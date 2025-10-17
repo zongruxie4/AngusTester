@@ -144,7 +144,7 @@ export type SecuritySchemeInfo = OpenAPIV3_1.SecuritySchemeObject & {
   scopesErr?: boolean;
 }
 
-export interface ModalsConfig {
+export interface ModalConfig {
   syncModalVisible: boolean,
   serverUrlModalVisible: boolean,
   importModalVisible: boolean,
@@ -154,25 +154,13 @@ export interface ModalsConfig {
   shareModalVisible: boolean,
   authModalVisible: boolean,
   activeId: string,
+  type: string,
   activeName: string,
   statusVisible: boolean;
   auth: boolean;
   selectedNode?:ServicesInfo;
   delTestScriptVisible: boolean;
   enabledApiTestVisible: boolean;
-}
-
-export type UnarchivedItem = {
-  id: string;
-  protocol: {
-    value: string;
-    message: string;
-  },
-  method: string;
-  endpoint: string;
-  summary: string;
-  createdDate: string;
-  lastModifiedDate: string;
 }
 
 export type FoldActionKey = 'creatService' | 'import' | 'export'|'authorization';
@@ -288,8 +276,8 @@ export const menuActions = [
   {
     name: t('actions.rename'),
     icon: 'icon-bianji',
-    key: 'rename',
-    permission: 'RENAME',
+    key: 'MODIFY',
+    permission: 'MODIFY',
     disabled: false
   },
   {
@@ -309,7 +297,7 @@ export const menuActions = [
     name: t('actions.clone'),
     icon: 'icon-fuzhi',
     key: 'clone',
-    permission: 'CLONE',
+    permission: 'VIEW',
     disabled: false
   },
   {

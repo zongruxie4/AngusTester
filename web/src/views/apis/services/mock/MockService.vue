@@ -8,6 +8,7 @@ import type { Rule } from 'ant-design-vue/es/form';
 import { mock, services } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { ApiMenuKey } from '@/views/apis/menu';
+import { ServicesDetail } from '@/views/apis/services/services/types';
 
 import ApiList from '@/views/apis/mock/add/ApiList.vue';
 import HeadInfo from '@/components/layout/header/info/index.vue';
@@ -19,10 +20,11 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   id: ''
 });
+
 const { t } = useI18n();
 
 const isPrivate = ref(false);
-const serviceInfo = ref();
+const serviceInfo = ref<ServicesDetail>();
 
 const createType = ref<boolean>();
 
@@ -48,7 +50,7 @@ const formState = ref<{
 });
 
 const loading = ref(false);
-const loadInfo = async () => {
+const loadMockService = async () => {
   loading.value = true;
   const [error, { data }] = await mock.getServiceDetail(serviceInfo.value?.mockServiceId);
   loading.value = false;
@@ -99,7 +101,6 @@ const rules = computed(() => {
     ...baseRule,
     serviceDomainUrl: [{ required: true, validator: serviceDomainValidate, trigger: 'change' }]
   };
-
   return serviceInfo.value?.mockServiceId ? {} : isPrivate.value ? privateRule : publicRule;
 });
 
@@ -124,12 +125,12 @@ const handleSave = () => {
     loading.value = false;
     if (error) { return; }
     notification.success(serviceInfo.value?.mockServiceId ? t('actions.tips.updateSuccess') : t('actions.tips.addSuccess'));
-    router.push(`/apis#${ApiMenuKey.MOCK}`);
+    await router.push(`/apis#${ApiMenuKey.MOCK}`);
   }, () => { /** */ });
 };
 
-const loadProjectInfo = async () => {
-  const [error, { data }] = await services.loadInfo(props.id);
+const loadServiceInfo = async () => {
+  const [error, { data }] = await services.loadDetail(props.id);
   if (error) {
     return;
   }
@@ -145,11 +146,11 @@ const handleCancel = () => {
 onMounted(async () => {
   isPrivate.value = appContext.isPrivateEdition();
   formState.value.serviceId = props.id;
-  await loadProjectInfo();
+  await loadServiceInfo();
   createType.value = !serviceInfo.value?.mockServiceId;
   if (serviceInfo.value?.mockServiceId) {
-    loadInfo();
-    loadServiceApiIds();
+    await loadMockService();
+    await loadServiceApiIds();
   }
 });
 </script>

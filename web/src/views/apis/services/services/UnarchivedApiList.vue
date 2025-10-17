@@ -2,22 +2,22 @@
 import { computed, inject, ref, Ref } from 'vue';
 import { Dropdown, HttpMethodText, Icon, IconRefresh, notification, Scroll } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { apis } from '@/api/tester';
+import { CombinedTargetType } from '@/enums/enums';
+import { ApisUnarchivedListInfo } from '@/views/apis/services/apis/types';
 
-import { UnarchivedItem } from '@/views/apis/services/services/types';
-
+// props and emits
 interface Props {
-  keywords: string | undefined;
+  searchKeyword: string | undefined;
   total: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  keywords: undefined,
+  searchKeyword: undefined,
   total: 0
 });
-const { t } = useI18n();
 
 const emit = defineEmits<{
   (e: 'delete'): void;
@@ -25,103 +25,40 @@ const emit = defineEmits<{
   (e: 'refresh'): void;
 }>();
 
+// i18n
+const { t } = useI18n();
+
+// injections
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
 const projectId = inject<Ref<string>>('projectId', ref(''));
-
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const deleteTabPane = inject<(data: any) => void>('deleteTabPane', () => { });
 
+// refs and state
 const scrollRef = ref();
+const refreshCounter = ref(0);
+const isLoading = ref(false);
+const unarchivedApis = ref<ApisUnarchivedListInfo[]>([]);
 
-const notify = ref(0);
-const loading = ref(false);
-const dataList = ref<UnarchivedItem[]>([]);
-
-const scrollChange = (data:UnarchivedItem[]) => {
-  dataList.value = data;
-};
-
-const toDelete = async (value:UnarchivedItem) => {
-  const id = value.id;
-  const [error] = await apis.deleteUnarchivedApi(id);
-  if (error) {
-    return;
-  }
-
-  scrollDelete(id);
-  emit('delete');
-
-  const _key = getKey(value.protocol?.value);
-  deleteTabPane([id + _key]);
-  notification.success(t('actions.tips.deleteSuccess'));
-};
-
-const scrollDelete = (id:string) => {
-  if (typeof scrollRef.value?.delete === 'function') {
-    scrollRef.value.del(id);
-  }
-};
-
-const deleteAll = async () => {
-  const [error] = await apis.deleteAllUnarchivedApi();
-  if (error) {
-    return;
-  }
-
-  // 删除已经打开的tab
-  const delIds = dataList.value.map(item => item.id + getKey(item.protocol?.value));
-  deleteTabPane(delIds);
-
-  dataList.value = [];
-
-  if (typeof scrollRef.value?.pureDelAll === 'function') {
-    scrollRef.value.pureDelAll();
-  }
-
-  emit('deleteAll');
-  notification.success(t('actions.tips.deleteAllSuccess'));
-};
-
-const refresh = () => {
-  notify.value++;
-  emit('refresh');
-};
-
-const select = (data:UnarchivedItem) => {
-  const value = getKey(data.protocol?.value);
-  addTabPane({ ...data, name: data.summary, value, unarchived: true, _id: data.id + value, pid: data.id + value });
-};
-
-const getKey = (protocol:string) => {
-  return protocol.includes('ws') ? 'socket' : 'API';
-};
-
-const menuItemClick = ({ key }:{key:'delete'}, value:UnarchivedItem) => {
-  switch (key) {
-    case 'delete':
-      toDelete(value);
-      break;
-  }
-};
-
-const buttonDisabled = computed(() => {
-  return !props.total || loading.value;
+// computed
+const isDeleteAllDisabled = computed(() => {
+  return !props.total || isLoading.value;
 });
 
-const params = computed(() => {
-  const filters: { key: 'summary'; op: 'MATCH', value: string; }[] = [];
-  if (props.keywords) {
-    filters.push({ key: 'summary', op: 'MATCH', value: props.keywords });
+const fetchParams = computed(() => {
+  const filters: { key: 'summary'; op: SearchCriteria.OpEnum; value: string; }[] = [];
+  if (props.searchKeyword) {
+    filters.push({ key: 'summary', op: SearchCriteria.OpEnum.Match, value: props.searchKeyword });
   }
   return {
     filters,
-    targetType: 'API',
+    targetType: CombinedTargetType.API,
     projectId: projectId.value
   };
 });
 
-const menuItems:{
+const contextMenuItems:{
   key:'delete';
   name:string;
   icon:string;
@@ -134,9 +71,101 @@ const menuItems:{
     }
   ];
 
+// handlers
+/**
+ * Handle list data changes from the Scroll component and refresh local cache
+ */
+const handleScrollChange = (data:ApisUnarchivedListInfo[]) => {
+  unarchivedApis.value = data;
+};
+
+/**
+ * Delete a single unarchived API and update UI states and tabs
+ */
+const deleteOne = async (apiItem:ApisUnarchivedListInfo) => {
+  const id = apiItem.id;
+  const [error] = await apis.deleteUnarchivedApi(id);
+  if (error) {
+    return;
+  }
+
+  deleteFromScroll(id);
+  emit('delete');
+
+  const tabKey = getTabKeyByProtocol(apiItem.protocol?.value);
+  deleteTabPane([id + tabKey]);
+  notification.success(t('actions.tips.deleteSuccess'));
+};
+
+/**
+ * Remove a record from the Scroll component without triggering network calls
+ */
+const deleteFromScroll = (id:string) => {
+  if (typeof scrollRef.value?.delete === 'function') {
+    scrollRef.value.del(id);
+  }
+};
+
+/**
+ * Delete all unarchived APIs and clear list and related tabs
+ */
+const deleteAllUnarchived = async () => {
+  const [error] = await apis.deleteAllUnarchivedApi();
+  if (error) {
+    return;
+  }
+
+  const delIds = unarchivedApis.value.map(item => item.id + getTabKeyByProtocol(item.protocol?.value));
+  deleteTabPane(delIds);
+
+  unarchivedApis.value = [];
+
+  if (typeof scrollRef.value?.pureDelAll === 'function') {
+    scrollRef.value.pureDelAll();
+  }
+
+  emit('deleteAll');
+  notification.success(t('actions.tips.deleteAllSuccess'));
+};
+
+/**
+ * Notify Scroll to fetch again and bubble refresh event upward
+ */
+const triggerRefresh = () => {
+  refreshCounter.value++;
+  emit('refresh');
+};
+
+/**
+ * Open chosen API item in a new tab pane
+ */
+const openInTab = (apiItem:ApisUnarchivedListInfo) => {
+  const value = getTabKeyByProtocol(apiItem.protocol?.value);
+  addTabPane({ ...apiItem, name: apiItem.summary, value, unarchived: true, _id: apiItem.id + value, pid: apiItem.id + value });
+};
+
+/**
+ * Derive tab key by protocol value for consistent tab identity
+ */
+const getTabKeyByProtocol = (protocol:string) => {
+  return protocol.includes('ws') ? 'socket' : 'API';
+};
+
+/**
+ * Handle context menu item click actions
+ */
+const onMenuItemClick = ({ key }:{key:'delete'}, apiItem:ApisUnarchivedListInfo) => {
+  switch (key) {
+    case 'delete':
+      deleteOne(apiItem);
+      break;
+  }
+};
+
+// expose
 defineExpose({
   refresh: () => {
-    notify.value++;
+    refreshCounter.value++;
   }
 });
 </script>
@@ -145,22 +174,22 @@ defineExpose({
   <div class="h-107.25">
     <Scroll
       ref="scrollRef"
-      v-model:spinning="loading"
+      v-model:spinning="isLoading"
       :action="`${TESTER}/apis/unarchived?fullTextSearch=true`"
-      :params="params"
+      :params="fetchParams"
       :lineHeight="32"
-      :notify="notify"
+      :notify="refreshCounter"
       class="py-2"
       style="height: calc(100% - 29px);"
-      @change="scrollChange">
+      @change="handleScrollChange">
       <Dropdown
-        v-for="item in dataList"
+        v-for="item in unarchivedApis"
         :key="item.id"
         :trigger="['contextmenu']"
-        :menuItems="menuItems"
+        :menuItems="contextMenuItems"
         class="mb-1"
-        @click="menuItemClick($event, item)">
-        <div class="item-container leading-5 flex items-center pl-3.5 py-1 pr-2 space-x-2 rounded cursor-pointer" @click="select(item)">
+        @click="onMenuItemClick($event, item)">
+        <div class="item-container leading-5 flex items-center pl-3.5 py-1 pr-2 space-x-2 rounded cursor-pointer" @click="openInTab(item)">
           <div class="flex-1 truncate space-y-1">
             <div class="truncate" :title="item.summary">{{ item.summary }}</div>
             <div class="flex items-center space-x-2">
@@ -170,7 +199,7 @@ defineExpose({
           </div>
 
           <div class="flex-shrink-0 flex items-center space-x-2 text-3.5 invisible">
-            <span :title="t('actions.delete')" @click="toDelete(item)">
+            <span :title="t('actions.delete')" @click="deleteOne(item)">
               <Icon icon="icon-qingchu" class="cursor-pointer text-theme-text-hover" />
             </span>
           </div>
@@ -180,18 +209,18 @@ defineExpose({
 
     <div class="flex items-center justify-end space-x-3 px-5 border-t border-solid border-theme-text-box">
       <Button
-        :disabled="buttonDisabled"
+        :disabled="isDeleteAllDisabled"
         size="small"
         type="text"
-        @click="deleteAll">
+        @click="deleteAllUnarchived">
         <Icon icon="icon-qingchu" class="text-3.5 mr-1" />
         <span>{{ t('service.sidebar.deleteAllAction') }}</span>
       </Button>
       <Button
-        :disabled="loading"
+        :disabled="isLoading"
         size="small"
         type="text"
-        @click="refresh">
+        @click="triggerRefresh">
         <IconRefresh class="text-3.5 mr-1" />
         <span>{{ t('actions.refresh') }}</span>
       </Button>
