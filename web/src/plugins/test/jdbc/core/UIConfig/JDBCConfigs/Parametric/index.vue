@@ -2,12 +2,13 @@
 import { defineAsyncComponent, inject, ref, Ref } from 'vue';
 import { appContext } from '@xcan-angus/infra';
 
-import { HTTPConfig } from '../PropsType';
+import { VariableInfo } from '../PropsType';
 import { ProjectInfo } from '@/layout/types';
+import { DatasetItem } from '@/plugins/test/types';
 
 type Props = {
-  variables: HTTPConfig['variables'];
-  datasets: HTTPConfig['datasets'];
+  variables: VariableInfo[];
+  datasets: DatasetItem[];
   actionOnEOF: 'RECYCLE' | 'STOP_THREAD';
   sharingMode: 'ALL_THREAD' | 'CURRENT_THREAD';
   errorNum: number;
@@ -23,8 +24,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 
 const emit = defineEmits<{
-  (e: 'variablesChange', value: HTTPConfig['variables']): void;
-  (e: 'datasetsChange', value: HTTPConfig['datasets']): void;
+  (e: 'variablesChange', value: VariableInfo[]): void;
+  (e: 'datasetsChange', value: DatasetItem[]): void;
   (e: 'update:errorNum', value: number): void;
   (e: 'update:actionOnEOF', value:'RECYCLE' | 'STOP_THREAD'): void;
   (e: 'update:sharingMode', value: 'ALL_THREAD' | 'CURRENT_THREAD'): void;
@@ -32,7 +33,7 @@ const emit = defineEmits<{
 
 const variablesRef = ref();
 
-const Dataset = defineAsyncComponent(() => import('./Dataset/index.vue'));
+const Dataset = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/ParametricDataset/index.vue'));
 const Variables = defineAsyncComponent(() => import('./Variables/index.vue'));
 
 const userInfo = ref(appContext.getUser());
@@ -50,11 +51,11 @@ const targetInfoChange = (data: { actionOnEOF?: 'RECYCLE' | 'STOP_THREAD'; shari
   }
 };
 
-const datasetsChange = (data:HTTPConfig['datasets']) => {
+const datasetsChange = (data: DatasetItem[]) => {
   emit('datasetsChange', data);
 };
 
-const variablesChange = (data:HTTPConfig['variables']) => {
+const variablesChange = (data: VariableInfo[]) => {
   emit('variablesChange', data);
 };
 
