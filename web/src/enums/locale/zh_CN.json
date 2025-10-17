@@ -40,6 +40,16 @@
         "DEV_COMPLETED": "开发完成",
         "RELEASED": "已发布"
       },
+      "ApisDesignSource": {
+        "SYNCHRONOUS_SERVICE": "同步服务",
+        "FILE_IMPORT": "文件导入",
+        "MANUAL_CREATED": "手动创建"
+      },
+      "ApiImportSource": {
+        "OPENAPI": "Openapi",
+        "POSTMAN": "Postman",
+        "ANGUS": "Angus"
+      },
       "ActionWhenDuplicate": {
         "COVER": "覆盖",
         "IGNORE": "忽略"
@@ -260,11 +270,6 @@
         "RETROSPECTIVE": "迭代总结会",
         "BACKLOG_REFINEMENT": "产品梳理会",
         "OTHER": "其他"
-      },
-      "ApisDesignSource": {
-        "SYNCHRONOUS_SERVICE": "同步服务",
-        "FILE_IMPORT": "文件导入",
-        "MANUAL_CREATED": "手动创建"
       },
       "DnsLine": {
         "DEFAULT": "默认",

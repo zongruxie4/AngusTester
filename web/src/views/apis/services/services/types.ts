@@ -162,19 +162,6 @@ export interface ModalsConfig {
   enabledApiTestVisible: boolean;
 }
 
-export type UnarchivedItem = {
-  id: string;
-  protocol: {
-    value: string;
-    message: string;
-  },
-  method: string;
-  endpoint: string;
-  summary: string;
-  createdDate: string;
-  lastModifiedDate: string;
-}
-
 export type FoldActionKey = 'creatService' | 'import' | 'export'|'authorization';
 
 export const globalActions = {

@@ -1,5 +1,6 @@
 import { i18n, HttpMethod, EnumMessage } from '@xcan-angus/infra';
 import { ApiSource, ApiStatus, ApiImportSource } from '@/enums/enums';
+import { OpenAPIV3 } from '@/types/openapi-types';
 
 const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
 
@@ -96,8 +97,51 @@ export type ApisListInfo = {
   testStabilityPassed?: boolean;
   testStabilityFailureMessage: string;
   tags: string[];
-  mockServiceId: number;
-  mockApisId: number;
+  mockServiceId: string;
+  mockApisId: string;
+}
+
+export type ApisUnarchivedListInfo = {
+  id: string;
+  projectId: string;
+  protocol: EnumMessage<ApisProtocol>;
+  method: string;
+  endpoint: string;
+  summary: string;
+  createdDate: string;
+  lastModifiedDate: string;
+}
+
+// Detail VO mapped from backend class `ApisUnarchivedDetailVo`
+export interface ApisUnarchivedDetail {
+  id?: string;
+  projectId?: string;
+
+  protocol?: EnumMessage<ApisProtocol>;
+  method?: string;
+  endpoint?: string;
+
+  // OpenAPI Document fields
+  summary?: string;
+  description?: string;
+  operationId?: string;
+  parameters?: (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[];
+  requestBody?: OpenAPIV3.ReferenceObject | OpenAPIV3.RequestBodyObject;
+  responses?: OpenAPIV3.ResponsesObject;
+  security?: OpenAPIV3.SecurityRequirementObject[];
+  currentServer?: OpenAPIV3.ServerObject;
+  extensions?: Record<string, any>;
+
+  // Security/authentication
+  authentication?: OpenAPIV3.SecuritySchemeObject;
+  assertions?: any[];
+  auth?: boolean;
+  secured?: boolean;
+
+  tenantId?: string;
+  createdBy?: string;
+  createdDate?: string;
+  lastModifiedDate?: string;
 }
 
 /**

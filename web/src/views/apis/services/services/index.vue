@@ -819,7 +819,7 @@ const searchInputProps = {
       <UnarchivedApiList
         ref="unarchivedRef"
         :total="collapseOptions[0].total"
-        :keywords="unarchivedKeywords"
+        :searchKeyword="unarchivedKeywords"
         @delete="loadUnarchivedCount"
         @deleteAll="loadUnarchivedCount"
         @refresh="loadUnarchivedCount" />

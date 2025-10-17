@@ -40,6 +40,16 @@
         "DEV_COMPLETED": "Completed",
         "RELEASED": "Released"
       },
+      "ApisDesignSource": {
+        "SYNCHRONOUS_SERVICE": "Sync Service",
+        "FILE_IMPORT": "File Import",
+        "MANUAL_CREATED": "Manually Created"
+      },
+      "ApiImportSource": {
+        "OPENAPI": "Openapi",
+        "POSTMAN": "Postman",
+        "ANGUS": "Angus"
+      },
       "ActionWhenDuplicate": {
         "COVER": "Overwrite",
         "IGNORE": "Ignore"
@@ -260,11 +270,6 @@
         "RETROSPECTIVE": "Sprint Retrospective",
         "BACKLOG_REFINEMENT": "Backlog Refinement",
         "OTHER": "Other"
-      },
-      "ApisDesignSource": {
-        "SYNCHRONOUS_SERVICE": "Sync Service",
-        "FILE_IMPORT": "File Import",
-        "MANUAL_CREATED": "Manually Created"
       },
       "DnsLine": {
         "DEFAULT": "Default",

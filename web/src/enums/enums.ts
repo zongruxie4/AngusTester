@@ -364,6 +364,12 @@ export enum ApisShareScope {
   SINGLE_APIS = 'SINGLE_APIS'
 }
 
+export enum ApiImportSource{
+  OPENAPI = 'OPENAPI',
+  POSTMAN = 'POSTMAN',
+  ANGUS = 'ANGUS'
+}
+
 // Indicator Enums
 export enum IndicatorType {
   FUNC = 'FUNC',
@@ -661,6 +667,7 @@ export const enumNamespaceMap = new Map<any, string>([
   [ProjectType, 'xcm.enum.ProjectType'],
   [ServicesExportScope, 'xcm.enum.ServicesExportScope'],
   [ApisShareScope, 'xcm.enum.ApisShareScope'],
+  [ApiImportSource, 'xcm.enum.ApiImportSource'],
   [IndicatorType, 'xcm.enum.IndicatorType'],
   [TaskSprintPermission, 'xcm.enum.TaskSprintPermission'],
   [ScenarioPermission, 'xcm.enum.ScenarioPermission'],
