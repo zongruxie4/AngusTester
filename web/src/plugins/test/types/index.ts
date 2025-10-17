@@ -434,3 +434,15 @@ export type DatasetItem = {
     source?: string;// 前端自动添加
     previewFlag?: boolean;// 前端自动添加
 };
+
+export type RequestServer = {
+    url: string;
+    variables: {
+      [key:string]: {
+        defaultValue: string;
+        allowableValues: string[];
+        description?: string;
+      }
+    };
+    description?:string;
+  }
