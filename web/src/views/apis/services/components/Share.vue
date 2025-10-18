@@ -7,16 +7,42 @@ import { useI18n } from 'vue-i18n';
 
 import ColumnItem from '@/components/share/columnItem/index.vue';
 import { apis } from '@/api/tester';
-import type { ListType, StateType } from './Share';
 
 const Share = defineAsyncComponent(() => import('@/components/share/index.vue'));
+
+// Define interfaces directly in the component file
+export interface ListType{
+  targetId: string;
+  apiIds?: string[];
+  expiredDuration: {
+    value: string;
+    unit: {
+      value: string;
+      message: string;
+    }
+  };
+  password: string;
+  url?: string;
+  id: string;
+  editPassd?: boolean;
+  tempPass?: string;
+  public0: boolean;
+  expiredFlag?: boolean;
+  targetType: 'SERVICE' | 'API';
+  remark?: string;
+}
+
+export interface StateType{
+  visible: boolean;
+  list: Array<ListType>;
+}
 
 type Type = 'API' | 'SERVICE'
 
 interface Props {
-  disabled:boolean,
-  id?: string,
-  type?: Type,
+  disabled: boolean;
+  id?: string;
+  type?: Type;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,54 +53,61 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+// Reactive pagination state for share list
 const pagination = reactive({
   total: 0,
   current: 1,
   pageSize: 10
 });
 
-const state:StateType = reactive({
+// Reactive state for share modal and list data
+const state: StateType = reactive({
   visible: false,
   list: []
 });
 
+// Reactive reference for showing load more button
 const showMore = ref(false);
 
-watch(() => props.id, newValue => {
-  if (newValue) {
-    pagination.current = 1;
-    loadList();
-  }
-});
-
-// 查询服务分享记录
+/**
+ * Load share list data with pagination support
+ * @param loadMore - Whether to load more data (for pagination)
+ */
 const loadList = async (loadMore = false) => {
   if (loadMore) {
     pagination.current += 1;
   }
+
   const params = {
     pageNo: pagination.current,
     pageSize: pagination.pageSize,
     targetId: props.id,
     targetType: props.type
   };
+
   const [error, res = { data: { list: [] } }] = await apis.getShareList(params);
   if (error) {
     return;
   }
+
   if (loadMore) {
     state.list.push(...res.data.list);
   } else {
     state.list = res.data.list || [];
   }
+
   if (state.list.length === +res.data.total) {
     showMore.value = false;
   } else {
     showMore.value = true;
   }
 };
-// 删除分享
-const delShare = async (id:string) => {
+
+/**
+ * Delete a share item
+ * @param id - The ID of the share item to delete
+ */
+const delShare = async (id: string) => {
   const [error] = await apis.deleteShare(id);
   if (error) {
     return;
@@ -84,31 +117,48 @@ const delShare = async (id:string) => {
   loadList();
 };
 
-const sharedId = ref();
-// 添加分享
+// Reactive reference for the ID of the share being edited
+const sharedId = ref<string | undefined>();
+
+/**
+ * Open the share dialog for creating a new share
+ */
 const openShareDialog = () => {
   state.visible = true;
   sharedId.value = undefined;
 };
-// 编辑
-const edit = (item:ListType) => {
+
+/**
+ * Edit an existing share item
+ * @param item - The share item to edit
+ */
+const edit = (item: ListType) => {
   sharedId.value = item.id;
   state.visible = true;
 };
 
-// 设置密码可以编辑
+/**
+ * Enable password editing for a share item
+ * @param item - The share item to edit password for
+ */
 const openEditPassd = (item: ListType) => {
   item.editPassd = true;
   item.tempPass = item.password;
 };
 
-// 修改密码
-const patchPassd = async (item:ListType) => {
+/**
+ * Update the password for a share item
+ * @param item - The share item to update password for
+ */
+const patchPassd = async (item: ListType) => {
   if (!item.tempPass) {
     notification.error(t('service.shareModal.messages.passwordRequired'));
+    return; // Add early return to prevent further execution
   }
+
   const { expiredDuration, apiIds, id, public0, remark, url } = item;
   const expiredFlag = !!expiredDuration.value;
+
   const params = {
     apiIds: apiIds || undefined,
     id,
@@ -119,22 +169,30 @@ const patchPassd = async (item:ListType) => {
     expiredFlag,
     expiredDuration: expiredFlag ? { ...expiredDuration, unit: expiredDuration.unit.value } : undefined
   };
+
   const [error] = await apis.patchShared(params);
   if (error) {
     return;
   }
+
   item.password = item.tempPass as string;
   item.editPassd = false;
   notification.success(t('service.shareModal.messages.updatePasswordSuccess'));
 };
 
-// 取消修改密码
+/**
+ * Cancel password editing for a share item
+ * @param item - The share item to cancel password editing for
+ */
 const cancelPassd = (item: ListType) => {
   item.editPassd = false;
 };
 
-// 复制密码和链接
-const copy = (item:ListType) => {
+/**
+ * Copy share link and password to clipboard
+ * @param item - The share item to copy
+ */
+const copy = (item: ListType) => {
   let message;
   if (!item.public0) {
     message = t('service.shareModal.copyFormat.withPassword', { url: item.url, password: item.password || '' });
@@ -146,12 +204,23 @@ const copy = (item:ListType) => {
   });
 };
 
-//
+/**
+ * Handle share operation completion
+ */
 const handleShareEnd = () => {
   pagination.current = 1;
   loadList();
 };
 
+// Watch for ID prop changes and reload list
+watch(() => props.id, newValue => {
+  if (newValue) {
+    pagination.current = 1;
+    loadList();
+  }
+});
+
+// Load initial data on component mount
 onMounted(() => {
   pagination.current = 1;
   loadList();
