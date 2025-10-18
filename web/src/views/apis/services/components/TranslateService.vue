@@ -35,8 +35,11 @@ const handleServiceId = (serviceId) => {
 const submit = () => {
   formRef.value.validate().then(async () => {
     const { serviceId, ...params } = formData.value;
+    if (!serviceId) {
+      return;
+    }
     loading.value = true;
-    const [error] = await services.translate(serviceId as string, { ...params });
+    const [error] = await services.translate(serviceId, { ...params });
     loading.value = false;
     if (error) {
       return;
@@ -96,7 +99,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- 下方：OpenAPI翻译配置 -->
     <div class="configuration-section mt-3">
       <div class="text-3.5 font-medium">{{ t('service.translateModal.configuration.title') }}</div>
 
@@ -118,7 +120,7 @@ onMounted(() => {
             :virtual="false"
             size="small"
             @change="handleServiceId">
-            <template #title="{name, targetType}">
+            <template #title="{name}">
               <div
                 class="flex items-center"
                 :title="name">
