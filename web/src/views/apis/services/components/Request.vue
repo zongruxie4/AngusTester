@@ -2,12 +2,95 @@
 import { ref, watch } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
 
-import { ResponseState } from '@/views/apis/services/apiHttp/interface';
-import { baseSource, getStatusText } from './Request';
+import { ResponseState } from '@/views/apis/services/protocol/http/interface';
 
 interface Props {
-  dataSource:ResponseState
+  dataSource: ResponseState
 }
+
+const props = withDefaults(defineProps<Props>(), {});
+
+/**
+ * Base source configuration for request information
+ */
+const baseSource = [
+  {
+    name: 'Request URL',
+    key: 'url',
+    value: ''
+  },
+  {
+    name: 'Request Method',
+    key: 'method',
+    value: ''
+  },
+  {
+    name: 'Status Code',
+    key: 'statusText',
+    value: ''
+  }
+];
+
+/**
+ * HTTP status code to text mapping
+ */
+const StatusMap: Record<number, string> = {
+  100: 'Continue',
+  101: 'Switching Protocols',
+  200: 'OK',
+  201: 'Created',
+  202: 'Accepted',
+  203: 'Non-Authoritative info',
+  204: 'No content',
+  205: 'Reset content',
+  206: 'Partial content',
+  300: 'Multiple Choices',
+  301: 'Moved Permanently',
+  302: 'Found',
+  303: 'See Other',
+  304: 'Not Modified',
+  305: 'Use Proxy',
+  306: 'Unused',
+  307: 'Temporary Redirect',
+  400: 'Bad Request',
+  401: 'Unauthorized',
+  402: 'Payment Required',
+  403: 'Forbidden',
+  404: 'Not Found',
+  405: 'Method Not Allowed',
+  406: 'Not Acceptable',
+  407: 'Proxy Authentication Required',
+  408: 'Request Time-out',
+  409: 'Conflict',
+  410: 'Gone',
+  411: 'Length Required',
+  412: 'precondition Failed',
+  413: 'Request Entity Too Large',
+  414: 'Request-URI Too Large',
+  415: 'Unsupported Media Type',
+  416: 'Requested range not satisfiable',
+  417: 'Expectation Failed',
+  500: 'Internal Server error',
+  501: 'Not Implemented',
+  502: 'Bad Gateway',
+  503: 'services Unavailable',
+  504: 'Gateway Time-out',
+  505: 'http version not supported'
+};
+
+/**
+ * Get status text for a given HTTP status code
+ * @param status - HTTP status code
+ * @returns Status text including code and description
+ */
+const getStatusText = (status: number): string => {
+  let statusText = status + '';
+  if (StatusMap[status]) {
+    statusText += ' ' + StatusMap[status];
+  }
+
+  return statusText;
+};
 
 interface RequestItem {
   name: string;
@@ -16,8 +99,7 @@ interface RequestItem {
   type?: string
 }
 
-const props = withDefaults(defineProps<Props>(), {});
-// 定义要渲染的请求数据的分组
+// Define request data groups to render
 const sourceData = ref<RequestItem[]>([
   { name: 'General', value: [], spread: true },
   { name: 'Query Parameters', value: [], spread: true },
@@ -25,17 +107,28 @@ const sourceData = ref<RequestItem[]>([
   { name: 'Response Headers', value: [], spread: true, type: '' },
   { name: 'Raw', value: [], spread: true }]);
 
+/**
+ * Toggle the spread state of a request data section
+ * @param idx - Index of the section to toggle
+ */
+const handleSpread = (idx: number) => {
+  sourceData.value[idx].spread = !sourceData.value[idx].spread;
+};
+
+// Watch for data source changes and update request data
 watch(() => props.dataSource, (newValue) => {
+  // Clear all existing values
   sourceData.value.forEach(i => {
     i.value = [];
   });
+
   const { status, config = {}, headers, requestHeaders } = newValue || {};
 
   let value = '';
-  // 基本
+  // Basic information
   baseSource.forEach(item => {
     if (item.key === 'statusText') {
-      value = getStatusText(status);
+      value = getStatusText(status || 0);
     } else if (item.key === 'url') {
       // value = encodeURI(config[item.key]);
       value = config[item.key];
@@ -48,7 +141,7 @@ watch(() => props.dataSource, (newValue) => {
     });
   });
 
-  // queryString
+  // Query string parameters
   if (config.queryString) {
     const querys = config.queryString?.split('&');
     for (const query of querys) {
@@ -57,16 +150,16 @@ watch(() => props.dataSource, (newValue) => {
     }
   }
 
-  // request header
+  // Request headers
   if (requestHeaders) {
     for (const head in requestHeaders) {
       if (requestHeaders[head]) {
-        sourceData.value[2].value.push({ name: head || '', value: decodeURIComponent(requestHeaders[head]) });
+        sourceData.value[2].value.push({ name: head || '', value: decodeURIComponent(requestHeaders[head] as unknown as string) });
       }
     }
   }
 
-  // response header
+  // Response headers
   if (headers && Object.keys(headers).length) {
     for (const key in headers) {
       if (Object.prototype.hasOwnProperty.call(headers, key)) {
@@ -79,7 +172,7 @@ watch(() => props.dataSource, (newValue) => {
     }
   }
 
-  // request body
+  // Request body
   if (config.forms) {
     sourceData.value[4].name = 'Form';
     for (const key in config.forms) {
@@ -94,11 +187,8 @@ watch(() => props.dataSource, (newValue) => {
   immediate: true,
   deep: true
 });
-
-const handleSpread = (idx) => {
-  sourceData.value[idx].spread = !sourceData.value[idx].spread;
-};
 </script>
+
 <template>
   <div class="h-full py-3 overflow-auto">
     <div
