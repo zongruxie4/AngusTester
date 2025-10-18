@@ -15,25 +15,38 @@ const props = withDefaults(defineProps<Props>(), {
   value: ''
 });
 
-const emits = defineEmits<{(e: 'update:visible', value: boolean): void, (e: 'ok', value: string):void, (e:'cancel'):void}>();
+const emits = defineEmits<{
+  (e: 'update:visible', value: boolean): void,
+  (e: 'ok', value: string):void,
+  (e:'cancel'):void
+}>();
 
+/**
+ * Cancel editing description and close the modal
+ */
 const cancelEditDescription = () => {
   emits('update:visible', false);
   emits('cancel');
 };
 
+/**
+ * Save the description and close the modal
+ */
 const saveDescription = () => {
   description.value = easyMdRef.value.getValue();
   emits('ok', description.value);
 };
 
+// Reactive references for markdown editor
 const easyMdRef = ref();
 const description = ref();
 
+// Computed property for modal footer visibility
 const footer = computed(() => {
-  return !!props.isEdit;
+  return props.isEdit;
 });
 
+// Initialize component with description value
 onMounted(() => {
   watch(() => props.visible, () => {
     description.value = props.value;
@@ -42,6 +55,7 @@ onMounted(() => {
   });
 });
 
+// Modal body style configuration
 const bodyStyle = {
   padding: '0 24px 16px 24px',
   height: 'calc(100% - 84px)'
