@@ -17,10 +17,6 @@ interface Props {
   source?:'introduce' | 'global' | 'services';
 }
 
-interface UploadOption extends UploadRequestOption {
-  file: File;
-}
-
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   serviceId: undefined,
@@ -38,135 +34,197 @@ const emits = defineEmits<{
   (e: 'close'): void
 }>();
 
-const isLoading = ref(false);
+// Reactive references for import form state
+const isLoading = ref<boolean>(false);
 const strategyWhenDuplicated = ref<StrategyWhenDuplicated>(StrategyWhenDuplicated.COVER);
-const deleteWhenNotExisted = ref(false);
-const projectServiceName = ref<string>();
-const nameErrorMsg = ref<string>();
+const deleteWhenNotExisted = ref<boolean>(false);
+const projectServiceName = ref<string | undefined>();
+const nameErrorMsg = ref<string | undefined>();
 const importSource = ref<ApiImportSource>(ApiImportSource.OPENAPI);
-const uploadErrorMsg = ref<string>();
-const progressing = ref(false);
-const file = ref<File>();
-const originFile = ref<File>();
+const uploadErrorMsg = ref<string | undefined>();
+const isProcessing = ref<boolean>(false);
+const convertedFile = ref<File | undefined>();
+const originalFile = ref<File | undefined>();
 
-const importSourceChange = (value:ApiImportSource.POSTMAN|ApiImportSource.OPENAPI) => {
-  if (value === ApiImportSource.POSTMAN && originFile.value && originFile.value.name === file.value?.name) {
-    toOpenapi(originFile.value);
+/**
+ * Handle import source change event
+ * @param value - New import source value
+ * @param option - Selected option object
+ */
+const handleImportSourceChange = (value: string) => {
+  // Convert string value to ApiImportSource enum
+  const typedValue = value as ApiImportSource;
+
+  if (typedValue === ApiImportSource.POSTMAN && originalFile.value && originalFile.value.name === convertedFile.value?.name) {
+    convertToOpenapi(originalFile.value);
   } else {
-    file.value = originFile.value;
+    convertedFile.value = originalFile.value;
     uploadErrorMsg.value = undefined;
   }
 };
 
-const saveModalData = async () => {
+/**
+ * Save import form data and submit API request
+ * @returns Promise that resolves when save operation completes
+ */
+const saveImportData = async () => {
+  // Prevent multiple submissions
   if (isLoading.value) {
     return;
   }
 
+  // Validate import source
   if (!importSource.value) {
     notification.warning(t('service.importForm.sourceRule'));
     return;
   }
 
-  if (!file.value) {
+  // Validate file selection
+  if (!convertedFile.value) {
     uploadErrorMsg.value = t('service.importForm.fileRule_required');
     return;
   }
 
+  // Validate service name for new services
   if (!props.serviceId && !projectServiceName.value) {
     nameErrorMsg.value = t('service.importForm.nameRule');
     return;
   }
 
-  const obj = new FormData();
+  // Prepare form data for API request
+  const formData = new FormData();
 
-  obj.append('file', file.value);
-  obj.append('strategyWhenDuplicated', strategyWhenDuplicated.value);
-  obj.append('deleteWhenNotExisted', deleteWhenNotExisted.value.toString());
-  obj.append('importSource', importSource.value);
-  obj.append('projectId', projectId.value);
+  formData.append('file', convertedFile.value);
+  formData.append('strategyWhenDuplicated', strategyWhenDuplicated.value);
+  formData.append('deleteWhenNotExisted', deleteWhenNotExisted.value.toString());
+  formData.append('importSource', importSource.value);
+  formData.append('projectId', projectId.value);
+
   if (props.serviceId) {
-    obj.append('serviceId', props.serviceId);
+    formData.append('serviceId', props.serviceId);
   } else {
-    obj.append('serviceName', projectServiceName.value || '');
+    formData.append('serviceName', projectServiceName.value || '');
   }
+
+  // Submit API request
   isLoading.value = true;
-  const [error, resp] = await services.localImport(obj);
+  const [error, response] = await services.localImport(formData);
   isLoading.value = false;
+
   if (error) {
     return;
   }
 
-  resetModalData();
-  emits('ok', resp.data || {});
+  // Reset form and notify success
+  resetImportForm();
+  emits('ok', response.data || {});
   notification.success(t('actions.tips.importSuccess'));
 };
 
-const customRequest = (info: UploadOption) => {
+/**
+ * Handle custom file upload request
+ * @param options - Upload request options
+ */
+const handleCustomRequest = (options: UploadRequestOption) => {
   uploadErrorMsg.value = undefined;
-  const _file = info.file;
-  if (info.file.type === 'application/json' && importSource.value === ApiImportSource.POSTMAN) {
-    toOpenapi(_file);
+
+  // Type guard to ensure file is of type File
+  if (!(options.file instanceof File)) {
+    uploadErrorMsg.value = t('service.importForm.fileRule_required');
     return;
   }
 
-  file.value = _file;
-  originFile.value = _file;
-  progressing.value = false;
+  const uploadedFile = options.file;
+
+  // Automatically convert Postman collections to OpenAPI format
+  if (uploadedFile.type === 'application/json' && importSource.value === ApiImportSource.POSTMAN) {
+    convertToOpenapi(uploadedFile);
+    return;
+  }
+
+  convertedFile.value = uploadedFile;
+  originalFile.value = uploadedFile;
+  isProcessing.value = false;
 };
 
-const toOpenapi = (_file:File) => {
-  progressing.value = true;
+/**
+ * Convert Postman collection to OpenAPI format
+ * @param file - Postman collection file to convert
+ */
+const convertToOpenapi = (file: File) => {
+  isProcessing.value = true;
   const reader = new FileReader();
+
   reader.onload = () => {
     try {
       const fileContent = reader.result as string;
       const openapiDoc = postmanToOpenApi(fileContent);
-      const yamlFileName = _file.name.replace(/\.json$/, '') + '.yml';
-      const yamlFile = new File([openapiDoc], yamlFileName, { type: 'text/yaml' });
-      file.value = yamlFile;
-      originFile.value = _file;
-      progressing.value = false;
+      const yamlFileName = file.name.replace(/\.json$/, '') + '.yml';
+      convertedFile.value = new File([openapiDoc], yamlFileName, { type: 'text/yaml' });
+      originalFile.value = file;
+      isProcessing.value = false;
     } catch (error) {
-      progressing.value = false;
-      file.value = _file;
-      originFile.value = _file;
+      // Handle conversion error
+      isProcessing.value = false;
+      convertedFile.value = file;
+      originalFile.value = file;
       uploadErrorMsg.value = t('service.importForm.fileRule');
     }
   };
-  reader.readAsText(_file);
+
+  reader.readAsText(file);
 };
 
-const deleteFile = () => {
-  file.value = undefined;
-  originFile.value = undefined;
+/**
+ * Remove selected file
+ */
+const removeFile = () => {
+  convertedFile.value = undefined;
+  originalFile.value = undefined;
   uploadErrorMsg.value = undefined;
 };
 
-const resetModalData = () => {
+/**
+ * Reset import form to initial state
+ */
+const resetImportForm = () => {
   strategyWhenDuplicated.value = StrategyWhenDuplicated.COVER;
   deleteWhenNotExisted.value = false;
   projectServiceName.value = undefined;
   nameErrorMsg.value = undefined;
-  file.value = undefined;
-  originFile.value = undefined;
+  convertedFile.value = undefined;
+  originalFile.value = undefined;
   uploadErrorMsg.value = undefined;
   importSource.value = ApiImportSource.OPENAPI;
 };
 
+/**
+ * Close modal and reset form
+ */
 const closeModal = () => {
-  resetModalData();
+  resetImportForm();
   emits('close');
 };
 
-const serviceNameChange = () => {
+/**
+ * Handle service name change event
+ */
+const handleServiceNameChange = () => {
   nameErrorMsg.value = undefined;
 };
 
-const sourceExcludes = ({ value }) => {
-  return [ApiImportSource.ANGUS].includes(value);
+/**
+ * Exclude certain import sources from selection
+ * @param option - Option object to check
+ * @returns Boolean indicating if option should be excluded
+ */
+const excludeImportSources = (option: { message: string; value: string }) => {
+  // Convert string value to ApiImportSource enum for comparison
+  const typedValue = option.value as ApiImportSource;
+  return [ApiImportSource.ANGUS].includes(typedValue);
 };
 
+// Initialize component with service name if provided
 onMounted(() => {
   projectServiceName.value = props.serviceName;
 });
@@ -183,7 +241,7 @@ onMounted(() => {
             :error="!!nameErrorMsg"
             :maxlength="100"
             :placeholder="t('common.placeholders.searchKeyword')"
-            @change="serviceNameChange" />
+            @change="handleServiceNameChange" />
         </Validate>
       </div>
       <div class="leading-3">{{ t('service.importForm.sourceLabel') }}</div>
@@ -191,18 +249,18 @@ onMounted(() => {
         v-model:value="importSource"
         class="w-full mt-2 mb-5"
         size="small"
-        :excludes="sourceExcludes"
+        :excludes="excludeImportSources"
         enumKey="ApiImportSource"
         defaultActiveFirstOption
-        @change="importSourceChange" />
+        @change="handleImportSourceChange" />
       <div :class="{'mb-5':props.source == 'services'}">
-        <Spin :spinning="progressing">
+        <Spin :spinning="isProcessing">
           <UploadDragger
-            v-show="!file"
+            v-show="!convertedFile"
             :class="{'error-border':!!uploadErrorMsg}"
             :multiple="false"
             :showUploadList="false"
-            :customRequest="customRequest"
+            :customRequest="handleCustomRequest"
             class="text-3 leading-5"
             accept=".zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.yml">
             <div class="flex flex-col items-center justify-center text-3 leading-5">
@@ -214,22 +272,22 @@ onMounted(() => {
         </Spin>
         <Validate :text="uploadErrorMsg">
           <div
-            v-show="!!originFile"
+            v-show="!!originalFile"
             :class="{'border-status-error':!!uploadErrorMsg}"
             class="px-3.5 border rounded">
             <div class="flex py-2 text-3 leading-3">
               <Popover placement="top">
                 <template #content>
-                  {{ originFile?.name }}
+                  {{ originalFile?.name }}
                 </template>
-                <div class="flex-2 truncate">{{ originFile?.name }}</div>
+                <div class="flex-2 truncate">{{ originalFile?.name }}</div>
               </Popover>
-              <div class="flex-1 text-right">{{ formatBytes(Number(originFile?.size)) }}</div>
+              <div class="flex-1 text-right">{{ formatBytes(Number(originalFile?.size)) }}</div>
               <div class="flex-1 text-right text-gray-500">
                 <Icon
                   icon="icon-qingchu"
                   class="cursor-pointer ml-2 text-3.5 text-theme-text-hover"
-                  @click="deleteFile" />
+                  @click="removeFile" />
               </div>
             </div>
           </div>
@@ -266,8 +324,8 @@ onMounted(() => {
       <Button
         type="primary"
         size="small"
-        :loading="isLoading || progressing"
-        @click="saveModalData">
+        :loading="isLoading || isProcessing"
+        @click="saveImportData">
         {{ t('actions.confirm') }}
       </Button>
     </div>
