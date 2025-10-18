@@ -2,36 +2,111 @@
 import { reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { Column, columns } from './Timeline';
+import { i18n } from '@xcan-angus/infra';
+
+// Get the i18n instance for translations
+const I18nInstance = i18n.getI18n();
+const globalT = I18nInstance?.global?.t || ((value: string): string => value);
 
 interface Props {
-  dataSource:PerformanceEntry
+  dataSource: PerformanceEntry;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ({}) as PerformanceEntry
 });
+
 const { t } = useI18n();
 
+/**
+ * Interface for timeline column data
+ */
+interface Column {
+  /** Display name of the timeline item */
+  name: string;
+  /** Key used to calculate time values */
+  key: string;
+  /** Calculated time duration in milliseconds */
+  time: number;
+  /** Delay before this item starts */
+  delay: number;
+}
+
+/**
+ * Array of timeline columns with translated names
+ */
+const columns: Column[] = [
+  {
+    name: globalT('service.timeline.items.dnsLookup'),
+    key: 'domainLookupEnd-domainLookupStart',
+    time: 0,
+    delay: 0
+  },
+  {
+    name: globalT('service.timeline.items.tcpConnection'),
+    key: 'connectEnd-connectStart',
+    time: 0,
+    delay: 0
+  },
+  {
+    name: globalT('service.timeline.items.ssl'),
+    key: 'secureConnectionEnd-secureConnectionStart',
+    time: 0,
+    delay: 0
+  },
+  {
+    name: globalT('service.timeline.items.requestSent'),
+    key: 'responseEnd-requestStart',
+    time: 0,
+    delay: 0
+  },
+  {
+    name: globalT('service.timeline.items.waiting'),
+    key: 'responseStart-requestStart',
+    time: 0,
+    delay: 0
+  },
+  {
+    name: globalT('service.timeline.items.contentDownload'),
+    key: 'responseEnd-responseStart',
+    time: 0,
+    delay: 0
+  }
+];
+
+// Reactive reference for the total duration of the timeline
 const duration = ref(0);
+
+// Reactive state for processed timeline data
 const state = reactive<{
-  data:Column[]
+  data: Column[];
 }>({
   data: []
 });
 
+/**
+ * Calculate padding left style based on delay
+ * @param delay - The delay in milliseconds
+ * @returns CSS style object with padding left percentage
+ */
 const getPaddingLeft = (delay: number): Record<string, string> => {
   return {
     paddingLeft: (delay / duration.value) * 100 + '%'
   };
 };
 
+/**
+ * Calculate width style based on time duration
+ * @param time - The time duration in milliseconds
+ * @returns CSS style object with width percentage
+ */
 const getWidth = (time: number): Record<string, string> => {
   return {
     width: (time / duration.value) * 100 + '%'
   };
 };
 
+// Watch for data source changes and update timeline data
 watch(() => props.dataSource, (newValue) => {
   if (!newValue || !newValue.duration) {
     return;
@@ -47,11 +122,15 @@ watch(() => props.dataSource, (newValue) => {
     const { delay = 0 } = prevValue[len - 1] || {};
     const { key } = currentValue;
     const keys = key.split('-');
+
+    // Calculate time based on key format
     if (keys?.length === 2 && keys[1]) {
       time = (newValue[keys[0]] - newValue[keys[1]]) || 0;
     } else {
       time = newValue[key] || 0;
     }
+
+    // Calculate delay based on key type
     if (key === 'responseStart-requestStart') {
       _delay = prevValue[len - 1]?.delay;
     } else {
@@ -68,6 +147,7 @@ watch(() => props.dataSource, (newValue) => {
   }, [] as Column[]);
 }, { immediate: true });
 </script>
+
 <template>
   <div class="h-full overflow-auto relative flex flex-nowrap whitespace-nowrap px-5 py-4">
     <div class="flex flex-col items-start text-3 leading-3 text-text-content mr-6">
@@ -101,6 +181,7 @@ watch(() => props.dataSource, (newValue) => {
     </div>
   </div>
 </template>
+
 <style scoped>
 .title-item-container {
   @apply flex items-center h-8 text-text-content;
