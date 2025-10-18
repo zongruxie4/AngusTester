@@ -47,7 +47,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const { t } = useI18n();
 
-
 const emits = defineEmits<{
   (e: 'update:debuging', value: boolean): void;
   (e: 'update:rendered', value: boolean): void;
