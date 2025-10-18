@@ -12,43 +12,65 @@ interface Props {
   };
   id: string;
 }
-const { t } = useI18n();
-const emits = defineEmits<{(e: 'update:data', value: {url: string;description?: string}): void}>();
-
-const url = ref();
-const description = ref();
-const editable = ref(false);
 
 const props = withDefaults(defineProps<Props>(), {
   data: () => ({ url: '' }),
   id: ''
 });
 
-const editDoc = () => {
-  editable.value = true;
+const { t } = useI18n();
+const emits = defineEmits<{(e: 'update:data', value: {url: string;description?: string}): void}>();
+
+// Reactive references for external documentation URL and description
+const url = ref<string>('');
+const description = ref<string | undefined>('');
+// Flag to control edit mode
+const isEditable = ref<boolean>(false);
+
+/**
+ * Enable edit mode for external documentation
+ */
+const enableEditMode = () => {
+  isEditable.value = true;
 };
 
-const cancel = () => {
-  editable.value = false;
-  url.value = props.data.url;
-  description.value = props.data.description;
+/**
+ * Cancel editing and revert to original values
+ */
+const cancelEditing = () => {
+  isEditable.value = false;
+  url.value = props.data?.url || '';
+  description.value = props.data?.description || '';
 };
 
-const saveDoc = async () => {
-  const externalDocs = { ...props.data, url: url.value, description: description.value };
+/**
+ * Save external documentation data
+ * @returns Promise that resolves when save operation completes
+ */
+const saveExternalDoc = async () => {
+  // Create updated external documentation object
+  const externalDocs = {
+    ...props.data,
+    url: url.value,
+    description: description.value
+  };
+
+  // Update API with new external documentation data
   const [error] = await apis.updateApi([{ id: props.id, externalDocs }]);
   if (error) {
     return;
   }
+
+  // Emit updated data to parent component
   emits('update:data', externalDocs);
-  editable.value = false;
+  isEditable.value = false;
 };
 
-watch(() => props.data, newValue => {
-  url.value = newValue.url;
-  description.value = newValue.description;
-});
-
+// Watch for changes in props.data and update reactive references
+watch(() => props.data, (newValue) => {
+  url.value = newValue?.url || '';
+  description.value = newValue?.description || '';
+}, { immediate: true });
 </script>
 <template>
   <div class="pl-2">
@@ -59,10 +81,10 @@ watch(() => props.data, newValue => {
           v-model:value="url"
           :maxLength="100"
           :placeholder="t('service.externalDoc.urlPlaceholder')"
-          :disabled="!editable" />
+          :disabled="!isEditable" />
         <Input
           v-model:value="description"
-          :disabled="!editable"
+          :disabled="!isEditable"
           :maxLength="100"
           type="textarea"
           :placeholder="t('service.externalDoc.descriptionPlaceholder')"
@@ -71,19 +93,19 @@ watch(() => props.data, newValue => {
       <Icon
         icon="icon-shuxie"
         class="text-4 ml-1 cursor-pointer text-text-link"
-        @click="editDoc" />
+        @click="enableEditMode" />
     </div>
-    <template v-if="editable">
+    <template v-if="isEditable">
       <Button
         type="link"
         size="small"
-        @click="saveDoc">
+        @click="saveExternalDoc">
         {{ t('actions.save') }}
       </Button>
       <Button
         type="link"
         size="small"
-        @click="cancel">
+        @click="cancelEditing">
         {{ t('actions.cancel') }}
       </Button>
     </template>
