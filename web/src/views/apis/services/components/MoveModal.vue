@@ -25,37 +25,39 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const { t } = useI18n();
 
-
 const emits = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'cancel'): void;
   (e: 'ok', value: { id: string, fromId: string }): void;
 }>();
 
-const toId = ref<string>();
+// Reactive references for move modal state
+const targetId = ref<string>();
 const fieldNames = { label: 'name', value: 'id', children: 'children' };
 const defaultValue = ref<{ name: string; id: string; }>();
+
+/**
+ * Cancel the move operation and close the modal
+ */
 const cancel = () => {
   emits('cancel');
   emits('update:visible', false);
 };
 
+/**
+ * Handle successful move operation
+ * @returns Promise that resolves when move operation completes
+ */
 const onOk = async () => {
   const id = props.id;
   cancel();
   notification.success(t('actions.tips.moveSuccess'));
-  emits('ok', { id: id!, fromId: props.pid });
+  if (id !== undefined) {
+    emits('ok', { id, fromId: props.pid });
+  }
 };
 
-onMounted(() => {
-  watch([() => props.pid, () => props.parentName], ([pid, pname]) => {
-    toId.value = pid;
-    defaultValue.value = { name: pname, id: pid };
-  }, {
-    immediate: true
-  });
-});
-
+// Computed properties for modal configuration
 const title = computed(() => {
   return t('service.moveModal.title');
 });
@@ -67,10 +69,20 @@ const params = computed(() => {
   };
 });
 
+/**
+ * Get the move action URL
+ * @returns Move action URL string
+ */
 const getMoveAction = () => {
   return `${TESTER}/apis/move?projectId=${props.projectId}`;
 };
 
+/**
+ * Get parameters for the move operation
+ * @param id - ID of the item to move
+ * * @param targetId - Target ID to move to
+ * @returns Object containing move parameters
+ */
 const getokParams = (id: string, targetId: string) => {
   return {
     apiIds: [id],
@@ -78,19 +90,35 @@ const getokParams = (id: string, targetId: string) => {
   };
 };
 
+/**
+ * Filter options for the move modal
+ * @returns Boolean indicating if option should be filtered
+ */
 const filterOpt = () => {
   return false;
 };
 
+// Computed hint text for the modal
 const hints = computed(() => {
   return t('service.moveModal.hints');
 });
 
+// Computed parent object for the modal
 const parent = computed(() => {
   return {
     id: props.pid,
     name: props.parentName
   };
+});
+
+// Initialize component with parent information
+onMounted(() => {
+  watch([() => props.pid, () => props.parentName], ([pid, pname]) => {
+    targetId.value = pid;
+    defaultValue.value = { name: pname, id: pid };
+  }, {
+    immediate: true
+  });
 });
 </script>
 <template>
