@@ -1,4 +1,4 @@
-import { ExtractionMethod, AssertionCondition, AssertionType } from '@xcan-angus/infra';
+import {AssertionCondition, AssertionType, ExtractionMethod} from '@xcan-angus/infra';
 
 export type Extraction = {
   method: ExtractionMethod | undefined;
@@ -90,3 +90,25 @@ export type Parameter = {
   responseHeader: Record<string, string>;
   status: number;
 }
+
+export interface ParamsInfo {
+  name: string;
+  in: 'path' | 'query';
+  description: string;
+  key?: symbol;
+  [key: string]: any;
+}
+
+const paramsTypeOption = [
+  {
+    value: 'query',
+    label: 'query'
+  },
+  {
+    value: 'path',
+    label: 'path'
+  }
+];
+
+export { paramsTypeOption };
+

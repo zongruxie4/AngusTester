@@ -14,10 +14,9 @@ import JSONToSchema from 'json-to-schema';
 import { useI18n } from 'vue-i18n';
 
 // Internal dependencies
-import ApiUtils from '@/utils/apis';
+import ApiUtils, { deepDelAttrFromObj } from '@/utils/apis';
 import { apis } from '@/api/tester';
 import { CONTENT_TYPE, RADIO_TYPE, HTTP_HEADERS } from '@/utils/constant';
-import { deepDelAttrFromObj } from '@/views/apis/services/protocol/http/utils';
 
 // Language icons
 import cIcon from '@/views/apis/services/components/image/c.png';

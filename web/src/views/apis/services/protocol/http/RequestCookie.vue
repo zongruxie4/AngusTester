@@ -5,14 +5,12 @@ import { Button, Checkbox, Tooltip } from 'ant-design-vue';
 import { Icon, Input, notification, Select, SelectSchema } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 
-import { ParamsItem } from '@/views/apis/services/protocol/http/RequestParameter';
-import { getDefaultParams } from './interface';
-import { API_EXTENSION_KEY } from '@/utils/apis';
+import { API_EXTENSION_KEY, deepDelAttrFromObj } from '@/utils/apis';
 import { deconstruct } from '@/utils/swagger';
 import { services } from '@/api/tester';
-import { itemTypes } from './RequestCookie';
-import { deepDelAttrFromObj, validateType } from './utils';
+import { getDefaultParams, schemaTypeToOptions, validateType } from './utils';
 import { toClipboard } from '@xcan-angus/infra';
+import { ParamsInfo } from '@/views/apis/services/protocol/http/types';
 
 import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
@@ -20,25 +18,25 @@ import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 
 const { t } = useI18n();
+
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;
 
 interface Props {
-  value: ParamsItem[];
+  value: ParamsInfo[];
 }
 
 const props = withDefaults(defineProps<Props>(), {});
 const apiBaseInfo = inject('apiBaseInfo', ref());
 const globalConfigs = inject('globalConfigs', { VITE_API_PARAMETER_NAME_LENGTH: 400, VITE_API_PARAMETER_VALUE_LENGTH: 4096 });
 
-
 const emits = defineEmits<{
-  (e: 'change', data: ParamsItem[]): void,
+  (e: 'change', data: ParamsInfo[]): void,
   (e: 'del', index: number): void,
 }>();
 
 const state = reactive<{
-  formData:ParamsItem[]
+  formData:ParamsInfo[]
 }>({
   formData: []
 });
@@ -56,7 +54,7 @@ const enterHandle = (e: ChangeEvent): void => {
   e.target.blur();
 };
 
-const handleValueBlur = (target:HTMLElement, index: number, data: ParamsItem):void => {
+const handleValueBlur = (target:HTMLElement, index: number, data: ParamsInfo):void => {
   let value = target.innerText.trim().replace('\n', '');
   if (['integer', 'number', 'boolean'].includes(data.schema?.type)) {
     try {
@@ -69,7 +67,7 @@ const handleValueBlur = (target:HTMLElement, index: number, data: ParamsItem):vo
     return;
   }
 
-  const temp = { ...data, [valueKey]: value } as ParamsItem;
+  const temp = { ...data, [valueKey]: value } as ParamsInfo;
   changeEmit(index, temp);
 };
 
@@ -103,23 +101,23 @@ const selectModels = async (_value, option, index) => {
   }
 };
 
-const handleBlur = (e: ChangeEvent, index: number, data: ParamsItem, key: string): void => {
+const handleBlur = (e: ChangeEvent, index: number, data: ParamsInfo, key: string): void => {
   const value = e.target.value.trim();
-  const temp = { ...data, [key]: value } as ParamsItem;
+  const temp = { ...data, [key]: value } as ParamsInfo;
   changeEmit(index, temp);
 };
 
 // 启用 禁用
-const handleChecked = (e:ChangeEvent, index:number, data: ParamsItem) => {
+const handleChecked = (e:ChangeEvent, index:number, data: ParamsInfo) => {
   const checked = e.target.checked;
-  const temp = { ...data, [enabledKey]: checked } as ParamsItem;
+  const temp = { ...data, [enabledKey]: checked } as ParamsInfo;
   changeEmit(index, temp);
   if (!checked && validated.value) {
     jsContentRef.value[index] && jsContentRef.value[index].validate(false);
   }
 };
 
-const copyValue = async (data: ParamsItem) => {
+const copyValue = async (data: ParamsInfo) => {
   let text = data[valueKey];
   if (typeof text !== 'string') {
     text = JSON.stringify(text);
@@ -155,7 +153,7 @@ const changeDataType = (value, index, item) => {
   changeEmit(index, temp);
 };
 
-const handleDel = (index: number, data: ParamsItem): void => {
+const handleDel = (index: number, data: ParamsInfo): void => {
   const emptyList = state.formData.filter(item => !item.name);
   // 最少要有一条空数据
   if (!data.name && emptyList.length <= 1) {
@@ -169,10 +167,10 @@ const addChild = (pItem, idx) => {
   jsContentRef.value[idx].addItem({ type: pItem.schema.type, id: -1, idLine: [-1], level: 0 });
 };
 
-const changeEmit = (index: number, data: ParamsItem): void => {
+const changeEmit = (index: number, data: ParamsInfo): void => {
   state.formData[index] = data;
   if (state.formData.every(i => !!i.name)) {
-    state.formData.push(getDefaultParams({ in: 'cookie' }) as ParamsItem);
+    state.formData.push(getDefaultParams({ in: 'cookie' }) as ParamsInfo);
   }
   emitChange();
 };
@@ -196,7 +194,7 @@ const getErrValue = (item) => {
   if (!validated.value || !item.name || !item[enabledKey]) {
     return false;
   }
-  const errors = validateType(item[valueKey], deepDelAttrFromObj(item.schema));
+  const errors = validateType(item[valueKey], deepDelAttrFromObj(item.schema, []));
   return !!errors?.length;
 };
 
@@ -216,7 +214,7 @@ watch(() => props.value, (newValue) => {
     return { ...i, key: i.key || getKey(idx) };
   });
   if (state.formData.every(i => !!i.name)) {
-    state.formData.push(getDefaultParams({ in: 'cookie', key: getKey() }) as ParamsItem);
+    state.formData.push(getDefaultParams({ in: 'cookie', key: getKey() }) as ParamsInfo);
   }
 }, {
   deep: true,
@@ -297,7 +295,7 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
         </Tooltip>
         <Select
           v-model:value="item.schema.type"
-          :options="itemTypes"
+          :options="schemaTypeToOptions"
           class="w-25 flex-shrink-0"
           @change="changeDataType($event, index, item)" />
         <div class="flex flex-col flex-1 flex-shrink-0">

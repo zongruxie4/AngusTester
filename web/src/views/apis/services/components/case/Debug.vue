@@ -9,22 +9,20 @@ import { useI18n } from 'vue-i18n';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { type AssertResult, type ConditionResult } from '@xcan-angus/vue-ui/types';
 import { apis, services } from '@/api/tester';
-import { getShowAuthData } from '@/components/ApiAuthencation/interface';
+import { isValidUrl } from '@/utils/validate';
 import assertUtils from '@/utils/assertutils';
+import apiUtils, { API_EXTENSION_KEY, travelDelSchemaRef, travelEmptyObjToString } from '@/utils/apis';
 
-import apiUtils from '@/utils/apis';
+import { getShowAuthData } from '@/components/ApiAuthencation/interface';
 
 import {
   ApiInfo,
   getModelFromRef,
-  isValidUrl,
   rawTypeOptions,
-  ToolBarMenus,
-  travelDelSchemaRef,
-  travelEmptyObjToString
+  ToolBarMenus
 } from './Debug';
+
 import { getRequestBodyData } from './utils';
-import { API_EXTENSION_KEY } from './Debug.ts';
 
 export interface Props {
   disabled: boolean;

@@ -1,4 +1,4 @@
-import { EnumMessage, HttpMethod, ActionOnEOF, SharingMode } from '@xcan-angus/infra';
+import { ActionOnEOF, EnumMessage, HttpMethod, SharingMode } from '@xcan-angus/infra';
 import { ApiImportSource, ApiSource, ApisProtocol, ApiStatus } from '@/enums/enums';
 import { OpenAPIV3_1 } from '@/types/openapi-types';
 
@@ -174,4 +174,15 @@ export interface ApisUnarchivedDetail {
   createdBy?: string;
   createdDate?: string;
   lastModifiedDate?: string;
+}
+
+export interface ParamsItem {
+  name?: string,
+  in?: string,
+  [key: string]: any,
+  description?: string,
+  enabled?: boolean,
+  allowableValues?: string[] | null, // 枚举值
+  valueType?: string | null,
+  key?: symbol
 }

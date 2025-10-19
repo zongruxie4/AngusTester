@@ -5,7 +5,8 @@ const I18nInstance = i18n.getI18n();
 const t = I18nInstance?.global?.t || ((value: string):string => value);
 
 // const { valueKey, securityApiKeyPrefix } = API_EXTENSION_KEY;
-const { valueKey, securityApiKeyPrefix, oAuth2Key, oAuth2Token, newTokenKey } = API_EXTENSION_KEY;
+const { valueKey, securityApiKeyPrefix } = API_EXTENSION_KEY;
+
 export interface AuthItem {
   name?: string;
   type: 'http'|'apiKey'|'oauth2'|'extends'|null;
@@ -162,6 +163,7 @@ export const authorizationCode = [
   'x-xc-oauth2-clientSecret',
   'scopes'
 ];
+
 export const password = [
   'tokenUrl',
   'refreshUrl',
@@ -171,6 +173,7 @@ export const password = [
   'x-xc-oauth2-password',
   'scopes'
 ];
+
 export const implicit = [
   'authorizationUrl',
   'x-xc-oauth2-callbackUrl',
@@ -180,6 +183,7 @@ export const implicit = [
   'x-xc-oauth2-clientSecret',
   'scopes'
 ];
+
 export const clientCredentials = [
   'tokenUrl',
   'refreshUrl',
@@ -187,6 +191,7 @@ export const clientCredentials = [
   'x-xc-oauth2-clientSecret',
   'scopes'
 ];
+
 export const authorizationCodePKCE = [
   'authorizationUrl',
   'x-xc-oauth2-callbackUrl',
@@ -236,49 +241,4 @@ export const getShowApiKeyData = (dataSource) => {
     headerAuth[item.name] = item[valueKey];
   });
   return [headerAuth, queryAuth];
-};
-
-export const getShowAuthData = async (dataSource) => {
-  switch (dataSource.type) {
-    case 'http':
-      return [{
-        Authorization: dataSource[valueKey]
-      }];
-    case 'apiKey':
-      return getShowApiKeyData(dataSource);
-    case 'extends':
-      return [{
-        Authorization: dataSource.scheme
-      }];
-    case 'oauth2':
-      if (dataSource.flows) {
-        if (dataSource[newTokenKey]) {
-          if (dataSource.flows[dataSource[oAuth2Key]]) {
-            const oauth2Data = dataSource.flows[dataSource[oAuth2Key]];
-            if (oauth2Data[oAuth2Token]) {
-              return [{ access_token: dataSource[oAuth2Token] }];
-            }
-          }
-        } else if (dataSource[oAuth2Token]) {
-          return [{ access_token: dataSource[oAuth2Token] }];
-        }
-        return [{}];
-        // oauthKey.value = 2;
-        // const flowAuthKey = Object.keys(dataSource.flows)[0];
-        // oauthData['x-xc-oauth2-clientAuthType'] = dataSource.flows?.[authType.value]?.extensions?.['x-xc-oauth2-clientAuthType'];
-        // flowAuthKeys[authType.value].forEach(i => {
-        //   if (i.includes('x-xc-')) {
-        //     oauthData[i] = dataSource.flows?.[flowAuthKey].extensions?.[i];
-        //   } else {
-        //     oauthData[i] = dataSource.flows?.[flowAuthKey][i];
-        //   }
-        // });
-        // authType.value = dataSource.extensions?.['x-xc-flowAuthKey'] || 'authorizationCode';
-      } else {
-        return [{
-          Authorization: dataSource['x-xc-oauth2-token']
-        }];
-      }
-      break;
-  }
 };

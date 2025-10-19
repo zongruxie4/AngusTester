@@ -13,10 +13,10 @@ import { deconstruct } from '@/utils/swagger';
 import { duration, codeUtils } from '@xcan-angus/infra';
 
 import { deepParseJson, OptionItem, radioGroups, RequestBodyParam, StateItem, transRefJsonToDataJson } from './interface';
-import { getBodyDefaultItem, ParamsItem } from '../interface';
-import { getNewItem } from '../utils';
+import {getBodyDefaultItem, getNewItem} from '../utils';
 import { API_EXTENSION_KEY, CONTENT_TYPE, getDataTypeFromFormat, getModelDataByRef } from '@/utils/apis';
 import { services } from '@/api/tester';
+import {ParamsItem} from "@/views/apis/services/protocol/types";
 
 const ApiForm = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/requestBody/Form.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/MonacoEditor/index.vue'));

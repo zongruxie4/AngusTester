@@ -1,4 +1,4 @@
-import { ParamsItem } from '../interface';
+import {ParamsItem} from "@/views/apis/services/protocol/types";
 
 export interface State {
   formData: ParamsItem[]

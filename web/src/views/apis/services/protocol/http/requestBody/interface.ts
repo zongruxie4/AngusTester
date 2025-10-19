@@ -1,6 +1,6 @@
-import { ParamsItem } from '../interface';
 import { getModelDataByRef } from '@/utils/apis';
 import { deconstruct } from '@/utils/swagger';
+import {ParamsItem} from "@/views/apis/services/protocol/types";
 
 export const radioGroups = [null, 'application/x-www-form-urlencoded', 'multipart/form-data', 'application/octet-stream'];
 export const rawTypeOptions = [

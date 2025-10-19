@@ -4,18 +4,17 @@ import { useI18n } from 'vue-i18n';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { Icon, Input, Select, SelectSchema, notification } from '@xcan-angus/vue-ui';
 import { Button, Checkbox } from 'ant-design-vue';
-import { API_EXTENSION_KEY, getModelDataByRef } from '@/utils/apis';
+import { API_EXTENSION_KEY, deepDelAttrFromObj, getModelDataByRef } from '@/utils/apis';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { deconstruct } from '@/utils/swagger';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { services } from '@/api/tester';
-import { deepDelAttrFromObj } from '@/views/apis/services/protocol/http/utils';
 
 import { inOptions, itemTypes, transJsonToList, transListToJson, transListToSchema } from './util';
-import { ParamsItem } from '@/views/apis/services/protocol/http/RequestParameter';
 
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
+import {ParamsInfo} from "@/views/apis/services/protocol/http/types";
 
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 const { t } = useI18n();
@@ -307,7 +306,7 @@ const handleValueBlur = (dom, item) => {
   emitHandle();
 };
 
-const copyValue = async (data: ParamsItem) => {
+const copyValue = async (data: ParamsInfo) => {
   let text = data[valueKey];
   if (typeof text !== 'string') {
     text = JSON.stringify(text);

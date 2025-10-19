@@ -7,21 +7,20 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import { deconstruct } from '@/utils/swagger';
 
 import { services } from '@/api/tester';
-import { ParamsItem, paramsTypeOpt } from './RequestParameter';
-import { getDefaultParams } from './interface';
-import { deepDelAttrFromObj, getParamsByUri, getUriByParams, validateType } from './utils';
-import { API_EXTENSION_KEY, getModelDataByRef } from '@/utils/apis';
+import {getDefaultParams, validateType} from './utils';
+import { API_EXTENSION_KEY, deepDelAttrFromObj, getModelDataByRef, getUriByParams, getParamsByUri } from '@/utils/apis';
 import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
 import { itemTypes } from '@/views/apis/services/protocol/http/requestBody/util';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 import { toClipboard } from '@xcan-angus/infra';
+import {ParamsInfo, paramsTypeOption} from "@/views/apis/services/protocol/http/types";
 
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 const { t } = useI18n();
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;
 interface Props {
-  value: ParamsItem[],
+  value: ParamsInfo[],
   apiUri?: string
 }
 
@@ -33,14 +32,13 @@ const props = withDefaults(defineProps<Props>(), {
 const apiBaseInfo = inject('apiBaseInfo', ref());
 const globalConfigs = inject('globalConfigs', { VITE_API_PARAMETER_NAME_LENGTH: 400, VITE_API_PARAMETER_VALUE_LENGTH: 4096 });
 
-
 const emits = defineEmits<{
-  (e: 'change', value: ParamsItem[]): void,
+  (e: 'change', value: ParamsInfo[]): void,
   (e: 'update:apiUri', value: string)
 }>();
 
 const state = reactive<{
-  formData:ParamsItem[]
+  formData:ParamsInfo[]
 }>({
   formData: []
 });
@@ -64,7 +62,7 @@ const enterHandle = (e: ChangeEvent): void => {
   e.target.blur();
 };
 
-const handleValueBlur = (target:HTMLElement, index: number, data: ParamsItem):void => {
+const handleValueBlur = (target:HTMLElement, index: number, data: ParamsInfo):void => {
   let value = target?.innerText?.trim().replace('\n', '');
   if (['integer', 'number', 'boolean'].includes(data.schema?.type)) {
     try {
@@ -73,7 +71,7 @@ const handleValueBlur = (target:HTMLElement, index: number, data: ParamsItem):vo
       }
     } catch {}
   }
-  const temp = { ...data, [valueKey]: value } as ParamsItem;
+  const temp = { ...data, [valueKey]: value } as ParamsInfo;
   changeEmit(index, temp);
 };
 
@@ -147,16 +145,16 @@ const changeDataType = (value, index, item) => {
 //   changeEmit(index, temp);
 // };
 
-const handleBlur = (e: ChangeEvent, index: number, data: ParamsItem, key: string): void => {
+const handleBlur = (e: ChangeEvent, index: number, data: ParamsInfo, key: string): void => {
   const value = e.target.value.trim();
-  const temp = { ...data, [key]: value } as ParamsItem;
+  const temp = { ...data, [key]: value } as ParamsInfo;
   changeEmit(index, temp);
 };
 
 // 启用禁用
-const changeChecke = (e:ChangeEvent, index:number, data: ParamsItem) => {
+const changeChecke = (e:ChangeEvent, index:number, data: ParamsInfo) => {
   const checked = e?.target?.checked;
-  const temp = { ...data, [enabledKey]: checked } as ParamsItem;
+  const temp = { ...data, [enabledKey]: checked } as ParamsInfo;
 
   changeEmit(index, temp);
   if (!checked && validated.value) {
@@ -164,8 +162,8 @@ const changeChecke = (e:ChangeEvent, index:number, data: ParamsItem) => {
   }
 };
 
-const selectChange = (value: string, index: number, data: ParamsItem, key: string): void => {
-  const temp = { ...data, [key]: value } as ParamsItem;
+const selectChange = (value: string, index: number, data: ParamsInfo, key: string): void => {
+  const temp = { ...data, [key]: value } as ParamsInfo;
   changeEmit(index, temp);
 };
 
@@ -174,7 +172,7 @@ const changeSchema = (schema, item, index) => {
   changeEmit(index, temp);
 };
 
-const copyValue = async (data: ParamsItem) => {
+const copyValue = async (data: ParamsInfo) => {
   let text = data[valueKey];
   if (typeof text !== 'string') {
     text = JSON.stringify(text);
@@ -186,7 +184,7 @@ const copyValue = async (data: ParamsItem) => {
 };
 
 // 删除
-const handleDel = (index: number, data: ParamsItem): void => {
+const handleDel = (index: number, data: ParamsInfo): void => {
   const emptyList = state.formData.filter(item => !item.name);
   // 最少要有一条空数据
   if (!data.name && emptyList.length <= 1) {
@@ -201,7 +199,7 @@ const handleDel = (index: number, data: ParamsItem): void => {
   // emits('del', index);
 };
 
-const changeEmit = (index: number, data: ParamsItem): void => {
+const changeEmit = (index: number, data: ParamsInfo): void => {
   state.formData[index] = data;
   emitChange();
   changeApiUriByparams();
@@ -287,7 +285,7 @@ watch(() => props.value, (newValue) => {
 
 watch(() => state.formData, () => {
   if (state.formData.every(i => !!i.name || !!i[valueKey])) {
-    state.formData.push(getDefaultParams({ in: 'query', key: getKey() }) as ParamsItem);
+    state.formData.push(getDefaultParams({ in: 'query', key: getKey() }) as ParamsInfo);
   }
 }, {
   deep: true,
@@ -415,7 +413,7 @@ defineExpose({
           :placeholder="t('service.apiRequestParams.form.typePlaceholder')"
           :disabled="item.$ref"
           :allowClear="false"
-          :options="paramsTypeOpt"
+          :options="paramsTypeOption"
           class="w-25 flex-shrink-0"
           @change="selectChange($event, index, item, 'in')" />
         <Select

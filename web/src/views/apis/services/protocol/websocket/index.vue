@@ -14,7 +14,7 @@ import apiUtils from '@/utils/apis';
 import { apis } from '@/api/tester';
 import { ApiPermission } from '@/enums/enums';
 import { formatBytes } from '@/utils/utils';
-import { getNameValue } from '@/views/apis/services/protocol/http/utils';
+
 import { FormData, Message } from './PropsType';
 import { debounce } from 'throttle-debounce';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
@@ -160,7 +160,7 @@ const changeQuery = (data) => {
 };
 
 const getQueryStr = async () => {
-  const queryObjList = getNameValue.getQueryParamFromApi(queryParams.value);
+  const queryObjList = apiUtils.getQueryParamFromApi(queryParams.value);
   const [datas] = await apiUtils.replaceFuncValue({ parameter: [queryObjList] });
   return datas[0].map(item => `${item.name}=${item[valueKey]}`).join('&');
 };

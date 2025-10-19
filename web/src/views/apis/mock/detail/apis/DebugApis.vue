@@ -4,12 +4,11 @@ import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Icon, notification, Toggle } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
-import { convertBlob } from '@/views/apis/services/protocol/http/utils';
 import {
   axiosClient, ContentEncoding, EnumMessage, enumUtils, HttpMethod, HttpStatus, ParameterIn, utils
 } from '@xcan-angus/infra';
 
-import apiUtils from '@/utils/apis/index';
+import apiUtils, { convertBlob } from '@/utils/apis/index';
 import { dataURLtoBlob, getFileSuffixByContentType } from '@/utils/blob';
 import { CONTENT_TYPE, HTTP_HEADERS } from '@/utils/constant';
 

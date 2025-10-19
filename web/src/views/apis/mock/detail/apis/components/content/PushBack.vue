@@ -5,10 +5,9 @@ import { Button, Switch } from 'ant-design-vue';
 import { Composite, Icon, IconRequired, Input, notification, Validate } from '@xcan-angus/vue-ui';
 import { HttpMethod, regexpUtils, utils, axiosClient } from '@xcan-angus/infra';
 
-import { convertBlob } from '@/views/apis/services/protocol/http/utils';
 import { ContentType, DelayData, ParametersType, PushbackBody, ResponsePushbackConfig } from './types';
 import { CONTENT_TYPE, HTTP_HEADERS } from '@/utils/constant';
-import { API_EXTENSION_KEY } from '@/utils/apis';
+import { API_EXTENSION_KEY, convertBlob } from '@/utils/apis';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import DelayParameter from './DelayParameter.vue';
@@ -203,7 +202,7 @@ const sendRequest = async () => {
       bodyContent = formUrl;
       bodyOpenApi = {
         content: {
-          'application/x-www-form-urlencode': {
+          'application/x-www-form-urlencoded': {
             [valueKey]: formJson
           }
         }
@@ -478,7 +477,7 @@ defineExpose({
  * <p>Defines valid content types for request body configuration</p>
  */
 const CONTENTTYPES: ContentType[] = [
-  'application/x-www-form-urlencode',
+  'application/x-www-form-urlencoded',
   'multipart/form-data',
   'application/json',
   'text/html',

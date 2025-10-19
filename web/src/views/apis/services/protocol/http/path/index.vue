@@ -6,12 +6,11 @@ import { Button, Divider, Dropdown } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
 import { API_EXTENSION_KEY } from '@/utils/apis';
-import { getDefaultParams } from '@/views/apis/services/protocol/http/RequestParameter';
-import { HttpServer } from './PropsType';
-import { Method } from '../interface';
+import { ServerInfo } from '@/views/apis/server/types';
 
 import ServerInput from './ServerInput.vue';
 
+import {getDefaultParams} from "@/views/apis/services/protocol/http/utils";
 const AddCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/AddCaseModal.vue'));
 
 const { serverSourceKey, valueKey, idKey } = API_EXTENSION_KEY;
@@ -24,21 +23,21 @@ interface Props {
   id: string;
   endpoint: string;
   availableServers: any[];
-  currentServer: HttpServer;
-  defaultCurrentServer: HttpServer;
-  method: Method;
+  currentServer: ServerInfo;
+  defaultCurrentServer: ServerInfo;
+  method: HttpMethod;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   loading: false,
   isUnarchivedApi: true,
   id: '',
-  method: 'GET',
+  method: HttpMethod.GET,
   currentServer: () => ({ url: '', id: utils.uuid() }),
   availableServers: () => ([])
 });
-const { t } = useI18n();
 
+const { t } = useI18n();
 
 const emit = defineEmits<{
   (e: 'sendRequest'): void;
@@ -46,7 +45,7 @@ const emit = defineEmits<{
   (e: 'save'): void;
   (e: 'archived'): void;
   (e: 'update:endpoint', value: string): void;
-  (e: 'update:currentServer', value: HttpServer): void;
+  (e: 'update:currentServer', value: ServerInfo): void;
   (e: 'update:method', value: string): void;
   (e: 'abort'): void;
   (e: 'addQuery', value: Record<string, string>[]): void;
@@ -62,14 +61,14 @@ const dexie = new XCanDexie<{ id: string; data: any }>('serverUrl');
 
 const showServerListDrop = ref(false);
 const addCaseVisible = ref(false); // 生成用例弹窗visible
-const apiMethod = ref<Method>('GET');
+const apiMethod = ref<HttpMethod>(HttpMethod.GET);
 
-const currentHttpServer = ref<HttpServer>({ url: '', id: utils.uuid() });
+const currentHttpServer = ref<ServerInfo>({ url: '', id: utils.uuid() });
 const serverValue = ref<string>('');
 const apiUri = ref<string>(); // uri整体
-const serversFromParent = ref<HttpServer[]>([]);
-const serversFromMock = ref<HttpServer[]>([]);
-const serversFromIndexDB = ref<HttpServer[]>([]);
+const serversFromParent = ref<ServerInfo[]>([]);
+const serversFromMock = ref<ServerInfo[]>([]);
+const serversFromIndexDB = ref<ServerInfo[]>([]);
 
 const recognizeUri = (endpoint: string) => {
   try {
@@ -105,7 +104,7 @@ const recognizeUri = (endpoint: string) => {
   }
 };
 
-const handleSelectServer = (value: string, item: HttpServer) => {
+const handleSelectServer = (value: string, item: ServerInfo) => {
   currentHttpServer.value = JSON.parse(JSON.stringify(item));
   serverValue.value = value;
   emit('update:currentServer', item);
@@ -235,6 +234,10 @@ const openCaseModal = () => {
   addCaseVisible.value = true;
 };
 
+const serverListOpt = computed(() => {
+  return [...serversFromParent.value, ...serversFromIndexDB.value, ...serversFromMock.value];
+});
+
 onMounted(() => {
   loadHttpMethodOpt();
   loadServerFromDB();
@@ -284,10 +287,6 @@ onMounted(() => {
   }, {
     immediate: true
   });
-});
-
-const serverListOpt = computed(() => {
-  return [...serversFromParent.value, ...serversFromIndexDB.value, ...serversFromMock.value];
 });
 </script>
 <template>

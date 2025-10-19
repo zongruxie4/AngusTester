@@ -1,139 +1,29 @@
 import { Component, defineAsyncComponent } from 'vue';
 import { AuthItem } from './Authorization';
-import { RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/interface';
-import { API_EXTENSION_KEY } from '@/utils/apis';
 import { i18n } from '@xcan-angus/infra';
+import { RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/interface';
+import { ParamsItem } from '@/views/apis/services/protocol/types';
+
 import ApiAssertion from '@/components/ApiAssert/index.vue';
-import ApiAuthencation from './Authorization.vue';
 import ResponseAssert from '@/components/ResponseAssert/index.vue';
+import ApiAuthorization from './Authorization.vue';
+
+export const RequestParams: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestParameter.vue'));
+export const RequestBody: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/requestBody/index.vue'));
+export const RequestHeader: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestHeader.vue'));
+export const RequestCookie: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestCookie.vue'));
+export const Authorization: Component = ApiAuthorization;
+// @TODO 临时调试，需要删除
+export const AssertForm: Component = ApiAssertion;
+
+export const ApiRequest: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Request.vue'));
+export const ApiResponse: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Response.vue'));
+export const ApiTimeline: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Timeline.vue'));
+export const ApiCookie: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Cookie.vue'));
+// @TODO 临时调试，需要删除
+export const ApiAssert: Component = ResponseAssert;
 
 const t = i18n.getI18n()?.global?.t || ((value: string) => value);
-
-const { valueKey, enabledKey } = API_EXTENSION_KEY;
-
-export interface ParamsItem {
-  name?: string,
-  in?: string,
-  [key: string]: any,
-  description?: string,
-  variabledFlag?: boolean,
-  enabled?: boolean,
-  allowableValues?: string[] | null, // 枚举值
-  valueType?: string | null,
-  key?: symbol
-}
-
-export const getDefaultParams = (config = {}): ParamsItem => {
-  return {
-    name: '',
-    in: undefined,
-    description: '',
-    // [exportVariableKey]: false,
-    [valueKey]: '',
-    [enabledKey]: true,
-    schema: { type: 'string' },
-    ...config
-  };
-};
-
-export const getBodyDefaultItem = (config = {}) => {
-  return {
-    name: '',
-    in: undefined,
-    description: '',
-    [valueKey]: '',
-    [enabledKey]: true,
-    type: 'string',
-    ...config
-  };
-};
-
-export const RESP_FILE_TYPE = [
-  'application/octet-stream',
-  'application/force-download',
-  'images/',
-  'application/msword',
-  'application/vnd',
-  'video/',
-  'audio/',
-  'application/x-',
-  'text/x-'
-];
-
-export const enum AuthEnum {
-  NO_AUTH = 'NO_AUTH',
-  BASIC_AUTH = 'BASIC_AUTH',
-  BEARER_TOKEN = 'BEARER_TOKEN',
-  CUSTOM = 'CUSTOM',
-}
-export type AuthType = 'NO_AUTH' | 'BASIC_AUTH' | 'BEARER_TOKEN' | 'CUSTOM'
-export type Method = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH' | 'HEAD' | 'OPTIONS' | 'TRACE';
-
-export const navs = [
-  {
-    icon: 'icon-baocundaoweiguidang',
-    name: t('service.apis.navs.saveUnarchived'),
-    disabled: false,
-    value: 'saveUnarchived',
-    auth: 'VIEW'
-  },
-  {
-    icon: 'icon-fuwuxinxi',
-    name: t('actions.save'),
-    value: 'save',
-    disabled: false,
-    auth: 'MODIFY'
-  },
-  {
-    icon: 'icon-zhibiao',
-    name: t('service.apis.navs.indicator'),
-    value: 'performance', // 2
-    disabled: false,
-    auth: 'MODIFY'
-  },
-  {
-    icon: 'icon-zhihangceshi',
-    name: t('service.apis.navs.test'),
-    value: 'test',
-    disabled: false,
-    auth: 'QUERY'
-  },
-  // {
-  //   icon: 'icon-yongliku',
-  //   name: 'service.apis.navs.case',
-  //   value: 'case',
-  //   disabled: false,
-  //   auth: 'MODIFY'
-  // },
-  {
-    icon: 'icon-lishijilu',
-    name: t('service.apis.navs.activity'),
-    value: 'activity',
-    disabled: false,
-    auth: 'QUERY'
-  },
-  // {
-  //   icon: 'icon-bianliang',
-  //   name: 'service.apis.navs.variable',
-  //   value: 'variable',
-  //   disabled: false,
-  //   auth: 'MODIFY'
-  // },
-  // {
-  //   icon: 'icon-mockjiedian',
-  //   name: 'service.apis.navs.apiMock',
-  //   value: 'apiMock',
-  //   auth: 'VIEW',
-  //   disabled: true
-  // },
-  {
-    icon: 'icon-jiekoudaili',
-    name: t('service.apis.navs.agent'),
-    value: 'agent',
-    auth: 'MODIFY',
-    disabled: false
-  }
-];
 
 export interface OptionItem {
   label: string | null,
@@ -183,20 +73,50 @@ export interface ResponseState {
   contentEncoding?: string;
 }
 
-export const RequestParams: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestParameter.vue'));
-export const RequestBody: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/requestBody/index.vue'));
-export const RequestHeader: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestHeader.vue'));
-export const RequestCookie: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestCookie.vue'));
-export const Authorization: Component = ApiAuthencation;
-// @TODO 临时调试，需要删除
-export const AssertForm: Component = ApiAssertion;
-
-export const ApiRequest: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Request.vue'));
-export const ApiResponse: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Response.vue'));
-export const ApiTimeline: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Timeline.vue'));
-export const ApiCookie: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Cookie.vue'));
-// @TODO 临时调试，需要删除
-export const ApiAssert: Component = ResponseAssert;
+export const navs = [
+  {
+    icon: 'icon-baocundaoweiguidang',
+    name: t('service.apis.navs.saveUnarchived'),
+    disabled: false,
+    value: 'saveUnarchived',
+    auth: 'VIEW'
+  },
+  {
+    icon: 'icon-fuwuxinxi',
+    name: t('actions.save'),
+    value: 'save',
+    disabled: false,
+    auth: 'MODIFY'
+  },
+  {
+    icon: 'icon-zhibiao',
+    name: t('service.apis.navs.indicator'),
+    value: 'performance', // 2
+    disabled: false,
+    auth: 'MODIFY'
+  },
+  {
+    icon: 'icon-zhihangceshi',
+    name: t('service.apis.navs.test'),
+    value: 'test',
+    disabled: false,
+    auth: 'VIEW'
+  },
+  {
+    icon: 'icon-lishijilu',
+    name: t('service.apis.navs.activity'),
+    value: 'activity',
+    disabled: false,
+    auth: 'VIEW'
+  },
+  {
+    icon: 'icon-jiekoudaili',
+    name: t('service.apis.navs.agent'),
+    value: 'agent',
+    auth: 'MODIFY',
+    disabled: false
+  }
+];
 
 export interface Menu {
   name: string,
@@ -229,6 +149,7 @@ export const menus: Menu[] = [
     value: 'generateCode'
   }
 ];
+
 export const getStatusColor = (status) => {
   const statusStr = status.toString();
   if (statusStr.startsWith('4') || statusStr.startsWith('5')) {
@@ -240,19 +161,38 @@ export const getStatusColor = (status) => {
 export const docInfo = [
   {
     title: t('service.apis.docInfo.pathParams.title'),
-    rules: [t('service.apis.docInfo.pathParams.rules.primitive'), t('service.apis.docInfo.pathParams.rules.array'), t('service.apis.docInfo.pathParams.rules.object'), t('service.apis.docInfo.pathParams.rules.limit')]
+    rules: [
+      t('service.apis.docInfo.pathParams.rules.primitive'),
+      t('service.apis.docInfo.pathParams.rules.array'),
+      t('service.apis.docInfo.pathParams.rules.object'),
+      t('service.apis.docInfo.pathParams.rules.limit')]
   },
   {
     title: t('service.apis.docInfo.queryFormParams.title'),
-    rules: [t('service.apis.docInfo.queryFormParams.rules.primitive'), t('service.apis.docInfo.queryFormParams.rules.array'), t('service.apis.docInfo.queryFormParams.rules.object'), t('service.apis.docInfo.queryFormParams.rules.support')]
+    rules: [
+      t('service.apis.docInfo.queryFormParams.rules.primitive'),
+      t('service.apis.docInfo.queryFormParams.rules.array'),
+      t('service.apis.docInfo.queryFormParams.rules.object'),
+      t('service.apis.docInfo.queryFormParams.rules.support')
+    ]
   },
   {
     title: t('service.apis.docInfo.headerParams.title'),
-    rules: [t('service.apis.docInfo.headerParams.rules.primitive'), t('service.apis.docInfo.headerParams.rules.array'), t('service.apis.docInfo.headerParams.rules.object'), t('service.apis.docInfo.headerParams.rules.limit')]
+    rules: [
+      t('service.apis.docInfo.headerParams.rules.primitive'),
+      t('service.apis.docInfo.headerParams.rules.array'),
+      t('service.apis.docInfo.headerParams.rules.object'),
+      t('service.apis.docInfo.headerParams.rules.limit')
+    ]
   },
   {
     title: t('service.apis.docInfo.cookieParams.title'),
-    rules: [t('service.apis.docInfo.cookieParams.rules.primitive'), t('service.apis.docInfo.cookieParams.rules.array'), t('service.apis.docInfo.cookieParams.rules.object'), t('service.apis.docInfo.cookieParams.rules.limit')]
+    rules: [
+      t('service.apis.docInfo.cookieParams.rules.primitive'),
+      t('service.apis.docInfo.cookieParams.rules.array'),
+      t('service.apis.docInfo.cookieParams.rules.object'),
+      t('service.apis.docInfo.cookieParams.rules.limit')
+    ]
   }
 ];
 

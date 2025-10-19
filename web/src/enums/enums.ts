@@ -203,6 +203,13 @@ export enum ApiPermission {
   EXPORT = 'EXPORT'
 }
 
+export enum ApiServerSource {
+  CURRENT_REQUEST = 'CURRENT_REQUEST',
+  API_SERVERS = 'API_SERVERS',
+  PARENT_SERVERS = 'PARENT_SERVERS',
+  MOCK_SERVICE = 'MOCK_SERVICE',
+}
+
 export enum ScriptPermission {
   VIEW = 'VIEW',
   MODIFY = 'MODIFY',

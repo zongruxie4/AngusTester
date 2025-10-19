@@ -3,6 +3,7 @@ export type ApiKeyIn = 'header' | 'query';
 export type ParameterIn = 'query' | 'path' |  'cookie' |'header';
 export type AuthFlowKey = 'authorizationCode' | 'password' | 'implicit' | 'clientCredentials';
 export type SchemaType = 'boolean' | 'object' | 'number' | 'string' | 'integer' | 'array';
+export type ApiServerSource = 'CURRENT_REQUEST' | 'API_SERVERS' | 'PARENT_SERVERS' | 'MOCK_SERVICE';
 
 /**
  * API extension keys for XCan custom properties.
@@ -112,6 +113,8 @@ export namespace OpenAPIV3_1 {
       url: string;
       description?: string;
       variables?: Record<string, ServerVariableObject>;
+      // vendor extension stored under dynamic key
+      [API_EXTENSION_KEYS.serverSourceKey]: ApiServerSource
     }
   >;
 
@@ -347,7 +350,8 @@ export namespace OpenAPIV3 {
     description?: string;
     variables?: { [variable: string]: ServerVariableObject };
     extensions?: Record<string, any>;
-    [API_EXTENSION_KEYS.idKey]: string; // vendor extension stored under dynamic key
+    // vendor extension stored under dynamic key
+    [API_EXTENSION_KEYS.idKey]: string;
   }
 
   export interface ServerVariableObject {

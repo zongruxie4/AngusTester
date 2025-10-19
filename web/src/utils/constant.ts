@@ -40,7 +40,7 @@ export const cropperUploadOption = {
 };
 
 export const CONTENT_TYPE = {
-  FORM_URLENCODED: 'application/x-www-form-urlencode',
+  FORM_URLENCODED: 'application/x-www-form-urlencoded',
   MULTIPART_FORM_DATA: 'multipart/form-data',
   JSON: 'application/json',
   HTML: 'text/html',
@@ -52,7 +52,7 @@ export const CONTENT_TYPE = {
 
 export const RADIO_TYPE = {
   NONE: 'none',
-  FORM_URLENCODED: 'application/x-www-form-urlencode',
+  FORM_URLENCODED: 'application/x-www-form-urlencoded',
   MULTIPART_FORM_DATA: 'multipart/form-data',
   OCTET_STREAM: 'application/octet-stream',
   RAW: 'raw'
@@ -69,5 +69,7 @@ export const LANGUAGE = {
 export const HTTP_HEADERS = {
   CONTENT_TYPE: 'Content-Type',
   ACCEPT: 'accept',
-  COOKIE: 'Cookie'
+  COOKIE: 'Cookie',
+  SET_COOKIE: 'Set-Cookie',
+  SET_COOKIE_LOWER: 'set-cookie'
 } as const;

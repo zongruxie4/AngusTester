@@ -6,14 +6,14 @@ import { Icon, Input, notification, Select, SelectSchema } from '@xcan-angus/vue
 import SwaggerUI from '@xcan-angus/swagger-ui';
 
 import ApiUpload from '@/views/apis/services/protocol/http/Upload.vue';
-import { ParamsItem } from '../interface';
 import { formDataTypes, itemTypes } from './form';
-import { API_EXTENSION_KEY, getModelDataByRef, variableNameReg } from '@/utils/apis';
+import { API_EXTENSION_KEY, deepDelAttrFromObj, getModelDataByRef, variableNameReg } from '@/utils/apis';
 import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
 import { services, variable as variableApi } from '@/api/tester';
 import { deconstruct } from '@/utils/swagger';
-import { deepDelAttrFromObj, validateType } from '@/views/apis/services/protocol/http/utils';
+import { validateType } from '@/views/apis/services/protocol/http/utils';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
+import {ParamsItem} from "@/views/apis/services/protocol/types";
 
 const { t } = useI18n();
 const { valueKey, enabledKey } = API_EXTENSION_KEY;

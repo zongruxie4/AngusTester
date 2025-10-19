@@ -1,11 +1,31 @@
 <script setup lang="ts">
 import {
-  computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, provide, reactive, ref, watch
+  computed,
+  defineAsyncComponent,
+  inject,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  provide,
+  reactive,
+  ref,
+  watch
 } from 'vue';
-import { Popover, TabPane, Tabs, RadioGroup, RadioButton, Button, Badge } from 'ant-design-vue';
-import { ActivityTimeline, Drawer, Hints, Icon, NoData, notification, Spin, AsyncComponent } from '@xcan-angus/vue-ui';
+import { Badge, Button, Popover, RadioButton, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
+import { ActivityTimeline, AsyncComponent, Drawer, Hints, Icon, NoData, notification, Spin } from '@xcan-angus/vue-ui';
 import elementResizeDetector from 'element-resize-detector';
-import { AssertionCondition, AssertionType, utils, axiosClient, duration } from '@xcan-angus/infra';
+import {
+  ActionOnEOF,
+  AssertionCondition,
+  AssertionType,
+  axiosClient,
+  duration,
+  HttpMethod,
+  ParameterIn,
+  SchemaType,
+  SharingMode,
+  utils
+} from '@xcan-angus/infra';
 import { dataURLtoBlob } from '@/utils/blob';
 import qs from 'qs';
 import { deconstruct } from '@/utils/swagger';
@@ -14,36 +34,83 @@ import XML from 'xml';
 import useClipboard from 'vue-clipboard3';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+
 import assertUtils from '@/utils/assertutils';
-import apiUtils from '@/utils/apis';
-
-import { apis, services } from '@/api/tester';
-import { getStatusText } from '@/views/apis/services/components/Request';
-import { getDefaultParams } from '@/views/apis/services/protocol/http/RequestParameter';
-import { API_STATUS_COLOR_CONFIG, API_STATUS_BADGE_COLOR_CONFIG, API_EXTENSION_KEY, getModelDataByRef } from '@/utils/apis';
-
+import { encode } from '@/utils/secure';
 import { formatBytes } from '@/utils/common';
+import { apis, services } from '@/api/tester';
+import { ApiPermission, ApiServerSource, ApiStatus, ApisShareScope } from '@/enums/enums';
+import { CONTENT_TYPE, HTTP_HEADERS } from '@/utils/constant';
+
+// eslint-disable-next-line import/no-duplicates
+import apiUtils, {
+  API_EXTENSION_KEY,
+  API_STATUS_BADGE_COLOR_CONFIG,
+  API_STATUS_COLOR_CONFIG,
+  getModelDataByRef,
+  travelXcValueToString,
+  travelEmptyObjToString,
+  convertBlob
+} from '@/utils/apis';
+
+import { getServerData, ServerInfo } from '@/views/apis/server/types';
+import { rawTypeOptions, RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/interface';
+import { getShowAuthData } from '@/components/ApiAuthencation/interface';
+
+import { getStatusText } from '@/views/apis/services/components/types';
+
 import {
-  ApiAssert, ApiCookie, ApiRequest, ApiResponse, ApiTimeline, AssertForm, Authorization,
-  debugTip, docInfo, getStatusColor, menus, Method, navs, ParamsItem, RequestBody, RequestCookie, RequestHeader,
-  RequestParams, ResponseState, Setting, State
+  ApiAssert,
+  ApiCookie,
+  ApiRequest,
+  ApiResponse,
+  ApiTimeline,
+  AssertForm,
+  Authorization,
+  debugTip,
+  docInfo,
+  getStatusColor,
+  menus,
+  navs,
+  RequestBody,
+  RequestCookie,
+  RequestHeader,
+  RequestParams,
+  ResponseState,
+  Setting,
+  State
 } from './interface';
 import {
-  convertBlob, travelEmptyObjToString, travelXcValueToString, validateBodyForm, validateQueryParameter
+  getDefaultParams,
+  validateBodyForm,
+  validateQueryParameter
 } from './utils';
-import { HttpServer } from '@/views/apis/services/protocol/http/path/PropsType';
-import { getServerData } from '@/views/apis/services/protocol/http/path/utils';
-import { rawTypeOptions, RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/interface';
-import { AssertResult, ConditionResult, Parameter } from './PropsType';
-import { encode } from '@/utils/secure';
-import { getShowAuthData } from '@/components/ApiAuthencation/interface';
+import {AssertResult, ConditionResult, Parameter} from './types';
+
+import SelectEnum from '@/components/enum/SelectEnum.vue';
+import {ParamsItem} from "@/views/apis/services/protocol/types";
 
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
 const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
 const FunctionsButton = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.FunctionsButton));
 const APICaseParametric = defineAsyncComponent(() => import('@/components/apis/parameterization/index.vue'));
 const ExecDetail = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/exec/index.vue'));
+
+const UnarchivedEdit = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/slider/UnarchivedEdit.vue'));
+const InfoEdit = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/slider/InfoEdit.vue'));
+
+const ShareList = defineAsyncComponent(() => import('@/components/share/list.vue'));
+const RequestProxy = defineAsyncComponent(() => import('@/views/config/proxy/EditableRequestProxy.vue'));
+const CodeSnippet = defineAsyncComponent(() => import('@/views/apis/services/components/CodeSnippet.vue'));
+
+const ApiSetting = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/Setting.vue'));
+const ServerPath = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/path/index.vue'));
+const Toolbar = defineAsyncComponent(() => import('@/components/layout/toolbar/index.vue'));
+const ResponseError = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/ResponseError.vue'));
+const ApiDoc = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/Doc.vue'));
+const TestCase = defineAsyncComponent(() => import('@/views/apis/services/components/case/tableView.vue'));
+const ApiMockVue = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/MockApi.vue')); //
+const ApiShare = defineAsyncComponent(() => import('@/views/apis/share/Edit.vue'));
 
 interface Props {
   pid: string,
@@ -67,22 +134,6 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: ''
 });
 
-const UnarchivedEdit = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/slider/UnarchivedEdit.vue'));
-const InfoEditVue = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/slider/InfoEdit.vue'));
-
-const ShareList = defineAsyncComponent(() => import('@/components/share/list.vue'));
-const RequestProxy = defineAsyncComponent(() => import('@/views/config/proxy/EditableRequestProxy.vue'));
-const CodeSnippet = defineAsyncComponent(() => import('@/views/apis/services/components/CodeSnippet.vue'));
-
-const ApiSetting = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/Setting.vue'));
-const ServerPath = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/path/index.vue'));
-const Toolbar = defineAsyncComponent(() => import('@/components/layout/toolbar/index.vue'));
-const ResponseError = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/ResponseError.vue'));
-const ApiDoc = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/Doc.vue'));
-const TestCase = defineAsyncComponent(() => import('@/views/apis/services/components/case/tableView.vue'));
-const ApiMockVue = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/MockApi.vue')); //
-const ApiShare = defineAsyncComponent(() => import('@/views/apis/share/Edit.vue'));
-
 const shareVisible = ref(false); // 分享弹窗
 const handleShare = () => {
   shareVisible.value = true;
@@ -95,9 +146,10 @@ const refreshUnarchived = inject('refreshUnarchived', () => { });
 const erd = elementResizeDetector({ strategy: 'scroll' });
 const { toClipboard } = useClipboard();
 
+// eslint-disable-next-line new-cap
 const myRequest = new axiosClient({ timeout: 0, intervalMs: 500, maxRedirects: 0, maxRetries: 5 });
 const { serverSourceKey, requestSettingKey, valueKey, enabledKey, fileNameKey, idKey } = API_EXTENSION_KEY;
-const auths = ref<string[]>(['SHARE', 'DEBUG', 'GRANT', 'EXECUTE', 'QUERY', 'DELETE', 'MODIFY']);
+const apiAuths = ref<ApiPermission[]>([]);
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const updateTabPane = inject<(data: any) => void>('updateTabPane', () => { });
@@ -122,14 +174,14 @@ const myNavs = computed(() => {
       return {
         ...i,
         key: i.value,
-        disabled: !auths.value?.includes(i.auth as string),
+        disabled: !apiAuths.value?.includes(i.auth),
         name: t('actions.save')
       };
     }
     return {
       ...i,
       key: i.value,
-      disabled: !auths.value?.includes(i.auth as string)
+      disabled: !apiAuths.value?.includes(i.auth)
     };
   });
 });
@@ -152,8 +204,8 @@ const loadWS = (value) => {
 const currentTab = ref<string>('');
 const height = ref<number>(34);
 
-const apiMethod = ref<Method>('GET');
-const currentServer = ref<HttpServer>({ url: '' });
+const apiMethod = ref<HttpMethod>(HttpMethod.GET);
+const currentServer = ref<ServerInfo>({ url: '' });
 const defaultCurrentServer = ref();
 const apiUri = ref<string>(); // uri整体
 const requestParamsRef = ref(); // 参数 ref
@@ -244,6 +296,7 @@ const setting = ref<Setting>({
   retryNum: 0,
   maxRedirects: 1
 });
+
 const state = reactive<State>({
   authentication: { type: null },
   parameter: {},
@@ -320,7 +373,7 @@ const handleStatusChange = async (value: string) => {
 };
 
 const getModelFromRef = async (ref) => {
-  const [error, resp] = await getModelDataByRef(saveParams.value.serviceId, ref);
+  const [error, resp] = await getModelDataByRef(saveParams.value.serviceId as string, ref);
   if (error) {
     return {};
   }
@@ -333,10 +386,10 @@ const loadApiAuth = async () => {
   if (error) {
     return;
   }
-  auths.value = (res.data?.permissions || []).map(i => i.value);
+  apiAuths.value = (res.data?.permissions || []).map(i => i.value);
 };
 
-const loadProjectServers = async (serviceId) => {
+const loadServiceServers = async (serviceId: string) => {
   const [error, resp] = await services.getServicesServerUrlInfo(serviceId);
   if (error) {
     return;
@@ -344,17 +397,17 @@ const loadProjectServers = async (serviceId) => {
   availableServers.value = (resp.data || []).map(i => ({ ...i, ...(i.extensions || {}) }));
 };
 
-const loadingInfo = ref(false);
+const loadingApiDetail = ref(false);
 // 获取当前 api 信息
-const loadApiInfo = async (): Promise<void> => {
+const loadApiDetail = async (): Promise<void> => {
+  loadingApiDetail.value = true;
   let result;
-  loadingInfo.value = true;
   if (isUnarchivedApi.value) {
     result = await apis.getUnarchivedApiDetail(props.id as string);
   } else {
     result = await apis.getApiDetail(props.id as string);
   }
-  loadingInfo.value = false;
+  loadingApiDetail.value = false;
   const [error, res] = result;
   if (error) {
     return;
@@ -383,15 +436,15 @@ const loadApiInfo = async (): Promise<void> => {
   } = res.data;
 
   if (serviceId) {
-    loadProjectServers(serviceId);
+    await loadServiceServers(serviceId);
   }
   apisStatus.value = status?.value;
 
-  datasetActionOnEOF.value = _datasetActionOnEOF?.value || _datasetActionOnEOF || 'RECYCLE';
-  datasetSharingMode.value = _datasetSharingMode?.value || _datasetSharingMode || 'ALL_THREAD';
+  datasetActionOnEOF.value = _datasetActionOnEOF?.value || _datasetActionOnEOF || ActionOnEOF.RECYCLE;
+  datasetSharingMode.value = _datasetSharingMode?.value || _datasetSharingMode || SharingMode.ALL_THREAD;
 
   if (!isUnarchivedApi.value && auth && serviceAuth) {
-    loadApiAuth();
+    await loadApiAuth();
   }
   initApiInfo.value = res.data;
 
@@ -418,11 +471,11 @@ const loadApiInfo = async (): Promise<void> => {
   } else {
     const availableServersFromPro = (res.data?.availableServers || []).map(i => ({ ...i, ...(i.extensions || {}) }));
     if (availableServersFromPro.length) {
-      currentServer.value = availableServersFromPro.find(i => i[serverSourceKey] === 'CURRENT_REQUEST') || availableServersFromPro[0];
+      currentServer.value = availableServersFromPro.find(i => i[serverSourceKey] === ApiServerSource.CURRENT_REQUEST) || availableServersFromPro[0];
     } else {
       currentServer.value = { url: '' };
     }
-    availableServers.value = (availableServersFromPro || []).filter(i => i[serverSourceKey] !== 'CURRENT_REQUEST');
+    availableServers.value = (availableServersFromPro || []).filter(i => i[serverSourceKey] !== ApiServerSource.CURRENT_REQUEST);
   }
   defaultCurrentServer.value = JSON.parse(JSON.stringify(currentServer.value));
 
@@ -449,7 +502,7 @@ const loadApiInfo = async (): Promise<void> => {
 
   state.authentication = authentication ? { ...authentication, ...(authentication.extensions || {}) } : { type: null };
   defaultAuthentication.value = JSON.parse(JSON.stringify(state.authentication));
-  state.publishFlag = (status?.value === 'RELEASED');
+  state.publishFlag = (status?.value === ApiStatus.RELEASED);
   state.secured = !!state.authentication.type || !!state.authentication.$ref;
   for (const key in parameters) {
     if (parameters[key].$ref) {
@@ -457,7 +510,7 @@ const loadApiInfo = async (): Promise<void> => {
       if (model.name) {
         if (!model.schema.type) {
           if (model.schema.properties) {
-            model.schema.type = 'object';
+            model.schema.type = SchemaType.object;
             if (typeof model[valueKey] === 'string') {
               try {
                 model[valueKey] = JSON.parse(model[valueKey]);
@@ -466,7 +519,7 @@ const loadApiInfo = async (): Promise<void> => {
               }
             }
           } else if (model.schema.items) {
-            model.schema.type = 'array';
+            model.schema.type = SchemaType.array;
             if (typeof model[valueKey] === 'string') {
               try {
                 model[valueKey] = JSON.parse(model[valueKey]);
@@ -475,37 +528,42 @@ const loadApiInfo = async (): Promise<void> => {
               }
             }
           } else {
-            model.schema.type = 'string';
+            model.schema.type = SchemaType.string;
           }
         }
         parameters[key] = { ...parameters[key], ...model };
       } else {
-        parameters[key] = { name: undefined, schema: { type: 'string' }, in: 'query', [valueKey]: '' };
+        parameters[key] = { name: undefined, schema: { type: SchemaType.string }, in: ParameterIn.query, [valueKey]: '' };
       }
     }
-    if (['object', 'array', 'boolean', 'integer', 'number'].includes(parameters[key].schema?.type) && parameters[key]?.[valueKey] && typeof parameters[key]?.[valueKey] === 'string') {
+    if ([SchemaType.object, SchemaType.array, SchemaType.boolean, SchemaType.integer, SchemaType.number]
+      .includes(parameters[key].schema?.type) && parameters[key]?.[valueKey] && typeof parameters[key]?.[valueKey] === 'string') {
       try {
         parameters[key][valueKey] = JSON.parse(parameters[key][valueKey]);
       } catch {
         console.log(parameters[key][valueKey] + 'is not an object');
       }
     }
-    if (!parameters[key][valueKey] && parameters[key].schema?.type && (parameters[key].schema?.[valueKey] || parameters[key].schema?.properties || parameters[key].schema?.items)) {
+    if (!parameters[key][valueKey] && parameters[key].schema?.type &&
+      (parameters[key].schema?.[valueKey] || parameters[key].schema?.properties || parameters[key].schema?.items)) {
       parameters[key][valueKey] = SwaggerUI.extension.sampleFromSchemaGeneric(parameters[key].schema, { useValue: true });
     }
   }
-  state.parameters = [...queryStrParam, ...(parameters?.filter(item => ['query', 'path'].includes(item.in) && !!item.name) || []).map(i => ({ ...i, [enabledKey]: i[enabledKey] !== false }))];
-  state.headerList = (parameters?.filter(i => i.in === 'header' && !!i.name) || []).map(i => ({ ...i, [enabledKey]: i[enabledKey] !== false }));
+  state.parameters = [...queryStrParam, ...(parameters?.filter(item => [ParameterIn.query, ParameterIn.path]
+    .includes(item.in) && !!item.name) || []).map(i => ({ ...i, [enabledKey]: i[enabledKey] !== false }))];
+  state.headerList = (parameters?.filter(i => i.in === ParameterIn.header && !!i.name) || [])
+    .map(i => ({ ...i, [enabledKey]: i[enabledKey] !== false }));
 
   apiUri.value = endpoint ? endpoint.split('?')[0] : undefined;
-  const contentTypeIndex = state.headerList.findIndex(i => i.name === 'Content-Type');
+  const contentTypeIndex = state.headerList.findIndex(i => i.name === HTTP_HEADERS.CONTENT_TYPE);
   if (contentTypeIndex > -1) {
     contentType.value = state.headerList[contentTypeIndex]?.[valueKey];
     if (contentType.value) {
       state.headerList.splice(contentTypeIndex, 1);
     }
   }
-  state.cookieList = (parameters?.filter(i => i.in === 'cookie' && !!i.name) || []).map(i => ({ ...i, [enabledKey]: i[enabledKey] !== false }));
+  state.cookieList = (parameters?.filter(i => i.in === ParameterIn.cookie && !!i.name) || [])
+    .map(i => ({ ...i, [enabledKey]: i[enabledKey] !== false }));
   state.requestBody = requestBody || {};
   if (res.data.resolvedRefModels) {
     resolvedRefModels.value = res.data.resolvedRefModels;
@@ -513,10 +571,10 @@ const loadApiInfo = async (): Promise<void> => {
 };
 
 // 参数化逻辑 - start
-const datasetActionOnEOF = ref<'RECYCLE' | 'STOP_THREAD'>('RECYCLE');
-const datasetSharingMode = ref<'ALL_THREAD' | 'CURRENT_THREAD'>('ALL_THREAD');
+const datasetActionOnEOF = ref<ActionOnEOF>(ActionOnEOF.RECYCLE);
+const datasetSharingMode = ref<SharingMode>(SharingMode.ALL_THREAD);
 
-const targetInfoChange = (data: { id: string; datasetActionOnEOF: 'RECYCLE' | 'STOP_THREAD'; datasetSharingMode: 'ALL_THREAD' | 'CURRENT_THREAD'; }) => {
+const targetInfoChange = (data: { id: string; datasetActionOnEOF: ActionOnEOF; datasetSharingMode: SharingMode; }) => {
   datasetActionOnEOF.value = data.datasetActionOnEOF;
   datasetSharingMode.value = data.datasetSharingMode;
 };
@@ -525,14 +583,6 @@ const targetInfoChange = (data: { id: string; datasetActionOnEOF: 'RECYCLE' | 'S
 // 请求体是否有数据
 const hasBodyContent = computed(() => {
   return !!contentType.value || !!state.requestBody.content;
-});
-
-// 显示认证信息在请求头
-watch(() => state.authentication, async newValue => {
-  const data = await getShowAuthData(newValue);
-  authInHeader.value = data?.[0] || {};
-}, {
-  deep: true
 });
 
 // 获取有效 请求头
@@ -570,11 +620,11 @@ const validateParam = () => {
  * 分两步获取，
  * 2. 校验通过执行该方法
  */
-const getParameter = async (isdebug = false) => {
+const getParameter = async (isDebug = false) => {
   const { parameters, requestBody, headerList, cookieList, authentication, secured } = state;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { content } = requestBody;
-  if (!isdebug) {
+  if (!isDebug) {
     const exceedFileSize = requestBodyRef.value.ifExceedSize();
     if (exceedFileSize) {
       Object.keys(content).forEach(key => {
@@ -582,12 +632,12 @@ const getParameter = async (isdebug = false) => {
           delete requestBody.content[key].schema[valueKey];
           delete requestBody.content[key].schema[fileNameKey];
         }
-        if (key === 'multipart/form-data') {
+        if (key === CONTENT_TYPE.MULTIPART_FORM_DATA) {
           if (content[key]?.schema?.properties) {
             Object.keys(content[key]?.schema?.properties).forEach(name => {
               if (content[key].schema.properties[name].format === 'binary') {
                 const type = content[key].schema.properties[name].type;
-                requestBody.content[key].schema.properties[name][valueKey] = (type === 'array' ? [] : undefined);
+                requestBody.content[key].schema.properties[name][valueKey] = (type === SchemaType.array ? [] : undefined);
               }
             });
           }
@@ -603,11 +653,11 @@ const getParameter = async (isdebug = false) => {
     }
     return {
       ...header,
-      in: 'header'
+      in: ParameterIn.header
     };
   });
   if (contentType.value) {
-    headers.unshift({ name: 'Content-Type', in: 'header', [valueKey]: contentType.value, [enabledKey]: true });
+    headers.unshift({ name: HTTP_HEADERS.CONTENT_TYPE, in: ParameterIn.header, [valueKey]: contentType.value, [enabledKey]: true });
   }
   let protocol = '';
   if (currentServer.value?.url) {
@@ -616,7 +666,7 @@ const getParameter = async (isdebug = false) => {
       protocol = _server.protocol.replace(':', '');
     } catch {
       protocol = 'http';
-      if (!currentServer.value.url.startsWith('http') && !currentServer.value['x-xc-id']) {
+      if (!currentServer.value.url.startsWith('http') && !currentServer.value[idKey]) {
         currentServer.value.url = 'http://' + currentServer.value.url;
       }
     }
@@ -637,7 +687,7 @@ const getParameter = async (isdebug = false) => {
   }
   const currentServerICopy = JSON.parse(JSON.stringify(currentServer.value));
   delete currentServerICopy[serverSourceKey];
-  const res = {
+  return {
     ...saveParams.value,
     assertions,
     parameters: [...parameters, ...headers, ...cookieList.filter(i => i.name)],
@@ -654,7 +704,6 @@ const getParameter = async (isdebug = false) => {
       readTimeout: setting.value.readTimeout + 'ms'
     }
   };
-  return res;
 };
 
 const getRealUri = (pathParams: Record<string, any>, queryParams: Record<string, any>) => {
@@ -709,7 +758,7 @@ const sendRequest = async () => {
   let requestBodyContents = await requestBodyRef.value.getBodyData(state.requestBody, contentType.value);
   let formData: any[] = [];
   const strParam: string[] = [];
-  if (contentType.value === 'application/x-www-form-urlencoded' || contentType.value === 'multipart/form-data') {
+  if (contentType.value === CONTENT_TYPE.FORM_URLENCODED || contentType.value === CONTENT_TYPE.MULTIPART_FORM_DATA) {
     formData = requestBodyContents;
   } else if (typeof requestBodyContents === 'string') {
     strParam.push(requestBodyContents);
@@ -744,7 +793,15 @@ const sendRequest = async () => {
   }
 
   // 替换 mock 函数和变量
-  const result = await apiUtils.replaceFuncValue({ parameter: [querPathData, formData, headerCookieData, authParamData, authQueryData], str: strParam, variableStr: asserVariableStr }, allFuncNames.value, !isUnarchivedApi.value ? saveParams.value.id : undefined, 'API', { ignoreErr: false });
+  const result = await apiUtils.replaceFuncValue(
+    {
+      parameter: [querPathData, formData, headerCookieData, authParamData, authQueryData],
+      str: strParam,
+      variableStr: asserVariableStr
+    }, allFuncNames.value,
+    !isUnarchivedApi.value ? saveParams.value.id : undefined,
+    'API', { ignoreErr: false }
+  );
   if (!result) {
     loading.value = false;
     return;
@@ -778,12 +835,12 @@ const sendRequest = async () => {
       requestParamsRef.value.validate();
       notification.error(t('service.apis.errors.parameterValidationFailed'));
     }
-    const validatedHeader = validateQueryParameter(funcValues[2].filter(i => i.in === 'header'));
+    const validatedHeader = validateQueryParameter(funcValues[2].filter(i => i.in === ParameterIn.header));
     if (!validatedHeader) {
       requestHeaderRef.value.validate();
       notification.error(t('service.apis.errors.headerValidationFailed'));
     }
-    const validatedCookie = validateQueryParameter(funcValues[2].filter(i => i.in === 'cookie'));
+    const validatedCookie = validateQueryParameter(funcValues[2].filter(i => i.in === ParameterIn.cookie));
     if (!validatedCookie) {
       requestCookieRef.value.validate();
       notification.error(t('service.apis.errors.cookieValidationFailed'));
@@ -818,11 +875,12 @@ const sendRequest = async () => {
   }
 
   // 组装 body 数据
-  let requestBody;
   const showRequestBody: Record<string, any> = {};
-  if ((contentType.value === 'application/x-www-form-urlencoded' || contentType.value === 'multipart/form-data') && funcValues[1]?.length) {
+  let requestBody;
+  if ((contentType.value === CONTENT_TYPE.FORM_URLENCODED ||
+    contentType.value === CONTENT_TYPE.MULTIPART_FORM_DATA) && funcValues[1]?.length) {
     const bodyDataArr = funcValues[1];
-    if (contentType.value === 'application/x-www-form-urlencoded') {
+    if (contentType.value === CONTENT_TYPE.FORM_URLENCODED) {
       requestBody = '';
       const content = {};
       bodyDataArr.forEach(item => {
@@ -837,7 +895,7 @@ const sendRequest = async () => {
         showRequestBody.urlencoded[key] = decodeURIComponent(value || '');
       });
     }
-    if (contentType.value === 'multipart/form-data') {
+    if (contentType.value === CONTENT_TYPE.MULTIPART_FORM_DATA) {
       showRequestBody.formData = {};
       requestBody = new FormData();
       bodyDataArr.forEach(item => {
@@ -853,7 +911,7 @@ const sendRequest = async () => {
             showRequestBody.formData[item.name] = typeof item[valueKey] === 'object' ? JSON.stringify(item[valueKey]) : item[valueKey];
           }
         } else {
-          if (item.type === 'array') {
+          if (item.type === SchemaType.array) {
             showRequestBody.formData[item.name] = '<binary array>';
             item[valueKey].forEach(file => {
               requestBody.append(item.name, file?.file || '', file[fileNameKey] || '');
@@ -878,15 +936,15 @@ const sendRequest = async () => {
 
   // parameterPath 的 JSON 格式
   const pathJson = {};
-  const pathArr = funcValues[0].filter(i => i.in === 'path');
+  const pathArr = funcValues[0].filter(i => i.in === ParameterIn.path);
   pathArr.forEach(i => {
     pathJson[i.name] = i[valueKey];
   });
 
   // 组装 query 数据 query + 认证 query
   const queryJson = {};
-  const quryyArr = funcValues[0].filter(i => i.in === 'query').concat(funcValues[4]);
-  quryyArr.forEach(i => {
+  const queryArr = funcValues[0].filter(i => i.in === ParameterIn.query).concat(funcValues[4]);
+  queryArr.forEach(i => {
     queryJson[i.name] = travelEmptyObjToString(i[valueKey]);
   });
   const apiPathQuery = getRealUri(pathJson, queryJson);
@@ -909,18 +967,24 @@ const sendRequest = async () => {
 
   // 组装 请求header
   let headers: Record<string, string> = {};
-  const headList = funcValues[2].filter(i => i.in === 'header');
-  const cookieList = funcValues[2].filter(i => i.in === 'cookie');
+  const headList = funcValues[2].filter(i => i.in === ParameterIn.header);
+  const cookieList = funcValues[2].filter(i => i.in === ParameterIn.cookie);
   headList.forEach(item => {
     if (typeof item[valueKey] === 'object') {
       // encodeURIComponent 用于编译中文内容， 否则本地请求无法发送
       if (Object.prototype.toString.call(item[valueKey]) === '[object Array]') {
-        headers[item.name] = item[valueKey] ? item[valueKey].map(value => value && apiUtils.containsAllAscii(value) ? value : value ? encodeURIComponent(value) : '').join(',') : '';
+        headers[item.name] = item[valueKey]
+          ? item[valueKey].map(value => value && apiUtils.containsAllAscii(value) ? value : value ? encodeURIComponent(value) : '').join(',')
+          : '';
       } else {
-        headers[item.name] = item[valueKey] ? Object.entries(item[valueKey]).map(([key, value]) => `${key}=${value && apiUtils.containsAllAscii(value) ? value : value ? encodeURIComponent(value) : ''}`).join(',') : '';
+        headers[item.name] = item[valueKey]
+          ? Object.entries(item[valueKey]).map(([key, value]) => `${key}=${value && apiUtils.containsAllAscii(value) ? value : value ? encodeURIComponent(value) : ''}`).join(',')
+          : '';
       }
     } else {
-      headers[item.name] = item[valueKey] && apiUtils.containsAllAscii(item[valueKey]) ? item[valueKey] : item[valueKey] ? encodeURIComponent(item[valueKey]) : '';
+      headers[item.name] = item[valueKey] && apiUtils.containsAllAscii(item[valueKey])
+        ? item[valueKey]
+        : item[valueKey] ? encodeURIComponent(item[valueKey]) : '';
     }
   });
   const cookieStrs = cookieList.map(item => {
@@ -955,7 +1019,7 @@ const sendRequest = async () => {
     };
   }
   if (contentType.value) {
-    headers['Content-Type'] = contentType.value;
+    headers[HTTP_HEADERS.CONTENT_TYPE] = contentType.value;
   }
 
   // 请求设置
@@ -978,9 +1042,17 @@ const sendRequest = async () => {
       maxRedirects: maxRedirects,
       maxRetries: retryNum
     };
-    const responese = await myRequest.request(axiosConfig);
+    const responses = await myRequest.request(axiosConfig);
     setErrTitle();
-    await onHttpResponse(responese, { query: requestQueryJson, header: headers, path: pathJson, requestBody: showRequestBody, queryString: apiPathQuery.split('?')[1] || '', assertions, variableValues });
+    await onHttpResponse(responses, {
+      query: requestQueryJson,
+      header: headers,
+      path: pathJson,
+      requestBody: showRequestBody,
+      queryString: apiPathQuery.split('?')[1] || '',
+      assertions,
+      variableValues
+    });
     openToolBar();
   } else if (ws.readyState !== 1) {
     loading.value = false;
@@ -1076,19 +1148,16 @@ const onHttpResponse = async (resp, request) => {
       url: decodeURIComponent(resp.config.url),
       method: apiMethod.value,
       queryString: request.queryString,
-      forms: request.header['Content-Type'] === 'multipart/form-data'
+      forms: request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE.MULTIPART_FORM_DATA
         ? request.requestBody.formData
-        : request.header['Content-Type'] === 'application/x-www-form-urlencoded'
-          ? request.requestBody.urlencoded
-          : {},
+        : request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE.FORM_URLENCODED ? request.requestBody.urlencoded : {},
       body: request.requestBody.body || ''
     };
     responseState.headers = resp.response.headers;
     responseState.status = resp.response.status;
     responseState.size = resp.response.data.size;
-    const requestHead = resp?.config?.headers || {};
-    responseState.requestHeaders = requestHead;
-    const cookie = resp.config.headers?.['Set-Cookie'];
+    responseState.requestHeaders = resp?.config?.headers || {};
+    const cookie = resp.config.headers?.[HTTP_HEADERS.SET_COOKIE];
     responseState.cookie = cookie ? [cookie] : [];
   } else {
     responseState.data = await convertBlob(resp.data);
@@ -1101,9 +1170,9 @@ const onHttpResponse = async (resp, request) => {
       url: decodeURIComponent(resp.config.url),
       method: apiMethod.value,
       queryString: request.queryString,
-      forms: request.header['Content-Type'] === 'multipart/form-data'
+      forms: request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE.MULTIPART_FORM_DATA
         ? request.requestBody.formData
-        : request.header['Content-Type'] === 'application/x-www-form-urlencoded'
+        : request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE.FORM_URLENCODED
           ? request.requestBody.urlencoded
           : {},
       body: request.requestBody.body || ''
@@ -1113,25 +1182,25 @@ const onHttpResponse = async (resp, request) => {
     responseState.size = resp.data.size;
     const requestHead = resp?.config?.headers || {};
     responseState.requestHeaders = requestHead;
-    const cookie = resp.config.headers?.['Set-Cookie'];
+    const cookie = resp.config.headers?.[HTTP_HEADERS.SET_COOKIE];
     responseState.cookie = cookie ? [cookie] : [];
   }
 
   if (!respError.show) {
-    localRequstInfo.responseHeader = responseState.headers;
-    localRequstInfo.responseBody = { size: responseState.size || 0, data: responseState.data };
-    localRequstInfo.status = responseState.status;
-    localRequstInfo.duration = responseState?.performance?.duration || 0;
-    localRequstInfo.query = request.query;
-    localRequstInfo.path = request.path;
-    localRequstInfo.header = request.header;
-    localRequstInfo.form = request.header['Content-Type'] === 'multipart/form-data'
+    localRequestInfo.responseHeader = responseState.headers;
+    localRequestInfo.responseBody = { size: responseState.size || 0, data: responseState.data };
+    localRequestInfo.status = responseState.status;
+    localRequestInfo.duration = responseState?.performance?.duration || 0;
+    localRequestInfo.query = request.query;
+    localRequestInfo.path = request.path;
+    localRequestInfo.header = request.header;
+    localRequestInfo.form = request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE.MULTIPART_FORM_DATA
       ? request.requestBody.formData
-      : request.header['Content-Type'] === 'application/x-www-form-urlencoded'
+      : request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE.FORM_URLENCODED
         ? request.requestBody.urlencoded
         : undefined;
-    localRequstInfo.rawBody = request.requestBody.body || undefined;
-    assertResult.value = await assertUtils.assert.execute(localRequstInfo, request.assertions, request.variableValues);
+    localRequestInfo.rawBody = request.requestBody.body || undefined;
+    assertResult.value = await assertUtils.assert.execute(localRequestInfo, request.assertions, request.variableValues);
   }
 };
 
@@ -1204,7 +1273,7 @@ const onResponse = async () => {
         ...response.response.timeline,
         duration: +response.response.timeline.total || 0
       };
-      const cookieStr = header?.['Set-Cookie'] || header?.['set-cookie'];
+      const cookieStr = header?.[HTTP_HEADERS.SET_COOKIE] || header?.[HTTP_HEADERS.SET_COOKIE_LOWER];
       responseState.cookie = cookieStr ? [cookieStr] : [];
       respError.show = false;
 
@@ -1213,7 +1282,7 @@ const onResponse = async () => {
   }
 };
 
-const localRequstInfo = reactive<Parameter>({
+const localRequestInfo = reactive<Parameter>({
   responseHeader: {},
   responseBody: {
     data: undefined,
@@ -1273,8 +1342,8 @@ const getValueByType = (assertionCondition: AssertionCondition, type: AssertionT
   message: string;
   errorMessage: string;
 } => {
-  if (type === 'BODY') {
-    if (['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(assertionCondition)) {
+  if (type === AssertionType.BODY) {
+    if ([AssertionCondition.REG_MATCH, AssertionCondition.XPATH_MATCH, AssertionCondition.JSON_PATH_MATCH].includes(assertionCondition)) {
       return {
         data: data.extractValue,
         message: '',
@@ -1289,7 +1358,7 @@ const getValueByType = (assertionCondition: AssertionCondition, type: AssertionT
     };
   }
 
-  if (type === 'BODY_SIZE') {
+  if (type === AssertionType.BODY_SIZE) {
     return {
       data: data.bodySize + '',
       message: '',
@@ -1297,7 +1366,7 @@ const getValueByType = (assertionCondition: AssertionCondition, type: AssertionT
     };
   }
 
-  if (type === 'DURATION') {
+  if (type === AssertionType.DURATION) {
     return {
       data: data.duration + '',
       message: '',
@@ -1305,8 +1374,8 @@ const getValueByType = (assertionCondition: AssertionCondition, type: AssertionT
     };
   }
 
-  if (type === 'HEADER') {
-    if (['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(assertionCondition)) {
+  if (type === AssertionType.HEADER) {
+    if ([AssertionCondition.REG_MATCH, AssertionCondition.XPATH_MATCH, AssertionCondition.JSON_PATH_MATCH].includes(assertionCondition)) {
       return {
         data: data.extractValue,
         message: '',
@@ -1321,7 +1390,7 @@ const getValueByType = (assertionCondition: AssertionCondition, type: AssertionT
     };
   }
 
-  if (type === 'SIZE') {
+  if (type === AssertionType.SIZE) {
     return {
       data: data.size + '',
       message: '',
@@ -1369,7 +1438,7 @@ const setAssertResult = async (responseData) => {
     let ignored = true;
     let failure = false;
     if (_assertResult) {
-      ignored = _assertResult.ignored;
+      ignored = _assertResult.ignored || false;
       failure = _assertResult.failure;
 
       if (!condition) {
@@ -1504,10 +1573,8 @@ const setAssertResult = async (responseData) => {
         message: _assertResult?.message
       }
     };
-
     result.push(_result);
   }
-
   return result;
 };
 
@@ -1547,7 +1614,7 @@ const autoSave = async () => {
   if (utils.deepCompare(initParams, JSON.parse(JSON.stringify(params)))) { // 比较新旧值
     return;
   }
-  if (auths.value.includes('MODIFY') && !state.publishFlag) {
+  if (apiAuths.value.includes(ApiPermission.MODIFY) && !state.publishFlag) {
     if (requestHeaderRef.value) {
       await requestHeaderRef.value.updateComp();
     }
@@ -1579,14 +1646,14 @@ const isEmpty = computed(() => {
 
 const copyUrl = async () => {
   const pathJson = {};
-  const pathArr = state.parameters.filter(i => i.in === 'path');
+  const pathArr = state.parameters.filter(i => i.in === ParameterIn.path);
   pathArr.forEach(i => {
     pathJson[i.name || ''] = i[valueKey];
   });
 
   // 组装 query 数据 query + 认证 query
   const queryJson = {};
-  const quryyArr = state.parameters.filter(i => i.in === 'query');
+  const quryyArr = state.parameters.filter(i => i.in === ParameterIn.query);
   quryyArr.forEach(i => {
     queryJson[i.name || ''] = travelEmptyObjToString(i[valueKey]);
   });
@@ -1604,22 +1671,6 @@ const copyUrl = async () => {
   notification.success(t('service.apis.notifications.copyUrlSuccess'));
 };
 
-watch(() => props.id, () => {
-  // 没有id的 或者是 未归档的 api, 都属于未归档
-  if (props.valueObj.unarchived || !props.id) {
-    isUnarchivedApi.value = true;
-    if (props.id) {
-      loadApiInfo();
-    }
-  } else {
-    isUnarchivedApi.value = false;
-    // 编辑API
-    loadApiInfo();
-  }
-}, {
-  immediate: true
-});
-
 const moving = ref(false); // 记录当前是否在拖拽中
 
 // 监听 window 变化事件, 重置最大高度
@@ -1629,8 +1680,32 @@ const resizeHandler = debounce(duration.resize, () => {
   });
 });
 
-onBeforeUnmount(() => {
-  erd.removeListener(mainWrapper.value, resizeHandler);
+const closeDrawer = () => {
+  drawerRef.value.close();
+};
+
+// 显示认证信息在请求头
+watch(() => state.authentication, async newValue => {
+  const data = await getShowAuthData(newValue);
+  authInHeader.value = data?.[0] || {};
+}, {
+  deep: true
+});
+
+watch(() => props.id, () => {
+  // 没有id的 或者是 未归档的 api, 都属于未归档
+  if (props.valueObj.unarchived || !props.id) {
+    isUnarchivedApi.value = true;
+    if (props.id) {
+      loadApiDetail();
+    }
+  } else {
+    isUnarchivedApi.value = false;
+    // 编辑API
+    loadApiDetail();
+  }
+}, {
+  immediate: true
 });
 
 watch(() => props.uuid, newValue => {
@@ -1655,20 +1730,18 @@ onMounted(() => {
   erd.listenTo(mainWrapper.value, resizeHandler);
 });
 
-const closeDrawer = () => {
-  drawerRef.value.close();
-};
+onBeforeUnmount(() => {
+  erd.removeListener(mainWrapper.value, resizeHandler);
+});
 
 defineExpose({ autoSave, pid: props.pid });
 provide('getParameter', getParameter);
-provide('auths', auths);
+provide('auths', apiAuths);
 provide('id', computed(() => saveParams.value.id)); // 提供给子组件 当前 api 的 id
 provide('apiBaseInfo', computed(() => saveParams.value)); // api 基本信息
 provide('isUnarchivedApi', isUnarchivedApi); // 提供给子组件用于判断接口是否归档
 provide('resolvedRefModels', computed(() => resolvedRefModels.value));
-provide('archivedId', computed(() => {
-  return isUnarchivedApi.value ? undefined : saveParams.value.id;
-}));
+provide('archivedId', computed(() => { return isUnarchivedApi.value ? undefined : saveParams.value.id; }));
 provide('selectHandle', closeDrawer);
 </script>
 <template>
@@ -1700,7 +1773,7 @@ provide('selectHandle', closeDrawer);
             </Button>
             <SelectEnum
               v-model:value="apisStatus"
-              :disabled="!auths.includes('MODIFY')"
+              :disabled="!apiAuths.includes(ApiPermission.MODIFY)"
               :lazy="false"
               class="inline-block"
               enumKey="ApiStatus"
@@ -1747,11 +1820,6 @@ provide('selectHandle', closeDrawer);
                     class="flex-1 px-5"
                     :value="state.parameters"
                     @change="changeParamList" />
-                  <!-- <ApiDoc
-                    v-show="showDoc"
-                    v-model:data="initApiInfo"
-                    tab="parameters"
-                    class="flex-1" /> -->
                 </div>
               </TabPane>
               <TabPane
@@ -1766,11 +1834,6 @@ provide('selectHandle', closeDrawer);
                     :value="state.headerList"
                     :authData="authInHeader"
                     @change="changeHeaderList" />
-                  <!-- <ApiDoc
-                    v-show="showDoc"
-                    :data="initApiInfo"
-                    tab="header"
-                    class="flex-1" /> -->
                 </div>
               </TabPane>
               <TabPane
@@ -1899,7 +1962,7 @@ provide('selectHandle', closeDrawer);
             @change="toolbarChange">
             <template #content="{ activeMenu }">
               <div class="toolbar-main  relative" :class="{ 'select-text': !moving }">
-                <template v-if="['request', 'response', 'time', 'cookie', 'assert'].includes(activeMenu)">
+                <template v-if="['request', 'response', 'time', 'cookie', 'assert'].includes(activeMenu | '')">
                   <template v-if="respError.show">
                     <ResponseError
                       class="h-full overflow-hidden"
@@ -1920,7 +1983,7 @@ provide('selectHandle', closeDrawer);
                       class="px-5"
                       :dataSource="responseState?.performance" />
                     <ApiCookie
-                      v-show="activeMenu === 'cookie'"
+                      v-show="activeMenu === ParameterIn.cookie"
                       class="px-5"
                       :dataSource="responseState?.cookie"
                       :host="getServerData(currentServer)" />
@@ -1936,14 +1999,6 @@ provide('selectHandle', closeDrawer);
                       style="height: calc(100% - 29px);" />
                   </template>
                 </template>
-                <!-- <template v-if="activeMenu === 'define'">
-                  <ApiDefine
-                    :id="props.id"
-                    :serviceId="saveParams.serviceId"
-                    :value="saveParams.responses"
-                    class="pt-4" />
-                </template> -->
-
                 <template v-if="activeMenu === 'generateCode'">
                   <CodeSnippet class="px-5 h-full overflow-auto" />
                 </template>
@@ -1985,7 +2040,7 @@ provide('selectHandle', closeDrawer);
               :projectId="props.projectId"
               :apisIds="[props.id]"
               :servicesId="saveParams.serviceId"
-              shareScope="SINGLE_APIS" />
+              :shareScope="ApisShareScope.SINGLE_APIS" />
           </AsyncComponent>
         </div>
 
@@ -2011,7 +2066,7 @@ provide('selectHandle', closeDrawer);
           <ApiMockVue
             :id="props.id"
             class="px-5 mt-3 "
-            :disabled="!auths.includes('MODIFY')" />
+            :disabled="!apiAuths.includes(ApiPermission.MODIFY)" />
         </template>
 
         <template v-if="activeTabKey === 'doc'">
@@ -2021,8 +2076,8 @@ provide('selectHandle', closeDrawer);
         </template>
 
         <Spin
-          :spinning="loadingInfo"
-          :class="{ '-z-1': !loadingInfo }"
+          :spinning="loadingApiDetail"
+          :class="{ '-z-1': !loadingApiDetail }"
           :delay="0"
           class="!absolute top-0 bottom-0 left-0 right-0">
         </Spin>
@@ -2040,18 +2095,18 @@ provide('selectHandle', closeDrawer);
             type="API" />
         </template>
         <template #save>
-          <InfoEditVue
+          <InfoEdit
             v-if="activeDrawerKey === 'save'"
             :id="props.id"
             class="pr-5"
-            :disabled="!auths.includes('MODIFY')"
+            :disabled="!apiAuths.includes(ApiPermission.MODIFY)"
             type="API" />
         </template>
         <template #performance>
           <Indicator
             v-if="activeDrawerKey === 'performance'"
             :id="props.id"
-            :disabled="!auths.includes('MODIFY')"
+            :disabled="!apiAuths.includes(ApiPermission.MODIFY)"
             class="pr-5 mt-2"
             type="API" />
         </template>
@@ -2069,38 +2124,20 @@ provide('selectHandle', closeDrawer);
             class="pr-5 mt-2"
             type="API" />
         </template>
-        <!-- <template #variable>
-          <VariableVue
-            v-if="activeDrawerKey === 'variable'"
-            :id="props.id"
-            :disabled="!auths.includes('MODIFY')"
-            class="pr-5 pt-2"
-            type="API" />
-        </template> -->
         <template #apiMock>
-          <!-- <ApiMockVue
-            v-if="activeDrawerKey === 'apiMock'"
-            :id="props.id"
-            class="pt-2 pr-5"
-            :disabled="!auths.includes('MODIFY')" /> -->
         </template>
         <template #share>
           <ShareList
             v-if="activeDrawerKey === 'share'"
             :id="props.id"
             class="mt-2 pr-5"
-            :disabled="!auths.includes('SHARE')"
+            :disabled="!apiAuths.includes(ApiPermission.SHARE)"
             type="API" />
         </template>
         <template #agent>
           <RequestProxy v-if="activeDrawerKey === 'agent'" class="pr-5 mt-2" />
         </template>
         <template #cases>
-          <!-- <TestCase
-            v-if="activeDrawerKey === 'case'"
-            :id="props.id"
-            type="API"
-            class="pr-5" /> -->
         </template>
       </Drawer>
     </div>

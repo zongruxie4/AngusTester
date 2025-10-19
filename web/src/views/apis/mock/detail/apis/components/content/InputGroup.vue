@@ -76,7 +76,7 @@ const queryParameters = computed<ParametersType[]>((): ParametersType[] => {
  * <p>Used to determine if Content-Type header should be disabled</p>
  */
 const contentTypeList: ContentType[] = [
-  'application/x-www-form-urlencode',
+  'application/x-www-form-urlencoded',
   'multipart/form-data',
   'application/json',
   'text/html',

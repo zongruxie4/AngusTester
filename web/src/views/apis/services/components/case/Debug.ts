@@ -27,19 +27,6 @@ export const ToolBarMenus = [
     value: 'assert'
   }
 ];
-export const getDefaultParams = (config = {}) => {
-  return {
-    name: '',
-    in: 'query',
-    description: '',
-    [valueKey]: '',
-    [enabledKey]: true,
-    schema: {
-      type: 'string'
-    },
-    ...config
-  };
-};
 
 const deconstruct = (data: Record<string, any>) => {
   const handler = (schema: Record<string, any>) => {
@@ -106,85 +93,6 @@ export type ApiInfo = {
     assertions?: any[];
     resolvedRefModels?: Record<string, any>;
 }
-
-// 删除schame 中 得引用字段
-export const travelDelSchemaRef = (schame) => {
-  if (typeof schame === 'object') {
-    if (schame.$ref) {
-      delete schame.$ref;
-    }
-    if (Object.prototype.toString.call(schame) === '[object Object]') {
-      Object.keys(schame).forEach(key => {
-        if (key !== valueKey) {
-          schame[key] = travelDelSchemaRef(schame[key]);
-        }
-      });
-    }
-    if (Object.prototype.toString.call(schame) === '[object Array]') {
-      schame.forEach(item => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        item = travelDelSchemaRef(item);
-      });
-    }
-  }
-  return schame;
-};
-
-// 校验 url 正确性
-export const isValidUrl = (url):boolean => {
-  try {
-    // eslint-disable-next-line no-new
-    new URL(url);
-    return true;
-  } catch {
-    return false;
-  }
-};
-
-// 解密
-export const decode = (value: string, native = false): { name: string; value: string; } | string => {
-  if (native) {
-    return dt(value);
-  }
-
-  const slices = dt(value).split(':');
-  return {
-    name: slices[0],
-    value: slices[1]
-  };
-};
-
-// 加密
-export const encode = (name = '', value = ''): string => {
-  if (!value) {
-    return et(name);
-  }
-
-  if (!name && !value) {
-    return '';
-  }
-
-  return et(name + ':' + value);
-};
-
-// 将x-xc-value 的 空object  为  String 类型
-export const travelEmptyObjToString = (data) => {
-  if (typeof data === 'object') {
-    if (JSON.stringify(data) === '{}') {
-      data = '';
-    }
-    if (Object.prototype.toString.call(data) === '[object Object]') {
-      Object.keys(data).forEach(key => {
-        data[key] = travelEmptyObjToString(data[key]);
-      });
-    } else if (Object.prototype.toString.call(data) === '[object Array]') {
-      data.forEach((i, idx) => {
-        data[idx] = travelEmptyObjToString(i);
-      });
-    }
-  }
-  return data;
-};
 
 export type Parameter = {
   form: { [key: string]: any };
