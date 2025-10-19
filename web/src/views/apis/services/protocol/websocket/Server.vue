@@ -5,26 +5,21 @@ import { Icon } from '@xcan-angus/vue-ui';
 import { XCanDexie } from '@xcan-angus/infra';
 import { Dropdown, Menu, MenuItem } from 'ant-design-vue';
 import { API_EXTENSION_KEY } from '@/utils/apis';
+import { ServerInfo } from '@/views/apis/server/types';
 
 import ServerInput from '@/views/apis/services/protocol/http/path/ServerInput.vue';
-
-type HttpServer = {
-  url: string;
-  variables?: any,
-  description?: string
-  'x-xc-serverSource'?: string;
-}
 
 interface Props {
   isUnarchivedApi?: boolean;
   id: string;
   availableServers: any[];
-  currentServer: HttpServer;
-  defaultCurrentServer: HttpServer;
+  currentServer: ServerInfo;
+  defaultCurrentServer: ServerInfo;
   readonly: boolean;
 }
 
 const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   isUnarchivedApi: true,
   id: '',
@@ -37,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   (e: 'sendRequest'):void;
   (e: 'save'): void;
-  (e: 'update:currentServer', value: HttpServer): void;
+  (e: 'update:currentServer', value: ServerInfo): void;
   (e: 'update:method', value: string): void;
   (e: 'abort'): void;
 }>();
@@ -46,41 +41,17 @@ const dexie = new XCanDexie<{id:string;data: any}>('serverUrl');
 
 const { serverSourceKey } = API_EXTENSION_KEY;
 const showServerListDrop = ref(false);
-const currentServer = ref<HttpServer>({ url: '' });
+const currentServer = ref<ServerInfo>({ url: '' });
 const serverValue = ref<string>(props.currentServer?.url || '');
-const serversFromParent = ref<HttpServer[]>([]);
-const serversFromMock = ref<HttpServer[]>([]);
-const serversFromIndexDB = ref<HttpServer[]>([]);
-
-watch(() => props.currentServer, newValue => {
-  currentServer.value = JSON.parse(JSON.stringify(newValue));
-  serverValue.value = newValue.url;
-}, {
-  immediate: true
-});
-
-watch(() => props.availableServers, newValue => {
-  serversFromParent.value = (newValue || []).filter(i => i[serverSourceKey] === 'PARENT_SERVERS').map(i => {
-    return {
-      ...i,
-      ...i.extentions
-    };
-  });
-  serversFromMock.value = (newValue || []).filter(i => i[serverSourceKey] === 'MOCK_SERVICE').map(i => {
-    return {
-      ...i,
-      ...i.extentions
-    };
-  });
-}, {
-  immediate: true
-});
+const serversFromParent = ref<ServerInfo[]>([]);
+const serversFromMock = ref<ServerInfo[]>([]);
+const serversFromIndexDB = ref<ServerInfo[]>([]);
 
 const serverListOpt = computed(() => {
   return [...serversFromParent.value, ...serversFromIndexDB.value, ...serversFromMock.value];
 });
 
-const handleSelectServer = (value: string, item: HttpServer) => {
+const handleSelectServer = (value: string, item: ServerInfo) => {
   currentServer.value = JSON.parse(JSON.stringify(item));
   serverValue.value = value;
   emit('update:currentServer', item);
@@ -132,6 +103,30 @@ const handleServerBlur = () => {
 const handleFocus = () => {
   showServerListDrop.value = true;
 };
+
+watch(() => props.currentServer, newValue => {
+  currentServer.value = JSON.parse(JSON.stringify(newValue));
+  serverValue.value = newValue.url;
+}, {
+  immediate: true
+});
+
+watch(() => props.availableServers, newValue => {
+  serversFromParent.value = (newValue || []).filter(i => i[serverSourceKey] === 'PARENT_SERVERS').map(i => {
+    return {
+      ...i,
+      ...i.extentions
+    };
+  });
+  serversFromMock.value = (newValue || []).filter(i => i[serverSourceKey] === 'MOCK_SERVICE').map(i => {
+    return {
+      ...i,
+      ...i.extentions
+    };
+  });
+}, {
+  immediate: true
+});
 
 onMounted(() => {
   loadServerFromDB();

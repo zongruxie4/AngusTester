@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Message } from './PropsType';
+import { Message } from './types';
 import { Arrow, Icon, IconCopy } from '@xcan-angus/vue-ui';
 
 interface Props {
@@ -9,32 +9,14 @@ interface Props {
   msgType: string;
   data: Message[];
 }
-const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   keyword: ''
 });
 
+const { t } = useI18n();
+
 const data = ref<Message[]>([]);
-
-// const addMessage = (msg: Message) => {
-//   data.value.push({ ...msg, date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false });
-// };
-
-// const deleteAllMessage = () => {
-//   data.value = [];
-// };
-
-const getMsgText = (type) => {
-  switch (type) {
-    case 'send': return t('service.webSocketMsg.types.send');
-    case 'receive': return t('service.webSocketMsg.types.receive');
-    case 'connect': return t('service.webSocketMsg.types.connect');
-    case 'close': return t('service.webSocketMsg.types.close');
-    case 'closeErr': return t('service.webSocketMsg.types.closeErr');
-    case 'sendErr': return t('service.webSocketMsg.types.sendErr');
-    case 'connectErr': return t('service.webSocketMsg.types.connectErr');
-  }
-};
 
 const showData = computed(() => {
   if (props.keyword || props.msgType) {
@@ -51,6 +33,17 @@ watch(() => props.data, newValue => {
   immediate: true
 });
 
+const getMsgText = (type) => {
+  switch (type) {
+    case 'send': return t('service.webSocketMsg.types.send');
+    case 'receive': return t('service.webSocketMsg.types.receive');
+    case 'connect': return t('service.webSocketMsg.types.connect');
+    case 'close': return t('service.webSocketMsg.types.close');
+    case 'closeErr': return t('service.webSocketMsg.types.closeErr');
+    case 'sendErr': return t('service.webSocketMsg.types.sendErr');
+    case 'connectErr': return t('service.webSocketMsg.types.connectErr');
+  }
+};
 </script>
 <template>
   <ul class="text-3">

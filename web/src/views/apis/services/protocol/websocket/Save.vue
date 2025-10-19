@@ -4,23 +4,17 @@ import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { Input, notification, Select, SelectUser, TreeSelect, IconText } from '@xcan-angus/vue-ui';
 import { TESTER, appContext } from '@xcan-angus/infra';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 import { apis, services } from '@/api/tester';
+import { Props } from '@/views/apis/services/protocol/websocket/types';
 
-interface Props {
-  getParameter: any;
-  id: string;
-  summary: string;
-  operationId: string;
-  serviceId: string;
-  description: string;
-  status: string;
-  ownerId: string;
-  deprecated: boolean;
-  tabKey: string;
-  packageParams: ()=> Record<string, any>;
-}
+import SelectEnum from '@/components/enum/SelectEnum.vue';
+
+const props = withDefaults(defineProps<Props>(), {
+  getParameter: () => ({})
+});
+
+const emits = defineEmits<{(e: 'ok'): void}>();
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const replaceTabPane = inject<(key:string, data: any) => void>('replaceTabPane', () => { });
@@ -41,18 +35,13 @@ const updateTabPane = inject<(data: any) => void>('updateTabPane', () => { });
 const defaultProject = ref();
 
 const { t } = useI18n();
-const props = withDefaults(defineProps<Props>(), {
-  getParameter: () => ({})
-});
-
-const emits = defineEmits<{(e: 'ok'): void}>();
 
 const form = reactive({
   summary: '',
   operationId: '',
   ownerId: '',
   serviceId: '',
-  projectName: '',
+  projectName: '', // ? TODO 删除字段和替换类型
   description: '',
   status: 'UNKNOWN',
   deprecated: false,
@@ -74,6 +63,7 @@ const rules = {
     required: true, message: t('service.webSocketSave.form.status.validation'), trigger: 'change'
   }]
 };
+
 const ownerOpt = ref([]);
 
 const isLoading = ref(false);

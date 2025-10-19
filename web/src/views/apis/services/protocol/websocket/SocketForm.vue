@@ -8,7 +8,7 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import { API_EXTENSION_KEY } from '@/utils/apis';
 import { deconstruct } from '@/utils/swagger';
 import { services } from '@/api/tester';
-import { FormData, getDefaultForm } from './PropsType';
+import { FormData, getDefaultForm } from './types';
 import { schemaTypeToOptions } from '@/views/apis/services/protocol/http/utils';
 
 import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
@@ -132,17 +132,6 @@ const changeSchema = (schema, item, index) => {
   handleEmit();
 };
 
-watch(() => props.data, newValue => {
-  if (formData.value.length < 2) {
-    formData.value = newValue;
-    if (formData.value.every(i => !!i.name)) {
-      formData.value.push(getDefaultForm({ in: props.in }));
-    }
-  }
-}, {
-  immediate: true
-});
-
 const filterDataModel = (opt) => {
   const model = JSON.parse(opt.model);
   if (props.in === 'query') {
@@ -163,6 +152,17 @@ const getModelResolve = () => {
   });
   return models;
 };
+
+watch(() => props.data, newValue => {
+  if (formData.value.length < 2) {
+    formData.value = newValue;
+    if (formData.value.every(i => !!i.name)) {
+      formData.value.push(getDefaultForm({ in: props.in }));
+    }
+  }
+}, {
+  immediate: true
+});
 
 defineExpose({ getModelResolve, addItem });
 </script>
@@ -216,12 +216,6 @@ defineExpose({ getModelResolve, addItem });
           disabled
           class="flex-1"
           size="small" />
-        <!-- <Input
-          v-model:value="item.description"
-          size="small"
-          class="w-100"
-          :placeholder="t('service.webSocketForm.placeholder.inputParameterDescription')"
-          @blur="handleBlur" /> -->
         <Button
           v-show="item.schema?.type === 'array' || item.schema?.type === 'object'"
           size="small"
