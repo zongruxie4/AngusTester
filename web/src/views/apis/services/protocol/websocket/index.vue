@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import { Drawer, Icon, Input, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
-import { utils, duration, enumUtils } from '@xcan-angus/infra';
+import { utils, duration, enumUtils, HttpMethod } from '@xcan-angus/infra';
 import qs from 'qs';
 import elementResizeDetector from 'element-resize-detector';
 import useClipboard from 'vue-clipboard3';
@@ -15,30 +15,9 @@ import { apis } from '@/api/tester';
 import { ApiPermission } from '@/enums/enums';
 import { formatBytes } from '@/utils/utils';
 
-import { FormData, Message } from './PropsType';
+import { FormData, Message } from './types';
 import { debounce } from 'throttle-debounce';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
-
-interface Props {
-  id: string;
-  valueObj: Record<string, any>;
-  uuid: string;
-  ws: WebSocket;
-  response: string;
-  pid: string;
-  responseCount: number;
-}
-
-const { t } = useI18n();
-const props = withDefaults(defineProps<Props>(), {
-  id: undefined,
-  valueObj: undefined,
-  uuid: undefined,
-  ws: undefined,
-  response: undefined,
-  pid: undefined,
-  responseCount: undefined
-});
 
 const ApiServer = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/Server.vue'));
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
@@ -53,6 +32,28 @@ const RequestProxy = defineAsyncComponent(() => import('@/views/config/proxy/Edi
 const saveUnarchived = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/SaveUnarchived.vue'));
 const ShareListVue = defineAsyncComponent(() => import('@/components/share/list.vue'));
 
+interface Props {
+  id: string;
+  valueObj: Record<string, any>;
+  uuid: string;
+  ws: WebSocket;
+  response: string;
+  pid: string;
+  responseCount: number;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  id: undefined,
+  valueObj: undefined,
+  uuid: undefined,
+  ws: undefined,
+  response: undefined,
+  pid: undefined,
+  responseCount: undefined
+});
+
+const { t } = useI18n();
+
 const { API_EXTENSION_KEY } = apiUtils;
 const { wsMessageKey, requestSettingKey } = API_EXTENSION_KEY;
 
@@ -63,10 +64,11 @@ const queryParamRef = ref();
 const headerParamRef = ref();
 const mainSocketRef = ref();
 
+type lge = 'json'|'html'|'text'|'yaml'|'typescript';
+
 const auths = ref<string[]>([]);
 const languageOpt = ['json', 'html', 'text', 'yaml', 'typescript'].map(i => ({ value: i, label: i }));
 const { valueKey } = API_EXTENSION_KEY;
-type lge = 'json'|'html'|'text'|'yaml'|'typescript';
 const language = ref<lge>('text');
 const socketTarget = ref();
 const msgListRef = ref();
@@ -136,17 +138,18 @@ const apiInfo = reactive({
   currentServer: { url: 'ws://' },
   parameters: [],
   status: '',
-  method: 'GET',
-  [requestSettingKey]: {
-    maxReconnections: 3,
-    reconnectionInterval: 200, // max delay in ms between reconnections
-    connectTimeout: 60000
-  },
+  method: HttpMethod.GET,
   requestBody: {
     [wsMessageKey]: ''
   },
   endpoint: undefined
+   [requestSettingKey]: {
+      maxReconnections: 3,
+      reconnectionInterval: 200, // max delay in ms between reconnections
+      connectTimeout: 60000
+  },
 });
+
 const queryParams = ref<FormData[]>([]);
 const header = ref<FormData[]>([]);
 
@@ -160,7 +163,7 @@ const changeQuery = (data) => {
 };
 
 const getQueryStr = async () => {
-  const queryObjList = apiUtils.getQueryParamFromApi(queryParams.value);
+  const queryObjList = apiUtils.getQueryParamFromApi(queryParams.value); // TODO 找不到方法
   const [datas] = await apiUtils.replaceFuncValue({ parameter: [queryObjList] });
   return datas[0].map(item => `${item.name}=${item[valueKey]}`).join('&');
 };
@@ -174,33 +177,6 @@ const showParams = ref(true);
 const content = ref();
 const WS = ref<WebSocket|undefined>();
 
-const navs = computed(() => [
-  props.valueObj.unarchived && {
-    icon: 'icon-baocundaoweiguidang',
-    name: t('service.apiWebSocket.navigation.saveToUnarchived'),
-    key: 'saveUnarchived'
-  },
-  {
-    icon: 'icon-baocun',
-    name: props.valueObj?.unarchived ? t('actions.archiveToService') : t('actions.save'),
-    key: 'save'
-  },
-  !props.valueObj.unarchived && {
-    icon: 'icon-bianliang',
-    name: t('common.variables'),
-    key: 'variable'
-  },
-  // !props.valueObj.unarchived && {
-  //   icon: 'icon-fenxiang',
-  //   name: '分享',
-  //   key: 'share'
-  // },
-  {
-    icon: 'icon-jiekoudaili',
-    name: t('service.apiWebSocket.navigation.agent'),
-    key: 'agent'
-  }
-].filter(Boolean));
 const barHeight = ref(30);
 const moving = ref(false);
 const barMaxHeight = ref(500);
@@ -261,7 +237,7 @@ const packageParams = async () => {
     }
   }
   const parameters = [...queryParams.value.filter(i => !!i.name), ...header.value.filter(i => i.name)];
-  const params = {
+  return {
     serviceId: props.valueObj.serviceId || undefined,
     serviceName: props.valueObj.serviceName || undefined,
     targetType: props.valueObj.targetType || undefined,
@@ -275,7 +251,6 @@ const packageParams = async () => {
       [wsMessageKey]: content.value
     }
   };
-  return params;
 };
 
 const save = async () => {
@@ -428,6 +403,26 @@ const copyUrl = async () => {
   notification.success(t('service.apiWebSocket.messages.copyUrlSuccess'));
 };
 
+const onUriBlur = () => {
+  const uriStrs = endpoint.value.split('?');
+  if (uriStrs.length > 1 && !!uriStrs[1]) {
+    const jsonQuery = qs.parse(uriStrs[1]);
+    Object.keys(jsonQuery).forEach(key => {
+      if (typeof jsonQuery[key] === 'string') {
+        queryParamRef.value.addItem({ name: key, [valueKey]: jsonQuery[key], schema: { type: 'string' } });
+      } else {
+        if (Object.prototype.toString.call(jsonQuery[key]) === '[object Object]') {
+          queryParamRef.value.addItem({ name: key, [valueKey]: jsonQuery[key], schema: { type: 'object' } });
+        } else {
+          queryParamRef.value.addItem({ name: key, [valueKey]: jsonQuery[key], schema: { type: 'array' } });
+        }
+      }
+    });
+    endpoint.value = uriStrs[0];
+    activeKey.value = 'query';
+  }
+};
+
 watch(() => props.responseCount, () => {
   if (props.uuid === props.pid) {
     onResponse();
@@ -455,26 +450,6 @@ watch(() => props.ws, newValue => {
   immediate: true
 });
 
-const onUriBlur = () => {
-  const uriStrs = endpoint.value.split('?');
-  if (uriStrs.length > 1 && !!uriStrs[1]) {
-    const jsonQuery = qs.parse(uriStrs[1]);
-    Object.keys(jsonQuery).forEach(key => {
-      if (typeof jsonQuery[key] === 'string') {
-        queryParamRef.value.addItem({ name: key, [valueKey]: jsonQuery[key], schema: { type: 'string' } });
-      } else {
-        if (Object.prototype.toString.call(jsonQuery[key]) === '[object Object]') {
-          queryParamRef.value.addItem({ name: key, [valueKey]: jsonQuery[key], schema: { type: 'object' } });
-        } else {
-          queryParamRef.value.addItem({ name: key, [valueKey]: jsonQuery[key], schema: { type: 'array' } });
-        }
-      }
-    });
-    endpoint.value = uriStrs[0];
-    activeKey.value = 'query';
-  }
-};
-
 onMounted(async () => {
   await loadApiInfo();
   loadApiAuth();
@@ -491,6 +466,29 @@ provide('close', () => {
 provide('auths', computed(() => auths.value));
 provide('apiBaseInfo', apiInfo);
 provide('isUnarchived', computed(() => props.valueObj.unarchived));
+
+const navs = computed(() => [
+  props.valueObj.unarchived && {
+    icon: 'icon-baocundaoweiguidang',
+    name: t('service.apiWebSocket.navigation.saveToUnarchived'),
+    key: 'saveUnarchived'
+  },
+  {
+    icon: 'icon-baocun',
+    name: props.valueObj?.unarchived ? t('actions.archiveToService') : t('actions.save'),
+    key: 'save'
+  },
+  !props.valueObj.unarchived && {
+    icon: 'icon-bianliang',
+    name: t('common.variables'),
+    key: 'variable'
+  },
+  {
+    icon: 'icon-jiekoudaili',
+    name: t('service.apiWebSocket.navigation.agent'),
+    key: 'agent'
+  }
+].filter(Boolean));
 </script>
 <template>
   <div

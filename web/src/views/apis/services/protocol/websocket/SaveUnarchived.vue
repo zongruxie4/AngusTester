@@ -5,20 +5,13 @@ import { Button, Form, FormItem } from 'ant-design-vue';
 import { Hints, Input, notification } from '@xcan-angus/vue-ui';
 
 import { apis } from '@/api/tester';
+import { Props } from '@/views/apis/services/protocol/websocket/types';
 
-interface Props {
-  getParameter: any;
-  id: string;
-  summary: string;
-  operationId: string;
-  projectId: string;
-  description: string;
-  status: string;
-  ownerId: string;
-  deprecated: boolean;
-  tabKey: string;
-  packageParams: ()=> Record<string, any>;
-}
+const props = withDefaults(defineProps<Props>(), {
+  getParameter: () => ({})
+});
+
+const emits = defineEmits<{(e: 'ok'): void}>();
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const replaceTabPane = inject<(key:string, data: any) => void>('replaceTabPane', () => { });
@@ -33,11 +26,6 @@ const refreshUnarchived = inject('refreshUnarchived', () => {});
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const { t } = useI18n();
-const props = withDefaults(defineProps<Props>(), {
-  getParameter: () => ({})
-});
-
-const emits = defineEmits<{(e: 'ok'): void}>();
 
 const form = reactive({
   summary: '',

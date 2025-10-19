@@ -9,30 +9,22 @@ interface Props {
   value: Record<string, string>;
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   id: '',
   value: () => ({})
 });
 
 const emits = defineEmits<{(e: 'update:value', value: Record<string, string>): void}>();
+
+const { t } = useI18n();
+
 const form = reactive({
   connectTimeout: '60000',
   maxReconnections: '0',
   reconnectionInterval: '200'
 });
+
 const formRef = ref();
-const rules = {
-  connectTimeout: [{
-    required: true, message: t('service.webSocketSetting.validation.connectTimeout'), trigger: 'blur'
-  }],
-  maxReconnections: [{
-    required: true, message: t('service.webSocketSetting.validation.maxReconnections'), trigger: 'change'
-  }],
-  reconnectionInterval: [{
-    required: true, message: t('service.webSocketSetting.validation.reconnectionInterval'), trigger: 'change'
-  }]
-};
 
 watch(() => form, () => {
   emits('update:value', form);
@@ -46,6 +38,17 @@ onMounted(() => {
   form.reconnectionInterval = props.value?.reconnectionInterval || '1000';
 });
 
+const rules = {
+  connectTimeout: [{
+    required: true, message: t('service.webSocketSetting.validation.connectTimeout'), trigger: 'blur'
+  }],
+  maxReconnections: [{
+    required: true, message: t('service.webSocketSetting.validation.maxReconnections'), trigger: 'change'
+  }],
+  reconnectionInterval: [{
+    required: true, message: t('service.webSocketSetting.validation.reconnectionInterval'), trigger: 'change'
+  }]
+};
 </script>
 <template>
   <Form
