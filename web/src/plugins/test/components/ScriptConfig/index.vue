@@ -6,34 +6,68 @@ import { useI18n } from 'vue-i18n';
 
 import { ScenarioConfig } from '@/plugins/test/types/index';
 
+/**
+ * Component props interface
+ */
 export interface Props {
-  value: ScenarioConfig['script'];
+  value: ScenarioConfig['script'];  // Script configuration object to display
 }
 
+// Define props with default values
 const props = withDefaults(defineProps<Props>(), {
   value: undefined
 });
 
+// Initialize i18n for internationalization
 const { t } = useI18n();
 
+/**
+ * Editor content in YAML format
+ */
 const content = ref('');
+
+/**
+ * Monaco Editor loading state
+ */
 const loading = ref(true);
 
+/**
+ * Component mount lifecycle hook
+ * Sets up watcher to convert script configuration to YAML format
+ */
 onMounted(() => {
+  /**
+   * Watch for value prop changes
+   * Converts script configuration object to YAML string for editor display
+   * Falls back to JSON format if YAML conversion fails
+   */
   watch(() => props.value, (newValue) => {
+    // Early return if no value provided
     if (!newValue) {
       return;
     }
 
     try {
+      // Try to convert to YAML format (preferred)
       content.value = YAML.stringify(newValue);
     } catch (error) {
+      // Fallback to JSON format if YAML conversion fails
       content.value = JSON.stringify(newValue, null, 2);
     }
-  }, { immediate: true, deep: true });
+  }, { 
+    immediate: true,  // Execute immediately on mount
+    deep: true        // Watch nested properties
+  });
 });
 
-const isValid = ():boolean => {
+/**
+ * Validate YAML content
+ * Attempts to parse the current editor content as YAML
+ * Shows error notification if parsing fails
+ * 
+ * @returns true if content is valid YAML, false otherwise
+ */
+const isValid = (): boolean => {
   try {
     YAML.parse(content.value);
     return true;
@@ -43,10 +77,20 @@ const isValid = ():boolean => {
   }
 };
 
-const getData = ():{[key:string]:any} => {
+/**
+ * Get parsed configuration data
+ * Parses the current YAML content and returns as JavaScript object
+ * Note: Should call isValid() first to ensure content is valid YAML
+ * 
+ * @returns Parsed configuration object
+ */
+const getData = (): { [key: string]: any } => {
   return YAML.parse(content.value);
 };
 
+/**
+ * Expose methods for parent component access
+ */
 defineExpose({
   isValid,
   getData
@@ -54,6 +98,13 @@ defineExpose({
 </script>
 
 <template>
+  <!--
+    Monaco Editor for YAML configuration display
+    - Read-only mode to prevent editing
+    - Full width and height with vertical padding
+    - YAML syntax highlighting
+    - Two-way binding for loading state and content
+  -->
   <MonacoEditor
     v-model:loading="loading"
     v-model:value="content"
