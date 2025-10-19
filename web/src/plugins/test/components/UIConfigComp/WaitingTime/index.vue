@@ -7,79 +7,131 @@ import { utils } from '@xcan-angus/infra';
 import { WaitingTimeConfig } from './PropsType';
 import ActionsGroup from '../ActionsGroup/index.vue';
 
+// Initialize i18n for internationalization
 const { t } = useI18n();
 
+/**
+ * Wait type definition
+ */
+type WaitType = 'fixed' | 'random';
+
+/**
+ * Component props interface
+ */
 export interface Props {
-  value: WaitingTimeConfig;
-  repeatNames: string[];
-  enabled?: boolean;
+  value: WaitingTimeConfig;  // Waiting time configuration data
+  repeatNames: string[];     // List of existing names to check for duplicates
+  enabled?: boolean;         // Whether waiting time functionality is enabled
 }
 
+// Define props with default values
 const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   repeatNames: () => [],
   enabled: true
 });
 
-
+/**
+ * Event emitters
+ */
 const emit = defineEmits<{
-  (e: 'change', value: Omit<WaitingTimeConfig, 'id'>): void;
-  (e: 'nameChange', value: string): void;
-  (e: 'click', value:'delete'|'clone'):void;
-  (e: 'enabledChange', value: boolean): void;
-  (e: 'renderChange'): void;
+  (e: 'change', value: Omit<WaitingTimeConfig, 'id'>): void;  // Emit data changes
+  (e: 'nameChange', value: string): void;                      // Emit name changes
+  (e: 'click', value: 'delete' | 'clone'): void;              // Emit action clicks
+  (e: 'enabledChange', value: boolean): void;                  // Emit enabled state changes
+  (e: 'renderChange'): void;                                   // Emit render event
 }>();
 
-const enabled = ref(false);
-const name = ref<string>();
-const description = ref<string>();
-const waitType = ref<'fixed' | 'random'>('fixed');
-const maxWaitTimeInMs = ref<string>();
-const minWaitTimeInMs = ref<string>();
-const minWaitTimeInMsError = ref(false);
-const maxWaitTimeInMsError = ref(false);
-const nameError = ref(false);
-const nameRepeatFlag = ref(false);
+/**
+ * Form field reactive references
+ */
+const enabled = ref(false);              // Whether this waiting time is enabled
+const name = ref<string>();              // Waiting time name (must be unique)
+const description = ref<string>();       // Optional description
+const waitType = ref<WaitType>('fixed'); // Wait type: fixed or random
+const maxWaitTimeInMs = ref<string>();   // Maximum wait time in milliseconds
+const minWaitTimeInMs = ref<string>();   // Minimum wait time in milliseconds (random mode only)
 
-const nameChange = (event: { target: { value: string } }) => {
-  const value = event.target.value;
+/**
+ * Validation error states
+ */
+const minWaitTimeInMsError = ref(false);  // Min wait time validation error
+const maxWaitTimeInMsError = ref(false);  // Max wait time validation error
+const nameError = ref(false);             // Name validation error
+const nameRepeatFlag = ref(false);        // Name duplication flag
+
+/**
+ * Handle name field change
+ * Clears validation errors and emits name change event
+ * 
+ * @param event - Input change event
+ */
+const nameChange = (event: any): void => {
+  const value = event.target?.value;
   name.value = value;
   nameError.value = false;
   nameRepeatFlag.value = false;
   emit('nameChange', value);
 };
 
-const waitTypeChange = (value: 'fixed' | 'random') => {
-  waitType.value = value;
+/**
+ * Handle wait type change (fixed/random)
+ * Resets time fields and errors when switching modes
+ * 
+ * @param value - New wait type
+ */
+const waitTypeChange = (value: any): void => {
+  waitType.value = value as WaitType;
   minWaitTimeInMs.value = undefined;
   minWaitTimeInMsError.value = false;
   maxWaitTimeInMs.value = undefined;
   maxWaitTimeInMsError.value = false;
 };
 
-const maxWaitTimeInMsChange = (event: { target: { value: string } }) => {
-  maxWaitTimeInMs.value = event.target.value;
+/**
+ * Handle max wait time field change
+ * Clears validation error
+ * 
+ * @param event - Input change event
+ */
+const maxWaitTimeInMsChange = (event: any): void => {
+  maxWaitTimeInMs.value = event.target?.value;
   maxWaitTimeInMsError.value = false;
 };
 
-const maxWaitTimeInMsBlur = (event: { target: { value: string } }) => {
-  maxWaitTimeInMs.value = event.target.value;
+/**
+ * Handle max wait time field blur
+ * Validates max time after user leaves the field
+ * 
+ * @param event - Input blur event
+ */
+const maxWaitTimeInMsBlur = (event: any): void => {
+  maxWaitTimeInMs.value = event.target?.value;
   maxWaitTimeInMsError.value = false;
   validateMaxTime();
 };
 
-const validateMaxTime = () => {
+/**
+ * Validate maximum wait time
+ * Checks:
+ * - Required for both modes
+ * - Must be >= min time (in random mode)
+ */
+const validateMaxTime = (): void => {
+  // Max time is required
   if (utils.isEmpty(maxWaitTimeInMs.value)) {
     maxWaitTimeInMsError.value = true;
     return;
   }
 
+  // If no min time, max is valid
   if (utils.isEmpty(minWaitTimeInMs.value)) {
     maxWaitTimeInMsError.value = false;
     return;
   }
 
-  if (+minWaitTimeInMs.value > +maxWaitTimeInMs.value) {
+  // In random mode: max must be >= min
+  if (+(minWaitTimeInMs.value || 0) > +(maxWaitTimeInMs.value || 0)) {
     maxWaitTimeInMsError.value = true;
     return;
   }
@@ -87,29 +139,50 @@ const validateMaxTime = () => {
   maxWaitTimeInMsError.value = false;
 };
 
-const minWaitTimeInMsChange = (event: { target: { value: string } }) => {
-  minWaitTimeInMs.value = event.target.value;
+/**
+ * Handle min wait time field change
+ * Clears validation error
+ * 
+ * @param event - Input change event
+ */
+const minWaitTimeInMsChange = (event: any): void => {
+  minWaitTimeInMs.value = event.target?.value;
   minWaitTimeInMsError.value = false;
 };
 
-const minWaitTimeInMsBlur = (event: { target: { value: string } }) => {
-  const value = event.target.value;
+/**
+ * Handle min wait time field blur
+ * Validates min time after user leaves the field
+ * 
+ * @param event - Input blur event
+ */
+const minWaitTimeInMsBlur = (event: any): void => {
+  const value = event.target?.value;
   minWaitTimeInMs.value = value;
   validateMinTime();
 };
 
-const validateMinTime = () => {
+/**
+ * Validate minimum wait time
+ * Checks:
+ * - Required in random mode
+ * - Must be <= max time (in random mode)
+ */
+const validateMinTime = (): void => {
+  // Min time is required in random mode
   if (utils.isEmpty(minWaitTimeInMs.value)) {
     minWaitTimeInMsError.value = true;
     return;
   }
 
+  // If no max time, min is valid (max will be validated separately)
   if (utils.isEmpty(maxWaitTimeInMs.value)) {
     minWaitTimeInMsError.value = false;
     return;
   }
 
-  if (+minWaitTimeInMs.value > +maxWaitTimeInMs.value) {
+  // In random mode: min must be <= max
+  if (+(minWaitTimeInMs.value || 0) > +(maxWaitTimeInMs.value || 0)) {
     maxWaitTimeInMsError.value = true;
     return;
   }
@@ -117,16 +190,36 @@ const validateMinTime = () => {
   minWaitTimeInMsError.value = false;
 };
 
-const enabledChange = (_enabled: boolean) => {
+/**
+ * Handle enabled state change
+ * Updates local state and emits change event
+ * 
+ * @param _enabled - New enabled state
+ */
+const enabledChange = (_enabled: boolean): void => {
   enabled.value = _enabled;
   emit('enabledChange', _enabled);
 };
 
-const actionClick = (value: 'delete' | 'clone') => {
+/**
+ * Handle action button click (clone or delete)
+ * Emits click event to parent component
+ * 
+ * @param value - Action type
+ */
+const actionClick = (value: 'delete' | 'clone'): void => {
   emit('click', value);
 };
 
-const initializedData = () => {
+/**
+ * Initialize form data from props
+ * Determines wait type based on whether min time is present
+ * 
+ * Logic:
+ * - If only max time exists: Fixed wait mode
+ * - If both min and max exist: Random wait mode
+ */
+const initializedData = (): void => {
   if (!props.value) {
     return;
   }
@@ -139,7 +232,7 @@ const initializedData = () => {
     enabled: _enabled
   } = props.value;
 
-  // 如果只有最大等待时间，就是固定等待时间
+  // Determine wait type: if only max time, it's fixed; otherwise random
   if (!utils.isEmpty(_maxWaitTimeInMs) && (_minWaitTimeInMs === undefined || _minWaitTimeInMs === null)) {
     waitType.value = 'fixed';
   } else {
@@ -153,34 +246,60 @@ const initializedData = () => {
   minWaitTimeInMs.value = _minWaitTimeInMs;
 };
 
+/**
+ * Component mount lifecycle hook
+ * Emits render event, initializes data, and sets up watchers
+ */
 onMounted(() => {
+  // Emit render change event
   emit('renderChange');
+  
+  // Initialize form with prop data
   initializedData();
+  
+  /**
+   * Watch for duplicate name changes
+   * Marks name as error if it appears in repeatNames list
+   */
   watch(() => props.repeatNames, (newValue) => {
-    if (newValue.includes(name.value)) {
+    if (name.value && newValue.includes(name.value)) {
       nameError.value = true;
       nameRepeatFlag.value = true;
       return;
     }
 
+    // Clear error if name was previously duplicate but no longer is
     if (nameRepeatFlag.value) {
       nameError.value = false;
       nameRepeatFlag.value = false;
     }
   });
 
+  /**
+   * Watch for any data changes and emit to parent
+   */
   watchEffect(() => {
     const data = getData();
     emit('change', data);
   });
 });
 
-const isValid = ():boolean => {
+/**
+ * Validate form fields
+ * Checks for required name field, duplicate names, and time values
+ * 
+ * @returns true if all validations pass, false otherwise
+ */
+const isValid = (): boolean => {
+  // Clear previous errors
   nameError.value = false;
   maxWaitTimeInMsError.value = false;
   minWaitTimeInMsError.value = false;
   nameRepeatFlag.value = false;
+  
   let errorNum = 0;
+  
+  // Validate name (required and unique)
   if (!name.value) {
     errorNum++;
     nameError.value = true;
@@ -190,9 +309,11 @@ const isValid = ():boolean => {
       nameRepeatFlag.value = true;
     }
   }
-  // 校验最大等待时间
+  
+  // Validate max wait time (required for both modes)
   validateMaxTime();
-  // 只有随机等待时间才需要校验最小等待时间
+  
+  // Validate min wait time (only for random mode)
   if (waitType.value === 'random') {
     validateMinTime();
   }
@@ -200,17 +321,25 @@ const isValid = ():boolean => {
   return !errorNum && !maxWaitTimeInMsError.value && !minWaitTimeInMsError.value;
 };
 
-const getData = ():Omit<WaitingTimeConfig, 'id'> => {
-  const data:Omit<WaitingTimeConfig, 'id'> = {
+/**
+ * Get waiting time configuration data
+ * Returns configuration object without ID
+ * Includes minWaitTimeInMs only in random mode
+ * 
+ * @returns WaitingTime configuration (excluding ID)
+ */
+const getData = (): Omit<WaitingTimeConfig, 'id'> => {
+  const data: Omit<WaitingTimeConfig, 'id'> = {
     beforeName: '',
     transactionName: '',
-    description: description.value,
+    description: description.value || '',
     enabled: enabled.value,
-    maxWaitTimeInMs: maxWaitTimeInMs.value,
-    name: name.value,
+    maxWaitTimeInMs: maxWaitTimeInMs.value || '',
+    name: name.value || '',
     target: 'WAITING_TIME'
   };
 
+  // Include min time only in random mode
   if (waitType.value === 'random') {
     data.minWaitTimeInMs = minWaitTimeInMs.value;
   }
@@ -218,14 +347,28 @@ const getData = ():Omit<WaitingTimeConfig, 'id'> => {
   return data;
 };
 
+/**
+ * Expose methods for parent component access
+ */
 defineExpose({
-  isValid,
-  getData,
-  getName: ():string => {
-    return name.value;
+  isValid,    // Validate form fields
+  getData,    // Get configuration data
+  
+  /**
+   * Get waiting time name
+   * @returns Current name value
+   */
+  getName: (): string => {
+    return name.value || '';
   },
-  validateRepeatName: (value:string[]):boolean => {
-    if (value.includes(name.value)) {
+  
+  /**
+   * Validate if name is duplicate
+   * @param value - List of existing names to check against
+   * @returns true if name is unique, false if duplicate
+   */
+  validateRepeatName: (value: string[]): boolean => {
+    if (name.value && value.includes(name.value)) {
       nameError.value = true;
       nameRepeatFlag.value = true;
       return false;
@@ -235,16 +378,28 @@ defineExpose({
   }
 });
 
+/**
+ * Computed wait type options for select dropdown
+ * Returns localized options for fixed and random wait modes
+ */
 const waitTypeoptions = computed(() => [
   { label: t('httpPlugin.uiConfig.waitingTime.fixedWait'), value: 'fixed' },
   { label: t('httpPlugin.uiConfig.waitingTime.randomWait'), value: 'random' }
 ]);
 </script>
 
-<template>
-  <div :class="{'opacity-70':!enabled&&props.enabled}" class="h-11.5 flex items-center pl-9.5 pr-3 rounded bg-gray-light">
-    <Icon class="flex-shrink-0 text-4 mr-3" icon="icon-dengdaishijian" />
+<template> 
+  <div 
+    :class="{ 'opacity-70': !enabled && props.enabled }" 
+    class="h-11.5 flex items-center pl-9.5 pr-3 rounded bg-gray-light">
+    <!-- Waiting time icon -->
+    <Icon 
+      class="flex-shrink-0 text-4 mr-3" 
+      icon="icon-dengdaishijian" />
+    
+    <!-- Form fields container -->
     <div class="flex-1 flex items-center space-x-5 mr-5">
+      <!-- Name field with duplicate name tooltip -->
       <Tooltip
         :title="t('httpPlugin.uiConfig.waitingTime.duplicateName')"
         internal
@@ -261,14 +416,19 @@ const waitTypeoptions = computed(() => [
           :placeholder="t('common.placeholders.searchKeyword')"
           @change="nameChange" />
       </Tooltip>
+      
+      <!-- Wait type selector (fixed/random) -->
       <Select
         :value="waitType"
         :border="false"
         :options="waitTypeoptions"
         class="w-25 flex-shrink-0"
         @change="waitTypeChange" />
+      
+      <!-- Fixed wait mode: single time input -->
       <template v-if="waitType === 'fixed'">
         <div class="flex items-center space-x-2">
+          <!-- Max wait time input (0-7200000 ms) -->
           <Input
             :value="maxWaitTimeInMs"
             :maxlength="7"
@@ -284,8 +444,11 @@ const waitTypeoptions = computed(() => [
           <div>ms</div>
         </div>
       </template>
+      
+      <!-- Random wait mode: min and max time inputs -->
       <template v-else>
         <div class="flex items-center space-x-2">
+          <!-- Min wait time input (0-7200000 ms) -->
           <Input
             :value="minWaitTimeInMs"
             :maxlength="7"
@@ -298,7 +461,11 @@ const waitTypeoptions = computed(() => [
             placeholder="0 ~ 7200000"
             @change="minWaitTimeInMsChange"
             @blur="minWaitTimeInMsBlur" />
+          
+          <!-- "to" separator -->
           <div>{{ t('httpPlugin.uiConfig.waitingTime.to') }}</div>
+          
+          <!-- Max wait time input (0-7200000 ms) -->
           <Input
             :value="maxWaitTimeInMs"
             :maxlength="7"
@@ -315,6 +482,8 @@ const waitTypeoptions = computed(() => [
         </div>
       </template>
     </div>
+    
+    <!-- Action buttons: enable/disable, clone, delete -->
     <ActionsGroup
       v-model:enabled="enabled"
       :open="false"
