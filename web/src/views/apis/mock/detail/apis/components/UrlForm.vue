@@ -24,7 +24,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-
 const emit = defineEmits<{
   (e: 'update:method', value: string): void;
   (e: 'update:endpoint', value: string): void;

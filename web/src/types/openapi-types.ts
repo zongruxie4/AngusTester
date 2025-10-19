@@ -14,6 +14,7 @@ export const API_EXTENSION_KEYS = {
   valueKey: 'x-xc-value', // Value
   enabledKey: 'x-xc-enabled', // Enable/disable
   statusKey: 'x-xc-status', // Data status
+  contentEncoding : 'x-xc-contentEncoding', // Content encoding
   exportVariableKey: 'x-xc-exportVariable', // Whether to set as variable
   requestSettingKey: 'x-xc-requestSetting', // Request settings like timeout, object
   serverNameKey: 'x-xc-serverName', // Server URL name
@@ -114,6 +115,7 @@ export namespace OpenAPIV3_1 {
       description?: string;
       variables?: Record<string, ServerVariableObject>;
       // vendor extension stored under dynamic key
+      [API_EXTENSION_KEYS.idKey]: string;
       [API_EXTENSION_KEYS.serverSourceKey]: ApiServerSource
     }
   >;

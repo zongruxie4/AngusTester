@@ -3,6 +3,7 @@ import { onMounted, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { IconTask, Table } from '@xcan-angus/vue-ui';
 import { issue } from '@/api/tester';
+
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TaskStatus from '@/components/TaskStatus/index.vue';
 
@@ -104,7 +105,6 @@ const columns = computed(() => {
       width: '17%'
     }
   ];
-
   return _columns;
 });
 

@@ -25,7 +25,6 @@ const props = withDefaults(defineProps<Props>(), {
   maxFileSize: 10485760
 });
 
-
 const emit = defineEmits<{
   (e: 'change', value: RequestBody): void;
   (e: 'contentTypeChange', value: ContentType): void;

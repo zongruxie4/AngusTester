@@ -14,7 +14,6 @@ const props = withDefaults(defineProps<BasicProps>(), {
   id: undefined
 });
 
-
 const emit = defineEmits<{
   (event: 'update:visible', value: boolean): void;
   (event: 'ok', value: string): void;

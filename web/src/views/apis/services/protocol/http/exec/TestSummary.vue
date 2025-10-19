@@ -5,17 +5,18 @@ import * as echarts from 'echarts';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Popover } from 'ant-design-vue';
+import { ScriptType, EnumMessage } from '@xcan-angus/infra';
+import { TestResultStatus } from '@/enums/enums';
 
 interface Props {
-
   appInfo:{[key:string]:any};
   userInfo:{[key:string]:any};
   projectId:string;
   dataSource: {
-    enabledTestTypes: 'MOCK_APIS'|'MOCK_DATA'|'TEST_CUSTOMIZATION'|'TEST_FUNCTIONALITY'|'TEST_PERFORMANCE'|'TEST_STABILITY';
+    enabledTestTypes: ScriptType;
     passed: boolean;
     resultSummary: {
-      resultStatus: 'FULLY_FAILED'|'FULLY_PASSED'|'NOT_ENABLED'|'PARTIALLY_PASSED'|'UNTESTED';
+      resultStatus: EnumMessage<TestResultStatus>;
       testFailureNum: string;
       testNum: string;
       testSuccessRate: string;
@@ -178,8 +179,10 @@ const getErrIconName = (testData) => {
 };
 
 const configInfo = [
-  [{ label: t('status.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' }, { label: t('status.success'), dataIndex: 'successNum', bgColor: 'bg-status-success' }],
-  [{ label: t('status.failed'), dataIndex: 'failNum', bgColor: 'bg-status-error' }, { label: t('status.disabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
+  [{ label: t('status.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' },
+    { label: t('status.success'), dataIndex: 'successNum', bgColor: 'bg-status-success' }],
+  [{ label: t('status.failed'), dataIndex: 'failNum', bgColor: 'bg-status-error' },
+    { label: t('status.disabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
 ];
 
 const resize = () => {
@@ -211,7 +214,9 @@ onMounted(() => {
     <div class="flex-1 border rounded p-1 space-y-3">
       <div class="font-semibold text-text-title">{{ t('service.apiExecDetail.testSummary.functional') }}</div>
       <div class="font-semibold text-6 text-center">
-        <span :class="[!TEST_FUNCTIONALITY ? '' : TEST_FUNCTIONALITY.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_FUNCTIONALITY ? t('status.notTested') : TEST_FUNCTIONALITY.passed ? t('status.passed') : t('status.notPassed') }}</span>
+        <span :class="[!TEST_FUNCTIONALITY ? '' : TEST_FUNCTIONALITY.passed ? 'PASSED': 'NOT_PASSED']">
+          {{ !TEST_FUNCTIONALITY ? t('status.notTested') : TEST_FUNCTIONALITY.passed ? t('status.passed') : t('status.notPassed') }}
+        </span>
         <Popover>
           <template #content>
             <div class="max-w-80">
@@ -238,7 +243,9 @@ onMounted(() => {
               v-if="item.label"
               class="flex-1 text-white px-1 rounded"
               :class="item.bgColor">{{ item.label }}</span>
-            <span v-if="item.dataIndex" class="flex-1 bg-gray-light px-1 rounded-r">{{ TEST_FUNCTIONALITY?.targetSummary?.[item.dataIndex] || '--' }}</span>
+            <span v-if="item.dataIndex" class="flex-1 bg-gray-light px-1 rounded-r">
+              {{ TEST_FUNCTIONALITY?.targetSummary?.[item.dataIndex] || '--' }}
+            </span>
           </div>
         </li>
       </div>
@@ -249,7 +256,9 @@ onMounted(() => {
     <div class="flex-1 border rounded p-1 space-y-2 flex flex-col justify-between">
       <div class="font-semibold text-text-title">{{ t('service.apiExecDetail.testSummary.performance') }}</div>
       <div class="font-semibold text-6 text-center">
-        <span :class="[!TEST_PERFORMANCE ? '' : TEST_PERFORMANCE.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_PERFORMANCE ? t('status.notTested') : TEST_PERFORMANCE.passed ? t('status.passed') : t('status.notPassed') }}</span>
+        <span :class="[!TEST_PERFORMANCE ? '' : TEST_PERFORMANCE.passed ? 'PASSED': 'NOT_PASSED']">
+          {{ !TEST_PERFORMANCE ? t('status.notTested') : TEST_PERFORMANCE.passed ? t('status.passed') : t('status.notPassed') }}
+        </span>
         <Popover>
           <template #content>
             <div class="max-w-80">
@@ -287,13 +296,17 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="text-center font-semibold text-text-title">{{ t('service.apiExecDetail.testSummary.resultIndicators') }}</div>
+      <div class="text-center font-semibold text-text-title">
+        {{ t('service.apiExecDetail.testSummary.resultIndicators') }}
+      </div>
     </div>
 
     <div class="flex-1 border rounded p-1 space-y-2 flex flex-col justify-between">
       <div class="font-semibold text-text-title">{{ t('service.apiExecDetail.testSummary.stability') }}</div>
       <div class="font-semibold text-6 text-center">
-        <span :class="[!TEST_STABILITY ? '' : TEST_STABILITY.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_STABILITY ? t('status.notTested') : TEST_STABILITY.passed ? t('status.passed') : t('status.notPassed') }}</span>
+        <span :class="[!TEST_STABILITY ? '' : TEST_STABILITY.passed ? 'PASSED': 'NOT_PASSED']">
+          {{ !TEST_STABILITY ? t('status.notTested') : TEST_STABILITY.passed ? t('status.passed') : t('status.notPassed') }}
+        </span>
         <Popover>
           <template #content>
             <div class="max-w-80">

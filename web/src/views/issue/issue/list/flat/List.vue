@@ -29,7 +29,6 @@ const props = withDefaults(defineProps<Props>(), {
   pagination: () => ({ current: 1, pageSize: 10, total: 0 })
 });
 
-
 const emit = defineEmits<{
   (e: 'paginationChange', value: { current: number; pageSize: number; }): void;
   (e: 'checked', value: TaskDetail): void;

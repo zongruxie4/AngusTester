@@ -25,7 +25,6 @@ const props = withDefaults(defineProps<Props>(), {
   caseList: () => []
 });
 
-
 const emits = defineEmits<{
   (e: 'update:selectedRowKeys', value: number[]): void;
   (e: 'select', value: CaseDetail): void;

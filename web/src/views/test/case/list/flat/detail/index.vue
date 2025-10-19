@@ -40,7 +40,6 @@ withDefaults(defineProps<Props>(), {
   actionAuth: () => ([])
 });
 
-
 const emit = defineEmits<{
   (e: 'editSuccess'):void;
   (e: 'loadingChange', value:boolean):void;

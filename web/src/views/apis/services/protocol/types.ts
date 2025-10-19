@@ -133,6 +133,46 @@ export type ApisDetail = {
   lastModifiedDate: string;
 }
 
+export interface ApisFormEdit {
+  id?: string; // Changed from Long to string for TS compatibility
+  unarchivedId?: string;
+  protocol?: ApisProtocol;
+  method?: HttpMethod;
+  endpoint?: string;
+  status?: ApiStatus;
+
+  // OpenAPI Document related fields
+  tags?: string[];
+  summary?: string;
+  description?: string;
+  externalDocs?: OpenAPIV3_1.ExternalDocumentationObject;
+  operationId?: string;
+  parameters?: OpenAPIV3_1.ParameterObject[];
+  requestBody?: OpenAPIV3_1.RequestBodyObject;
+  responses?: OpenAPIV3_1.ResponsesObject;
+  deprecated?: boolean;
+  security?: OpenAPIV3_1.SecurityRequirementObject[];
+  currentServer?: OpenAPIV3_1.ServerObject;
+  extensions?: Record<string, any>;
+
+  authentication?: OpenAPIV3_1.SecuritySchemeObject;
+  assertions?: any[];
+
+  datasetActionOnEOF?: ActionOnEOF;
+  datasetSharingMode?: SharingMode;
+
+  testFunc?: boolean;
+  testPerf?: boolean;
+  testStability?: boolean;
+
+  ownerId?: string;
+
+  // Temp fields in web
+  ownerName?: string;
+  serviceId?: string;
+  serviceName?: string;
+}
+
 export type ApisUnarchivedListInfo = {
   id: string;
   projectId: string;
@@ -176,6 +216,7 @@ export interface ApisUnarchivedDetail {
   lastModifiedDate?: string;
 }
 
+// TODO 替换类型
 export interface ParamsItem {
   name?: string,
   in?: string,

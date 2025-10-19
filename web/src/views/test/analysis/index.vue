@@ -102,25 +102,25 @@ const initializeBrowserTabs = () => {
 
   // Watch for browser tab changes and ensure case list tab exists
   watch(() => browserTabRef.value, () => {
-  if (typeof browserTabRef.value?.update === 'function') {
-    const tabData = browserTabRef.value.getData().map(item => item.value);
-    if (!tabData.includes('analysisList')) {
-      addTabPane({
-        _id: 'analysisList',
+    if (typeof browserTabRef.value?.update === 'function') {
+      const tabData = browserTabRef.value.getData().map(item => item.value);
+      if (!tabData.includes('analysisList')) {
+        addTabPane({
+          _id: 'analysisList',
           value: 'analysisList',
           name: t('testAnalysis.title'),
           closable: false
-      });
-    } else {
-      updateTabPane({
-        _id: 'analysisList',
-        value: 'analysisList',
-        name: t('testAnalysis.title'),
-        closable: false
-      });
+        });
+      } else {
+        updateTabPane({
+          _id: 'analysisList',
+          value: 'analysisList',
+          name: t('testAnalysis.title'),
+          closable: false
+        });
+      }
     }
-  }
-}, { immediate: true });
+  }, { immediate: true });
 
   handleHashChange(route.hash);
 };

@@ -30,7 +30,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-
 const emit = defineEmits<{
   (e: 'clear'): void;
   (e: 'change', value:string): void;

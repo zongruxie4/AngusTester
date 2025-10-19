@@ -19,7 +19,6 @@ const props = withDefaults(defineProps<Props>(), {
   defaultValue: () => []
 });
 
-
 const emit = defineEmits<{
   (e: 'change', value: Option[]): void;
 }>();

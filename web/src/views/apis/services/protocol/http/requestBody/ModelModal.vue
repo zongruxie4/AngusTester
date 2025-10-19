@@ -9,14 +9,20 @@ import { deconstruct } from '@/utils/swagger';
 interface Props {
   visible: boolean;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   visible: false
 });
+
 const { t } = useI18n();
 const loading = ref(false);
 const keywords = ref();
 const apiBaseInfo = inject('apiBaseInfo', ref());
-const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'confirm', value?: Record<string, any>):void}>();
+
+const emits = defineEmits<{
+  (e: 'update:visible', value: boolean):void;
+  (e: 'confirm', value?: Record<string, any>):void
+}>();
 
 const toggleOpenModel = () => {
   emits('update:visible', false);
@@ -26,18 +32,7 @@ const handleImportModel = async () => {
   if (!targetModel.value) {
     toggleOpenModel();
   }
-  // const [error, resp] = await services.getCompData(apiBaseInfo.value.serviceId, ['schemas']);
-  // if (error) {
-  //   return;
-  // }
 
-  // const schemas = resp.data.reduce((prev, current) => {
-  //   return {
-  //     ...prev,
-  //     [current.ref]: JSON.parse(current.model)
-  //   };
-  // }, {});
-  // const samplingSummary = deconstruct(modelValue, resolvedRefModels.value);
   const [error, resp] = await services.getComponentRef(apiBaseInfo.value.serviceId, $ref.value);
   if (error) {
     return;
@@ -97,11 +92,6 @@ watch(() => props.visible, newValue => {
     :title="t('service.apiRequestBody.modal.title')"
     @cancel="toggleOpenModel"
     @ok="handleImportModel">
-    <!-- <Divider /> -->
-    <!-- <RadioGroup
-      v-model:value="targetModel"
-      :options="options"
-      @change="handleChangeModel" /> -->
     <Input
       v-model:value="keywords"
       class="w-50 mb-2"

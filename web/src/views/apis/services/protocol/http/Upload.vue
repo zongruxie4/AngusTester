@@ -7,12 +7,12 @@ import { Icon, notification } from '@xcan-angus/vue-ui';
 import { API_EXTENSION_KEY } from '@/utils/apis';
 import { codeUtils } from '@xcan-angus/infra';
 
-const { valueKey, fileNameKey, formContentTypeKey } = API_EXTENSION_KEY;
+const { valueKey, fileNameKey, formContentTypeKey, contentEncoding } = API_EXTENSION_KEY;
 const { gzip, ungzip } = codeUtils;
 
 interface File {
   [formContentTypeKey]: string;
-  'x-xc-contentEncoding': 'gzip_base64';
+  [contentEncoding]: 'gzip_base64';
   [fileNameKey]: string;
   [valueKey]: string;
 }
@@ -24,18 +24,18 @@ interface Props {
   maxFileSize: number;
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   maxFileSize: 0
 });
 
-let totalSize = 0;
-
-
 const emits = defineEmits<{
   (e: 'change', value?: File|File[]): void
 }>();
+
+const { t } = useI18n();
+
+let totalSize = 0;
 
 const fileList = ref<any[]>([]);
 

@@ -28,7 +28,6 @@ const props = withDefaults(defineProps<TaskDetailProps>(), {
   dataSource: undefined
 });
 
-
 const emit = defineEmits<{
   (event: 'update:visible', value: boolean): void;
   (event: 'ok'): void;

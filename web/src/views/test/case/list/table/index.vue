@@ -35,7 +35,6 @@ const props = withDefaults(defineProps<Props>(), {
   selectedRowKeys: () => []
 });
 
-
 const emits = defineEmits<{
   (e: 'update:selectedRowKeys', value: number[]): void;
   (e: 'onClick', type:CaseActionAuth, value:CaseDetail):void;

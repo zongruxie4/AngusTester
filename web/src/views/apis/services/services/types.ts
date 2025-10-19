@@ -118,7 +118,7 @@ export interface TagInfo extends OpenAPIV3_1.TagObject{
 }
 
 export interface ApiKeyExtensionInfo extends OpenAPIV3_1.ApiKeyExtensionField {
-  // Temp feilds in web
+  // Temp fields in web
   nameErr: boolean;
   valueErr: boolean;
 }

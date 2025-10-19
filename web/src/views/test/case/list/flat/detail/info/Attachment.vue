@@ -23,7 +23,6 @@ const props = withDefaults(defineProps<Props>(), {
   actionAuth: () => ([])
 });
 
-
 const emit = defineEmits<{
   (event: 'change', value: Partial<CaseDetail>): void;
   (event: 'loadingChange', value: boolean): void;

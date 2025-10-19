@@ -34,7 +34,6 @@ const props = withDefaults(defineProps<Props>(), {
   title: undefined
 });
 
-
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'update:id', value: string | undefined): void;

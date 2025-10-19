@@ -38,7 +38,6 @@ const props = withDefaults(defineProps<Props>(), {
   moduleId: undefined
 });
 
-
 const emit = defineEmits<{
   (e: 'update:loading', value: boolean): void;
 }>();

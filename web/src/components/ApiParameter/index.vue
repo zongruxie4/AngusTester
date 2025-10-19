@@ -17,7 +17,7 @@ import JsonContent from '@/components/JsonContent/index.vue';
 import SimpleEditableSelect from '@/components/SimpleEditableSelect/index.vue';
 
 // Utility imports
-import { deconstruct, getParamsByUri, getUriByParams, API_EXTENSION_KEY, getModelDataByRef, itemTypes, validateType, deepDelAttrFromObj } from 'src/utils/apis';
+import { deconstruct, getParamsByUri, getUriByParams, API_EXTENSION_KEY, getModelDataByRef, schemaTypeToOption, validateType, deepDelAttrFromObj } from 'src/utils/apis';
 
 // Local imports
 import { ParamsItem, paramsTypeOpt, getDefaultParams } from './interface';
@@ -529,7 +529,7 @@ defineExpose({
           v-model:value="item.schema.type"
           class="w-25"
           :readonly="item.$ref || props.viewType"
-          :options="itemTypes"
+          :options="schemaTypeToOption"
           @change="handleDataTypeChange($event, index, item)" />
         <div class="flex flex-col flex-1 ml-3 space-y-0.5">
           <SimpleEditableSelect

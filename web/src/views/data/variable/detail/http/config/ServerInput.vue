@@ -19,7 +19,6 @@ const props = withDefaults(defineProps<Props>(), {
   readonly: false
 });
 
-
 const emits = defineEmits<{
   (e: 'update:value', value: string): void;
   (e: 'focus'): void;

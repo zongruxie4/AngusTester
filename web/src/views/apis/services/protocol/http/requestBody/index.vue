@@ -12,11 +12,11 @@ import { debounce } from 'throttle-debounce';
 import { deconstruct } from '@/utils/swagger';
 import { duration, codeUtils } from '@xcan-angus/infra';
 
-import { deepParseJson, OptionItem, radioGroups, RequestBodyParam, StateItem, transRefJsonToDataJson } from './interface';
-import {getBodyDefaultItem, getNewItem} from '../utils';
+import { OptionItem, radioGroups, RequestBodyParam, StateItem } from './interface';
+import { deepParseJson, getBodyDefaultItem, getNewItem, transRefJsonToDataJson } from '../utils';
 import { API_EXTENSION_KEY, CONTENT_TYPE, getDataTypeFromFormat, getModelDataByRef } from '@/utils/apis';
 import { services } from '@/api/tester';
-import {ParamsItem} from "@/views/apis/services/protocol/types";
+import { ParamsItem } from '@/views/apis/services/protocol/types';
 
 const ApiForm = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/requestBody/Form.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/MonacoEditor/index.vue'));
@@ -25,8 +25,6 @@ const ModelModal = defineAsyncComponent(() => import('./ModelModal.vue'));
 const { t } = useI18n();
 const { gzip, ungzip } = codeUtils;
 const { valueKey, fileNameKey, enabledKey } = API_EXTENSION_KEY;
-
-const globalConfigs = inject('globalConfigs', { VITE_MAX_FILE_SIZE: 10485760, VITE_DEBUG_MAX_FILE_SIZE: 524288000 });
 
 interface Props {
   defaultValue:RequestBodyParam,
@@ -40,14 +38,15 @@ const props = withDefaults(defineProps<Props>(), {
   contentType: null
 });
 
-const apiBaseInfo = inject('apiBaseInfo', ref());
-
-
 const emits = defineEmits<{
   (e: 'change', value: RequestBodyParam): void;
   (e: 'update:binaryFile', value: any):void;
   (e: 'update:contentType', value: string): void;
 }>();
+
+const globalConfigs = inject('globalConfigs', { VITE_MAX_FILE_SIZE: 10485760, VITE_DEBUG_MAX_FILE_SIZE: 524288000 });
+
+const apiBaseInfo = inject('apiBaseInfo', ref());
 
 const clearRawContent = ref(0);
 const _contentType = ref<string>();
@@ -55,7 +54,7 @@ const binaryCt = ref(); // 文件 base64 内容
 const contentMediaType = ref(); // 文件媒体类型
 
 // raw 选中效果
-const checkeRaw = computed(() => {
+const checkRaw = computed(() => {
   return !!state.rawSelectOptions.find(i => i.value === _contentType.value);
 });
 
@@ -68,14 +67,6 @@ const state = reactive<StateItem>({
 });
 
 const allContentTypes = ref<string[]>(CONTENT_TYPE);
-
-// const loadSelectOpt = async () => {
-//   const [error, data] = await enumUtils.enumToMessages('BodyContentType');
-//   if (error) {
-//     return;
-//   }
-//   allContentTypes.value = (data || []).map(i => i.message);
-// };
 
 const packageParams = () => {
   if (!_contentType.value) {
@@ -212,7 +203,7 @@ const cancelUrlEncodedRef = () => {
   }
 };
 
-const delEncodeedList = (index:number):void => {
+const delEncodedList = (index:number):void => {
   state.encodeedList.splice(index, 1);
   emitHandle();
   // 没有name为空的元素则添加新的空元素
@@ -245,8 +236,9 @@ const delFormDataList = (index:number) => {
   }
   emitHandle();
 };
+
 // 取消 formDataUseRef 引用
-const cancelformDataRef = () => {
+const cancelFormDataRef = () => {
   formDataUseRef.value = false;
   emitHandle();
   const newItem = getNewItem(state.formDataList);
@@ -264,7 +256,7 @@ const isRaw = computed(() => {
   return ['application/json', 'text/html', 'application/javascript', 'application/xml', '*/*', 'text/plain'].includes(_contentType.value);
 });
 
-const showEncodeedForm = computed(() => {
+const showEncodedForm = computed(() => {
   return _contentType.value === 'application/x-www-form-urlencoded';
 });
 
@@ -313,7 +305,6 @@ const getPropsRawContent = async () => {
     hasUseDefaultValue = true;
     const [error, res] = await getModelDataByRef(apiBaseInfo.value.serviceId, content[type]?.schema.$ref);
     if (error) {
-      // emits('change', { ...props.defaultValue, content: { ...props.defaultValue.content, [type]: {...content[type], schema: { ...content[type]?.schema,}}} });
       return;
     }
     const model = JSON.parse(res.data.model);
@@ -327,7 +318,7 @@ const getPropsRawContent = async () => {
       }
     }
     emits('change', { ...props.defaultValue, content: { ...props.defaultValue.content, [type]: { ...content[type], schema: { ...content[type]?.schema, ...model } } } });
-    getPropsRawContent();
+    await getPropsRawContent();
   }
   if (type === 'application/json') {
     if (content?.[type]?.schema?.format === 'binary') {
@@ -351,8 +342,6 @@ const getPropsRawContent = async () => {
     if (typeof state.rawContent === 'object') {
       state.rawContent = JSON.stringify(state.rawContent, undefined, 2);
     }
-    // state.rawContent = "\"{\\n    \\\"id\\\": 64845653,\\n    \\\"address\\\": \\\"dolor enim laborum Ut\\\",\\n    \\\"email\\\": \\\"consectetur commodo\\\",\\n    \\\"enterpriseCertData\\\": {\\n        \\\"businessLicensePicUrl\\\": \\\"dolore esse\\\",\\n        \\\"bussiness\\\": \\\"labore irure consectet\\\",\\n        \\\"creditCode\\\": \\\"consequat adipisicing laborum\\\",\\n        \\\"email\\\": \\\"culpa eu ut eiusmod laboris\\\",\\n        \\\"expiryTime\\\": \\\"2001-04-16T23:24:58.877Z\\\",\\n        \\\"issueTime\\\": \\\"1993-05-13T15:00:19.431Z\\\",\\n        \\\"legalPerson\\\": \\\"sint nostrud amet\\\",\\n        \\\"orgCode\\\": \\\"mollit fugiat sit consequat\\\",\\n        \\\"orgCodePicUrl\\\": \\\"consectetur labore aliqua ex\\\",\\n        \\\"phone\\\": \\\"id occaecat\\\",\\n        \\\"regAddress\\\": \\\"pariatur consequat\\\",\\n        \\\"type\\\": -90161412,\\n        \\\"webSite\\\": \\\"vo\\\"\\n    },\\n    \\\"legalCertData\\\": {\\n        \\\"birthday\\\": \\\"anim esse labore \\\",\\n        \\\"cerBackPicUrl\\\": \\\"minim laborum irure\\\",\\n        \\\"certFrontPicUrl\\\": \\\"dolore exercitation Lorem\\\",\\n        \\\"certNo\\\": \\\"laborum cillum aliqua deserunt\\\",\\n        \\\"name\\\": \\\"Excepteur culpa\\\",\\n        \\\"nation\\\": \\\"laboris\\\",\\n        \\\"sex\\\": \\\"Lorem esse ut amet\\\"\\n    },\\n    \\\"name\\\": \\\"sunt ad anim velit dolore\\\",\\n    \\\"orgCertData\\\": {\\n        \\\"certNo\\\": \\\"consectetur tempor ut id\\\",\\n        \\\"legalPerson\\\": \\\"in la\\\",\\n        \\\"legalPersonCertUrl\\\": \\\"tempor in Excepteur\\\",\\n        \\\"orgCode\\\": \\\"aute deserunt exerc\\\",\\n        \\\"orgCodePicUrl\\\": \\\"cillum officia proident Excepteur\\\",\\n        \\\"orgName\\\": \\\"Lorem Ut est\\\",\\n        \\\"type\\\": 75072651\\n    },\\n    \\\"userCertData\\\": {\\n        \\\"birthday\\\": \\\"exercitation elit Lorem\\\",\\n        \\\"cerBackPicUrl\\\": \\\"cillum laborum ea aliqua\\\",\\n        \\\"certFrontPicUrl\\\": \\\"sit cupidatat quis\\\",\\n        \\\"certNo\\\": \\\"incididunt qui aliquip\\\",\\n        \\\"name\\\": \\\"occaecat cillum fugia\\\",\\n        \\\"nation\\\": \\\"ad labore eu dolor ut\\\",\\n        \\\"sex\\\": \\\"qui esse quis\\\"\\n    }\\n}\""
-    // state.rawContent = "{\n    \"groupId\": 13639619,\n    \"orgCode\": \"qui sunt ad nostrud\"\n}"
     return;
   }
   if (type === 'application/xml') {
@@ -396,14 +385,12 @@ const getPropsRawContent = async () => {
   }
   state.rawContent = SwaggerUI.extension.sampleFromSchemaGeneric(typeBodyContent?.schema, { useValue: true }, (typeBodyContent?.[valueKey] !== undefined ? typeBodyContent?.[valueKey] : undefined));
 };
+
 watch(() => props.defaultValue, async (newValue) => {
   if (hasUseDefaultValue) {
     return;
   }
   const { content } = newValue;
-  // if (!allContentTypes.value.length) {
-  //   await loadSelectOpt();
-  // }
   if (newValue.$ref) {
     $ref.value = newValue.$ref;
     if (!content) {
@@ -685,13 +672,7 @@ const handleRemove = () => {
   emits('update:contentType', 'application/octet-stream');
   emitHandle();
 };
-// const formMaxFileSize
 
-watch(() => state.rawContent, debounce(duration.search, () => {
-  emitHandle();
-}));
-
-// 暴露给父级 返回binaryFile
 const getBinaryFile = async () => {
   if (binaryFile.value) {
     return binaryFile.value;
@@ -724,26 +705,6 @@ const importModel = (data) => {
   emits('change', { ...data.schema, $ref: $ref.value || undefined });
 };
 
-watch(() => binaryCt.value, newValue => {
-  if (!fileSize.value && newValue) {
-    getBinaryFile();
-  }
-}, {
-  immediate: true
-});
-
-watch(() => allContentTypes.value, (newValue) => {
-  if (!newValue) {
-    return;
-  }
-  const radioOptions:OptionItem[] = [{ value: null, label: 'none' }];
-  radioOptions.push(...newValue?.filter(item => radioGroups.includes(item)).map(item => ({ label: item, value: item })));
-  state.radioOptions = radioOptions;
-  state.rawSelectOptions = newValue?.filter(item => !radioGroups.includes(item)).map(item => ({ label: item, value: item }));
-}, {
-  immediate: true
-});
-
 // 组装用于前端发送请求的body数据结构
 const getBodyData = async (dataSource, contentType) => {
   const { content } = dataSource;
@@ -755,54 +716,19 @@ const getBodyData = async (dataSource, contentType) => {
   }
   // const contents = content[contentType];
   if (contentType === 'application/x-www-form-urlencoded') {
-    // state.encodeedList = contents;
-    // let data:any[] = [];
-    // data = SwaggerUI.extension.sampleFromSchemaGeneric(content[contentType]?.schema || {}, { useValue: true });
-    // data = Object.keys(data).map(key => {
-    //   return {
-    //     name: key,
-    //     ...data[key]
-    //     // ...content['application/x-www-form-urlencoded']?.schema?.properties?.[key].extensions
-    //   };
-    // });
     return state.encodeedList.filter(i => i[enabledKey] && !!i.name);
   } else if (contentType === 'multipart/form-data') {
-    // const data: any[] = [];
-    // const contentValue = SwaggerUI.extension.sampleFromSchemaGeneric(content[contentType]?.schema || {}, { useValue: true });
-    // Object.keys(contentValue).forEach((key) => {
-    //   data.push({
-    //     name: key,
-    //     ...contentValue?.[key]
-    //   });
-    // });
     return state.formDataList.filter(i => i[enabledKey] && !!i.name);
   } else if (_contentType.value === 'application/octet-stream') {
     return await getBinaryFile();
   } else {
-    // let data = '';
-    // if (contentType === 'application/json') {
-    //   data = SwaggerUI.extension.sampleFromSchemaGeneric(content[contentType]?.schema, { useValue: true }, content[contentType]?.[valueKey] || undefined);
-    //   if (typeof data === 'object') {
-    //     data = JSON.stringify(data, undefined, 2);
-    //   }
-    // }
-    // } else if (contentType === 'application/xml') {
-    //   data = SwaggerUI.extension.sampleFromSchemaGeneric(content[contentType]?.schema, { useValue: true }, content[contentType]?.[valueKey] || undefined);
-    // } else {
-    //   data = SwaggerUI.extension.sampleFromSchemaGeneric(content[contentType]?.schema, { useValue: true }, content[contentType]?.[valueKey] || undefined);
-    // }
     return state.rawContent;
   }
 };
 
 const updateComp = async () => {
-  if (state.encodeedList && urlencodeFormRef.value) {
-    // for (const item of state.encodeedList) {
-    //   if (item.$ref) {
-    //     await services.addComponent(apiBaseInfo.value.serviceId,)
-    //   }
-    // }
-    await urlencodeFormRef.value.updateComp();
+  if (state.encodeedList && urlEncodeFormRef.value) {
+    await urlEncodeFormRef.value.updateComp();
   }
 
   if (state.formDataList && formDataFormRef.value) {
@@ -814,21 +740,13 @@ const updateComp = async () => {
     const name = paths[paths.length - 1];
     await services.addComponent(apiBaseInfo.value.serviceId, 'requestBodies', name, body);
   }
-
-  // for (const type in (body.content || {})) {
-  //   if (body.content[type].$ref) {
-  //     const paths = body.content[type].$re.split('/');
-  //     const name = paths[paths.length - 1];
-  //     await services.addComponent(apiBaseInfo.value.serviceId, 'schemas', name, body.content[type]);
-  //   }
-  // }
 };
 
 const formDataFormRef = ref();
-const urlencodeFormRef = ref();
+const urlEncodeFormRef = ref();
 const validate = (val = true) => {
   if (_contentType.value === 'application/x-www-form-urlencoded') {
-    urlencodeFormRef.value.validate(val);
+    urlEncodeFormRef.value.validate(val);
   }
   if (_contentType.value === 'multipart/form-data') {
     formDataFormRef.value.validate(val);
@@ -848,8 +766,8 @@ const getModelResolve = () => {
     models[formDataUseRef.value] = props.defaultValue.content['multipart/form-data'];
     delete models[formDataUseRef.value]?.schema?.$ref;
   }
-  if (showEncodeedForm.value) {
-    urlencodeFormRef.value.getModelResolve(models);
+  if (showEncodedForm.value) {
+    urlEncodeFormRef.value.getModelResolve(models);
   } else if (formDataFormRef.value) {
     formDataFormRef.value.getModelResolve(models);
   } else if (_contentType.value && props.defaultValue.content?.[_contentType.value]) {
@@ -866,8 +784,32 @@ const ifExceedSize = () => {
 };
 
 const ifExceedRequestSize = () => {
-  return formFileSize.value + fileSize.value > globalConfigs.VITE_MAX_WS_REQUEST_SIZE;
+  return formFileSize.value + fileSize.value > globalConfigs.VITE_MAX_WS_REQUEST_SIZE; // TODO 提到常量文件
 };
+
+watch(() => state.rawContent, debounce(duration.search, () => {
+  emitHandle();
+}));
+
+watch(() => binaryCt.value, newValue => {
+  if (!fileSize.value && newValue) {
+    getBinaryFile();
+  }
+}, {
+  immediate: true
+});
+
+watch(() => allContentTypes.value, (newValue) => {
+  if (!newValue) {
+    return;
+  }
+  const radioOptions:OptionItem[] = [{ value: null, label: 'none' }];
+  radioOptions.push(...newValue?.filter(item => radioGroups.includes(item)).map(item => ({ label: item, value: item })));
+  state.radioOptions = radioOptions;
+  state.rawSelectOptions = newValue?.filter(item => !radioGroups.includes(item)).map(item => ({ label: item, value: item }));
+}, {
+  immediate: true
+});
 
 defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, updateComp, validate, getModelResolve, ifExceedSize, ifExceedRequestSize });
 </script>
@@ -889,7 +831,7 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, updateComp, validate
           {{ item.label === 'application/octet-stream' ? 'binary' : item.label }}
         </Radio>
       </RadioGroup>
-      <Radio :checked="checkeRaw" @change="clickRawRadio">raw</Radio>
+      <Radio :checked="checkRaw" @change="clickRawRadio">raw</Radio>
       <Select
         v-show="isRaw"
         v-model:value="_contentType"
@@ -935,16 +877,16 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, updateComp, validate
     </div>
     <Tooltip placement="topLeft">
       <ApiForm
-        v-show="showEncodeedForm"
+        v-show="showEncodedForm"
         key="encodeedList"
-        ref="urlencodeFormRef"
+        ref="urlEncodeFormRef"
         v-model:formFileSize="formFileSize"
         class="mt-5"
         :maxFileSize="0"
         :useModel="!!urlencodedUseRef"
         :value="state.encodeedList"
         @change="changeEncodeedList"
-        @del="delEncodeedList" />
+        @del="delEncodedList" />
       <template v-if="urlencodedUseRef" #title>
         {{ t('service.apiRequestBody.tips.componentReference', { ref: urlencodedUseRef }) }}
         <Button
@@ -973,7 +915,7 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, updateComp, validate
         <Button
           size="small"
           type="link"
-          @click="cancelformDataRef">
+          @click="cancelFormDataRef">
           {{ t('service.apiRequestBody.actions.cancelReference') }}
         </Button>
       </template>

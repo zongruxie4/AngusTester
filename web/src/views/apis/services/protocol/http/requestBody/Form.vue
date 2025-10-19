@@ -5,23 +5,22 @@ import { Button, Checkbox } from 'ant-design-vue';
 import { Icon, Input, notification, Select, SelectSchema } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 
-import ApiUpload from '@/views/apis/services/protocol/http/Upload.vue';
-import { formDataTypes, itemTypes } from './form';
-import { API_EXTENSION_KEY, deepDelAttrFromObj, getModelDataByRef, variableNameReg } from '@/utils/apis';
-import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
+import {
+  API_EXTENSION_KEY,
+  deepDelAttrFromObj,
+  getModelDataByRef,
+  schemaTypeToOption,
+  schemaTypeToWideOption,
+  VARIABLE_NAME_REG
+} from '@/utils/apis';
 import { services, variable as variableApi } from '@/api/tester';
 import { deconstruct } from '@/utils/swagger';
 import { validateType } from '@/views/apis/services/protocol/http/utils';
+import { ParamsItem } from '@/views/apis/services/protocol/types';
+
+import ApiUpload from '@/views/apis/services/protocol/http/Upload.vue';
+import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
-import {ParamsItem} from "@/views/apis/services/protocol/types";
-
-const { t } = useI18n();
-const { valueKey, enabledKey } = API_EXTENSION_KEY;
-const apiBaseInfo = inject('apiBaseInfo', ref());
-const archivedId = inject('archivedId', ref());
-const globalConfigs = inject('globalConfigs', { VITE_API_PARAMETER_NAME_LENGTH: 400, VITE_API_PARAMETER_VALUE_LENGTH: 4096 });
-const jsContentRef = ref<any[]>([]);
-
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 
 interface Props {
@@ -37,6 +36,12 @@ const props = withDefaults(defineProps<Props>(), {
   hasFileType: false
 });
 
+const { t } = useI18n();
+const { valueKey, enabledKey } = API_EXTENSION_KEY;
+const apiBaseInfo = inject('apiBaseInfo', ref());
+const archivedId = inject('archivedId', ref());
+const globalConfigs = inject('globalConfigs', { VITE_API_PARAMETER_NAME_LENGTH: 400, VITE_API_PARAMETER_VALUE_LENGTH: 4096 });
+const jsContentRef = ref<any[]>([]);
 
 const emits = defineEmits<{
   (e: 'change', index:number, data:ParamsItem): void,
@@ -44,15 +49,7 @@ const emits = defineEmits<{
   (e: 'update:formFileSize', value:number):void
 }>();
 
-// const state = reactive<State>({
-//   formData: []
-// });
-
 const formData = ref<ParamsItem[]>([]);
-
-// const getText = (flag: boolean | undefined): string => {
-//   return flag ? '取消变量' : '设为变量';
-// };
 
 const getKey = (index?:number):symbol => {
   return Symbol(index);
@@ -78,11 +75,6 @@ const handleValueBlur = (target: HTMLElement, index:number, data:ParamsItem):voi
   const temp = { ...data, [valueKey]: value } as ParamsItem;
   changeEmit(index, temp);
 };
-
-// const handleValueChange = (value: string, index:number, data: ParamsItem):void => {
-//   const temp = { ...data, value } as ParamsItem;
-//   changeEmit(index, temp);
-// };
 
 const handleBlur = (e:ChangeEvent, index:number, data:ParamsItem, key:string):void => {
   const value = e.target.value?.trim();
@@ -115,21 +107,6 @@ const selectModels = async (_value, option, index, item) => {
       temp.$ref = option.ref;
     }
     changeEmit(index, temp);
-    // dataSource.value[index].type = model.type;
-    // dataSource.value[index] = {
-    //   ...dataSource.value[index],
-    //   ...model
-    // };
-
-    // const childSchema = model.type === 'object' ? model.properties : model.type === 'array' ? model.items : {};
-    // const data = transJsonToList(value, item.id, item.level + 1, [dataSource.value[index]], childSchema);
-    // dataSource.value.splice(index, 1, ...data);
-    // data.forEach(i => {
-    //   dataSourceObj.value[i.id] = i;
-    // });
-    // emitHandle();
-  } else {
-    // dataSource.value[index].name = value;
   }
 };
 
@@ -149,10 +126,8 @@ const uploadChange = ({ file, size }, index:number, data:ParamsItem):void => {
         type: 'string',
         format: 'binary'
       };
-      // temp[formContentTypeKey] = file.map(i => i[formContentTypeKey]).join(';');
     } else {
       delete temp.items;
-      // temp[formContentTypeKey] = file[formContentTypeKey];
     }
     changeEmit(index, temp);
   } else {
@@ -219,15 +194,13 @@ const setToVariable = async (data:ParamsItem):void => {
     return;
   }
   setVariableLoading[data.name as string] = true;
-  if (!variableNameReg.test(data.name as string)) {
+  if (!VARIABLE_NAME_REG.test(data.name as string)) {
     notification.warning(t('service.apiRequestBody.messages.variableNameInvalid'));
     return;
   }
 
   const value = typeof data[valueKey] === 'object' ? JSON.stringify(data[valueKey]) : data[valueKey];
   const [error] = await variableApi.addVariables({ name: data.name, targetId: archivedId.value, scope: 'CURRENT', targetType: 'API', enabled: true, value });
-  // const temp = { ...data, [exportVariableKey]: !data[exportVariableKey] } as ParamsItem;
-  // changeEmit(index, temp);
   setVariableLoading[data.name as string] = false;
   if (!error) {
     notification.success(t('service.apiRequestBody.messages.setVariableSuccess'));
@@ -286,62 +259,6 @@ const addChild = (pItem, idx) => {
   jsContentRef.value[idx].addItem({ type: pItem.type.split('(')[0], id: -1, idLine: [-1], level: 0 });
 };
 
-watch(() => props.value, (newValue) => {
-  formData.value = newValue.map((i, idx) => {
-    let type = i.type;
-    if (i.format === 'binary') {
-      type = 'file';
-      if (i.type === 'array') {
-        type = 'file(array)';
-      }
-    }
-    if (props.hasFileType) {
-      if (type === 'object') {
-        type = 'object(json)';
-        if (i.format === 'xml') {
-          type = 'object(xml)';
-        }
-      }
-      if (type === 'array' && i.format !== 'binary') {
-        type = 'array(json)';
-        if (i.format === 'xml') {
-          type = 'array(xml)';
-        }
-      }
-    }
-    if (!i.type) {
-      if (i.properties) {
-        type = 'object(json)';
-      } else if (i.items) {
-        type = 'array(json)';
-      } else {
-        type = 'string';
-      }
-    }
-    return { ...i, key: i.key || getKey(idx), type };
-  });
-}, {
-  deep: true,
-  immediate: true
-});
-
-const getItemMaxFileSize = (index) => {
-  const currenSize = sizes.value[index] || 0;
-  return props.maxFileSize - (props.formFileSize - currenSize);
-};
-
-watch(() => sizes.value, () => {
-  if (!props.hasFileType) {
-    return;
-  }
-  const result = sizes.value.reduce((pre, current) => {
-    return pre + current;
-  }, 0);
-  emits('update:formFileSize', result);
-}, {
-  deep: true
-});
-
 const validated = ref(false);
 const validateContents = async (val = true) => {
   validated.value = val;
@@ -387,8 +304,63 @@ const updateComp = async () => {
   }
 };
 
-defineExpose({ getModelResolve, updateComp, validate: validateContents });
+const getItemMaxFileSize = (index) => {
+  const currenSize = sizes.value[index] || 0;
+  return props.maxFileSize - (props.formFileSize - currenSize);
+};
 
+watch(() => props.value, (newValue) => {
+  formData.value = newValue.map((i, idx) => {
+    let type = i.type;
+    if (i.format === 'binary') {
+      type = 'file';
+      if (i.type === 'array') {
+        type = 'file(array)';
+      }
+    }
+    if (props.hasFileType) {
+      if (type === 'object') {
+        type = 'object(json)';
+        if (i.format === 'xml') {
+          type = 'object(xml)';
+        }
+      }
+      if (type === 'array' && i.format !== 'binary') {
+        type = 'array(json)';
+        if (i.format === 'xml') {
+          type = 'array(xml)';
+        }
+      }
+    }
+    if (!i.type) {
+      if (i.properties) {
+        type = 'object(json)';
+      } else if (i.items) {
+        type = 'array(json)';
+      } else {
+        type = 'string';
+      }
+    }
+    return { ...i, key: i.key || getKey(idx), type };
+  });
+}, {
+  deep: true,
+  immediate: true
+});
+
+watch(() => sizes.value, () => {
+  if (!props.hasFileType) {
+    return;
+  }
+  const result = sizes.value.reduce((pre, current) => {
+    return pre + current;
+  }, 0);
+  emits('update:formFileSize', result);
+}, {
+  deep: true
+});
+
+defineExpose({ getModelResolve, updateComp, validate: validateContents });
 </script>
 <template>
   <div class="space-y-3 relative min-w-220" :class="{'pre-sign': props.useModel}">
@@ -432,7 +404,7 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
             dropdownClassName="api-select-dropdown"
             :placeholder="t('service.apiRequestBody.form.typePlaceholder')"
             :disabled="!!item.$ref || !!props.useModel"
-            :options="props.hasFileType ? formDataTypes : itemTypes"
+            :options="props.hasFileType ? schemaTypeToWideOption : schemaTypeToOption"
             :allowClear="false"
             @change="typeChange($event, index, item)" />
         </div>

@@ -111,9 +111,9 @@ const initializeComponent = () => {
       if (!tabData.includes('analysisList')) {
         addTabPane({
           _id: 'analysisList',
-            value: 'analysisList',
-            name: t('issueAnalysis.title'),
-            closable: false
+          value: 'analysisList',
+          name: t('issueAnalysis.title'),
+          closable: false
         });
       } else {
         updateTabPane({
@@ -125,7 +125,6 @@ const initializeComponent = () => {
       }
     }
   }, { immediate: true });
-
 
   processUrlHash(route.hash);
 };

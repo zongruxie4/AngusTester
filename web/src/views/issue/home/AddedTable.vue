@@ -25,7 +25,6 @@ const props = withDefaults(defineProps<BasicProps>(), {
   refreshNotify: undefined
 });
 
-
 const emit = defineEmits<{
   (e: 'update:total', value: number): void;
   (e: 'update:deletedNotify', value: string): void;

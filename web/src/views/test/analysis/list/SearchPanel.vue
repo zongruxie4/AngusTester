@@ -33,7 +33,6 @@ const props = withDefaults(defineProps<Props>(), {
   orderSort: undefined
 });
 
-
 const emit = defineEmits<{
   (e: 'add'): void;
   (e: 'change', value: SearchCriteria[]): void;
@@ -147,7 +146,6 @@ const handleSearchPanelChange = (
  * @param searchCriteria - Array of search criteria from quick search
  */
 const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void => {
-
   let isAssociated = false;
   if (key === 'createdBy') {
     isAssociated = true;
@@ -163,7 +161,7 @@ const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: Search
   if (key && key.startsWith('last') && (key.endsWith('Day') || key.endsWith('Days'))) {
     isAssociated = true;
     const createdDateSearchCriteria = searchCriteria.filter(f => f.key === 'createdDate');
-    let createdDateValue: [string, string] | undefined = undefined;
+    let createdDateValue: [string, string] | undefined;
     if (createdDateSearchCriteria.length > 0) {
       createdDateValue = [createdDateSearchCriteria[0].value, createdDateSearchCriteria[1].value];
     }

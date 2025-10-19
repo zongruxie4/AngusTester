@@ -33,7 +33,6 @@ const props = withDefaults(defineProps<Props>(), {
   delayInSeconds: 3000
 });
 
-
 const emit = defineEmits<{
   (e: 'loadingChange', value: boolean): void;
 }>();

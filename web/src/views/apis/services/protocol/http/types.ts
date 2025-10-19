@@ -1,4 +1,4 @@
-import {AssertionCondition, AssertionType, ExtractionMethod} from '@xcan-angus/infra';
+import { AssertionCondition, AssertionType, ExtractionMethod } from '@xcan-angus/infra';
 
 export type Extraction = {
   method: ExtractionMethod | undefined;
@@ -76,6 +76,7 @@ export type AssertResult = {
   };
 };
 
+// TODO 替换参数
 export type Parameter = {
   form: { [key: string]: any };
   rawBody: { [key: string]: any };
@@ -91,24 +92,19 @@ export type Parameter = {
   status: number;
 }
 
+// TODO 替换参数
 export interface ParamsInfo {
   name: string;
   in: 'path' | 'query';
   description: string;
   key?: symbol;
-  [key: string]: any;
+  [key: string]: any; // TODO ?? 未约定的字段，前端临时字段吗
 }
 
-const paramsTypeOption = [
-  {
-    value: 'query',
-    label: 'query'
-  },
-  {
-    value: 'path',
-    label: 'path'
-  }
-];
-
-export { paramsTypeOption };
-
+export interface RequestSetting {
+  enableParamValidation: boolean;
+  connectTimeout: number;
+  readTimeout: number;
+  maxRedirects: number;
+  retryNum: number;
+}

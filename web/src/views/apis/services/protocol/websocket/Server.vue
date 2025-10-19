@@ -34,7 +34,6 @@ const props = withDefaults(defineProps<Props>(), {
   readonly: false
 });
 
-
 const emit = defineEmits<{
   (e: 'sendRequest'):void;
   (e: 'save'): void;

@@ -1,7 +1,7 @@
 import { computed, ref, watch } from 'vue';
 import { apis } from '@/api/tester';
 
-import {ApiInfo} from "@/views/apis/mock/types";
+import { ApiInfo } from '@/views/apis/mock/types';
 
 /**
  * Composable for managing API list functionality

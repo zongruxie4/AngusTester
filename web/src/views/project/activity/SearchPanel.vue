@@ -53,7 +53,7 @@ const {
   clearAllFilters,
   searchFilters,
   quickSearchFilters,
-  assocFilters,
+  assocFilters
 } = useActivitySearch(quickSearchOptionsRef);
 
 /**
@@ -83,8 +83,6 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
     }
   }
 }));
-
-
 
 /**
  * Handle search panel change events
@@ -117,7 +115,7 @@ const handleQuickSearchChange = (_selectedKeys: string[], _searchCriteria: Searc
 
   if (changedKey && changedKey.startsWith('last') && (changedKey.endsWith('Day') || changedKey.endsWith('Days'))) {
     const optDateSearchCriteria = _searchCriteria.filter(f => f.key === 'optDate');
-    let optDateValue: [string, string] | undefined = undefined;
+    let optDateValue: [string, string] | undefined;
     if (optDateSearchCriteria.length > 0) {
       optDateValue = [optDateSearchCriteria[0].value, optDateSearchCriteria[1].value];
     }

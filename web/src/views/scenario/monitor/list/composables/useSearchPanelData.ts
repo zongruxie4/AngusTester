@@ -15,9 +15,8 @@ import type {
 export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn {
   const { t } = useI18n();
 
-    // Search panel ref
+  // Search panel ref
   const searchPanelRef = ref();
-  
 
   // Search panel options configuration
   const searchPanelOptions: SearchPanelOption[] = [

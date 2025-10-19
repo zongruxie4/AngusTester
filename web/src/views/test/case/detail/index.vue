@@ -53,7 +53,6 @@ const props = withDefaults(defineProps<Props>(), {
   notify: 0
 });
 
-
 const emits = defineEmits<{
   (e: 'onClick', type: CaseActionAuth, value: CaseDetail): void;
   (e: 'editSuccess', id:number): void;

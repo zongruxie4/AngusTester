@@ -17,7 +17,6 @@ const props = withDefaults(defineProps<Props>(), {
   columnIndex: undefined
 });
 
-
 const emit = defineEmits<{
   (e: 'change', value: { name: string }[]): void;
 }>();

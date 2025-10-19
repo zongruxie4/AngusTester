@@ -1,13 +1,14 @@
-import { OpenAPIV3_1 } from '@/types/openapi-types';
+import { OpenAPIV3_1, ApiServerSource, API_EXTENSION_KEYS } from '@/types/openapi-types';
 
 export type ServerInfo = {
   serviceId?: string;
   id?: string;
-  'x-xc-id'?: string;
   url: string;
   description?: string;
   variables?: OpenAPIV3_1.ServerVariableObject[];
   extensions?: Record<string, any>;
+  [API_EXTENSION_KEYS.idKey]: string;
+  [API_EXTENSION_KEYS.serverSourceKey]: ApiServerSource
 }
 
 export const getServerData = (dataSource: ServerInfo): string => {

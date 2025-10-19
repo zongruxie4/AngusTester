@@ -27,7 +27,6 @@ const props = withDefaults(defineProps<AssocTaskProps>(), {
   tip: ''
 });
 
-
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'editSuccess'): void;

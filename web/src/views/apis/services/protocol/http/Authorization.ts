@@ -7,6 +7,7 @@ const t = I18nInstance?.global?.t || ((value: string):string => value);
 // const { valueKey, securityApiKeyPrefix } = API_EXTENSION_KEY;
 const { valueKey, securityApiKeyPrefix } = API_EXTENSION_KEY;
 
+// TODO 替换类型
 export interface AuthItem {
   name?: string;
   type: 'http'|'apiKey'|'oauth2'|'extends'|null;
@@ -14,17 +15,6 @@ export interface AuthItem {
   in?: string;
   scheme?: string;
 }
-
-export const inOpt = [
-  {
-    value: 'query',
-    label: 'query'
-  },
-  {
-    value: 'header',
-    label: 'header'
-  }
-];
 
 export const getAuthItem = () => {
   return {

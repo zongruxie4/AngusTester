@@ -10,7 +10,7 @@ import { bgColor } from '@/utils/common';
 import { ButtonGroup, CollapseButtonGroup } from './types';
 
 import VirtualList from './BaseVirtualList.vue';
-import {ApisListInfo} from "@/views/apis/services/protocol/types";
+import { ApisListInfo } from '@/views/apis/services/protocol/types';
 
 interface Props {
   dataSource: Array<any>; // Mixed array of ApisListInfo and group headers

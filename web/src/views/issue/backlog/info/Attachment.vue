@@ -30,7 +30,6 @@ const props = withDefaults(defineProps<TaskDetailProps>(), {
   dataSource: undefined
 });
 
-
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'change', value: Partial<TaskDetail>): void;

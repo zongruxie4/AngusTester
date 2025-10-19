@@ -2,9 +2,10 @@
 import { defineAsyncComponent, ref, onMounted } from 'vue';
 import { TESTER, VERSION, API, cookieUtils, appContext, routerUtils, ApiType, ApiUrlBuilder } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
-
 import '@xcan-angus/rapidoc';
-// import { createPdf } from 'rapipdf';
+import { useI18n } from 'vue-i18n';
+
+const ExportApi = defineAsyncComponent(() => import('@/views/apis/services/components/ExportOptionalModal.vue'));
 
 interface Props {
   id: string;
@@ -13,32 +14,24 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined
 });
 
-const emit = defineEmits<{(e: 'update:data', value: any):void}>();
+defineEmits<{(e: 'update:data', value: any):void}>();
 
-const ExportApi = defineAsyncComponent(() => import('@/views/apis/services/components/ExportOptionalModal.vue'));
+const { t } = useI18n();
 
-// visible: boolean;
-//   type?: 'SERVICE' | 'APIS' | 'API';
-//   selectedNode?: ProjectService;
-//   id?: ProjectService;
 const docOrigin = ref();
 const accessToken = ref();
 const isPrivate = ref();
 
 const exportVisible = ref(false);
-const handleExportdoc = () => {
+const handleExportDoc = () => {
   exportVisible.value = true;
 };
 
 onMounted(async () => {
   accessToken.value = cookieUtils.getTokenInfo().access_token;
-  // isPrivate.value = await site.isPrivate();
-  // docOrigin.value = await site.getUrl('apis');
-
   isPrivate.value = appContext.isPrivateEdition();
   docOrigin.value = ApiUrlBuilder.buildApiUrl(routerUtils.getTesterApiRouteConfig(ApiType.API), '');
 });
-
 </script>
 <template>
   <div class="">
@@ -63,8 +56,8 @@ onMounted(async () => {
       <Button
         slot="exportDoc"
         class="text-3 ml-2"
-        @click="handleExportdoc">
-        导出
+        @click="handleExportDoc">
+        {{ t('actions.export') }}
       </Button>
     </rapi-doc>
 

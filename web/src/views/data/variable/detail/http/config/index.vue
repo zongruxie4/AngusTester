@@ -32,7 +32,6 @@ const props = withDefaults(defineProps<Props>(), {
   errorNum: 0
 });
 
-
 const emit = defineEmits<{
   (e: 'update:errorNum', value: number): void;
 }>();

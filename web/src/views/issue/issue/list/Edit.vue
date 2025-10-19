@@ -42,7 +42,6 @@ const props = withDefaults(defineProps<TaskEditState>(), {
   refCaseIds: () => []
 });
 
-
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'update:taskId', value: string | undefined): void;
@@ -186,8 +185,8 @@ const formStyle = computed(() => {
 });
 
 const softwareVersionParams = {
-    filters: [{ value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN' }]
-  };
+  filters: [{ value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN' }]
+};
 
 /**
  * Generate cache key for storing zoom state in local storage

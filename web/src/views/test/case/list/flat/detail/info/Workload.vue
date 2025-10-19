@@ -24,7 +24,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'change', value: Partial<CaseDetail>): void;

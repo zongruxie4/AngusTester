@@ -7,18 +7,22 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import { deconstruct } from '@/utils/swagger';
 
 import { services } from '@/api/tester';
-import {getDefaultParams, validateType} from './utils';
-import { API_EXTENSION_KEY, deepDelAttrFromObj, getModelDataByRef, getUriByParams, getParamsByUri } from '@/utils/apis';
+import { getDefaultParams, schemaTypeToOptions, validateType } from './utils';
+import {
+  API_EXTENSION_KEY,
+  deepDelAttrFromObj,
+  getModelDataByRef,
+  getUriByParams,
+  getParamsByUri,
+  QueryAndPathInOption
+} from '@/utils/apis';
 import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
-import { itemTypes } from '@/views/apis/services/protocol/http/requestBody/util';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 import { toClipboard } from '@xcan-angus/infra';
-import {ParamsInfo, paramsTypeOption} from "@/views/apis/services/protocol/http/types";
+import { ParamsInfo } from '@/views/apis/services/protocol/http/types';
 
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
-const { t } = useI18n();
-const valueKey = API_EXTENSION_KEY.valueKey;
-const enabledKey = API_EXTENSION_KEY.enabledKey;
+
 interface Props {
   value: ParamsInfo[],
   apiUri?: string
@@ -28,6 +32,11 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   apiUri: ''
 });
+
+const { t } = useI18n();
+
+const valueKey = API_EXTENSION_KEY.valueKey;
+const enabledKey = API_EXTENSION_KEY.enabledKey;
 
 const apiBaseInfo = inject('apiBaseInfo', ref());
 const globalConfigs = inject('globalConfigs', { VITE_API_PARAMETER_NAME_LENGTH: 400, VITE_API_PARAMETER_VALUE_LENGTH: 4096 });
@@ -125,25 +134,8 @@ const changeDataType = (value, index, item) => {
     delete temp.deepObject;
     delete temp.explode;
   }
-  // if (!temp.name && !!temp.name[valueKey]) {
-  //   return;
-  // }
   changeEmit(index, temp);
 };
-
-// const addValueItem = (item, index) => {
-//   const value = state.formData[index][valueKey];
-//   value.push('');
-//   const temp = { ...item, [valueKey]: value };
-//   changeEmit(index, temp);
-// };
-
-// const delValueItem = (item, index, subIndex) => {
-//   const value = state.formData[index][valueKey];
-//   value.splice(subIndex, 1);
-//   const temp = { ...item, [valueKey]: value };
-//   changeEmit(index, temp);
-// };
 
 const handleBlur = (e: ChangeEvent, index: number, data: ParamsInfo, key: string): void => {
   const value = e.target.value.trim();
@@ -193,7 +185,7 @@ const handleDel = (index: number, data: ParamsInfo): void => {
   state.formData.splice(index, 1);
   emitChange();
   if (data.in === 'path') {
-    changeApiUriByparams();
+    changeApiUriByParams();
   }
 
   // emits('del', index);
@@ -202,7 +194,7 @@ const handleDel = (index: number, data: ParamsInfo): void => {
 const changeEmit = (index: number, data: ParamsInfo): void => {
   state.formData[index] = data;
   emitChange();
-  changeApiUriByparams();
+  changeApiUriByParams();
 };
 
 const addChild = (pItem, idx) => {
@@ -210,7 +202,7 @@ const addChild = (pItem, idx) => {
 };
 
 // param 变更, 改变 apiUri
-const changeApiUriByparams = () => {
+const changeApiUriByParams = () => {
   const pathList = state.formData.filter(item => item?.[enabledKey] && item.name && item.in === 'path');
   let apiUri = props.apiUri;
   if (pathList.length) {
@@ -228,8 +220,6 @@ const setParamList = ():void => {
 
   // 从 url拿到所有 path 的 list;
   const pathList = paramsList.filter(i => i.in === 'path');
-
-  // let formValue = props.value.map(toRaw);
 
   // 正向对比, 找到 formData 中缺少的填入
   pathList?.forEach((current) => {
@@ -253,57 +243,9 @@ const setParamList = ():void => {
     }
   });
 
-  // query list 逻辑同上
-  // const queryList = paramsList.filter(i => i.in === 'query');
-  // formValue.forEach((item, index) => {
-  //   if (item.in === 'query' && item[enabledKey] && queryList.length) {
-  //     item.name = queryList[0].name;
-  //     item[valueKey] = queryList[0]?.[valueKey];
-  //     item[enabledKey] = true;
-  //     queryList.shift();
-  //   } else if (item.in === 'query' && (!!item.name || !!item[valueKey]) && item[enabledKey]) {
-  //     tempIdx.push(index);
-  //   }
-  // });
   state.formData = state.formData.filter((_i, index) => !tempIdx.includes(index));
-  // formValue.push(...queryList);
-  // emits('change', state.formData);
   emitChange();
 };
-
-watch(() => props.value, (newValue) => {
-  if (state.formData.filter(i => !!i.name || i[valueKey] || i.schema?.type !== 'string' || i.in !== 'query').length > 0) {
-    return;
-  }
-  state.formData = newValue.map((i) => {
-    return { ...i, key: i.key || getKey() };
-  });
-}, {
-  deep: true,
-  immediate: true
-});
-
-watch(() => state.formData, () => {
-  if (state.formData.every(i => !!i.name || !!i[valueKey])) {
-    state.formData.push(getDefaultParams({ in: 'query', key: getKey() }) as ParamsInfo);
-  }
-}, {
-  deep: true,
-  immediate: true
-});
-
-// 监听 apiUri 变更, 同步params
-watch(() => props.apiUri, () => {
-  setTimeout(() => {
-    setParamList();
-  });
-});
-
-// const validateParams = ():boolean => {
-//   const samplingSummary = state.formData.filter(i => i[enabledKey] && i.in === 'path' && i.name).every(i => i[valueKey]);
-//   validated.value = true;
-//   return samplingSummary;
-// };
 
 const validateContents = async (val = true) => {
   validated.value = val;
@@ -335,7 +277,8 @@ const updateComp = async () => {
     if (state.formData[i].$ref) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { $ref, ...content } = state.formData[i];
-      await services.addComponent(apiBaseInfo.value?.serviceId, 'parameters', state.formData[i].name, { ...content, schema: { ...(content.schema || {}), [valueKey]: content[valueKey] } });
+      await services.addComponent(apiBaseInfo.value?.serviceId, 'parameters', state.formData[i].name,
+        { ...content, schema: { ...(content.schema || {}), [valueKey]: content[valueKey] } });
     }
     if (jsContentRef.value[i]) {
       await jsContentRef.value[i].updateComp();
@@ -358,6 +301,34 @@ const getModelResolve = () => {
   });
   return models;
 };
+
+watch(() => props.value, (newValue) => {
+  if (state.formData.filter(i => !!i.name || i[valueKey] || i.schema?.type !== 'string' || i.in !== 'query').length > 0) {
+    return;
+  }
+  state.formData = newValue.map((i) => {
+    return { ...i, key: i.key || getKey() };
+  });
+}, {
+  deep: true,
+  immediate: true
+});
+
+watch(() => state.formData, () => {
+  if (state.formData.every(i => !!i.name || !!i[valueKey])) {
+    state.formData.push(getDefaultParams({ in: 'query', key: getKey() }) as ParamsInfo);
+  }
+}, {
+  deep: true,
+  immediate: true
+});
+
+// 监听 apiUri 变更, 同步params
+watch(() => props.apiUri, () => {
+  setTimeout(() => {
+    setParamList();
+  });
+});
 
 defineExpose({
   validate: validateContents,
@@ -413,14 +384,14 @@ defineExpose({
           :placeholder="t('service.apiRequestParams.form.typePlaceholder')"
           :disabled="item.$ref"
           :allowClear="false"
-          :options="paramsTypeOption"
+          :options="QueryAndPathInOption"
           class="w-25 flex-shrink-0"
           @change="selectChange($event, index, item, 'in')" />
         <Select
           v-model:value="item.schema.type"
           class="w-25 flex-shrink-0"
           :disabled="item.$ref"
-          :options="itemTypes"
+          :options="schemaTypeToOptions"
           @change="changeDataType($event, index, item)" />
         <div class="flex flex-col flex-25 ml-3 space-y-0.5">
           <SimpleEditableSelect

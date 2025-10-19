@@ -26,7 +26,6 @@ export function useActions (onDataChange: () => Promise<void>) {
   const activeModule = ref<ModuleItem>();
   const currentParentId = ref<number>();
 
-
   /**
    * Creates a new module with the specified parameters
    * Shows success notification and refreshes data on completion
@@ -133,12 +132,12 @@ export function useActions (onDataChange: () => Promise<void>) {
     ids: string[];
   }, dataList: ModuleItem[]): Promise<void> => {
     const { index, id, ids, pid } = record;
-    
+
     let updateParams: UpdateModuleParams;
 
     if (index === 0) {
-      let targetSequece: number = 0;
-      let targetParentId: string = '-1';
+      let targetSequece = 0;
+      let targetParentId = '-1';
 
       ids.reduce((pre: ModuleItem[], cur: string): ModuleItem[] => {
         if (cur === String(pid)) {
@@ -158,7 +157,7 @@ export function useActions (onDataChange: () => Promise<void>) {
         sequence: targetSequece
       };
     } else {
-      let targetSequece: number = 0;
+      let targetSequece = 0;
 
       ids.reduce((pre: ModuleItem[], cur: string): ModuleItem[] => {
         if (cur === String(id)) {
@@ -191,9 +190,8 @@ export function useActions (onDataChange: () => Promise<void>) {
     index: number;
     ids: string[];
   }, dataList: ModuleItem[]): Promise<void> => {
-
     const { id, ids } = record;
-    let targetSequece: number = 0;
+    let targetSequece = 0;
 
     ids.reduce((pre: ModuleItem[], cur: string): ModuleItem[] => {
       if (cur === String(id)) {

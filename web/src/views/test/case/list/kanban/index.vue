@@ -58,7 +58,6 @@ const props = withDefaults(defineProps<Props>(), {
   orderSort: undefined
 });
 
-
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'refreshChange'): void;

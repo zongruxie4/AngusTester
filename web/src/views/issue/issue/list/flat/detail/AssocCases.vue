@@ -7,7 +7,7 @@ import { Button } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import {TestMenuKey} from '@/views/test/menu';
+import { TestMenuKey } from '@/views/test/menu';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';

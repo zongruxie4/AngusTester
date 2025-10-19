@@ -4,15 +4,15 @@ import { useI18n } from 'vue-i18n';
 import { Icon, IconRequired, Input, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, RadioGroup } from 'ant-design-vue';
 import { encode } from '@/utils/secure';
-import { http, utils } from '@xcan-angus/infra';
+import { http, utils, AuthClientIn } from '@xcan-angus/infra';
 import axios from 'axios';
 import { services } from '@/api/tester';
-import { API_EXTENSION_KEY } from '@/utils/apis';
+import { API_EXTENSION_KEY, QueryAndHeaderInOption } from '@/utils/apis';
 
 import {
   AuthItem, authLabels, authTypeOptions as _authTypeOptions,
   encryptionTypeOpt, flowAuthKeys, flowAuthType, getApiKeyData,
-  getAuthItem, getShowApiKeyData, inOpt
+  getAuthItem, getShowApiKeyData
 } from './Authorization';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
@@ -22,13 +22,6 @@ interface Props {
   auth?: boolean;
   ws?: WebSocket
 }
-const { valueKey, securityApiKeyPrefix, oAuth2Key, oAuth2Token, newTokenKey, basicAuthKey } = API_EXTENSION_KEY;
-
-const apiBaseInfo = inject('apiBaseInfo', ref());
-let tokenUuid = '';
-const authTypeOptions = computed(() => {
-  return _authTypeOptions.filter(i => apiBaseInfo.value?.serviceId || i.value !== 'extends');
-});
 
 const props = withDefaults(defineProps<Props>(), {
   defaultValue: undefined
@@ -36,12 +29,19 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-
 const emits = defineEmits<{
   (e: 'change', value:AuthItem): void,
   (e: 'update:auth', value:boolean):void
 }>();
 
+const { valueKey, securityApiKeyPrefix, oAuth2Key, oAuth2Token, newTokenKey, basicAuthKey } = API_EXTENSION_KEY;
+
+const apiBaseInfo = inject('apiBaseInfo', ref());
+const authTypeOptions = computed(() => {
+  return _authTypeOptions.filter(i => apiBaseInfo.value?.serviceId || i.value !== 'extends');
+});
+
+let tokenUuid = '';
 const type = ref<string | null>(null);
 const authType = ref('authorizationCode');
 const scheme = ref(); // http 类型下 值
@@ -53,14 +53,13 @@ let scopesObj = {};
 const tokenJson = ref({});
 const token = ref();
 
-const flowauthLabel = computed(() => {
+const flowAuthLabel = computed(() => {
   return authLabels.filter(i => {
     return flowAuthKeys[authType.value].includes(i.valueKey);
   });
 });
 
-// 父级的安全认证
-const loadProjectSecurity = async () => {
+const loadServiceSecurity = async () => {
   const [error, resp] = await services.getCompData(apiBaseInfo.value.serviceId, ['securitySchemes'], [], false);
   if (error) {
     return;
@@ -105,16 +104,12 @@ const handleBlur = (e:ChangeEvent, key:'name'|'value'):void => {
       emits('change', { type: 'http', [valueKey]: scheme.value, scheme: type.value });
       break;
   }
-  // emits('change', { type: 'http', [valueKey]: scheme.value, scheme: type.value });
 };
 
-const initHttpBasicData = (value: {username: string; pssword: string}) => {
-  // const decodeMap = decode(scheme.value.replace(/basic\s+/, '')) as {name: string, value: string};
-  // httpAuthData.name = decodeMap.name;
-  // httpAuthData.value = decodeMap.value;
-  const { username = '', pssword = '' } = value || {};
+const initHttpBasicData = (value: {username: string; password: string}) => {
+  const { username = '', password = '' } = value || {};
   httpAuthData.name = username || '';
-  httpAuthData.name = pssword || '';
+  httpAuthData.name = password || '';
 };
 
 // 继承方案
@@ -163,10 +158,10 @@ const oauthData = reactive({
   'x-xc-oauth2-callbackUrl': undefined,
   'x-xc-oauth2-username': undefined,
   'x-xc-oauth2-password': undefined,
-  'x-xc-oauth2-clientAuthType': 'REQUEST_BODY'
+  'x-xc-oauth2-clientAuthType': AuthClientIn.REQUEST_BODY
 });
 
-const pakageOauthData = () => {
+const packageOauthData = () => {
   // if (oauthKey.value === 2) {
   const flowData = {
     'x-xc-oauth2-clientAuthType': oauthData['x-xc-oauth2-clientAuthType'],
@@ -184,7 +179,7 @@ const pakageOauthData = () => {
     }
   });
   const authKey = authType.value === 'authorizationCodePKCE' ? 'authorizationCode' : authType.value;
-  const data = {
+  return {
     type: 'oauth2',
     flows: {
       ...props.defaultValue.flows,
@@ -194,11 +189,10 @@ const pakageOauthData = () => {
     [oAuth2Token]: scheme.value,
     [newTokenKey]: oauthKey.value === 2
   };
-  return data;
 };
 
 const onOauthChange = () => {
-  const data = pakageOauthData();
+  const data = packageOauthData();
   emits('change', data);
 };
 
@@ -207,7 +201,7 @@ const onOauthFlowTypeChange = (authFlow) => {
   tokenJson.value = {};
   token.value = undefined;
   validate.value = false;
-  oauthData['x-xc-oauth2-clientAuthType'] = data?.['x-xc-oauth2-clientAuthType'] || 'REQUEST_BODY';
+  oauthData['x-xc-oauth2-clientAuthType'] = data?.['x-xc-oauth2-clientAuthType'] || AuthClientIn.REQUEST_BODY;
   flowAuthKeys[authType.value].forEach(i => {
     if (i === 'scopes') {
       scopesObj = data[i] || {};
@@ -259,7 +253,7 @@ const fetchOauth2Token = async () => {
       return;
     }
     try {
-      let url:any = new URL(oauthData.tokenUrl);
+      let url:any = new URL(oauthData.tokenUrl || '');
       for (const key in params) {
         if (params[key]) {
           if (key === 'grant_type' && params[key] === 'clientCredentials') {
@@ -270,7 +264,7 @@ const fetchOauth2Token = async () => {
         }
       }
       let requestBody;
-      if (oauthData['x-xc-oauth2-clientAuthType'] === 'REQUEST_BODY') {
+      if (oauthData['x-xc-oauth2-clientAuthType'] === AuthClientIn.REQUEST_BODY) {
         requestBody = {
           content: {
             'application/x-www-form-urlencoded': {
@@ -295,16 +289,27 @@ const fetchOauth2Token = async () => {
           }
         };
       }
-      if (oauthData['x-xc-oauth2-clientAuthType'] === 'QUERY_PARAMETER') {
+      if (oauthData['x-xc-oauth2-clientAuthType'] === AuthClientIn.QUERY_PARAMETER) {
         url.searchParams.append('client_id', oauthData['x-xc-oauth2-clientId']);
         url.searchParams.append('client_secret', oauthData['x-xc-oauth2-clientSecret']);
       }
       const header:any[] = [];
-      if (oauthData['x-xc-oauth2-clientAuthType'] === 'BASIC_AUTH_HEADER') {
-        header.push({ name: 'Authorization', in: 'header', schema: { type: 'string' }, [valueKey]: 'basic ' + encode(oauthData['x-xc-oauth2-clientId'], oauthData['x-xc-oauth2-clientSecret']) });
+      if (oauthData['x-xc-oauth2-clientAuthType'] === AuthClientIn.BASIC_AUTH_HEADER) {
+        header.push({
+          name: 'Authorization',
+          in: 'header',
+          schema: { type: 'string' },
+          [valueKey]: 'basic ' + encode(oauthData['x-xc-oauth2-clientId'], oauthData['x-xc-oauth2-clientSecret'])
+        });
       }
       if (requestBody) {
-        header.push({ name: 'Content-Type', in: 'header', schema: { type: 'string' }, [valueKey]: 'application/x-www-form-urlencoded' });
+        header.push({
+          name: 'Content-Type',
+          in: 'header',
+          schema:
+            { type: 'string' },
+          [valueKey]: 'application/x-www-form-urlencoded'
+        });
       }
       url = url.toString();
       tokenUuid = utils.uuid('anthencation-token');
@@ -404,7 +409,7 @@ const fetchOauthToken = async (oauthData) => {
         }
       }
       let requestBody;
-      if (oauthData['x-xc-oauth2-clientAuthType'] === 'REQUEST_BODY') {
+      if (oauthData['x-xc-oauth2-clientAuthType'] === AuthClientIn.REQUEST_BODY) {
         requestBody = {
           content: {
             'application/x-www-form-urlencoded': {
@@ -429,16 +434,26 @@ const fetchOauthToken = async (oauthData) => {
           }
         };
       }
-      if (oauthData['x-xc-oauth2-clientAuthType'] === 'QUERY_PARAMETER') {
+      if (oauthData['x-xc-oauth2-clientAuthType'] === AuthClientIn.QUERY_PARAMETER) {
         url.searchParams.append('client_id', oauthData['x-xc-oauth2-clientId']);
         url.searchParams.append('client_secret', oauthData['x-xc-oauth2-clientSecret']);
       }
       const header:any[] = [];
-      if (oauthData['x-xc-oauth2-clientAuthType'] === 'BASIC_AUTH_HEADER') {
-        header.push({ name: 'Authorization', in: 'header', schema: { type: 'string' }, [valueKey]: 'basic ' + encode(oauthData['x-xc-oauth2-clientId'], oauthData['x-xc-oauth2-clientSecret']) });
+      if (oauthData['x-xc-oauth2-clientAuthType'] === AuthClientIn.BASIC_AUTH_HEADER) {
+        header.push({
+          name: 'Authorization',
+          in: 'header',
+          schema: { type: 'string' },
+          [valueKey]: 'basic ' + encode(oauthData['x-xc-oauth2-clientId'], oauthData['x-xc-oauth2-clientSecret'])
+        });
       }
       if (requestBody) {
-        header.push({ name: 'Content-Type', in: 'header', schema: { type: 'string' }, [valueKey]: 'application/x-www-form-urlencoded' });
+        header.push({
+          name: 'Content-Type',
+          in: 'header',
+          schema: { type: 'string' },
+          [valueKey]: 'application/x-www-form-urlencoded'
+        });
       }
       url = url.toString();
       const headers: Record<string, string> = {};
@@ -485,12 +500,8 @@ const validateOauthData = (showValidate = true) => {
   if (showValidate) {
     validate.value = true;
   }
-  const keys = flowauthLabel.value.map(i => i.valueKey);
-  if (keys.every(key => key === 'refreshUrl' || !!oauthData[key])) {
-    return true;
-  } else {
-    return false;
-  }
+  const keys = flowAuthLabel.value.map(i => i.valueKey);
+  return keys.every(key => key === 'refreshUrl' || !!oauthData[key]);
 };
 
 const models = {};
@@ -569,7 +580,7 @@ watch(() => props.defaultValue, (newValue) => {
 
 watch(() => apiBaseInfo.value?.serviceId, newValue => {
   if (newValue) {
-    loadProjectSecurity();
+    loadServiceSecurity();
   }
 }, {
   immediate: true
@@ -599,7 +610,7 @@ const getAuthData = async (dataSource) => {
             return [{ access_token: dataSource.flows.password?.['x-xc-oauth2-token'] }];
           } else if (validateOauthData(false)) {
             await fetchOauth2Token();
-            const data = pakageOauthData();
+            const data = packageOauthData();
             return getAuthData({ ...data, [newTokenKey]: false });
           }
         }
@@ -608,7 +619,7 @@ const getAuthData = async (dataSource) => {
             return [{ access_token: dataSource.flows.clientCredentials?.['x-xc-oauth2-token'] }];
           } else if (validateOauthData(false)) {
             await fetchOauth2Token();
-            const data = pakageOauthData();
+            const data = packageOauthData();
             return getAuthData({ ...data, [newTokenKey]: false });
           }
         }
@@ -727,7 +738,12 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
       <template v-if="type==='oauth2'">
         <div class="flex items-center mb-3">
           <span class="w-25">{{ t('service.apiAuthorization.oauth2.configMethod') }}</span>
-          <RadioGroup v-model:value="oauthKey" :options="[{value: 1, label: t('service.apiAuthorization.oauth2.existingToken')}, {value: 2, label: t('service.apiAuthorization.oauth2.generateToken')}]">
+          <RadioGroup
+            v-model:value="oauthKey"
+            :options="[
+              {value: 1, label: t('service.apiAuthorization.oauth2.existingToken')},
+              {value: 2, label: t('service.apiAuthorization.oauth2.generateToken')}
+            ]">
           </RadioGroup>
         </div>
         <template v-if="oauthKey === 1">
@@ -753,7 +769,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
                 @change="onOauthFlowTypeChange" />
             </div>
             <div
-              v-for="item in flowauthLabel"
+              v-for="item in flowAuthLabel"
               :key="item.valueKey"
               :class="{'error': validate && !oauthData[item.valueKey] && !['scopes', 'refreshUrl'].includes(item.valueKey)}"
               class="flex items-center">
@@ -845,7 +861,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
             <Select
               v-model:value="item.in"
               class="w-100"
-              :options="inOpt"
+              :options="QueryAndHeaderInOption"
               @change="changeApiKey" />
           </div>
         </div>

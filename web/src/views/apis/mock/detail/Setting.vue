@@ -256,7 +256,7 @@ const securityFormRef = ref();
             <template v-if="editWorkThreadNum">
               <a
                 class="text-text-link text-3 leading-3"
-                @click="handleEdit('workThreadNum', 'cancel', 'settingForm')">{{t('actions.cancel') }}</a>
+                @click="handleEdit('workThreadNum', 'cancel', 'settingForm')">{{ t('actions.cancel') }}</a>
               <Divider type="vertical" />
               <a
                 class="text-text-link text-3 leading-3"

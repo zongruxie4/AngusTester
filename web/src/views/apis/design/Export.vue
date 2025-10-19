@@ -17,7 +17,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-
 const emits = defineEmits<{
   (e: 'cancel'):void;
   (e: 'ok'):void;

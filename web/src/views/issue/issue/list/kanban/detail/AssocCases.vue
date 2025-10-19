@@ -20,7 +20,6 @@ const props = withDefaults(defineProps<TaskDetailProps>(), {
 
 const { t } = useI18n();
 
-
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'change', value: Partial<TaskDetail>): void;

@@ -77,7 +77,6 @@ import {
   RequestHeader,
   RequestParams,
   ResponseState,
-  Setting,
   State
 } from './interface';
 import {
@@ -85,10 +84,10 @@ import {
   validateBodyForm,
   validateQueryParameter
 } from './utils';
-import {AssertResult, ConditionResult, Parameter} from './types';
+import { AssertResult, ConditionResult, Parameter, RequestSetting } from './types';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import {ParamsItem} from "@/views/apis/services/protocol/types";
+import { ApisFormEdit, ParamsItem } from '@/views/apis/services/protocol/types';
 
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
 const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
@@ -215,7 +214,7 @@ const toolbarRef = ref(); // 底部响应comp ref;
 const maxHeight = ref(0); // 最大高度
 const loading = ref(false); // 发送请求
 const mainWrapper = ref();
-const availableServers = ref<{ description: string; url: string; variabled: boolean;[serverSourceKey]: string }[]>([]); // 所有可用 server
+const availableServers = ref<ServerInfo[]>([]); // 所有可用 server
 const isUnarchivedApi = ref<boolean>(true);
 const requestHeaderRef = ref();
 const requestCookieRef = ref();
@@ -225,7 +224,7 @@ let initParams = {};
 const assertResult = ref<AssertResult[]>();// 断言结果
 
 // 保存编辑的数据
-const saveParams = ref({
+const saveParams = ref<ApisFormEdit>({
   id: undefined,
   operationId: undefined,
   summary: undefined,
@@ -240,42 +239,6 @@ const saveParams = ref({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 const updateApiGroup = inject('updateApiGroup', (_id) => undefined);
 
-// 更新 api 信息
-provide('setApiInfo', (info) => {
-  saveParams.value.id = info.id;
-  saveParams.value.ownerId = info.ownerId;
-  if (saveParams.value.serviceId) {
-    updateApiGroup(saveParams.value.serviceId);
-  }
-  if (saveParams.value.serviceId !== info.serviceId) {
-    saveParams.value.serviceId = info.serviceId;
-    updateApiGroup(saveParams.value.serviceId);
-  }
-  if (isUnarchivedApi.value) {
-    refreshUnarchived();
-  }
-  saveParams.value.summary = info.name;
-  isUnarchivedApi.value = false;
-  if (props.pid === info.id + 'API') {
-    updateTabPane({ _id: props.pid, pid: props.pid, id: info.id, name: info.name, unarchived: false });
-  } else {
-    replaceTabPane(props.pid, { _id: info.id + 'API', pid: info.id + 'API', id: info.id, name: info.name, unarchived: false, value: 'API' });
-  }
-  initParams = getParameter();
-});
-
-provide('setUnarchivedApiInfo', (info) => {
-  saveParams.value.id = info.id;
-  saveParams.value.summary = info.name;
-  isUnarchivedApi.value = true;
-  if (props.pid === info.id + 'API') {
-    updateTabPane({ _id: props.pid, pid: info.id + 'API', id: info.id, name: info.name, unarchived: true });
-  } else {
-    replaceTabPane(props.pid, { _id: info.id + 'API', pid: info.id + 'API', id: info.id, name: info.name, unarchived: true, value: 'API' });
-  }
-  initParams = getParameter();
-});
-
 const responseState = reactive<ResponseState>({
   config: {},
   headers: {},
@@ -289,7 +252,7 @@ const responseState = reactive<ResponseState>({
   contentEncoding: undefined
 });
 
-const setting = ref<Setting>({
+const setting = ref<RequestSetting>({
   enableParamValidation: false,
   connectTimeout: 6000,
   readTimeout: 60000,
@@ -360,7 +323,7 @@ const changeAuthData = (data): void => {
   state.authentication = data;
 };
 
-const changeSetting = (data: Setting): void => {
+const changeSetting = (data: RequestSetting): void => {
   setting.value = data;
 };
 
@@ -373,7 +336,7 @@ const handleStatusChange = async (value: string) => {
 };
 
 const getModelFromRef = async (ref) => {
-  const [error, resp] = await getModelDataByRef(saveParams.value.serviceId as string, ref);
+  const [error, resp] = await getModelDataByRef(saveParams.value.serviceId, ref);
   if (error) {
     return {};
   }
@@ -1732,6 +1695,42 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   erd.removeListener(mainWrapper.value, resizeHandler);
+});
+
+// 更新 api 信息
+provide('setApiInfo', (info) => {
+  saveParams.value.id = info.id;
+  saveParams.value.ownerId = info.ownerId;
+  if (saveParams.value.serviceId) {
+    updateApiGroup(saveParams.value.serviceId);
+  }
+  if (saveParams.value.serviceId !== info.serviceId) {
+    saveParams.value.serviceId = info.serviceId;
+    updateApiGroup(saveParams.value.serviceId);
+  }
+  if (isUnarchivedApi.value) {
+    refreshUnarchived();
+  }
+  saveParams.value.summary = info.name;
+  isUnarchivedApi.value = false;
+  if (props.pid === info.id + 'API') {
+    updateTabPane({ _id: props.pid, pid: props.pid, id: info.id, name: info.name, unarchived: false });
+  } else {
+    replaceTabPane(props.pid, { _id: info.id + 'API', pid: info.id + 'API', id: info.id, name: info.name, unarchived: false, value: 'API' });
+  }
+  initParams = getParameter();
+});
+
+provide('setUnarchivedApiInfo', (info) => {
+  saveParams.value.id = info.id;
+  saveParams.value.summary = info.name;
+  isUnarchivedApi.value = true;
+  if (props.pid === info.id + 'API') {
+    updateTabPane({ _id: props.pid, pid: info.id + 'API', id: info.id, name: info.name, unarchived: true });
+  } else {
+    replaceTabPane(props.pid, { _id: info.id + 'API', pid: info.id + 'API', id: info.id, name: info.name, unarchived: true, value: 'API' });
+  }
+  initParams = getParameter();
 });
 
 defineExpose({ autoSave, pid: props.pid });

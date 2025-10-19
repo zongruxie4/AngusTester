@@ -2,8 +2,12 @@
 import { onMounted, ref, defineAsyncComponent, computed, inject, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Tabs, TabPane } from 'ant-design-vue';
-import { NoData } from '@xcan-angus/vue-ui';
 import { exec } from '@/api/ctrl';
+import { ScriptType } from '@xcan-angus/infra';
+
+const TestSummary = defineAsyncComponent(() => import('./TestSummary.vue'));
+const ExecDetail = defineAsyncComponent(() => import('@/views/execution/detail/index.vue'));
+const Task = defineAsyncComponent(() => import('./Task.vue'));
 
 interface Props {
   apisId: string;
@@ -18,9 +22,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
-const TestSummary = defineAsyncComponent(() => import('./TestSummary.vue'));
-const ExecDetail = defineAsyncComponent(() => import('@/views/execution/detail/index.vue'));
-const Task = defineAsyncComponent(() => import('./Task.vue'));
 
 const activeTab = ref('func');
 const dataSource = ref();
@@ -55,7 +56,6 @@ onMounted(() => {
     loadApisResult();
   }
 });
-
 </script>
 <template>
   <div class="h-full" :class="[['activity', 'comment'].includes(activeTab) ? 'flex flex-col' : 'overflow-y-auto']">
@@ -77,46 +77,32 @@ onMounted(() => {
           :showBackBtn="false"
           :execId="funcExecId"
           :monicaEditorStyle="{height: '600px'}"
-          scriptType="TEST_FUNCTIONALITY"
+          :scriptType="ScriptType.TEST_FUNCTIONALITY"
           @del="handleDel" />
-
-        <!--        <NoData size="small" class="mt-25" />-->
       </TabPane>
       <TabPane key="perf" :tab="t('service.apiExecDetail.tabs.performanceTest')">
         <ExecDetail
           :showBackBtn="false"
           :execId="perfExecId"
           :monicaEditorStyle="{height: '600px'}"
-          scriptType="TEST_PERFORMANCE"
+          :scriptType="ScriptType.TEST_PERFORMANCE"
           @del="handleDel" />
-        <!--        <NoData-->
-        <!--          v-else-->
-        <!--          size="small"-->
-        <!--          class="mt-25" />-->
       </TabPane>
       <TabPane key="stability" :tab="t('service.apiExecDetail.tabs.stabilityTest')">
         <ExecDetail
           :showBackBtn="false"
           :execId="stabilityExecId"
           :monicaEditorStyle="{height: '600px'}"
-          scriptType="TEST_STABILITY"
+          :scriptType="ScriptType.TEST_STABILITY"
           @del="handleDel" />
-        <!--        <NoData-->
-        <!--          v-else-->
-        <!--          size="small"-->
-        <!--          class="mt-25" />-->
       </TabPane>
       <TabPane key="custom" :tab="t('service.apiExecDetail.tabs.customTest')">
         <ExecDetail
           :showBackBtn="false"
           :execId="customExecId"
           :monicaEditorStyle="{height: '600px'}"
-          scriptType="TEST_CUSTOMIZATION"
+          :scriptType="ScriptType.TEST_CUSTOMIZATION"
           @del="handleDel" />
-        <!--        <NoData-->
-        <!--          v-else-->
-        <!--          size="small"-->
-        <!--          class="mt-25" />-->
       </TabPane>
       <TabPane
         v-if="proTypeShowMap.showTask"

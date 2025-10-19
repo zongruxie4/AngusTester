@@ -50,7 +50,6 @@ const enterHandle = (e: ChangeEvent): void => {
   if (e.key !== 'Enter') {
     return;
   }
-
   e.target.blur();
 };
 
@@ -206,21 +205,6 @@ const changeSchema = (schema, item, index) => {
   changeEmit(index, temp);
 };
 
-watch(() => props.value, (newValue) => {
-  if (state.formData.length && state.formData.some(item => !!item.name || (!!item.schema?.type && item.schema?.type !== 'string') || !!item[valueKey])) {
-    return;
-  }
-  state.formData = (newValue || []).map((i, idx) => {
-    return { ...i, key: i.key || getKey(idx) };
-  });
-  if (state.formData.every(i => !!i.name)) {
-    state.formData.push(getDefaultParams({ in: 'cookie', key: getKey() }) as ParamsInfo);
-  }
-}, {
-  deep: true,
-  immediate: true
-});
-
 const updateComp = async () => {
   if (!apiBaseInfo.value?.serviceId) {
     return;
@@ -229,7 +213,8 @@ const updateComp = async () => {
     if (state.formData[i].$ref) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { $ref, ...content } = state.formData[i];
-      await services.addComponent(apiBaseInfo.value?.serviceId, 'parameters', state.formData[i].name, { ...content, schema: { ...(content.schema || {}), [valueKey]: content[valueKey] } });
+      await services.addComponent(apiBaseInfo.value?.serviceId, 'parameters', state.formData[i].name,
+        { ...content, schema: { ...(content.schema || {}), [valueKey]: content[valueKey] } });
     }
     if (jsContentRef.value[i]) {
       await jsContentRef.value[i].updateComp();
@@ -248,6 +233,21 @@ const getModelResolve = () => {
   });
   return models;
 };
+
+watch(() => props.value, (newValue) => {
+  if (state.formData.length && state.formData.some(item => !!item.name || (!!item.schema?.type && item.schema?.type !== 'string') || !!item[valueKey])) {
+    return;
+  }
+  state.formData = (newValue || []).map((i, idx) => {
+    return { ...i, key: i.key || getKey(idx) };
+  });
+  if (state.formData.every(i => !!i.name)) {
+    state.formData.push(getDefaultParams({ in: 'cookie', key: getKey() }) as ParamsInfo);
+  }
+}, {
+  deep: true,
+  immediate: true
+});
 
 defineExpose({ updateComp, getModelResolve, validate: validateContents });
 </script>

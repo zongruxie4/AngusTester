@@ -4,19 +4,20 @@ import { useI18n } from 'vue-i18n';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { Icon, Input, Select, SelectSchema, notification } from '@xcan-angus/vue-ui';
 import { Button, Checkbox } from 'ant-design-vue';
-import { API_EXTENSION_KEY, deepDelAttrFromObj, getModelDataByRef } from '@/utils/apis';
+import { API_EXTENSION_KEY, deepDelAttrFromObj, getModelDataByRef, QueryAndPathInOption } from '@/utils/apis';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { deconstruct } from '@/utils/swagger';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { services } from '@/api/tester';
+import { schemaTypeToOptions } from '@/views/apis/services/protocol/http/utils';
+import { ParamsInfo } from '@/views/apis/services/protocol/http/types';
 
-import { inOptions, itemTypes, transJsonToList, transListToJson, transListToSchema } from './util';
+import { transJsonToList, transListToJson, transListToSchema } from './util';
 
-import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
-import {ParamsInfo} from "@/views/apis/services/protocol/http/types";
-
+const SimpleEditableSelect = defineAsyncComponent(() => import('@/components/apis/editableSelector/index.vue'));
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
+
 const { t } = useI18n();
 const ajv = new Ajv();
 addFormats(ajv);
@@ -44,14 +45,14 @@ interface Props {
   paramInType?: 'path'|'query'
 }
 
-const emit = defineEmits<{(e: 'update:data', value: any):void, (e: 'change', value: any): void}>();
-
 const props = withDefaults(defineProps<Props>(), {
   data: () => ([]),
   pType: 'array',
   disabled: false,
   paramInType: undefined
 });
+
+const emit = defineEmits<{(e: 'update:data', value: any):void, (e: 'change', value: any): void}>();
 
 const emitHandle = () => {
   const data = transListToJson(dataSource.value, props.pType);
@@ -68,18 +69,9 @@ const disabledType = (item) => {
   if (props.disabled || item.$ref) {
     return true;
   }
-  // if (disableItemId.value[item.id]) {
-  //   return true;
-  // }
   if (disabledItem(item)) {
     return true;
   }
-  // const firstChild = dataSource.value.find(i => i.pid === item.pid);
-  // const parent = dataSourceObj.value[item.pid] || { id: -1, type: props.pType };
-  // if (parent.type === 'array' && firstChild.id !== item.id) {
-  //   disableItemId.value[item.id] = true;
-  //   return true;
-  // }
   return false;
 };
 
@@ -97,7 +89,6 @@ const disabledName = (item) => {
 };
 
 const hideDel = (item) => {
-  // && item.type !== 'array'
   return disabledItem(item) && dataSourceObj.value[item.pid]?.type !== 'array' && item.pid !== -1;
 };
 
@@ -109,14 +100,11 @@ const allArrFirstIds = computed(() => {
   const result = [];
   if (props.pType === 'array') {
     result.push(-1);
-    // const first = dataSource.value[0];
-    // if (first.type) {
-    //   findAllFirstArr(dataSource.value.filter(i => i.idLine.includes(first.id)), samplingSummary);
-    // }
   }
   const other = dataSource.value.filter(i => {
     if (i.type === 'array') {
-      if ((dataSourceObj.value[i.pid] === -1 && props.pType !== 'array') || (dataSourceObj.value[i.pid] && dataSourceObj.value[i.pid].type !== 'array')) {
+      if ((dataSourceObj.value[i.pid] === -1 && props.pType !== 'array') ||
+        (dataSourceObj.value[i.pid] && dataSourceObj.value[i.pid].type !== 'array')) {
         return true;
       }
       if (dataSource.value.find(t => t.pid === i.pid)?.id === i.id) {
@@ -125,7 +113,6 @@ const allArrFirstIds = computed(() => {
     }
     return false;
   }).map(i => i.id);
-  // return [...samplingSummary, ...other];
   return [...result, ...other].map(pid => {
     const first = dataSource.value.find(i => i.pid === pid);
     return first?.id;
@@ -152,22 +139,10 @@ const disabledAdd = (item) => {
   return item.type === 'object' && disabledItem(item);
 };
 
-// const selectModel = () => {
-//   if (dataSource.value.every(i => i.name)) {
-//     dataSource.value.push(getDefaultItem());
-//   }
-// };
-
 const changeType = (value, item, idx) => {
   if (value === 'array' || value === 'object') {
     item[valueKey] = undefined;
   }
-  // let childs: Item[] = [];
-  // if ((dataSourceObj.value[item.pid] && dataSourceObj.value[item.pid].type === 'array') || (item.pid === -1 && props.pType === 'array')) {
-  //   childs = dataSource.value.filter(i => (i.idLine.includes(item.pid) || item.pid === -1) && item.id !== i.id);
-  // } else {
-  //   childs = dataSource.value.filter(i => i.idLine.includes(item.id) && item.id !== i.id);
-  // }
   const childs = value === 'array'
     ? dataSource.value.filter(i => (i.idLine.includes(item.pid) || item.pid === -1) && item.id !== i.id)
     : dataSource.value.filter(i => i.idLine.includes(item.id) && item.id !== i.id);
@@ -189,8 +164,6 @@ const addItem = (pItem, idx = dataSource.value.length) => {
   const id = utils.uuid('api');
   if (pItem.type === 'array') {
     if (childs.length > 0) {
-    // if ((childs.length > 0 && pItem.level < 1) || childs.length > 1) {
-      // let allItems = [];
       const firstId = childs[0].id;
       let allItems = dataSource.value.filter(i => i.idLine.includes(firstId));
       allItems = JSON.parse(JSON.stringify(allItems));
@@ -317,16 +290,6 @@ const copyValue = async (data: ParamsInfo) => {
   });
 };
 
-watch(() => props.pType, () => {
-  const childrenSchema = props.pType === 'array' ? (props.schema || {}) : (props.schema.properties || {});
-  dataSource.value = transJsonToList(props.data, -1, 1, [], childrenSchema, props.schema);
-  dataSource.value.forEach(i => {
-    dataSourceObj.value[i.id] = i;
-  });
-}, {
-  immediate: true
-});
-
 const startValidate = ref(false);
 const validate = (val = true) => {
   startValidate.value = val;
@@ -360,6 +323,16 @@ const updateComp = async () => {
     await services.addComponent(apiBaseInfo.value.serviceId, 'schema', i.name as string, schema);
   }
 };
+
+watch(() => props.pType, () => {
+  const childrenSchema = props.pType === 'array' ? (props.schema || {}) : (props.schema.properties || {});
+  dataSource.value = transJsonToList(props.data, -1, 1, [], childrenSchema, props.schema);
+  dataSource.value.forEach(i => {
+    dataSourceObj.value[i.id] = i;
+  });
+}, {
+  immediate: true
+});
 
 defineExpose({ addItem, validate, getModelResolve, updateComp });
 </script>
@@ -397,12 +370,12 @@ defineExpose({ addItem, validate, getModelResolve, updateComp });
       v-if="props.paramInType"
       :value="props.paramInType"
       class="w-25"
-      :options="inOptions"
+      :options="QueryAndPathInOption"
       :disabled="true" />
     <Select
       v-model:value="item.type"
       class="w-25"
-      :options="itemTypes"
+      :options="schemaTypeToOptions"
       :disabled="disabledType(item)"
       @change="changeType($event, item, idx)" />
     <Input

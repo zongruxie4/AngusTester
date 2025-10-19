@@ -1,42 +1,10 @@
 import { utils } from '@xcan-angus/infra';
-import { API_EXTENSION_KEY, getDataTypeFromFormat } from '@/utils/apis';
+import { API_EXTENSION_KEY, getDataTypeFromFormat, getDataType } from '@/utils/apis';
 
 const { valueKey } = API_EXTENSION_KEY;
 
-export const itemTypes = [
-  'string',
-  'array',
-  'boolean',
-  'integer',
-  'object',
-  'number'
-].map(i => ({ value: i, label: i }));
-
-export const inOptions = ['path', 'query'].map(i => ({ value: i, label: i }));
-
-export const baseTypes = [
-  'string',
-  'boolean',
-  'integer',
-  'number'
-].map(i => ({ value: i, label: i }));
-
-export const getDataType = (data) => {
-  const type = typeof data;
-  if (type !== 'object') {
-    return type;
-  }
-  if (Object.prototype.toString.call(data) === '[object Array]') {
-    return 'array';
-  }
-  if (Object.prototype.toString.call(data) === '[object Object]') {
-    return 'object';
-  }
-};
-
 /**
- *transform JSON to list<key, value>[]
- *
+ *transform JSON to list<key, value>[] TODO 重复代码, 和上层 utils 文件合并
  */
 export const transJsonToList = (data: any [] | Record<string, any>, pid = -1, level = 1, defaultData: any[] = [], schema = {}, topSchema = {}): any[] => {
   const transArr = (data, pid = -1, level = 1, schema) => {

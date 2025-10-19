@@ -7,7 +7,6 @@ import type { OrderByKey } from '../../types';
 type FilterItem = SearchCriteria;
 type SearchPanelParams = PageQuery;
 
-
 export function useSearchPanelAction (
   searchPanelRef: any,
   userId: string,
@@ -60,55 +59,55 @@ export function useSearchPanelAction (
  * @param selectedKeys - Array of selected option keys
  * @param searchCriteria - Array of search criteria from quick search
  */
-const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void => {
+  const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void => {
   // Update quick search filters
-  if (key === 'createdBy') {
-    if (selectedKeys.includes(key)) {
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([{
-          valueKey: 'createdBy',
-          value: userId
-        }]);
+    if (key === 'createdBy') {
+      if (selectedKeys.includes(key)) {
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{
+            valueKey: 'createdBy',
+            value: userId
+          }]);
+        }
+      } else {
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{
+            valueKey: 'createdBy',
+            value: undefined
+          }]);
+        }
       }
-    } else {
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([{
-          valueKey: 'createdBy',
-          value: undefined
-        }]);
-      }
+      searchCriteria = searchCriteria.filter(f => f.key !== 'createdBy');
     }
-    searchCriteria = searchCriteria.filter(f => f.key !== 'createdBy');
-  }
 
-  if (key && key.startsWith('last') && (key.endsWith('Day') && key.endsWith('Days'))) {
-    if (selectedKeys.includes(key)) {
-      const createdDataSearchCriteria = searchCriteria.filter(f => f.key === 'createdDate');
-      const createdDataValue = [createdDataSearchCriteria[0].value, createdDataSearchCriteria[1].value]
+    if (key && key.startsWith('last') && (key.endsWith('Day') && key.endsWith('Days'))) {
+      if (selectedKeys.includes(key)) {
+        const createdDataSearchCriteria = searchCriteria.filter(f => f.key === 'createdDate');
+        const createdDataValue = [createdDataSearchCriteria[0].value, createdDataSearchCriteria[1].value];
 
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([{
-          valueKey: 'createdDate',
-          value: createdDataValue,
-          type: 'date-range'
-        }]);
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{
+            valueKey: 'createdDate',
+            value: createdDataValue,
+            type: 'date-range'
+          }]);
+        }
+      } else {
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{
+            valueKey: 'createdDate',
+            value: undefined,
+            type: 'date-range'
+          }]);
+        }
       }
-    } else {
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([{
-          valueKey: 'createdDate',
-          value: undefined,
-          type: 'date-range'
-        }]);
-      }
+      searchCriteria = searchCriteria.filter(f => f.key !== 'createdDate');
     }
-    searchCriteria = searchCriteria.filter(f => f.key !== 'createdDate');
-  }
-  quickSearchFilters.value = searchCriteria;
+    quickSearchFilters.value = searchCriteria;
 
-  // Emit change event with current params
-  emit(getParams());
-};
+    // Emit change event with current params
+    emit(getParams());
+  };
 
   /**
    * Handle sort change event

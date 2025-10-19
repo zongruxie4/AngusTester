@@ -17,7 +17,6 @@ const props = withDefaults(defineProps<BasicProps>(), {
   notify: undefined
 });
 
-
 const emit = defineEmits<{
   (e: 'import'): void;
   (e: 'delete'): void;

@@ -22,7 +22,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-
 const emits = defineEmits<{
   (e: 'update:template', value: string): void;
   (e: 'update:templateData', value: EnumMessage<AnalysisTaskTemplate>[]): void;

@@ -5,12 +5,13 @@ import { XCanDexie, utils, enumUtils, HttpMethod } from '@xcan-angus/infra';
 import { Button, Divider, Dropdown } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
+import { ApiPermission } from '@/enums/enums';
 import { API_EXTENSION_KEY } from '@/utils/apis';
 import { ServerInfo } from '@/views/apis/server/types';
+import { getDefaultParams } from '@/views/apis/services/protocol/http/utils';
 
 import ServerInput from './ServerInput.vue';
 
-import {getDefaultParams} from "@/views/apis/services/protocol/http/utils";
 const AddCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/AddCaseModal.vue'));
 
 const { serverSourceKey, valueKey, idKey } = API_EXTENSION_KEY;
@@ -156,7 +157,7 @@ const handleRequest = async () => {
 
 // apiUri 回车
 const handleEnter = (): void => {
-  if (!auths.value.includes('DEBUG')) {
+  if (!auths.value.includes(ApiPermission.DEBUG)) {
     return;
   }
 
@@ -168,7 +169,7 @@ const handleEnter = (): void => {
 // currentServer 回车
 const handleServerEnter = () => {
   emit('update:currentServer', currentHttpServer.value);
-  if (!auths.value.includes('DEBUG')) {
+  if (!auths.value.includes(ApiPermission.DEBUG)) {
     return;
   }
 
@@ -415,7 +416,7 @@ onMounted(() => {
         <Button
           v-if="!props.loading"
           type="primary"
-          :disabled="!auths.includes('DEBUG')"
+          :disabled="!auths.includes(ApiPermission.DEBUG)"
           @click="handleRequest">
           <template #icon>
             <Icon class="mr-2" icon="icon-fasong" />
@@ -439,13 +440,13 @@ onMounted(() => {
         <template v-if="props.id">
           <Button
             class="ml-2"
-            :disabled="!auths.includes('MODIFY')"
+            :disabled="!auths.includes(ApiPermission.MODIFY)"
             @click="emit('save')">
             {{ t('actions.save') }}
           </Button>
           <Button
             class="ml-2"
-            :disabled="!auths.includes('MODIFY')"
+            :disabled="!auths.includes(ApiPermission.MODIFY)"
             @click="emit('archived')">
             {{ t('service.apiServerPath.actions.archive') }}
           </Button>
@@ -453,7 +454,7 @@ onMounted(() => {
         <template v-else>
           <Button
             class="ml-2"
-            :disabled="!auths.includes('MODIFY')"
+            :disabled="!auths.includes(ApiPermission.MODIFY)"
             @click="emit('save')">
             {{ t('service.apiServerPath.actions.saveToUnarchived') }}
           </Button>
@@ -477,7 +478,7 @@ onMounted(() => {
             </template>
             <Button
               class="ml-2"
-              :disabled="!auths.includes('MODIFY')"
+              :disabled="!auths.includes(ApiPermission.MODIFY)"
               @click="emit('archived')">
               {{ t('service.apiServerPath.actions.archive') }}
             </Button>
@@ -487,7 +488,7 @@ onMounted(() => {
       <template v-else>
         <Button
           class="ml-2"
-          :disabled="!auths.includes('MODIFY')"
+          :disabled="!auths.includes(ApiPermission.MODIFY)"
           @click="emit('save')">
           <template #icon>
             <Icon class="mr-2" icon="icon-baocun" />
@@ -496,7 +497,7 @@ onMounted(() => {
         </Button>
         <Button
           class="ml-2"
-          :disabled="!auths.includes('MODIFY')"
+          :disabled="!auths.includes(ApiPermission.MODIFY)"
           @click="openCaseModal">
           {{ t('service.apiServerPath.actions.generateCase') }}
         </Button>

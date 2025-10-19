@@ -16,7 +16,6 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: ''
 });
 
-
 const emits = defineEmits<{
   (e: 'cancel'):void;
   (e: 'ok'):void;

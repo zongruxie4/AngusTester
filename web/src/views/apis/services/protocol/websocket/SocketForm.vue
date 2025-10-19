@@ -8,7 +8,8 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import { API_EXTENSION_KEY } from '@/utils/apis';
 import { deconstruct } from '@/utils/swagger';
 import { services } from '@/api/tester';
-import { FormData, getDefaultForm, itemTypes } from './PropsType';
+import { FormData, getDefaultForm } from './PropsType';
+import { schemaTypeToOptions } from '@/views/apis/services/protocol/http/utils';
 
 import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
 
@@ -201,7 +202,7 @@ defineExpose({ getModelResolve, addItem });
           v-model:value="item.schema.type"
           class="w-25"
           :disabled="item.$ref"
-          :options="itemTypes"
+          :options="schemaTypeToOptions"
           @change="changeDataType($event, index, item)" />
         <ParamInput
           v-if="!['array', 'object'].includes(item.schema.type)"

@@ -26,7 +26,6 @@ const props = withDefaults(defineProps<Props>(), {
   defaultIn: ParameterIn.query
 });
 
-
 const emit = defineEmits<{
   (e: 'change', value: Parameter[]): void;
   (e: 'changePath', value: Parameter[]): void;

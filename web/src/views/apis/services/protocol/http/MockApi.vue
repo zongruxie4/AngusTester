@@ -27,24 +27,13 @@ const mockApisId = ref();
 const mockServiceId = ref();
 const mockApiInfo = ref();
 const loading = ref(true);
+
 const loadMockApiInfo = async (id:string) => {
   const [error, { data }] = await apis.getMockApiByApiId(id);
   loading.value = false;
   if (error) { return; }
   mockApiInfo.value = JSON.parse(JSON.stringify(data));
 };
-
-const columns = [[
-  { label: t('service.mockApi.columns.apiName'), dataIndex: 'name' },
-  { label: t('service.mockApi.columns.mockServiceName'), dataIndex: 'mockServiceName' }
-], [
-  { label: t('common.method'), dataIndex: 'method' },
-  { label: t('service.mockApi.columns.mockServiceHostUrl'), dataIndex: 'mockServiceHostUrl' }
-],
-[
-  { label: t('common.createdBy'), dataIndex: 'createdByName' },
-  { label: t('common.createdDate'), dataIndex: 'createdDate' }
-]];
 
 const summary = ref('');
 const createApiLoading = ref(false);
@@ -56,7 +45,7 @@ const createMockApiById = async () => {
   if (error) { return; }
   mockApisId.value = data?.id;
   notification.success(t('service.mockApi.messages.generateSuccess'));
-  loadMockApiInfo(props.id);
+  await loadMockApiInfo(props.id);
 };
 
 const selectedMockApiId = ref();
@@ -71,38 +60,10 @@ const relatedMockServiceApi = async () => {
   }
   mockApisId.value = selectedMockApiId.value;
   notification.success(t('service.mockApi.messages.associateSuccess'));
-  loadMockApiInfo(props.id);
+  await loadMockApiInfo(props.id);
 };
 
-const mockServiceCount = [
-  {
-    name: t('service.mockApi.statistics.requestNum'),
-    key: 'requestNum',
-    icon: 'icon-qingqiushu'
-  },
-  {
-    name: t('service.mockApi.statistics.pushbackNum'),
-    key: 'pushbackNum',
-    icon: 'icon-huituishu'
-  },
-  {
-    name: t('service.mockApi.statistics.simulateErrorNum'),
-    key: 'simulateErrorNum',
-    icon: 'icon-moniyichangshu'
-  },
-  {
-    name: t('service.mockApi.statistics.successNum'),
-    key: 'successNum',
-    icon: 'icon-chenggongshu1'
-  },
-  {
-    name: t('service.mockApi.statistics.exceptionNum'),
-    key: 'exceptionNum',
-    icon: 'icon-yichangshu1'
-  }
-];
-
-const cencelProjcetMock = async () => {
+const cancelMockApi = async () => {
   loading.value = true;
   const [error] = await mock.cancelMockApiAssoc([mockApiInfo.value.id]);
   loading.value = false;
@@ -132,16 +93,6 @@ const loadApiInfo = async (_id) => {
   summary.value = data?.summary || '';
 };
 
-watch(() => props.id, async (newValue) => {
-  mockApiInfo.value = undefined;
-  if (newValue) {
-    await loadMockApiInfo(newValue);
-    loadApiInfo(newValue);
-  }
-}, {
-  immediate: true
-});
-
 const mockApiParams = computed(() => {
   return { mockServiceId: mockServiceId.value };
 });
@@ -149,6 +100,57 @@ const mockApiParams = computed(() => {
 const format = (data) => {
   return { ...data, disabled: !!data.assocApisId };
 };
+
+watch(() => props.id, async (newValue) => {
+  mockApiInfo.value = undefined;
+  if (newValue) {
+    await loadMockApiInfo(newValue);
+    await loadApiInfo(newValue);
+  }
+}, {
+  immediate: true
+});
+
+const mockServiceCount = [
+  {
+    name: t('service.mockApi.statistics.requestNum'),
+    key: 'requestNum',
+    icon: 'icon-qingqiushu'
+  },
+  {
+    name: t('service.mockApi.statistics.pushbackNum'),
+    key: 'pushbackNum',
+    icon: 'icon-huituishu'
+  },
+  {
+    name: t('service.mockApi.statistics.simulateErrorNum'),
+    key: 'simulateErrorNum',
+    icon: 'icon-moniyichangshu'
+  },
+  {
+    name: t('service.mockApi.statistics.successNum'),
+    key: 'successNum',
+    icon: 'icon-chenggongshu1'
+  },
+  {
+    name: t('service.mockApi.statistics.exceptionNum'),
+    key: 'exceptionNum',
+    icon: 'icon-yichangshu1'
+  }
+];
+
+const columns = [[
+  { label: t('service.mockApi.columns.apiName'), dataIndex: 'name' },
+  { label: t('service.mockApi.columns.mockServiceName'), dataIndex: 'mockServiceName' }
+], [
+  { label: t('common.method'), dataIndex: 'method' },
+  { label: t('service.mockApi.columns.mockServiceHostUrl'), dataIndex: 'mockServiceHostUrl' }
+],
+[
+  { label: t('common.createdBy'), dataIndex: 'createdByName' },
+  { label: t('common.createdDate'), dataIndex: 'createdDate' }
+]];
+
 </script>
 <template>
   <div class="h-full w-full">
@@ -168,7 +170,7 @@ const format = (data) => {
                 <a class="whitespace-nowrap text-text-disabled cursor-not-allowed ml-2">{{ t('service.mockApi.actions.cancelAssociation') }}</a>
               </template>
               <template v-else>
-                <a class="whitespace-nowrap text-text-link ml-2" @click="cencelProjcetMock">{{ t('service.mockApi.actions.cancelAssociation') }}</a>
+                <a class="whitespace-nowrap text-text-link ml-2" @click="cancelMockApi">{{ t('service.mockApi.actions.cancelAssociation') }}</a>
               </template>
             </div>
           </template>

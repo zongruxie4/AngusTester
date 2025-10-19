@@ -181,28 +181,27 @@ const handleSearchPanelChange = (data: SearchCriteria[], _headers?: { [key: stri
  * @param searchCriteria - Array of search criteria from quick search
  */
 const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void => {
-
   // Update quick search filters
   if (key && key.startsWith('last') && (key.endsWith('Day') || key.endsWith('Days'))) {
     if (selectedKeys.includes(key)) {
       const createdDataSearchCriteria = searchCriteria.filter(f => f.key === 'createdDate');
       const createdDataValue = [createdDataSearchCriteria[0].value, createdDataSearchCriteria[1].value];
       if (createdDataValue.length > 0) {
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([{
-          valueKey: 'createdDate',
-          type: 'date-range',
-          value: createdDataValue
-        }]);
-      } else {
         if (typeof searchPanelRef.value?.setConfigs === 'function') {
           searchPanelRef.value.setConfigs([{
             valueKey: 'createdDate',
             type: 'date-range',
-            value: undefined
+            value: createdDataValue
           }]);
+        } else {
+          if (typeof searchPanelRef.value?.setConfigs === 'function') {
+            searchPanelRef.value.setConfigs([{
+              valueKey: 'createdDate',
+              type: 'date-range',
+              value: undefined
+            }]);
+          }
         }
-       }
       }
     }
   }
@@ -213,7 +212,7 @@ const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchC
 
   // Emit change event with current params
   emits('change', getSearchParameters());
-}
+};
 
 /**
  * Handle sort change

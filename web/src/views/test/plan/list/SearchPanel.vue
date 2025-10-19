@@ -26,7 +26,6 @@ const props = withDefaults(defineProps<{
 
 type OrderByKey = string;
 
-
 const emits = defineEmits<{
     (e: 'change', value: { orderBy?: string; orderSort?: PageQuery.OrderSort; filters: SearchCriteria[]; }):void,
     (e: 'refresh'):void

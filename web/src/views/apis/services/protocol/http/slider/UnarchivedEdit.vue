@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-import { computed, inject, reactive, ref, watch, Ref } from 'vue';
+import { computed, inject, reactive, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Hints, Input, notification } from '@xcan-angus/vue-ui';
 import { apis } from '@/api/tester';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { appContext } from '@xcan-angus/infra';
+import { ApisFormEdit } from '@/views/apis/services/protocol/types';
+import { ApiStatus } from '@/enums/enums';
 
 interface Props {
   disabled:boolean
@@ -27,23 +29,25 @@ const state = reactive({
   id: '',
   treeDataList: []
 });
-const form = reactive({
+
+const form = reactive<ApisFormEdit>({
   summary: '',
+  operationId: '',
+  method: undefined,
+  protocol: undefined,
+  status: ApiStatus.UNKNOWN,
   ownerId: '',
   ownerName: '',
+  serviceId: undefined,
+  serviceName: '',
   description: '',
   assertions: [],
-  authentication: {},
-  requestBody: {
-    apiContentRawType: '',
-    apiContentType: '',
-    formParam: [],
-    rawContent: ''
-  },
-  host: '',
-  method: '',
-  protocol: '',
-  requestHeaders: []
+  authentication: undefined,
+  requestBody: undefined,
+  responses: undefined,
+  tags: [],
+  deprecated: false,
+  externalDocs: undefined
 });
 
 const disabled = computed(() => {
@@ -68,7 +72,7 @@ const loadInfo = async () => {
   }
   Object.keys(res.data).forEach(key => {
     if (key === 'status') {
-      form[key] = res.data[key]?.value || 'UNKNOWN';
+      form[key] = res.data[key]?.value || ApiStatus.UNKNOWN;
     } else {
       form[key] = res.data[key];
     }
@@ -79,19 +83,10 @@ const loadInfo = async () => {
     type: item.type?.value
   })) || [];
   if (!form.ownerId && userInfo.value?.id) {
-    form.ownerId = userInfo.value.id;
+    form.ownerId = userInfo.value.id.toString();
     form.ownerName = userInfo.value.fullName;
   }
 };
-
-watch(() => state.id, async () => {
-  if (state.id) {
-    loadInfo();
-  }
-}, {
-  deep: true,
-  immediate: true
-});
 
 const rules = {
   summary: [{
@@ -131,8 +126,15 @@ const handleClose = () => {
   handleCloseDrawer(null);
 };
 
+watch(() => state.id, async () => {
+  if (state.id) {
+    loadInfo();
+  }
+}, {
+  deep: true,
+  immediate: true
+});
 </script>
-
 <template>
   <div class="py-3">
     <Hints

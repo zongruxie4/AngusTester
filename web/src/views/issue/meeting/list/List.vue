@@ -26,7 +26,6 @@ withDefaults(defineProps<{
   pageSizeOptions: () => ['4', '10', '15', '20', '30']
 });
 
-
 const emit = defineEmits<{
   (e: 'delete', meeting: MeetingInfo): void;
   (e: 'pageChange', page: number, pageSize: number): void;

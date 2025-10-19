@@ -12,7 +12,7 @@ import { ApiPermission } from '@/enums/enums';
 import { ProjectInfo } from '@/layout/types';
 
 import VirtualApiList from './VirtualApiList.vue';
-import {ApisListInfo} from "@/views/apis/services/protocol/types";
+import { ApisListInfo } from '@/views/apis/services/protocol/types';
 
 interface Props {
   dataSource:Array<ApisListInfo>;

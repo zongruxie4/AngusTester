@@ -38,7 +38,6 @@ const props = withDefaults(defineProps<Props>(), {
   exception: undefined
 });
 
-
 const emit = defineEmits<{
   (e: 'loadingChange', value: boolean): void;
 }>();

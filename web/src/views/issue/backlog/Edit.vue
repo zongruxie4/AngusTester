@@ -40,7 +40,6 @@ const props = withDefaults(defineProps<TaskEditState>(), {
   refCaseIds: () => []
 });
 
-
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'update:taskId', value: number | undefined): void;

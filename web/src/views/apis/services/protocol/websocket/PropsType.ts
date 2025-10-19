@@ -1,6 +1,7 @@
 import { API_EXTENSION_KEY } from '@/utils/apis';
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
+
 export interface FormData {
   name?: string;
   [valueKey]?: string;
@@ -33,12 +34,3 @@ export interface Message {
   showContent?: boolean;
   key: string;
 }
-
-export const itemTypes = [
-  'string',
-  'array',
-  'boolean',
-  'integer',
-  'object',
-  'number'
-].map(i => ({ value: i, label: i }));

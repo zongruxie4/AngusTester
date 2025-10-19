@@ -30,14 +30,6 @@ export interface OptionItem {
   value: string
 }
 
-export interface Setting {
-  enableParamValidation: boolean;
-  connectTimeout: number;
-  readTimeout: number;
-  maxRedirects: number;
-  retryNum: number;
-}
-
 export interface State {
   parameter: Record<string, unknown>;
   assertTypeOptions: OptionItem[];

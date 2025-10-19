@@ -22,7 +22,6 @@ const props = withDefaults(defineProps<BasicDataSourceProps<ScenarioInfo[]>>(), 
   notify: undefined
 });
 
-
 const emit = defineEmits<{
   (e: 'delete', value: string): void;
   (e: 'clone', value: ScenarioInfo): void;

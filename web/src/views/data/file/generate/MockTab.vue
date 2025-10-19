@@ -14,7 +14,6 @@ const props = withDefaults(defineProps<Props>(), {
   params: undefined
 });
 
-
 const emit = defineEmits<{
     (e:'formatChange', value:{[key:string]:any}):void;
 }>();

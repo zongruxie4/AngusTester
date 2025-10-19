@@ -1,7 +1,8 @@
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import { API_EXTENSION_KEY, deepDelAttrFromObj } from '@/utils/apis';
+import { API_EXTENSION_KEY, deepDelAttrFromObj, getModelDataByRef } from '@/utils/apis';
 import { ParamsItem } from '@/views/apis/services/protocol/types';
+import { deconstruct } from '@/utils/swagger';
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
 
@@ -80,6 +81,12 @@ const validateBodyForm = (data) => {
   return !errors.length;
 };
 
+export {
+  getNewItem,
+  validateQueryParameter,
+  validateBodyForm
+};
+
 export const schemaTypeToOptions = [
   'string',
   'array',
@@ -89,8 +96,37 @@ export const schemaTypeToOptions = [
   'number'
 ].map(i => ({ value: i, label: i }));
 
-export {
-  getNewItem,
-  validateQueryParameter,
-  validateBodyForm
+export const getRefData = async (ref, serviceId) => {
+  const [error, resp] = await getModelDataByRef(serviceId, ref);
+  if (error) {
+    return '';
+  }
+  return deconstruct(resp.data || {});
+};
+
+export const transRefJsonToDataJson = async (schema: any = {}, serviceId) => {
+  // const keys = Object.keys(schema);
+  for (const key in schema) {
+    if (key === '$ref') {
+      const refData = await getRefData(schema.$ref, serviceId);
+      schema = { ...schema, ...refData };
+      delete schema.$ref;
+    }
+    if (Object.prototype.toString.call(schema[key]) === '[object Object]') {
+      schema[key] = await transRefJsonToDataJson(schema[key], serviceId);
+    }
+  }
+  return schema;
+};
+
+export const deepParseJson = (jsonStr: string) => {
+  try {
+    const result = JSON.parse(jsonStr);
+    if (typeof result === 'string') {
+      return deepParseJson(result);
+    }
+    return result;
+  } catch {
+    return jsonStr;
+  }
 };

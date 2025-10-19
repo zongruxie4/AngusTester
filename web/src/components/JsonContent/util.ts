@@ -1,5 +1,5 @@
 import { utils } from '@xcan-angus/infra';
-import { API_EXTENSION_KEY, getDataTypeFromFormat } from '@/utils/apis/index';
+import { API_EXTENSION_KEY, getDataTypeFromFormat, getDataType } from '@/utils/apis/index';
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
 
@@ -35,19 +35,6 @@ export const getDefaultItem = (config = {}) => {
     [enabledKey]: true,
     ...config
   };
-};
-
-const getDataType = (data) => {
-  const type = typeof data;
-  if (type !== 'object') {
-    return type;
-  }
-  if (Object.prototype.toString.call(data) === '[object Array]') {
-    return 'array';
-  }
-  if (Object.prototype.toString.call(data) === '[object Object]') {
-    return 'object';
-  }
 };
 
 /**

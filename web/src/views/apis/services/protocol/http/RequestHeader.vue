@@ -8,18 +8,14 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import { API_EXTENSION_KEY, deepDelAttrFromObj } from '@/utils/apis';
 import { deconstruct } from '@/utils/swagger';
 import { services } from '@/api/tester';
-import {validateType, schemaTypeToOptions, getDefaultParams} from './utils';
+import { validateType, schemaTypeToOptions, getDefaultParams } from './utils';
 import { toClipboard } from '@xcan-angus/infra';
 
 import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
-import {ParamsInfo} from "@/views/apis/services/protocol/http/types";
+import { ParamsInfo } from '@/views/apis/services/protocol/http/types';
 
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
-
-const { t } = useI18n();
-const valueKey = API_EXTENSION_KEY.valueKey;
-const enabledKey = API_EXTENSION_KEY.enabledKey;
 
 interface Props {
   value: ParamsInfo[];
@@ -28,16 +24,20 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {});
-const apiBaseInfo = inject('apiBaseInfo', ref());
-const archivedId = inject('archivedId', ref());
-const globalConfigs = inject('globalConfigs', { VITE_API_PARAMETER_NAME_LENGTH: 400, VITE_API_PARAMETER_VALUE_LENGTH: 4096 });
-
 
 const emits = defineEmits<{
   (e: 'change', data: ParamsInfo[]): void,
   (e: 'del', index: number): void,
   (e: 'update:authorizationData', value):void
 }>();
+
+const { t } = useI18n();
+const valueKey = API_EXTENSION_KEY.valueKey;
+const enabledKey = API_EXTENSION_KEY.enabledKey;
+
+const apiBaseInfo = inject('apiBaseInfo', ref());
+const archivedId = inject('archivedId', ref());
+const globalConfigs = inject('globalConfigs', { VITE_API_PARAMETER_NAME_LENGTH: 400, VITE_API_PARAMETER_VALUE_LENGTH: 4096 });
 
 const state = reactive<{
   formData:ParamsInfo[]
@@ -215,21 +215,6 @@ const changeSchema = (schema, item, index) => {
   changeEmit(index, temp);
 };
 
-watch(() => props.value, (newValue) => {
-  if (state.formData.length && state.formData.some(item => !!item.name || (!!item.schema?.type && item.schema?.type !== 'string') || !!item[valueKey])) {
-    return;
-  }
-  state.formData = (newValue || []).map((i, idx) => {
-    return { ...i, key: i.key || getKey(idx) };
-  });
-  if (state.formData.every(i => !!i.name)) {
-    state.formData.push(getDefaultParams({ in: 'header', key: getKey() }) as ParamsInfo);
-  }
-}, {
-  deep: true,
-  immediate: true
-});
-
 const updateComp = async () => {
   if (!apiBaseInfo.value?.serviceId) {
     return;
@@ -238,7 +223,8 @@ const updateComp = async () => {
     if (state.formData[i].$ref) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { $ref, ...content } = state.formData[i];
-      await services.addComponent(apiBaseInfo.value?.serviceId, 'parameters', state.formData[i].name, { ...content, schema: { ...(content.schema || {}), [valueKey]: content[valueKey] } });
+      await services.addComponent(apiBaseInfo.value?.serviceId, 'parameters', state.formData[i].name,
+        { ...content, schema: { ...(content.schema || {}), [valueKey]: content[valueKey] } });
     }
     if (jsContentRef.value[i]) {
       await jsContentRef.value[i].updateComp();
@@ -257,6 +243,22 @@ const getModelResolve = () => {
   });
   return models;
 };
+
+watch(() => props.value, (newValue) => {
+  if (state.formData.length && state.formData.some(item => !!item.name ||
+    (!!item.schema?.type && item.schema?.type !== 'string') || !!item[valueKey])) {
+    return;
+  }
+  state.formData = (newValue || []).map((i, idx) => {
+    return { ...i, key: i.key || getKey(idx) };
+  });
+  if (state.formData.every(i => !!i.name)) {
+    state.formData.push(getDefaultParams({ in: 'header', key: getKey() }) as ParamsInfo);
+  }
+}, {
+  deep: true,
+  immediate: true
+});
 
 defineExpose({ updateComp, getModelResolve, validate: validateContents });
 </script>

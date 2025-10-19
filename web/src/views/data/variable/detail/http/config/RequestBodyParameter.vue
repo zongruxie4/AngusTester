@@ -26,7 +26,6 @@ const props = withDefaults(defineProps<Props>(), {
   hasFileType: false
 });
 
-
 const emit = defineEmits<{
   (e: 'change', index: number, data: RequestBodyFormItem): void;
   (e: 'add', data: RequestBodyFormItem): void;

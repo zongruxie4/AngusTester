@@ -2,29 +2,23 @@
 import { Switch } from 'ant-design-vue';
 import { Input } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-
-interface Setting {
-  enableParamValidation: boolean;
-  connectTimeout: number;
-  readTimeout: number;
-  maxRedirects: number;
-  retryNum: number;
-}
+import { RequestSetting } from '@/views/apis/services/protocol/http/types';
 
 interface Props {
-  value: Setting;
+  value: RequestSetting;
 }
-const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   value: () => ({ enableParamValidation: false, connectTimeout: 6000, readTimeout: 60000, retryNum: 0, maxRedirects: 1 })
 });
 
+const { t } = useI18n();
 
 const emit = defineEmits<{
   (e: 'change', value: Props['value']): void;
 }>();
 
-const change = (event:ChangeEvent, key: keyof Setting) => {
+const change = (event:ChangeEvent, key: keyof RequestSetting) => {
   let value = event.target.value;
   if (!value && ['connectTimeout', 'retryNum', 'readTimeout'].includes(key)) {
     value = 0;
@@ -53,24 +47,6 @@ const onBlur = (key) => {
           @change="change({target: {value: $event}} as ChangeEvent, 'enableParamValidation')" />
       </div>
     </div>
-    <!-- <div class="flex items-start">
-      <div class="flex-1">
-        <div class="leading-7 text-text-title">允许修改引用数据模型</div>
-        <div class="mt-1 text-text-sub-content">
-          启用后修改引用模型($ref)将同步修改引用模型模板。
-          如果引用模型模板被其他接口使用，其他接口也会被间接修改；
-          未启用时，修改数据模型会生成副本并删除与原数据模型引用关系，这将引起生成OpenAPI文档和代码中冗余增多。
-          默认未开启。注意：未单击“保存”修改将不会生效。
-        </div>
-      </div>
-      <div class="flex-shrink-0 w-55 ml-10">
-        <Switch
-          :checked="props.value.modifyReferencedModel"
-          class="w-8.5"
-          size="small"
-          @change="change($event, 'modifyReferencedModel')" />
-      </div>
-    </div> -->
     <div class="flex items-start">
       <div class="flex-1">
         <div class="leading-7 text-text-title">{{ t('service.apiSetting.labels.connectTimeout') }}</div>
@@ -127,24 +103,6 @@ const onBlur = (key) => {
           @change="change($event, 'retryNum')" /><span class="ml-2">{{ t('service.apiSetting.units.times') }}</span>
       </div>
     </div>
-    <!-- <div class="flex items-start">
-      <div class="flex-1">
-        <div class="leading-7 text-text-title">重试间隔</div>
-        <div class="mt-1 text-text-sub-content">请求失败时的重试间隔。默认200毫秒，最大允许30分钟。</div>
-      </div>
-      <div class="flex-shrink-0 w-55 ml-10">
-        <Input
-          class="w-20"
-          :maxlength="7"
-          :min="0"
-          :max="1800000"
-          :value="props.value.retryInterval"
-          placeholder="0 ~ 1800000"
-          dataType="number"
-          @change="change($event, 'retryInterval')" /><span
-            class="ml-2">ms</span>
-      </div>
-    </div> -->
     <div class="flex items-start">
       <div class="flex-1">
         <div class="leading-7 text-text-title">{{ t('service.apiSetting.labels.maxRedirects') }}</div>

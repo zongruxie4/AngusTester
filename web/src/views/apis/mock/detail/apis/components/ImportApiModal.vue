@@ -19,7 +19,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'ok'): void;

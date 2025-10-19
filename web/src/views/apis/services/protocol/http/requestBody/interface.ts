@@ -1,8 +1,11 @@
-import { getModelDataByRef } from '@/utils/apis';
-import { deconstruct } from '@/utils/swagger';
-import {ParamsItem} from "@/views/apis/services/protocol/types";
+import { ParamsItem } from '@/views/apis/services/protocol/types';
 
-export const radioGroups = [null, 'application/x-www-form-urlencoded', 'multipart/form-data', 'application/octet-stream'];
+export const radioGroups = [
+  null, 'application/x-www-form-urlencoded',
+  'multipart/form-data',
+  'application/octet-stream'
+];
+
 export const rawTypeOptions = [
   'application/json',
   'text/html',
@@ -13,7 +16,7 @@ export const rawTypeOptions = [
 ];
 
 export interface RequestBodyParam {
-  [key:string]: any;
+  [key:string]: any; // TODO ?
   contentType?: string | null;
   formData?: ParamsItem[];
   rawContent?: string;
@@ -32,38 +35,3 @@ export interface StateItem {
   radioOptions: OptionItem[],
   rawSelectOptions: OptionItem[],
 }
-
-export const getRefData = async (ref, serviceId) => {
-  const [error, resp] = await getModelDataByRef(serviceId, ref);
-  if (error) {
-    return '';
-  }
-  return deconstruct(resp.data || {});
-};
-
-export const transRefJsonToDataJson = async (schema = {}, serviceId) => {
-  // const keys = Object.keys(schema);
-  for (const key in schema) {
-    if (key === '$ref') {
-      const refData = await getRefData(schema.$ref, serviceId);
-      schema = { ...schema, ...refData };
-      delete schema.$ref;
-    }
-    if (Object.prototype.toString.call(schema[key]) === '[object Object]') {
-      schema[key] = await transRefJsonToDataJson(schema[key], serviceId);
-    }
-  }
-  return schema;
-};
-
-export const deepParseJson = (jsonStr: string) => {
-  try {
-    const result = JSON.parse(jsonStr);
-    if (typeof result === 'string') {
-      return deepParseJson(result);
-    }
-    return result;
-  } catch {
-    return jsonStr;
-  }
-};

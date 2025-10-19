@@ -19,7 +19,6 @@ const props = withDefaults(defineProps<Props>(), {
   readonly: true
 });
 
-
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'change'): void;

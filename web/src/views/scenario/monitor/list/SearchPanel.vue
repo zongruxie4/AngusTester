@@ -29,8 +29,6 @@ const emits = defineEmits<{
   (e: 'refresh'): void;
 }>();
 
-
-
 // Use composables
 const {
   searchPanelOptions,
@@ -42,9 +40,8 @@ const {
   quickSearchFilters,
   assocFilters,
   getParams,
-  searchPanelRef,
+  searchPanelRef
 } = useSearchPanelData(props.projectId);
-
 
 // Use logic composable
 const {
@@ -65,7 +62,6 @@ const {
   (value: PageQuery) => emits('change', value),
   () => emits('refresh')
 );
-
 
 </script>
 

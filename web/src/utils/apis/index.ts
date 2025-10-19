@@ -1,18 +1,18 @@
 import qs from 'qs';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import { uniq } from 'lodash-es';
-import { decode as dt, encode as et } from 'js-base64';
-import { http, utils, TESTER, codeUtils, AssertionCondition, AssertionType } from '@xcan-angus/infra';
+import {uniq} from 'lodash-es';
+import {decode as dt, encode as et} from 'js-base64';
+import {AssertionCondition, AssertionType, codeUtils, http, TESTER, utils} from '@xcan-angus/infra';
 import SwaggerUI from '@xcan-angus/swagger-ui';
-import { notification } from '@xcan-angus/vue-ui';
+import {notification} from '@xcan-angus/vue-ui';
 
-import { Extraction } from '@/components/ApiAssert/utils/extract/PropsType';
-import { getExecShowAuthData } from '@/components/ExecAuthencation/interface';
+import {Extraction} from '@/components/ApiAssert/utils/extract/PropsType';
+import {getExecShowAuthData} from '@/components/ExecAuthencation/interface';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { services } from '@/api/tester';
-import { API_EXTENSION_KEYS } from '@/types/openapi-types';
+import {services} from '@/api/tester';
+import {API_EXTENSION_KEYS} from '@/types/openapi-types';
 
 dayjs.extend(duration);
 
@@ -59,7 +59,29 @@ const API_STATUS_BADGE_COLOR_CONFIG = {
 const API_EXTENSION_KEY = API_EXTENSION_KEYS;
 
 // eslint-disable-next-line prefer-regex-literals
-const variableNameReg = new RegExp(/^[a-zA-Z0-9!@$%^&*()_\-+=./]+$/);
+const VARIABLE_NAME_REG = new RegExp(/^[a-zA-Z0-9!@$%^&*()_\-+=./]+$/);
+
+export const QueryAndPathInOption = [
+  {
+    value: 'query',
+    label: 'query'
+  },
+  {
+    value: 'path',
+    label: 'path'
+  }
+];
+
+export const QueryAndHeaderInOption = [
+  {
+    value: 'query',
+    label: 'query'
+  },
+  {
+    value: 'header',
+    label: 'header'
+  }
+];
 
 /**
  * Parameter item interface for API parameters.
@@ -757,7 +779,7 @@ const travelDelSchemaRef = (schame) => {
   return schame;
 };
 
-export const itemTypes = [
+export const schemaTypeToOption = [
   'string',
   'array',
   'boolean',
@@ -766,18 +788,17 @@ export const itemTypes = [
   'number'
 ].map(i => ({ value: i, label: i }));
 
-export const inOptions = ['path', 'query'].map(i => ({ value: i, label: i }));
-
-export const baseTypes = [
+export const schemaTypeToWideOption = [
   'string',
+  'array(json)',
+  'array(xml)',
   'boolean',
   'integer',
-  'number'
-].map(i => ({ value: i, label: i }));
-
-export const parameterIn = [
-  'query',
-  'path'
+  'object(json)',
+  'object(xml)',
+  'number',
+  'file',
+  'file(array)'
 ].map(i => ({ value: i, label: i }));
 
 /**
@@ -796,6 +817,25 @@ const getDataTypeFromFormat = (format: string): string => {
     default:
       return 'string';
   }
+};
+
+/**
+ * Get data type of a value.
+ * @param data - Value to check
+ * @returns Type string ('string', 'number', 'boolean', 'array', 'object', etc.)
+ */
+const getDataType = (data: any): string => {
+  const type = typeof data;
+  if (type !== 'object') {
+    return type;
+  }
+  if (Object.prototype.toString.call(data) === '[object Array]') {
+    return 'array';
+  }
+  if (Object.prototype.toString.call(data) === '[object Object]') {
+    return 'object';
+  }
+  return type;
 };
 
 /**
@@ -1187,25 +1227,6 @@ const qsJsonToParamList = (data: Record<string, any> | Array<any>) => {
 };
 
 /**
- * Get data type of a value.
- * @param data - Value to check
- * @returns Type string ('string', 'number', 'boolean', 'array', 'object', etc.)
- */
-const getDataType = (data: any): string => {
-  const type = typeof data;
-  if (type !== 'object') {
-    return type;
-  }
-  if (Object.prototype.toString.call(data) === '[object Array]') {
-    return 'array';
-  }
-  if (Object.prototype.toString.call(data) === '[object Object]') {
-    return 'object';
-  }
-  return type;
-};
-
-/**
  * Transform JSON to list of key-value pairs.
  * @param data - JSON data to transform
  * @param pid - Parent ID
@@ -1468,10 +1489,11 @@ export {
   getModelDataByRef,
   decode,
   encode,
-  variableNameReg,
+  VARIABLE_NAME_REG,
   fileToBuffer,
   convertBlob,
   getDataTypeFromFormat,
+  getDataType,
   deepDelAttrFromObj,
   validateType,
   getJsonFromSplitData,
@@ -1515,10 +1537,11 @@ export default {
   getModelDataByRef,
   decode,
   encode,
-  variableNameReg,
+  variableNameReg: VARIABLE_NAME_REG,
   fileToBuffer,
   convertBlob,
   getDataTypeFromFormat,
+  getDataType,
   deepDelAttrFromObj,
   validateType,
   getJsonFromSplitData,

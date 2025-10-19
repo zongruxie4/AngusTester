@@ -19,7 +19,6 @@ const props = withDefaults(defineProps<CaseInfoEditProps>(), {
   canEdit: false
 });
 
-
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'change', value: CaseDetail): void;

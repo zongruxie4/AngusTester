@@ -27,7 +27,6 @@ const props = withDefaults(defineProps<Props>(), {
   visible: true
 });
 
-
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'ok'): void;

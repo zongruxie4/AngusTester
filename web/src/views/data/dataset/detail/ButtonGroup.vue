@@ -15,7 +15,6 @@ const props = withDefaults(defineProps<Props>(), {
   okButtonDisabled: false
 });
 
-
 const emit = defineEmits<{
   (e: 'click', value: 'ok' | 'delete' | 'export' | 'clone' | 'copyLink' | 'refresh'): void;
 }>();

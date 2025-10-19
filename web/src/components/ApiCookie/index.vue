@@ -16,7 +16,7 @@ import ParamsInput from '@/components/ParamInput/index.vue';
 import JsonContent from '@/components/JsonContent/index.vue';
 
 // Utility imports
-import { ParamsItem, getDefaultParams, API_EXTENSION_KEY, deconstruct, validateType, deepDelAttrFromObj, getModelDataByRef, variableNameReg } from 'src/utils/apis';
+import { ParamsItem, getDefaultParams, API_EXTENSION_KEY, deconstruct, validateType, deepDelAttrFromObj, getModelDataByRef, VARIABLE_NAME_REG } from 'src/utils/apis';
 import variableApi from '../Variable/apis.ts';
 
 // Local imports
@@ -188,7 +188,7 @@ const setParameterAsVariable = async (data: ParamsItem): Promise<void> => {
     return;
   }
   variableSettingLoading[data.name] = true;
-  if (!variableNameReg.test(data.name as string)) {
+  if (!VARIABLE_NAME_REG.test(data.name as string)) {
     notification.warning(t('xcan_apiCookie.nameNotMeetVariableRequirements'));
     return;
   }

@@ -5,28 +5,32 @@ import {
   Hints,
   Icon,
   IconCopy,
+  IconText,
   Input,
   notification,
   Select,
   SelectUser,
   Tooltip,
   TreeSelect,
-  IconText
-  , VuexHelper
+  VuexHelper
 } from '@xcan-angus/vue-ui';
 import { apis, services } from '@/api/tester';
-import { TESTER, appContext } from '@xcan-angus/infra';
+import { appContext, TESTER } from '@xcan-angus/infra';
 import { Button, Form, FormItem } from 'ant-design-vue';
+import { ApisProtocol, ApiStatus } from '@/enums/enums';
+import { ApisFormEdit } from '@/views/apis/services/protocol/types';
+
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 interface Props {
   disabled:boolean
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
+
+const { t } = useI18n();
 
 const { useMutations, useState } = VuexHelper;
 const { stepVisible, stepKey, stepContent } = useState(['stepVisible', 'stepKey', 'stepContent'], 'guideStore');
@@ -56,39 +60,28 @@ const state = reactive({
   treeDataList: []
 });
 
-const form = reactive({
+const form = reactive<ApisFormEdit>({
   summary: '',
   operationId: '',
+  method: undefined,
+  protocol: undefined,
+  status: ApiStatus.UNKNOWN,
   ownerId: '',
   ownerName: '',
   serviceId: undefined,
   serviceName: '',
   description: '',
   assertions: [],
-  authentication: {},
-  requestBody: {
-    apiContentRawType: '',
-    apiContentType: '',
-    formParam: [],
-    rawContent: ''
-  },
-  host: '',
-  method: '',
-  protocol: '',
-  requestHeaders: [],
-  requestParams: [],
-  response: [],
-  status: 'UNKNOWN',
+  authentication: undefined,
+  requestBody: undefined,
+  responses: undefined,
   tags: [],
   deprecated: false,
-  externalDocs: {
-    url: '',
-    description: ''
-  }
+  externalDocs: undefined
 });
 
 const disabled = computed(() => {
-  return props.disabled || form.status === 'RELEASED';
+  return props.disabled || form.status === ApiStatus.RELEASED;
 });
 
 const loadInfo = async () => {
@@ -100,7 +93,7 @@ const loadInfo = async () => {
   }
   Object.keys(res.data).forEach(key => {
     if (key === 'status') {
-      form[key] = res.data[key]?.value || 'UNKNOWN';
+      form[key] = res.data[key]?.value || ApiStatus.UNKNOWN;
     } else {
       form[key] = res.data[key];
     }
@@ -111,7 +104,7 @@ const loadInfo = async () => {
     type: item.type?.value
   })) || [];
   if (!form.ownerId && userInfo.value?.id) {
-    form.ownerId = userInfo.value.id;
+    form.ownerId = userInfo.value.id.toString();
     form.ownerName = userInfo.value.fullName;
   }
   form.tags = form.tags || undefined;
@@ -119,44 +112,12 @@ const loadInfo = async () => {
   defaultProject.value = { id: form.serviceId, name: form.serviceName };
 };
 
-watch(() => state.id, async () => {
-  if (state.id) {
-    loadInfo();
-  } else {
-    const formParams = await getParameter();
-    if (formParams.serviceId) {
-      form.serviceId = formParams.serviceId;
-      form.serviceName = formParams.serviceName;
-      defaultProject.value = { id: form.serviceId, name: form.serviceName };
-    }
-    if (!form.ownerId && userInfo.value?.id) {
-      form.ownerId = userInfo.value.id;
-      form.ownerName = userInfo.value.fullName;
-    }
-  }
-}, { immediate: true });
-
-const rules = {
-  summary: [{
-    required: true, message: t('service.apiSliderSave.validation.summaryRequired'), trigger: 'blur'
-  }],
-  ownerId: [{
-    required: true, message: t('service.apiSliderSave.validation.ownerRequired'), trigger: 'change'
-  }],
-  serviceId: [{
-    required: true, message: t('service.apiSliderSave.validation.serviceRequired'), trigger: 'change'
-  }],
-  status: [{
-    required: true, message: t('service.apiSliderSave.validation.statusRequired'), trigger: 'change'
-  }]
-};
-
 const handleProjectChange = (value, name) => {
   form.serviceId = value;
   form.serviceName = name?.[0];
 };
 
-const loadTagfromProject = async () => {
+const loadTagFromService = async () => {
   if (!form.serviceId || tagsOpt.value.length) {
     return;
   }
@@ -222,6 +183,37 @@ onMounted(() => {
   }
 });
 
+watch(() => state.id, async () => {
+  if (state.id) {
+    await loadInfo();
+  } else {
+    const formParams = await getParameter();
+    if (formParams.serviceId) {
+      form.serviceId = formParams.serviceId;
+      form.serviceName = formParams.serviceName;
+      defaultProject.value = { id: form.serviceId, name: form.serviceName };
+    }
+    if (!form.ownerId && userInfo.value?.id) {
+      form.ownerId = userInfo.value.id.toString();
+      form.ownerName = userInfo.value.fullName;
+    }
+  }
+}, { immediate: true });
+
+const rules = {
+  summary: [{
+    required: true, message: t('service.apiSliderSave.validation.summaryRequired'), trigger: 'blur'
+  }],
+  ownerId: [{
+    required: true, message: t('service.apiSliderSave.validation.ownerRequired'), trigger: 'change'
+  }],
+  serviceId: [{
+    required: true, message: t('service.apiSliderSave.validation.serviceRequired'), trigger: 'change'
+  }],
+  status: [{
+    required: true, message: t('service.apiSliderSave.validation.statusRequired'), trigger: 'change'
+  }]
+};
 </script>
 
 <template>
@@ -247,8 +239,12 @@ onMounted(() => {
         <Hints
           :text="t('service.apiSliderSave.tips.duplicateApi')"
           class="mb-2 mt-2" />
-        <div v-if="state.id" class="mb-2 flex items-center space-x-2"><span>ID:  {{ state.id }}</span> <IconCopy :copyText="state.id" /></div>
-        <p v-if="form.status === 'RELEASED'" class="text-3 text-status-orange mt-1">{{ t('service.apiSliderSave.tips.releasedApiNotEditable') }}</p>
+        <div v-if="state.id" class="mb-2 flex items-center space-x-2">
+          <span>ID:  {{ state.id }}</span> <IconCopy :copyText="state.id" />
+        </div>
+        <p v-if="form.status === 'RELEASED'" class="text-3 text-status-orange mt-1">
+          {{ t('service.apiSliderSave.tips.releasedApiNotEditable') }}
+        </p>
       </FormItem>
       <FormItem :label="t('service.apiSliderSave.labels.summary')" name="summary">
         <Tooltip
@@ -342,7 +338,7 @@ onMounted(() => {
           :placeholder="t('service.apiSliderSave.form.tagsPlaceholder')"
           :disabled="disabled"
           :options="tagsOpt"
-          @dropdownVisibleChange="loadTagfromProject">
+          @dropdownVisibleChange="loadTagFromService">
         </Select>
       </FormItem>
       <FormItem :label="t('common.status')" name="status">
@@ -357,7 +353,10 @@ onMounted(() => {
         <Select
           v-model:value="form.deprecated"
           :disabled="disabled"
-          :options="[{label: t('service.apiSliderSave.options.normal'), value: false}, {label: t('service.apiSliderSave.options.deprecated'), value: true}]">
+          :options="[
+            {label: t('service.apiSliderSave.options.normal'), value: false},
+            {label: t('service.apiSliderSave.options.deprecated'), value: true}
+          ]">
         </Select>
       </FormItem>
       <FormItem :label="t('common.description')" name="externalDocs">
@@ -384,14 +383,14 @@ onMounted(() => {
           </div>
         </template>
         <Input
-          v-model:value="form.externalDocs.url"
+          :value="form.externalDocs?.url"
           :placeholder="t('service.apiSliderSave.form.externalDocsUrlPlaceholder')"
           :disabled="disabled"
           :maxLength="100" />
       </FormItem>
       <FormItem class="-mt-1">
         <Input
-          v-model:value="form.externalDocs.description"
+          :value="form.externalDocs?.description"
           :placeholder="t('service.apiSliderSave.form.externalDocsDescPlaceholder')"
           :disabled="disabled"
           :maxLength="200"

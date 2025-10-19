@@ -33,7 +33,6 @@ const props = withDefaults(defineProps<Props>(), {
   closable: true
 });
 
-
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'cancel', value: boolean): void;

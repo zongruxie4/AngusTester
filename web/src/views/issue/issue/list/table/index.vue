@@ -38,7 +38,6 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false
 });
 
-
 const emit = defineEmits<{
   (event: 'update:selectedIds', value: number[]): void;
   (event: 'update:loading', value: boolean): void;

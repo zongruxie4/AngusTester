@@ -25,7 +25,6 @@ const props = withDefaults(defineProps<Props>(), {
   groupId: undefined
 });
 
-
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'change', addIds: string[], addPolicies: { id: string; name: string }[]): void;

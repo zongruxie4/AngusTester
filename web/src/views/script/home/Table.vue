@@ -22,7 +22,6 @@ const props = withDefaults(defineProps<ScriptTableProps>(), {
   resetSelectedIdsNotify: undefined
 });
 
-
 const emit = defineEmits<{
   (event: 'update:loading', value: boolean): void;
   (event: 'refresh'): void;

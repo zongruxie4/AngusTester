@@ -38,7 +38,6 @@ const props = withDefaults(defineProps<Props>(), {
   orderSort: undefined
 });
 
-
 const emit = defineEmits<{
   (e: 'add'): void;
   (e: 'change', value: SearchCriteria[]): void;

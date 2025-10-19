@@ -17,7 +17,6 @@ const props = withDefaults(defineProps<BasicDataSourceProps<DataSetDetail>>(), {
   dataSource: undefined
 });
 
-
 const emit = defineEmits<{
   (e: 'ok', data: DataSetDetail, isEdit: boolean): void;
   (e: 'delete', value: string): void;

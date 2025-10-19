@@ -75,14 +75,14 @@ export function useScriptSearch (userId: string) {
         if (typeof searchPanelRef.value?.setConfigs === 'function') {
           searchPanelRef.value.setConfigs([{
             valueKey: 'createdBy',
-            value: userId,
+            value: userId
           }]);
         }
       } else {
         if (typeof searchPanelRef.value?.setConfigs === 'function') {
           searchPanelRef.value.setConfigs([{
             valueKey: 'createdBy',
-            value: undefined,
+            value: undefined
           }]);
         }
       }
@@ -93,14 +93,14 @@ export function useScriptSearch (userId: string) {
         if (typeof searchPanelRef.value?.setConfigs === 'function') {
           searchPanelRef.value.setConfigs([{
             valueKey: 'lastModifiedBy',
-            value: userId,
+            value: userId
           }]);
         }
       } else {
         if (typeof searchPanelRef.value?.setConfigs === 'function') {
           searchPanelRef.value.setConfigs([{
             valueKey: 'lastModifiedBy',
-            value: undefined,
+            value: undefined
           }]);
         }
       }
@@ -108,7 +108,7 @@ export function useScriptSearch (userId: string) {
     if (key && key.startsWith('last') && (key.endsWith('Day') || key.endsWith('Days'))) {
       const createdDataSearchCriteria = searchCriteria.filter(f => f.key === 'createdDate');
       if (createdDataSearchCriteria.length > 0) {
-        const createdDataValue = [createdDataSearchCriteria[0]?.value, createdDataSearchCriteria[1]?.value]
+        const createdDataValue = [createdDataSearchCriteria[0]?.value, createdDataSearchCriteria[1]?.value];
         if (typeof searchPanelRef.value?.setConfigs === 'function') {
           searchPanelRef.value.setConfigs([{
             valueKey: 'createdDate',
@@ -144,13 +144,13 @@ export function useScriptSearch (userId: string) {
     if (isUpdating) return;
 
     isUpdating = true;
-    
+
     const searchCriteriaKeys = quickSearchOptionsRef.value.getSearchCriteria().map(f => f.key);
     let quickSearchFilters = filters.value.filter(f => f.key && searchCriteriaKeys.includes(f.key));
     if (key && searchCriteriaKeys.includes(key)) {
       quickSearchFilters = quickSearchFilters.filter(f => f.key !== key);
     }
-    
+
     if (key === 'createdBy' && searchCriteriaKeys.includes('createdBy')) {
       quickSearchOptionsRef.value.clearSelectedMap('createdBy');
     }
@@ -160,7 +160,7 @@ export function useScriptSearch (userId: string) {
     if (key === 'createdDate' && searchCriteriaKeys.includes('createdDate')) {
       quickSearchOptionsRef.value.clearSelectedMap(['createdDate', 'last1Day', 'last3Days', 'last7Days']);
     }
-  
+
     const newFilters = [...quickSearchFilters, ..._filters];
 
     // Check if filters actually changed

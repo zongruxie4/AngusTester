@@ -5,13 +5,13 @@ import { Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
 import { services } from '@/api/tester';
-import { HttpServer } from './PropsType';
+import { ServerInfo } from '@/views/apis/server/types';
 
 const { t } = useI18n();
 
 interface Props {
   value: string;
-  valueObj: HttpServer;
+  valueObj: ServerInfo;
   readonly?: boolean;
 }
 
@@ -19,7 +19,6 @@ const props = withDefaults(defineProps<Props>(), {
   value: '',
   readonly: false
 });
-
 
 const emits = defineEmits<{
   (e: 'update:value', value: string): void;
@@ -106,42 +105,9 @@ const handleMouseover = (e) => {
     popPosition.left = e.target.offsetLeft + 'px';
     const key = e.target.innerText.replace('{', '').replace('}', '');
     const variables = serverObj.value.variables || {};
-    if (variables[key]) {
-      showErrorPopover.value = false;
-    } else {
-      showErrorPopover.value = true;
-    }
+    showErrorPopover.value = !variables[key];
   }
 };
-
-watch(() => props.value, newValue => {
-  if (newValue === value.value) {
-    return;
-  }
-  value.value = newValue;
-}, {
-  immediate: true
-});
-
-watch(() => props.valueObj, newValue => {
-  serverObj.value = newValue;
-}, {
-  immediate: true
-});
-
-watch(() => value.value, newValue => {
-  const content = (newValue || '').replaceAll('\n', '');
-  const replaced = content.replace(variableReg, (match) => `<span class="text-blue-1 cursor-pointer xc-tip">${match}</span>`); // 将${abc}替换为<span>${abc}</span>
-  valueHtml.value = replaced;
-  if (inputRef.value?.innerHTML && inputRef.value.innerHTML === replaced) {
-    return;
-  }
-  nextTick(() => {
-    inputRef.value && (inputRef.value.innerHTML = valueHtml.value);
-  });
-}, {
-  immediate: true
-});
 
 let delayTimer = null;
 
@@ -177,6 +143,35 @@ const setTimer = () => {
     popoverVisible.value = false;
   }, 100);
 };
+
+watch(() => props.value, newValue => {
+  if (newValue === value.value) {
+    return;
+  }
+  value.value = newValue;
+}, {
+  immediate: true
+});
+
+watch(() => props.valueObj, newValue => {
+  serverObj.value = newValue;
+}, {
+  immediate: true
+});
+
+watch(() => value.value, newValue => {
+  const content = (newValue || '').replaceAll('\n', '');
+  const replaced = content.replace(variableReg, (match) => `<span class="text-blue-1 cursor-pointer xc-tip">${match}</span>`); // 将${abc}替换为<span>${abc}</span>
+  valueHtml.value = replaced;
+  if (inputRef.value?.innerHTML && inputRef.value.innerHTML === replaced) {
+    return;
+  }
+  nextTick(() => {
+    inputRef.value && (inputRef.value.innerHTML = valueHtml.value);
+  });
+}, {
+  immediate: true
+});
 
 onMounted(() => {
   document.addEventListener('click', setTimer);

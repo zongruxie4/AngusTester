@@ -13,7 +13,6 @@ const props = withDefaults(defineProps<BasicDataSourceProps<DataSetDetail>>(), {
   dataSource: undefined
 });
 
-
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
 }>();

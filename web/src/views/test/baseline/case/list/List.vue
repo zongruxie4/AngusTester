@@ -282,7 +282,7 @@ onUnmounted(() => {
       <!-- Search -->
       <Search
         :established="currentBaselineInfo?.established"
-:userId="props.userInfo?.id"
+        :userId="props.userInfo?.id"
         @handleAddCase="openAddCaseModal"
         @change="handleSearchParametersChange" />
 

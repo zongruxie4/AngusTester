@@ -23,7 +23,6 @@ const props = withDefaults(defineProps<LoadingProps>(), {
   loading: false
 });
 
-
 const emits = defineEmits<{
   (e: 'change', value: PageQuery): void;
   (e: 'refresh'): void;
