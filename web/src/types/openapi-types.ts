@@ -1,5 +1,6 @@
 export type AuthType = 'basic' | 'bearer' | 'apiKey' | 'oauth2';
 export type ApiKeyIn = 'header' | 'query';
+export type ParameterIn = 'query' | 'path' |  'cookie' |'header';
 export type AuthFlowKey = 'authorizationCode' | 'password' | 'implicit' | 'clientCredentials';
 export type SchemaType = 'boolean' | 'object' | 'number' | 'string' | 'integer' | 'array';
 
@@ -11,6 +12,7 @@ export const API_EXTENSION_KEYS = {
   idKey: 'x-xc-id', // Unique identifier
   valueKey: 'x-xc-value', // Value
   enabledKey: 'x-xc-enabled', // Enable/disable
+  statusKey: 'x-xc-status', // Data status
   exportVariableKey: 'x-xc-exportVariable', // Whether to set as variable
   requestSettingKey: 'x-xc-requestSetting', // Request settings like timeout, object
   serverNameKey: 'x-xc-serverName', // Server URL name
@@ -426,7 +428,8 @@ export namespace OpenAPIV3 {
     examples?: { [media: string]: ReferenceObject | ExampleObject };
     content?: { [media: string]: MediaTypeObject };
     extensions?: Record<string, any>;
-    [API_EXTENSION_KEYS.valueKey]: any; // vendor extension stored under dynamic key
+    // vendor extension stored under dynamic key
+    [API_EXTENSION_KEYS.valueKey]: any;
   }
   export type NonArraySchemaObjectType =
     | 'boolean'
