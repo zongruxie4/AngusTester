@@ -1,6 +1,7 @@
+
 <script lang="ts" setup>
 import { ref, onMounted, watch, computed, onBeforeUnmount } from 'vue';
-import { RadioGroup, RadioButton, Select, Slider } from 'ant-design-vue';
+import { RadioGroup, RadioButton, Select, Slider, Table } from 'ant-design-vue';
 import * as echarts from 'echarts';
 import dayjs from 'dayjs';
 import { NoData } from '@xcan-angus/vue-ui';
@@ -9,23 +10,47 @@ import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { nodeCtrl } from '@/api/ctrl';
 
+// Initialize i18n for internationalization
 const { t } = useI18n();
 
+/**
+ * Node item interface
+ */
 interface NodeItem {
-  agentPort: string; domain: string; id: string; ip: string; name: string
+  agentPort: string;  // Agent service port
+  domain: string;     // Node domain
+  id: string;         // Node unique identifier
+  ip: string;         // Node IP address
+  name: string;       // Node display name
 }
 
+/**
+ * Table data row interface
+ */
+interface TableDataRow {
+  name: string;    // Metric name
+  unit: string;    // Unit of measurement
+  average: string; // Average value
+  high: string;    // Maximum value
+  low: string;     // Minimum value
+  latest: string;  // Latest value
+}
+
+/**
+ * Component props interface
+ */
 interface Props {
-  execNodes: NodeItem[]; // 执行节点选项
-  appNodes: NodeItem[]; // 应用节点选项
-  startTime: string; // 开始时间
-  endTime: string; // 结束时间
-  reportInterval: string; // 采集数据间隔时间
-  status: string;
-  delayInSeconds: number; // 执行过程中的调接口间隔时间
-  activeChart: string
+  execNodes: NodeItem[];      // Execution node options
+  appNodes: NodeItem[];       // Application node options
+  startTime: string;          // Test start time
+  endTime: string;            // Test end time (empty if still running)
+  reportInterval: string;     // Data collection interval (e.g., "30s", "1min")
+  status: string;             // Execution status (CREATED, PENDING, RUNNING, etc.)
+  delayInSeconds: number;     // Polling interval in milliseconds for auto-refresh
+  activeChart: string;        // Currently active chart type
 }
 
+// Define props with default values
 const props = withDefaults(defineProps<Props>(), {
   execNodes: () => ([]),
   appNodes: () => ([]),
@@ -34,17 +59,48 @@ const props = withDefaults(defineProps<Props>(), {
   delayInSeconds: 3000
 });
 
-let myEcahrt;
-// table表格
-const tableData = ref<{name: string, unit: string, average: string, high: string, low: string, latest: string}[]>([]);
-const notMerge = ref(true); // 图表数据覆盖是否重新渲染
+/**
+ * ECharts instance reference
+ */
+let myEcahrt: echarts.ECharts;
+
+/**
+ * Table data for displaying metric statistics
+ */
+const tableData = ref<TableDataRow[]>([]);
+
+/**
+ * Table column definitions
+ */
+const columns = [
+  { title: t('ftpPlugin.performanceTestDetail.nodeData.table.metric'), dataIndex: 'name', key: 'name' },
+  { title: t('ftpPlugin.performanceTestDetail.nodeData.table.unit'), dataIndex: 'unit', key: 'unit' },
+  { title: t('ftpPlugin.performanceTestDetail.nodeData.table.average'), dataIndex: 'average', key: 'average' },
+  { title: t('ftpPlugin.performanceTestDetail.nodeData.table.max'), dataIndex: 'high', key: 'high' },
+  { title: t('ftpPlugin.performanceTestDetail.nodeData.table.min'), dataIndex: 'low', key: 'low' },
+  { title: t('ftpPlugin.performanceTestDetail.nodeData.table.latest'), dataIndex: 'latest', key: 'latest' }
+];
+
+/**
+ * Whether to merge chart data or replace entirely
+ * true = replace (initial load), false = merge (updates)
+ */
+const notMerge = ref(true);
+
+/**
+ * Default legend configuration for all charts
+ */
 const defaultLegend = {
   type: 'plain',
   data: [],
   y: 'top',
   x: 'center'
 };
-// echarts 图表配置
+
+/**
+ * Base ECharts configuration options
+ * Applied to all metric charts with customizations per type
+ */
 const echartsOpt = {
   title: {
     text: ' '
@@ -84,17 +140,30 @@ const echartsOpt = {
         type: 'dashed'
       }
     }
-
   },
   series: []
 };
 
-const echartRef = ref();
-const initEcahrts = () => {
-  myEcahrt = echarts.init(echartRef.value);
+/**
+ * Reference to chart DOM element
+ */
+const echartRef = ref<HTMLDivElement>();
+
+/**
+ * Initialize ECharts instance
+ * Creates the chart with base configuration
+ */
+const initEcahrts = (): void => {
+  myEcahrt = echarts.init(echartRef.value!);
   myEcahrt.setOption(echartsOpt);
 };
 
+/**
+ * Get default line series configuration
+ * Returns a smooth line chart config with minimal styling
+ * 
+ * @returns Line series configuration object
+ */
 const getDefaultLineConfig = () => {
   return {
     data: [] as number[],
@@ -107,6 +176,9 @@ const getDefaultLineConfig = () => {
   };
 };
 
+/**
+ * Tab configuration for different metric types
+ */
 const nodeTabs = [
   {
     label: t('ftpPlugin.performanceTestDetail.nodeData.tabs.cpu'),
@@ -125,11 +197,23 @@ const nodeTabs = [
     value: 'network'
   }
 ];
+
+/**
+ * State Management
+ */
+// Currently active metric tab (cpu, memory, disk, network)
 const activeTab = ref('cpu');
 
+// Node type selection (exec or apply)
 const nodeType = ref('exec');
-const currrentNodeId = ref();
 
+// Currently selected node ID
+const currrentNodeId = ref<string>();
+
+/**
+ * Get node list based on selected node type
+ * Returns either execution nodes or application nodes
+ */
 const nodeList = computed(() => {
   if (nodeType.value === 'apply') {
     return props.appNodes;
@@ -137,30 +221,45 @@ const nodeList = computed(() => {
   return props.execNodes;
 });
 
+/**
+ * Watch node list changes
+ * Auto-select first node when list changes
+ */
 watch(() => nodeList.value, () => {
-  currrentNodeId.value = nodeList.value[0].id;
+  currrentNodeId.value = nodeList.value[0]?.id;
 });
 
-// const sliderValue = ref<number[]>([]); // 时间滑块的值
-// let sliderMax: number|undefined;
-// const times = ref<string[]>([]);
+/**
+ * Time Range Slider State (per metric type)
+ * Each metric type maintains its own slider state for independent time range selection
+ */
 
-const sliderValueCpu = ref<number[]>([]); // 时间滑块的值
-let sliderMaxCpu: number|undefined;
-const timesCpu = ref<string[]>([]);
+// CPU metric slider state
+const sliderValueCpu = ref<number[]>([]);          // Current slider range [start, end]
+let sliderMaxCpu: number | undefined;              // Maximum slider value
+const timesCpu = ref<string[]>([]);                // Timestamp array
 
-const sliderValueMemory = ref<number[]>([]); // 时间滑块的值
-let sliderMaxMemory: number|undefined;
-const timesMemory = ref<string[]>([]);
+// Memory metric slider state
+const sliderValueMemory = ref<number[]>([]);       // Current slider range [start, end]
+let sliderMaxMemory: number | undefined;           // Maximum slider value
+const timesMemory = ref<string[]>([]);             // Timestamp array
 
-const sliderValueDisk = ref<number[]>([]); // 时间滑块的值
-let sliderMaxDisk: number|undefined;
-const timesDisk = ref<string[]>([]);
+// Disk metric slider state
+const sliderValueDisk = ref<number[]>([]);         // Current slider range [start, end]
+let sliderMaxDisk: number | undefined;             // Maximum slider value
+const timesDisk = ref<string[]>([]);               // Timestamp array
 
-const sliderValueNetwork = ref<number[]>([]); // 时间滑块的值
-let sliderMaxNetwork: number|undefined;
-const timesNetwork = ref<string[]>([]);
+// Network metric slider state
+const sliderValueNetwork = ref<number[]>([]);      // Current slider range [start, end]
+let sliderMaxNetwork: number | undefined;          // Maximum slider value
+const timesNetwork = ref<string[]>([]);            // Timestamp array
 
+/**
+ * Get current active tab's timestamp array
+ * Returns timestamps for the currently selected metric type
+ * 
+ * @returns Array of timestamp strings
+ */
 const times = computed(() => {
   if (activeTab.value === 'cpu') {
     return timesCpu.value;
@@ -177,16 +276,26 @@ const times = computed(() => {
   return [];
 });
 
-const setSliderConfig = (reset = false) => {
+/**
+ * Configure time range slider for active metric type
+ * Initializes slider state or updates range when new data arrives
+ * Auto-extends slider if currently at max and test is still running
+ * 
+ * @param reset - Whether to reset slider to full range
+ */
+const setSliderConfig = (reset = false): void => {
   if (activeTab.value === 'cpu') {
     if (!cpuChartData.length) {
       return;
     }
+    
+    // Initialize slider on first load
     if (!sliderValueCpu.value.length) {
       timesCpu.value = cpuChartData.map(i => i.timestamp);
       sliderValueCpu.value = [0, timesCpu.value.length - 1];
       sliderMaxCpu = timesCpu.value.length - 1;
     } else {
+      // Update timestamps and auto-extend if at max
       timesCpu.value = cpuChartData.map(i => i.timestamp);
       if (!props.endTime || reset) {
         if (sliderValueCpu.value[1] === sliderMaxCpu) {
@@ -199,6 +308,7 @@ const setSliderConfig = (reset = false) => {
     if (!memoryChartData.length) {
       return;
     }
+    
     if (!sliderValueMemory.value.length) {
       timesMemory.value = memoryChartData.map(i => i.timestamp);
       sliderValueMemory.value = [0, timesMemory.value.length - 1];
@@ -216,6 +326,7 @@ const setSliderConfig = (reset = false) => {
     if (!diskChartData.length) {
       return;
     }
+    
     if (!sliderValueDisk.value.length) {
       timesDisk.value = diskChartData.map(i => i.timestamp);
       sliderValueDisk.value = [0, timesDisk.value.length - 1];
@@ -230,9 +341,11 @@ const setSliderConfig = (reset = false) => {
       sliderMaxDisk = timesDisk.value.length - 1;
     }
   } else {
+    // Network
     if (!networkChartData.length) {
       return;
     }
+    
     if (!sliderValueNetwork.value.length) {
       timesNetwork.value = networkChartData.map(i => i.timestamp);
       sliderValueNetwork.value = [0, timesNetwork.value.length - 1];
@@ -247,41 +360,40 @@ const setSliderConfig = (reset = false) => {
       sliderMaxNetwork = timesNetwork.value.length - 1;
     }
   }
-
-  // if (!chartsData.length) {
-  //   return;
-  // }
-  // if (!sliderValue.value.length) {
-  //   times.value = chartsData.map(i => i.timestamp);
-  //   sliderValue.value = [0, times.value.length - 1];
-  //   sliderMax = times.value.length - 1;
-  // } else {
-  //   times.value = chartsData.map(i => i.timestamp);
-  //   if (!props.endTime || reset) {
-  //     if (sliderValue.value[1] === sliderMax) {
-  //       sliderValue.value = [0, times.value.length - 1];
-  //     }
-  //   }
-  //   sliderMax = times.value.length - 1;
-  // }
 };
 
-const pagination = { // 数据分页获取
-  pageSize: 1000,
-  pageNo: 1
+/**
+ * Pagination configuration for metric data fetching
+ * Large page size to minimize requests
+ */
+const pagination = {
+  pageSize: 1000,  // Fetch 1000 records per request
+  pageNo: 1        // Current page number
 };
 
-const getChartParam = (params = {}) => {
+/**
+ * Build API request parameters for chart data
+ * Constructs time range filters based on test start/end times
+ * 
+ * @param params - Additional parameters (e.g., device filters)
+ * @returns Request parameters object with pagination and filters
+ */
+const getChartParam = (params: any = {}) => {
   const startTime = dayjs(props.startTime).format(DATE_TIME_FORMAT);
   const [interval, unit] = splitDuration(props.reportInterval);
+  
+  // Calculate end time: test end time + interval, or start + 1 day if still running
   const endTime = props.endTime
-    ? dayjs(props.endTime).add(+interval, unit).format(DATE_TIME_FORMAT)
-    : dayjs(props.startTime).add(+interval, unit).add(1, 'day').format(DATE_TIME_FORMAT);
+    ? dayjs(props.endTime).add(+interval, unit as any).format(DATE_TIME_FORMAT)
+    : dayjs(props.startTime).add(+interval, unit as any).add(1, 'day').format(DATE_TIME_FORMAT);
+  
+  // Build time range filters
   const filters = [
     { key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: startTime },
     { key: 'timestamp', op: 'LESS_THAN_EQUAL', value: endTime },
     ...(params?.filters || [])
   ];
+  
   return {
     pageNo: pagination.pageNo,
     pageSize: pagination.pageSize,
@@ -289,48 +401,73 @@ const getChartParam = (params = {}) => {
   };
 };
 
-let cpuChartData = [];
-const cpuloaded = ref(false);
-// 获取图表数据 CPU
-const loadCpuEchartData = async () => {
+/**
+ * CPU Metrics State
+ */
+let cpuChartData: any[] = [];           // Raw CPU metrics data from API
+const cpuloaded = ref(false);           // Whether CPU data has been loaded
+
+/**
+ * Load CPU metrics data from API
+ * Fetches data with pagination, recursively loads all pages
+ * Removes duplicate timestamps and initializes chart
+ */
+const loadCpuEchartData = async (): Promise<void> => {
   const param = getChartParam();
   const [error, res] = await nodeCtrl.getCpuMetrics(currrentNodeId.value, param);
+  
   if (error) {
     return;
   }
+  
+  // First page: replace data, subsequent pages: append
   if (pagination.pageNo === 1) {
-    // chartsData = res.data?.list || [];
     cpuChartData = res.data?.list || [];
   } else {
-    // chartsData = chartsData.concat(res.data?.list || []);
     cpuChartData = cpuChartData.concat(res.data?.list || []);
   }
+  
+  // Recursively fetch next page if more data exists
   if (cpuChartData.length < res.data.total) {
     pagination.pageNo += 1;
     loadCpuEchartData();
-    // return;
   }
-  if (cpuChartData.length > 2 && cpuChartData[cpuChartData.length - 1].timestamp === cpuChartData[cpuChartData.length - 2].timestamp) {
+  
+  // Remove duplicate timestamps (if last two entries have same timestamp)
+  if (cpuChartData.length > 2 && 
+      cpuChartData[cpuChartData.length - 1].timestamp === cpuChartData[cpuChartData.length - 2].timestamp) {
     cpuChartData.splice(cpuChartData.length - 2, 1);
   }
+  
   cpuloaded.value = true;
 
+  // Initialize slider and render chart
   setSliderConfig(true);
   setCpuChartData();
 };
 
-// 设置CPU图表数据
-const setCpuChartData = () => {
+/**
+ * Set CPU chart data
+ * Filters data by slider range, builds series for each CPU metric,
+ * calculates statistics, and updates both chart and table
+ */
+const setCpuChartData = (): void => {
+  // Filter data by current slider range
   const showChartData = cpuChartData.filter((_i, idx) => {
     return idx >= sliderValueCpu.value[0] && idx <= sliderValueCpu.value[1];
   });
-  // const showChartData = chartsData.filter((_i, idx) => {
-  //   return idx >= sliderValue.value[0] && idx <= sliderValue.value[1];
-  // });
-  // chartsData = data;
-  // 'CPU 空闲百分比', '系统空间占用 CPU 百分比', '用户空间占 CPU 百分比', '等待 IO 操作的 CPU 百分比', '其他占用 CPU 百分比', '当前占用的总 CPU 百分比'
-  // const dataType = ['idle', 'sys', 'sys', 'wait', 'other', 'total'];
-  const dataType = [t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.idlePercentage'), t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.systemSpacePercentage'), t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.userSpacePercentage'), t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.ioWaitPercentage'), t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.otherPercentage'), t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.totalPercentage')];
+  
+  // CPU metric types: idle, system, user, IO wait, other, total
+  const dataType = [
+    t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.idlePercentage'),
+    t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.systemSpacePercentage'),
+    t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.userSpacePercentage'),
+    t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.ioWaitPercentage'),
+    t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.otherPercentage'),
+    t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.totalPercentage')
+  ];
+  
+  // Initialize series data structure
   const seriesData = dataType.map(type => {
     return {
       ...getDefaultLineConfig(),
@@ -338,6 +475,7 @@ const setCpuChartData = () => {
     };
   });
 
+  // Parse CSV data and populate series
   showChartData.forEach(item => {
     const cpusValues = item.cvsCpu.split(',');
     cpusValues.forEach((val, idx) => {
@@ -345,7 +483,7 @@ const setCpuChartData = () => {
     });
   });
 
-  // table 表格数据
+  // Calculate statistics for table display
   if (showChartData.length) {
     tableData.value = dataType.map((name, idx) => {
       const total = seriesData[idx].data.reduce((pre, current) => {
@@ -365,6 +503,7 @@ const setCpuChartData = () => {
     tableData.value = [];
   }
 
+  // Add legend only on initial load (notMerge = true)
   const legend = notMerge.value
     ? {
         legend: {
@@ -376,6 +515,7 @@ const setCpuChartData = () => {
       }
     : {};
 
+  // Update chart with CPU data
   myEcahrt.setOption({
     ...echartsOpt,
     ...legend,
@@ -389,36 +529,56 @@ const setCpuChartData = () => {
         data: showChartData.map(i => i.timestamp)
       }
     ],
-    series: seriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [60] }] : seriesData
+    // Show placeholder data if no series data
+    series: seriesData.every(serries => !serries.data.length) 
+      ? [{ ...getDefaultLineConfig(), data: [60] }] 
+      : seriesData
   }, false);
 };
 
-const networkNames = ref<{value: string, label: string}[]>([]); // 网络设备选项
-const activeNetwork = ref(); // 网络设备名称
-let networkChartData = [];
-let networkTableData = [];
-const networkloaded = ref(false);
-// 图表数据 网络
-const loadNetworkEchartData = async () => {
-  const param = getChartParam({ filters: [{ key: 'deviceName', op: 'EQUAL', value: activeNetwork.value }] });
+/**
+ * Network Metrics State
+ */
+const networkNames = ref<{ value: string; label: string }[]>([]);  // Available network devices
+const activeNetwork = ref<string>();                                // Currently selected network device
+let networkChartData: any[] = [];                                   // Raw network metrics data
+let networkTableData: any[] = [];                                   // Processed network table data
+const networkloaded = ref(false);                                   // Whether network data loaded
+
+/**
+ * Load network metrics data from API
+ * Fetches data for selected network device with pagination
+ */
+const loadNetworkEchartData = async (): Promise<void> => {
+  const param = getChartParam({ 
+    filters: [{ key: 'deviceName', op: 'EQUAL', value: activeNetwork.value }] 
+  });
+  
   const [error, res] = await nodeCtrl.getNetworkMetrics(currrentNodeId.value, param);
+  
   if (error) {
     return;
   }
+  
+  // First page: replace data, subsequent pages: append
   if (pagination.pageNo === 1) {
-    // chartsData = res.data?.[0]?.values?.list || [];
     networkChartData = res.data?.[0]?.values?.list || [];
   } else {
-    // chartsData = chartsData.concat(res.data?.[0]?.values?.list || []);
     networkChartData = networkChartData.concat(res.data?.[0]?.values?.list || []);
   }
+  
+  // Recursively fetch next page if more data exists
   if (res.data?.[0]?.values?.total && networkChartData.length < res.data?.[0]?.values?.total) {
     pagination.pageNo += 1;
     loadNetworkEchartData();
   }
-  if (networkChartData.length > 2 && networkChartData[networkChartData.length - 1].timestamp === networkChartData[networkChartData.length - 2].timestamp) {
+  
+  // Remove duplicate timestamps
+  if (networkChartData.length > 2 && 
+      networkChartData[networkChartData.length - 1].timestamp === networkChartData[networkChartData.length - 2].timestamp) {
     networkChartData.splice(networkChartData.length - 2, 1);
   }
+  
   networkloaded.value = true;
   setSliderConfig(true);
   setNetworkChartData();
@@ -515,11 +675,18 @@ const setNetworkChartData = () => {
   myEcahrt.setOption(networkChartOption, notMerge.value);
 };
 
-let memoryChartData = [];
-let memoryTableData = [];
-const memoryloaded = ref(false);
-// 获取图表数据 内存
-const loadMemoryEchartData = async () => {
+/**
+ * Memory Metrics State
+ */
+let memoryChartData: any[] = [];        // Raw memory metrics data
+let memoryTableData: any[] = [];        // Processed memory table data
+const memoryloaded = ref(false);        // Whether memory data loaded
+
+/**
+ * Load memory metrics data from API
+ * Fetches data with pagination and initializes chart
+ */
+const loadMemoryEchartData = async (): Promise<void> => {
   const param = getChartParam();
   // // loadingChartData.value = true;
   const [error, res] = await nodeCtrl.getMemoryMetrics(currrentNodeId.value, param);
@@ -641,17 +808,20 @@ const setMemoryChartData = () => {
   myEcahrt.setOption(memoryPercentEchartOption, notMerge.value);
 };
 
-// let diskChartOption;
-// let percentChartOption;
-// let diskTableData;
+/**
+ * Disk Metrics State
+ */
+const diskNames = ref<{ value: string; label: string }[]>([]);  // Available disk devices
+const activeDisk = ref<string>();                                // Currently selected disk device
+let diskChartData: any[] = [];                                   // Raw disk metrics data
+let diskTableData: any[] = [];                                   // Processed disk table data
+const diskloaded = ref(false);                                   // Whether disk data loaded
 
-const diskNames = ref<{value: string, label: string}[]>([]);
-const activeDisk = ref();
-let diskChartData = [];
-let diskTableData = [];
-const diskloaded = ref(false);
-// 获取图表数据 磁盘
-const loadDiskEchartData = async () => {
+/**
+ * Load disk metrics data from API
+ * Fetches data for selected disk device with pagination
+ */
+const loadDiskEchartData = async (): Promise<void> => {
   const param = getChartParam({ filters: [{ key: 'deviceName', op: 'EQUAL', value: activeDisk.value }] });
   const [error, res] = await nodeCtrl.getDiskMetrics(currrentNodeId.value, param);
   if (error) {
@@ -677,12 +847,26 @@ const loadDiskEchartData = async () => {
   setDiskEchartData();
 };
 
-// 设置图表数据 磁盘
-let rateChartOption;
-let bytesRateChartOption;
-const diskChartKey = ref('rate'); // 显示文件系统百分比图表
-const diskDataOptions = [{ label: t('ftpPlugin.performanceTestDetail.nodeData.diskDataOptions.iops'), value: 'rate' }, { label: t('ftpPlugin.performanceTestDetail.nodeData.diskDataOptions.mbPerSecond'), value: 'bytesRate' }];
-const setDiskEchartData = () => {
+/**
+ * Disk chart configuration
+ */
+let rateChartOption: any;              // IOPS chart option
+let bytesRateChartOption: any;         // MB/s chart option
+const diskChartKey = ref('rate');      // Current disk chart view (rate or bytesRate)
+
+/**
+ * Disk chart view options
+ */
+const diskDataOptions = [
+  { label: t('ftpPlugin.performanceTestDetail.nodeData.diskDataOptions.iops'), value: 'rate' },
+  { label: t('ftpPlugin.performanceTestDetail.nodeData.diskDataOptions.mbPerSecond'), value: 'bytesRate' }
+];
+
+/**
+ * Set disk chart data
+ * Builds chart series for disk metrics and updates display
+ */
+const setDiskEchartData = (): void => {
   // const showChartData = chartsData.filter((_i, idx) => {
   //   return idx >= sliderValue.value[0] && idx <= sliderValue.value[1];
   // });
@@ -813,9 +997,13 @@ const setDiskEchartData = () => {
   myEcahrt.setOption(showEchartOptions, notMerge.value);
 };
 
-// 文件系统展示类型变更
-const onDiskChartKeyChange = () => {
+/**
+ * Handle disk chart view type change
+ * Switches between IOPS and MB/s views
+ */
+const onDiskChartKeyChange = (): void => {
   let showEchartOptions;
+  
   if (diskChartKey.value === 'rate') {
     showEchartOptions = rateChartOption;
     tableData.value = diskTableData.filter(i => i.unit === 'IO/s');
@@ -824,12 +1012,17 @@ const onDiskChartKeyChange = () => {
     showEchartOptions = bytesRateChartOption;
     tableData.value = diskTableData.filter(i => i.unit === 'MB/s');
   }
+  
   myEcahrt.setOption(showEchartOptions, notMerge.value);
 };
 
-// slider 时间轴 变化
-const onSliderChaneg = () => {
+/**
+ * Handle time range slider change
+ * Updates chart data for selected time range
+ */
+const onSliderChaneg = (): void => {
   notMerge.value = false;
+  
   if (activeTab.value === 'cpu') {
     setCpuChartData();
   }
@@ -844,23 +1037,38 @@ const onSliderChaneg = () => {
   }
 };
 
-// 网络设备更换
-const onActiveNetwokChange = () => {
+/**
+ * Handle network device selection change
+ * Reloads network metrics for new device
+ */
+const onActiveNetwokChange = (): void => {
   pagination.pageNo = 1;
   loadNetworkEchartData();
 };
 
-// 网络设备更换
-const onActiveDiskChange = () => {
+/**
+ * Handle disk device selection change
+ * Reloads disk metrics for new device
+ */
+const onActiveDiskChange = (): void => {
   pagination.pageNo = 1;
   loadDiskEchartData();
 };
 
-let intervalTimer;
+/**
+ * Auto-refresh timer for real-time data updates
+ */
+let intervalTimer: NodeJS.Timeout | null;
 
-const intervalRefresh = () => {
+/**
+ * Set up automatic data refresh interval
+ * Continues refreshing until test completes (endTime is set)
+ */
+const intervalRefresh = (): void => {
   intervalTimer = setTimeout(async () => {
     notMerge.value = false;
+    
+    // Load latest data for active metric type
     if (activeTab.value === 'cpu') {
       await loadCputimerData();
     }
@@ -873,8 +1081,12 @@ const intervalRefresh = () => {
     if (activeTab.value === 'disk') {
       await loadDiskTimerData();
     }
-    clearTimeout(intervalTimer);
+    
+    // Clear current timer
+    clearTimeout(intervalTimer!);
     intervalTimer = null;
+    
+    // Continue refresh if test still running (no end time)
     if (!props.endTime) {
       intervalRefresh();
     }
@@ -959,8 +1171,17 @@ watch(() => activeTab.value, async () => {
   }
 });
 
-const getChartTimerParam = (params = {}) => {
-  let startDate;
+/**
+ * Build API parameters for incremental timer refresh
+ * Gets data from last known timestamp to now
+ * 
+ * @param params - Additional parameters (e.g., device filters)
+ * @returns Request parameters for fetching new data since last timestamp
+ */
+const getChartTimerParam = (params: any = {}) => {
+  let startDate: string;
+  
+  // Get last timestamp from active metric's data
   if (activeTab.value === 'cpu') {
     startDate = cpuChartData[cpuChartData.length - 1].timestamp;
   }
@@ -973,13 +1194,16 @@ const getChartTimerParam = (params = {}) => {
   if (activeTab.value === 'network') {
     startDate = networkChartData[networkChartData.length - 1].timestamp;
   }
-  const startTime = dayjs(startDate).format(DATE_TIME_FORMAT);
+  
+  const startTime = dayjs(startDate!).format(DATE_TIME_FORMAT);
   const nowTime = dayjs().format(DATE_TIME_FORMAT);
+  
   const filters = [
     { key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: startTime },
     { key: 'timestamp', op: 'LESS_THAN_EQUAL', value: nowTime },
     ...(params?.filters || [])
   ];
+  
   return {
     pageNo: 1,
     pageSize: 100,
@@ -987,66 +1211,111 @@ const getChartTimerParam = (params = {}) => {
   };
 };
 
-const loadCputimerData = async () => {
+/**
+ * Load incremental CPU data for timer refresh
+ * Fetches new data since last timestamp and appends to existing data
+ */
+const loadCputimerData = async (): Promise<void> => {
   const params = getChartTimerParam();
   const [error, res] = await nodeCtrl.getCpuMetrics(currrentNodeId.value, params);
+  
   if (error) {
     return;
   }
+  
   const data = res.data?.list || [];
+  
+  // Remove duplicate if first item matches last existing timestamp
   if (data.length && data[0].timestamp === cpuChartData[cpuChartData.length - 1].timestamp) {
     data.splice(0, 1);
   }
+  
+  // Append new data
   cpuChartData = cpuChartData.concat(data);
   setSliderConfig();
   setCpuChartData();
 };
 
-const loadNetworkTimerData = async () => {
-  const param = getChartTimerParam({ filters: [{ key: 'deviceName', op: 'EQUAL', value: activeNetwork.value }] });
+/**
+ * Load incremental network data for timer refresh
+ */
+const loadNetworkTimerData = async (): Promise<void> => {
+  const param = getChartTimerParam({ 
+    filters: [{ key: 'deviceName', op: 'EQUAL', value: activeNetwork.value }] 
+  });
+  
   const [error, res] = await nodeCtrl.getNetworkMetrics(currrentNodeId.value, param);
+  
   if (error) {
     return;
   }
+  
   const data = res.data?.[0]?.values?.list || [];
+  
   if (data.length && data[0].timestamp === networkChartData[networkChartData.length - 1].timestamp) {
     data.splice(0, 1);
   }
+  
   networkChartData = networkChartData.concat(data);
   setSliderConfig();
   setNetworkChartData();
 };
 
-const loadMemoryTimerData = async () => {
+/**
+ * Load incremental memory data for timer refresh
+ */
+const loadMemoryTimerData = async (): Promise<void> => {
   const param = getChartTimerParam();
   const [error, res] = await nodeCtrl.getMemoryMetrics(currrentNodeId.value, param);
+  
   if (error) {
     return;
   }
+  
   const data = res.data?.list || [];
+  
   if (data.length && data[0].timestamp === memoryChartData[memoryChartData.length - 1].timestamp) {
     data.splice(0, 1);
   }
+  
   memoryChartData = memoryChartData.concat(data);
   setSliderConfig();
   setMemoryChartData();
 };
 
-const loadDiskTimerData = async () => {
-  const param = getChartTimerParam({ filters: [{ key: 'deviceName', op: 'EQUAL', value: activeDisk.value }] });
+/**
+ * Load incremental disk data for timer refresh
+ */
+const loadDiskTimerData = async (): Promise<void> => {
+  const param = getChartTimerParam({ 
+    filters: [{ key: 'deviceName', op: 'EQUAL', value: activeDisk.value }] 
+  });
+  
   const [error, res] = await nodeCtrl.getDiskMetrics(currrentNodeId.value, param);
+  
   if (error) {
     return;
   }
+  
   const data = res.data?.[0]?.values?.list || [];
+  
   if (data.length && data[0].timestamp === diskChartData[diskChartData.length - 1].timestamp) {
     data.splice(0, 1);
   }
+  
   diskChartData = diskChartData.concat(data);
   setSliderConfig();
   setDiskEchartData();
 };
 
+/**
+ * Lifecycle Hooks
+ */
+
+/**
+ * Component mount hook
+ * Initializes chart and selects first execution node
+ */
 onMounted(() => {
   setTimeout(() => {
     if (props.execNodes.length) {
@@ -1056,6 +1325,10 @@ onMounted(() => {
   });
 });
 
+/**
+ * Before unmount hook
+ * Cleans up auto-refresh timer to prevent memory leaks
+ */
 onBeforeUnmount(() => {
   if (intervalTimer) {
     clearTimeout(intervalTimer);
@@ -1063,13 +1336,19 @@ onBeforeUnmount(() => {
   }
 });
 
+/**
+ * Watch for active chart tab changes
+ * Stops/starts refresh timer based on whether node chart is active
+ */
 watch(() => props.activeChart, newValue => {
   if (newValue !== 'node') {
+    // Stop refresh when switching away from node chart
     if (intervalTimer) {
       clearTimeout(intervalTimer);
       intervalTimer = null;
     }
   } else {
+    // Start loading or resume refresh when switching to node chart
     if (!cpuloaded.value && !memoryloaded.value && !diskloaded.value && !networkloaded.value) {
       restart();
     } else {
@@ -1080,15 +1359,42 @@ watch(() => props.activeChart, newValue => {
   }
 });
 
-const formatBytesToUnit = (size = 0, unit = 'GB', decimal = 5):string => {
+/**
+ * Utility Functions
+ */
+
+/**
+ * Convert bytes to specified unit
+ * 
+ * @param size - Size in bytes
+ * @param unit - Target unit (B, KB, MB, GB, TB, PB)
+ * @param decimal - Number of decimal places
+ * @returns Formatted string with specified decimal places
+ */
+const formatBytesToUnit = (size = 0, unit = 'GB', decimal = 5): string => {
   if (size === 0) return '0';
-  const unitMap = {
-    B: 1, KB: 1024, MB: 1048576, GB: 1073741824, TB: 1099511627776, PB: 1125899906842624
+  
+  // Unit conversion map (bytes per unit)
+  const unitMap: Record<string, number> = {
+    B: 1,
+    KB: 1024,
+    MB: 1048576,
+    GB: 1073741824,
+    TB: 1099511627776,
+    PB: 1125899906842624
   };
-  const c = unitMap[unit] || 1073741824;
-  return (size / c).toFixed(decimal);
+  
+  const divisor = unitMap[unit] || 1073741824;
+  return (size / divisor).toFixed(decimal);
 };
 
+/**
+ * Parse duration string into value and unit
+ * Extracts numeric value and time unit from duration string
+ * 
+ * @param duration - Duration string (e.g., "30s", "5min", "2h")
+ * @returns Array of [value, unit]
+ */
 const splitDuration = (duration: string): string[] => {
   if (duration.includes('h')) {
     duration = duration.replace('h', '');
@@ -1109,41 +1415,62 @@ const splitDuration = (duration: string): string[] => {
   return [];
 };
 
-const restart = async (nodeChange = false) => {
+/**
+ * Restart data loading for current node and metric type
+ * Clears all cached data, reloads device lists if needed,
+ * fetches fresh metrics, and starts auto-refresh if test is running
+ * 
+ * @param nodeChange - Whether this is triggered by node selection change
+ */
+const restart = async (nodeChange = false): Promise<void> => {
+  // Reset pagination and loading states
   pagination.pageNo = 1;
   cpuloaded.value = false;
   networkloaded.value = false;
   diskloaded.value = false;
   memoryloaded.value = false;
+  
+  // Clear all cached data
   cpuChartData = [];
   networkChartData = [];
   memoryChartData = [];
   diskChartData = [];
+  
+  // Clear refresh timer
   if (intervalTimer) {
     clearTimeout(intervalTimer);
     intervalTimer = null;
   }
+  
+  // Only proceed if node chart is active
   if (props.activeChart !== 'node') {
     return;
   }
+  
   if (currrentNodeId.value) {
     notMerge.value = true;
+    
+    // Load data for active metric type
     if (activeTab.value === 'cpu') {
       await loadCpuEchartData();
     }
+    
     if (activeTab.value === 'network') {
+      // Load network device list if not loaded or node changed
       if (!networkNames.value.length || nodeChange) {
         const [error, { data }] = await nodeCtrl.getNetworkInfoMetrics(currrentNodeId.value);
         if (!error) {
-          // networkNames.value = data;
-          const _networkNames: {label: string, value: string}[] = [];
-          const networkNamesMp = {};
+          const _networkNames: { label: string; value: string }[] = [];
+          const networkNamesMp: Record<string, boolean> = {};
+          
+          // Deduplicate device names
           for (const item of (data || [])) {
             if (!networkNamesMp[item.deviceName]) {
               _networkNames.push({ label: item.deviceName, value: item.deviceName });
               networkNamesMp[item.deviceName] = true;
             }
           }
+          
           networkNames.value = _networkNames;
           activeNetwork.value = _networkNames?.[0]?.value;
         }
@@ -1156,45 +1483,64 @@ const restart = async (nodeChange = false) => {
     }
 
     if (activeTab.value === 'disk') {
-      if (!networkNames.value.length || nodeChange) {
+      // Load disk device list if not loaded or node changed
+      if (!diskNames.value.length || nodeChange) {
         const [error, res] = await nodeCtrl.getDiskInfoMetrics(currrentNodeId.value);
         if (error) {
           return;
         }
-        const _diskNames:{label: string, value: string}[] = [];
-        const deviceNameMp = {};
+        
+        const _diskNames: { label: string; value: string }[] = [];
+        const deviceNameMp: Record<string, boolean> = {};
+        
+        // Deduplicate device names
         for (const item of (res.data || [])) {
           if (!deviceNameMp[item.deviceName]) {
             _diskNames.push({ label: item.deviceName, value: item.deviceName });
             deviceNameMp[item.deviceName] = true;
           }
         }
+        
         diskNames.value = _diskNames;
         activeDisk.value = diskNames.value?.[0]?.value;
       }
       await loadDiskEchartData();
     }
   }
+  
+  // Start auto-refresh if test is still running
   if (!props.endTime && ['PENDING', 'RUNNING'].includes(props.status)) {
     intervalRefresh();
   }
 };
 
-// 监听Node 变更
+/**
+ * Watch for node selection changes
+ * Triggers restart to load data for newly selected node
+ */
 watch(() => currrentNodeId.value, () => {
   restart(true);
 }, {
   immediate: true
 });
 
+/**
+ * Expose restart method for parent component
+ */
 defineExpose({
   restart
 });
 </script>
+
 <template>
+  <!-- No data placeholder (shown when test not started or no nodes) -->
   <NoData v-if="!props.startTime || !props.execNodes.length || props.status === 'CREATED'" />
+  
+  <!-- Main content (when data is available) -->
   <div v-else class="flex flex-col justify-between">
+    <!-- Control panel: metric tabs, device selectors, and node selector -->
     <div class="flex pl-10 items-center pr-15">
+      <!-- Metric type selector (CPU, Memory, Disk, Network) -->
       <RadioGroup
         v-model:value="activeTab"
         buttonStyle="solid"
@@ -1206,6 +1552,8 @@ defineExpose({
           {{ tab.label }}
         </RadioButton>
       </RadioGroup>
+      
+      <!-- Network device selector (shown only on network tab) -->
       <Select
         v-if="activeTab === 'network'"
         v-model:value="activeNetwork"
@@ -1213,6 +1561,8 @@ defineExpose({
         size="small"
         :options="networkNames"
         @change="onActiveNetwokChange" />
+      
+      <!-- Disk device selector (shown only on disk tab) -->
       <Select
         v-show="activeTab === 'disk'"
         v-model:value="activeDisk"
@@ -1220,34 +1570,53 @@ defineExpose({
         size="small"
         :options="diskNames"
         @change="onActiveDiskChange" />
+      
+      <!-- Disk chart type selector: IOPS vs MB/s (shown only on disk tab) -->
       <RadioGroup
-        v-show="activeTab ==='disk'"
+        v-show="activeTab === 'disk'"
         v-model:value="diskChartKey"
         class="block text-center ml-2"
         size="small"
         :options="diskDataOptions"
         @change="onDiskChartKeyChange" />
+      
+      <!-- Right side controls: node type and node selector -->
       <div class="flex items-center flex-1 justify-end">
+        <!-- Node type selector (Execution Node vs Application Node) -->
         <RadioGroup
           v-model:value="nodeType"
           class="mr-5"
           :disabled="!props.appNodes?.length"
-          :options="[{label: t('ftpPlugin.performanceTestDetail.nodeData.nodeTypes.execNode'), value: 'exec'}, {label: t('ftpPlugin.performanceTestDetail.nodeData.nodeTypes.appNode'), value: 'apply'}]" />
+          :options="[
+            { label: t('ftpPlugin.performanceTestDetail.nodeData.nodeTypes.execNode'), value: 'exec' },
+            { label: t('ftpPlugin.performanceTestDetail.nodeData.nodeTypes.appNode'), value: 'apply' }
+          ]" />
+        
+        <!-- Node selector dropdown -->
         <Select
           v-model:value="currrentNodeId"
           class="min-w-25"
           size="small"
           :options="nodeList"
-          :fieldNames="{value: 'id', label: 'name'}" />
+          :fieldNames="{ value: 'id', label: 'name' }" />
       </div>
     </div>
+    
+    <!-- Chart and slider section -->
     <div class="mt-3.5">
+      <!-- No data placeholder (shown when data loaded but empty) -->
       <template v-if="!times.length && ((activeTab === 'cpu' && cpuloaded) || (activeTab === 'memory' && memoryloaded) || (activeTab === 'disk' && diskloaded) || (activeTab === 'network' && networkloaded))">
         <NoData class="my-20" />
       </template>
-      <div v-show="times.length || (activeTab === 'cpu' && !cpuloaded) || (activeTab === 'memory' && !memoryloaded) || (activeTab === 'disk' && !diskloaded) || (activeTab === 'network' && !networkloaded)" class="w-full ">
+      
+      <!-- Chart container (shown when loading or has data) -->
+      <div v-show="times.length || (activeTab === 'cpu' && !cpuloaded) || (activeTab === 'memory' && !memoryloaded) || (activeTab === 'disk' && !diskloaded) || (activeTab === 'network' && !networkloaded)" class="w-full">
+        <!-- ECharts container -->
         <div ref="echartRef" class="w-full h-70"></div>
+        
+        <!-- Time range sliders (one for each metric type) -->
         <div class="-mt-5 pl-10 pr-12">
+          <!-- CPU time range slider -->
           <template v-if="activeTab === 'cpu'">
             <Slider
               v-model:value="sliderValueCpu"
@@ -1255,9 +1624,10 @@ defineExpose({
               :min="0"
               :max="timesCpu.length - 1 > 0 ? timesCpu.length - 1 : sliderValueCpu[1]"
               :tipFormatter="(value) => timesCpu.length ? cpuChartData[value]?.timestamp : ''"
-              @change="onSliderChaneg">
-            </Slider>
+              @change="onSliderChaneg" />
           </template>
+          
+          <!-- Memory time range slider -->
           <template v-if="activeTab === 'memory'">
             <Slider
               v-model:value="sliderValueMemory"
@@ -1265,9 +1635,10 @@ defineExpose({
               :min="0"
               :max="timesMemory.length - 1 > 0 ? timesMemory.length - 1 : sliderValueMemory[1]"
               :tipFormatter="(value) => timesMemory.length ? memoryChartData[value]?.timestamp : ''"
-              @change="onSliderChaneg">
-            </Slider>
+              @change="onSliderChaneg" />
           </template>
+          
+          <!-- Disk time range slider -->
           <template v-if="activeTab === 'disk'">
             <Slider
               v-model:value="sliderValueDisk"
@@ -1275,9 +1646,10 @@ defineExpose({
               :min="0"
               :max="timesDisk.length - 1 > 0 ? timesDisk.length - 1 : sliderValueDisk[1]"
               :tipFormatter="(value) => timesDisk.length ? diskChartData[value]?.timestamp : ''"
-              @change="onSliderChaneg">
-            </Slider>
+              @change="onSliderChaneg" />
           </template>
+          
+          <!-- Network time range slider -->
           <template v-if="activeTab === 'network'">
             <Slider
               v-model:value="sliderValueNetwork"
@@ -1285,77 +1657,78 @@ defineExpose({
               :min="0"
               :max="timesNetwork.length - 1 > 0 ? timesNetwork.length - 1 : sliderValueNetwork[1]"
               :tipFormatter="(value) => timesNetwork.length ? networkChartData[value]?.timestamp : ''"
-              @change="onSliderChaneg">
-            </Slider>
+              @change="onSliderChaneg" />
           </template>
-          <!-- <Slider
-            v-model:value="sliderValue"
-            range
-            :min="0"
-            :max="times.length - 1 > 0 ? times.length - 1 : sliderValue[1]"
-            :tipFormatter="(value) => times.length ? chartsData[value]?.timestamp : ''"
-            @change="onSliderChaneg">
-          </Slider> -->
         </div>
       </div>
     </div>
+    
+    <!-- Statistics table (shown when data is available) -->
     <Table
       v-if="!!tableData.length"
       :columns="columns"
       :pagination="false"
       :dataSource="tableData"
       size="small"
-      class="mb-7.5 mt-10 pl-10 pr-15">
-    </Table>
+      class="mb-7.5 mt-10 pl-10 pr-15" />
   </div>
 </template>
+
 <style scoped>
-:deep(.ant-slider-rail){
+/**
+ * Custom slider styles for time range selection
+ */
+
+/* Slider rail (base track) */
+:deep(.ant-slider-rail) {
   height: 10px;
   border: 1px solid var(--border-divider);
-  border-radius:1px;
+  border-radius: 1px;
   background-color: rgba(0, 0, 0, 0%);
 }
 
-:deep(.ant-slider:hover .ant-slider-rail){
+:deep(.ant-slider:hover .ant-slider-rail) {
   height: 10px;
   background-color: rgba(0, 0, 0, 0%);
 }
 
-:deep(.ant-slider-track){
+/* Slider track (selected range) */
+:deep(.ant-slider-track) {
   height: 10px;
-  border-color:rgba(145, 213, 255, 30%);
+  border-color: rgba(145, 213, 255, 30%);
   background-color: rgba(245, 245, 245, 100%);
 
   @apply border;
 }
 
-:deep(.ant-slider:hover .ant-slider-track){
+:deep(.ant-slider:hover .ant-slider-track) {
   height: 10px;
   background-color: rgba(245, 245, 245, 100%);
 }
 
-:deep(.ant-slider-step){
+/* Slider step marks */
+:deep(.ant-slider-step) {
   height: 10px;
   background-color: rgba(0, 0, 0, 0%);
 }
 
-:deep(.ant-slider-handle){
+/* Slider handle (drag thumb) */
+:deep(.ant-slider-handle) {
   width: 10px;
   height: 16px;
-  margin-top:-3px;
-  border-radius:3px;
-  border-color:rgba(145, 213, 255, 100%);
+  margin-top: -3px;
+  border-radius: 3px;
+  border-color: rgba(145, 213, 255, 100%);
 
-  @apply border-2 ;
+  @apply border-2;
 }
 
-:deep(.ant-slider-handle:focus){
-  border-color:rgba(145, 213, 255, 100%);
-  box-shadow:none
+:deep(.ant-slider-handle:focus) {
+  border-color: rgba(145, 213, 255, 100%);
+  box-shadow: none;
 }
 
-:deep(.ant-slider:hover .ant-slider-handle){
+:deep(.ant-slider:hover .ant-slider-handle) {
   border-color: rgba(145, 213, 255, 100%);
 }
 </style>
