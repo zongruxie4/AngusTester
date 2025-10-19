@@ -5,30 +5,34 @@ import { utils } from '@xcan-angus/infra';
 import { Button, Popover, RadioButton, RadioGroup, Switch, TabPane, Tabs, Tag, Tooltip } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { Props } from './PropTypes';
+import { API_EXTENSION_KEYS } from '@/types/openapi-types';
 
-import Genaral from './General.vue';
-import Parameters from './Parameters.vue';
-import RequestBody from './RequestBody.vue';
-import Responses from './Responses.vue';
+import General from '@/views/apis/services/model/apis/General.vue';
+import Parameters from '@/views/apis/services/model/apis/Parameters.vue';
+import RequestBody from '@/views/apis/services/model/apis/RequestBody.vue';
+import Responses from '@/views/apis/services/model/apis/Responses.vue';
 import CodeView from '@/views/apis/services/model/overview/Code.vue';
 
-const statusKey = 'x-xc-status';
-
 const props = withDefaults(defineProps<Props>(), {
+  id: '',
   dataSource: () => ({
     parameters: [],
     tags: [],
     responses: {},
     deprecated: false,
     operationId: '',
-    [statusKey]: ''
+    [API_EXTENSION_KEYS.statusKey]: ''
   }),
-  id: '',
   openapiDoc: () => ({})
 });
+
 const { t } = useI18n();
 
-const emits = defineEmits<{(e: 'cancel'):void, (e: 'ok', value: Props.dataSource):void}>();
+const emits = defineEmits<{
+  (e: 'cancel'):void,
+  (e: 'ok', value: Props.dataSource):void
+}>();
+
 const activeKey = ref('general');
 
 const viewType = ref('form');
@@ -42,6 +46,7 @@ const viewTypeOpt = [
     value: 'code'
   }
 ];
+
 const selectStr = ref({});
 const path = ref('');
 
@@ -56,19 +61,6 @@ const _tags = ref<string[]>([]);
 const _deprecated = ref(false);
 
 const docs = ref<{[key: string]: any}>({});
-
-onMounted(() => {
-  watch([() => props.dataSource.method, () => props.dataSource.endpoint], () => {
-    _deprecated.value = props.dataSource.deprecated;
-    _tags.value = props.dataSource.tags;
-    const { method, endpoint, ...datas } = props.dataSource;
-    selectStr.value = { [method]: { ...datas } };
-    path.value = endpoint;
-  }, {
-    immediate: true
-  });
-  docs.value = JSON.parse(JSON.stringify(props.openapiDoc));
-});
 
 const delTags = () => {
   _tags.value = [];
@@ -148,6 +140,19 @@ const confirm = () => {
   emits('ok', data);
 };
 
+onMounted(() => {
+  watch([() => props.dataSource.method, () => props.dataSource.endpoint], () => {
+    _deprecated.value = props.dataSource.deprecated;
+    _tags.value = props.dataSource.tags;
+    const { method, endpoint, ...datas } = props.dataSource;
+    selectStr.value = { [method]: { ...datas } };
+    path.value = endpoint;
+  }, {
+    immediate: true
+  });
+  docs.value = JSON.parse(JSON.stringify(props.openapiDoc));
+});
+
 provide('serviceId', props.id);
 
 </script>
@@ -171,7 +176,6 @@ provide('serviceId', props.id);
       </Popover>
       <Tooltip title="Tags">
         <div class="h-6 flex items-center ml-2">
-          <!-- <Icon icon="icon-biaoqian" /> -->
           <Tag
             v-for="tag in _tags"
             :key="tag"
@@ -217,7 +221,7 @@ provide('serviceId', props.id);
       <TabPane
         key="general"
         :tab="t('common.general')">
-        <Genaral ref="generalRef" :dataSource="props.dataSource" />
+        <General ref="generalRef" :dataSource="props.dataSource" />
       </TabPane>
       <TabPane
         key="parameter"

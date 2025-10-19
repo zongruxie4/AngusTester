@@ -2,6 +2,7 @@
 import { computed, nextTick, ref, watch } from 'vue';
 
 import { parseSchemaObjToArr } from './utils';
+
 import AddSchemeModel from './AddSchemaModel.vue';
 
 interface Props {
@@ -15,6 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   data: () => ({}),
   viewType: false
 });
+
 const addSchemaModelRef = ref();
 const activeTab = ref('model');
 const modelType = ref();
@@ -29,8 +31,7 @@ const disabledBodyModelType = computed(() => {
     'application/xml'].includes(props.contentType);
 });
 
-const objectAttrList = ref<{name: string, [key: string]: any}[]>([
-]);
+const objectAttrList = ref<{name: string, [key: string]: any}[]>([]);
 
 const getData = () => {
   const compData = addSchemaModelRef.value.getData();

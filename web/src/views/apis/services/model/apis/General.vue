@@ -2,16 +2,17 @@
 import { onMounted, ref, watch } from 'vue';
 import { Composite, HttpMethodTag, Icon, Input } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
+import { API_EXTENSION_KEYS, OpenAPIV3_1 } from '@/types/openapi-types';
+
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
-const statusKey = 'x-xc-status';
 interface Props {
     dataSource: {
         method: string;
         summary: string;
         operationId: string;
-        'x-xc-status': string;
-        security?: Array<string, string[]>
+        security?: OpenAPIV3_1.SecurityRequirementObject
+        [API_EXTENSION_KEYS.statusKey]: string;
     }
 }
 
@@ -20,26 +21,12 @@ const props = withDefaults(defineProps<Props>(), {
     method: '',
     summary: '',
     operationId: '',
-    'x-xc-status': ''
+    [API_EXTENSION_KEYS.statusKey]: ''
   })
 });
 
 const data = ref({});
-const security = ref<{key: string, value: string[]}[]>([]);
-
-onMounted(() => {
-  watch(() => props.dataSource, () => {
-    data.value = props.dataSource;
-    (props.security || []).forEach(item => {
-      Object.keys(item).forEach(key => {
-        security.value.push({ key, value: item[key] || [] });
-      });
-    });
-  }, {
-    deep: true,
-    immediate: true
-  });
-});
+const security = ref<OpenAPIV3_1.SecurityRequirementObject>({});
 
 const addSecurity = () => {
   if (!security.value) {
@@ -63,9 +50,23 @@ const getData = () => {
     summary,
     operationId,
     description,
-    [statusKey]: data.value[statusKey]
+    [API_EXTENSION_KEYS.statusKey]: data.value[API_EXTENSION_KEYS.statusKey]
   };
 };
+
+onMounted(() => {
+  watch(() => props.dataSource, () => {
+    data.value = props.dataSource;
+    (props.security || []).forEach(item => {
+      Object.keys(item).forEach(key => {
+        security.value.push({ key, value: item[key] || [] });
+      });
+    });
+  }, {
+    deep: true,
+    immediate: true
+  });
+});
 
 defineExpose({
   getData
@@ -90,8 +91,10 @@ defineExpose({
         <Input v-model:value="data.description" type="textarea" />
       </div>
     </div>
+
     <div class="flex items-center justify-between border-b pb-2 mt-6">
-      <span class="text-4 font-medium"><Icon icon="icon-anquan" class="text-5" /> Security</span>
+      <span class="text-4 font-medium">
+        <Icon icon="icon-anquan" class="text-5" /> Security</span>
       <Button
         type="primary"
         size="small"
@@ -99,6 +102,7 @@ defineExpose({
         Add
       </Button>
     </div>
+
     <div v-if="security" class="space-y-2 mt-2">
       <Composite v-for="(item,idx) in security" :key="idx">
         <Input v-model:value="item.key" />
@@ -113,16 +117,19 @@ defineExpose({
         </Button>
       </Composite>
     </div>
+
     <div class="flex items-center justify-between border-b pb-2 mt-6">
-      <span class="text-4 font-medium"><Icon icon="icon-anquan" class="text-5" /> Status</span>
+      <span class="text-4 font-medium">
+        <Icon icon="icon-anquan" class="text-5" /> Status</span>
     </div>
+
     <Composite class="mt-2">
       <Input
         readOnly
-        value="x-xc-status"
+        :value="API_EXTENSION_KEYS.statusKey"
         class="flex-1" />
       <SelectEnum
-        v-model:value="data[statusKey]"
+        v-model:value="data[API_EXTENSION_KEYS.statusKey]"
         class="flex-1"
         :lazy="false"
         enumKey="ApiStatus" />

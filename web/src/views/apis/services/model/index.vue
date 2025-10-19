@@ -5,6 +5,8 @@ import { Button, Popover } from 'ant-design-vue';
 import { services } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
+// TODO 数据模型管理吗 删除掉？？
+
 import Main from './Main.vue';
 
 import ApiModel from '@/views/apis/services/model/apis/index.vue';
@@ -22,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   pid: undefined
 });
+
 const { t } = useI18n();
 const loading = ref(false);
 const selectedOverview = ref(false);
@@ -40,7 +43,7 @@ const compListMap = ref<{[key: string]: Array<any>}>({ paths: [] });
 
 const apiPaths = ref<{[key: string]: Array<any>}>({});
 
-const loadProjectOpenapi = async () => {
+const loadServiceOpenapi = async () => {
   const [error, { data }] = await services.getOpenapi(props.id, { gzipCompression: false, format: 'json' });
   if (error) {
     return;
@@ -61,7 +64,7 @@ compType.forEach(type => {
   compExpandMap.value[type] = true;
   compListMap.value[type] = [];
 });
-const getProjectCompList = async () => {
+const getServiceCompList = async () => {
   if (loading.value) {
     return;
   }
@@ -114,7 +117,7 @@ const cancelEditComp = () => {
 };
 
 const submitComp = () => {
-  getProjectCompList();
+  getServiceCompList();
 };
 
 const submitOpenapi = async (data) => {
@@ -128,7 +131,7 @@ const submitOpenapi = async (data) => {
     return;
   }
   notification.success(t('actions.tips.updateSuccess'));
-  loadProjectOpenapi();
+  await loadServiceOpenapi();
 };
 
 const submitOverview = async (data) => {
@@ -140,7 +143,7 @@ const submitOverview = async (data) => {
     return;
   }
   notification.success(t('actions.tips.updateSuccess'));
-  loadProjectOpenapi();
+  await loadServiceOpenapi();
 };
 
 const onPopoverVisibleChange = () => {
@@ -159,7 +162,7 @@ const copyComp = async (comp, key) => {
     return;
   }
   notification.success(t('actions.tips.cloneSuccess'));
-  getProjectCompList();
+  await getServiceCompList();
 };
 
 const delComp = async (comp) => {
@@ -168,14 +171,13 @@ const delComp = async (comp) => {
     return;
   }
   notification.success(t('actions.tips.deleteSuccess'));
-  getProjectCompList();
+  await getServiceCompList();
 };
 
 onMounted(() => {
-  loadProjectOpenapi();
-  getProjectCompList();
+  loadServiceOpenapi();
+  getServiceCompList();
 });
-
 </script>
 <template>
   <div class="flex h-full">
@@ -189,12 +191,14 @@ onMounted(() => {
           {{ t('service.dataModel.addComp') }}
         </Button>
       </div>
+
       <div
         class="text-3.5 h-8 leading-8 font-medium px-2 flex items-center space-x-2 cursor-pointer hover:bg-bg-hover"
         :class="{'!bg-bg-blue': selectedOverview}"
         @click="selectOverview">
         <Icon icon="icon-shoucang" class="text-4" /> <span>API overview</span>
       </div>
+
       <div v-for="(value,key) in compListMap" :key="key">
         <div
           class="h-8 leading-8 px-2 cursor-pointer flex items-center justify-between font-medium bg-bg-content"
@@ -203,8 +207,7 @@ onMounted(() => {
             <Icon :icon="compExpandMap[key] ? 'icon-folderzhankai' : 'icon-wenjianjia'" />
             {{ key }} <template v-if="key !== 'paths'">{{ `{${value.length}\}` }}</template>
           </div>
-          <Arrow
-            v-model:open="compExpandMap[key]" />
+          <Arrow v-model:open="compExpandMap[key]" />
         </div>
         <template v-if="key !== 'paths'">
           <div
@@ -274,7 +277,7 @@ onMounted(() => {
               {{ path }}
             </div>
             <div
-              v-for="api,method in apis"
+              v-for="api, method in apis"
               v-show="compExpandMap[path]"
               :key="method"
               :class="{'!bg-bg-blue': `${path}_${method}` === selectedApi}"
