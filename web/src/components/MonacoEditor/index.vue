@@ -7,20 +7,38 @@ import JsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
 import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
 import TsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 
-const editorRef = ref();
+/**
+ * Ref: Editor container DOM element
+ */
+const editorRef = ref<HTMLElement>();
 
+/**
+ * Supported editor languages
+ */
+type EditorLanguage = 'json' | 'html' | 'typescript' | 'text' | 'yaml';
+
+/**
+ * Editor theme options
+ */
+type EditorTheme = 'vs' | 'vs-dark';
+
+/**
+ * Component props interface
+ */
 interface Props {
-  value: string|undefined,
-  theme?: 'vs' | 'vs-dark',
-  language?: 'json' | 'html' | 'typescript' | 'text' | 'yaml',
-  notifyClear?: number,
-  isFormat?: boolean, // 是否执行格式化
-  isClear?: boolean, // 是否执行清空
-  readOnly?: boolean, // 是否只读模式
-  searchText?: string, // 检索文本
-  isExcuteSearch?: boolean // 是否切换当前检索项的下标
-  loading?:boolean;// 编辑器资源是否已经加载完成
+  value: string | undefined;         // Editor content value
+  theme?: EditorTheme;               // Editor theme (light/dark)
+  language?: EditorLanguage;         // Programming language for syntax highlighting
+  notifyClear?: number;              // Trigger to clear/reset editor (increment to trigger)
+  isFormat?: boolean;                // Whether to execute formatting
+  isClear?: boolean;                 // Whether to execute clear
+  readOnly?: boolean;                // Read-only mode
+  searchText?: string;               // Text to search for
+  isExcuteSearch?: boolean;          // Whether to toggle to next search match
+  loading?: boolean;                 // Whether editor resources are loaded
 }
+
+// Define props with default values
 const props = withDefaults(defineProps<Props>(), {
   theme: 'vs',
   language: 'text',
@@ -33,27 +51,40 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false
 });
 
-
+/**
+ * Emitted events interface
+ */
 const emit = defineEmits<{
-  (e: 'update:value', val: string):void;
-  (e: 'change', val: string):void;
-  (e: 'update:loading', val: boolean):void;
+  (e: 'update:value', val: string): void;   // Emitted when editor value changes
+  (e: 'change', val: string): void;         // Emitted when editor value changes
+  (e: 'update:loading', val: boolean): void; // Emitted when loading state changes
 }>();
 
+/**
+ * Reactive state for editor instance and search
+ */
 const state = reactive<{
-  editorInstace: monaco.editor.IStandaloneCodeEditor | null,
-  allMatches: Array<monaco.Range>, // 所有检索出的匹配项
-  matchIndex: number // 当前所在检索项的下标
+  editorInstace: monaco.editor.IStandaloneCodeEditor | null;  // Monaco editor instance
+  allMatches: Array<monaco.Range>;                            // All search matches
+  matchIndex: number;                                          // Current match index
 }>({
   editorInstace: null,
   allMatches: [],
   matchIndex: 0
 });
 
+/**
+ * Configure Monaco Environment for Web Workers
+ * Sets up language-specific workers for better performance
+ * - JSON Worker: JSON parsing and validation
+ * - HTML Worker: HTML/CSS parsing
+ * - TypeScript Worker: TypeScript/JavaScript IntelliSense
+ * - Editor Worker: Default fallback worker
+ */
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 self.MonacoEnvironment = {
-  getWorker (_, label) {
+  getWorker(_: any, label: string) {
     if (label === 'json') {
       return new JsonWorker();
     }
@@ -67,63 +98,103 @@ self.MonacoEnvironment = {
   }
 };
 
-const create = () => {
+/**
+ * Create Monaco Editor instance
+ * Initializes the editor with configuration options and sets up event listeners
+ * 
+ * Configuration includes:
+ * - Language-specific syntax highlighting
+ * - Theme (light/dark mode)
+ * - Read-only mode toggle
+ * - Minimap disabled for cleaner interface
+ * - Custom scrollbar styling
+ * - Code folding enabled
+ * - Automatic layout adjustment
+ * - Smooth cursor animation
+ * - Word wrapping enabled
+ * - Custom font size and scrolling behavior
+ */
+const create = (): void => {
+  if (!editorRef.value) {
+    console.warn('Editor container element not found');
+    return;
+  }
+
   state.editorInstace = monaco.editor.create(editorRef.value, {
-    value: props.value,
-    language: props.language,
-    theme: props.theme,
-    readOnly: props.readOnly, // 是否只读模式
-    minimap: { // mini地图
-      enabled: false // 是否显示mini地图
+    value: props.value,                    // Initial editor content
+    language: props.language,              // Programming language for syntax highlighting
+    theme: props.theme,                    // Editor theme (light/dark)
+    readOnly: props.readOnly,              // Read-only mode toggle
+    minimap: {                             // Minimap configuration
+      enabled: false                       // Disable minimap for cleaner interface
     },
-    scrollbar: { // 滚动条
-      verticalSliderSize: 7, // 纵向滑块的宽度
-      horizontalSliderSize: 7, // 横向滑块的宽度
-      verticalScrollbarSize: 7, // 纵向滚动条宽度
-      horizontalScrollbarSize: 7, // 横向滚动条宽度
-      arrowSize: 11,
-      useShadows: true,
-      scrollByPage: false,
-      vertical: 'auto',
-      horizontal: 'auto',
-      verticalHasArrows: false,
-      horizontalHasArrows: false
+    scrollbar: {                           // Custom scrollbar styling
+      verticalSliderSize: 7,               // Vertical slider width
+      horizontalSliderSize: 7,             // Horizontal slider width
+      verticalScrollbarSize: 7,            // Vertical scrollbar width
+      horizontalScrollbarSize: 7,          // Horizontal scrollbar width
+      arrowSize: 11,                       // Scrollbar arrow size
+      useShadows: true,                    // Enable scrollbar shadows
+      scrollByPage: false,                 // Scroll by line instead of page
+      vertical: 'auto',                    // Vertical scrollbar behavior
+      horizontal: 'auto',                  // Horizontal scrollbar behavior
+      verticalHasArrows: false,            // Disable vertical arrows
+      horizontalHasArrows: false           // Disable horizontal arrows
     },
-    folding: true, // 是否可折叠
-    automaticLayout: true, // 根据 div 调整自身大小
-    contextmenu: true, // 禁用右键菜单
-    renderLineHighlight: 'none', // 当前选中行样式
-    cursorSmoothCaretAnimation: 'on', // 光标是否平滑移动
-    trimAutoWhitespace: true, // 控制内容后面的空白行
-    fontSize: 12, // 字体大小
-    wordBreak: 'normal',
-    wordWrap: 'on',
-    smoothScrolling: false,
-    mouseWheelScrollSensitivity: 1.5,
-    scrollBeyondLastLine: true
+    folding: true,                         // Enable code folding
+    automaticLayout: true,                 // Auto-resize based on container
+    contextmenu: true,                     // Enable right-click context menu
+    renderLineHighlight: 'none',           // Disable current line highlighting
+    cursorSmoothCaretAnimation: 'on',      // Enable smooth cursor animation
+    trimAutoWhitespace: true,              // Trim trailing whitespace
+    fontSize: 12,                          // Font size in pixels
+    wordBreak: 'normal',                   // Word breaking behavior
+    wordWrap: 'on',                        // Enable word wrapping
+    smoothScrolling: false,                // Disable smooth scrolling
+    mouseWheelScrollSensitivity: 1.5,      // Mouse wheel scroll sensitivity
+    scrollBeyondLastLine: true             // Allow scrolling beyond last line
   });
+
+  // Set up content change listener
   state.editorInstace.onDidChangeModelContent(() => {
-    // 这里必须使用 toRaw 转换成原始对象再获取值, 否则会造成页面卡死!
+    // Use toRaw to prevent Vue reactivity issues that can cause performance problems
     const value = toRaw(state.editorInstace)?.getValue();
     emit('update:value', value || '');
     emit('change', value || '');
   });
-  // 实例化完成后自动格式化
+
+  // Auto-format document after creation
   formatDocument();
 };
 
-const clearValue = () => {
+/**
+ * Clear editor value to initial state
+ * Resets the editor content to the original props.value
+ * Used when notifyClear or isClear props change
+ */
+const clearValue = (): void => {
   if (state.editorInstace && props.value) {
     toRaw(state.editorInstace).setValue(props.value);
   }
 };
 
-const setValue = () => {
+/**
+ * Set editor value from props
+ * Updates the editor content with the current props.value
+ * Used when the value prop changes externally
+ */
+const setValue = (): void => {
   if (state.editorInstace) {
     toRaw(state.editorInstace).setValue(props.value || '');
   }
 };
-const changeLanguage = () => {
+
+/**
+ * Change editor language
+ * Updates the syntax highlighting and language features
+ * Also clears the value to prevent language mismatch issues
+ */
+const changeLanguage = (): void => {
   if (state.editorInstace) {
     const model = toRaw(state.editorInstace).getModel();
     if (model) {
@@ -131,26 +202,67 @@ const changeLanguage = () => {
     }
   }
 };
-const changeTheme = () => {
+
+/**
+ * Change editor theme
+ * Switches between light (vs) and dark (vs-dark) themes
+ * Applied globally to all Monaco editor instances
+ */
+const changeTheme = (): void => {
   monaco.editor.setTheme(props.theme);
 };
-const changeReadOnly = () => {
+
+/**
+ * Toggle read-only mode
+ * Enables or disables editing based on props.readOnly
+ * Updates editor options without recreating the instance
+ */
+const changeReadOnly = (): void => {
   toRaw(state.editorInstace)?.updateOptions({ readOnly: props.readOnly });
 };
-const formatDocument = () => {
+
+/**
+ * Format document content
+ * Executes the built-in format document action
+ * Only runs when props.isFormat is true
+ */
+const formatDocument = (): void => {
   if (props.isFormat && state.editorInstace) {
     toRaw(state.editorInstace)?.getAction('editor.action.formatDocument')?.run();
   }
 };
-const findAllMatches = () => {
+/**
+ * Find all text matches in the editor
+ * Searches for the searchText prop and highlights all matches
+ * Automatically selects and centers the first match
+ * 
+ * Search options:
+ * - Case sensitive: false
+ * - Whole word: false  
+ * - Regex: false
+ * - Word separators: null
+ * - Capture matches: false
+ */
+const findAllMatches = (): void => {
   state.allMatches = [];
   state.matchIndex = 0;
-  if (props.searchText) {
-    const data = toRaw(state.editorInstace)?.getModel()?.findMatches(props.searchText, false, false, false, null, false);
+  
+  if (props.searchText && state.editorInstace) {
+    const data = toRaw(state.editorInstace)?.getModel()?.findMatches(
+      props.searchText,    // Search text
+      false,               // Case sensitive
+      false,               // Whole word
+      false,               // Regex
+      null,                // Word separators
+      false                // Capture matches
+    );
+    
     (data || []).forEach((item, index) => {
       const { startLineNumber, endLineNumber, startColumn, endColumn } = item.range;
       const range = new monaco.Range(startLineNumber, startColumn, endLineNumber, endColumn);
       state.allMatches.push(range);
+      
+      // Select and center the first match
       if (index === 0) {
         toRaw(state.editorInstace)?.setSelection(range);
         toRaw(state.editorInstace)?.revealRangeInCenter(range);
@@ -158,70 +270,129 @@ const findAllMatches = () => {
     });
   }
 };
-const gotoMatch = () => {
+
+/**
+ * Navigate to next search match
+ * Cycles through all found matches when isExcuteSearch prop changes
+ * Wraps around to the first match after reaching the last one
+ */
+const gotoMatch = (): void => {
   if (props.isExcuteSearch && state.allMatches.length > 0) {
+    // Cycle through matches
     if (state.matchIndex >= state.allMatches.length - 1) {
-      state.matchIndex = 0;
+      state.matchIndex = 0;  // Wrap to first match
     } else {
-      state.matchIndex++;
+      state.matchIndex++;    // Go to next match
     }
+    
     const range = state.allMatches[state.matchIndex];
     toRaw(state.editorInstace)?.setSelection(range);
     toRaw(state.editorInstace)?.revealRangeInCenter(range);
   }
 };
-const destroy = () => {
+
+/**
+ * Destroy editor instance
+ * Properly disposes of the Monaco editor to prevent memory leaks
+ * Must use toRaw to avoid Vue reactivity issues that can cause performance problems
+ */
+const destroy = (): void => {
   if (state.editorInstace) {
-    // 这里必须使用 toRaw 转换成原始对象调用销毁方法, 否则会造成页面卡死
+    // Use toRaw to prevent Vue reactivity issues that can cause performance problems
     toRaw(state.editorInstace).dispose();
     state.editorInstace = null;
   }
 };
 
+/**
+ * Watch: notifyClear prop changes
+ * Triggers editor value reset when notifyClear increments
+ */
 watch(() => props.notifyClear, () => {
   clearValue();
 });
 
+/**
+ * Watch: isClear prop changes
+ * Triggers editor value reset when isClear becomes true
+ */
 watch(() => props.isClear, () => {
   clearValue();
 });
 
+/**
+ * Watch: language prop changes
+ * Updates editor language and resets value to prevent language mismatch
+ * Language switching can change data format, so we reset the content
+ */
 watch(() => props.language, () => {
   changeLanguage();
-  // 切换语言数据会改变，重新设置数据
-  clearValue();
+  clearValue(); // Reset data when language changes to prevent format issues
 });
 
+/**
+ * Watch: theme prop changes
+ * Updates editor theme (light/dark mode)
+ */
 watch(() => props.theme, () => {
   changeTheme();
 });
 
+/**
+ * Watch: isFormat prop changes
+ * Triggers document formatting when isFormat becomes true
+ */
 watch(() => props.isFormat, () => {
   formatDocument();
 });
 
+/**
+ * Watch: readOnly prop changes
+ * Toggles read-only mode when readOnly prop changes
+ */
 watch(() => props.readOnly, () => {
   changeReadOnly();
 });
 
+/**
+ * Watch: searchText prop changes
+ * Performs new search when search text changes
+ */
 watch(() => props.searchText, () => {
   findAllMatches();
 });
 
+/**
+ * Watch: isExcuteSearch prop changes
+ * Navigates to next search match when search execution is triggered
+ */
 watch(() => props.isExcuteSearch, () => {
   gotoMatch();
 });
 
+/**
+ * Watch: value prop changes
+ * Updates editor content when value prop changes externally
+ * Includes whitespace normalization to prevent unnecessary updates
+ */
 watch(() => props.value, (newValue) => {
   const refValue = toRaw(state.editorInstace)?.getValue();
+  
+  // Normalize whitespace for comparison to prevent unnecessary updates
   if (refValue && newValue && (newValue.replace(' ', '') === refValue.replace(' ', ''))) {
     return;
   }
+  
+  // Update editor if values are different
   if (newValue !== refValue) {
     setValue();
   }
 });
 
+/**
+ * Component mounted lifecycle hook
+ * Creates the Monaco editor instance and emits loading completion
+ */
 onMounted(() => {
   create();
   nextTick(() => {
@@ -229,12 +400,24 @@ onMounted(() => {
   });
 });
 
+/**
+ * Component before unmount lifecycle hook
+ * Properly disposes of the Monaco editor to prevent memory leaks
+ */
 onBeforeUnmount(() => {
   destroy();
 });
 
+/**
+ * Expose public methods to parent components
+ * Allows external formatting control
+ */
 defineExpose({
-  format: () => {
+  /**
+   * Format the current document
+   * Executes the built-in format document action
+   */
+  format: (): void => {
     if (state.editorInstace) {
       toRaw(state.editorInstace).getAction('editor.action.formatDocument')?.run();
     }

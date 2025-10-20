@@ -16,6 +16,8 @@ import { API_EXTENSION_KEYS } from '@/types/openapi-types';
 
 dayjs.extend(duration);
 
+const { valueKey, enabledKey } = API_EXTENSION_KEYS;
+
 /**
  * Supported content types for API requests
  */
@@ -218,7 +220,7 @@ const deconstruct = (data: Record<string, any>) => {
   return handler(model);
 };
 
-const { valueKey, enabledKey } = API_EXTENSION_KEY;
+
 const ajv = new Ajv();
 addFormats(ajv);
 
@@ -1378,6 +1380,123 @@ const transJsonToList = (data: any [] | Record<string, any>, pid: string | numbe
   return result;
 };
 
+
+/**
+ * transform list to json<key, value>
+ */
+const transListToJson = (list, type, pid = -1) => {
+  const child = list.filter(item => item.pid === pid);
+  let result;
+  if (type === 'object') {
+    result = {};
+    child.forEach(item => {
+      if (item.name) {
+        if (item.type === 'array') {
+          result[item.name] = transListToJson(list, item.type, item.id);
+        } else if (item.type === 'object') {
+          result[item.name] = transListToJson(list, item.type, item.id);
+        } else {
+          if (item.type === 'integer' && /^-?\d+(\.?\d+)?$/.test(item[valueKey]) && item[valueKey] <= 9007199254740992) {
+            item[valueKey] = Number(item[valueKey]);
+          }
+          if (item.type === 'number' && /^-?\d+$/.test(item[valueKey]) && item[valueKey] <= 9007199254740992) {
+            item[valueKey] = Number(item[valueKey]);
+          }
+          if (item.type === 'boolean' && (item[valueKey] === 'true' || item[valueKey] === 'false')) {
+            item[valueKey] = JSON.parse(item[valueKey]);
+          }
+          result[item.name] = item[valueKey];
+        }
+      }
+    });
+  } else if (type === 'array') {
+    result = [];
+    child.forEach(item => {
+      if (item.type === 'array') {
+        result.push(transListToJson(list, item.type, item.id));
+      } else if (item.type === 'object') {
+        result.push(transListToJson(list, item.type, item.id));
+      } else {
+        if (item.type === 'integer' && /^-?\d+(\.?\d+)?$/.test(item[valueKey])) {
+          item[valueKey] = Number(item[valueKey]);
+        }
+        if (item.type === 'number' && /^-?\d+$/.test(item[valueKey])) {
+          item[valueKey] = Number(item[valueKey]);
+        }
+        if (item.type === 'boolean' && (item[valueKey] === 'true' || item[valueKey] === 'false')) {
+          item[valueKey] = JSON.parse(item[valueKey]);
+        }
+        result.push(item[valueKey]);
+      }
+    });
+  }
+  return result;
+};
+
+/**
+ *transform list to schema<key, value>
+ *
+ */
+const transListToSchema = (list, type, pid = -1) => {
+  const childs = list.filter(item => item.pid === pid);
+  const child = childs[0];
+  let result: Record<string, any> = {};
+  if (type === 'object') {
+    const current = list.find(item => item.id === pid);
+    if (current) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { type, id, name, pid, level, idLine, checked, ...other } = current;
+      result = {
+        ...other
+      };
+    }
+    result.type = 'object';
+    result.properties = {};
+
+    (childs || []).forEach(item => {
+      if (item.name) {
+        if (item.type === 'object') {
+          result.properties[item.name] = transListToSchema(list, item.type, item.id);
+        } else if (item.type === 'array') {
+          result.properties[item.name] = transListToSchema(list, item.type, item.id);
+        } else {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { type, id, name, pid, level, idLine, checked, ...other } = item;
+          result.properties[item.name] = {
+            ...other,
+            type: item.type,
+            [valueKey]: item[valueKey]
+          };
+        }
+      }
+    });
+    result[valueKey] = transListToJson(list, type, pid);
+  } else if (type === 'array') {
+    if (child) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { type, id, name, pid, level, idLine, checked, ...other } = child;
+      result = {
+        ...other
+      };
+    }
+    result.type = 'array';
+    const targetId = ['array', 'object'].includes(child?.type) ? child.id : child?.pid;
+    if (targetId) {
+      result.items = transListToSchema(list, child.type, targetId);
+    }
+    result[valueKey] = transListToJson(list, type, pid);
+  } else {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { type, id, name, pid, level, idLine, checked, ...other } = child;
+    result = {
+      ...other
+    };
+    result.type = type;
+    result[valueKey] = child[valueKey];
+  }
+  return result;
+};
+
 /**
  * Check if string contains only ASCII characters.
  * @param str - String to check
@@ -1525,6 +1644,8 @@ export {
   splitDuration,
   qsJsonToParamList,
   transJsonToList,
+  transListToJson,
+  transListToSchema,
   containsAllAscii,
   gzipFileToBase64,
   fileToBase64,
@@ -1574,6 +1695,8 @@ export default {
   splitDuration,
   qsJsonToParamList,
   transJsonToList,
+  transListToSchema,
+  transListToJson,
   containsAllAscii,
   gzipFileToBase64,
   fileToBase64,
