@@ -16,7 +16,7 @@ export type AssertResult = {
     type: AssertionType;
     parameterName: string;
     condition: string;
-    extraction: boolean;// 是否是提取期望值
+    extraction: boolean | Extraction;// 是否是提取期望值
     assertionCondition: AssertionCondition;
     result: {
         expectedData: {
