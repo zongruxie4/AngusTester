@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import { getStatusText } from './types';
 
-import { ResponseState } from '@/views/apis/services/protocol/http/interface';
+import { ResponseState } from '@/views/apis/services/protocol/http/index';
 
 interface Props {
   dataSource: ResponseState

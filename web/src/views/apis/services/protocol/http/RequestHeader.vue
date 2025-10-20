@@ -2,269 +2,190 @@
 import { computed, inject, reactive, ref, watch, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Tooltip } from 'ant-design-vue';
-import { Icon, Input, notification, Select, SelectSchema } from '@xcan-angus/vue-ui';
-import SwaggerUI from '@xcan-angus/swagger-ui';
+import { Icon, Input, Select, SelectSchema } from '@xcan-angus/vue-ui';
+import { SchemaType } from '@/types/openapi-types';
 
-import { API_EXTENSION_KEY, deepDelAttrFromObj } from '@/utils/apis';
-import { deconstruct } from '@/utils/swagger';
-import { services } from '@/api/tester';
-import { validateType, schemaTypeToOptions, getDefaultParams } from './utils';
-import { toClipboard } from '@xcan-angus/infra';
+import { schemaTypeToOption } from '@/utils/apis';
+import { getDefaultParams } from './utils';
+import { API_PARAMETER_NAME_LENGTH, API_PARAMETER_VALUE_LENGTH } from '@/utils/constant';
+import { ParamsInfo } from '@/views/apis/services/protocol/http/types';
+import { ParameterUtils, type ParameterComponentProps, type ParameterComponentEmits } from './RequestParameter';
 
 import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
-import { ParamsInfo } from '@/views/apis/services/protocol/http/types';
-
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 
-interface Props {
-  value: ParamsInfo[];
+/**
+ * Component props interface
+ * <p>
+ * Defines the structure for component props including header parameters and authentication data
+ * </p>
+ */
+interface Props extends ParameterComponentProps {
   contentType?: string;
-  authData: Record<string, string>
+  authData: Record<string, string>;
 }
 
 const props = withDefaults(defineProps<Props>(), {});
 
-const emits = defineEmits<{
-  (e: 'change', data: ParamsInfo[]): void,
-  (e: 'del', index: number): void,
-  (e: 'update:authorizationData', value):void
+/**
+ * Component emits interface
+ * <p>
+ * Defines the events that this component can emit
+ * </p>
+ */
+const emits = defineEmits<ParameterComponentEmits & {
+  (e: 'update:authorizationData', value: any): void;
 }>();
 
 const { t } = useI18n();
-const valueKey = API_EXTENSION_KEY.valueKey;
-const enabledKey = API_EXTENSION_KEY.enabledKey;
 
+/**
+ * Injected API base information
+ */
 const apiBaseInfo = inject('apiBaseInfo', ref());
-const archivedId = inject('archivedId', ref());
-const globalConfigs = inject('globalConfigs', { VITE_API_PARAMETER_NAME_LENGTH: 400, VITE_API_PARAMETER_VALUE_LENGTH: 4096 });
 
-const state = reactive<{
-  formData:ParamsInfo[]
+/**
+ * Injected archived ID
+ */
+const archivedId = inject('archivedId', ref());
+
+/**
+ * Component state
+ * <p>
+ * Reactive state containing form data for header parameters
+ * </p>
+ */
+const componentState = reactive<{
+  formData: ParamsInfo[];
 }>({
   formData: []
 });
 
-const jsContentRef = ref<any[]>([]);
-const showContentType = computed(() => {
+/**
+ * JSON content component references
+ */
+const jsonContentRefs = ref<any[]>([]);
+
+/**
+ * Request parameter manager instance
+ */
+const parameterManager = ParameterUtils.createManager(componentState, jsonContentRefs.value, apiBaseInfo);
+
+/**
+ * Computed property to show content type
+ * <p>
+ * Determines whether to display content type field
+ * </p>
+ */
+const shouldShowContentType = computed(() => {
   return !!props.contentType;
 });
-// 对参数名称限制
-const nameInputProps = { dataType: 'mixin-en', includes: '-_', maxLength: 100 };
 
-const getKey = (index?: number): symbol => {
-  return Symbol(index);
+/**
+ * Input properties for parameter names
+ * <p>
+ * Configuration for parameter name input validation
+ * </p>
+ */
+const parameterNameInputProps = {
+  dataType: 'mixin-en',
+  includes: '-_',
+  maxLength: 100
 };
 
-const enterHandle = (e: ChangeEvent): void => {
-  if (e.key !== 'Enter') {
-    return;
+// Use parameter manager methods
+const handleEnterKeyPress = parameterManager.handleEnterKeyPress.bind(parameterManager);
+const handleParameterValueBlur = parameterManager.handleParameterValueBlur.bind(parameterManager);
+const handleModelSelection = parameterManager.handleModelSelection.bind(parameterManager);
+const handleFormFieldBlur = parameterManager.handleFormFieldBlur.bind(parameterManager);
+const handleCheckboxChange = parameterManager.handleCheckboxChange.bind(parameterManager);
+const copyParameterValue = parameterManager.copyParameterValue.bind(parameterManager);
+
+/**
+ * Emits change event to parent component
+ * <p>
+ * Sends filtered form data to parent component
+ * </p>
+ */
+const emitChangeToParent = () => {
+  emits('change', componentState.formData.filter(item => !!item.name));
+};
+
+/**
+ * Adds default parameter when all parameters are filled
+ */
+const addDefaultParameter = () => {
+  componentState.formData.push(getDefaultParams({ in: 'header' }) as ParamsInfo);
+};
+
+// Use parameter manager methods
+const changeParameterDataType = parameterManager.changeParameterDataType.bind(parameterManager);
+const handleParameterDeletion = (index: number, parameterData: ParamsInfo) =>
+  parameterManager.handleParameterDeletion(index, parameterData, emitChangeToParent);
+const addChildParameter = parameterManager.addChildParameter.bind(parameterManager);
+const updateParameterData = (index: number, parameterData: ParamsInfo) => {
+  parameterManager.updateParameterData(index, parameterData);
+  if (componentState.formData.every(item => !!item.name)) {
+    addDefaultParameter();
   }
-  e.target.blur();
+  emitChangeToParent();
 };
 
-const handleValueBlur = (target:HTMLElement, index: number, data: ParamsInfo):void => {
-  let value = target.innerText.trim().replace('\n', '');
-  if (['integer', 'number', 'boolean'].includes(data.schema?.type)) {
-    try {
-      if (value <= 9007199254740992) {
-        value = JSON.parse(value);
-      }
-    } catch {}
-  }
-  if (value === data[valueKey]) {
-    return;
-  }
-
-  const temp = { ...data, [valueKey]: value } as ParamsInfo;
-  changeEmit(index, temp);
+/**
+ * Filters model options
+ * <p>
+ * Filters out models that are not header parameters
+ * </p>
+ * @param option - Model option to filter
+ * @returns True if option should be excluded
+ */
+const filterModelOptions = (option: any) => {
+  return ParameterUtils.filterModelOptions(option, ['header']);
 };
 
-const getModelData = async (ref) => {
-  const [error, { data }] = await services.getComponentRef(apiBaseInfo.value?.serviceId, ref);
-  if (error) {
-    return {};
-  }
-  return deconstruct(data || {});
-};
+// Use parameter manager methods
+const validateFormContents = parameterManager.validateFormContents.bind(parameterManager);
+const getParameterErrorState = parameterManager.getParameterErrorState.bind(parameterManager);
+const updateParameterSchema = (newSchema: any, parameterItem: ParamsInfo, index: number) =>
+  parameterManager.updateParameterSchema(newSchema, parameterItem, index);
+const updateComponentData = parameterManager.updateComponentData.bind(parameterManager);
+const getResolvedModelData = parameterManager.getResolvedModelData.bind(parameterManager);
 
-const selectModels = async (_value, option, index) => {
-  if (option) {
-    const model = await getModelData(option.ref);
-    const schema = model.schema ? { ...model.schema, [valueKey]: model[valueKey] || model.schema?.[valueKey] } : {};
-    const value = SwaggerUI.extension.sampleFromSchemaGeneric(schema);
-    if (option.readonly) {
-      model.$ref = option.ref;
-    }
-    if (!schema.type) {
-      let type: string = typeof value;
-      if (type === 'object') {
-        if (Object.prototype.toString.call(value) === '[object Array]') {
-          type = 'array';
-        }
-      }
-      schema.type = type;
-    }
-    const temp = { ...model, schema, [enabledKey]: true, [valueKey]: value };
-    changeEmit(index, temp);
-  }
-};
-
-const handleBlur = (e: ChangeEvent, index: number, data: ParamsInfo, key: string): void => {
-  const value = e.target.value.trim();
-  const temp = { ...data, [key]: value } as ParamsInfo;
-  changeEmit(index, temp);
-};
-
-// 启用 禁用
-const handleChecked = (e:ChangeEvent, index:number, data: ParamsInfo) => {
-  const checked = e.target.checked;
-  const temp = { ...data, [enabledKey]: checked } as ParamsInfo;
-  changeEmit(index, temp);
-  if (!checked && validated.value) {
-    jsContentRef.value[index] && jsContentRef.value[index].validate(false);
-  }
-};
-
-const copyValue = async (data: ParamsInfo) => {
-  let text = data[valueKey];
-  if (typeof text !== 'string') {
-    text = JSON.stringify(text);
-  }
-
-  toClipboard(text).then(() => {
-    notification.success(t('actions.tips.copySuccess'));
-  });
-};
-
-// 同步给父级
-const emitChange = () => {
-  emits('change', state.formData.filter(i => !!i.name));
-};
-
-const changeDataType = (value, index, item) => {
-  const schema = item.schema || {};
-  const temp = { ...item, schema: { ...schema, type: value } };
-  if (value === 'object') {
-    temp.deepObject = true;
-    temp[valueKey] = { '': '' };
-  } else {
-    temp[valueKey] = undefined;
-    if (value === 'array') {
-      temp[valueKey] = [''];
-      temp.schema.item = {
-        type: 'string'
-      };
-    }
-    delete temp.deepObject;
-    delete temp.explode;
-  }
-  changeEmit(index, temp);
-};
-
-const handleDel = (index: number, data: ParamsInfo): void => {
-  const emptyList = state.formData.filter(item => !item.name);
-  // 最少要有一条空数据
-  if (!data.name && emptyList.length <= 1) {
-    return;
-  }
-  state.formData.splice(index, 1);
-  emitChange();
-};
-
-const addChild = (pItem, idx) => {
-  jsContentRef.value[idx].addItem({ type: pItem.schema.type, id: -1, idLine: [-1], level: 0 });
-};
-
-const changeEmit = (index: number, data: ParamsInfo): void => {
-  state.formData[index] = data;
-  if (state.formData.every(i => !!i.name)) {
-    state.formData.push(getDefaultParams({ in: 'header' }) as ParamsInfo);
-  }
-  emitChange();
-};
-
-const filterModels = (option) => {
-  const model = option.model && JSON.parse(option.model);
-  return !model || model.in !== 'header';
-};
-
-const validated = ref(false);
-const validateContents = async (val = true) => {
-  validated.value = val;
-  for (const idx in jsContentRef.value) {
-    if (state.formData[idx][enabledKey]) {
-      jsContentRef.value[idx].validate(val);
-    }
-  }
-};
-
-const getErrValue = (item) => {
-  if (!validated.value || !item.name || !item[enabledKey]) {
-    return false;
-  }
-  const errors = validateType(item[valueKey], deepDelAttrFromObj(item.schema, []));
-  return !!errors?.length;
-};
-
-const changeSchema = (schema, item, index) => {
-  if (item.$ref) {
-    return;
-  }
-  const temp = { ...item, schema };
-  changeEmit(index, temp);
-};
-
-const updateComp = async () => {
-  if (!apiBaseInfo.value?.serviceId) {
-    return;
-  }
-  for (let i = 0; i < state.formData.length; i++) {
-    if (state.formData[i].$ref) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { $ref, ...content } = state.formData[i];
-      await services.addComponent(apiBaseInfo.value?.serviceId, 'parameters', state.formData[i].name,
-        { ...content, schema: { ...(content.schema || {}), [valueKey]: content[valueKey] } });
-    }
-    if (jsContentRef.value[i]) {
-      await jsContentRef.value[i].updateComp();
-    }
-  }
-};
-
-const getModelResolve = () => {
-  const models = {};
-  state.formData.forEach((i, index) => {
-    if (i.$ref) {
-      models[i.$ref] = JSON.parse(JSON.stringify(i));
-      delete models[i.$ref].schema.$ref;
-      jsContentRef.value[index] && jsContentRef.value[index].getModelResolve(models);
-    }
-  });
-  return models;
-};
-
+/**
+ * Watches for changes in props value
+ * <p>
+ * Updates form data when props value changes
+ * </p>
+ */
 watch(() => props.value, (newValue) => {
-  if (state.formData.length && state.formData.some(item => !!item.name ||
-    (!!item.schema?.type && item.schema?.type !== 'string') || !!item[valueKey])) {
+  if (componentState.formData.length && componentState.formData.some(item =>
+    !!item.name ||
+    (!!item.schema?.type && item.schema?.type !== SchemaType.string) ||
+    !!item[parameterManager.valueKey]
+  )) {
     return;
   }
-  state.formData = (newValue || []).map((i, idx) => {
-    return { ...i, key: i.key || getKey(idx) };
+  componentState.formData = (newValue || []).map((parameterItem, index) => {
+    return { ...parameterItem, key: parameterItem.key || parameterManager.generateUniqueKey(index) };
   });
-  if (state.formData.every(i => !!i.name)) {
-    state.formData.push(getDefaultParams({ in: 'header', key: getKey() }) as ParamsInfo);
+  if (componentState.formData.every(item => !!item.name)) {
+    componentState.formData.push(getDefaultParams({ in: 'header', key: parameterManager.generateUniqueKey() }) as ParamsInfo);
   }
 }, {
   deep: true,
   immediate: true
 });
 
-defineExpose({ updateComp, getModelResolve, validate: validateContents });
+defineExpose({
+  updateComp: updateComponentData,
+  getModelResolve: getResolvedModelData,
+  validate: validateFormContents
+});
 </script>
 <template>
   <div class="space-y-3 min-w-220">
-    <div v-if="showContentType" class="flex flex-nowrap items-center whitespace-nowrap">
+    <div v-if="shouldShowContentType" class="flex flex-nowrap items-center whitespace-nowrap">
       <Checkbox :checked="true" />
       <div class="flex flex-col w-100 ml-2  flex-shrink-0">
         <Input
@@ -276,12 +197,12 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
       </div>
       <Select
         value="string"
-        :options="schemaTypeToOptions"
+        :options="schemaTypeToOption"
         disabled
         class="w-25 ml-2 flex-shrink-0" />
       <div class="flex flex-col flex-25 ml-2">
         <Input
-          :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH })"
+          :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
           :value="props.contentType"
           :allowClear="false"
           size="small"
@@ -306,12 +227,12 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
       </div>
       <Select
         value="string"
-        :options="schemaTypeToOptions"
+        :options="schemaTypeToOption"
         disabled
         class="w-25 ml-2 flex-shrink-0" />
       <div class="flex flex-col flex-1 ml-2">
         <Input
-          :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH })"
+          :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
           :value="value"
           :allowClear="false"
           size="small"
@@ -322,16 +243,16 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
       </div>
     </div>
     <div
-      v-for="(item, index) in state.formData"
+      v-for="(item, index) in componentState.formData"
       :key="item.key"
       class="space-y-2">
       <div
         class="flex flex-nowrap items-center mb-3 whitespace-nowrap space-x-2"
-        :class="{'opacity-50': !item[enabledKey]}">
+        :class="{'opacity-50': !item[parameterManager.enabledKey]}">
         <Checkbox
           :disabled="!item.name"
-          :checked="item[enabledKey] && !!item.name"
-          @change="handleChecked($event, index, item)" />
+          :checked="item[parameterManager.enabledKey] && !!item.name"
+          @change="handleCheckboxChange($event, index, item)" />
         <Tooltip placement="topLeft">
           <div class="flex flex-col w-100 flex-shrink-0" :class="{'border-l border-blue-1': item.$ref}">
             <SelectSchema
@@ -340,25 +261,25 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
               v-model:value="item.name"
               :placeholder="t('common.placeholders.searchKeyword')"
               mode="pure"
-              :maxLength="globalConfigs.VITE_API_PARAMETER_NAME_LENGTH"
+              :maxLength="API_PARAMETER_NAME_LENGTH"
               :params="{ ignoreModel: false, types: 'parameters'}"
               :type="['parameters']"
               :disabled="item.$ref"
-              :excludes="opt => filterModels(opt)"
-              :inputProps="nameInputProps"
-              @blur="handleBlur($event, index, state.formData[index], 'name')"
-              @change="(...arg) => selectModels(...arg, index)" />
+              :excludes="opt => filterModelOptions(opt)"
+              :inputProps="parameterNameInputProps"
+              @blur="handleFormFieldBlur($event, index, componentState.formData[index], 'name')"
+              @change="(value, option) => handleModelSelection(value, option, index)" />
             <Input
               v-else
               :placeholder="t('service.apiRequestHeader.form.inputNamePlaceholder')"
               :value="item.name"
               :allowClear="false"
-              :maxLength="globalConfigs.VITE_API_PARAMETER_NAME_LENGTH"
+              :maxLength="API_PARAMETER_NAME_LENGTH"
               dataType="mixin-en"
               includes="-_."
-              :inputProps="nameInputProps"
-              @blur="handleBlur($event, index, item, 'name')"
-              @keypress="enterHandle" />
+              :inputProps="parameterNameInputProps"
+              @blur="handleFormFieldBlur($event, index, item, 'name')"
+              @keypress="handleEnterKeyPress" />
           </div>
           <template v-if="item.$ref" #title>
             {{ t('service.apiRequestHeader.tips.componentReference', { ref: item.$ref }) }}
@@ -366,25 +287,25 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
         </Tooltip>
         <Select
           v-model:value="item.schema.type"
-          :options="schemaTypeToOptions"
+          :options="schemaTypeToOption"
           class="w-25 flex-shrink-0"
-          @change="changeDataType($event, index, item)" />
+          @change="changeParameterDataType($event, index, item)" />
         <div class="flex flex-col flex-1">
           <SimpleEditableSelect
             v-if="item.schema?.enum"
-            :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH })"
-            :options="item.schema.enum || item.schema?.[valueKey]"
-            :value="item[valueKey]"
-            :maxLength="globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH"
-            @blur="handleValueBlur($event,index,item )"
-            @select="changeEmit(index, { ...item, [valueKey]: $event, schema: {...item?.schema|| {}, [valueKey]: $event}})" />
+            :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
+            :options="item.schema.enum || item.schema?.[parameterManager.valueKey]"
+            :value="item[parameterManager.valueKey]"
+            :maxLength="0"
+            @blur="handleParameterValueBlur($event,index,item )"
+            @select="updateParameterData(index, { ...item, [parameterManager.valueKey]: $event, schema: {...item?.schema|| {}, [parameterManager.valueKey]: $event}})" />
           <ParamInput
-            v-else-if="!['array', 'object'].includes(item.schema.type)"
-            :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH })"
-            :maxLength="globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH"
-            :value="item[valueKey]"
-            :error="getErrValue(item)"
-            @blur="handleValueBlur($event, index, item)" />
+            v-else-if="![SchemaType.array, SchemaType.object].includes(item.schema.type)"
+            :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
+            :maxLength="0"
+            :value="item[parameterManager.valueKey]"
+            :error="getParameterErrorState(item)"
+            @blur="handleParameterValueBlur($event, index, item)" />
           <Input v-else disabled />
         </div>
         <Button
@@ -392,32 +313,32 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
           size="small"
           :title="t('service.apiRequestHeader.actions.copyValue')"
           class="ml-2"
-          @click="copyValue(item)">
+          @click="copyParameterValue(item)">
           <Icon icon="icon-fuzhi" />
         </Button>
         <Button
           size="small"
-          :disabled="!['array', 'object'].includes(item.schema.type) || (item.schema.type === 'object' && item.$ref)"
-          @click="addChild(item, index)">
+          :disabled="![SchemaType.array, SchemaType.object].includes(item.schema.type) || (item.schema.type === SchemaType.object && item.$ref)"
+          @click="addChildParameter(item, index)">
           <Icon icon="icon-jia" />
         </Button>
         <Button
           class="w-7 ml-3 p-0"
           type="default"
           size="small"
-          :disabled="!item.name && !item[valueKey]"
-          @click="handleDel(index, item)">
+          :disabled="!item.name && !item[parameterManager.valueKey]"
+          @click="handleParameterDeletion(index, item)">
           <Icon icon="icon-shanchuguanbi" />
         </Button>
       </div>
       <JsonContent
-        v-if="item.schema?.type === 'array' || item.schema?.type === 'object'"
-        :ref="dom => jsContentRef[index] = dom"
-        v-model:data="item[valueKey]"
+        v-if="item.schema?.type === SchemaType.array || item.schema?.type === SchemaType.object"
+        :ref="dom => jsonContentRefs[index] = dom"
+        v-model:data="item[parameterManager.valueKey]"
         :schema="item.schema || {}"
         :disabled="!!item.$ref"
         :pType="item.schema?.type"
-        @change="changeSchema($event, item, index)" />
+        @change="updateParameterSchema($event, item, index)" />
     </div>
   </div>
 </template>

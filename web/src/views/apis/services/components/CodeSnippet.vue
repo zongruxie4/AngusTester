@@ -16,7 +16,7 @@ import { useI18n } from 'vue-i18n';
 // Internal dependencies
 import ApiUtils, { deepDelAttrFromObj } from '@/utils/apis';
 import { apis } from '@/api/tester';
-import { CONTENT_TYPE, RADIO_TYPE, HTTP_HEADERS } from '@/utils/constant';
+import { CONTENT_TYPE_KEYS, RADIO_TYPE_KEYS, HTTP_HEADERS } from '@/utils/constant';
 
 // Language icons
 import cIcon from '@/views/apis/services/components/image/c.png';
@@ -164,8 +164,8 @@ const extractParameters = (parameters: any[]) => {
 const processFormData = (parameter: any, contentType: string) => {
   const formParams = {};
 
-  if (contentType === CONTENT_TYPE.FORM_URLENCODED) {
-    Object.entries(parameter.requestBody?.content[CONTENT_TYPE.FORM_URLENCODED]?.schema?.properties || {}).forEach(([key, value]) => {
+  if (contentType === CONTENT_TYPE_KEYS.FORM_URLENCODED) {
+    Object.entries(parameter.requestBody?.content[CONTENT_TYPE_KEYS.FORM_URLENCODED]?.schema?.properties || {}).forEach(([key, value]) => {
       formParams[key] = value?.[valueKey];
     });
   }
@@ -178,7 +178,7 @@ const processFormData = (parameter: any, contentType: string) => {
  */
 const processMultipartFormData = (parameter: any) => {
   const body = {};
-  const formContent = parameter.requestBody.content[CONTENT_TYPE.MULTIPART_FORM_DATA]?.schema?.properties || {};
+  const formContent = parameter.requestBody.content[CONTENT_TYPE_KEYS.MULTIPART_FORM_DATA]?.schema?.properties || {};
 
   Object.keys(formContent).forEach((key) => {
     if (formContent[key].format === 'binary') {
@@ -210,7 +210,7 @@ const processMultipartFormData = (parameter: any) => {
     }
   });
 
-  parameter.requestBody.content[CONTENT_TYPE.MULTIPART_FORM_DATA].schema = JSONToSchema(body);
+  parameter.requestBody.content[CONTENT_TYPE_KEYS.MULTIPART_FORM_DATA].schema = JSONToSchema(body);
   return body;
 };
 
@@ -220,15 +220,15 @@ const processMultipartFormData = (parameter: any) => {
 const processRequestBodyContent = (parameter: any, contentType: string) => {
   let body;
 
-  if (contentType === CONTENT_TYPE.MULTIPART_FORM_DATA) {
+  if (contentType === CONTENT_TYPE_KEYS.MULTIPART_FORM_DATA) {
     body = processMultipartFormData(parameter);
-  } else if (contentType === RADIO_TYPE.OCTET_STREAM || parameter.requestBody?.content?.[contentType]?.schema?.format === 'binary') {
+  } else if (contentType === RADIO_TYPE_KEYS.OCTET_STREAM || parameter.requestBody?.content?.[contentType]?.schema?.format === 'binary') {
     body = parameter.requestBody?.content[contentType]?.schema?.[valueKey];
   } else {
     if (valueKey in (parameter.requestBody?.content?.[contentType] || {})) {
       body = parameter.requestBody?.content?.[contentType]?.[valueKey] || undefined;
     } else if (parameter.requestBody?.content?.[contentType]) {
-      const isXml = contentType === CONTENT_TYPE.XML;
+      const isXml = contentType === CONTENT_TYPE_KEYS.XML;
 
       parameter.requestBody.content[contentType][valueKey] = SwaggerUI.extension.sampleFromSchemaGeneric(
         parameter.requestBody.content[contentType].schema || {},

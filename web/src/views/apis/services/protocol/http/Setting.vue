@@ -9,7 +9,13 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  value: () => ({ enableParamValidation: false, connectTimeout: 6000, readTimeout: 60000, retryNum: 0, maxRedirects: 1 })
+  value: () => ({
+    enableParamValidation: false,
+    connectTimeout: 6000,
+    readTimeout: 60000,
+    retryNum: 0,
+    maxRedirects: 1
+  })
 });
 
 const { t } = useI18n();
@@ -18,15 +24,30 @@ const emit = defineEmits<{
   (e: 'change', value: Props['value']): void;
 }>();
 
-const change = (event:ChangeEvent, key: keyof RequestSetting) => {
-  let value = event.target.value;
-  if (!value && ['connectTimeout', 'retryNum', 'readTimeout'].includes(key)) {
-    value = 0;
+/**
+ * Handles setting value change
+ * <p>
+ * Updates the setting value when input changes
+ * </p>
+ * @param event - Change event from input
+ * @param key - Setting key to update
+ */
+const handleSettingChange = (event: ChangeEvent, key: keyof RequestSetting) => {
+  let newValue = (event.target as HTMLInputElement).value;
+  if (!newValue && ['connectTimeout', 'retryNum', 'readTimeout'].includes(key)) {
+    newValue = '0';
   }
-  emit('change', { ...props.value, [key]: value });
+  emit('change', { ...props.value, [key]: newValue });
 };
 
-const onBlur = (key) => {
+/**
+ * Handles input blur event
+ * <p>
+ * Sets default value to 0 if input is empty
+ * </p>
+ * @param key - Setting key to update
+ */
+const handleInputBlur = (key: keyof RequestSetting) => {
   if (!props.value[key]) {
     emit('change', { ...props.value, [key]: 0 });
   }
@@ -44,7 +65,7 @@ const onBlur = (key) => {
           :checked="props.value.enableParamValidation"
           class="w-8.5"
           size="small"
-          @change="change({target: {value: $event}} as ChangeEvent, 'enableParamValidation')" />
+          @change="handleSettingChange({target: {value: $event}} as ChangeEvent, 'enableParamValidation')" />
       </div>
     </div>
     <div class="flex items-start">
@@ -61,8 +82,8 @@ const onBlur = (key) => {
           :value="props.value.connectTimeout"
           :placeholder="t('service.apiSetting.form.timeoutPlaceholder')"
           dataType="number"
-          @blur="onBlur('connectTimeout')"
-          @change="change($event, 'connectTimeout')" /><span
+          @blur="handleInputBlur('connectTimeout')"
+          @change="handleSettingChange($event, 'connectTimeout')" /><span
             class="ml-2">{{ t('service.apiSetting.units.milliseconds') }}</span>
       </div>
     </div>
@@ -80,8 +101,8 @@ const onBlur = (key) => {
           :value="props.value.readTimeout"
           :placeholder="t('service.apiSetting.form.timeoutPlaceholder')"
           dataType="number"
-          @blur="onBlur('readTimeout')"
-          @change="change($event, 'readTimeout')" /><span
+          @blur="handleInputBlur('readTimeout')"
+          @change="handleSettingChange($event, 'readTimeout')" /><span
             class="ml-2">{{ t('service.apiSetting.units.milliseconds') }}</span>
       </div>
     </div>
@@ -99,8 +120,8 @@ const onBlur = (key) => {
           :value="props.value.retryNum"
           :placeholder="t('service.apiSetting.form.retryNumPlaceholder')"
           dataType="number"
-          @blur="onBlur('retryNum')"
-          @change="change($event, 'retryNum')" /><span class="ml-2">{{ t('service.apiSetting.units.times') }}</span>
+          @blur="handleInputBlur('retryNum')"
+          @change="handleSettingChange($event, 'retryNum')" /><span class="ml-2">{{ t('service.apiSetting.units.times') }}</span>
       </div>
     </div>
     <div class="flex items-start">
@@ -117,8 +138,8 @@ const onBlur = (key) => {
           :value="props.value.maxRedirects"
           :placeholder="t('service.apiSetting.form.maxRedirectsPlaceholder')"
           dataType="number"
-          @blur="onBlur('maxRedirects')"
-          @change="change($event, 'maxRedirects')" /><span class="ml-2">{{ t('service.apiSetting.units.times') }}</span>
+          @blur="handleInputBlur('maxRedirects')"
+          @change="handleSettingChange($event, 'maxRedirects')" /><span class="ml-2">{{ t('service.apiSetting.units.times') }}</span>
       </div>
     </div>
   </div>

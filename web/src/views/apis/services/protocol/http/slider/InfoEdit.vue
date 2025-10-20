@@ -17,13 +17,17 @@ import {
 import { apis, services } from '@/api/tester';
 import { appContext, TESTER } from '@xcan-angus/infra';
 import { Button, Form, FormItem } from 'ant-design-vue';
-import { ApisProtocol, ApiStatus } from '@/enums/enums';
+import { ApiStatus } from '@/enums/enums';
 import { ApisFormEdit } from '@/views/apis/services/protocol/types';
+import { API_SUMMARY_MAX_LENGTH, API_OPERATION_ID_MAX_LENGTH, API_DESC_MAX_LENGTH } from '@/utils/constant';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
+/**
+ * Props interface for InfoEdit component
+ */
 interface Props {
-  disabled:boolean
+  disabled: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -32,34 +36,40 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+// Vuex store helpers for guide functionality
 const { useMutations, useState } = VuexHelper;
 const { stepVisible, stepKey, stepContent } = useState(['stepVisible', 'stepKey', 'stepContent'], 'guideStore');
 const { updateGuideStep } = useMutations(['updateGuideStep'], 'guideStore');
-// 更新左侧未归档列表
+
+// Injected dependencies for parent component communication
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const refreshUnarchived = inject('refreshUnarchived', () => {});
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const handleCloseDrawer = inject('selectHandle', () => {});
-const isUnarchivedApi = inject('isUnarchivedApi', { value: false }); // 当前 api 是否为未存档
+const isUnarchivedApi = inject('isUnarchivedApi', { value: false }); // Current API is unarchived
 const setApiInfo = inject('setApiInfo', (info) => (info));
 const userInfo = ref(appContext.getUser());
+
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const getParameter = inject('getParameter', () => ({} as any));
-const globalConfigs = inject('globalConfigs', { VITE_API_SUMMARY_MAX_LENGTH: 400, VITE_API_CODE_MAX_LENGTH: 400, VITE_API_DESC_MAX_LENGTH: 20000 });
 
+// Component state
 const isLoading = ref(false);
-const tagsOpt = ref<{value: string}[]>([]);
-const ownerOpt = ref();
+const tagsOptions = ref<{value: string}[]>([]);
+const ownerOptions = ref();
 const defaultProject = ref();
 
 const state = reactive({
   id: inject('id', ''),
-  treeDataList: []
+  treeDataList: [] // Unused - can be removed
 });
 
+/**
+ * Form data for API information editing
+ */
 const form = reactive<ApisFormEdit>({
   summary: '',
   operationId: '',
@@ -80,17 +90,28 @@ const form = reactive<ApisFormEdit>({
   externalDocs: undefined
 });
 
+/**
+ * Computed property to determine if form should be disabled
+ * <p>Form is disabled when props.disabled is true or API status is RELEASED</p>
+ */
 const disabled = computed(() => {
   return props.disabled || form.status === ApiStatus.RELEASED;
 });
 
-const loadInfo = async () => {
+/**
+ * Loads API information from server
+ * <p>Fetches API details based on whether it's archived or unarchived</p>
+ * <p>Populates form with fetched data and sets default values</p>
+ */
+const loadApiInfo = async () => {
   const [error, res] = isUnarchivedApi.value
     ? await apis.getUnarchivedApiDetail(state.id)
     : await apis.getApiDetail(state.id);
   if (error) {
     return;
   }
+
+  // Map response data to form fields
   Object.keys(res.data).forEach(key => {
     if (key === 'status') {
       form[key] = res.data[key]?.value || ApiStatus.UNKNOWN;
@@ -98,95 +119,134 @@ const loadInfo = async () => {
       form[key] = res.data[key];
     }
   });
+
+  // Process assertions array
   form.assertions = res.data?.assertions?.map(item => ({
     ...item,
     condition: item.condition?.value,
     type: item.type?.value
   })) || [];
+
+  // Set default owner if not present
   if (!form.ownerId && userInfo.value?.id) {
     form.ownerId = userInfo.value.id.toString();
     form.ownerName = userInfo.value.fullName;
   }
+
   form.tags = form.tags || undefined;
-  ownerOpt.value = [{ fullName: form.ownerName, id: form.ownerId }];
+  ownerOptions.value = [{ fullName: form.ownerName, id: form.ownerId }];
   defaultProject.value = { id: form.serviceId, name: form.serviceName };
 };
 
-const handleProjectChange = (value, name) => {
+/**
+ * Handles project/service selection change
+ * <p>Updates form with selected service ID and name</p>
+ */
+const handleProjectChange = (value: string, name: string[]) => {
   form.serviceId = value;
   form.serviceName = name?.[0];
 };
 
-const loadTagFromService = async () => {
-  if (!form.serviceId || tagsOpt.value.length) {
+/**
+ * Loads available tags from the selected service
+ * <p>Fetches tags only if service is selected and tags haven't been loaded yet</p>
+ */
+const loadTagsFromService = async () => {
+  if (!form.serviceId || tagsOptions.value.length) {
     return;
   }
   const [error, resp] = await services.getTags(form.serviceId);
   if (error) {
     return;
   }
-  tagsOpt.value = (resp.data || []).map(i => ({ value: i.name, label: i.name }));
+  tagsOptions.value = (resp.data || []).map(i => ({ value: i.name, label: i.name }));
 };
 
 const formRef = ref();
 
-const save = async () => {
+/**
+ * Saves the API information
+ * <p>Validates form, prepares parameters, and calls appropriate API endpoint</p>
+ * <p>Handles both archived and unarchived API updates</p>
+ */
+const saveApiInfo = async () => {
   formRef.value.validate().then(async () => {
     const formParams = await getParameter();
     delete formParams.id;
     const { ownerId, summary, operationId, serviceId, description, tags, status, deprecated, externalDocs } = form;
     const params = { ...formParams, ownerId, summary, operationId, serviceId, description, tags, status, deprecated, externalDocs };
     isLoading.value = true;
+
+    // Determine which API endpoint to call based on API state
     const [error, res] = isUnarchivedApi.value && state.id
       ? await apis.addApi([{ ...params, unarchivedId: state.id }])
       : isUnarchivedApi.value && !state.id
         ? await apis.putApi([{ ...params }])
         : await apis.updateApi([{ ...formParams, externalDocs, ownerId, summary, operationId, serviceId, description, tags, status, deprecated, id: state.id }]);
+
     isLoading.value = false;
     if (error) {
       return;
     }
+
+    // Update parent component with new API info
     setApiInfo({
       id: res.data?.[0].id || state.id,
       name: summary,
       ownerId,
       serviceId
     });
+
+    // Refresh unarchived list if needed
     if (isUnarchivedApi.value) {
       refreshUnarchived();
     }
+
     notification.success(t('actions.tips.saveSuccess'));
     handleClose();
   });
 };
 
-// 取消保存
+/**
+ * Closes the drawer and cancels editing
+ */
 const handleClose = () => {
   handleCloseDrawer();
 };
 
-const scrollDivRef = ref(null);
-const guideStep = (key:string) => {
-  if (key === 'debugApiSeven') {
+const scrollDivRef = ref<HTMLElement | null>(null);
+
+/**
+ * Handles guide step navigation
+ * <p>Manages user guide flow and performs specific actions for certain steps</p>
+ */
+const handleGuideStep = (key: string) => {
+  if (key === 'debugApiSeven' && scrollDivRef.value) {
     scrollDivRef.value.scrollTop = scrollDivRef.value.scrollHeight;
   }
   updateGuideStep({ visible: true, key });
 
   if (key === 'hideProject') {
-    save();
+    saveApiInfo();
   }
 };
 
 onMounted(() => {
+  // Set example text for guide step
   if (stepKey.value === 'debugApiSix' && stepVisible.value) {
     form.summary = t('service.apiSliderSave.debug.example');
   }
 });
 
+/**
+ * Watches for changes in API ID
+ * <p>Loads API info when ID is present, or initializes form with default values</p>
+ */
 watch(() => state.id, async () => {
   if (state.id) {
-    await loadInfo();
+    await loadApiInfo();
   } else {
+    // Initialize form with default values for new API
     const formParams = await getParameter();
     if (formParams.serviceId) {
       form.serviceId = formParams.serviceId;
@@ -200,19 +260,30 @@ watch(() => state.id, async () => {
   }
 }, { immediate: true });
 
+/**
+ * Form validation rules
+ */
 const rules = {
   summary: [{
-    required: true, message: t('service.apiSliderSave.validation.summaryRequired'), trigger: 'blur'
-  }],
+    required: true,
+    message: t('service.apiSliderSave.validation.summaryRequired'),
+    trigger: 'blur'
+  }] as any,
   ownerId: [{
-    required: true, message: t('service.apiSliderSave.validation.ownerRequired'), trigger: 'change'
-  }],
+    required: true,
+    message: t('service.apiSliderSave.validation.ownerRequired'),
+    trigger: 'change'
+  }] as any,
   serviceId: [{
-    required: true, message: t('service.apiSliderSave.validation.serviceRequired'), trigger: 'change'
-  }],
+    required: true,
+    message: t('service.apiSliderSave.validation.serviceRequired'),
+    trigger: 'change'
+  }] as any,
   status: [{
-    required: true, message: t('service.apiSliderSave.validation.statusRequired'), trigger: 'change'
-  }]
+    required: true,
+    message: t('service.apiSliderSave.validation.statusRequired'),
+    trigger: 'change'
+  }] as any
 };
 </script>
 
@@ -230,7 +301,7 @@ const rules = {
           :loading="isLoading"
           :disabled="disabled"
           size="small"
-          @click="save">
+          @click="saveApiInfo">
           {{ t('actions.save') }}
         </Button>
         <Button size="small" @click="handleClose">
@@ -254,13 +325,13 @@ const rules = {
           destroyTooltipOnHide>
           <template #title>
             <div class="p-2 text-3">
-              <div class="text-4 text-text-title">{{ stepContent.title }}</div>
-              <div class="mt-2">{{ stepContent.content }}</div>
+              <div class="text-4 text-text-title">{{ (stepContent as any)?.title }}</div>
+              <div class="mt-2">{{ (stepContent as any)?.content }}</div>
               <div class="flex justify-end mt-5">
                 <Button
                   size="small"
                   type="primary"
-                  @click="guideStep('debugApiSeven')">
+                  @click="handleGuideStep('debugApiSeven')">
                   {{ t('actions.nextStep') }}
                 </Button>
               </div>
@@ -268,7 +339,7 @@ const rules = {
           </template>
           <Input
             v-model:value="form.summary"
-            :maxlength="globalConfigs.VITE_API_SUMMARY_MAX_LENGTH"
+            :maxlength="API_SUMMARY_MAX_LENGTH"
             :disabled="disabled"
             :allowClear="false"
             class="rounded"
@@ -279,7 +350,7 @@ const rules = {
       <FormItem :label="t('service.apiSliderSave.labels.operationId')">
         <Input
           v-model:value="form.operationId"
-          :maxlength="globalConfigs.VITE_API_CODE_MAX_LENGTH"
+          :maxlength="API_OPERATION_ID_MAX_LENGTH"
           :disabled="disabled"
           :allowClear="false"
           dataType="mixin-en"
@@ -292,7 +363,7 @@ const rules = {
         <SelectUser
           v-model:value="form.ownerId"
           class="rounded-border"
-          :options="ownerOpt"
+          :options="ownerOptions"
           :disabled="disabled"
           size="small"
           :placeholder="t('common.placeholders.selectOwner')"
@@ -337,8 +408,8 @@ const rules = {
           mode="tags"
           :placeholder="t('service.apiSliderSave.form.tagsPlaceholder')"
           :disabled="disabled"
-          :options="tagsOpt"
-          @dropdownVisibleChange="loadTagFromService">
+          :options="tagsOptions"
+          @dropdownVisibleChange="loadTagsFromService">
         </Select>
       </FormItem>
       <FormItem :label="t('common.status')" name="status">
@@ -351,12 +422,13 @@ const rules = {
       </FormItem>
       <FormItem :label="t('service.apiSliderSave.labels.deprecated')" name="deprecated">
         <Select
-          v-model:value="form.deprecated"
+          :value="form.deprecated ? 'true' : 'false'"
           :disabled="disabled"
           :options="[
-            {label: t('service.apiSliderSave.options.normal'), value: false},
-            {label: t('service.apiSliderSave.options.deprecated'), value: true}
-          ]">
+            {label: t('service.apiSliderSave.options.normal'), value: 'false'},
+            {label: t('service.apiSliderSave.options.deprecated'), value: 'true'}
+          ]"
+          @change="(value) => form.deprecated = value === 'true'">
         </Select>
       </FormItem>
       <FormItem :label="t('common.description')" name="externalDocs">
@@ -367,7 +439,7 @@ const rules = {
           :autoSize="{ minRows: 5, maxRows: 5 }"
           :disabled="disabled"
           :allowClear="false"
-          :maxlength="globalConfigs.VITE_API_DESC_MAX_LENGTH"
+          :maxlength="API_DESC_MAX_LENGTH"
           class="rounded-border"
           size="small"
           :placeholder="t('service.apiSliderSave.form.descriptionPlaceholder')" />

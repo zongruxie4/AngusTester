@@ -6,7 +6,7 @@ import { Composite, Icon, IconRequired, Input, notification, Validate } from '@x
 import { HttpMethod, regexpUtils, utils, axiosClient } from '@xcan-angus/infra';
 
 import { ContentType, DelayData, ParametersType, PushbackBody, ResponsePushbackConfig } from './types';
-import { CONTENT_TYPE, HTTP_HEADERS } from '@/utils/constant';
+import { CONTENT_TYPE_KEYS, HTTP_HEADERS } from '@/utils/constant';
 import { API_EXTENSION_KEY, convertBlob } from '@/utils/apis';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
@@ -192,7 +192,7 @@ const sendRequest = async () => {
 
   const contentType = headerData.find(item => item.name === HTTP_HEADERS.CONTENT_TYPE)?.value;
   if (contentType) {
-    if (contentType === CONTENT_TYPE.FORM_URLENCODED) {
+    if (contentType === CONTENT_TYPE_KEYS.FORM_URLENCODED) {
       const formUrlEncodeParam = forms || [];
       const formJson = {};
       const formUrl = formUrlEncodeParam.map(item => {
@@ -207,7 +207,7 @@ const sendRequest = async () => {
           }
         }
       };
-    } else if (contentType === CONTENT_TYPE.MULTIPART_FORM_DATA) {
+    } else if (contentType === CONTENT_TYPE_KEYS.MULTIPART_FORM_DATA) {
       const formUrlEncodeParam = forms || [];
       const formData = new FormData();
       const formJson = {};

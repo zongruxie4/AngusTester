@@ -1,8 +1,10 @@
 <script lang="ts" setup>
+
 interface Props {
   info: string;
   errorTitle: string;
 }
+
 withDefaults(defineProps<Props>(), {});
 </script>
 <template>

@@ -6,8 +6,8 @@ import { exec } from '@/api/ctrl';
 import { ScriptType } from '@xcan-angus/infra';
 
 const TestSummary = defineAsyncComponent(() => import('./TestSummary.vue'));
-const ExecDetail = defineAsyncComponent(() => import('@/views/execution/detail/index.vue'));
 const Task = defineAsyncComponent(() => import('./Task.vue'));
+const ExecDetail = defineAsyncComponent(() => import('@/views/execution/detail/index.vue'));
 
 interface Props {
   apisId: string;
@@ -26,6 +26,10 @@ const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', r
 const activeTab = ref('func');
 const dataSource = ref();
 
+/**
+ * Load API test results from backend
+ * Updates dataSource with test result data
+ */
 const loadApisResult = async () => {
   const [error, { data }] = await exec.getApiTestResult(props.apisId);
   if (error) {
@@ -34,23 +38,50 @@ const loadApisResult = async () => {
   dataSource.value = data;
 };
 
-const funcExecId = computed(() => {
+/**
+ * Get execution ID for functional test
+ * @returns {string|undefined} Functional test execution ID
+ */
+const functionalTestExecId = computed(() => {
   return dataSource.value?.resultDetailVoMap?.TEST_FUNCTIONALITY?.execId;
 });
-const perfExecId = computed(() => {
+
+/**
+ * Get execution ID for performance test
+ * @returns {string|undefined} Performance test execution ID
+ */
+const performanceTestExecId = computed(() => {
   return dataSource.value?.resultDetailVoMap?.TEST_PERFORMANCE?.execId;
 });
-const customExecId = computed(() => {
+
+/**
+ * Get execution ID for custom test
+ * @returns {string|undefined} Custom test execution ID
+ */
+const customTestExecId = computed(() => {
   return dataSource.value?.resultDetailVoMap?.TEST_CUSTOMIZATION?.execId;
 });
-const stabilityExecId = computed(() => {
+
+/**
+ * Get execution ID for stability test
+ * @returns {string|undefined} Stability test execution ID
+ */
+const stabilityTestExecId = computed(() => {
   return dataSource.value?.resultDetailVoMap?.TEST_STABILITY?.execId;
 });
 
-const handleDel = () => {
+/**
+ * Handle test deletion event
+ * Reloads API test results after deletion
+ */
+const handleTestDeletion = () => {
   loadApisResult();
 };
 
+/**
+ * Component mounted lifecycle hook
+ * Loads API test results if apisId is provided
+ */
 onMounted(() => {
   if (props.apisId) {
     loadApisResult();
@@ -75,34 +106,34 @@ onMounted(() => {
         <ExecDetail
           class="p-0"
           :showBackBtn="false"
-          :execId="funcExecId"
+          :execId="functionalTestExecId"
           :monicaEditorStyle="{height: '600px'}"
           :scriptType="ScriptType.TEST_FUNCTIONALITY"
-          @del="handleDel" />
+          @del="handleTestDeletion" />
       </TabPane>
       <TabPane key="perf" :tab="t('service.apiExecDetail.tabs.performanceTest')">
         <ExecDetail
           :showBackBtn="false"
-          :execId="perfExecId"
+          :execId="performanceTestExecId"
           :monicaEditorStyle="{height: '600px'}"
           :scriptType="ScriptType.TEST_PERFORMANCE"
-          @del="handleDel" />
+          @del="handleTestDeletion" />
       </TabPane>
       <TabPane key="stability" :tab="t('service.apiExecDetail.tabs.stabilityTest')">
         <ExecDetail
           :showBackBtn="false"
-          :execId="stabilityExecId"
+          :execId="stabilityTestExecId"
           :monicaEditorStyle="{height: '600px'}"
           :scriptType="ScriptType.TEST_STABILITY"
-          @del="handleDel" />
+          @del="handleTestDeletion" />
       </TabPane>
       <TabPane key="custom" :tab="t('service.apiExecDetail.tabs.customTest')">
         <ExecDetail
           :showBackBtn="false"
-          :execId="customExecId"
+          :execId="customTestExecId"
           :monicaEditorStyle="{height: '600px'}"
           :scriptType="ScriptType.TEST_CUSTOMIZATION"
-          @del="handleDel" />
+          @del="handleTestDeletion" />
       </TabPane>
       <TabPane
         v-if="proTypeShowMap.showTask"

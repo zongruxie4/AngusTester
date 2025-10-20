@@ -4,23 +4,41 @@ import { useI18n } from 'vue-i18n';
 import type { UploadProps } from 'ant-design-vue';
 import { Upload } from 'ant-design-vue';
 import { Icon, notification } from '@xcan-angus/vue-ui';
-import { API_EXTENSION_KEY } from '@/utils/apis';
+import { API_EXTENSION_KEY, SchemaWideType } from '@/utils/apis';
 import { codeUtils } from '@xcan-angus/infra';
 
 const { valueKey, fileNameKey, formContentTypeKey, contentEncoding } = API_EXTENSION_KEY;
 const { gzip, ungzip } = codeUtils;
 
-interface File {
+/**
+ * File interface for upload
+ */
+interface UploadFileItem {
+  /** Form content type */
   [formContentTypeKey]: string;
+  /** Content encoding */
   [contentEncoding]: 'gzip_base64';
+  /** File name */
   [fileNameKey]: string;
+  /** File value */
   [valueKey]: string;
+  /** Origin file object */
+  originFileObj?: File;
+  /** File type */
+  type?: string;
+  /** File status */
+  status?: string;
+  /** File name */
+  name?: string;
 }
 
+/**
+ * Component props interface
+ */
 interface Props {
-  value?:File|File[];
+  value?: UploadFileItem | UploadFileItem[];
   sizes: number[];
-  type: 'file'|'file(array)';
+  type: SchemaWideType.file | SchemaWideType.file_array;
   maxFileSize: number;
 }
 
@@ -30,45 +48,79 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{
-  (e: 'change', value?: File|File[]): void
+  (e: 'change', value?: { file?: File | File[]; size: number }): void;
 }>();
 
 const { t } = useI18n();
 
-let totalSize = 0;
+let totalFileSize = 0;
 
 const fileList = ref<any[]>([]);
 
-const beforeUpload: UploadProps['beforeUpload'] = async (file) => {
-  if (totalSize + file.size > props.maxFileSize) {
+/**
+ * Handles file before upload
+ * <p>
+ * Validates file size before upload
+ * </p>
+ * @param file - File to upload
+ * @returns False to prevent automatic upload
+ */
+const handleBeforeUpload: UploadProps['beforeUpload'] = async (file) => {
+  if (totalFileSize + file.size > props.maxFileSize) {
     notification.warning(t('service.apiUpload.messages.fileSizeLimit'));
   }
   return false;
 };
-const loadAsync = async (base64Text, name) => {
-  const buf = await ungzip(base64Text);
-  return await new File([buf], name);
+
+/**
+ * Loads file asynchronously from base64
+ * <p>
+ * Decompresses and creates file from base64 text
+ * </p>
+ * @param base64Text - Base64 encoded file content
+ * @param fileName - Name of the file
+ * @returns Promise resolving to File object
+ */
+const loadFileAsynchronously = async (base64Text: string, fileName: string) => {
+  const buffer = await ungzip(base64Text);
+  return await new File([buffer], fileName);
 };
 
-const showSelectFile = computed(() => {
-  return props.type === 'file(array)' || !fileList.value.length;
+/**
+ * Computed property to show file selection
+ * <p>
+ * Determines whether to show file selection button
+ * </p>
+ */
+const shouldShowFileSelection = computed(() => {
+  return props.type === SchemaWideType.file_array || !fileList.value.length;
 });
 
+/**
+ * Component mounted hook
+ * <p>
+ * Initializes file list from props value
+ * </p>
+ */
 onMounted(async () => {
   if (props.value?.length || props.value?.[valueKey]) {
     const files = Array.isArray(props.value) ? props.value : [props.value];
     if (!fileList.value?.length) {
       fileList.value = [];
-      for (const i of files) {
-        const originFileObj = i.originFileObj ? i.originFileObj : await loadAsync(i[valueKey], i[fileNameKey]);
-        if (!i[formContentTypeKey]) {
-          i[formContentTypeKey] = originFileObj.type;
+      for (const fileItem of files) {
+        const originFileObject = fileItem.originFileObj
+          ? fileItem.originFileObj
+          : (typeof fileItem[valueKey] === 'string' && typeof fileItem[fileNameKey] === 'string'
+              ? await loadFileAsynchronously(fileItem[valueKey], fileItem[fileNameKey])
+              : new File([], ''));
+        if (!fileItem[formContentTypeKey]) {
+          fileItem[formContentTypeKey] = originFileObject.type;
         }
         fileList.value.push({
-          name: i[fileNameKey],
+          name: fileItem[fileNameKey],
           status: 'done',
-          ...i,
-          originFileObj
+          ...fileItem,
+          originFileObj: originFileObject
         });
       }
     }
@@ -77,46 +129,61 @@ onMounted(async () => {
   }
 });
 
+/**
+ * Watches for changes in upload type
+ * <p>
+ * Clears file list when upload type changes
+ * </p>
+ */
 watch(() => props.type, () => {
   fileList.value = [];
 });
 
+/**
+ * Watches for changes in file list
+ * <p>
+ * Processes files and emits change event
+ * </p>
+ */
 watch(() => fileList.value, async () => {
   nextTick(async () => {
-    const data:File[] = [];
-    totalSize = 0;
+    const processedFiles: UploadFileItem[] = [];
+    totalFileSize = 0;
     fileList.value.forEach(item => {
-      totalSize += (item.size || item.file.size);
+      totalFileSize += (item.size || item.file.size);
     });
-    if (totalSize > props.maxFileSize) {
+    if (totalFileSize > props.maxFileSize) {
       fileList.value?.splice(-1);
       return;
     }
-    for (const file of fileList.value) {
-      if (!file[valueKey]) {
-        if (file.originFileObj) {
-          const fileBase = await gzip(file.originFileObj);
-          file[valueKey] = fileBase;
+    for (const fileItem of fileList.value) {
+      if (!fileItem[valueKey]) {
+        if (fileItem.originFileObj) {
+          fileItem[valueKey] = await gzip(fileItem.originFileObj);
         }
       }
-      data.push({
-        [formContentTypeKey]: file.type,
-        'x-xc-contentEncoding': 'gzip_base64',
-        [fileNameKey]: file.name,
-        [valueKey]: file[valueKey],
-        file: file.originFileObj || undefined
-      });
+      processedFiles.push({
+        [formContentTypeKey]: fileItem.type,
+        [contentEncoding]: 'gzip_base64',
+        [fileNameKey]: fileItem.name,
+        [valueKey]: fileItem[valueKey],
+        originFileObj: fileItem.originFileObj || undefined
+      } as UploadFileItem);
     }
-    if (data.length === 0) {
-      emits('change', { file: props.type === 'file(array)' ? [] : undefined, size: 0 });
+    if (processedFiles.length === 0) {
+      emits('change', { file: props.type === SchemaWideType.file_array ? [] : undefined, size: 0 });
       return;
     }
-    if (props.type === 'file') {
-      emits('change', { file: data[0], size: totalSize });
+    if (props.type === SchemaWideType.file) {
+      // Extract the actual File object from UploadFileItem
+      const fileObj = processedFiles[0].originFileObj || new File([], '');
+      emits('change', { file: fileObj, size: totalFileSize });
       return;
     }
-    if (props.type === 'file(array)') {
-      emits('change', { file: data, size: totalSize });
+    if (props.type === SchemaWideType.file_array) {
+      // Extract the actual File objects from UploadFileItem array
+      const fileObjs = processedFiles.map(item => item.originFileObj || new File([], ''));
+      emits('change', { file: fileObjs, size: totalFileSize });
     }
   });
 }, {
@@ -126,10 +193,10 @@ watch(() => fileList.value, async () => {
 <template>
   <Upload
     v-model:fileList="fileList"
-    :multiple="props.type === 'file(array)'"
-    :beforeUpload="beforeUpload"
+    :multiple="props.type === SchemaWideType.file_array"
+    :beforeUpload="handleBeforeUpload"
     class="flex items-center flex-wrap">
-    <template v-if="showSelectFile">
+    <template v-if="shouldShowFileSelection">
       <div class="flex items-center h-5 px-1.5 ml-1 my-0.5 select-none rounded text-3 border-none text-text-content bg-gray-bg">
         <Icon icon="icon-xuanze" class="mr-1 text-text-sub-content" />
         {{ t('service.apiUpload.actions.selectFile') }}

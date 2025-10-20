@@ -37,9 +37,8 @@ public class VariableAddDto {
   @Length(max = MAX_PARAM_VALUE_LENGTH)
   private String value;
 
-  @NotNull
-  @Schema(description = "Is the password type value, default `false`", requiredMode = RequiredMode.REQUIRED)
-  private Boolean passwordValue;
+  @Schema(description = "Is the password type value, default `false`")
+  private Boolean passwordValue = false;
 
   @Valid
   @Schema(description = "Extraction rules configuration")

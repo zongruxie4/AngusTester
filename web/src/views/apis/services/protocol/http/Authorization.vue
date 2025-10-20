@@ -7,20 +7,28 @@ import { encode } from '@/utils/secure';
 import { http, utils, AuthClientIn } from '@xcan-angus/infra';
 import axios from 'axios';
 import { services } from '@/api/tester';
-import { API_EXTENSION_KEY, QueryAndHeaderInOption } from '@/utils/apis';
+import { HTTP_HEADERS, CONTENT_TYPE_KEYS } from '@/utils/constant';
+import { QueryAndHeaderInOption } from '@/utils/apis';
+import { API_EXTENSION_KEYS, OAuth2GrantType } from '@/types/openapi-types';
 
 import {
-  AuthItem, authLabels, authTypeOptions as _authTypeOptions,
-  encryptionTypeOpt, flowAuthKeys, flowAuthType, getApiKeyData,
-  getAuthItem, getShowApiKeyData
+  AuthenticationItem, oauth2FieldLabels, authenticationTypeOptions as _authenticationTypeOptions,
+  encryptionTypeOptions, oauth2FlowFieldMappings, oauth2FlowTypeOptions, extractApiKeyAuthenticationData,
+  createDefaultAuthItem, extractDisplayApiKeyData
 } from './Authorization';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
+/**
+ * Component props interface
+ * <p>
+ * Defines the structure for component props including authentication configuration and WebSocket connection
+ * </p>
+ */
 interface Props {
-  defaultValue:AuthItem,
+  defaultValue: AuthenticationItem;
   auth?: boolean;
-  ws?: WebSocket
+  ws?: WebSocket;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -29,243 +37,384 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+/**
+ * Component emits interface
+ * <p>
+ * Defines the events that this component can emit
+ * </p>
+ */
 const emits = defineEmits<{
-  (e: 'change', value:AuthItem): void,
-  (e: 'update:auth', value:boolean):void
+  (e: 'change', value: AuthenticationItem): void;
+  (e: 'update:auth', value: boolean): void;
 }>();
 
-const { valueKey, securityApiKeyPrefix, oAuth2Key, oAuth2Token, newTokenKey, basicAuthKey } = API_EXTENSION_KEY;
+const { valueKey, securityApiKeyPrefix, oAuth2Key, oAuth2Token, newTokenKey, basicAuthKey } = API_EXTENSION_KEYS;
 
+/**
+ * Injected API base information
+ */
 const apiBaseInfo = inject('apiBaseInfo', ref());
-const authTypeOptions = computed(() => {
-  return _authTypeOptions.filter(i => apiBaseInfo.value?.serviceId || i.value !== 'extends');
+
+/**
+ * Computed authentication type options
+ * <p>
+ * Filters available authentication types based on service configuration
+ * </p>
+ */
+const authenticationTypeOptions = computed(() => {
+  return _authenticationTypeOptions.filter(option =>
+    apiBaseInfo.value?.serviceId || option.value !== 'extends'
+  );
 });
 
-let tokenUuid = '';
-const type = ref<string | null>(null);
-const authType = ref('authorizationCode');
-const scheme = ref(); // http 类型下 值
-const apiKeyContentList = ref<{name: string, in: string, [valueKey]: string}[]>([getAuthItem()]); // apikey 类型下 值
-const extendsSecurityOpt = ref<{id: string; type: string; model: string; key: string;}[]>([]);
-const oauthKey = ref(1);
-let scopesObj = {};
+let tokenRequestId = '';
+let oauth2ScopesObject = {};
 
-const tokenJson = ref({});
-const token = ref();
+const currentAuthenticationType = ref<string | null>(null);
+const oauth2FlowType = ref('authorizationCode');
+const httpAuthenticationScheme = ref();
+const apiKeyContentList = ref<{name: string, in: string, [valueKey]: string}[]>([createDefaultAuthItem()]);
+const extendedSecurityOptions = ref<{id: string; type: string; model: string; key: string;}[]>([]);
+const oauth2ConfigurationKey = ref(1);
+const tokenResponseJson = ref({});
+const accessToken = ref();
+const validate = ref(false);
+const models = {};
 
-const flowAuthLabel = computed(() => {
-  return authLabels.filter(i => {
-    return flowAuthKeys[authType.value].includes(i.valueKey);
+/**
+ * Legacy variable aliases for compatibility
+ */
+const type = currentAuthenticationType;
+const oauthKey = oauth2ConfigurationKey;
+const authType = oauth2FlowType;
+const scheme = httpAuthenticationScheme;
+const tokenJson = tokenResponseJson;
+const token = accessToken;
+const tokenUuid = tokenRequestId;
+
+/**
+ * Computed OAuth2 flow field labels
+ * <p>
+ * Filters OAuth2 field labels based on the current flow type
+ * </p>
+ */
+const oauth2FlowFieldLabels = computed(() => {
+  return oauth2FieldLabels.filter(field => {
+    return oauth2FlowFieldMappings[oauth2FlowType.value].includes(field.valueKey);
   });
 });
 
-const loadServiceSecurity = async () => {
-  const [error, resp] = await services.getCompData(apiBaseInfo.value.serviceId, ['securitySchemes'], [], false);
+/**
+ * Loads service security configuration
+ * <p>
+ * Fetches extended security options for the current service
+ * </p>
+ */
+const loadServiceSecurityConfiguration = async () => {
+  const [error, response] = await services.getCompData(
+    apiBaseInfo.value.serviceId,
+    ['securitySchemes'],
+    [],
+    false
+  );
   if (error) {
     return;
   }
-  extendsSecurityOpt.value = resp.data || [];
+  extendedSecurityOptions.value = response.data || [];
 };
 
-const httpAuthData = reactive({
+/**
+ * HTTP authentication data
+ */
+const httpAuthenticationData = reactive({
   name: '',
   value: ''
 });
 
-const extendsId = ref();
+/**
+ * Selected extended security ID
+ */
+const selectedExtendedSecurityId = ref();
 
-// 切换认证类型
-const handleChangeType = () => {
-  httpAuthData.name = '';
-  httpAuthData.value = '';
-  scheme.value = '';
-  extendsId.value = '';
-  authType.value = 'authorizationCode';
-  emits('change', { type: type.value });
-  if (type.value) {
+/**
+ * Handles authentication type change
+ * <p>
+ * Resets authentication data when the type changes and emits appropriate events
+ * </p>
+ */
+const handleAuthenticationTypeChange = () => {
+  httpAuthenticationData.name = '';
+  httpAuthenticationData.value = '';
+  httpAuthenticationScheme.value = '';
+  selectedExtendedSecurityId.value = '';
+  oauth2FlowType.value = 'authorizationCode';
+  emits('change', { type: currentAuthenticationType.value } as AuthenticationItem);
+  if (currentAuthenticationType.value) {
     emits('update:auth', true);
   } else {
     emits('update:auth', false);
   }
 };
 
-// http 方案
-const handleBlur = (e:ChangeEvent, key:'name'|'value'):void => {
-  const value = e.target.value || '';
-  switch (type.value) {
+/**
+ * Handles HTTP authentication field blur event
+ * <p>
+ * Processes HTTP authentication data based on the authentication type
+ * </p>
+ * @param event - Change event from input field
+ * @param fieldKey - Field key ('name' or 'value')
+ */
+const handleHttpAuthenticationFieldBlur = (event: ChangeEvent, fieldKey: 'name' | 'value'): void => {
+  const fieldValue = event.target.value || '';
+  switch (currentAuthenticationType.value) {
     case 'basic':
-      httpAuthData[key] = value;
-      // scheme.value = 'basic ' + encode(httpAuthData?.name, httpAuthData?.value);
-      emits('change', { type: 'http', [basicAuthKey]: httpAuthData });
+      httpAuthenticationData[fieldKey] = fieldValue;
+      emits('change', {
+        type: 'http',
+        [basicAuthKey]: httpAuthenticationData
+      });
       break;
     case 'bearer':
-      httpAuthData.value = value.startsWith('Bearer ') ? value : 'Bearer ' + value;
-      scheme.value = httpAuthData.value;
-      emits('change', { type: 'http', [valueKey]: scheme.value, scheme: type.value });
+      httpAuthenticationData.value = fieldValue.startsWith('Bearer ') ? fieldValue : 'Bearer ' + fieldValue;
+      httpAuthenticationScheme.value = httpAuthenticationData.value;
+      emits('change', {
+        type: 'http',
+        [valueKey]: httpAuthenticationScheme.value,
+        scheme: currentAuthenticationType.value
+      });
       break;
   }
 };
 
-const initHttpBasicData = (value: {username: string; password: string}) => {
-  const { username = '', password = '' } = value || {};
-  httpAuthData.name = username || '';
-  httpAuthData.name = password || '';
+/**
+ * Initializes HTTP basic authentication data
+ * <p>
+ * Sets up username and password for basic authentication
+ * </p>
+ * @param credentials - Object containing username and password
+ */
+const initializeHttpBasicAuthenticationData = (credentials: {username: string; password: string}) => {
+  const { username = '', password = '' } = credentials || {};
+  httpAuthenticationData.name = username || '';
+  httpAuthenticationData.value = password || '';
 };
 
-// 继承方案
-const handleSelectSecurity = (value) => {
-  // const data = JSON.parse(option.model);
-  emits('change', { $ref: value });
+/**
+ * Handles extended security selection
+ * <p>
+ * Emits change event when extended security option is selected
+ * </p>
+ * @param securityId - Selected security ID
+ */
+const handleExtendedSecuritySelection = (securityId: string) => {
+  emits('change', { $ref: securityId } as any);
 };
 
-// apikey 方案
-const initApiKeyContentList = (newValue) => {
-  // const { name, in } = newValue;
-  const first = { name: newValue.name, in: newValue.in || 'header', [valueKey]: newValue[valueKey] };
-  const others = newValue[securityApiKeyPrefix] || [];
-  apiKeyContentList.value = [first, ...others];
+/**
+ * Initializes API key content list
+ * <p>
+ * Sets up the API key content list with primary and additional keys
+ * </p>
+ * @param apiKeyData - API key data object
+ */
+const initializeApiKeyContentList = (apiKeyData: any) => {
+  const primaryKey = {
+    name: apiKeyData.name,
+    in: apiKeyData.in || 'header',
+    [valueKey]: apiKeyData[valueKey]
+  };
+  const additionalKeys = apiKeyData[securityApiKeyPrefix] || [];
+  apiKeyContentList.value = [primaryKey, ...additionalKeys];
 };
 
-const handleAddApiKey = () => {
-  apiKeyContentList.value.push(getAuthItem());
+/**
+ * Adds a new API key to the list
+ * <p>
+ * Appends a new default API key item to the content list
+ * </p>
+ */
+const addApiKeyItem = () => {
+  apiKeyContentList.value.push(createDefaultAuthItem());
 };
-const handleDelApiKey = (index) => {
+
+/**
+ * Removes an API key from the list
+ * <p>
+ * Removes the API key at the specified index
+ * </p>
+ * @param index - Index of the API key to remove
+ */
+const removeApiKeyItem = (index: number) => {
   apiKeyContentList.value.splice(index, 1);
 };
 
-const changeApiKey = () => {
-  const { name } = apiKeyContentList.value.filter(i => i.name)[0] || {};
-  const lists = apiKeyContentList.value.slice(1);
-  const data = {
+/**
+ * Handles API key configuration change
+ * <p>
+ * Processes API key data and emits change event with updated configuration
+ * </p>
+ */
+const handleApiKeyConfigurationChange = () => {
+  const primaryKey = apiKeyContentList.value.filter(item => item.name)[0] || {};
+  const additionalKeys = apiKeyContentList.value.slice(1);
+  const apiKeyConfiguration = {
     type: 'apiKey',
-    name,
+    name: primaryKey.name,
     in: apiKeyContentList.value[0].in,
     [valueKey]: apiKeyContentList.value[0][valueKey],
-    [securityApiKeyPrefix]: lists.length ? lists : undefined
-    // [xcAuthMethod]: type.value
+    [securityApiKeyPrefix]: additionalKeys.length ? additionalKeys : undefined
   };
-  emits('change', data);
+  emits('change', apiKeyConfiguration as any);
 };
 
-// oauth2 方案
-const oauthData = reactive({
+/**
+ * OAuth2 authentication data
+ * <p>
+ * Reactive object containing OAuth2 configuration parameters
+ * </p>
+ */
+const oauth2AuthenticationData = reactive({
   authorizationUrl: undefined,
   tokenUrl: undefined,
   refreshUrl: undefined,
   scopes: [],
-  'x-xc-oauth2-clientId': undefined,
-  'x-xc-oauth2-clientSecret': undefined,
-  'x-xc-oauth2-callbackUrl': undefined,
-  'x-xc-oauth2-username': undefined,
-  'x-xc-oauth2-password': undefined,
-  'x-xc-oauth2-clientAuthType': AuthClientIn.REQUEST_BODY
+  [API_EXTENSION_KEYS.oAuth2ClientIdKey]: undefined,
+  [API_EXTENSION_KEYS.oAuth2ClientSecretKey]: undefined,
+  [API_EXTENSION_KEYS.oAuth2CallbackUrlKey]: undefined,
+  [API_EXTENSION_KEYS.oAuth2UsernameKey]: undefined,
+  [API_EXTENSION_KEYS.oAuth2PasswordKey]: undefined,
+  [API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey]: AuthClientIn.REQUEST_BODY
 });
 
-const packageOauthData = () => {
-  // if (oauthKey.value === 2) {
-  const flowData = {
-    'x-xc-oauth2-clientAuthType': oauthData['x-xc-oauth2-clientAuthType'],
-    'x-xc-oauth2-token': token.value
+/**
+ * Packages OAuth2 authentication data
+ * <p>
+ * Prepares OAuth2 configuration data for API requests
+ * </p>
+ * @returns Packaged OAuth2 authentication data
+ */
+const packageOAuth2AuthenticationData = () => {
+  const oauth2FlowData = {
+    [API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey]: oauth2AuthenticationData[API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey],
+    [API_EXTENSION_KEYS.oAuth2Token]: accessToken.value
   };
-  flowAuthKeys[authType.value].forEach(i => {
-    if (i === 'scopes') {
-      const scopes = {};
-      oauthData[i].forEach(key => {
-        scopes[key] = scopesObj[key] || '';
+  oauth2FlowFieldMappings[oauth2FlowType.value].forEach(fieldKey => {
+    if (fieldKey === 'scopes') {
+      const scopesObject = {};
+      oauth2AuthenticationData[fieldKey].forEach(scopeKey => {
+        scopesObject[scopeKey] = oauth2ScopesObject[scopeKey] || '';
       });
-      flowData[i] = scopes;
+      oauth2FlowData[fieldKey] = scopesObject;
     } else {
-      flowData[i] = oauthData[i];
+      oauth2FlowData[fieldKey] = oauth2AuthenticationData[fieldKey];
     }
   });
-  const authKey = authType.value === 'authorizationCodePKCE' ? 'authorizationCode' : authType.value;
+  const authenticationKey = oauth2FlowType.value === 'authorizationCodePKCE' ? 'authorizationCode' : oauth2FlowType.value;
   return {
     type: 'oauth2',
     flows: {
       ...props.defaultValue.flows,
-      [authKey]: flowData
+      [authenticationKey]: oauth2FlowData
     },
-    [oAuth2Key]: authType.value,
-    [oAuth2Token]: scheme.value,
-    [newTokenKey]: oauthKey.value === 2
+    [oAuth2Key]: oauth2FlowType.value,
+    [oAuth2Token]: httpAuthenticationScheme.value,
+    [newTokenKey]: oauth2ConfigurationKey.value === 2
   };
 };
 
-const onOauthChange = () => {
-  const data = packageOauthData();
-  emits('change', data);
+/**
+ * Handles OAuth2 configuration change
+ * <p>
+ * Emits change event when OAuth2 configuration is updated
+ * </p>
+ */
+const handleOAuth2ConfigurationChange = () => {
+  const oauth2Data = packageOAuth2AuthenticationData();
+  emits('change', oauth2Data as any);
 };
 
-const onOauthFlowTypeChange = (authFlow) => {
-  const data = props.defaultValue.flows?.[authFlow] || {};
-  tokenJson.value = {};
-  token.value = undefined;
+/**
+ * Handles OAuth2 flow type change
+ * <p>
+ * Updates OAuth2 configuration when flow type changes
+ * </p>
+ * @param authFlow - Authentication flow type
+ */
+const handleOAuth2FlowTypeChange = (authFlow: string) => {
+  const flowData = props.defaultValue.flows?.[authFlow] || {};
+  tokenResponseJson.value = {};
+  accessToken.value = undefined;
   validate.value = false;
-  oauthData['x-xc-oauth2-clientAuthType'] = data?.['x-xc-oauth2-clientAuthType'] || AuthClientIn.REQUEST_BODY;
-  flowAuthKeys[authType.value].forEach(i => {
-    if (i === 'scopes') {
-      scopesObj = data[i] || {};
-      oauthData[i] = Object.keys(scopesObj);
+  oauth2AuthenticationData[API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey] = flowData?.[API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey] || AuthClientIn.REQUEST_BODY;
+  oauth2FlowFieldMappings[oauth2FlowType.value].forEach(fieldKey => {
+    if (fieldKey === 'scopes') {
+      oauth2ScopesObject = flowData[fieldKey] || {};
+      oauth2AuthenticationData[fieldKey] = Object.keys(oauth2ScopesObject);
     } else {
-      oauthData[i] = data[i];
+      oauth2AuthenticationData[fieldKey] = flowData[fieldKey];
     }
   });
-  onOauthChange();
+  handleOAuth2ConfigurationChange();
 };
 
-// 获取令牌 密码模式
-const fetchOauth2Token = async () => {
-  const params: Record<string, string> = {
-    grant_type: authType.value
+/**
+ * Fetches OAuth2 access token
+ * <p>
+ * Retrieves OAuth2 access token using the configured flow type
+ * </p>
+ */
+const fetchOAuth2AccessToken = async () => {
+  const requestParams: Record<string, string> = {
+    grant_type: oauth2FlowType.value
   };
-  flowAuthKeys[authType.value].forEach(key => {
-    if (key === 'tokenUrl' || key === 'x-xc-oauth2-clientAuthType' || key === 'x-xc-oauth2-clientId' || key === 'x-xc-oauth2-clientSecret') {
+  oauth2FlowFieldMappings[oauth2FlowType.value].forEach(fieldKey => {
+    if (fieldKey === 'tokenUrl' || fieldKey === API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey || fieldKey === API_EXTENSION_KEYS.oAuth2ClientIdKey || fieldKey === API_EXTENSION_KEYS.oAuth2ClientSecretKey) {
       return;
     }
-    if (key === 'scopes') {
-      params.scope = oauthData[key].join(' ');
+    if (fieldKey === 'scopes') {
+      requestParams.scope = oauth2AuthenticationData[fieldKey].join(' ');
     }
-    if (key === 'x-xc-oauth2-username') {
-      params.username = oauthData[key];
+    if (fieldKey === API_EXTENSION_KEYS.oAuth2UsernameKey) {
+      requestParams.username = oauth2AuthenticationData[fieldKey];
     }
-    if (key === 'x-xc-oauth2-password') {
-      params.password = oauthData[key];
+    if (fieldKey === API_EXTENSION_KEYS.oAuth2PasswordKey) {
+      requestParams.password = oauth2AuthenticationData[fieldKey];
     }
-    if (key === 'refreshUrl') {
-      params.refresh_url = oauthData[key];
+    if (fieldKey === 'refreshUrl') {
+      requestParams.refresh_url = oauth2AuthenticationData[fieldKey];
     }
   });
-  if (authType.value !== 'password' && authType.value !== 'clientCredentials') {
+  if (oauth2FlowType.value !== 'password' && oauth2FlowType.value !== 'clientCredentials') {
     try {
       // eslint-disable-next-line no-new
-      new URL(oauthData.tokenUrl);
-      const query = http.getURLSearchParams(params, true);
-      window.open(oauthData.tokenUrl + '?' + query);
+      new URL(oauth2AuthenticationData.tokenUrl || '');
+      const queryString = http.getURLSearchParams(requestParams, true);
+      window.open(oauth2AuthenticationData.tokenUrl + '?' + queryString);
     } catch {
-      notification.error('Authorization failed Couldn’t complete authentication.');
+      notification.error('Authorization failed Couldn\'t complete authentication.');
     }
     return;
   }
 
-  if (authType.value === 'clientCredentials' || authType.value === 'password') {
-    const validateRes = validateOauthData();
-    if (!validateRes) {
+  if (oauth2FlowType.value === 'clientCredentials' || oauth2FlowType.value === 'password') {
+    const validationResult = validateOAuth2Data();
+    if (!validationResult) {
       return;
     }
     try {
-      let url:any = new URL(oauthData.tokenUrl || '');
-      for (const key in params) {
-        if (params[key]) {
-          if (key === 'grant_type' && params[key] === 'clientCredentials') {
-            url.searchParams.append(key, 'client_credentials');
+      const tokenUrl: any = new URL(oauth2AuthenticationData.tokenUrl || '');
+      for (const paramKey in requestParams) {
+        if (requestParams[paramKey]) {
+          if (paramKey === 'grant_type' && requestParams[paramKey] === 'clientCredentials') {
+            tokenUrl.searchParams.append(paramKey, OAuth2GrantType.CLIENT_CREDENTIALS);
           } else {
-            url.searchParams.append(key, params[key]);
+            tokenUrl.searchParams.append(paramKey, requestParams[paramKey]);
           }
         }
       }
-      let requestBody;
-      if (oauthData['x-xc-oauth2-clientAuthType'] === AuthClientIn.REQUEST_BODY) {
-        requestBody = {
+      let requestBodyData;
+      if (oauth2AuthenticationData[API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey] === AuthClientIn.REQUEST_BODY) {
+        requestBodyData = {
           content: {
             'application/x-www-form-urlencoded': {
               schema: {
@@ -273,99 +422,101 @@ const fetchOauth2Token = async () => {
                 properties: {
                   client_id: {
                     type: 'string',
-                    [valueKey]: oauthData['x-xc-oauth2-clientId']
+                    [valueKey]: oauth2AuthenticationData[API_EXTENSION_KEYS.oAuth2ClientIdKey]
                   },
                   client_secret: {
                     type: 'string',
-                    [valueKey]: oauthData['x-xc-oauth2-clientId']
+                    [valueKey]: oauth2AuthenticationData[API_EXTENSION_KEYS.oAuth2ClientSecretKey]
                   }
                 },
                 [valueKey]: {
-                  client_id: oauthData['x-xc-oauth2-clientId'],
-                  client_secret: oauthData['x-xc-oauth2-clientSecret']
+                  client_id: oauth2AuthenticationData[API_EXTENSION_KEYS.oAuth2ClientIdKey],
+                  client_secret: oauth2AuthenticationData[API_EXTENSION_KEYS.oAuth2ClientSecretKey]
                 }
               }
             }
           }
         };
       }
-      if (oauthData['x-xc-oauth2-clientAuthType'] === AuthClientIn.QUERY_PARAMETER) {
-        url.searchParams.append('client_id', oauthData['x-xc-oauth2-clientId']);
-        url.searchParams.append('client_secret', oauthData['x-xc-oauth2-clientSecret']);
+      if (oauth2AuthenticationData[API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey] === AuthClientIn.QUERY_PARAMETER) {
+        tokenUrl.searchParams.append('client_id', oauth2AuthenticationData[API_EXTENSION_KEYS.oAuth2ClientIdKey]);
+        tokenUrl.searchParams.append('client_secret', oauth2AuthenticationData[API_EXTENSION_KEYS.oAuth2ClientSecretKey]);
       }
-      const header:any[] = [];
-      if (oauthData['x-xc-oauth2-clientAuthType'] === AuthClientIn.BASIC_AUTH_HEADER) {
-        header.push({
-          name: 'Authorization',
+      const requestHeaders: any[] = [];
+      if (oauth2AuthenticationData[API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey] === AuthClientIn.BASIC_AUTH_HEADER) {
+        requestHeaders.push({
+          name: HTTP_HEADERS.AUTHORIZATION,
           in: 'header',
           schema: { type: 'string' },
-          [valueKey]: 'basic ' + encode(oauthData['x-xc-oauth2-clientId'], oauthData['x-xc-oauth2-clientSecret'])
+          [valueKey]: 'basic ' + encode(
+            oauth2AuthenticationData[API_EXTENSION_KEYS.oAuth2ClientIdKey],
+            oauth2AuthenticationData[API_EXTENSION_KEYS.oAuth2ClientSecretKey]
+          )
         });
       }
-      if (requestBody) {
-        header.push({
-          name: 'Content-Type',
+      if (requestBodyData) {
+        requestHeaders.push({
+          name: HTTP_HEADERS.CONTENT_TYPE,
           in: 'header',
-          schema:
-            { type: 'string' },
-          [valueKey]: 'application/x-www-form-urlencoded'
+          schema: { type: 'string' },
+          [valueKey]: CONTENT_TYPE_KEYS.FORM_URLENCODED
         });
       }
-      url = url.toString();
-      tokenUuid = utils.uuid('anthencation-token');
+      const tokenUrlString = tokenUrl.toString();
+      tokenRequestId = utils.uuid('authentication-token');
       if (props.ws) {
         if (props.ws.readyState !== 1) {
           notification.error(t('service.apiAuthorization.messages.proxyNotConnected'));
           return;
         }
-        const params = {
+        const websocketParams = {
           method: 'post',
-          server: { url: url },
+          server: { url: tokenUrlString },
           endpoint: '',
-          requestId: tokenUuid,
+          requestId: tokenRequestId,
           messageType: 'HttpRequestProxy',
-          requestBody,
-          parameters: header
+          requestBody: requestBodyData,
+          parameters: requestHeaders
         };
-        if (!requestBody) {
-          delete params.requestBody;
+        if (!requestBodyData) {
+          delete websocketParams.requestBody;
         }
-        props.ws.send(JSON.stringify(params));
+        props.ws.send(JSON.stringify(websocketParams));
         return;
       }
-      const headers: Record<string, string> = {};
-      if (requestBody) {
-        headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      const axiosHeaders: Record<string, string> = {};
+      if (requestBodyData) {
+        axiosHeaders[HTTP_HEADERS.CONTENT_TYPE] = CONTENT_TYPE_KEYS.FORM_URLENCODED;
       }
-      tokenJson.value = {};
-      token.value = undefined;
-      if (header.length) {
-        headers.Authorization = header[0][valueKey];
+      tokenResponseJson.value = {};
+      accessToken.value = undefined;
+      if (requestHeaders.length) {
+        axiosHeaders.Authorization = requestHeaders[0][valueKey];
       }
-      axios.post(url, requestBody?.['application/x-www-form-urlencoded'], {
-        headers
-      }).then(resp => {
-        tokenJson.value = resp.data || {};
-        const result = resp.data;
-        for (const key in result) {
+      axios.post(tokenUrlString, requestBodyData?.[CONTENT_TYPE_KEYS.FORM_URLENCODED], {
+        headers: axiosHeaders
+      }).then(response => {
+        tokenResponseJson.value = response.data || {};
+        const responseData = response.data;
+        for (const key in responseData) {
           if (key === 'access_token') {
-            token.value = result.access_token;
+            accessToken.value = responseData.access_token;
           }
-          if (Object.prototype.toString.call(result[key]) === '[object Object]') {
-            for (const subKey in result[key]) {
+          if (Object.prototype.toString.call(responseData[key]) === '[object Object]') {
+            for (const subKey in responseData[key]) {
               if (subKey === 'access_token') {
-                token.value = result[key].access_token;
+                accessToken.value = responseData[key].access_token;
               }
             }
           }
         }
-        onOauthChange();
+        handleOAuth2ConfigurationChange();
       }).catch(error => {
-        onOauthChange();
+        handleOAuth2ConfigurationChange();
         notification.warning(error.message);
       });
     } catch {
-      notification.error('Authorization failed Couldn’t complete authentication.');
+      notification.error('Authorization failed Couldn\'t complete authentication.');
     }
   }
 };
@@ -375,21 +526,24 @@ const fetchOauthToken = async (oauthData) => {
   if (!oauthData[newTokenKey] && oauthData[oAuth2Token]) {
     return [{ access_token: oauthData[oAuth2Token] }];
   }
-  const authFlowType = oauthData['x-xc-oauth2-authFlow'];
+  const authFlowType = oauthData[API_EXTENSION_KEYS.oAuth2Key];
   const params: Record<string, string> = {
     grant_type: authFlowType
   };
   flowAuthKeys[authFlowType].forEach(key => {
-    if (key === 'tokenUrl' || key === 'x-xc-oauth2-clientAuthType' || key === 'x-xc-oauth2-clientId' || key === 'x-xc-oauth2-clientSecret') {
+    if (key === 'tokenUrl' ||
+      key === API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey ||
+      key === API_EXTENSION_KEYS.oAuth2ClientIdKey ||
+      key === API_EXTENSION_KEYS.oAuth2ClientSecretKey) {
       return;
     }
     if (key === 'scopes') {
       params.scope = oauthData[key].join(' ');
     }
-    if (key === 'x-xc-oauth2-username') {
+    if (key === API_EXTENSION_KEYS.oAuth2UsernameKey) {
       params.username = oauthData[key];
     }
-    if (key === 'x-xc-oauth2-password') {
+    if (key === API_EXTENSION_KEYS.oAuth2PasswordKey) {
       params.password = oauthData[key];
     }
     if (key === 'refreshUrl') {
@@ -402,14 +556,14 @@ const fetchOauthToken = async (oauthData) => {
       for (const key in params) {
         if (params[key]) {
           if (key === 'grant_type' && params[key] === 'clientCredentials') {
-            url.searchParams.append(key, 'client_credentials');
+            url.searchParams.append(key, OAuth2GrantType.CLIENT_CREDENTIALS);
           } else {
             url.searchParams.append(key, params[key]);
           }
         }
       }
       let requestBody;
-      if (oauthData['x-xc-oauth2-clientAuthType'] === AuthClientIn.REQUEST_BODY) {
+      if (oauthData[API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey] === AuthClientIn.REQUEST_BODY) {
         requestBody = {
           content: {
             'application/x-www-form-urlencoded': {
@@ -418,54 +572,57 @@ const fetchOauthToken = async (oauthData) => {
                 properties: {
                   client_id: {
                     type: 'string',
-                    [valueKey]: oauthData['x-xc-oauth2-clientId']
+                    [valueKey]: oauthData[API_EXTENSION_KEYS.oAuth2ClientIdKey]
                   },
                   client_secret: {
                     type: 'string',
-                    [valueKey]: oauthData['x-xc-oauth2-clientId']
+                    [valueKey]: oauthData[API_EXTENSION_KEYS.oAuth2ClientSecretKey]
                   }
                 },
                 [valueKey]: {
-                  client_id: oauthData['x-xc-oauth2-clientId'],
-                  client_secret: oauthData['x-xc-oauth2-clientSecret']
+                  client_id: oauthData[API_EXTENSION_KEYS.oAuth2ClientIdKey],
+                  client_secret: oauthData[API_EXTENSION_KEYS.oAuth2ClientSecretKey]
                 }
               }
             }
           }
         };
       }
-      if (oauthData['x-xc-oauth2-clientAuthType'] === AuthClientIn.QUERY_PARAMETER) {
-        url.searchParams.append('client_id', oauthData['x-xc-oauth2-clientId']);
-        url.searchParams.append('client_secret', oauthData['x-xc-oauth2-clientSecret']);
+      if (oauthData[API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey] === AuthClientIn.QUERY_PARAMETER) {
+        url.searchParams.append('client_id', oauthData[API_EXTENSION_KEYS.oAuth2ClientIdKey]);
+        url.searchParams.append('client_secret', oauthData[API_EXTENSION_KEYS.oAuth2ClientSecretKey]);
       }
       const header:any[] = [];
-      if (oauthData['x-xc-oauth2-clientAuthType'] === AuthClientIn.BASIC_AUTH_HEADER) {
+      if (oauthData[API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey] === AuthClientIn.BASIC_AUTH_HEADER) {
         header.push({
-          name: 'Authorization',
+          name: HTTP_HEADERS.AUTHORIZATION,
           in: 'header',
           schema: { type: 'string' },
-          [valueKey]: 'basic ' + encode(oauthData['x-xc-oauth2-clientId'], oauthData['x-xc-oauth2-clientSecret'])
+          [valueKey]: 'basic ' + encode(
+            oauthData[API_EXTENSION_KEYS.oAuth2ClientIdKey],
+            oauthData[API_EXTENSION_KEYS.oAuth2ClientSecretKey]
+          )
         });
       }
       if (requestBody) {
         header.push({
-          name: 'Content-Type',
+          name: HTTP_HEADERS.CONTENT_TYPE,
           in: 'header',
           schema: { type: 'string' },
-          [valueKey]: 'application/x-www-form-urlencoded'
+          [valueKey]: CONTENT_TYPE_KEYS.FORM_URLENCODED
         });
       }
       url = url.toString();
       const headers: Record<string, string> = {};
       if (requestBody) {
-        headers['Content-Type'] = 'application/x-www-form-urlencoded';
+        headers[HTTP_HEADERS.CONTENT_TYPE] = CONTENT_TYPE_KEYS.FORM_URLENCODED;
       }
       tokenJson.value = {};
       token.value = undefined;
       if (header.length) {
         headers.Authorization = header[0][valueKey];
       }
-      const resp = await axios.post(url, requestBody?.['application/x-www-form-urlencoded'], {
+      const resp = await axios.post(url, requestBody?.[CONTENT_TYPE_KEYS.FORM_URLENCODED], {
         headers
       });
       tokenJson.value = resp.data || {};
@@ -495,17 +652,37 @@ const fetchOauthToken = async (oauthData) => {
   }
 };
 
-const validate = ref(false);
-const validateOauthData = (showValidate = true) => {
+/**
+ * Validates OAuth2 data
+ * <p>
+ * Checks if all required OAuth2 fields are properly filled
+ * </p>
+ * @param showValidate - Whether to show validation errors
+ * @returns True if validation passes, false otherwise
+ */
+const validateOAuth2Data = (showValidate = true) => {
   if (showValidate) {
     validate.value = true;
   }
-  const keys = flowAuthLabel.value.map(i => i.valueKey);
-  return keys.every(key => key === 'refreshUrl' || !!oauthData[key]);
+  const requiredKeys = oauth2FlowFieldLabels.value.map(field => field.valueKey);
+  return requiredKeys.every(key => key === 'refreshUrl' || !!oauth2AuthenticationData[key]);
 };
 
-const models = {};
-// 获取继承的认证模型
+/**
+ * Legacy method aliases for compatibility
+ */
+const flowAuthKeys = oauth2FlowFieldMappings;
+const initHttpBasicData = initializeHttpBasicAuthenticationData;
+const initApiKeyContentList = initializeApiKeyContentList;
+const onOauthChange = handleOAuth2ConfigurationChange;
+const loadServiceSecurity = loadServiceSecurityConfiguration;
+const getApiKeyData = extractApiKeyAuthenticationData;
+const getShowApiKeyData = extractDisplayApiKeyData;
+
+const oauthData = oauth2AuthenticationData;
+const httpAuthData = httpAuthenticationData;
+const extendsId = selectedExtendedSecurityId;
+
 const getExtendModel = async (ref) => {
   if (!ref) {
     return [{}];
@@ -531,10 +708,90 @@ const getExtendModel = async (ref) => {
   }
 };
 
+const onResponse = (response) => {
+  if (response.requestId === tokenUuid) {
+    try {
+      if (response.response.status >= 200 && response.response.status < 300) {
+        const result = JSON.parse(response.response.rawContent);
+        tokenJson.value = result;
+        for (const key in result) {
+          if (key === 'access_token') {
+            token.value = result.access_token;
+          }
+          if (Object.prototype.toString.call(result[key]) === '[object Object]') {
+            for (const subKey in result[key]) {
+              if (subKey === 'access_token') {
+                token.value = result[key].access_token;
+              }
+            }
+          }
+        }
+      } else {
+        tokenJson.value = JSON.parse(response.response.rawContent);
+      }
+    } catch {
+      notification.warning(response.response.rawContent);
+    } finally {
+      onOauthChange();
+    }
+  }
+};
+
+const getModelResolve = () => {
+  return models;
+};
+
+const getAuthData = async (dataSource) => {
+  switch (type.value) {
+    case 'bearer':
+      return [{
+        Authorization: scheme.value
+      }];
+    case 'basic':
+      return [{
+        Authorization: { username: httpAuthData.name, password: httpAuthData.value }
+      }];
+    case 'apiKey':
+      return getApiKeyData(apiKeyContentList.value);
+    case 'extends':
+      return await getExtendModel(dataSource.$ref);
+    case 'oauth2':
+      if (dataSource[newTokenKey]) {
+        if (dataSource[oAuth2Key] === 'password') {
+          if (dataSource.flows.password?.[API_EXTENSION_KEYS.oAuth2Token]) {
+            return [{ access_token: dataSource.flows.password?.[API_EXTENSION_KEYS.oAuth2Token] }];
+          } else if (validateOAuth2Data(false)) {
+            await fetchOAuth2AccessToken();
+            const oauth2Data = packageOAuth2AuthenticationData();
+            return getAuthData({ ...oauth2Data, [newTokenKey]: false });
+          }
+        }
+        if (dataSource[oAuth2Key] === 'clientCredentials') {
+          if (dataSource.flows.clientCredentials?.[API_EXTENSION_KEYS.oAuth2Token]) {
+            return [{ access_token: dataSource.flows.clientCredentials?.[API_EXTENSION_KEYS.oAuth2Token] }];
+          } else if (validateOAuth2Data(false)) {
+            await fetchOAuth2AccessToken();
+            const oauth2Data = packageOAuth2AuthenticationData();
+            return getAuthData({ ...oauth2Data, [newTokenKey]: false });
+          }
+        }
+        return [{}];
+      } else {
+        if (dataSource[API_EXTENSION_KEYS.oAuth2Token]) {
+          return [{
+            access_token: dataSource[API_EXTENSION_KEYS.oAuth2Token]
+          }];
+        } else {
+          return [{}];
+        }
+      }
+  }
+};
+
 watch(() => props.defaultValue, (newValue) => {
-  if (newValue?.$ref) {
+  if ((newValue as any)?.$ref) {
     type.value = 'extends';
-    extendsId.value = newValue.$ref;
+    extendsId.value = (newValue as any).$ref;
     return;
   }
   if (newValue?.scheme) {
@@ -556,13 +813,13 @@ watch(() => props.defaultValue, (newValue) => {
     }
     authType.value = newValue[oAuth2Key] || 'authorizationCode';
     if (newValue.flows) {
-      oauthData['x-xc-oauth2-clientAuthType'] = newValue.flows[authType.value]?.['x-xc-oauth2-clientAuthType'];
+      oauthData[API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey] = newValue.flows[authType.value]?.[API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey];
       flowAuthKeys[authType.value].forEach(i => {
         if (i === 'scopes') {
-          scopesObj = newValue.flows[authType.value]?.[i] || {};
-          oauthData[i] = Object.keys(scopesObj);
+          oauth2ScopesObject = newValue.flows?.[authType.value]?.[i] || {};
+          oauthData[i] = Object.keys(oauth2ScopesObject);
         } else {
-          oauthData[i] = newValue.flows[authType.value]?.[i];
+          oauthData[i] = newValue.flows?.[authType.value]?.[i];
         }
       });
       scheme.value = newValue[oAuth2Token];
@@ -585,90 +842,6 @@ watch(() => apiBaseInfo.value?.serviceId, newValue => {
 }, {
   immediate: true
 });
-const getAuthData = async (dataSource) => {
-  switch (type.value) {
-    case 'bearer':
-      return [{
-        Authorization: scheme.value
-      }];
-    case 'basic':
-      return [{
-        Authorization: { username: httpAuthData.name, password: httpAuthData.value }
-      }];
-    // case 'http-bearer':
-    //   return [{
-    //     Authorization: scheme.value
-    //   }];
-    case 'apiKey':
-      return getApiKeyData(apiKeyContentList.value);
-    case 'extends':
-      return await getExtendModel(dataSource.$ref);
-    case 'oauth2':
-      if (dataSource[newTokenKey]) {
-        if (dataSource[oAuth2Key] === 'password') {
-          if (dataSource.flows.password?.['x-xc-oauth2-token']) {
-            return [{ access_token: dataSource.flows.password?.['x-xc-oauth2-token'] }];
-          } else if (validateOauthData(false)) {
-            await fetchOauth2Token();
-            const data = packageOauthData();
-            return getAuthData({ ...data, [newTokenKey]: false });
-          }
-        }
-        if (dataSource[oAuth2Key] === 'clientCredentials') {
-          if (dataSource.flows.clientCredentials?.['x-xc-oauth2-token']) {
-            return [{ access_token: dataSource.flows.clientCredentials?.['x-xc-oauth2-token'] }];
-          } else if (validateOauthData(false)) {
-            await fetchOauth2Token();
-            const data = packageOauthData();
-            return getAuthData({ ...data, [newTokenKey]: false });
-          }
-        }
-        return [{}];
-      } else {
-        if (dataSource[oAuth2Token]) {
-          return [{
-            access_token: dataSource[oAuth2Token]
-          }];
-        } else {
-          return [{}];
-        }
-      }
-  }
-};
-
-const onResponse = (response) => {
-  if (response.requestId === tokenUuid) {
-    try {
-      if (response.response.status >= 200 && response.response.status < 300) {
-        const result = JSON.parse(response.response.rawContent);
-        tokenJson.value = result;
-        for (const key in result) {
-          if (key === 'access_token') {
-            token.value = result.access_token;
-          }
-          if (Object.prototype.toString.call(result[key]) === '[object Object]') {
-            for (const subKey in result[key]) {
-              if (subKey === 'access_token') {
-                token.value = result[key].access_token;
-              }
-            }
-          }
-        }
-      } else {
-        const result = JSON.parse(response.response.rawContent);
-        tokenJson.value = result;
-      }
-    } catch {
-      notification.warning(response.response.rawContent);
-    } finally {
-      onOauthChange();
-    }
-  }
-};
-
-const getModelResolve = () => {
-  return models;
-};
 
 defineExpose({ getAuthData, onResponse, getModelResolve });
 </script>
@@ -678,26 +851,26 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
       <div class="flex items-center">
         <span class="mr-3">{{ t('service.apiAuthorization.title') }}</span>
         <RadioGroup
-          v-model:value="type"
-          :options="authTypeOptions"
-          @change="handleChangeType">
+          v-model:value="currentAuthenticationType"
+          :options="authenticationTypeOptions"
+          @change="handleAuthenticationTypeChange">
         </RadioGroup>
       </div>
     </div>
     <div class="min-h-50 p-2 text-3">
-      <template v-if="type === 'extends'">
+      <template v-if="currentAuthenticationType === 'extends'">
         <div class="flex items-center">
           <span class="mr-2">{{ t('service.apiAuthorization.extends.selectServiceSecurity') }}</span>
           <Select
-            v-model:value="extendsId"
+            v-model:value="selectedExtendedSecurityId"
             class="w-100"
-            :options="extendsSecurityOpt"
+            :options="extendedSecurityOptions"
             :fieldNames="{value: 'ref', label: 'key'}"
-            @change="handleSelectSecurity">
+            @change="(value) => handleExtendedSecuritySelection(value as string)">
           </Select>
         </div>
       </template>
-      <template v-if="type==='basic'">
+      <template v-if="currentAuthenticationType==='basic'">
         <div class="flex items-center flex-grow flex-shrink mb-3">
           <span class="text-3 leading-3 w-15 relative">
             <IconRequired class="absolute -left-2" />
@@ -705,125 +878,125 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
           </span>
           <Input
             :placeholder="t('service.apiAuthorization.basic.usernamePlaceholder')"
-            :value="httpAuthData?.name"
+            :value="httpAuthenticationData?.name"
             size="small"
             class="w-100"
             :allowClear="true"
-            @blur="handleBlur($event, 'name')" />
+            @blur="handleHttpAuthenticationFieldBlur($event, 'name')" />
         </div>
         <div class="flex items-center flex-grow flex-shrink">
           <span class="text-3 leading-3 w-15">{{ t('common.password') }}</span>
           <Input
             :placeholder="t('service.apiAuthorization.basic.passwordPlaceholder')"
-            :value="httpAuthData?.value"
+            :value="httpAuthenticationData?.value"
             :allowClear="true"
             type="password"
             class="w-100"
             size="small"
-            @blur="handleBlur($event, 'value')" />
+            @blur="handleHttpAuthenticationFieldBlur($event, 'value')" />
         </div>
       </template>
-      <template v-if="type==='bearer'">
+      <template v-if="currentAuthenticationType==='bearer'">
         <div class="flex items-center">
           <span class="w-15">{{ t('service.apiAuthorization.bearer.token') }}</span>
           <Input
             :placeholder="t('service.apiAuthorization.bearer.tokenPlaceholder')"
-            :value="httpAuthData?.name"
+            :value="httpAuthenticationData?.name"
             :allowClear="true"
             class="w-100"
             size="small"
-            @blur="handleBlur($event, 'name')" />
+            @blur="handleHttpAuthenticationFieldBlur($event, 'name')" />
         </div>
       </template>
-      <template v-if="type==='oauth2'">
+      <template v-if="currentAuthenticationType==='oauth2'">
         <div class="flex items-center mb-3">
           <span class="w-25">{{ t('service.apiAuthorization.oauth2.configMethod') }}</span>
           <RadioGroup
-            v-model:value="oauthKey"
+            v-model:value="oauth2ConfigurationKey"
             :options="[
               {value: 1, label: t('service.apiAuthorization.oauth2.existingToken')},
               {value: 2, label: t('service.apiAuthorization.oauth2.generateToken')}
             ]">
           </RadioGroup>
         </div>
-        <template v-if="oauthKey === 1">
+        <template v-if="oauth2ConfigurationKey === 1">
           <div class="text-3 space-y-3">
             <div class="flex items-center">
               <span class="w-25">{{ t('service.apiAuthorization.oauth2.accessToken') }}</span>
               <Input
-                v-model:value="scheme"
+                v-model:value="httpAuthenticationScheme"
                 :allowClear="true"
                 class="w-100"
-                @blur="onOauthChange" />
+                @blur="handleOAuth2ConfigurationChange" />
             </div>
           </div>
         </template>
-        <template v-if="oauthKey === 2">
+        <template v-if="oauth2ConfigurationKey === 2">
           <div class="text-3 space-y-3">
             <div class="flex items-center">
               <span class="w-25">{{ t('common.type') }}</span>
               <Select
-                v-model:value="authType"
+                v-model:value="oauth2FlowType"
                 class="w-100"
-                :options="flowAuthType"
-                @change="onOauthFlowTypeChange" />
+                :options="oauth2FlowTypeOptions"
+                @change="(value) => handleOAuth2FlowTypeChange(value as string)" />
             </div>
             <div
-              v-for="item in flowAuthLabel"
+              v-for="item in oauth2FlowFieldLabels"
               :key="item.valueKey"
-              :class="{'error': validate && !oauthData[item.valueKey] && !['scopes', 'refreshUrl'].includes(item.valueKey)}"
+              :class="{'error': validate && !oauth2AuthenticationData[item.valueKey] && !['scopes', 'refreshUrl'].includes(item.valueKey)}"
               class="flex items-center">
               <span class="w-25">
                 <IconRequired v-show="item.required" />{{ t(item.label) }}
               </span>
               <Select
                 v-if="item.valueKey === 'x-xc-oauth2-challengeMethod'"
-                v-model:value="oauthData[item.valueKey]"
+                v-model:value="oauth2AuthenticationData[item.valueKey]"
                 class="w-100"
                 :placeholder="item.maxLength ? t('service.apiAuthorization.messages.maxLengthTip', { maxLength: item.maxLength }) : ''"
-                :options="encryptionTypeOpt"
-                @change="onOauthChange" />
+                :options="encryptionTypeOptions"
+                @change="handleOAuth2ConfigurationChange" />
               <Select
                 v-else-if="item.valueKey==='scopes'"
-                v-model:value="oauthData[item.valueKey]"
+                v-model:value="oauth2AuthenticationData[item.valueKey]"
                 :placeholder="item.maxLength ? t('service.apiAuthorization.messages.maxLengthTip', { maxLength: item.maxLength }) : ''"
                 class="w-100"
                 mode="tags" />
               <Input
                 v-else
-                v-model:value="oauthData[item.valueKey]"
+                v-model:value="oauth2AuthenticationData[item.valueKey]"
                 class="w-100"
                 :allowClear="true"
                 :placeholder="item.maxLength ? t('service.apiAuthorization.messages.maxLengthTip', { maxLength: item.maxLength }) : ''"
                 :maxLength="item.maxLength"
-                @blur="onOauthChange" />
+                @blur="handleOAuth2ConfigurationChange" />
             </div>
             <div class="flex items-center">
               <span class="w-25">{{ t('service.apiAuthorization.oauth2.clientAuth') }}</span>
               <SelectEnum
-                v-model:value="oauthData['x-xc-oauth2-clientAuthType']"
+                v-model:value="oauth2AuthenticationData[API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey]"
                 class="w-100"
                 enumKey="AuthClientIn"
                 :lazy="false"
-                @change="onOauthChange" />
+                @change="handleOAuth2ConfigurationChange" />
             </div>
           </div>
           <div
-            v-for="key in Object.keys(tokenJson)"
+            v-for="key in Object.keys(tokenResponseJson)"
             :key="key"
             class="mt-2">
-            <span>{{ key }}</span>: <span>{{ tokenJson[key] }}</span>
+            <span>{{ key }}</span>: <span>{{ tokenResponseJson[key] }}</span>
           </div>
           <Button
             type="primary"
             size="small"
             class="ml-25 mt-3"
-            @click="fetchOauth2Token">
+            @click="fetchOAuth2AccessToken">
             {{ t('service.apiAuthorization.oauth2.getToken') }}
           </Button>
         </template>
       </template>
-      <template v-if="type==='apiKey'">
+      <template v-if="currentAuthenticationType==='apiKey'">
         <div
           v-for="(item, index) in apiKeyContentList"
           :key="index"
@@ -837,16 +1010,16 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
               :allowClear="true"
               dataType="mixin-en"
               includes="-_"
-              @blur="changeApiKey" />
+              @blur="handleApiKeyConfigurationChange" />
             <Icon
               v-show="apiKeyContentList.length > 1"
               icon="icon-qingchu"
               class="text-4 ml-1 cursor-pointer"
-              @click="handleDelApiKey(index)" />
+              @click="removeApiKeyItem(index)" />
             <Icon
               icon="icon-jia"
               class="text-4 ml-1 cursor-pointer"
-              @click="handleAddApiKey" />
+              @click="addApiKeyItem" />
           </div>
           <div class="flex items-center">
             <span class="w-15">{{ t('common.value') }}</span>
@@ -854,7 +1027,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
               v-model:value="item[valueKey]"
               :allowClear="true"
               class="w-100"
-              @blur="changeApiKey" />
+              @blur="handleApiKeyConfigurationChange" />
           </div>
           <div class="flex items-center">
             <span class="w-15">{{ t('common.position') }}</span>
@@ -862,7 +1035,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
               v-model:value="item.in"
               class="w-100"
               :options="QueryAndHeaderInOption"
-              @change="changeApiKey" />
+              @change="handleApiKeyConfigurationChange" />
           </div>
         </div>
       </template>

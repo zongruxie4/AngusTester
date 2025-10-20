@@ -1,22 +1,25 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, onMounted, ref, toRaw, watch } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, ref, toRaw, watch, Ref } from 'vue';
 import { AsyncComponent, Icon, Input, Spin, Tooltip, VuexHelper, Select } from '@xcan-angus/vue-ui';
 import { XCanDexie, utils, enumUtils, HttpMethod } from '@xcan-angus/infra';
 import { Button, Divider, Dropdown } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
-import { ApiPermission } from '@/enums/enums';
+import { ApiPermission, ApiServerSource } from '@/enums/enums';
 import { API_EXTENSION_KEY } from '@/utils/apis';
 import { ServerInfo } from '@/views/apis/server/types';
 import { getDefaultParams } from '@/views/apis/services/protocol/http/utils';
+import { API_URI_MAX_LENGTH } from '@/utils/constant';
 
-import ServerInput from './ServerInput.vue';
-
+const ServerInput = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/path/ServerInput.vue'));
 const AddCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/AddCaseModal.vue'));
 
-const { serverSourceKey, valueKey, idKey } = API_EXTENSION_KEY;
-
-const { useMutations, useState } = VuexHelper;
+// Define ChangeEvent type for better type safety
+interface ChangeEvent {
+  target: {
+    value: string;
+  };
+}
 
 interface Props {
   loading: boolean;
@@ -53,15 +56,18 @@ const emit = defineEmits<{
   (e: 'copyUrl'): void;
 }>();
 
-const globalConfigs = inject('globalConfigs', { VITE_URI_MAX_LENGTH: 800 });
+const { serverSourceKey, valueKey, idKey } = API_EXTENSION_KEY;
+
+const { useMutations, useState } = VuexHelper;
+
 const auths = inject('auths', ref<string[]>([]));
-const { stepVisible, stepKey, stepContent }: { stepVisible: boolean; stepKey: string; stepContent: { title: string; content: string; } } = useState(['stepVisible', 'stepKey', 'stepContent'], 'guideStore');
+const { stepVisible, stepKey, stepContent } = useState(['stepVisible', 'stepKey', 'stepContent'], 'guideStore') as { stepVisible: Ref<boolean>; stepKey: Ref<string>; stepContent: Ref<{ title: string; content: string; }> };
 const { updateGuideStep } = useMutations(['updateGuideStep'], 'guideStore');
 
 const dexie = new XCanDexie<{ id: string; data: any }>('serverUrl');
 
 const showServerListDrop = ref(false);
-const addCaseVisible = ref(false); // 生成用例弹窗visible
+const addCaseVisible = ref(false);
 const apiMethod = ref<HttpMethod>(HttpMethod.GET);
 
 const currentHttpServer = ref<ServerInfo>({ url: '', id: utils.uuid() });
@@ -71,13 +77,21 @@ const serversFromParent = ref<ServerInfo[]>([]);
 const serversFromMock = ref<ServerInfo[]>([]);
 const serversFromIndexDB = ref<ServerInfo[]>([]);
 
-const recognizeUri = (endpoint: string) => {
+/**
+ * Parse and recognize URI components from endpoint string
+ * <p>Extracts server URL, path, and query parameters from a complete endpoint URL</p>
+ * <p>Handles both valid URLs and simple endpoint strings</p>
+ * @param endpoint - The complete endpoint string to parse
+ */
+const parseEndpointUri = (endpoint: string) => {
   try {
+    // Try to parse as a complete URL
     const urlObj = new URL(endpoint);
     serverValue.value = urlObj.origin;
     currentHttpServer.value.url = serverValue.value;
     apiUri.value = urlObj.pathname;
 
+    // Extract query parameters if present
     const queryString = urlObj.search.split('?')[1];
     if (queryString) {
       const queryStrArr = queryString.split('&');
@@ -89,6 +103,7 @@ const recognizeUri = (endpoint: string) => {
       apiUri.value = urlObj.search.split('?')[0];
     }
   } catch {
+    // Fallback for simple endpoint strings (not full URLs)
     const queryString = endpoint.split('?')[1];
     if (queryString) {
       const queryStrArr = queryString.split('&');
@@ -100,25 +115,40 @@ const recognizeUri = (endpoint: string) => {
       apiUri.value = endpoint.split('?')[0];
     }
   } finally {
+    // Always emit updates regardless of parsing success
     emit('update:currentServer', currentHttpServer.value);
     emit('update:endpoint', apiUri.value || '');
   }
 };
 
-const handleSelectServer = (value: string, item: ServerInfo) => {
+/**
+ * Handle server selection from dropdown
+ * <p>Updates current server and emits change event</p>
+ * @param value - The selected server URL
+ * @param item - The complete server info object
+ */
+const handleServerSelection = (value: string, item: ServerInfo) => {
   currentHttpServer.value = JSON.parse(JSON.stringify(item));
   serverValue.value = value;
   emit('update:currentServer', item);
 };
 
-const httpMethodOpt = ref<{value: string; label: string}[]>([]);
-const loadHttpMethodOpt = () => {
+const httpMethodOptions = ref<{value: string; label: string}[]>([]);
+
+/**
+ * Load HTTP method options from enum
+ * <p>Converts HttpMethod enum to dropdown options format</p>
+ */
+const loadHttpMethodOptions = () => {
   const data = enumUtils.enumToMessages(HttpMethod);
-  httpMethodOpt.value = data.map(i => ({ value: i.value, label: i.message }));
+  httpMethodOptions.value = data.map(i => ({ value: i.value, label: i.message }));
 };
 
-// 前端数据库存储的 server
-const loadServerFromDB = async () => {
+/**
+ * Load server history from IndexedDB
+ * <p>Retrieves previously used servers for the current API</p>
+ */
+const loadServerHistoryFromDB = async () => {
   const [error, res] = await dexie.get(props.id || '000');
   if (error) {
     return;
@@ -132,62 +162,89 @@ const loadServerFromDB = async () => {
   });
 };
 
-// SERVER 来源枚举
+/**
+ * Load API server source enumeration
+ * <p>Placeholder for future server source enum loading</p>
+ */
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const loadApiServerSourceEnum = async () => { };
 
-const handleRequest = async () => {
+/**
+ * Handle API request execution
+ * <p>Manages server history and triggers request emission</p>
+ * <p>Automatically saves new servers to history (max 10 entries)</p>
+ */
+const executeApiRequest = async () => {
+  // Skip history management if server already exists or no current server
   if (!currentHttpServer.value || serversFromIndexDB.value.find(item => item.url === serverValue.value)) {
     emit('sendRequest');
     return;
   }
 
-  const _currentServer = JSON.parse(JSON.stringify(currentHttpServer.value));
-  delete _currentServer[idKey];
-  serversFromIndexDB.value.push({ ..._currentServer, url: serverValue.value });
+  // Add new server to history
+  const currentServerCopy = JSON.parse(JSON.stringify(currentHttpServer.value));
+  delete currentServerCopy[idKey];
+  serversFromIndexDB.value.push({ ...currentServerCopy, url: serverValue.value });
 
+  // Maintain history limit (keep last 10 entries)
   if (serversFromIndexDB.value.length > 10) {
     serversFromIndexDB.value = serversFromIndexDB.value.slice(-10);
   }
 
+  // Save updated history to IndexedDB
   const data = toRaw(serversFromIndexDB.value);
   await dexie.add({ id: props.id || '000', data });
   emit('sendRequest');
 };
 
-// apiUri 回车
-const handleEnter = (): void => {
+/**
+ * Handle Enter key press on API URI input
+ * <p>Triggers request execution if user has debug permission</p>
+ */
+const handleUriEnterKey = (): void => {
   if (!auths.value.includes(ApiPermission.DEBUG)) {
     return;
   }
 
   setTimeout(() => {
-    handleRequest();
+    executeApiRequest();
   });
 };
 
-// currentServer 回车
-const handleServerEnter = () => {
+/**
+ * Handle Enter key press on server input
+ * <p>Updates current server and triggers request if user has debug permission</p>
+ */
+const handleServerEnterKey = () => {
   emit('update:currentServer', currentHttpServer.value);
   if (!auths.value.includes(ApiPermission.DEBUG)) {
     return;
   }
 
   setTimeout(() => {
-    handleRequest();
+    executeApiRequest();
   });
 };
 
-const handleUriBlur = (e: ChangeEvent): void => {
+/**
+ * Handle URI input blur event
+ * <p>Parses endpoint when user finishes editing URI</p>
+ * @param e - The change event from input
+ */
+const handleUriInputBlur = (e: ChangeEvent): void => {
   const value = e.target.value;
   if (value === props.endpoint) {
     return;
   }
 
-  recognizeUri(value);
+  parseEndpointUri(value);
 };
 
-const handleServerBlur = () => {
+/**
+ * Handle server input blur event
+ * <p>Updates server URL and hides dropdown with delay</p>
+ */
+const handleServerInputBlur = () => {
   currentHttpServer.value.url = serverValue.value;
   emit('update:currentServer', currentHttpServer.value);
   setTimeout(() => {
@@ -195,30 +252,52 @@ const handleServerBlur = () => {
   }, 150);
 };
 
-const handleFocus = () => {
+/**
+ * Handle server input focus event
+ * <p>Shows server dropdown when user focuses on input</p>
+ */
+const handleServerInputFocus = () => {
   showServerListDrop.value = true;
 };
 
-const pathEnterHandler = (event: KeyboardEvent): void => {
+/**
+ * Handle Enter key press on path input
+ * <p>Blurs input when Enter is pressed to trigger validation</p>
+ * @param event - The keyboard event
+ */
+const handlePathEnterKey = (event: KeyboardEvent): void => {
   const code = event.code.toLowerCase();
   if (!['numpadenter', 'enter'].includes(code)) {
     return;
   }
 
-  event.target.blur();
+  (event.target as HTMLElement)?.blur();
 };
 
-const handleAbort = () => {
+/**
+ * Handle request abort
+ * <p>Emits abort event to cancel ongoing request</p>
+ */
+const handleRequestAbort = () => {
   emit('abort');
 };
 
-const copyUrl = async () => {
+/**
+ * Handle URL copy action
+ * <p>Emits copyUrl event to copy current URL to clipboard</p>
+ */
+const handleCopyUrl = async () => {
   emit('copyUrl');
 };
 
-const guideStep = (key: string) => {
+/**
+ * Handle guide step progression
+ * <p>Manages user guide flow and triggers appropriate actions</p>
+ * @param key - The guide step key
+ */
+const handleGuideStep = (key: string) => {
   if (key === 'debugApiThree') {
-    handleRequest();
+    executeApiRequest();
     const guideTimer = setTimeout(() => {
       updateGuideStep({ visible: true, key });
       clearTimeout(guideTimer);
@@ -231,17 +310,26 @@ const guideStep = (key: string) => {
   }
 };
 
-const openCaseModal = () => {
+/**
+ * Open add case modal
+ * <p>Shows the modal for generating test cases</p>
+ */
+const openAddCaseModal = () => {
   addCaseVisible.value = true;
 };
 
-const serverListOpt = computed(() => {
+/**
+ * Computed property for server list options
+ * <p>Combines servers from all sources: parent, history, and mock</p>
+ */
+const serverListOptions = computed(() => {
   return [...serversFromParent.value, ...serversFromIndexDB.value, ...serversFromMock.value];
 });
 
 onMounted(() => {
-  loadHttpMethodOpt();
-  loadServerFromDB();
+  // Initialize component data
+  loadHttpMethodOptions();
+  loadServerHistoryFromDB();
   loadApiServerSourceEnum();
 
   watch(() => props.endpoint, (newValue) => {
@@ -270,21 +358,23 @@ onMounted(() => {
   });
 
   watch(() => props.availableServers, (newValue) => {
-    serversFromParent.value = (newValue || []).filter(item => item[serverSourceKey] === 'PARENT_SERVERS').map(item => {
-      return {
-        ...item,
-        ...item.extentions,
-        id: utils.uuid()
-      };
-    });
+    serversFromParent.value = (newValue || [])
+      .filter(item => item[serverSourceKey] === ApiServerSource.PARENT_SERVERS).map(item => {
+        return {
+          ...item,
+          ...item.extentions,
+          id: utils.uuid()
+        };
+      });
 
-    serversFromMock.value = (newValue || []).filter(item => item[serverSourceKey] === 'MOCK_SERVICE').map(item => {
-      return {
-        ...item,
-        ...item.extentions,
-        id: utils.uuid()
-      };
-    });
+    serversFromMock.value = (newValue || [])
+      .filter(item => item[serverSourceKey] === ApiServerSource.MOCK_SERVICE).map(item => {
+        return {
+          ...item,
+          ...item.extentions,
+          id: utils.uuid()
+        };
+      });
   }, {
     immediate: true
   });
@@ -298,17 +388,17 @@ onMounted(() => {
         class="method-select w-23"
         style="height:30px;"
         :allowClear="false"
-        size="normal"
-        :options="httpMethodOpt" />
+        size="middle"
+        :options="httpMethodOptions" />
       <Divider type="vertical" class="h-auto mx-0" />
-      <Dropdown :visible="showServerListDrop && !!serverListOpt.length">
+      <Dropdown :visible="showServerListDrop && !!serverListOptions.length">
         <ServerInput
           v-model:value="serverValue"
           :valueObj="currentHttpServer"
           class="w-1/3"
-          @enterPress="handleServerEnter"
-          @focus="handleFocus"
-          @handleBlur="handleServerBlur" />
+          @enterPress="handleServerEnterKey"
+          @focus="handleServerInputFocus"
+          @handleBlur="handleServerInputBlur" />
         <template #overlay>
           <div class="px-3.5 py-3.5 text-3 bg-white rounded leading-5 space-y-4" style="box-shadow: 0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d;">
             <div v-if="props.defaultCurrentServer?.url">
@@ -319,7 +409,7 @@ onMounted(() => {
                 </div>
                 <div class="flex-1 h-0.25 border-t border-dashed border-border-divider"></div>
               </div>
-              <div class="leading-7 px-2 cursor-pointer hover:bg-bg-hover rounded" @click="handleSelectServer(props.defaultCurrentServer?.url, props.defaultCurrentServer)">
+              <div class="leading-7 px-2 cursor-pointer hover:bg-bg-hover rounded" @click="handleServerSelection(props.defaultCurrentServer?.url, props.defaultCurrentServer)">
                 {{ props.defaultCurrentServer?.url }}
               </div>
             </div>
@@ -338,7 +428,7 @@ onMounted(() => {
                   v-for="item in serversFromParent"
                   :key="item.id"
                   class="leading-7 px-2 cursor-pointer hover:bg-bg-hover rounded"
-                  @click="handleSelectServer(item.url, item)">
+                  @click="handleServerSelection(item.url, item)">
                   {{ item.url }}
                 </div>
               </div>
@@ -357,7 +447,7 @@ onMounted(() => {
                 v-for="item in serversFromMock"
                 :key="item.id"
                 class="leading-7 px-2 cursor-pointer hover:bg-bg-hover rounded"
-                @click="handleSelectServer(item.url, item)">
+                @click="handleServerSelection(item.url, item)">
                 {{ item.url }}
               </div>
             </div>
@@ -375,7 +465,7 @@ onMounted(() => {
                 v-for="item in serversFromIndexDB"
                 :key="item.id"
                 class="leading-7 px-2 cursor-pointer hover:bg-bg-hover rounded"
-                @click="handleSelectServer(item.url, item)">
+                @click="handleServerSelection(item.url, item)">
                 {{ item.url }}
               </div>
             </div>
@@ -384,15 +474,15 @@ onMounted(() => {
       </Dropdown>
       <Input
         v-model:value="apiUri"
-        :maxlength="globalConfigs.VITE_URI_MAX_LENGTH"
+        :maxlength="API_URI_MAX_LENGTH"
         :allowClear="false"
         trim
         class="input-container min-w-25"
-        placeholder="接口路径，以 “ / ” 起始"
-        size="default"
-        @blur="handleUriBlur"
-        @pressEnter="handleEnter"
-        @keypress="pathEnterHandler" />
+        placeholder="接口路径，以“/”开始"
+        size="middle"
+        @blur="(e: FocusEvent) => handleUriInputBlur(e as any)"
+        @pressEnter="handleUriEnterKey"
+        @keypress="handlePathEnterKey" />
     </div>
     <div class="flex flex-nowrap whitespace-nowrap flex-freeze ml-3 space-x-2">
       <Tooltip
@@ -407,7 +497,7 @@ onMounted(() => {
               <Button
                 size="small"
                 type="primary"
-                @click="guideStep('debugApiThree')">
+                @click="handleGuideStep('debugApiThree')">
                 {{ t('actions.nextStep') }}
               </Button>
             </div>
@@ -417,7 +507,7 @@ onMounted(() => {
           v-if="!props.loading"
           type="primary"
           :disabled="!auths.includes(ApiPermission.DEBUG)"
-          @click="handleRequest">
+          @click="executeApiRequest">
           <template #icon>
             <Icon class="mr-2" icon="icon-fasong" />
           </template>{{ t('service.apiServerPath.actions.sendRequest') }}
@@ -427,7 +517,7 @@ onMounted(() => {
           indicator="circle"
           class="cursor-pointer"
           :spinning="props.loading"
-          @click="handleAbort">
+          @click="handleRequestAbort">
           <Button type="primary" danger>
             <template #icon>
               <Icon class="mr-2" icon="icon-duankai" />
@@ -470,7 +560,7 @@ onMounted(() => {
                   <Button
                     size="small"
                     type="primary"
-                    @click="guideStep('debugApiSix')">
+                    @click="handleGuideStep('debugApiSix')">
                     {{ t('actions.nextStep') }}
                   </Button>
                 </div>
@@ -498,11 +588,11 @@ onMounted(() => {
         <Button
           class="ml-2"
           :disabled="!auths.includes(ApiPermission.MODIFY)"
-          @click="openCaseModal">
+          @click="openAddCaseModal">
           {{ t('service.apiServerPath.actions.generateCase') }}
         </Button>
       </template>
-      <Button @click="copyUrl">
+      <Button @click="handleCopyUrl">
         {{ t('service.apiServerPath.actions.copyUrl') }}
       </Button>
       <AsyncComponent :visible="addCaseVisible">

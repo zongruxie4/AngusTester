@@ -1,22 +1,37 @@
 import { i18n } from '@xcan-angus/infra';
 import { API_EXTENSION_KEY } from '@/utils/apis';
+import { API_EXTENSION_KEYS } from '@/types/openapi-types';
 
-const I18nInstance = i18n.getI18n();
-const t = I18nInstance?.global?.t || ((value: string):string => value);
+/**
+ * Internationalization instance for translations
+ */
+const i18nInstance = i18n.getI18n();
+const translateFunction = i18nInstance?.global?.t || ((value: string): string => value);
 
-// const { valueKey, securityApiKeyPrefix } = API_EXTENSION_KEY;
 const { valueKey, securityApiKeyPrefix } = API_EXTENSION_KEY;
 
-// TODO 替换类型
-export interface AuthItem {
+/**
+ * Authentication item interface
+ * <p>
+ * Defines the structure for authentication configuration items including type, flows, and scheme
+ * </p>
+ */
+export interface AuthenticationItem {
   name?: string;
-  type: 'http'|'apiKey'|'oauth2'|'extends'|null;
+  type: 'http' | 'apiKey' | 'oauth2' | 'extends' | null;
   flows?: Record<string, any>;
   in?: string;
   scheme?: string;
 }
 
-export const getAuthItem = () => {
+/**
+ * Creates a default authentication item
+ * <p>
+ * Returns a default authentication item with empty values
+ * </p>
+ * @returns Default authentication item object
+ */
+export const createDefaultAuthItem = () => {
   return {
     name: '',
     in: 'header',
@@ -24,116 +39,140 @@ export const getAuthItem = () => {
   };
 };
 
-export const authTypeOptions = [
+/**
+ * Available authentication type options
+ * <p>
+ * Configuration options for different authentication types supported by the API
+ * </p>
+ */
+export const authenticationTypeOptions = [
   {
-    label: t('service.apiAuthorization.types.noAuth'),
+    label: translateFunction('service.apiAuthorization.types.noAuth'),
     value: null
   },
   {
-    label: t('service.apiAuthorization.types.basicAuth'),
+    label: translateFunction('service.apiAuthorization.types.basicAuth'),
     value: 'basic'
   },
   {
-    label: t('service.apiAuthorization.types.bearerToken'),
+    label: translateFunction('service.apiAuthorization.types.bearerToken'),
     value: 'bearer'
   },
   {
-    label: t('service.apiAuthorization.types.apiKey'),
+    label: translateFunction('service.apiAuthorization.types.apiKey'),
     value: 'apiKey'
   },
   {
-    label: t('service.apiAuthorization.types.oauth2'),
+    label: translateFunction('service.apiAuthorization.types.oauth2'),
     value: 'oauth2'
   },
   {
-    label: t('service.apiAuthorization.types.extends'),
+    label: translateFunction('service.apiAuthorization.types.extends'),
     value: 'extends'
   }
 ];
 
-export const flowAuthType = [
+/**
+ * OAuth2 flow type options
+ * <p>
+ * Available OAuth2 authentication flow types for API authorization
+ * </p>
+ */
+export const oauth2FlowTypeOptions = [
   {
     value: 'authorizationCode',
-    label: t('service.apiAuthorization.flowTypes.authorizationCode')
+    label: translateFunction('service.apiAuthorization.flowTypes.authorizationCode')
   },
   {
     value: 'password',
-    label: t('common.password')
+    label: translateFunction('common.password')
   },
   {
     value: 'implicit',
-    label: t('service.apiAuthorization.flowTypes.implicit')
+    label: translateFunction('service.apiAuthorization.flowTypes.implicit')
   },
   {
     value: 'clientCredentials',
-    label: t('service.apiAuthorization.flowTypes.clientCredentials')
+    label: translateFunction('service.apiAuthorization.flowTypes.clientCredentials')
   }
 ];
 
-export const authLabels = [
+/**
+ * OAuth2 field configuration labels
+ * <p>
+ * Configuration labels and validation rules for OAuth2 authentication fields
+ * </p>
+ */
+export const oauth2FieldLabels = [
   {
     valueKey: 'authorizationUrl',
-    label: t('service.apiAuthorization.oauth2Fields.authorizationUrl'),
+    label: translateFunction('service.apiAuthorization.oauth2Fields.authorizationUrl'),
     maxLength: 400,
     required: true
   },
   {
-    valueKey: 'x-xc-oauth2-callbackUrl',
-    label: t('service.apiAuthorization.oauth2Fields.callbackUrl'),
+    valueKey: API_EXTENSION_KEYS.oAuth2CallbackUrlKey,
+    label: translateFunction('service.apiAuthorization.oauth2Fields.callbackUrl'),
     maxLength: 400,
     required: true
   },
   {
     valueKey: 'tokenUrl',
-    label: t('service.apiAuthorization.oauth2Fields.tokenUrl'),
+    label: translateFunction('service.apiAuthorization.oauth2Fields.tokenUrl'),
     maxLength: 400,
     required: true
   },
   {
     valueKey: 'refreshUrl',
-    label: t('service.apiAuthorization.oauth2Fields.refreshUrl'),
+    label: translateFunction('service.apiAuthorization.oauth2Fields.refreshUrl'),
     maxLength: 400
   },
   {
-    valueKey: 'x-xc-oauth2-clientId',
-    label: t('service.apiAuthorization.oauth2Fields.clientId'),
+    valueKey: API_EXTENSION_KEYS.oAuth2ClientIdKey,
+    label: translateFunction('service.apiAuthorization.oauth2Fields.clientId'),
     maxLength: 400,
     required: true
   },
   {
-    valueKey: 'x-xc-oauth2-clientSecret',
-    label: t('service.apiAuthorization.oauth2Fields.clientSecret'),
+    valueKey: API_EXTENSION_KEYS.oAuth2ClientSecretKey,
+    label: translateFunction('service.apiAuthorization.oauth2Fields.clientSecret'),
     maxLength: 1024,
     required: true
   },
   {
-    valueKey: 'x-xc-oauth2-username',
-    label: t('common.username'),
+    valueKey: API_EXTENSION_KEYS.oAuth2UsernameKey,
+    label: translateFunction('common.username'),
     maxLength: 400,
     required: true
   },
   {
-    valueKey: 'x-xc-oauth2-password',
-    label: t('common.password'),
+    valueKey: API_EXTENSION_KEYS.oAuth2PasswordKey,
+    label: translateFunction('common.password'),
     maxLength: 1024,
     required: true
   },
   {
     valueKey: 'x-xc-oauth2-challengeMethod',
-    label: t('service.apiAuthorization.oauth2Fields.encryptionMethod')
+    label: translateFunction('service.apiAuthorization.oauth2Fields.encryptionMethod')
   },
   {
     valueKey: 'x-xc-oauth2-codeVerifier',
-    label: t('service.apiAuthorization.oauth2Fields.verificationCode')
+    label: translateFunction('service.apiAuthorization.oauth2Fields.verificationCode')
   },
   {
     valueKey: 'scopes',
-    label: t('service.apiAuthorization.oauth2Fields.scope'),
+    label: translateFunction('service.apiAuthorization.oauth2Fields.scope'),
     maxLength: 200
   }
 ];
 
-export const encryptionTypeOpt = [
+/**
+ * Encryption type options for OAuth2
+ * <p>
+ * Available encryption methods for OAuth2 authentication
+ * </p>
+ */
+export const encryptionTypeOptions = [
   {
     value: 'SHA-256',
     label: 'SHA-256'
@@ -144,91 +183,135 @@ export const encryptionTypeOpt = [
   }
 ];
 
-export const authorizationCode = [
+/**
+ * Required fields for authorization code flow
+ */
+export const authorizationCodeRequiredFields = [
   'authorizationUrl',
-  'x-xc-oauth2-callbackUrl',
+  API_EXTENSION_KEYS.oAuth2CallbackUrlKey,
   'tokenUrl',
   'refreshUrl',
-  'x-xc-oauth2-clientId',
-  'x-xc-oauth2-clientSecret',
+  API_EXTENSION_KEYS.oAuth2ClientIdKey,
+  API_EXTENSION_KEYS.oAuth2ClientSecretKey,
   'scopes'
 ];
 
-export const password = [
+/**
+ * Required fields for password flow
+ */
+export const passwordFlowRequiredFields = [
   'tokenUrl',
   'refreshUrl',
-  'x-xc-oauth2-clientId',
-  'x-xc-oauth2-clientSecret',
-  'x-xc-oauth2-username',
-  'x-xc-oauth2-password',
+  API_EXTENSION_KEYS.oAuth2ClientIdKey,
+  API_EXTENSION_KEYS.oAuth2ClientSecretKey,
+  API_EXTENSION_KEYS.oAuth2UsernameKey,
+  API_EXTENSION_KEYS.oAuth2PasswordKey,
   'scopes'
 ];
 
-export const implicit = [
+/**
+ * Required fields for implicit flow
+ */
+export const implicitFlowRequiredFields = [
   'authorizationUrl',
-  'x-xc-oauth2-callbackUrl',
-  // 'tokenUrl',
+  API_EXTENSION_KEYS.oAuth2CallbackUrlKey,
   'refreshUrl',
-  'x-xc-oauth2-clientId',
-  'x-xc-oauth2-clientSecret',
+  API_EXTENSION_KEYS.oAuth2ClientIdKey,
+  API_EXTENSION_KEYS.oAuth2ClientSecretKey,
   'scopes'
 ];
 
-export const clientCredentials = [
+/**
+ * Required fields for client credentials flow
+ */
+export const clientCredentialsFlowRequiredFields = [
   'tokenUrl',
   'refreshUrl',
-  'x-xc-oauth2-clientId',
-  'x-xc-oauth2-clientSecret',
+  API_EXTENSION_KEYS.oAuth2ClientIdKey,
+  API_EXTENSION_KEYS.oAuth2ClientSecretKey,
   'scopes'
 ];
 
-export const authorizationCodePKCE = [
+/**
+ * Required fields for authorization code PKCE flow
+ */
+export const authorizationCodePKCERequiredFields = [
   'authorizationUrl',
-  'x-xc-oauth2-callbackUrl',
+  API_EXTENSION_KEYS.oAuth2CallbackUrlKey,
   'tokenUrl',
   'refreshUrl',
-  'x-xc-oauth2-clientId',
-  'x-xc-oauth2-clientSecret',
+  API_EXTENSION_KEYS.oAuth2ClientIdKey,
+  API_EXTENSION_KEYS.oAuth2ClientSecretKey,
   'x-xc-oauth2-challengeMethod',
   'x-xc-oauth2-codeVerifier',
   'scopes'
 ];
 
-export const flowAuthKeys = {
-  authorizationCode,
-  password,
-  implicit,
-  clientCredentials,
-  authorizationCodePKCE
+/**
+ * OAuth2 flow field mappings
+ * <p>
+ * Maps OAuth2 flow types to their required field configurations
+ * </p>
+ */
+export const oauth2FlowFieldMappings = {
+  authorizationCode: authorizationCodeRequiredFields,
+  password: passwordFlowRequiredFields,
+  implicit: implicitFlowRequiredFields,
+  clientCredentials: clientCredentialsFlowRequiredFields,
+  authorizationCodePKCE: authorizationCodePKCERequiredFields
 };
 
-export const getApiKeyData = (dataSource) => {
-  const queryAuth = {};
-  const queryList = dataSource.filter(item => item.in === 'query');
-  queryList.forEach(item => {
-    queryAuth[item.name] = item[valueKey];
+/**
+ * Extracts API key authentication data from data source
+ * <p>
+ * Processes API key authentication data and separates it into header and query parameters
+ * </p>
+ * @param dataSource - Source data containing API key information
+ * @returns Array containing header and query authentication data
+ */
+export const extractApiKeyAuthenticationData = (dataSource: any[]) => {
+  const queryAuthenticationData = {};
+  const queryParameterList = dataSource.filter(item => item.in === 'query');
+  queryParameterList.forEach(item => {
+    queryAuthenticationData[item.name] = item[valueKey];
   });
-  const headerAuth = {};
-  const headerList = dataSource.filter(item => item.in === 'header');
-  headerList.forEach(item => {
-    headerAuth[item.name] = item[valueKey];
+
+  const headerAuthenticationData = {};
+  const headerParameterList = dataSource.filter(item => item.in === 'header');
+  headerParameterList.forEach(item => {
+    headerAuthenticationData[item.name] = item[valueKey];
   });
-  return [headerAuth, queryAuth];
+
+  return [headerAuthenticationData, queryAuthenticationData];
 };
 
-export const getShowApiKeyData = (dataSource) => {
-  // const { extensions } = dataSource;
-  const first = { name: dataSource.name, in: dataSource.in, [valueKey]: dataSource[valueKey] };
-  const others = dataSource[securityApiKeyPrefix] || [];
-  const queryAuth = {};
-  const queryList = [first, ...others].filter(item => item.in === 'query');
-  queryList.forEach(item => {
-    queryAuth[item.name] = item[valueKey];
+/**
+ * Extracts display API key data from data source
+ * <p>
+ * Processes API key data for display purposes, including primary and additional keys
+ * </p>
+ * @param dataSource - Source data containing API key information
+ * @returns Array containing header and query authentication data for display
+ */
+export const extractDisplayApiKeyData = (dataSource: any) => {
+  const primaryKey = {
+    name: dataSource.name,
+    in: dataSource.in,
+    [valueKey]: dataSource[valueKey]
+  };
+  const additionalKeys = dataSource[securityApiKeyPrefix] || [];
+
+  const queryAuthenticationData = {};
+  const queryParameterList = [primaryKey, ...additionalKeys].filter(item => item.in === 'query');
+  queryParameterList.forEach(item => {
+    queryAuthenticationData[item.name] = item[valueKey];
   });
-  const headerAuth = {};
-  const headerList = [first, ...others].filter(item => item.in === 'header');
-  headerList.forEach(item => {
-    headerAuth[item.name] = item[valueKey];
+
+  const headerAuthenticationData = {};
+  const headerParameterList = [primaryKey, ...additionalKeys].filter(item => item.in === 'header');
+  headerParameterList.forEach(item => {
+    headerAuthenticationData[item.name] = item[valueKey];
   });
-  return [headerAuth, queryAuth];
+
+  return [headerAuthenticationData, queryAuthenticationData];
 };

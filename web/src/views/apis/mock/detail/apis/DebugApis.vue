@@ -10,7 +10,7 @@ import {
 
 import apiUtils, { convertBlob } from '@/utils/apis/index';
 import { dataURLtoBlob, getFileSuffixByContentType } from '@/utils/blob';
-import { CONTENT_TYPE, HTTP_HEADERS } from '@/utils/constant';
+import { CONTENT_TYPE_KEYS, HTTP_HEADERS } from '@/utils/constant';
 
 import UrlForm from '@/views/apis/mock/detail/apis/components/UrlForm.vue';
 
@@ -174,7 +174,7 @@ const processRequestBody = (headerData: any[]) => {
     if (bodyContentType) {
       headerData.push({ in: ParameterIn.header, name: HTTP_HEADERS.CONTENT_TYPE, [valueKey]: bodyContentType });
 
-      if (bodyContentType === CONTENT_TYPE.FORM_URLENCODED) {
+      if (bodyContentType === CONTENT_TYPE_KEYS.FORM_URLENCODED) {
         const formUrlEncodeParam = (forms || []).map(i => ({ ...i, [valueKey]: i.value }));
         const formJson = {};
         const formUrl = formUrlEncodeParam.map(item => {
@@ -184,12 +184,12 @@ const processRequestBody = (headerData: any[]) => {
         bodyContent = formUrl;
         bodyOpenApi = {
           content: {
-            [CONTENT_TYPE.FORM_URLENCODED]: {
+            [CONTENT_TYPE_KEYS.FORM_URLENCODED]: {
               [valueKey]: formJson
             }
           }
         };
-      } else if (bodyContentType === CONTENT_TYPE.MULTIPART_FORM_DATA) {
+      } else if (bodyContentType === CONTENT_TYPE_KEYS.MULTIPART_FORM_DATA) {
         const formUrlEncodeParam = (forms || []).map(i => ({ ...i, [valueKey]: i.value }));
         const formData = new FormData();
         const formJson = {};
@@ -202,7 +202,7 @@ const processRequestBody = (headerData: any[]) => {
         bodyContent = formData;
         bodyOpenApi = {
           content: {
-            [CONTENT_TYPE.MULTIPART_FORM_DATA]: {
+            [CONTENT_TYPE_KEYS.MULTIPART_FORM_DATA]: {
               [valueKey]: formJson
             }
           }
