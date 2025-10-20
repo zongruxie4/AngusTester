@@ -128,17 +128,17 @@ const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   id: undefined,
-  pid: undefined, // pid 用来标志当前 pane 唯一值
+  pid: undefined, // pid used to identify the unique value of the current pane
   serviceId: undefined,
   projectId: ''
 });
 
-const shareVisible = ref(false); // 分享弹窗
+const shareVisible = ref(false); // Share dialog visibility
 const handleShare = () => {
   shareVisible.value = true;
 };
 
-// 更新左侧未归档列表
+// Update left sidebar unarchived list
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const refreshUnarchived = inject('refreshUnarchived', () => { });
 
@@ -146,7 +146,7 @@ const erd = elementResizeDetector({ strategy: 'scroll' });
 const { toClipboard } = useClipboard();
 
 // eslint-disable-next-line new-cap
-const myRequest = new axiosClient({ timeout: 0, intervalMs: 500, maxRedirects: 0, maxRetries: 5 });
+const httpClient = new axiosClient({ timeout: 0, intervalMs: 500, maxRedirects: 0, maxRetries: 5 });
 const { serverSourceKey, requestSettingKey, valueKey, enabledKey, fileNameKey, idKey } = API_EXTENSION_KEY;
 const apiAuths = ref<ApiPermission[]>([]);
 
@@ -173,14 +173,14 @@ const myNavs = computed(() => {
       return {
         ...i,
         key: i.value,
-        disabled: !apiAuths.value?.includes(i.auth),
+        disabled: !apiAuths.value?.includes(i.auth as ApiPermission),
         name: t('actions.save')
       };
     }
     return {
       ...i,
       key: i.value,
-      disabled: !apiAuths.value?.includes(i.auth)
+      disabled: !apiAuths.value?.includes(i.auth as ApiPermission)
     };
   });
 });
@@ -189,14 +189,14 @@ let ws: WebSocket | undefined;
 
 let uuid = '';
 
-const respError = reactive<{
+const responseError = reactive<{
   show: boolean,
   value: string | undefined
 }>({
   show: false,
   value: undefined
 });
-const loadWS = (value) => {
+const setWebSocket = (value) => {
   ws = value;
 };
 
@@ -206,24 +206,24 @@ const height = ref<number>(34);
 const apiMethod = ref<HttpMethod>(HttpMethod.GET);
 const currentServer = ref<ServerInfo>({ url: '' });
 const defaultCurrentServer = ref();
-const apiUri = ref<string>(); // uri整体
-const requestParamsRef = ref(); // 参数 ref
-const drawerRef = ref(); // 右侧抽屉 apis ref;
+const apiUri = ref<string>(); // Complete URI
+const requestParamsRef = ref(); // Parameters ref
+const drawerRef = ref(); // Right drawer APIs ref
 const activeDrawerKey = ref();
-const toolbarRef = ref(); // 底部响应comp ref;
-const maxHeight = ref(0); // 最大高度
-const loading = ref(false); // 发送请求
+const toolbarRef = ref(); // Bottom response component ref
+const maxHeight = ref(0); // Maximum height
+const loading = ref(false); // Send request loading state
 const mainWrapper = ref();
-const availableServers = ref<ServerInfo[]>([]); // 所有可用 server
+const availableServers = ref<ServerInfo[]>([]); // All available servers
 const isUnarchivedApi = ref<boolean>(true);
 const requestHeaderRef = ref();
 const requestCookieRef = ref();
 const authorizationRef = ref();
 let initParams = {};
 
-const assertResult = ref<AssertResult[]>();// 断言结果
+const assertResult = ref<AssertResult[]>(); // Assertion results
 
-// 保存编辑的数据
+// Data for saving edits
 const saveParams = ref<ApisFormEdit>({
   id: undefined,
   operationId: undefined,
@@ -336,6 +336,9 @@ const handleStatusChange = async (value: string) => {
 };
 
 const getModelFromRef = async (ref) => {
+  if (!saveParams.value.serviceId) {
+    return {};
+  }
   const [error, resp] = await getModelDataByRef(saveParams.value.serviceId, ref);
   if (error) {
     return {};
@@ -343,7 +346,13 @@ const getModelFromRef = async (ref) => {
   return deconstruct(resp.data || {});
 };
 
-// 获取当前 api 的操作权限
+/**
+ * Load API operation permissions
+ * <p>
+ * Fetches the current user's permissions for the API and updates the
+ * apiAuths reactive reference with the permission values.
+ * </p>
+ */
 const loadApiAuth = async () => {
   const [error, res] = await apis.getCurrentAuth(props.id as string);
   if (error) {
@@ -352,6 +361,14 @@ const loadApiAuth = async () => {
   apiAuths.value = (res.data?.permissions || []).map(i => i.value);
 };
 
+/**
+ * Load service server information
+ * <p>
+ * Fetches available server URLs for the specified service and updates
+ * the availableServers reactive reference with server data including extensions.
+ * </p>
+ * @param serviceId - The service ID to load servers for
+ */
 const loadServiceServers = async (serviceId: string) => {
   const [error, resp] = await services.getServicesServerUrlInfo(serviceId);
   if (error) {
@@ -361,7 +378,14 @@ const loadServiceServers = async (serviceId: string) => {
 };
 
 const loadingApiDetail = ref(false);
-// 获取当前 api 信息
+
+/**
+ * Load API detail information
+ * <p>
+ * Fetches detailed API information including parameters, request body, authentication,
+ * and other configuration. Handles both archived and unarchived APIs.
+ * </p>
+ */
 const loadApiDetail = async (): Promise<void> => {
   loadingApiDetail.value = true;
   let result;
@@ -398,14 +422,17 @@ const loadApiDetail = async (): Promise<void> => {
     datasetSharingMode: _datasetSharingMode
   } = res.data;
 
+  // Load service servers if service ID is available
   if (serviceId) {
     await loadServiceServers(serviceId);
   }
   apisStatus.value = status?.value;
 
+  // Set dataset configuration
   datasetActionOnEOF.value = _datasetActionOnEOF?.value || _datasetActionOnEOF || ActionOnEOF.RECYCLE;
   datasetSharingMode.value = _datasetSharingMode?.value || _datasetSharingMode || SharingMode.ALL_THREAD;
 
+  // Load API permissions for archived APIs
   if (!isUnarchivedApi.value && auth && serviceAuth) {
     await loadApiAuth();
   }
@@ -442,6 +469,7 @@ const loadApiDetail = async (): Promise<void> => {
   }
   defaultCurrentServer.value = JSON.parse(JSON.stringify(currentServer.value));
 
+  // Extract query parameters from endpoint URL
   let queryStrParam = [];
   if (endpoint && endpoint.split('?')[1]) {
     const queryString = endpoint.split('?')[1];
@@ -533,7 +561,7 @@ const loadApiDetail = async (): Promise<void> => {
   }
 };
 
-// 参数化逻辑 - start
+// Parameterization logic - start
 const datasetActionOnEOF = ref<ActionOnEOF>(ActionOnEOF.RECYCLE);
 const datasetSharingMode = ref<SharingMode>(SharingMode.ALL_THREAD);
 
@@ -541,14 +569,14 @@ const targetInfoChange = (data: { id: string; datasetActionOnEOF: ActionOnEOF; d
   datasetActionOnEOF.value = data.datasetActionOnEOF;
   datasetSharingMode.value = data.datasetSharingMode;
 };
-// 参数化逻辑 - end
+// Parameterization logic - end
 
-// 请求体是否有数据
+// Check if request body has data
 const hasBodyContent = computed(() => {
   return !!contentType.value || !!state.requestBody.content;
 });
 
-// 获取有效 请求头
+// Get valid request headers
 const getHeaderList = computed(() => {
   return state.headerList.filter(i => !!i.name);
 });
@@ -570,18 +598,14 @@ const cookieCount = computed(() => {
 });
 
 /**
- *
- * 分两步获取，
- * 1. 先校验数据 validate
+ * Validate parameters
  */
 const validateParam = () => {
   return !assertFormRef.value || assertFormRef.value?.validate();
 };
 
 /**
- *
- * 分两步获取，
- * 2. 校验通过执行该方法
+ * Get parameters, Execute this method after validation passes.
  */
 const getParameter = async (isDebug = false) => {
   const { parameters, requestBody, headerList, cookieList, authentication, secured } = state;
@@ -669,9 +693,21 @@ const getParameter = async (isDebug = false) => {
   };
 };
 
+/**
+ * Build real URI with path and query parameters
+ * <p>
+ * Constructs the final URI by replacing path parameters in the endpoint
+ * and appending query parameters. Handles object and array parameter values.
+ * </p>
+ * @param pathParams - Path parameters to replace in the URI
+ * @param queryParams - Query parameters to append to the URI
+ * @returns The constructed URI string
+ */
 const getRealUri = (pathParams: Record<string, any>, queryParams: Record<string, any>) => {
-  let tempUri = apiUri.value || '';
+  let processedUri = apiUri.value || '';
   const paths = Object.keys(pathParams || {}).map(key => ({ name: key, [valueKey]: pathParams?.[key] }));
+
+  // Process path parameters (convert objects/arrays to strings)
   paths.forEach(item => {
     if (typeof item[valueKey] === 'object') {
       if (Object.prototype.toString.call(item[valueKey]) === '[object Array]') {
@@ -683,41 +719,53 @@ const getRealUri = (pathParams: Record<string, any>, queryParams: Record<string,
   });
   if (paths?.length) {
     let pattern: RegExp;
+    // Replace path placeholders with parameter values
     const endpoint = paths?.reduce((prevValue, currentValue) => {
       pattern = new RegExp('{' + currentValue.name + '}', 'gi');
       if (pattern.test(prevValue)) {
         prevValue = prevValue.replace(pattern, currentValue[valueKey] || '');
       }
       return prevValue;
-    }, tempUri) || '';
-    // path 中的占位符使用参数值替换
-    tempUri = '/' + endpoint.replace(/^\/+/, '');
+    }, processedUri) || '';
+    // Normalize path by removing leading slashes and adding single leading slash
+    processedUri = '/' + endpoint.replace(/^\/+/, '');
   }
+
+  // Append query parameters
   const queryUri = qs.stringify(queryParams, { allowDots: true, encode: true });
-  if (tempUri.includes('?')) {
-    tempUri = tempUri + '&' + queryUri;
+  if (processedUri.includes('?')) {
+    processedUri = processedUri + '&' + queryUri;
   } else if (queryUri) {
-    tempUri = tempUri + '?' + queryUri;
+    processedUri = processedUri + '?' + queryUri;
   }
-  return tempUri;
+  return processedUri;
 };
 
 const activeKey = ref('parameters');
 let controller: AbortController;
-// 发送请求 Send the request
+/**
+ * Send HTTP request
+ * <p>
+ * Main request handler that validates parameters, prepares request data,
+ * and sends the request either through direct HTTP client or WebSocket proxy.
+ * Also handles parameter validation and assertion execution.
+ * </p>
+ */
 const sendRequest = async () => {
+  // Handle request cancellation if already in progress
   if (loading.value) {
     handleAbort();
   }
   loading.value = true;
-  assertVariableExtra.value = {};
-  // 校验 url
+  assertionVariableExtra.value = {};
+
+  // Validate URL configuration
   if (!currentServer.value.url && !apiUri.value) {
     loading.value = false;
     notification.error({ message: t('service.apis.errors.invalidUrl'), description: t('service.apis.errors.invalidUrlDescription') });
     return;
   }
-  // 准备 body 数据
+  // Prepare request body data
   let requestBodyContents = await requestBodyRef.value.getBodyData(state.requestBody, contentType.value);
   let formData: any[] = [];
   const strParam: string[] = [];
@@ -726,7 +774,8 @@ const sendRequest = async () => {
   } else if (typeof requestBodyContents === 'string') {
     strParam.push(requestBodyContents);
   }
-  //  准备认证数据
+
+  // Prepare authentication data
   const auth = authorizationRef.value ? await authorizationRef.value.getAuthData(state.authentication) : [{}];
   const authParamData = Object.keys(auth?.[0] || {}).map(key => {
     if (typeof auth?.[0]?.[key] !== 'object') {
@@ -737,14 +786,14 @@ const sendRequest = async () => {
       strParam.push(password || '');
     }
     return undefined;
-  }).filter(Boolean); // header 认证
-  const authQueryData = Object.keys(auth?.[1] || {}).map(key => ({ name: key, [valueKey]: auth?.[1]?.[key] })); // query 认证
+  }).filter(Boolean); // Header authentication data
+  const authQueryData = Object.keys(auth?.[1] || {}).map(key => ({ name: key, [valueKey]: auth?.[1]?.[key] })); // Query authentication data
 
   const headerCookieData = [...state.headerList, ...state.cookieList].filter(i => i.name && i[valueKey] && i[enabledKey]);
-  // 准备 parameter 数据
+  // Prepare parameter data
   const querPathData = state.parameters.filter(i => i.name && i[enabledKey]);
 
-  // 断言数据
+  // Prepare assertion data
   let assertions: any[] = [];
   let asserVariableStr: string[] = [];
   if (typeof assertFormRef.value?.getData === 'function') {
@@ -755,7 +804,7 @@ const sendRequest = async () => {
     assertions = state.assertions;
   }
 
-  // 替换 mock 函数和变量
+  // Replace mock functions and variables in parameters
   const result = await apiUtils.replaceFuncValue(
     {
       parameter: [querPathData, formData, headerCookieData, authParamData, authQueryData],
@@ -765,7 +814,7 @@ const sendRequest = async () => {
     !isUnarchivedApi.value ? saveParams.value.id : undefined,
     'API', { ignoreErr: false }
   );
-  if (!result) {
+  if (!result || result === true) {
     loading.value = false;
     return;
   }
@@ -788,10 +837,10 @@ const sendRequest = async () => {
       ];
     }
   }
-  // 校验 断言数据
+  // Validate assertion data
   const validateAssertData = validateParam();
 
-  // 校验 parameter 数据 和 format 数据
+  // Validate parameter data and format if enabled
   if (setting.value.enableParamValidation) {
     const validatedQuery = validateQueryParameter(funcValues[0]);
     if (!validatedQuery) {
@@ -837,7 +886,7 @@ const sendRequest = async () => {
     }
   }
 
-  // 组装 body 数据
+  // Assemble request body data
   const showRequestBody: Record<string, any> = {};
   let requestBody;
   if ((contentType.value === CONTENT_TYPE_KEYS.FORM_URLENCODED ||
@@ -897,14 +946,14 @@ const sendRequest = async () => {
     }
   }
 
-  // parameterPath 的 JSON 格式
+  // Prepare path parameters in JSON format
   const pathJson = {};
   const pathArr = funcValues[0].filter(i => i.in === ParameterIn.path);
   pathArr.forEach(i => {
     pathJson[i.name] = i[valueKey];
   });
 
-  // 组装 query 数据 query + 认证 query
+  // Assemble query data (query parameters + authentication query)
   const queryJson = {};
   const queryArr = funcValues[0].filter(i => i.in === ParameterIn.query).concat(funcValues[4]);
   queryArr.forEach(i => {
@@ -913,10 +962,10 @@ const sendRequest = async () => {
   const apiPathQuery = getRealUri(pathJson, queryJson);
   const serverUrl = getServerData(currentServer.value);
 
-  // parameterQuery 的 JSON 格式
+  // Parse query parameters for request display
   const requestQueryJson = qs.parse(apiPathQuery.split('?')[1] || '');
 
-  // 组装请求 url
+  // Assemble final request URL
   let apiHref = '';
   if (!serverUrl.endsWith('/') && apiPathQuery && apiPathQuery.split('?')[0] && !apiPathQuery.startsWith('/')) {
     apiHref = serverUrl + '/' + apiPathQuery;
@@ -928,20 +977,20 @@ const sendRequest = async () => {
   }
   uuid = utils.uuid('api-item');
 
-  // 组装 请求header
+  // Assemble request headers
   let headers: Record<string, string> = {};
   const headList = funcValues[2].filter(i => i.in === ParameterIn.header);
   const cookieList = funcValues[2].filter(i => i.in === ParameterIn.cookie);
   headList.forEach(item => {
     if (typeof item[valueKey] === 'object') {
-      // encodeURIComponent 用于编译中文内容， 否则本地请求无法发送
+      // Use encodeURIComponent for Chinese content to ensure local requests can be sent
       if (Object.prototype.toString.call(item[valueKey]) === '[object Array]') {
         headers[item.name] = item[valueKey]
           ? item[valueKey].map(value => value && apiUtils.containsAllAscii(value) ? value : value ? encodeURIComponent(value) : '').join(',')
           : '';
       } else {
         headers[item.name] = item[valueKey]
-          ? Object.entries(item[valueKey]).map(([key, value]) => `${key}=${value && apiUtils.containsAllAscii(value) ? value : value ? encodeURIComponent(value) : ''}`).join(',')
+          ? Object.entries(item[valueKey]).map(([key, value]) => `${key}=${value && apiUtils.containsAllAscii(String(value)) ? String(value) : value ? encodeURIComponent(String(value)) : ''}`).join(',')
           : '';
       }
     } else {
@@ -959,7 +1008,7 @@ const sendRequest = async () => {
         const value: string[] = [];
         Object.entries(item[valueKey]).forEach(([key, val]) => {
           value.push(key);
-          value.push(encodeURIComponent(val));
+          value.push(encodeURIComponent(String(val)));
         });
         return `${item.name}=${value.join(',')}`;
       }
@@ -985,9 +1034,11 @@ const sendRequest = async () => {
     headers[HTTP_HEADERS.CONTENT_TYPE] = contentType.value;
   }
 
-  // 请求设置
+  // Request configuration
   const { connectTimeout, readTimeout, retryNum, maxRedirects } = setting.value;
   const isExceedRequestSize = requestBodyRef.value.ifExceedRequestSize();
+
+  // Send request via direct HTTP client or WebSocket proxy
   if (!ws || isExceedRequestSize) {
     controller = new AbortController();
     const signal = controller.signal;
@@ -1005,9 +1056,9 @@ const sendRequest = async () => {
       maxRedirects: maxRedirects,
       maxRetries: retryNum
     };
-    const responses = await myRequest.request(axiosConfig);
+    const responses = await httpClient.request(axiosConfig);
     setErrTitle();
-    await onHttpResponse(responses, {
+    await handleHttpResponse(responses, {
       query: requestQueryJson,
       header: headers,
       path: pathJson,
@@ -1017,14 +1068,18 @@ const sendRequest = async () => {
       variableValues
     });
     openToolBar();
-  } else if (ws.readyState !== 1) {
+  }
+  // Handle WebSocket connection errors
+  else if (ws.readyState !== 1) {
     loading.value = false;
     notification.error(t('service.apis.errors.proxyNotConnected'));
-  } else if (ws) {
+  }
+  // Send request via WebSocket proxy
+  else if (ws) {
     const { currentServer, requestBody, ...params } = await getParameter(true);
     if (!params?.authentication.type && !params?.authentication.$ref) {
-      delete params.authentication;
-    } else if (params?.authentication.$ref) {
+      delete (params as any).authentication;
+    } else if (params?.authentication.$ref && saveParams.value.serviceId) {
       const [_error, resp] = await services.getComponentRef(saveParams.value.serviceId, params?.authentication.$ref);
       params.authentication = JSON.parse(resp.data.model);
     }
@@ -1039,7 +1094,7 @@ const sendRequest = async () => {
       });
     }
 
-    // 过滤掉没有启用的断言
+    // Filter out disabled assertions
     if (params.assertions?.length) {
       params.assertions = params.assertions.filter((item) => item.enabled);
     }
@@ -1058,7 +1113,7 @@ const sendRequest = async () => {
     if (!isUnarchivedApi.value) {
       const conditions = params.assertions.filter(item => item.condition).map(item => item.condition);
       const { extra } = assertUtils.proxy.execute(conditions, variableValues);
-      assertVariableExtra.value = extra;
+      assertionVariableExtra.value = extra;
     }
     const jsonStr = JSON.stringify({
       ...params,
@@ -1076,28 +1131,45 @@ const sendRequest = async () => {
   }
 };
 
-// 终止请求
+/**
+ * Abort current request
+ * <p>
+ * Cancels the ongoing request either by aborting the HTTP controller
+ * or clearing the WebSocket request ID.
+ * </p>
+ */
 const handleAbort = () => {
   loading.value = false;
-  // 验证websocket中断功能
+  // Handle WebSocket request cancellation
   if (ws) {
     uuid = '';
     // ws.close();
   } else {
+    // Handle HTTP request cancellation
     controller.abort();
   }
 };
 
-// 处理本地无代理请求
-const onHttpResponse = async (resp, request) => {
+/**
+ * Handle HTTP response for local requests without proxy
+ * <p>
+ * Processes the response data, updates the response state, and handles both successful
+ * and error responses. Also executes assertions if configured.
+ * </p>
+ * @param resp - The HTTP response object from axios
+ * @param request - The request context containing query, headers, path, and body data
+ */
+const handleHttpResponse = async (resp, request) => {
   loading.value = false;
-  respError.show = false;
-  respError.value = undefined;
+  responseError.show = false;
+  responseError.value = undefined;
   responseState.performance = resp.performance;
   assertResult.value = undefined;
+
+  // Handle network errors (status 0)
   if (resp.request.status === 0) {
-    respError.show = true;
-    respError.value = resp.message;
+    responseError.show = true;
+    responseError.value = resp.message;
     responseState.config = {
       url: decodeURIComponent(resp.config.url),
       method: apiMethod.value,
@@ -1105,7 +1177,9 @@ const onHttpResponse = async (resp, request) => {
       queryString: request.queryString
     };
     responseState.headers = resp.config.headers;
-  } else if (resp.request.status < 200 || resp.request.status >= 300) {
+  }
+  // Handle HTTP error responses (4xx, 5xx)
+  else if (resp.request.status < 200 || resp.request.status >= 300) {
     responseState.data = await convertBlob(resp.response.data);
     responseState.config = {
       url: decodeURIComponent(resp.config.url),
@@ -1120,9 +1194,12 @@ const onHttpResponse = async (resp, request) => {
     responseState.status = resp.response.status;
     responseState.size = resp.response.data.size;
     responseState.requestHeaders = resp?.config?.headers || {};
-    const cookie = resp.config.headers?.[HTTP_HEADERS.SET_COOKIE];
-    responseState.cookie = cookie ? [cookie] : [];
-  } else {
+    const cookie = resp.response.headers?.[HTTP_HEADERS.SET_COOKIE] ||
+      resp.response.headers?.[HTTP_HEADERS.SET_COOKIE_LOWER];
+    responseState.cookie = cookie ? (Array.isArray(cookie) ? cookie : [cookie]) : [];
+  }
+  // Handle successful responses (2xx)
+  else {
     responseState.data = await convertBlob(resp.data);
     if (responseState.data instanceof Blob) {
       responseState.contentEncoding = 'base64';
@@ -1145,11 +1222,14 @@ const onHttpResponse = async (resp, request) => {
     responseState.size = resp.data.size;
     const requestHead = resp?.config?.headers || {};
     responseState.requestHeaders = requestHead;
-    const cookie = resp.config.headers?.[HTTP_HEADERS.SET_COOKIE];
-    responseState.cookie = cookie ? [cookie] : [];
+    const cookie = resp.headers?.[HTTP_HEADERS.SET_COOKIE] ||
+      resp.headers?.[HTTP_HEADERS.SET_COOKIE_LOWER];
+    responseState.cookie = cookie ? (Array.isArray(cookie) ? cookie : [cookie]) : [];
   }
 
-  if (!respError.show) {
+  // Execute assertions if no error occurred
+  if (!responseError.show) {
+    // Prepare local request info for assertion execution
     localRequestInfo.responseHeader = responseState.headers;
     localRequestInfo.responseBody = { size: responseState.size || 0, data: responseState.data };
     localRequestInfo.status = responseState.status;
@@ -1163,22 +1243,32 @@ const onHttpResponse = async (resp, request) => {
         ? request.requestBody.urlencoded
         : undefined;
     localRequestInfo.rawBody = request.requestBody.body || undefined;
+
+    // Execute assertions with the prepared request context
     assertResult.value = await assertUtils.assert.execute(localRequestInfo, request.assertions, request.variableValues);
   }
 };
 
-const assertVariableExtra = ref<any>({});// 替换执行条件执行条件表达式的变量
+const assertionVariableExtra = ref<any>({}); // Variables for replacing execution condition expressions
 
-// 拿到代理请求结果
+/**
+ * Handle WebSocket proxy response
+ * <p>
+ * Processes responses received through WebSocket proxy, parses JSON data,
+ * and updates the response state accordingly.
+ * </p>
+ */
 const onResponse = async () => {
   loading.value = false;
   assertResult.value = undefined;
   let response: any = {};
+
+  // Parse JSON response from WebSocket
   try {
     response = JSON.parse(props.response);
   } catch {
-    respError.show = true;
-    respError.value = props.response;
+    responseError.show = true;
+    responseError.value = props.response;
     responseState.config = {};
     responseState.config = {};
     responseState.data = null;
@@ -1190,10 +1280,11 @@ const onResponse = async () => {
     return;
   }
   if (typeof response === 'object') {
+    // Handle proxy errors (status 0)
     if (+response.response.status === 0) {
-      respError.show = true;
-      assertVariableExtra.value = {};
-      respError.value = response.response?.rawContent || '';
+      responseError.show = true;
+      assertionVariableExtra.value = {};
+      responseError.value = response.response?.rawContent || '';
       responseState.headers = {};
       responseState.config = {};
       responseState.data = null;
@@ -1202,12 +1293,16 @@ const onResponse = async () => {
       responseState.cookie = [];
       responseState.requestHeaders = response.response.headers || [];
       responseState.performance = {} as PerformanceEntry;
-    } else {
+    }
+    // Handle successful proxy responses
+    else {
       responseState.config = {
         ...response.request0,
         url: response.request0.url + (response.request0.queryString ? ('?' + response.request0.queryString) : '')
       };
 
+      // Parse header array into object format
+      // Headers are stored as [key1, value1, key2, value2, ...] array
       const header = {};
       (response.response?.headerArray || []).forEach((value, idx, arr) => {
         if (idx % 2 === 0) {
@@ -1226,8 +1321,9 @@ const onResponse = async () => {
       responseState.headers = header;
       responseState.data = response.response.rawContent;
       responseState.contentEncoding = response.response?.contentEncoding;
-      if (response.response.contentEncoding === 'base64') { // 后台转 base64 了
-        const mime = header['content-Type'];
+      // Convert base64 data to blob if needed
+      if (response.response.contentEncoding === 'base64') {
+        const mime = header[HTTP_HEADERS.CONTENT_TYPE] || header['content-type'] || header['content-Type'] || header['CONTENT-TYPE'];
         responseState.data = dataURLtoBlob(responseState.data, mime);
       }
       responseState.status = response.response.status;
@@ -1238,7 +1334,7 @@ const onResponse = async () => {
       };
       const cookieStr = header?.[HTTP_HEADERS.SET_COOKIE] || header?.[HTTP_HEADERS.SET_COOKIE_LOWER];
       responseState.cookie = cookieStr ? [cookieStr] : [];
-      respError.show = false;
+      responseError.show = false;
 
       assertResult.value = await setAssertResult(response);
     }
@@ -1292,6 +1388,18 @@ const getHeaderParams = (data: string[], name: string): string => {
   return result.join(',');
 };
 
+/**
+ * Get assertion value by type
+ * <p>
+ * Extracts the appropriate value from response data based on assertion type
+ * and condition. Handles different assertion types like body, header, status, etc.
+ * </p>
+ * @param assertionCondition - The assertion condition type
+ * @param type - The assertion type (body, header, status, etc.)
+ * @param data - Response data containing various metrics
+ * @param parameterName - Parameter name for header assertions
+ * @returns Object containing extracted data, message, and error message
+ */
 const getValueByType = (assertionCondition: AssertionCondition, type: AssertionType, data: {
   bodySize: number;
   size: number;
@@ -1299,7 +1407,7 @@ const getValueByType = (assertionCondition: AssertionCondition, type: AssertionT
   status: number;
   responseHeader: string[];
   rawContent: string;
-  extractValue: string;// 断言条件为正则匹配、xpath匹配、jsonpath匹配的左值
+  extractValue: string; // Left value for regex, xpath, jsonpath matching conditions
 }, parameterName: string): {
   data: string | null;
   message: string;
@@ -1368,6 +1476,15 @@ const getValueByType = (assertionCondition: AssertionCondition, type: AssertionT
   };
 };
 
+/**
+ * Set assertion results from proxy response
+ * <p>
+ * Processes assertion results from WebSocket proxy response, evaluates conditions,
+ * and prepares the final assertion result data for display.
+ * </p>
+ * @param responseData - Response data from WebSocket proxy containing assertions
+ * @returns Array of processed assertion results
+ */
 const setAssertResult = async (responseData) => {
   const assertions: AssertResult[] = responseData.assertions;
   if (!assertions?.length) {
@@ -1375,6 +1492,7 @@ const setAssertResult = async (responseData) => {
   }
 
   const result: AssertResult[] = [];
+  // Process each assertion result
   for (let i = 0, len = assertions.length; i < len; i++) {
     const {
       name,
@@ -1389,12 +1507,12 @@ const setAssertResult = async (responseData) => {
     } = assertions[i];
 
     let _condition: ConditionResult = {
-      failure: false, // 执行结果
-      name: '', // 提取的变量名
-      conditionMessage: '', // 断言表达式错误的原因
-      failureMessage: '', // 提取失败的原因
-      value: '', // 提取变量的值
-      ignored: false, // 是否忽略该条断言
+      failure: false, // Execution result
+      name: '', // Extracted variable name
+      conditionMessage: '', // Reason for assertion expression error
+      failureMessage: '', // Reason for extraction failure
+      value: '', // Extracted variable value
+      ignored: false, // Whether to ignore this assertion
       message: t('service.case.debugModal.conditionMessageEmpty')
     };
 
@@ -1406,26 +1524,26 @@ const setAssertResult = async (responseData) => {
 
       if (!condition) {
         _condition = {
-          failure: false, // 执行结果
-          name: '', // 提取的变量名
-          conditionMessage: '', // 断言表达式错误的原因
-          failureMessage: '', // 提取失败的原因
-          value: '', // 提取变量的值
-          ignored: false, // 是否忽略该条断言
+          failure: false, // Execution result
+          name: '', // Extracted variable name
+          conditionMessage: '', // Reason for assertion expression error
+          failureMessage: '', // Reason for extraction failure
+          value: '', // Extracted variable value
+          ignored: false, // Whether to ignore this assertion
           message: t('service.case.debugModal.conditionMessageEmpty')
         };
       } else {
-        const matchsMap = assertVariableExtra.value?.matchs || {};
-        const varMap = assertVariableExtra.value?.vars || {};
+        const matchsMap = assertionVariableExtra.value?.matchs || {};
+        const varMap = assertionVariableExtra.value?.vars || {};
         const matchs = matchsMap[condition];
         if (!matchs) {
           _condition = {
-            failure: false, // 执行结果
-            name: '', // 提取的变量名
-            conditionMessage: t('service.case.debugModal.conditionMsgFormat'), // 断言表达式错误的原因
-            failureMessage: t('service.case.debugModal.conditionMsgFormatFail'), // 提取失败的原因
-            value: '', // 提取变量的值
-            ignored: true, // 是否忽略该条断言
+            failure: false, // Execution result
+            name: '', // Extracted variable name
+            conditionMessage: t('service.case.debugModal.conditionMsgFormat'), // Reason for assertion expression error
+            failureMessage: t('service.case.debugModal.conditionMsgFormatFail'), // Reason for extraction failure
+            value: '', // Extracted variable value
+            ignored: true, // Whether to ignore this assertion
             message: t('service.case.debugModal.conditionMsgFormatErr')
           };
         } else {
@@ -1443,22 +1561,22 @@ const setAssertResult = async (responseData) => {
 
           if (ignored) {
             _condition = {
-              failure: true, // 执行结果
-              name: leftOperand, // 提取的变量名
-              conditionMessage: '', // 断言表达式错误的原因
-              failureMessage, // 提取失败的原因
-              value, // 提取变量的值
-              ignored: true, // 是否忽略该条断言
+              failure: true, // Execution result
+              name: leftOperand, // Extracted variable name
+              conditionMessage: '', // Reason for assertion expression error
+              failureMessage, // Reason for extraction failure
+              value, // Extracted variable value
+              ignored: true, // Whether to ignore this assertion
               message: t('service.case.debugModal.conditionMsgIgnore')
             };
           } else {
             _condition = {
-              failure: false, // 执行结果
-              name: leftOperand, // 提取的变量名
-              conditionMessage: '', // 断言表达式错误的原因
-              failureMessage, // 提取失败的原因
-              value, // 提取变量的值
-              ignored: false, // 是否忽略该条断言
+              failure: false, // Execution result
+              name: leftOperand, // Extracted variable name
+              conditionMessage: '', // Reason for assertion expression error
+              failureMessage, // Reason for extraction failure
+              value, // Extracted variable value
+              ignored: false, // Whether to ignore this assertion
               message: t('service.case.debugModal.conditionMsgExec')
             };
           }
@@ -1466,7 +1584,7 @@ const setAssertResult = async (responseData) => {
       }
     }
 
-    // 期望值
+    // Expected value processing
     const expectedData: { data: string | null; message: string; errorMessage: string; } = { data: expected, message: '', errorMessage: '' };
     if (extraction) {
       expectedData.data = extraction.finalValue;
@@ -1490,7 +1608,7 @@ const setAssertResult = async (responseData) => {
       rawContent: string;
       extractValue: string;
     } = {
-      extractValue,
+      extractValue: extractValue || '',
       bodySize: 0,
       size: 0,
       duration: 0,
@@ -1541,6 +1659,13 @@ const setAssertResult = async (responseData) => {
   return result;
 };
 
+/**
+ * Open response toolbar
+ * <p>
+ * Opens the response toolbar and sets the default tab to 'response'
+ * if not already spread or no current tab is selected.
+ * </p>
+ */
 const openToolBar = () => {
   if (!toolbarRef.value.isSpread || !currentTab.value) {
     toolbarRef.value.handleSelected({ value: 'response' });
@@ -1550,7 +1675,23 @@ const openToolBar = () => {
   }
 };
 
-// 点击保存
+/**
+ * Handle toolbar menu change
+ * <p>
+ * Updates the current tab when a different toolbar menu is selected.
+ * </p>
+ * @param menuKey - The selected menu key
+ */
+const toolbarChange = (menuKey: string) => {
+  currentTab.value = menuKey;
+};
+
+/**
+ * Save API data
+ * <p>
+ * Handles saving API data based on whether it's an archived or unarchived API.
+ * </p>
+ */
 const save = (): void => {
   if (isUnarchivedApi.value) {
     saveUnarchived();
@@ -1559,12 +1700,23 @@ const save = (): void => {
   }
 };
 
-// 归档
+/**
+ * Archive API
+ * <p>
+ * Opens the save drawer for archiving the current API.
+ * </p>
+ */
 const archivedApi = () => {
   drawerRef.value.open('save');
 };
 
-// 保存已归档 api
+/**
+ * Auto-save archived API
+ * <p>
+ * Automatically saves changes to an archived API if the user has modify permissions
+ * and the data has actually changed.
+ * </p>
+ */
 const autoSave = async () => {
   if (state.publishFlag) {
     notification.warning(t('service.apis.notifications.apiPublishedWarning'));
@@ -1574,7 +1726,8 @@ const autoSave = async () => {
   }
   let params = await getParameter();
   params = JSON.parse(JSON.stringify(params));
-  if (utils.deepCompare(initParams, JSON.parse(JSON.stringify(params)))) { // 比较新旧值
+  // Compare old and new values to avoid unnecessary saves
+  if (utils.deepCompare(initParams, JSON.parse(JSON.stringify(params)))) {
     return;
   }
   if (apiAuths.value.includes(ApiPermission.MODIFY) && !state.publishFlag) {
@@ -1598,15 +1751,28 @@ const autoSave = async () => {
   }
 };
 
-// 保存/更新 未归档接口内容
+/**
+ * Save/update unarchived API content
+ * <p>
+ * Opens the save drawer for unarchived APIs to allow saving or updating
+ * the API content.
+ * </p>
+ */
 const saveUnarchived = async (): Promise<void> => {
   drawerRef.value.open('saveUnarchived');
 };
 
-const isEmpty = computed(() => {
+const isResponseEmpty = computed(() => {
   return !responseState.config || !Object.keys(responseState.config).length;
 });
 
+/**
+ * Copy API URL to clipboard
+ * <p>
+ * Constructs the complete API URL with path and query parameters,
+ * then copies it to the clipboard for easy sharing.
+ * </p>
+ */
 const copyUrl = async () => {
   const pathJson = {};
   const pathArr = state.parameters.filter(i => i.in === ParameterIn.path);
@@ -1614,7 +1780,7 @@ const copyUrl = async () => {
     pathJson[i.name || ''] = i[valueKey];
   });
 
-  // 组装 query 数据 query + 认证 query
+  // Assemble query data (query parameters + authentication query)
   const queryJson = {};
   const quryyArr = state.parameters.filter(i => i.in === ParameterIn.query);
   quryyArr.forEach(i => {
@@ -1623,7 +1789,7 @@ const copyUrl = async () => {
   const apiPathQuery = getRealUri(pathJson, queryJson);
   const serverUrl = getServerData(currentServer.value);
 
-  // 组装请求 url
+  // Assemble final request URL
   let apiHref = '';
   if (!serverUrl.endsWith('/') && apiPathQuery && apiPathQuery.split('?')[0] && !apiPathQuery.startsWith('/')) {
     apiHref = serverUrl + '/' + apiPathQuery;
@@ -1634,20 +1800,32 @@ const copyUrl = async () => {
   notification.success(t('service.apis.notifications.copyUrlSuccess'));
 };
 
-const moving = ref(false); // 记录当前是否在拖拽中
+const moving = ref(false); // Track if currently dragging
 
-// 监听 window 变化事件, 重置最大高度
+/**
+ * Handle window resize events
+ * <p>
+ * Debounced resize handler that updates the maximum height of the main wrapper
+ * when the window is resized.
+ * </p>
+ */
 const resizeHandler = debounce(duration.resize, () => {
   nextTick(() => {
     maxHeight.value = mainWrapper.value.clientHeight;
   });
 });
 
+/**
+ * Close the drawer
+ * <p>
+ * Closes the currently open drawer.
+ * </p>
+ */
 const closeDrawer = () => {
   drawerRef.value.close();
 };
 
-// 显示认证信息在请求头
+// Watch authentication changes and update header display
 watch(() => state.authentication, async newValue => {
   const data = await getShowAuthData(newValue);
   authInHeader.value = data?.[0] || {};
@@ -1656,7 +1834,7 @@ watch(() => state.authentication, async newValue => {
 });
 
 watch(() => props.id, () => {
-  // 没有id的 或者是 未归档的 api, 都属于未归档
+  // APIs without ID or marked as unarchived are considered unarchived
   if (props.valueObj.unarchived || !props.id) {
     isUnarchivedApi.value = true;
     if (props.id) {
@@ -1664,7 +1842,7 @@ watch(() => props.id, () => {
     }
   } else {
     isUnarchivedApi.value = false;
-    // 编辑API
+    // Load API details for editing
     loadApiDetail();
   }
 }, {
@@ -1672,9 +1850,11 @@ watch(() => props.id, () => {
 });
 
 watch(() => props.uuid, newValue => {
+  // Handle WebSocket response when UUID matches
   if (newValue === uuid) {
     onResponse();
   } else {
+    // Handle authorization response for different request
     try {
       const data = JSON.parse(props.response);
       authorizationRef.value.onResponse(data);
@@ -1683,7 +1863,7 @@ watch(() => props.uuid, newValue => {
 });
 
 watch(() => props.ws, (newValue) => {
-  loadWS(newValue);
+  setWebSocket(newValue);
 }, {
   immediate: true
 });
@@ -1697,8 +1877,8 @@ onBeforeUnmount(() => {
   erd.removeListener(mainWrapper.value, resizeHandler);
 });
 
-// 更新 api 信息
-provide('setApiInfo', (info) => {
+// Update API information
+provide('setApiInfo', async (info) => {
   saveParams.value.id = info.id;
   saveParams.value.ownerId = info.ownerId;
   if (saveParams.value.serviceId) {
@@ -1718,10 +1898,10 @@ provide('setApiInfo', (info) => {
   } else {
     replaceTabPane(props.pid, { _id: info.id + 'API', pid: info.id + 'API', id: info.id, name: info.name, unarchived: false, value: 'API' });
   }
-  initParams = getParameter();
+  initParams = await getParameter();
 });
 
-provide('setUnarchivedApiInfo', (info) => {
+provide('setUnarchivedApiInfo', async (info) => {
   saveParams.value.id = info.id;
   saveParams.value.summary = info.name;
   isUnarchivedApi.value = true;
@@ -1730,15 +1910,15 @@ provide('setUnarchivedApiInfo', (info) => {
   } else {
     replaceTabPane(props.pid, { _id: info.id + 'API', pid: info.id + 'API', id: info.id, name: info.name, unarchived: true, value: 'API' });
   }
-  initParams = getParameter();
+  initParams = await getParameter();
 });
 
 defineExpose({ autoSave, pid: props.pid });
 provide('getParameter', getParameter);
 provide('auths', apiAuths);
-provide('id', computed(() => saveParams.value.id)); // 提供给子组件 当前 api 的 id
-provide('apiBaseInfo', computed(() => saveParams.value)); // api 基本信息
-provide('isUnarchivedApi', isUnarchivedApi); // 提供给子组件用于判断接口是否归档
+provide('id', computed(() => saveParams.value.id)); // Provide current API ID to child components
+provide('apiBaseInfo', computed(() => saveParams.value)); // API basic information
+provide('isUnarchivedApi', isUnarchivedApi); // Provide to child components for determining if API is archived
 provide('resolvedRefModels', computed(() => resolvedRefModels.value));
 provide('archivedId', computed(() => { return isUnarchivedApi.value ? undefined : saveParams.value.id; }));
 provide('selectHandle', closeDrawer);
@@ -1961,14 +2141,14 @@ provide('selectHandle', closeDrawer);
             @change="toolbarChange">
             <template #content="{ activeMenu }">
               <div class="toolbar-main  relative" :class="{ 'select-text': !moving }">
-                <template v-if="['request', 'response', 'time', 'cookie', 'assert'].includes(activeMenu | '')">
-                  <template v-if="respError.show">
+                <template v-if="['request', 'response', 'time', 'cookie', 'assert'].includes(activeMenu || '')">
+                  <template v-if="responseError.show">
                     <ResponseError
                       class="h-full overflow-hidden"
                       :errorTitle="errorTitle"
-                      :info="respError.value" />
+                      :info="responseError.value" />
                   </template>
-                  <template v-else-if="!isEmpty">
+                  <template v-else-if="!isResponseEmpty">
                     <ApiRequest
                       v-show="activeMenu === 'request'"
                       class="px-5"
