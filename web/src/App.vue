@@ -4,7 +4,6 @@ import { ConfigProvider, Denied, Header, NetworkError, NotFound } from '@xcan-an
 import { utils, duration, appContext } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { mock } from '@/api/tester';
-import GlobalConstantConfig from '@/globalConstant';
 import { ai } from '@/api/gm';
 
 import store from './store';
@@ -90,7 +89,7 @@ const initializeApp = async (): Promise<void> => {
 
     // Load global configurations
     const envContent = appContext.getContext().env;
-    globalConfigs.value = { ...envContent, ...GlobalConstantConfig };
+    globalConfigs.value = { ...envContent };
 
     // Load AI agent settings
     aiAgent.value = await ai.getAIAgentSetting();
