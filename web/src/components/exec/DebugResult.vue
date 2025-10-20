@@ -12,7 +12,7 @@ import { utils } from '@xcan-angus/infra';
 
 // Local imports
 import { PipelineConfig } from './PropsType2';
-import { ExecContent } from '@/components/scenario/FunctionTestDetail/PropsType';
+import { ExecContent } from '@/components/exec/HttpFunctionTestResult/PropsType';
 
 const { t } = useI18n();
 
@@ -67,12 +67,12 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Async component imports
-const TransStartTestDetail = defineAsyncComponent(() => import('@/components/scenario/FunctionTestDetail/Collapse/TransStart/index.vue'));
-const WaitingTimeTestDetail = defineAsyncComponent(() => import('@/components/scenario/FunctionTestDetail/Collapse/WaitingTime/index.vue'));
-const ThroughputTestDetail = defineAsyncComponent(() => import('@/components/scenario/FunctionTestDetail/Collapse/Throughput/index.vue'));
-const RendezvousTestDetail = defineAsyncComponent(() => import('@/components/scenario/FunctionTestDetail/Collapse/Rendezvous/index.vue'));
-const HTTPTestDetail = defineAsyncComponent(() => import('@/components/scenario/FunctionTestDetail/Collapse/HTTP/index.vue'));
-const TransEndTestDetail = defineAsyncComponent(() => import('@/components/scenario/FunctionTestDetail/Collapse/TransEnd/index.vue'));
+const TransStartTestDetail = defineAsyncComponent(() => import('@/components/exec/HttpFunctionTestResult/Collapse/TransStart/index.vue'));
+const WaitingTimeTestDetail = defineAsyncComponent(() => import('@/components/exec/HttpFunctionTestResult/Collapse/WaitingTime/index.vue'));
+const ThroughputTestDetail = defineAsyncComponent(() => import('@/components/exec/HttpFunctionTestResult/Collapse/Throughput/index.vue'));
+const RendezvousTestDetail = defineAsyncComponent(() => import('@/components/exec/HttpFunctionTestResult/Collapse/Rendezvous/index.vue'));
+const HTTPTestDetail = defineAsyncComponent(() => import('@/components/exec/HttpFunctionTestResult/Collapse/HTTP/index.vue'));
+const TransEndTestDetail = defineAsyncComponent(() => import('@/components/exec/HttpFunctionTestResult/Collapse/TransEnd/index.vue'));
 
 // Computed properties
 const processedPipelines = computed(() => {

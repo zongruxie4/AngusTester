@@ -13,14 +13,14 @@ import Chart from '@/views/scenario/monitor/detail/Chart.vue';
 import DebugLog from '@/components/exec/DebugLog.vue';
 import ExecLog from '@/components/exec/ExecLog/index.vue';
 
-import ScenarioHttpDebugResult from '@/components/scenario/ScenarioHttpDebugResult/index.vue';
-import ScenarioJdbcDebugResult from '@/components/scenario/ScenarioJdbcDebugResult/index.vue';
-import ScenarioFtpDebugResult from '@/components/scenario/ScenarioFtpDebugResult/index.vue';
-import ScenarioWebsocketDebugResult from '@/components/scenario/ScenarioWebsocketDebugResult/index.vue';
-import ScenarioLdapDebugResult from '@/components/scenario/ScenarioLdapDebugResult/index.vue';
-import ScenarioMailDebugResult from '@/components/scenario/ScenarioMailDebugResult/index.vue';
-import ScenarioTcpDebugResult from '@/components/scenario/ScenarioTcpDebugResult/index.vue';
-import ScenarioSmtpDebugResult from '@/components/scenario/ScenarioSmtpDebugResult/index.vue';
+import ScenarioHttpDebugResult from '@/components/scenario/httpDebugResult/index.vue';
+import ScenarioJdbcDebugResult from '@/components/scenario/jdbcDebugResult/index.vue';
+import ScenarioFtpDebugResult from '@/components/scenario/ftpDebugResult/index.vue';
+import ScenarioWebsocketDebugResult from '@/components/scenario/websocketDebugResult/index.vue';
+import ScenarioLdapDebugResult from '@/components/scenario/ldapDebugResult/index.vue';
+import ScenarioMailDebugResult from '@/components/scenario/mailDebugResult/index.vue';
+import ScenarioTcpDebugResult from '@/components/scenario/tcpDebugResult/index.vue';
+import ScenarioSmtpDebugResult from '@/components/scenario/smtpDebugResult/index.vue';
 
 import { ScenarioMonitorStatus } from '@/enums/enums';
 
