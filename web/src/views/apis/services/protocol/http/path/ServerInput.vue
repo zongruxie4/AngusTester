@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n';
 
 import { services } from '@/api/tester';
 import { ServerInfo } from '@/views/apis/server/types';
+import { VARIABLE_NAME_WIDE_REG } from '@/utils/apis';
 
 const { t } = useI18n();
 
@@ -41,18 +42,30 @@ const popPosition = reactive({
   left: '0',
   width: '0'
 });
-const variableReg = /\{[a-zA-Z0-9_]+\}/g; // 匹配任意字母数字（大小写均可）
 
-const compositionend = (e): void => {
+/**
+ * Handle composition end event
+ * <p>Resets input flag and triggers change handler after IME input</p>
+ */
+const handleCompositionEnd = (): void => {
   inputFlag.value = false;
-  handleChange(e);
+  handleInputChange();
 };
 
-const compositionstart = (): void => {
+/**
+ * Handle composition start event
+ * <p>Sets input flag to prevent change handling during IME input</p>
+ */
+const handleCompositionStart = (): void => {
   inputFlag.value = true;
 };
 
-const handlePaste = (event) => {
+/**
+ * Handle paste event with custom text processing
+ * <p>Processes pasted text and updates input content</p>
+ * @param event - The paste event
+ */
+const handlePasteEvent = (event) => {
   event.preventDefault();
   let text;
   const clp = event.clipboardData;
@@ -73,7 +86,11 @@ const handlePaste = (event) => {
   valueHtml.value = inputRef.value.innerHTML;
 };
 
-const handleBlur = () => {
+/**
+ * Handle input blur event
+ * <p>Updates value and emits blur event when user leaves input</p>
+ */
+const handleInputBlur = () => {
   focused.value = false;
   value.value = inputRef.value.innerText.replace(/\n/mg, '');
   emits('update:value', value.value);
@@ -81,12 +98,21 @@ const handleBlur = () => {
   valueHtml.value = inputRef.value.innerHTML;
 };
 
-const handleFocus = () => {
+/**
+ * Handle input focus event
+ * <p>Sets focused state and emits focus event</p>
+ */
+const handleInputFocus = () => {
   focused.value = true;
   emits('focus');
 };
 
-const handleKeyPress = (e) => {
+/**
+ * Handle key press event
+ * <p>Processes Enter key to blur input and emit enter press event</p>
+ * @param e - The keyboard event
+ */
+const handleKeyPressEvent = (e) => {
   if (e.code === 'Enter') {
     e.preventDefault();
     inputRef.value.blur();
@@ -94,11 +120,20 @@ const handleKeyPress = (e) => {
   }
 };
 
-const handleChange = () => {
+/**
+ * Handle input change event
+ * <p>Updates HTML content when input changes</p>
+ */
+const handleInputChange = () => {
   valueHtml.value = inputRef.value.innerHTML;
 };
 
-const handleMouseover = (e) => {
+/**
+ * Handle mouse over event for variable tooltips
+ * <p>Shows popover with variable information when hovering over variables</p>
+ * @param e - The mouse event
+ */
+const handleMouseOverEvent = (e) => {
   if (e.target.tagName === 'SPAN' && e.target.className.includes('xc-tip')) {
     popoverVisible.value = true;
     popPosition.width = e.target.offsetWidth + 'px';
@@ -109,11 +144,18 @@ const handleMouseover = (e) => {
   }
 };
 
-let delayTimer = null;
+let delayTimer: NodeJS.Timeout | null = null;
 
-const serverDefaultChange = ref(false);
-const changeEnumDefault = async (value: string, serverKey) => {
-  serverDefaultChange.value = true;
+const isServerDefaultChanging = ref(false);
+
+/**
+ * Change enum default value for server variable
+ * <p>Updates server variable default value and saves to backend</p>
+ * @param value - The new default value
+ * @param serverKey - The server variable key
+ */
+const changeServerVariableDefault = async (value: string, serverKey) => {
+  isServerDefaultChanging.value = true;
   const params = {
     ...serverObj.value,
     variables: {
@@ -132,12 +174,16 @@ const changeEnumDefault = async (value: string, serverKey) => {
   emits('handleBlur');
 };
 
-const setTimer = () => {
+/**
+ * Set delay timer for popover visibility
+ * <p>Manages popover visibility with delay to prevent flickering</p>
+ */
+const setPopoverDelayTimer = () => {
   delayTimer = setTimeout(() => {
-    if (serverDefaultChange.value) {
+    if (isServerDefaultChanging.value) {
       delayTimer && clearTimeout(delayTimer);
       delayTimer = null;
-      serverDefaultChange.value = false;
+      isServerDefaultChanging.value = false;
       return;
     }
     popoverVisible.value = false;
@@ -161,7 +207,9 @@ watch(() => props.valueObj, newValue => {
 
 watch(() => value.value, newValue => {
   const content = (newValue || '').replaceAll('\n', '');
-  const replaced = content.replace(variableReg, (match) => `<span class="text-blue-1 cursor-pointer xc-tip">${match}</span>`); // 将${abc}替换为<span>${abc}</span>
+  // Replace ${abc} with <span>${abc}</span>
+  const replaced = content.replace(VARIABLE_NAME_WIDE_REG,
+    (match) => `<span class="text-blue-1 cursor-pointer xc-tip">${match}</span>`);
   valueHtml.value = replaced;
   if (inputRef.value?.innerHTML && inputRef.value.innerHTML === replaced) {
     return;
@@ -174,10 +222,16 @@ watch(() => value.value, newValue => {
 });
 
 onMounted(() => {
-  document.addEventListener('click', setTimer);
+  document.addEventListener('click', setPopoverDelayTimer);
 });
+
 onBeforeUnmount(() => {
-  document.removeEventListener('click', setTimer);
+  document.removeEventListener('click', setPopoverDelayTimer);
+  // Clean up timer to prevent memory leaks
+  if (delayTimer) {
+    clearTimeout(delayTimer);
+    delayTimer = null;
+  }
 });
 </script>
 <template>
@@ -191,14 +245,14 @@ onBeforeUnmount(() => {
       ref="inputRef"
       class="px-2 py-1 outline-none h-7.5 leading-5.5 whitespace-nowrap flex"
       :contenteditable="!props.readonly"
-      @keypress="handleKeyPress"
-      @input="handleChange"
-      @blur="handleBlur"
-      @focus="handleFocus"
-      @compositionend="compositionend"
-      @compositionstart="compositionstart"
-      @paste="handlePaste"
-      @mouseover="handleMouseover">
+      @keypress="handleKeyPressEvent"
+      @input="handleInputChange"
+      @blur="handleInputBlur"
+      @focus="handleInputFocus"
+      @compositionend="handleCompositionEnd"
+      @compositionstart="handleCompositionStart"
+      @paste="handlePasteEvent"
+      @mouseover="handleMouseOverEvent">
     </div>
     <Popover
       placement="bottom"
@@ -242,7 +296,7 @@ onBeforeUnmount(() => {
                         size="small"
                         :checked="_value.default === en"
                         class="-mr-0.25 ml-1"
-                        @click="changeEnumDefault(en, key)" />
+                        @click="changeServerVariableDefault(en, key)" />
                     </div>
                   </div>
                 </div>
