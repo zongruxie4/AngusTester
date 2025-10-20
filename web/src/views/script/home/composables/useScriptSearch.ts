@@ -5,7 +5,7 @@ import { cloneDeep } from 'lodash-es';
 import { CombinedTargetType } from '@/enums/enums';
 import {
   createAuditOptions, createTimeOptions, createEnumTypeConfig, type QuickSearchConfig
-} from '@/components/quickSearch';
+} from 'src/components/form/quickSearch';
 
 /**
  * Composable for managing search functionality in script home

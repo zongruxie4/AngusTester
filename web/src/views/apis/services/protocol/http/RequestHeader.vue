@@ -13,7 +13,7 @@ import { ParameterUtils, type ParameterComponentProps, type ParameterComponentEm
 
 import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
 import SimpleEditableSelect from '@/components/form/EditableSelector.vue';
-const ParamInput = defineAsyncComponent(() => import('@/components/form/ParamInput/index.vue'));
+const ParamInput = defineAsyncComponent(() => import('@/components/form/ParamInput.vue'));
 
 /**
  * Component props interface

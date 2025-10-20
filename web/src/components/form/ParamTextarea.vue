@@ -4,9 +4,9 @@ import { Popover } from 'ant-design-vue';
 import { Icon, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { init, insertHtmlAtCaret, stringToDomFragment } from './utils/selection';
-import { FunctionConfig, CallbackValue } from './utils/type';
-import Casecader from './Casecader/cascader';
+import { init, insertHtmlAtCaret, stringToDomFragment } from './selection';
+import { FunctionConfig, CallbackValue } from './type';
+import Casecader from '@/components/form/casecader/cascader';
 
 const { t } = useI18n();
 

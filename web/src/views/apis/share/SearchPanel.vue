@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n';
 import { LoadingProps } from '@/types/types';
 import {
   QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig
-} from '@/components/quickSearch';
+} from 'src/components/form/quickSearch';
 
 const { t } = useI18n();
 

@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router';
 import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { DataMenuKey } from '@/views/data/menu';
-import { createAuditOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
+import { createAuditOptions, createTimeOptions, type QuickSearchConfig } from 'src/components/form/quickSearch';
 import { useDropdownMenus } from '@/views/data/dataset/list/composables';
 
 export type DatasetSearchEmits = {

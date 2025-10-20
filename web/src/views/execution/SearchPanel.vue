@@ -7,7 +7,7 @@ import { TESTER, PageQuery, SearchCriteria, EditionType } from '@xcan-angus/infr
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { useSearchPanel } from './composables/useSearchPanel';
 import { BasicProps } from '@/types/types';
-import { QuickSearchOptions } from '@/components/quickSearch';
+import { QuickSearchOptions } from 'src/components/form/quickSearch';
 
 type OrderByKey = 'createdDate' | 'createdByName';
 

@@ -10,7 +10,7 @@ import { TIME_FORMAT } from '@/utils/constant';
 import { TestMenuKey } from '@/views/test/menu';
 import {
   QuickSearchOptions, createAuditOptions, createTimeOptions, createEnumOptions, type QuickSearchConfig
-} from '@/components/quickSearch';
+} from 'src/components/form/quickSearch';
 
 // composables
 const { t } = useI18n();

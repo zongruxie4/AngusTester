@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash-es';
 import { PageQuery, SearchCriteria, CombinedTargetType, XCanDexie } from '@xcan-angus/infra';
 import { BasicProps } from '@/types/types';
-import { createAuditOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
+import { createAuditOptions, createTimeOptions, type QuickSearchConfig } from 'src/components/form/quickSearch';
 
 import type {
   OrderByKey,

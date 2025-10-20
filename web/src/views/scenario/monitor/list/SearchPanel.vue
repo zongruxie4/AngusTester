@@ -2,7 +2,7 @@
 import { DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { PageQuery } from '@xcan-angus/infra';
-import { QuickSearchOptions } from '@/components/quickSearch';
+import { QuickSearchOptions } from 'src/components/form/quickSearch';
 import { ScenarioMenuKey } from '@/views/scenario/menu';
 
 // Import types and composables

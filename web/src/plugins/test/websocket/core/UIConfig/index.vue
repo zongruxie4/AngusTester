@@ -34,7 +34,7 @@ const emit = defineEmits<{
   (e: 'renderChange', value: boolean): void;
 }>();
 
-const ParamInput = defineAsyncComponent(() => import('@/components/form/ParamInput/index.vue'));
+const ParamInput = defineAsyncComponent(() => import('@/components/form/ParamInput.vue'));
 const SelectSocketApiModal = defineAsyncComponent(() => import('./SelectSocketApiModal/index.vue'));
 const AssertionForm = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/AssertionForm/index.vue'));
 const Parametric = defineAsyncComponent(() => import('./Parametric/index.vue'));

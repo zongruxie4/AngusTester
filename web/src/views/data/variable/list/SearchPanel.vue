@@ -4,7 +4,7 @@ import { Dropdown, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { Button, Tooltip } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
-import { QuickSearchOptions } from '@/components/quickSearch';
+import { QuickSearchOptions } from 'src/components/form/quickSearch';
 
 // Import composables
 import { useSearchPanel } from './composables/useSearchPanel';

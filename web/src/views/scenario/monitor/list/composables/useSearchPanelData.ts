@@ -1,7 +1,7 @@
 import { computed, ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { PageQuery, TESTER, appContext } from '@xcan-angus/infra';
-import { createAuditOptions, createTimeOptions, createEnumTypeConfig, type QuickSearchConfig } from '@/components/quickSearch';
+import { createAuditOptions, createTimeOptions, createEnumTypeConfig, type QuickSearchConfig } from 'src/components/form/quickSearch';
 import { ScenarioMonitorStatus } from '@/enums/enums';
 import type {
   FilterItem,

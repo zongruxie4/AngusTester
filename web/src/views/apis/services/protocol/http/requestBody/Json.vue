@@ -23,7 +23,7 @@ import { ParamsInfo } from '@/views/apis/services/protocol/http/types';
 import { transJsonToList, transListToJson, transListToSchema } from '@/utils/apis/index';
 
 const SimpleEditableSelect = defineAsyncComponent(() => import('@/components/form/EditableSelector.vue'));
-const ParamInput = defineAsyncComponent(() => import('@/components/form/ParamInput/index.vue'));
+const ParamInput = defineAsyncComponent(() => import('@/components/form/ParamInput.vue'));
 
 const { t } = useI18n();
 

@@ -13,8 +13,8 @@ import { http, TESTER } from '@xcan-angus/infra';
 
 // Local component imports
 import ApiUpload from './Upload.vue';
-import ParamInput from '@/components/form/ParamInput/index.vue';
-import JsonContent from '@/components/form/JsonContent/index.vue';
+import ParamInput from '@/components/form/ParamInput.vue';
+import JsonContent from '@/components/form/JsonContent.vue';
 
 // Local imports
 import { basicParameterItemTypes, formDataParameterTypes } from './interface2';

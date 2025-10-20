@@ -10,7 +10,7 @@ import {
   createAuditOptions,
   createTimeOptions,
   type QuickSearchConfig
-} from '@/components/quickSearch';
+} from 'src/components/form/quickSearch';
 import dayjs from 'dayjs';
 
 // Type Definitions

@@ -9,7 +9,7 @@ import { LoadingProps } from '@/types/types';
 import { IssueMenuKey } from '@/views/issue/menu';
 import {
   QuickSearchOptions, createAuditOptions, createTimeOptions, createEnumOptions, type QuickSearchConfig
-} from '@/components/quickSearch';
+} from 'src/components/form/quickSearch';
 
 const { t } = useI18n();
 

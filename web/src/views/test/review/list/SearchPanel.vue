@@ -8,7 +8,7 @@ import { useI18n } from 'vue-i18n';
 import { TestMenuKey } from '@/views/test/menu';
 import {
   QuickSearchOptions, createAuditOptions, createTimeOptions, createEnumOptions, type QuickSearchConfig
-} from '@/components/quickSearch';
+} from 'src/components/form/quickSearch';
 
 // Props and Component Setup
 const props = withDefaults(defineProps<{

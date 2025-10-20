@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 
 import { Input, Select, Icon, SelectSchema, SimpleEditableSelect } from '@xcan-angus/vue-ui';
 import { Button, Checkbox } from 'ant-design-vue';
-import ParamsInput from '@/components/form/ParamInput/index.vue';
+import ParamsInput from '@/components/form/ParamInput.vue';
 import { API_EXTENSION_KEY, deconstruct, deepDelAttrFromObj, getModelDataByRef } from '@/utils/apis';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import Ajv from 'ajv';

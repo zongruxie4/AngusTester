@@ -4,9 +4,9 @@ import { Popover } from 'ant-design-vue';
 import { Icon, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { init, insertHtmlAtCaret, stringToDomFragment } from './utils/selection';
-import { FunctionConfig, CallbackValue } from './utils/type';
-import Casecader from './Casecader/cascader';
+import { init, insertHtmlAtCaret, stringToDomFragment } from './selection';
+import { FunctionConfig, CallbackValue } from './type';
+import Casecader from '@/components/form/casecader/cascader';
 
 // Initialize i18n for internationalization
 const { t } = useI18n();
@@ -46,7 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
 /**
  * Computed: Effective placeholder text
  * Uses custom placeholder or default i18n text
- * 
+ *
  * @returns Placeholder string to display
  */
 const placeholder = computed(() => {
@@ -74,7 +74,7 @@ const getAllFunctions = inject('getAllFunctions', () => Promise);
 /**
  * Computed: Filtered functions based on keyword
  * Shows only functions matching the search keyword
- * 
+ *
  * @returns Filtered array of mock functions
  */
 const showFunctions = computed(() => {
@@ -125,7 +125,7 @@ const emit = defineEmits<{
  * Handle IME composition end event
  * Fired when user finishes typing with Input Method Editor (e.g., Chinese/Japanese input)
  * Updates input state and triggers change handling
- * 
+ *
  * @param e - Composition event
  */
 const compositionend = (e: any): void => {
@@ -163,7 +163,7 @@ const limitLength = (): void => {
 /**
  * Insert function text at cursor position
  * Replaces the @ keyword with the selected function
- * 
+ *
  * @param func - Function configuration to insert
  */
 function insertTxtAndSetcursor(func: FunctionConfig): void {
@@ -187,12 +187,12 @@ const selection = window.getSelection();
 /**
  * Handle input change events
  * Manages function dropdown visibility and keyword filtering
- * 
+ *
  * Logic:
  * - @ symbol: Show dropdown at cursor position
  * - Typing: Update keyword filter
  * - Backspace: Update keyword or hide dropdown if @ is deleted
- * 
+ *
  * @param event - Input event
  */
 const handleChange = (event: any): void => {
@@ -237,7 +237,7 @@ const handleChange = (event: any): void => {
 /**
  * Handle double-click to select function node
  * Selects the entire function node when double-clicked
- * 
+ *
  * @param event - Mouse event
  */
 const handleGeRange = (event: any): void => {
@@ -255,13 +255,13 @@ const handleGeRange = (event: any): void => {
  * Handle keypress events
  * Prevents Enter key default behavior (new line insertion)
  * Allows Ctrl+Enter and Shift+Enter to pass through
- * 
+ *
  * @param event - Keyboard event
  */
 const onKeypress = (event: KeyboardEvent): void => {
   const { code, ctrlKey, shiftKey } = event;
   const keyCode = code.toLowerCase();
-  
+
   // Allow Ctrl+Enter and Shift+Enter
   if ((ctrlKey || shiftKey) && (keyCode === 'enter' || keyCode === 'numpadenter')) {
     event.preventDefault();
@@ -337,7 +337,7 @@ watch(() => props.value, newValue => {
  */
 const updataValueDom = (): void => {
   let propsValue: string | undefined = undefined;
-  
+
   // Convert different types to string
   if (typeof props.value === 'boolean') {
     propsValue = props.value.toString();
@@ -348,7 +348,7 @@ const updataValueDom = (): void => {
   } else {
     propsValue = props.value;
   }
-  
+
   // Replace @function( patterns with function nodes
   const inputValueDom = (propsValue || '').replace(/@[a-zA-z0-9]+\(/g, (match) => {
     const funcName = match.replace('(', '');
@@ -359,7 +359,7 @@ const updataValueDom = (): void => {
     const funNode = stringToDomFragment(funObj);
     return funNode.outerHTML + '(';
   });
-  
+
   inputValue.value = inputValueDom;
   if (inputValueRef.value) {
     inputValueRef.value.innerHTML = inputValueDom;
@@ -382,7 +382,7 @@ onMounted(async () => {
   if (!allFunction.value.length && typeof getAllFunctions === 'function') {
     await getAllFunctions();
   }
-  
+
   // Initialize DOM value if props value exists
   if (props.value && props.value !== inputTextValue.value) {
     updataValueDom();

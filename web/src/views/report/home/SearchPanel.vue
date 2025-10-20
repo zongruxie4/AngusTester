@@ -5,7 +5,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { useSearchPanel } from './composables/useSearchPanel';
 import type { SearchPanelEmits } from './types';
 import { BasicProps } from '@/types/types';
-import { QuickSearchOptions } from '@/components/quickSearch';
+import { QuickSearchOptions } from 'src/components/form/quickSearch';
 
 // Props and emits definition
 const props = withDefaults(defineProps<BasicProps>(), {

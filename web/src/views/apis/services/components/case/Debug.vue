@@ -52,7 +52,7 @@ const emits = defineEmits<{
 }>();
 
 const ApiParameter = defineAsyncComponent(() => import('@/components/apis/parameter/index.vue'));
-const ApiHeader = defineAsyncComponent(() => import('@/components/form/header/index.vue'));
+const ApiHeader = defineAsyncComponent(() => import('@/components/form/Header.vue'));
 const ApiCookie = defineAsyncComponent(() => import('@/components/apis/cookie/index.vue'));
 const ApiBody = defineAsyncComponent(() => import('@/components/apis/body/index.vue'));
 const ApiAssert = defineAsyncComponent(() => import('@/components/apis/assertion/index.vue'));

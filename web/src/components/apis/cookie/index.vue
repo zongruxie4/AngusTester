@@ -12,8 +12,8 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import { http, TESTER } from '@xcan-angus/infra';
 
 // Local component imports
-import ParamsInput from '@/components/form/ParamInput/index.vue';
-import JsonContent from '@/components/form/JsonContent/index.vue';
+import ParamsInput from '@/components/form/ParamInput.vue';
+import JsonContent from '@/components/form/JsonContent.vue';
 
 // Utility imports
 import { ParamsItem, getDefaultParams, API_EXTENSION_KEY, deconstruct, validateType, deepDelAttrFromObj, getModelDataByRef, VARIABLE_NAME_REG } from '@/utils/apis';

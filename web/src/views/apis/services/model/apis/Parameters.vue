@@ -7,7 +7,7 @@ import { HTTP_HEADERS } from '@/utils/constant';
 
 import ApiCookie from '@/components/apis/cookie/index.vue';
 import ApiParameter from '@/components/apis/parameter/index.vue';
-import ApiHeader from '@/components/form/header/index.vue';
+import ApiHeader from '@/components/form/Header.vue';
 
 interface Props {
     dataSource: {[key: string]: any}[]
