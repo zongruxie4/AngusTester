@@ -4,7 +4,7 @@ import { API_EXTENSION_KEY, getDataTypeFromFormat, getDataType } from '@/utils/a
 const { valueKey } = API_EXTENSION_KEY;
 
 /**
- *transform JSON to list<key, value>[] TODO 重复代码, 和上层 utils 文件合并
+ *transform JSON to list<key, value>[] TODO 重复代码
  */
 export const transJsonToList = (data: any [] | Record<string, any>, pid = -1, level = 1, defaultData: any[] = [], schema = {}, topSchema = {}): any[] => {
   const transArr = (data, pid = -1, level = 1, schema) => {
@@ -127,7 +127,7 @@ export const transJsonToList = (data: any [] | Record<string, any>, pid = -1, le
 };
 
 /**
- * transform list to json<key, value>
+ * transform list to json<key, value> TODO 重复代码
  */
 export const transListToJson = (list, type, pid = -1) => {
   const child = list.filter(item => item.pid === pid);
@@ -179,7 +179,7 @@ export const transListToJson = (list, type, pid = -1) => {
 };
 
 /**
- * transform list to schema<key, value>
+ * transform list to schema<key, value> TODO 重复代码
  */
 export const transListToSchema = (list, type, pid = -1) => {
   const childs = list.filter(item => item.pid === pid);

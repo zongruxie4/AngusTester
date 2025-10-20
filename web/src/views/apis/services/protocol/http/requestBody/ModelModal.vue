@@ -10,79 +10,117 @@ interface Props {
   visible: boolean;
 }
 
+interface ModelOption {
+  id: string;
+  ref: string;
+  key: string;
+  model: string;
+  lastModifiedByName: string;
+  lastModifiedDate: string;
+  resolvedRefModels?: any;
+  label: string;
+  value: string;
+}
+
 const props = withDefaults(defineProps<Props>(), {
   visible: false
 });
 
 const { t } = useI18n();
-const loading = ref(false);
-const keywords = ref();
+const isLoading = ref(false);
+const searchKeywords = ref<string>();
 const apiBaseInfo = inject('apiBaseInfo', ref());
 
 const emits = defineEmits<{
-  (e: 'update:visible', value: boolean):void;
-  (e: 'confirm', value?: Record<string, any>):void
+  (e: 'update:visible', value: boolean): void;
+  (e: 'confirm', value?: Record<string, any>): void;
 }>();
 
-const toggleOpenModel = () => {
+/**
+ * Close the modal
+ */
+const closeModal = () => {
   emits('update:visible', false);
 };
 
-const handleImportModel = async () => {
-  if (!targetModel.value) {
-    toggleOpenModel();
+/**
+ * Handle model import
+ */
+const handleModelImport = async () => {
+  if (!selectedModel.value) {
+    closeModal();
+    return;
   }
 
-  const [error, resp] = await services.getComponentRef(apiBaseInfo.value.serviceId, $ref.value);
+  const [error, response] = await services.getComponentRef(apiBaseInfo.value.serviceId, modelReference.value!);
   if (error) {
     return;
   }
-  const result = deconstruct(resp.data);
-  emits('confirm', { schema: result || JSON.parse(resp.data.model), ref: $ref.value });
-  toggleOpenModel();
-};
 
-const options = ref<any[]>([]);
-const loadOpt = async () => {
-  const [error, resp] = await services.getCompData(apiBaseInfo.value.serviceId, ['requestBodies'], [], {}, false);
-  if (error) {
-    return;
-  }
-  options.value = (resp.data || []).map(i => {
-    return {
-      ...i,
-      label: i.ref,
-      value: i.id
-    };
+  const result = deconstruct(response.data);
+  emits('confirm', {
+    schema: result || JSON.parse(response.data.model),
+    ref: modelReference.value
   });
+  closeModal();
 };
 
-const modelValue = ref();
-const $ref = ref();
-const resolvedRefModels = ref();
+// Model options and state management
+const modelOptions = ref<ModelOption[]>([]);
+const selectedModel = ref<string>();
+const modelReference = ref<string>();
+const modelData = ref<any>();
+const resolvedRefModels = ref<any>();
 
-const targetModel = ref();
-const handleChangeModel = (value) => {
-  targetModel.value = value;
-  const modelObj = options.value.find(i => i.value === value);
-  let model = modelObj.model;
-  $ref.value = modelObj.ref;
-  model = JSON.parse(model);
-  modelValue.value = model;
-  resolvedRefModels.value = modelObj.resolvedRefModels;
-};
-
-const showOptions = computed(() => {
-  if (keywords.value) {
-    return options.value.filter(i => i.key.includes(keywords.value));
-  } else {
-    return options.value;
+/**
+ * Load model options from API
+ */
+const loadModelOptions = async () => {
+  const [error, response] = await services.getCompData(apiBaseInfo.value.serviceId, ['requestBodies'], [], {}, false);
+  if (error) {
+    return;
   }
+
+  modelOptions.value = (response.data || []).map((item: any) => ({
+    ...item,
+    label: item.ref,
+    value: item.id
+  }));
+};
+
+/**
+ * Handle model selection change
+ * @param value - Selected model value
+ */
+const handleModelSelectionChange = (value: string) => {
+  selectedModel.value = value;
+  const modelOption = modelOptions.value.find(option => option.value === value);
+
+  if (modelOption) {
+    modelReference.value = modelOption.ref;
+    modelData.value = JSON.parse(modelOption.model);
+    resolvedRefModels.value = modelOption.resolvedRefModels;
+  }
+};
+
+/**
+ * Filtered model options based on search keywords
+ */
+const filteredModelOptions = computed(() => {
+  if (searchKeywords.value) {
+    return modelOptions.value.filter(option =>
+      option.key.toLowerCase().includes(searchKeywords.value?.toLowerCase() || '')
+    );
+  }
+  return modelOptions.value;
 });
 
-watch(() => props.visible, newValue => {
-  if (newValue && !options.value.length) {
-    loadOpt();
+/**
+ * Watch for modal visibility changes and load data when needed
+ */
+watch(() => props.visible, (isVisible) => {
+  if (isVisible && !modelOptions.value.length) {
+    loadModelOptions();
   }
 });
 </script>
@@ -90,10 +128,10 @@ watch(() => props.visible, newValue => {
   <Modal
     :visible="props.visible"
     :title="t('service.apiRequestBody.modal.title')"
-    @cancel="toggleOpenModel"
-    @ok="handleImportModel">
+    @cancel="closeModal"
+    @ok="handleModelImport">
     <Input
-      v-model:value="keywords"
+      v-model:value="searchKeywords"
       class="w-50 mb-2"
       :placeholder="t('common.placeholders.searchKeyword')"
       size="small" />
@@ -103,18 +141,22 @@ watch(() => props.visible, newValue => {
         <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.modifiedBy') }}</div>
         <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.modifiedTime') }}</div>
       </div>
-      <Spin :spinning="loading">
-        <template v-if="!loading&&!showOptions?.length">
+      <Spin :spinning="isLoading">
+        <template v-if="!isLoading && !filteredModelOptions?.length">
           <NoData class="flex items-center min-h-26" />
         </template>
         <template v-else>
           <div style="min-height: 104px;max-height: 328px;" class="px-3 pt-2 overflow-y-auto">
             <div
-              v-for="item in showOptions"
+              v-for="item in filteredModelOptions"
               :key="item.id"
               class="flex items-center">
               <div class="flex-1/3 flex items-center">
-                <Checkbox :checked="targetModel === item.value" @change="handleChangeModel(item.value)">{{ item.key }}</Checkbox>
+                <Checkbox
+                  :checked="selectedModel === item.value"
+                  @change="handleModelSelectionChange(item.value)">
+                  {{ item.key }}
+                </Checkbox>
               </div>
               <div class="flex-1/3">{{ item.lastModifiedByName }}</div>
               <div class="flex-1/3">{{ item.lastModifiedDate }}</div>

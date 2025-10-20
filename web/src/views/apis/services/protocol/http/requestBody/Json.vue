@@ -4,13 +4,20 @@ import { useI18n } from 'vue-i18n';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { Icon, Input, Select, SelectSchema, notification } from '@xcan-angus/vue-ui';
 import { Button, Checkbox } from 'ant-design-vue';
-import { API_EXTENSION_KEY, deepDelAttrFromObj, getModelDataByRef, QueryAndPathInOption } from '@/utils/apis';
+import {
+  API_EXTENSION_KEY,
+  deepDelAttrFromObj,
+  getModelDataByRef,
+  QueryAndPathInOption,
+  schemaTypeToOption
+} from '@/utils/apis';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { deconstruct } from '@/utils/swagger';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { services } from '@/api/tester';
-import { schemaTypeToOptions } from '@/views/apis/services/protocol/http/utils';
+import { SchemaType } from '@/types/openapi-types';
+import { API_PARAMETER_NAME_LENGTH, API_PARAMETER_VALUE_LENGTH } from '@/utils/constant';
 import { ParamsInfo } from '@/views/apis/services/protocol/http/types';
 
 import { transJsonToList, transListToJson, transListToSchema } from './util';
@@ -19,27 +26,30 @@ const SimpleEditableSelect = defineAsyncComponent(() => import('@/components/api
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 
 const { t } = useI18n();
-const ajv = new Ajv();
-addFormats(ajv);
+
 const { valueKey } = API_EXTENSION_KEY;
 const apiBaseInfo = inject('apiBaseInfo', ref());
-const globalConfigs = inject('globalConfigs', { VITE_API_PARAMETER_NAME_LENGTH: 400, VITE_API_PARAMETER_VALUE_LENGTH: 4096 });
+
+const ajv = new Ajv();
+addFormats(ajv);
 
 interface Item {
   type: string;
-  [valueKey]: string;
+  [valueKey]: string | number | boolean | undefined;
   id: string;
   name?: string;
-  pid?: string;
+  pid?: string | number;
   level: number;
-  idLine: string[];
+  idLine: (string | number)[];
   $ref?: string;
-  enum?: string[]
+  enum?: string[];
+  checked?: boolean;
+  schema?: any;
 }
 
 interface Props {
   data: any,
-  pType: 'array'|'object';
+  pType: SchemaType.array|SchemaType.object;
   disabled: boolean;
   schema: Record<string, any>;
   paramInType?: 'path'|'query'
@@ -47,49 +57,69 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   data: () => ([]),
-  pType: 'array',
+  pType: SchemaType.array,
   disabled: false,
   paramInType: undefined
 });
 
 const emit = defineEmits<{(e: 'update:data', value: any):void, (e: 'change', value: any): void}>();
 
-const emitHandle = () => {
-  const data = transListToJson(dataSource.value, props.pType);
-  const schema = transListToSchema(dataSource.value, props.pType);
-  emit('update:data', data);
-  emit('change', schema);
+/**
+ * Emit data and schema changes to parent component
+ */
+const emitDataChange = () => {
+  const jsonData = transListToJson(dataSource.value, props.pType);
+  const jsonSchema = transListToSchema(dataSource.value, props.pType);
+  emit('update:data', jsonData);
+  emit('change', jsonSchema);
 };
 
-const disabledValue = item => {
-  return item.type === 'object' || item.type === 'array';
+/**
+ * Check if value input should be disabled for an item
+ * @param item - Item to check
+ * @returns True if value input should be disabled
+ */
+const isValueInputDisabled = item => {
+  return item.type === SchemaType.object || item.type === SchemaType.array;
 };
 
-const disabledType = (item) => {
+/**
+ * Check if type selection should be disabled for an item
+ * @param item - Item to check
+ * @returns True if type selection should be disabled
+ */
+const isTypeSelectionDisabled = (item) => {
   if (props.disabled || item.$ref) {
     return true;
   }
-  if (disabledItem(item)) {
-    return true;
-  }
-  return false;
+  return isItemDisabled(item);
 };
 
-const disabledName = (item) => {
+/**
+ * Check if name input should be disabled for an item
+ * @param item - Item to check
+ * @returns True if name input should be disabled
+ */
+const isNameInputDisabled = (item) => {
   if (props.disabled) {
     return true;
   }
-  if (disabledItem(item)) {
+  if (isItemDisabled(item)) {
     return true;
   }
   if (item.pid === -1) {
-    return props.pType !== 'object';
+    return props.pType !== SchemaType.object;
   }
-  return dataSourceObj.value[item.pid] && dataSourceObj.value[item.pid].type === 'array';
+  return dataSourceObj.value[item.pid as string] && dataSourceObj.value[item.pid as string].type === SchemaType.array;
 };
 
-const hideDel = (item) => {
-  return disabledItem(item) && dataSourceObj.value[item.pid]?.type !== 'array' && item.pid !== -1;
+/**
+ * Check if delete button should be hidden for an item
+ * @param item - Item to check
+ * @returns True if delete button should be hidden
+ */
+const shouldHideDeleteButton = (item) => {
+  return isItemDisabled(item) && dataSourceObj.value[item.pid as string]?.type !== SchemaType.array && item.pid !== -1;
 };
 
 const dataSourceObj = ref({});
@@ -97,14 +127,14 @@ const dataSourceObj = ref({});
 const dataSource = ref<Item[]>([]);
 
 const allArrFirstIds = computed(() => {
-  const result = [];
-  if (props.pType === 'array') {
+  const result: (string | number)[] = [];
+  if (props.pType === SchemaType.array) {
     result.push(-1);
   }
   const other = dataSource.value.filter(i => {
-    if (i.type === 'array') {
-      if ((dataSourceObj.value[i.pid] === -1 && props.pType !== 'array') ||
-        (dataSourceObj.value[i.pid] && dataSourceObj.value[i.pid].type !== 'array')) {
+    if (i.type === SchemaType.array) {
+      if ((dataSourceObj.value[i.pid as string] === -1 && props.pType !== SchemaType.array) ||
+        (dataSourceObj.value[i.pid as string] && dataSourceObj.value[i.pid as string].type !== SchemaType.array)) {
         return true;
       }
       if (dataSource.value.find(t => t.pid === i.pid)?.id === i.id) {
@@ -119,121 +149,171 @@ const allArrFirstIds = computed(() => {
   }).filter(Boolean);
 });
 
-const disabledItem = (item) => {
+/**
+ * Check if an item should be disabled
+ * @param item - Item to check
+ * @returns True if item should be disabled
+ */
+const isItemDisabled = (item) => {
   if (item.$ref) {
     return true;
   }
   if (item.idLine.some((id, idx) => dataSourceObj.value[id]?.$ref && idx < (item.idLine.length - 1))) {
     return true;
   }
-  if (item.pid === -1 && props.pType === 'array' && !allArrFirstIds.value.includes(item.id)) {
+  if (item.pid === -1 && props.pType === SchemaType.array && !allArrFirstIds.value.includes(item.id)) {
     return true;
   }
-  if (dataSourceObj.value[item.pid]?.type === 'array' && !allArrFirstIds.value.includes(item.id)) {
-    return true;
-  }
-  return false;
+  return dataSourceObj.value[item.pid as string]?.type === SchemaType.array && !allArrFirstIds.value.includes(item.id);
 };
 
-const disabledAdd = (item) => {
-  return item.type === 'object' && disabledItem(item);
+/**
+ * Check if add button should be disabled for an item
+ * @param item - Item to check
+ * @returns True if add button should be disabled
+ */
+const isAddButtonDisabled = (item) => {
+  return item.type === SchemaType.object && isItemDisabled(item);
 };
 
-const changeType = (value, item, idx) => {
-  if (value === 'array' || value === 'object') {
+/**
+ * Handle data type change for an item
+ * @param newType - New data type
+ * @param item - Item to change type
+ * @param index - Index of the item
+ */
+const handleDataTypeChange = (newType, item, index) => {
+  if (newType === SchemaType.array || newType === SchemaType.object) {
     item[valueKey] = undefined;
   }
-  const childs = value === 'array'
-    ? dataSource.value.filter(i => (i.idLine.includes(item.pid) || item.pid === -1) && item.id !== i.id)
+
+  // Find child items to remove
+  const childItems = newType === SchemaType.array
+    ? dataSource.value.filter(i => (i.idLine.includes(item.pid as string | number) || item.pid === -1) && item.id !== i.id)
     : dataSource.value.filter(i => i.idLine.includes(item.id) && item.id !== i.id);
-  dataSource.value.splice(idx + 1, childs.length);
-  dataSourceObj.value[item.id].type = value;
-  childs.forEach((i, idx) => idx > 0 && delete dataSourceObj.value[i.id]);
-  emitHandle();
-  if (value === 'array' || value === 'object') {
-    addItem(item, idx);
+
+  // Remove child items from data source
+  dataSource.value.splice(index + 1, childItems.length);
+  dataSourceObj.value[item.id].type = newType;
+
+  // Clean up child items from data source object
+  childItems.forEach((childItem, childIndex) => childIndex > 0 && delete dataSourceObj.value[childItem.id]);
+
+  emitDataChange();
+
+  // Add new child item if type is array or object
+  if (newType === SchemaType.array || newType === SchemaType.object) {
+    addItem(item, index);
   }
 };
 
-const addItem = (pItem, idx = dataSource.value.length) => {
-  const childs = pItem.level < 1
+/**
+ * Add a new child item to the data source
+ * @param parentItem - Parent item to add child to
+ * @param index - Index where to insert the new item
+ */
+const addItem = (parentItem, index = dataSource.value.length) => {
+  const existingChildren = parentItem.level < 1
     ? dataSource.value.filter(item => item.level === 1)
-    : dataSource.value.filter(item => item.idLine.includes(pItem.id) && item.id !== pItem.id);
-  const type = 'string';
+    : dataSource.value.filter(item => item.idLine.includes(parentItem.id as string | number) && item.id !== parentItem.id);
 
-  const id = utils.uuid('api');
-  if (pItem.type === 'array') {
-    if (childs.length > 0) {
-      const firstId = childs[0].id;
-      let allItems = dataSource.value.filter(i => i.idLine.includes(firstId));
-      allItems = JSON.parse(JSON.stringify(allItems));
-      const newIds = allItems.map(() => utils.uuid('api'));
-      const oldIds = allItems.map(i => i.id);
-      allItems.forEach((i, idx) => {
-        i[valueKey] = '';
-        if (i.id === oldIds[idx]) {
-          i.id = newIds[idx];
+  const defaultType = SchemaType.string;
+  const newItemId = utils.uuid('api');
+
+  if (parentItem.type === SchemaType.array) {
+    if (existingChildren.length > 0) {
+      // Clone existing array items
+      const firstChildId = existingChildren[0].id;
+      let allChildItems = dataSource.value.filter(i => i.idLine.includes(firstChildId as string | number));
+      allChildItems = JSON.parse(JSON.stringify(allChildItems));
+
+      // Generate new IDs for cloned items
+      const newIds = allChildItems.map(() => utils.uuid('api'));
+      const oldIds = allChildItems.map(i => i.id);
+
+      // Update IDs and references in cloned items
+      allChildItems.forEach((item, itemIndex) => {
+        item[valueKey] = '';
+        if (item.id === oldIds[itemIndex]) {
+          item.id = newIds[itemIndex];
         }
-        oldIds.forEach((oldId, index) => {
-          const replaceIdx = i.idLine.findIndex(id => id === oldId);
-          if (replaceIdx > -1) {
-            i.idLine[replaceIdx] = newIds[index];
+        oldIds.forEach((oldId, oldIndex) => {
+          const replaceIndex = item.idLine.findIndex(id => id === oldId);
+          if (replaceIndex > -1) {
+            item.idLine[replaceIndex] = newIds[oldIndex];
           }
-          if (i.pid === oldId) {
-            i.pid = newIds[index];
+          if (item.pid === oldId) {
+            item.pid = newIds[oldIndex];
           }
         });
-        dataSourceObj.value[i.id] = i;
+        dataSourceObj.value[item.id] = item;
       });
-      dataSource.value.splice(idx + childs.length + 1, 0, ...allItems);
+
+      dataSource.value.splice(index + existingChildren.length + 1, 0, ...allChildItems);
     } else {
-      if (pItem.items) {
-        const json = SwaggerUI.extension.sampleFromSchemaGeneric(pItem, { useValue: true });
-        const childSchema = pItem.items;
-        const data = transJsonToList(json, pItem.id, pItem.level + 1, [pItem], childSchema);
-        dataSource.value.splice(idx + childs.length, 1, ...data);
-        data.forEach(i => {
-          dataSourceObj.value[i.id] = i;
+      // Create new array item based on schema
+      if (parentItem.items) {
+        const sampleJson = SwaggerUI.extension.sampleFromSchemaGeneric(parentItem, { useValue: true });
+        const childSchema = parentItem.items;
+        const newItems = transJsonToList(sampleJson, parentItem.id, parentItem.level + 1, [parentItem], childSchema);
+        dataSource.value.splice(index + existingChildren.length, 1, ...newItems);
+        newItems.forEach(item => {
+          dataSourceObj.value[item.id] = item;
         });
       } else {
-        const item = {
+        // Create default array item
+        const newItem: Item = {
           name: 'item',
-          pid: pItem.id,
-          type,
-          id,
-          idLine: [...pItem.idLine, id],
+          pid: parentItem.id,
+          type: defaultType,
+          id: newItemId,
+          idLine: [...parentItem.idLine, newItemId],
           checked: true,
-          level: pItem.level + 1
+          level: parentItem.level + 1
         };
-        dataSource.value.splice(idx + childs.length + 1, 0, item);
-        dataSourceObj.value[id] = item;
+        dataSource.value.splice(index + existingChildren.length + 1, 0, newItem);
+        dataSourceObj.value[newItemId] = newItem;
       }
     }
-  } else if (pItem.type === 'object') {
-    const item = {
+  } else if (parentItem.type === SchemaType.object) {
+    // Create new object property
+    const newItem: Item = {
       name: '',
-      pid: pItem.id,
-      type,
-      id,
-      idLine: [...pItem.idLine, id],
+      pid: parentItem.id,
+      type: defaultType,
+      id: newItemId,
+      idLine: [...parentItem.idLine, newItemId],
       checked: true,
-      level: pItem.level + 1
+      level: parentItem.level + 1
     };
-    dataSource.value.splice(idx + childs.length + 1, 0, item);
-    dataSourceObj.value[id] = item;
+    dataSource.value.splice(index + existingChildren.length + 1, 0, newItem);
+    dataSourceObj.value[newItemId] = newItem;
   }
 };
 
-const delItem = (item, idx) => {
-  const delItems = dataSource.value.filter(i => i.idLine.includes(item.id));
-  dataSource.value.splice(idx, delItems.length);
-  delItems.forEach(i => {
-    delete dataSourceObj.value[i.id];
+/**
+ * Delete an item and all its children
+ * @param item - Item to delete
+ * @param index - Index of the item to delete
+ */
+const deleteItem = (item, index) => {
+  const itemsToDelete = dataSource.value.filter(i => i.idLine.includes(item.id));
+  dataSource.value.splice(index, itemsToDelete.length);
+
+  // Clean up deleted items from data source object
+  itemsToDelete.forEach(deletedItem => {
+    delete dataSourceObj.value[deletedItem.id];
   });
-  emitHandle();
+
+  emitDataChange();
 };
 
-const getModelData = async (ref) => {
+/**
+ * Fetch model data by reference
+ * @param ref - Model reference
+ * @returns Deconstructed model data
+ */
+const fetchModelData = async (ref) => {
   const [error, { data }] = await getModelDataByRef(apiBaseInfo.value.serviceId, ref);
   if (error) {
     return {};
@@ -241,91 +321,143 @@ const getModelData = async (ref) => {
   return deconstruct(data || {});
 };
 
-const selectModels = async (value, option, index, item) => {
+/**
+ * Handle model selection from schema dropdown
+ * @param selectedValue - Selected value
+ * @param option - Selected option with model data
+ * @param index - Index of the item
+ * @param item - Item to update
+ */
+const handleModelSelection = async (selectedValue, option, index, item) => {
   if (option) {
-    // const model = JSON.parse(option.model);
-    const model = await getModelData(option.ref);
-    const value = SwaggerUI.extension.sampleFromSchemaGeneric(model, { useValue: true });
+    const model = await fetchModelData(option.ref);
+    const sampleValue = SwaggerUI.extension.sampleFromSchemaGeneric(model, { useValue: true });
+
+    // Update item with model data
     dataSource.value[index].type = model.type;
     dataSource.value[index] = {
       ...dataSource.value[index],
       ...model
     };
+
+    // Set reference if option is readonly
     if (option.readonly) {
       dataSource.value[index].$ref = option.ref;
     }
-    const childSchema = model.type === 'object' ? model.properties : model.type === 'array' ? model.items : {};
-    const data = transJsonToList(value, item.id, item.level + 1, [dataSource.value[index]], childSchema);
-    dataSource.value.splice(index, 1, ...data);
-    data.forEach(i => {
-      dataSourceObj.value[i.id] = i;
+
+    // Generate child items based on model schema
+    const childSchema = model.type === SchemaType.object ? model.properties : model.type === SchemaType.array ? model.items : {};
+    const childItems = transJsonToList(sampleValue, item.id, item.level + 1, [dataSource.value[index]], childSchema);
+    dataSource.value.splice(index, 1, ...childItems);
+
+    // Update data source object with new child items
+    childItems.forEach(childItem => {
+      dataSourceObj.value[childItem.id] = childItem;
     });
-    emitHandle();
+
+    emitDataChange();
   } else {
-    dataSource.value[index].name = value;
+    // Update item name if no model selected
+    dataSource.value[index].name = selectedValue;
   }
 };
 
+/**
+ * Handle value blur event for parameter values
+ * @param dom - HTML element that lost focus
+ * @param item - Item to update
+ */
 const handleValueBlur = (dom, item) => {
   let value = dom.innerText;
-  if (['integer', 'number', 'boolean'].includes(item.schema?.type)) {
+
+  // Parse numeric and boolean values from string
+  if ([SchemaType.integer, SchemaType.number, SchemaType.boolean].includes(item.schema?.type)) {
     try {
-      if (value <= 9007199254740992) {
+      const numericValue = Number(value);
+      if (!isNaN(numericValue) && numericValue <= 9007199254740992) {
         value = JSON.parse(value);
       }
-    } catch {}
+    } catch {
+      // Keep original value if parsing fails
+    }
   }
+
   dataSourceObj.value[item.id][valueKey] = value;
-  emitHandle();
+  emitDataChange();
 };
 
-const copyValue = async (data: ParamsInfo) => {
-  let text = data[valueKey];
-  if (typeof text !== 'string') {
-    text = JSON.stringify(text);
+/**
+ * Copy parameter value to clipboard
+ * @param data - Parameter data to copy
+ */
+const copyParameterValue = async (data: ParamsInfo) => {
+  let textToCopy = data[valueKey];
+  if (typeof textToCopy !== 'string') {
+    textToCopy = JSON.stringify(textToCopy);
   }
 
-  toClipboard(text).then(() => {
+  toClipboard(textToCopy).then(() => {
     notification.success(t('actions.tips.copySuccess'));
   });
 };
 
-const startValidate = ref(false);
-const validate = (val = true) => {
-  startValidate.value = val;
+// Track validation state
+const isValidationEnabled = ref(false);
+
+/**
+ * Enable or disable validation
+ * @param enable - Whether to enable validation
+ */
+const enableValidation = (enable = true) => {
+  isValidationEnabled.value = enable;
 };
 
-const validateValue = (value, schema) => {
-  if (!startValidate.value) {
+/**
+ * Validate a value against its schema
+ * @param value - Value to validate
+ * @param schema - Schema to validate against
+ * @returns True if validation fails
+ */
+const hasValidationError = (value, schema) => {
+  if (!isValidationEnabled.value) {
     return false;
   }
-  let _schema = JSON.parse(JSON.stringify(schema));
-  _schema = deepDelAttrFromObj(_schema, ['name', 'id', 'level', 'pid', 'idLine', 'checked']);
-  const valida = ajv.compile(_schema);
-  const valid = valida(value);
-  return !valid;
+
+  let cleanSchema = JSON.parse(JSON.stringify(schema));
+  cleanSchema = deepDelAttrFromObj(cleanSchema, ['name', 'id', 'level', 'pid', 'idLine', 'checked']);
+
+  const validator = ajv.compile(cleanSchema);
+  const isValid = validator(value);
+  return !isValid;
 };
 
-const getModelResolve = (models) => {
-  dataSource.value.forEach(i => {
-    if (i.$ref) {
-      const datas = dataSource.value.filter(i => i.idLine.includes(i.id));
-      models[i.$ref] = transListToSchema(datas, i.type, i.pid);
-      delete models[i.$ref].schema?.$ref;
+/**
+ * Resolve model references for all items
+ * @param models - Models object to populate
+ */
+const resolveModelReferences = (models) => {
+  dataSource.value.forEach(item => {
+    if (item.$ref) {
+      const childItems = dataSource.value.filter(childItem => childItem.idLine.includes(item.id as string | number));
+      models[item.$ref] = transListToSchema(childItems, item.type, item.pid as number);
+      delete models[item.$ref].schema?.$ref;
     }
   });
 };
 
-const updateComp = async () => {
-  const data = dataSource.value.filter(i => i.$ref);
-  for (const i of data) {
-    const schema = transListToSchema(i, i.type, i.pid);
-    await services.addComponent(apiBaseInfo.value.serviceId, 'schema', i.name as string, schema);
+/**
+ * Update components with current data
+ */
+const updateComponents = async () => {
+  const itemsWithRefs = dataSource.value.filter(item => item.$ref);
+  for (const item of itemsWithRefs) {
+    const schema = transListToSchema(item, item.type, item.pid as number);
+    await services.addComponent(apiBaseInfo.value.serviceId, 'schema', item.name as string, schema);
   }
 };
 
 watch(() => props.pType, () => {
-  const childrenSchema = props.pType === 'array' ? (props.schema || {}) : (props.schema.properties || {});
+  const childrenSchema = props.pType === SchemaType.array ? (props.schema || {}) : (props.schema.properties || {});
   dataSource.value = transJsonToList(props.data, -1, 1, [], childrenSchema, props.schema);
   dataSource.value.forEach(i => {
     dataSourceObj.value[i.id] = i;
@@ -334,7 +466,13 @@ watch(() => props.pType, () => {
   immediate: true
 });
 
-defineExpose({ addItem, validate, getModelResolve, updateComp });
+// Expose methods to parent component
+defineExpose({
+  addItem,
+  validate: enableValidation,
+  getModelResolve: resolveModelReferences,
+  updateComp: updateComponents
+});
 </script>
 <template>
   <div
@@ -353,18 +491,18 @@ defineExpose({ addItem, validate, getModelResolve, updateComp });
         v-model:value="item.name"
         mode="pure"
         :placeholder="t('service.apiRequestBody.placeholder.inputParameterName')"
-        :maxLength="globalConfigs.VITE_API_PARAMETER_NAME_LENGTH"
+        :maxLength="API_PARAMETER_NAME_LENGTH"
         :type="['schemas']"
-        :disabled="item.$ref || disabledName(item)"
-        @blur="emitHandle"
-        @change="(_value, option) => selectModels(_value, option, idx, item)" />
+        :disabled="item.$ref || isNameInputDisabled(item)"
+        @blur="emitDataChange"
+        @change="(_value, option) => handleModelSelection(_value, option, idx, item)" />
       <Input
         v-else
         v-model:value="item.name"
         :placeholder="t('service.apiRequestBody.placeholder.inputParameterName')"
-        :maxLength="globalConfigs.VITE_API_PARAMETER_NAME_LENGTH"
-        :disabled="disabledName(item)"
-        @blur="emitHandle" />
+        :maxLength="API_PARAMETER_NAME_LENGTH"
+        :disabled="isNameInputDisabled(item)"
+        @blur="emitDataChange" />
     </div>
     <Select
       v-if="props.paramInType"
@@ -375,46 +513,46 @@ defineExpose({ addItem, validate, getModelResolve, updateComp });
     <Select
       v-model:value="item.type"
       class="w-25"
-      :options="schemaTypeToOptions"
-      :disabled="disabledType(item)"
-      @change="changeType($event, item, idx)" />
+      :options="schemaTypeToOption"
+      :disabled="isTypeSelectionDisabled(item)"
+      @change="handleDataTypeChange($event, item, idx)" />
     <Input
-      v-if="disabledValue(item)"
+      v-if="isValueInputDisabled(item)"
       disabled
       class="flex-1" />
     <SimpleEditableSelect
       v-else-if="item.enum?.length"
       v-model:value="item[valueKey]"
       class="flex-1"
-      :maxLength="globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH"
+      :maxLength="API_PARAMETER_VALUE_LENGTH"
       :options="item.enum"
-      @change="emitHandle"
-      @select="emitHandle" />
+      @change="emitDataChange"
+      @select="emitDataChange" />
     <ParamInput
       v-else
       class="flex-1"
-      :maxLength="globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH"
+      :maxLength="API_PARAMETER_VALUE_LENGTH"
       :value="item[valueKey]"
-      :error="validateValue(item[valueKey], item)"
+      :error="hasValidationError(item[valueKey], item)"
       @blur="handleValueBlur($event, item)" />
     <Button
       type="primary"
       size="small"
       :title="t('service.apiRequestBody.actions.copyValue')"
       class="ml-2"
-      @click="copyValue(item)">
+      @click="copyParameterValue(item as any)">
       <Icon icon="icon-fuzhi" />
     </Button>
     <Button
       size="small"
-      :disabled="(item.type !== 'array' && item.type !== 'object' || disabledAdd(item))"
+      :disabled="(item.type !== SchemaType.array && item.type !== SchemaType.object || isAddButtonDisabled(item))"
       @click="addItem(item, idx)">
       <Icon icon="icon-jia" />
     </Button>
     <Button
       size="small"
-      :disabled="hideDel(item)"
-      @click="delItem(item, idx)">
+      :disabled="shouldHideDeleteButton(item)"
+      @click="deleteItem(item, idx)">
       <Icon icon="icon-shanchuguanbi" />
     </Button>
   </div>

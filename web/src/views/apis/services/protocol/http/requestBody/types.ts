@@ -1,7 +1,8 @@
 import { ParamsItem } from '@/views/apis/services/protocol/types';
 
 export const radioGroups = [
-  null, 'application/x-www-form-urlencoded',
+  null,
+  'application/x-www-form-urlencoded',
   'multipart/form-data',
   'application/octet-stream'
 ];
@@ -16,7 +17,7 @@ export const rawTypeOptions = [
 ];
 
 export interface RequestBodyParam {
-  [key:string]: any; // TODO ?
+  [key:string]: any;
   contentType?: string | null;
   formData?: ParamsItem[];
   rawContent?: string;
