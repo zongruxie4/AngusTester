@@ -1,12 +1,11 @@
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ApiPermission } from '@/enums/enums';
-import { navs, menus } from '@/views/apis/services/protocol/http/index';
+import { navs, menus } from './constants';
 
 /**
- * UI状态管理composable
+ * UI state management composable
  * <p>
- * 管理组件的UI状态，包括标签页、抽屉、工具栏等
+ * Manages component UI state including tabs, drawers, and toolbars.
  * </p>
  */
 export function useUIState (props: {
@@ -15,24 +14,24 @@ export function useUIState (props: {
 }) {
   const { t } = useI18n();
 
-  // 标签页状态
+  // Tab state
   const activeTabKey = ref('debug');
   const activeKey = ref('parameters');
   const currentTab = ref<string>('');
 
-  // 抽屉状态
+  // Drawer state
   const activeDrawerKey = ref();
   const shareVisible = ref(false);
 
-  // 工具栏状态
+  // Toolbar state
   const height = ref<number>(34);
   const maxHeight = ref(0);
   const moving = ref(false);
 
-  // 错误状态
+  // Error state
   const errorTitle = ref(t('service.apis.errors.requestErrorWithProxy'));
 
-  // 计算属性 - 导航菜单
+  // Computed - navigation menus
   const myNavs = computed(() => {
     if (props.valueObj.unarchived || !props.id) {
       const archivedNav = ['performance', 'variable', 'share', 'test', 'case', 'activity', 'apiMock'];
@@ -44,28 +43,28 @@ export function useUIState (props: {
         return {
           ...i,
           key: i.value,
-          disabled: false, // 这里需要从外部传入权限
+          disabled: false, // permissions should be provided from outside
           name: t('actions.save')
         };
       }
       return {
         ...i,
         key: i.value,
-        disabled: false // 这里需要从外部传入权限
+        disabled: false // permissions should be provided from outside
       };
     });
   });
 
-  // 计算属性 - 工具栏菜单
+  // Computed - toolbar menus
   const toolbarMenus = computed(() => {
-    // 这里需要根据是否有WebSocket来决定显示哪些菜单
+    // Menus may depend on whether WebSocket is available
     return menus;
   });
 
   /**
-   * 处理分享
+   * Handle share
    * <p>
-   * 打开分享对话框
+   * Open share dialog
    * </p>
    */
   const handleShare = () => {
@@ -73,9 +72,9 @@ export function useUIState (props: {
   };
 
   /**
-   * 打开响应工具栏
+   * Open response toolbar
    * <p>
-   * 打开响应工具栏，如果未展开或未选择当前标签页，则将默认标签页设置为'response'
+   * Open response toolbar; if not expanded or no current tab, default to 'response'
    * </p>
    */
   const openToolBar = (toolbarRef: any) => {
@@ -88,22 +87,22 @@ export function useUIState (props: {
   };
 
   /**
-   * 处理工具栏菜单变化
+   * Handle toolbar menu change
    * <p>
-   * 当选择不同的工具栏菜单时更新当前标签页
+   * Update current tab when selecting different toolbar menu
    * </p>
-   * @param menuKey - 选择的菜单键
+   * @param menuKey - Selected menu key
    */
   const toolbarChange = (menuKey: string) => {
     currentTab.value = menuKey;
   };
 
   /**
-   * 设置错误标题
+   * Set error title
    * <p>
-   * 根据是否有WebSocket设置不同的错误标题
+   * Set different error titles based on whether WebSocket is available
    * </p>
-   * @param hasWebSocket - 是否有WebSocket连接
+   * @param hasWebSocket - Whether there is a WebSocket connection
    */
   const setErrTitle = (hasWebSocket: boolean) => {
     if (hasWebSocket) {
@@ -114,22 +113,22 @@ export function useUIState (props: {
   };
 
   /**
-   * 关闭抽屉
+   * Close drawer
    * <p>
-   * 关闭当前打开的抽屉
+   * Close the currently opened drawer
    * </p>
-   * @param drawerRef - 抽屉引用
+   * @param drawerRef - Drawer ref
    */
   const closeDrawer = (drawerRef: any) => {
     drawerRef.value.close();
   };
 
   /**
-   * 处理窗口大小调整事件
+   * Create resize handler
    * <p>
-   * 防抖的大小调整处理器，在窗口大小调整时更新主包装器的最大高度
+   * Debounced resize handler to update max height of main wrapper on window resize
    * </p>
-   * @param mainWrapper - 主包装器引用
+   * @param mainWrapper - Main wrapper ref
    */
   const createResizeHandler = (mainWrapper: any) => {
     const resizeHandler = () => {
@@ -141,9 +140,9 @@ export function useUIState (props: {
   };
 
   /**
-   * 重置UI状态
+   * Reset UI state
    * <p>
-   * 重置所有UI相关状态到初始值
+   * Reset all UI-related states to initial values
    * </p>
    */
   const resetUIState = () => {
@@ -159,7 +158,7 @@ export function useUIState (props: {
   };
 
   return {
-    // 状态
+    // State
     activeTabKey,
     activeKey,
     currentTab,
@@ -170,11 +169,11 @@ export function useUIState (props: {
     moving,
     errorTitle,
 
-    // 计算属性
+    // Computed
     myNavs,
     toolbarMenus,
 
-    // 方法
+    // Methods
     handleShare,
     openToolBar,
     toolbarChange,

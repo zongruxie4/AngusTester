@@ -84,7 +84,8 @@ export const validateType = (data: any, schema: any) => {
   const validator = ajvValidator.compile(schema);
   const isValid = validator(data);
   if (!isValid) {
-    return validator.errors;
+    // Always return an array to satisfy spread operations
+    return (validator.errors || []) as any[];
   }
   return [];
 };

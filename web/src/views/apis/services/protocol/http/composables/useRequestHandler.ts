@@ -18,39 +18,38 @@ import { RequestSetting } from '@/views/apis/services/protocol/http/types';
 import { validateBodyForm, validateQueryParameter } from '@/views/apis/services/protocol/http/utils';
 
 /**
- * 请求处理composable
+ * Request handling composable
  * <p>
- * 处理HTTP请求的发送、参数准备、验证等逻辑
+ * Handles sending HTTP requests, parameter preparation, and validation.
  * </p>
  */
 export function useRequestHandler () {
   const { t } = useI18n();
   const { valueKey, enabledKey, fileNameKey, idKey, serverSourceKey, requestSettingKey } = API_EXTENSION_KEY;
 
-  // HTTP客户端
+  // HTTP client
   // eslint-disable-next-line new-cap
   const httpClient = new axiosClient({ timeout: 0, intervalMs: 500, maxRedirects: 0, maxRetries: 5 });
 
-  // 请求状态
+  // Request state
   const loading = ref(false);
   const controller = ref<AbortController>();
 
   /**
-   * 构建真实URI，包含路径和查询参数
+   * Build real URI with path and query params
    * <p>
-   * 通过替换endpoint中的路径参数并追加查询参数来构建最终URI。
-   * 处理对象和数组参数值。
+   * Replace path placeholders and append query string. Handles object/array values.
    * </p>
-   * @param pathParams - 要替换URI中路径参数的参数
-   * @param queryParams - 要追加到URI的查询参数
-   * @param apiUri - API基础URI
-   * @returns 构建的URI字符串
+   * @param pathParams - Params to replace in URI path
+   * @param queryParams - Params to append as query string
+   * @param apiUri - Base API URI
+   * @returns Built URI string
    */
   const getRealUri = (pathParams: Record<string, any>, queryParams: Record<string, any>, apiUri: string) => {
     let processedUri = apiUri || '';
     const paths = Object.keys(pathParams || {}).map(key => ({ name: key, [valueKey]: pathParams?.[key] }));
 
-    // 处理路径参数（将对象/数组转换为字符串）
+    // Handle path params (stringify objects/arrays)
     paths.forEach(item => {
       if (typeof item[valueKey] === 'object') {
         if (Object.prototype.toString.call(item[valueKey]) === '[object Array]') {
@@ -63,7 +62,7 @@ export function useRequestHandler () {
 
     if (paths?.length) {
       let pattern: RegExp;
-      // 用参数值替换路径占位符
+      // Replace path placeholders with parameter values
       const endpoint = paths?.reduce((prevValue, currentValue) => {
         pattern = new RegExp('{' + currentValue.name + '}', 'gi');
         if (pattern.test(prevValue)) {
@@ -71,11 +70,11 @@ export function useRequestHandler () {
         }
         return prevValue;
       }, processedUri) || '';
-      // 通过删除前导斜杠并添加单个前导斜杠来规范化路径
+      // Normalize path by ensuring a single leading slash
       processedUri = '/' + endpoint.replace(/^\/+/, '');
     }
 
-    // 追加查询参数
+    // Append query params
     const queryUri = qs.stringify(queryParams, { allowDots: true, encode: true });
     if (processedUri.includes('?')) {
       processedUri = processedUri + '&' + queryUri;
@@ -86,9 +85,9 @@ export function useRequestHandler () {
   };
 
   /**
-   * 获取参数，验证通过后执行此方法
+   * Get parameters (after validation)
    * <p>
-   * 准备请求参数，包括headers、body、认证等
+   * Prepare request parameters including headers, body, and authentication
    * </p>
    */
   const getParameter = async (
@@ -117,7 +116,7 @@ export function useRequestHandler () {
     const { content } = requestBody;
 
     if (!isDebug) {
-      const exceedFileSize = requestBodyRef.value.ifExceedSize();
+      const exceedFileSize = requestBodyRef?.value?.ifExceedSize?.() ?? false;
       if (exceedFileSize) {
         Object.keys(content).forEach(key => {
           if (content[key]?.schema?.format === SchemaFormat.binary) {
@@ -241,7 +240,7 @@ export function useRequestHandler () {
     }
     loading.value = true;
 
-    // 验证URL配置
+    // Validate URL configuration
     if (!currentServer.url && !apiUri) {
       loading.value = false;
       notification.error({
@@ -251,8 +250,8 @@ export function useRequestHandler () {
       return;
     }
 
-    // 准备请求体数据
-    let requestBodyContents = await requestBodyRef.value.getBodyData(state.requestBody, contentType);
+    // Prepare request body data
+    let requestBodyContents = await (requestBodyRef?.value?.getBodyData?.(state.requestBody, contentType) ?? '');
     let formData: any[] = [];
     const strParam: string[] = [];
 
@@ -262,7 +261,7 @@ export function useRequestHandler () {
       strParam.push(requestBodyContents);
     }
 
-    // 准备认证数据
+    // Prepare authentication data
     const auth = authorizationRef.value ? await authorizationRef.value.getAuthData(state.authentication) : [{}];
     const authParamData = Object.keys(auth?.[0] || {}).map(key => {
       if (typeof auth?.[0]?.[key] !== 'object') {
@@ -278,10 +277,10 @@ export function useRequestHandler () {
     const authQueryData = Object.keys(auth?.[1] || {}).map(key => ({ name: key, [valueKey]: auth?.[1]?.[key] })); // Query认证数据
 
     const headerCookieData = [...state.headerList, ...state.cookieList].filter(i => i.name && i[valueKey] && i[enabledKey]);
-    // 准备参数数据
+    // Prepare parameter data
     const querPathData = state.parameters.filter(i => i.name && i[enabledKey]);
 
-    // 准备断言数据
+    // Prepare assertion data
     let assertions: any[] = [];
     let asserVariableStr: string[] = [];
     if (typeof assertFormRef.value?.getData === 'function') {
@@ -292,7 +291,7 @@ export function useRequestHandler () {
       assertions = state.assertions;
     }
 
-    // 替换参数中的模拟函数和变量
+    // Replace mock functions and variables in parameters
     const result = await apiUtils.replaceFuncValue(
       {
         parameter: [querPathData, formData, headerCookieData, authParamData, authQueryData],
@@ -328,10 +327,10 @@ export function useRequestHandler () {
       }
     }
 
-    // 验证断言数据
+    // Validate assertion data
     const validateAssertData = !assertFormRef.value || assertFormRef.value?.validate();
 
-    // 验证参数数据并在启用时格式化
+    // Validate parameter data and format when enabled
     if (setting.enableParamValidation) {
       const validatedQuery = validateQueryParameter(funcValues[0]);
       if (!validatedQuery) {
@@ -364,7 +363,7 @@ export function useRequestHandler () {
       }
     }
 
-    // 组装请求体数据
+    // Assemble request body for display
     const showRequestBody: Record<string, any> = {};
     let requestBody;
 
@@ -420,14 +419,14 @@ export function useRequestHandler () {
       }
     }
 
-    // 准备JSON格式的路径参数
+    // Prepare JSON for path params
     const pathJson = {};
     const pathArr = funcValues[0].filter(i => i.in === ParameterIn.path);
     pathArr.forEach(i => {
       pathJson[i.name] = i[valueKey];
     });
 
-    // 组装查询数据（查询参数 + 认证查询）
+    // Build query data (query params + auth query)
     const queryJson = {};
     const queryArr = funcValues[0].filter(i => i.in === ParameterIn.query).concat(funcValues[4]);
     queryArr.forEach(i => {
@@ -437,10 +436,10 @@ export function useRequestHandler () {
     const apiPathQuery = getRealUri(pathJson, queryJson, apiUri);
     const serverUrl = getServerData(currentServer);
 
-    // 解析请求显示的查询参数
+    // Parse query params for display
     const requestQueryJson = qs.parse(apiPathQuery.split('?')[1] || '');
 
-    // 组装最终请求URL
+    // Build final request URL
     let apiHref = '';
     if (!serverUrl.endsWith('/') && apiPathQuery && apiPathQuery.split('?')[0] && !apiPathQuery.startsWith('/')) {
       apiHref = serverUrl + '/' + apiPathQuery;
@@ -451,14 +450,14 @@ export function useRequestHandler () {
       apiHref = 'http://' + apiHref;
     }
 
-    // 组装请求头
+    // Build request headers
     let headers: Record<string, string> = {};
     const headList = funcValues[2].filter(i => i.in === ParameterIn.header);
     const cookieList = funcValues[2].filter(i => i.in === ParameterIn.cookie);
 
     headList.forEach(item => {
       if (typeof item[valueKey] === 'object') {
-        // 对中文内容使用encodeURIComponent以确保可以发送本地请求
+        // Use encodeURIComponent for non-ASCII to ensure local request sending
         if (Object.prototype.toString.call(item[valueKey]) === '[object Array]') {
           headers[item.name] = item[valueKey]
             ? item[valueKey].map(value => value && apiUtils.containsAllAscii(value) ? value : value ? encodeURIComponent(value) : '').join(',')
@@ -516,7 +515,7 @@ export function useRequestHandler () {
 
     // 请求配置
     const { connectTimeout, readTimeout, retryNum, maxRedirects } = setting;
-    const isExceedRequestSize = requestBodyRef.value.ifExceedRequestSize();
+    const isExceedRequestSize = requestBodyRef?.value?.ifExceedRequestSize?.() ?? false;
 
     // 通过直接HTTP客户端或WebSocket代理发送请求
     if (!ws || isExceedRequestSize) {
@@ -547,11 +546,11 @@ export function useRequestHandler () {
         variableValues
       });
     } else if (ws.readyState !== 1) {
-      // 处理WebSocket连接错误
+      // Handle WebSocket connection error
       loading.value = false;
       notification.error(t('service.apis.errors.proxyNotConnected'));
     } else if (ws) {
-      // 通过WebSocket代理发送请求
+      // Send request via WebSocket proxy
       const params = await getParameter(
         true, state, setting, currentServer, apiUri, apiMethod, contentType,
         saveParams, requestBodyRef, authorizationRef, assertFormRef, isUnarchivedApi
@@ -561,9 +560,9 @@ export function useRequestHandler () {
   };
 
   /**
-   * 中止当前请求
+   * Abort current request
    * <p>
-   * 通过中止HTTP控制器或清除WebSocket请求ID来取消正在进行的请求
+   * Cancel ongoing request by aborting HTTP controller or clearing WebSocket request id
    * </p>
    */
   const handleAbort = () => {

@@ -1,43 +1,43 @@
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { AssertionCondition, AssertionType } from '@xcan-angus/infra';
 import assertUtils from '@/utils/assertutils';
 import { AssertResult, ConditionResult } from '@/views/apis/services/protocol/http/types';
 
 /**
- * 断言处理composable
+ * Assertion handling composable
  * <p>
- * 处理API断言的创建、验证和执行
+ * Handles creation, validation and execution of API assertions.
  * </p>
  */
 export function useAssertionHandler () {
-  // 断言数量
+  // Assertion count
   const assertNum = ref(0);
 
-  // 断言结果
+  // Assertion results
   const assertResult = ref<AssertResult[]>();
 
-  // 断言变量额外信息
+  // Extra info for assertion variables
   const assertionVariableExtra = ref<any>({});
 
   /**
-   * 验证参数
+   * Validate parameters
    * <p>
-   * 验证断言表单是否有效
+   * Validate whether the assertion form is valid
    * </p>
-   * @param assertFormRef - 断言表单引用
-   * @returns 验证是否通过
+   * @param assertFormRef - Assertion form ref
+   * @returns Whether validation passed
    */
   const validateParam = (assertFormRef: any) => {
     return !assertFormRef.value || assertFormRef.value?.validate();
   };
 
   /**
-   * 获取断言数据
+   * Get assertion data
    * <p>
-   * 从断言表单中获取断言数据
+   * Get assertion data from the assertion form
    * </p>
-   * @param assertFormRef - 断言表单引用
-   * @returns 断言数据和变量
+   * @param assertFormRef - Assertion form ref
+   * @returns Assertion data and variables
    */
   const getAssertionData = (assertFormRef: any) => {
     if (typeof assertFormRef.value?.getData === 'function') {
@@ -47,14 +47,14 @@ export function useAssertionHandler () {
   };
 
   /**
-   * 执行断言
+   * Execute assertions
    * <p>
-   * 执行断言并返回结果
+   * Execute assertions and return results
    * </p>
-   * @param requestInfo - 请求信息
-   * @param assertions - 断言列表
-   * @param variableValues - 变量值
-   * @returns 断言执行结果
+   * @param requestInfo - Request info
+   * @param assertions - Assertion list
+   * @param variableValues - Variable values
+   * @returns Assertion results
    */
   const executeAssertions = async (requestInfo: any, assertions: any[], variableValues: any[]) => {
     if (!assertions?.length) {
@@ -65,19 +65,19 @@ export function useAssertionHandler () {
       const result = await assertUtils.assert.execute(requestInfo, assertions, variableValues);
       return result || [];
     } catch (error) {
-      console.error('断言执行失败:', error);
+      console.error('Assertion execution failed:', error);
       return [];
     }
   };
 
   /**
-   * 执行代理断言
+   * Execute proxy assertions
    * <p>
-   * 在代理模式下执行断言
+   * Execute assertions in proxy mode
    * </p>
-   * @param conditions - 条件列表
-   * @param variableValues - 变量值
-   * @returns 断言执行结果
+   * @param conditions - Conditions list
+   * @param variableValues - Variable values
+   * @returns Assertion execution result
    */
   const executeProxyAssertions = (conditions: any[], variableValues: any[]) => {
     if (!conditions?.length) {
@@ -88,21 +88,21 @@ export function useAssertionHandler () {
       const { extra } = assertUtils.proxy.execute(conditions, variableValues);
       return { extra };
     } catch (error) {
-      console.error('代理断言执行失败:', error);
+      console.error('Proxy assertion execution failed:', error);
       return { extra: {} };
     }
   };
 
   /**
-   * 根据类型获取断言值
+   * Get assertion value by type
    * <p>
-   * 根据断言类型和条件从响应数据中提取适当的值
+   * Extract appropriate value from response data based on assertion type and condition
    * </p>
-   * @param assertionCondition - 断言条件类型
-   * @param type - 断言类型
-   * @param data - 响应数据
-   * @param parameterName - 参数名称
-   * @returns 提取的值和相关信息
+   * @param assertionCondition - Assertion condition type
+   * @param type - Assertion type
+   * @param data - Response data
+   * @param parameterName - Parameter name
+   * @returns Extracted value and related info
    */
   const getValueByType = (
     assertionCondition: AssertionCondition,
@@ -186,13 +186,13 @@ export function useAssertionHandler () {
   };
 
   /**
-   * 获取header参数
+   * Get header parameter
    * <p>
-   * 从header数组中提取指定名称的参数值
+   * Extract the value for the specified name from a header array
    * </p>
-   * @param data - header数组
-   * @param name - 参数名称
-   * @returns 参数值
+   * @param data - Header array
+   * @param name - Parameter name
+   * @returns Parameter value
    */
   const getHeaderParams = (data: string[], name: string): string => {
     if (!data?.length || !name) {
@@ -211,14 +211,14 @@ export function useAssertionHandler () {
   };
 
   /**
-   * 处理断言结果
+   * Process assertion results
    * <p>
-   * 处理断言结果并格式化显示
+   * Process assertion results and format for display
    * </p>
-   * @param assertions - 断言列表
-   * @param responseData - 响应数据
-   * @param assertionVariableExtra - 断言变量额外信息
-   * @returns 处理后的断言结果
+   * @param assertions - Assertions list
+   * @param responseData - Response data
+   * @param assertionVariableExtra - Extra info for assertion variables
+   * @returns Processed assertion results
    */
   const processAssertionResults = async (
     assertions: any[],
@@ -325,7 +325,7 @@ export function useAssertionHandler () {
         }
       }
 
-      // 期望值处理
+      // Expected value processing
       const expectedData: { data: string | null; message: string; errorMessage: string; } = {
         data: expected,
         message: '',
@@ -405,20 +405,20 @@ export function useAssertionHandler () {
   };
 
   /**
-   * 更新断言数量
+   * Update assertion count
    * <p>
-   * 更新断言数量显示
+   * Update displayed assertion count
    * </p>
-   * @param count - 断言数量
+   * @param count - Assertion count
    */
   const updateAssertNum = (count: number) => {
     assertNum.value = count;
   };
 
   /**
-   * 重置断言状态
+   * Reset assertion state
    * <p>
-   * 重置所有断言相关状态
+   * Reset all assertion-related states
    * </p>
    */
   const resetAssertionState = () => {

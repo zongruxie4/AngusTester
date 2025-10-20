@@ -1,5 +1,5 @@
 import { Ref, ComputedRef } from 'vue';
-import { HttpMethod, ParameterIn, ActionOnEOF, SharingMode } from '@xcan-angus/infra';
+import { HttpMethod, ActionOnEOF, SharingMode } from '@xcan-angus/infra';
 import { ApiPermission, ApiStatus } from '@/enums/enums';
 import { ServerInfo } from '@/views/apis/server/types';
 import { RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/types';
@@ -9,10 +9,9 @@ import { RequestSetting, AssertResult } from '@/views/apis/services/protocol/htt
 import { ResponseState } from './useResponseHandler';
 
 /**
- * API状态管理composable返回类型
+ * API state composable return type
  */
 export interface UseApiStateReturn {
-  // 状态
   saveParams: Ref<ApisFormEdit>;
   isUnarchivedApi: Ref<boolean>;
   apisStatus: Ref<ApiStatus | undefined>;
@@ -50,13 +49,13 @@ export interface UseApiStateReturn {
   datasetActionOnEOF: Ref<ActionOnEOF>;
   datasetSharingMode: Ref<SharingMode>;
 
-  // 计算属性
+  // Computed
   parametersNum: ComputedRef<number>;
   headerCount: ComputedRef<number>;
   cookieCount: ComputedRef<number>;
   hasBodyContent: ComputedRef<boolean>;
 
-  // 方法
+  // Methods
   loadApiDetail: () => Promise<void>;
   loadApiAuth: () => Promise<void>;
   loadServiceServers: (serviceId: string) => Promise<void>;
@@ -66,7 +65,7 @@ export interface UseApiStateReturn {
 }
 
 /**
- * 请求处理composable返回类型
+ * Request handler composable return type
  */
 export interface UseRequestHandlerReturn {
   loading: Ref<boolean>;
@@ -106,7 +105,7 @@ export interface UseRequestHandlerReturn {
 }
 
 /**
- * 响应处理composable返回类型
+ * Response handler composable return type
  */
 export interface UseResponseHandlerReturn {
   responseState: ResponseState;
@@ -156,7 +155,7 @@ export interface UseResponseHandlerReturn {
 }
 
 /**
- * 断言处理composable返回类型
+ * Assertion handler composable return type
  */
 export interface UseAssertionHandlerReturn {
   assertNum: Ref<number>;
@@ -195,7 +194,7 @@ export interface UseAssertionHandlerReturn {
 }
 
 /**
- * UI状态管理composable返回类型
+ * UI state composable return type
  */
 export interface UseUIStateReturn {
   activeTabKey: Ref<string>;
@@ -219,7 +218,7 @@ export interface UseUIStateReturn {
 }
 
 /**
- * 参数管理composable返回类型
+ * Parameter manager composable return type
  */
 export interface UseParameterManagerReturn {
   parameters: Ref<ParamsItem[]>;
@@ -245,7 +244,7 @@ export interface UseParameterManagerReturn {
 }
 
 /**
- * 组件Props类型
+ * Component props type
  */
 export interface ComponentProps {
   pid: string;
@@ -261,7 +260,7 @@ export interface ComponentProps {
 }
 
 /**
- * 请求上下文类型
+ * Request context type
  */
 export interface RequestContext {
   query: Record<string, any>;

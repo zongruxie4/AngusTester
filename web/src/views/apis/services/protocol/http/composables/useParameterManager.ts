@@ -7,22 +7,22 @@ import { getDefaultParams } from '@/views/apis/services/protocol/http/utils';
 import { HTTP_HEADERS } from '@/utils/constant';
 
 /**
- * 参数管理composable
+ * Parameter management composable
  * <p>
- * 管理API的各种参数，包括查询参数、路径参数、请求头、Cookie等
+ * Manages various API parameters including query, path, headers, and cookies.
  * </p>
  */
 export function useParameterManager () {
   const { valueKey, enabledKey } = API_EXTENSION_KEY;
 
-  // 参数状态
+  // Parameter state
   const parameters = ref<ParamsItem[]>([]);
   const headerList = ref<ParamsItem[]>([]);
   const cookieList = ref<ParamsItem[]>([]);
   const requestBody = ref<RequestBodyParam>({});
   const contentType = ref<string | null>(null);
 
-  // 计算属性
+  // Computed
   const parametersNum = computed(() => parameters.value.length);
   const headerCount = computed(() => {
     let base = headerList.value.filter(i => !!i.name).length;
@@ -34,56 +34,56 @@ export function useParameterManager () {
   const cookieCount = computed(() => cookieList.value.filter(i => !!i.name).length);
 
   /**
-   * 更新参数列表
+   * Update parameter list
    * <p>
-   * 更新查询和路径参数列表
+   * Update query and path parameters list
    * </p>
-   * @param data - 新的参数列表
+   * @param data - New parameter list
    */
   const changeParamList = (data: ParamsItem[]): void => {
     parameters.value = data.filter(i => !!i.name || !!i[valueKey]);
   };
 
   /**
-   * 更新请求头列表
+   * Update header list
    * <p>
-   * 更新请求头参数列表
+   * Update request header parameters list
    * </p>
-   * @param data - 新的请求头列表
+   * @param data - New header list
    */
   const changeHeaderList = (data: ParamsItem[]): void => {
     headerList.value = data;
   };
 
   /**
-   * 更新Cookie列表
+   * Update cookie list
    * <p>
-   * 更新Cookie参数列表
+   * Update cookie parameter list
    * </p>
-   * @param data - 新的Cookie列表
+   * @param data - New cookie list
    */
   const changeCookieList = (data: ParamsItem[]): void => {
     cookieList.value = data;
   };
 
   /**
-   * 更新请求体
+   * Update request body
    * <p>
-   * 更新请求体参数
+   * Update request body parameters
    * </p>
-   * @param data - 新的请求体数据
+   * @param data - New request body data
    */
   const changeRequestBody = (data: RequestBodyParam): void => {
     requestBody.value = data;
   };
 
   /**
-   * 添加查询参数
+   * Add query parameter
    * <p>
-   * 添加新的查询参数到参数列表
+   * Add a new query parameter to the parameters list
    * </p>
-   * @param data - 要添加的参数数据
-   * @param requestParamsRef - 请求参数组件引用
+   * @param data - Parameter data to add
+   * @param requestParamsRef - Request parameters component ref
    */
   const addQueryParam = (data: any, requestParamsRef: any) => {
     setTimeout(() => {
@@ -92,12 +92,12 @@ export function useParameterManager () {
   };
 
   /**
-   * 从URL提取查询参数
+   * Extract query parameters from URL
    * <p>
-   * 从endpoint URL中提取查询参数并转换为参数列表
+   * Extract query parameters from the endpoint URL and convert to a list
    * </p>
-   * @param endpoint - API端点URL
-   * @returns 查询参数列表
+   * @param endpoint - API endpoint URL
+   * @returns Query parameters list
    */
   const extractQueryParamsFromUrl = (endpoint: string): ParamsItem[] => {
     let queryStrParam: ParamsItem[] = [];
@@ -113,26 +113,26 @@ export function useParameterManager () {
   };
 
   /**
-   * 处理参数数据
+   * Process parameters
    * <p>
-   * 处理从API详情加载的参数数据，包括类型转换和默认值设置
+   * Process parameters loaded from API details, including type coercion and defaults
    * </p>
-   * @param parameters - 原始参数数据
-   * @param endpoint - API端点URL
-   * @returns 处理后的参数列表
+   * @param parameters - Raw parameter data
+   * @param endpoint - API endpoint URL
+   * @returns Processed parameter list
    */
   const processParameters = (parameters: any[], endpoint: string) => {
-    // 从URL提取查询参数
+    // Extract query params from URL
     const queryStrParam = extractQueryParamsFromUrl(endpoint);
 
-    // 处理参数类型转换
+    // Handle parameter type conversion
     for (const key in parameters) {
       if (parameters[key].$ref) {
-        // 处理引用参数 - 这里需要调用getModelFromRef方法
+        // Handle $ref parameter - getModelFromRef should be invoked here
         parameters[key] = { name: undefined, schema: { type: SchemaType.string }, in: ParameterIn.query, [valueKey]: '' };
       }
 
-      // 处理参数值类型转换
+      // Convert parameter value types
       if ([SchemaType.object, SchemaType.array, SchemaType.boolean, SchemaType.integer, SchemaType.number]
         .includes(parameters[key].schema?.type) && parameters[key]?.[valueKey] && typeof parameters[key]?.[valueKey] === 'string') {
         try {
@@ -143,7 +143,7 @@ export function useParameterManager () {
       }
     }
 
-    // 设置参数列表
+    // Build parameter list
     const processedParams = (parameters?.filter(item => [ParameterIn.query, ParameterIn.path]
       .includes(item.in) && !!item.name) || []).map(i => ({ ...i, [enabledKey]: i[enabledKey] !== false }));
 
@@ -151,12 +151,12 @@ export function useParameterManager () {
   };
 
   /**
-   * 处理请求头数据
+   * Process headers
    * <p>
-   * 处理从API详情加载的请求头数据
+   * Process headers loaded from API details
    * </p>
-   * @param parameters - 原始参数数据
-   * @returns 处理后的请求头列表
+   * @param parameters - Raw parameters
+   * @returns Processed header list
    */
   const processHeaders = (parameters: any[]) => {
     return (parameters?.filter(i => i.in === ParameterIn.header && !!i.name) || [])
@@ -164,12 +164,12 @@ export function useParameterManager () {
   };
 
   /**
-   * 处理Cookie数据
+   * Process cookies
    * <p>
-   * 处理从API详情加载的Cookie数据
+   * Process cookies loaded from API details
    * </p>
-   * @param parameters - 原始参数数据
-   * @returns 处理后的Cookie列表
+   * @param parameters - Raw parameters
+   * @returns Processed cookie list
    */
   const processCookies = (parameters: any[]) => {
     return (parameters?.filter(i => i.in === ParameterIn.cookie && !!i.name) || [])
@@ -177,11 +177,11 @@ export function useParameterManager () {
   };
 
   /**
-   * 提取内容类型
+   * Extract content type
    * <p>
-   * 从请求头中提取内容类型并更新状态
+   * Extract content type from request headers and update state
    * </p>
-   * @param headers - 请求头列表
+   * @param headers - Request header list
    */
   const extractContentType = (headers: ParamsItem[]) => {
     const contentTypeIndex = headers.findIndex(i => i.name === HTTP_HEADERS.CONTENT_TYPE);
@@ -194,20 +194,20 @@ export function useParameterManager () {
   };
 
   /**
-   * 获取有效的请求头
+   * Get valid headers
    * <p>
-   * 获取有效的请求头列表（过滤掉空名称）
+   * Get valid header list (filter out empty names)
    * </p>
-   * @returns 有效的请求头列表
+   * @returns Valid header list
    */
   const getValidHeaders = () => {
     return headerList.value.filter(i => !!i.name);
   };
 
   /**
-   * 重置参数状态
+   * Reset parameter state
    * <p>
-   * 重置所有参数相关状态到初始值
+   * Reset all parameter-related state to initial values
    * </p>
    */
   const resetParameterState = () => {
@@ -219,19 +219,19 @@ export function useParameterManager () {
   };
 
   return {
-    // 状态
+    // State
     parameters,
     headerList,
     cookieList,
     requestBody,
     contentType,
 
-    // 计算属性
+    // Computed
     parametersNum,
     headerCount,
     cookieCount,
 
-    // 方法
+    // Methods
     changeParamList,
     changeHeaderList,
     changeCookieList,

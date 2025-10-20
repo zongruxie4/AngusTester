@@ -53,7 +53,6 @@ const getServicesCompTypeEnum = () => {
   return servicesCompTypeEnum;
 };
 
-
 // Grouped components by collection type for rendering
 const compListObj = ref<Partial<Record<ServicesCompType, {
   name:string;

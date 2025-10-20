@@ -8,7 +8,7 @@ import { AssertResult, ConditionResult, Extraction, Parameter } from '@/views/ap
 import assertUtils from '@/utils/assertutils';
 
 /**
- * 响应状态接口
+ * Response state interface
  */
 export interface ResponseState {
   config?: Record<string, any>;
@@ -25,13 +25,13 @@ export interface ResponseState {
 }
 
 /**
- * 响应处理composable
+ * Response handling composable
  * <p>
- * 处理HTTP响应的解析、显示和断言执行
+ * Handles parsing, displaying and assertion execution for HTTP responses.
  * </p>
  */
 export function useResponseHandler () {
-  // 响应状态
+  // Response state
   const responseState = reactive<ResponseState>({
     config: {},
     headers: {},
@@ -45,7 +45,7 @@ export function useResponseHandler () {
     contentEncoding: undefined
   });
 
-  // 错误状态
+  // Error state
   const responseError = reactive<{
     show: boolean;
     value: string | undefined;
@@ -54,11 +54,11 @@ export function useResponseHandler () {
     value: undefined
   });
 
-  // 断言结果
+  // Assertion results
   const assertResult = ref<AssertResult[]>();
   const assertionVariableExtra = ref<any>({});
 
-  // 本地请求信息（用于断言执行）
+  // Local request info (for assertion execution)
   const localRequestInfo = reactive<Parameter>({
     responseHeader: {},
     responseBody: {
@@ -73,18 +73,19 @@ export function useResponseHandler () {
     status: undefined
   });
 
-  // 计算属性
+  // Computed
   const isResponseEmpty = computed(() => {
     return !responseState.config || !Object.keys(responseState.config).length;
   });
 
   /**
-   * 处理HTTP响应（本地请求，无代理）
+   * Handle HTTP response (local request, no proxy)
    * <p>
-   * 处理响应数据，更新响应状态，并处理成功和错误响应。如果配置了断言，也会执行断言。
+   * Handle response data, update response state, and handle success/error responses.
+   * Execute assertions if configured.
    * </p>
-   * @param resp - 来自axios的HTTP响应对象
-   * @param request - 包含查询、headers、路径和body数据的请求上下文
+   * @param resp - HTTP response object from axios
+   * @param request - Request context including query, headers, path and body
    */
   const handleHttpResponse = async (resp: any, request: any) => {
     responseError.show = false;
@@ -92,7 +93,7 @@ export function useResponseHandler () {
     responseState.performance = resp.performance;
     assertResult.value = undefined;
 
-    // 处理网络错误（状态0）
+    // Handle network error (status 0)
     if (resp.request.status === 0) {
       responseError.show = true;
       responseError.value = resp.message;
@@ -104,7 +105,7 @@ export function useResponseHandler () {
       };
       responseState.headers = resp.config.headers;
     }
-    // 处理HTTP错误响应（4xx, 5xx）
+    // Handle HTTP error response (4xx, 5xx)
     else if (resp.request.status < 200 || resp.request.status >= 300) {
       responseState.data = await convertBlob(resp.response.data);
       responseState.config = {
@@ -124,7 +125,7 @@ export function useResponseHandler () {
         resp.response.headers?.[HTTP_HEADERS.SET_COOKIE_LOWER];
       responseState.cookie = cookie ? (Array.isArray(cookie) ? cookie : [cookie]) : [];
     }
-    // 处理成功响应（2xx）
+    // Handle success response (2xx)
     else {
       responseState.data = await convertBlob(resp.data);
       if (responseState.data instanceof Blob) {
@@ -153,9 +154,9 @@ export function useResponseHandler () {
       responseState.cookie = cookie ? (Array.isArray(cookie) ? cookie : [cookie]) : [];
     }
 
-    // 如果没有发生错误，执行断言
+    // Execute assertions if no error occurred
     if (!responseError.show) {
-      // 为断言执行准备本地请求信息
+      // Prepare local request info for assertions
       localRequestInfo.responseHeader = responseState.headers;
       localRequestInfo.responseBody = { size: responseState.size || 0, data: responseState.data };
       localRequestInfo.status = responseState.status || 0;
@@ -170,22 +171,22 @@ export function useResponseHandler () {
           : undefined;
       localRequestInfo.rawBody = request.requestBody.body || undefined;
 
-      // 使用准备的请求上下文执行断言
+      // Execute assertions with prepared request context
       assertResult.value = await assertUtils.assert.execute(localRequestInfo, request.assertions, request.variableValues);
     }
   };
 
   /**
-   * 处理WebSocket代理响应
+   * Handle WebSocket proxy response
    * <p>
-   * 处理通过WebSocket代理接收的响应，解析JSON数据，并相应地更新响应状态。
+   * Process responses received via WebSocket proxy, parse JSON and update state.
    * </p>
    */
   const onResponse = async (response: string) => {
     assertResult.value = undefined;
     let responseData: any = {};
 
-    // 解析来自WebSocket的JSON响应
+    // Parse JSON response from WebSocket
     try {
       responseData = JSON.parse(response);
     } catch {
@@ -203,7 +204,7 @@ export function useResponseHandler () {
     }
 
     if (typeof responseData === 'object') {
-      // 处理代理错误（状态0）
+      // Handle proxy error (status 0)
       if (+responseData.response.status === 0) {
         responseError.show = true;
         assertionVariableExtra.value = {};
@@ -217,15 +218,15 @@ export function useResponseHandler () {
         responseState.requestHeaders = responseData.response.headers || [];
         responseState.performance = {} as PerformanceEntry;
       }
-      // 处理成功的代理响应
+      // Handle successful proxy response
       else {
         responseState.config = {
           ...responseData.request0,
           url: responseData.request0.url + (responseData.request0.queryString ? ('?' + responseData.request0.queryString) : '')
         };
 
-        // 将header数组解析为对象格式
-        // Headers存储为[key1, value1, key2, value2, ...]数组
+        // Parse header array into object
+        // Headers are stored as [key1, value1, key2, value2, ...]
         const header = {};
         (responseData.response?.headerArray || []).forEach((value, idx, arr) => {
           if (idx % 2 === 0) {
@@ -246,7 +247,7 @@ export function useResponseHandler () {
         responseState.data = responseData.response.rawContent;
         responseState.contentEncoding = responseData.response?.contentEncoding;
 
-        // 如果需要，将base64数据转换为blob
+        // Convert base64 data to blob if needed
         if (responseData.response.contentEncoding === 'base64') {
           const mime = header[HTTP_HEADERS.CONTENT_TYPE] || header['content-type'] || header['content-Type'] || header['CONTENT-TYPE'];
           responseState.data = dataURLtoBlob(responseState.data, mime);
@@ -269,15 +270,15 @@ export function useResponseHandler () {
   };
 
   /**
-   * 根据类型获取断言值
+   * Get assertion value by type
    * <p>
-   * 根据断言类型和条件从响应数据中提取适当的值。处理不同的断言类型，如body、header、status等。
+   * Extract value from response based on type and condition. Handles body, header, status, etc.
    * </p>
-   * @param assertionCondition - 断言条件类型
-   * @param type - 断言类型（body、header、status等）
-   * @param data - 包含各种指标的响应数据
-   * @param parameterName - header断言的参数名
-   * @returns 包含提取数据、消息和错误消息的对象
+   * @param assertionCondition - Assertion condition type
+   * @param type - Assertion type (body, header, status, ...)
+   * @param data - Response metrics
+   * @param parameterName - Parameter name for header assertions
+   * @returns Object containing extracted data, message and errorMessage
    */
   const getValueByType = (assertionCondition: AssertionCondition, type: AssertionType, data: {
     bodySize: number;
@@ -356,9 +357,9 @@ export function useResponseHandler () {
   };
 
   /**
-   * 获取header参数
+   * Get header parameter
    * <p>
-   * 从header数组中提取指定名称的参数值
+   * Extract the parameter value for the specified name from the header array
    * </p>
    */
   const getHeaderParams = (data: string[], name: string): string => {
@@ -378,12 +379,12 @@ export function useResponseHandler () {
   };
 
   /**
-   * 从代理响应设置断言结果
+   * Set assertion results from proxy response
    * <p>
-   * 处理来自WebSocket代理响应的断言结果，评估条件，并准备用于显示的最终断言结果数据。
+   * Process assertion results from WebSocket proxy response, evaluate conditions, and prepare final data for display.
    * </p>
-   * @param responseData - 来自WebSocket代理的包含断言的响应数据
-   * @returns 处理后的断言结果数组
+   * @param responseData - Response data from WebSocket proxy including assertions
+   * @returns Processed assertion results
    */
   const setAssertResult = async (responseData: any) => {
     const assertions: AssertResult[] = responseData.assertions;
@@ -392,7 +393,7 @@ export function useResponseHandler () {
     }
 
     const result: AssertResult[] = [];
-    // 处理每个断言结果
+    // Handle each assertion result
     for (let i = 0, len = assertions.length; i < len; i++) {
       const {
         name,
@@ -407,12 +408,12 @@ export function useResponseHandler () {
       } = assertions[i];
 
       let _condition: ConditionResult = {
-        failure: false, // 执行结果
-        name: '', // 提取的变量名
-        conditionMessage: '', // 断言表达式错误的原因
-        failureMessage: '', // 提取失败的原因
-        value: '', // 提取的变量值
-        ignored: false, // 是否忽略此断言
+        failure: false, // execution result
+        name: '', // extracted variable name
+        conditionMessage: '', // reason for assertion expression error
+        failureMessage: '', // reason for extraction failure
+        value: '', // extracted variable value
+        ignored: false, // whether to ignore this assertion
         message: '条件消息为空'
       };
 
@@ -424,12 +425,12 @@ export function useResponseHandler () {
 
         if (!condition) {
           _condition = {
-            failure: false, // 执行结果
-            name: '', // 提取的变量名
-            conditionMessage: '', // 断言表达式错误的原因
-            failureMessage: '', // 提取失败的原因
-            value: '', // 提取的变量值
-            ignored: false, // 是否忽略此断言
+            failure: false, // execution result
+            name: '', // extracted variable name
+            conditionMessage: '', // reason for assertion expression error
+            failureMessage: '', // reason for extraction failure
+            value: '', // extracted variable value
+            ignored: false, // whether to ignore this assertion
             message: '条件消息为空'
           };
         } else {
@@ -438,12 +439,12 @@ export function useResponseHandler () {
           const matchs = matchsMap[condition];
           if (!matchs) {
             _condition = {
-              failure: false, // 执行结果
-              name: '', // 提取的变量名
-              conditionMessage: '条件消息格式错误', // 断言表达式错误的原因
-              failureMessage: '条件消息格式失败', // 提取失败的原因
-              value: '', // 提取的变量值
-              ignored: true, // 是否忽略此断言
+              failure: false, // execution result
+              name: '', // extracted variable name
+              conditionMessage: '条件消息格式错误', // reason for assertion expression error
+              failureMessage: '条件消息格式失败', // reason for extraction failure
+              value: '', // extracted variable value
+              ignored: true, // whether to ignore this assertion
               message: '条件消息格式错误'
             };
           } else {
@@ -461,22 +462,22 @@ export function useResponseHandler () {
 
             if (ignored) {
               _condition = {
-                failure: true, // 执行结果
-                name: leftOperand, // 提取的变量名
-                conditionMessage: '', // 断言表达式错误的原因
-                failureMessage, // 提取失败的原因
-                value, // 提取的变量值
-                ignored: true, // 是否忽略此断言
+                failure: true, // execution result
+                name: leftOperand, // extracted variable name
+                conditionMessage: '', // reason for assertion expression error
+                failureMessage, // reason for extraction failure
+                value, // extracted variable value
+                ignored: true, // whether to ignore this assertion
                 message: '条件消息忽略'
               };
             } else {
               _condition = {
-                failure: false, // 执行结果
-                name: leftOperand, // 提取的变量名
-                conditionMessage: '', // 断言表达式错误的原因
-                failureMessage, // 提取失败的原因
-                value, // 提取的变量值
-                ignored: false, // 是否忽略此断言
+                failure: false, // execution result
+                name: leftOperand, // extracted variable name
+                conditionMessage: '', // reason for assertion expression error
+                failureMessage, // reason for extraction failure
+                value, // extracted variable value
+                ignored: false, // whether to ignore this assertion
                 message: '条件消息执行'
               };
             }
@@ -594,17 +595,17 @@ export function useResponseHandler () {
   };
 
   return {
-    // 状态
+    // State
     responseState,
     responseError,
     assertResult,
     assertionVariableExtra,
     localRequestInfo,
 
-    // 计算属性
+    // Computed
     isResponseEmpty,
 
-    // 方法
+    // Methods
     handleHttpResponse,
     onResponse,
     resetResponseState,
