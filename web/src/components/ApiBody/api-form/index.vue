@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 
 // UI component imports
 import { Button, Checkbox } from 'ant-design-vue';
-import { Icon, Input, Select, SelectSchema } from '@xcan-angus/vue-ui';
+import { Icon, Input, Select, SelectSchema, SimpleEditableSelect } from '@xcan-angus/vue-ui';
 
 // Infrastructure imports
 import SwaggerUI from '@xcan-angus/swagger-ui';
@@ -15,7 +15,6 @@ import { http, TESTER } from '@xcan-angus/infra';
 import ApiUpload from '../upload/index.vue';
 import ParamInput from '../../ParamInput/index.vue';
 import JsonContent from '../../JsonContent/index.vue';
-import SimpleEditableSelect from '../../SimpleEditableSelect/index.vue';
 
 // Local imports
 import { basicParameterItemTypes, formDataParameterTypes } from './interface';

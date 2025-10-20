@@ -3,14 +3,13 @@ import { watch, ref, computed, inject, onMounted, nextTick } from 'vue';
 import { utils, http, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-import { Input, Select, Icon, SelectSchema } from '@xcan-angus/vue-ui';
+import { Input, Select, Icon, SelectSchema, SimpleEditableSelect } from '@xcan-angus/vue-ui';
 import { Button, Checkbox } from 'ant-design-vue';
 import ParamsInput from '../ParamInput/index.vue';
 import { API_EXTENSION_KEY, deconstruct, deepDelAttrFromObj, getModelDataByRef } from '@/utils/apis/index';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import SimpleEditableSelect from '../SimpleEditableSelect/index.vue';
 
 import {
   inOptions,
