@@ -653,6 +653,23 @@ export enum CombinedTargetType {
   REPORT = 'REPORT'
 }
 
+export enum PiplineTarget {
+  JDBC = 'JDBC',
+  TRANS_END = 'TRANS_END',
+  RENDEZVOUS = 'RENDEZVOUS',
+  WAITING_TIME = 'WAITING_TIME',
+  THROUGHPUT = 'THROUGHPUT',
+  HTTP = 'HTTP',
+  FTP = 'FTP',
+  LDAP = 'LDAP',
+  MAIL = 'MAIL',
+  SMTP = 'SMTP',
+  TCP = 'TCP',
+  WEBSOCKET = 'WEBSOCKET',
+  JMS = 'JMS',
+  TRANS_START = 'TRANS_START'
+}
+
 export const enumNamespaceMap = new Map<any, string>([
   [NodeSource, 'xcm.enum.NodeSource'],
   [CountScriptType, 'xcm.enum.CountScriptType'],

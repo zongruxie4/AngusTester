@@ -8,98 +8,178 @@ import { utils } from '@xcan-angus/infra';
 import { TransStartConfig } from './PropsType';
 import ActionsGroup from '../ActionsGroup/index.vue';
 
+// Initialize i18n for internationalization
 const { t } = useI18n();
 
+/**
+ * Component props interface
+ */
 export interface Props {
-  value: TransStartConfig;
-  repeatNames: string[];
+  value: TransStartConfig;  // Transaction start configuration data
+  repeatNames: string[];    // List of existing names to check for duplicates
 }
 
+// Define props with default values
 const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   repeatNames: () => []
 });
 
-
+/**
+ * Event emitters
+ */
 const emit = defineEmits<{
-  (e: 'change', value: Omit<TransStartConfig, 'id'>): void;
-  (e: 'nameChange', value: string): void;
-  (e: 'click', value:'delete'|'clone'):void;
-  (e: 'enabledChange', value: boolean): void;
-  (e: 'renderChange'): void;
+  (e: 'change', value: Omit<TransStartConfig, 'id'>): void;  // Emit data changes
+  (e: 'nameChange', value: string): void;                     // Emit name changes
+  (e: 'click', value: 'delete' | 'clone'): void;             // Emit action clicks
+  (e: 'enabledChange', value: boolean): void;                 // Emit enabled state changes
+  (e: 'renderChange'): void;                                  // Emit render event
 }>();
 
+/**
+ * Unique identifier for this component instance
+ * Used as collapse panel key
+ */
 const UUID = utils.uuid();
-const activeKey = ref<string>(UUID);
-const enabled = ref(false);
-const name = ref<string>();
-const description = ref<string>();
-const nameError = ref(false);
-const nameRepeatFlag = ref(false);
 
-const nameChange = (event: { target: { value: string } }) => {
-  const value = event.target.value;
+/**
+ * Form field reactive references
+ */
+const activeKey = ref<string>(UUID);   // Active collapse panel key (controls expand/collapse)
+const enabled = ref(false);            // Whether this transaction is enabled
+const name = ref<string>();            // Transaction name (must be unique)
+const description = ref<string>();     // Optional transaction description
+
+/**
+ * Validation error states
+ */
+const nameError = ref(false);          // Name validation error
+const nameRepeatFlag = ref(false);     // Name duplication flag
+
+/**
+ * Handle name field change
+ * Clears validation errors and emits name change event
+ * 
+ * @param event - Input change event
+ */
+const nameChange = (event: any): void => {
+  const value = event.target?.value;
   name.value = value;
   nameError.value = false;
   nameRepeatFlag.value = false;
   emit('nameChange', value);
 };
 
-const openChange = (_open: boolean) => {
+/**
+ * Handle collapse panel expand/collapse
+ * Updates active key to control panel visibility
+ * 
+ * @param _open - Whether to expand or collapse
+ */
+const openChange = (_open: boolean): void => {
   if (_open) {
+    // Expand: set active key to this panel's UUID
     activeKey.value = UUID;
     return;
   }
 
+  // Collapse: clear active key
   activeKey.value = '';
 };
 
-const enabledChange = (_enabled: boolean) => {
+/**
+ * Handle enabled state change
+ * Updates local state and emits change event
+ * 
+ * @param _enabled - New enabled state
+ */
+const enabledChange = (_enabled: boolean): void => {
   enabled.value = _enabled;
   emit('enabledChange', _enabled);
 };
 
-const actionClick = (value: 'delete' | 'clone') => {
+/**
+ * Handle action button click (clone or delete)
+ * Emits click event to parent component
+ * 
+ * @param value - Action type
+ */
+const actionClick = (value: 'delete' | 'clone'): void => {
   emit('click', value);
 };
 
-const initializedData = () => {
+/**
+ * Initialize form data from props
+ * Populates form fields with prop values
+ */
+const initializedData = (): void => {
   if (!props.value) {
     return;
   }
 
-  const { name: _name, description: _description, enabled: _enabled } = props.value;
+  const { 
+    name: _name, 
+    description: _description, 
+    enabled: _enabled 
+  } = props.value;
+  
   name.value = _name;
   description.value = _description;
   enabled.value = _enabled;
 };
 
+/**
+ * Component mount lifecycle hook
+ * Emits render event, initializes data, and sets up watchers
+ */
 onMounted(() => {
+  // Emit render change event
   emit('renderChange');
+  
+  // Initialize form with prop data
   initializedData();
+  
+  /**
+   * Watch for duplicate name changes
+   * Marks name as error if it appears in repeatNames list
+   */
   watch(() => props.repeatNames, (newValue) => {
-    if (newValue.includes(name.value)) {
+    if (name.value && newValue.includes(name.value)) {
       nameError.value = true;
       nameRepeatFlag.value = true;
       return;
     }
 
+    // Clear error if name was previously duplicate but no longer is
     if (nameRepeatFlag.value) {
       nameError.value = false;
       nameRepeatFlag.value = false;
     }
   });
 
+  /**
+   * Watch for any data changes and emit to parent
+   */
   watchEffect(() => {
     const data = getData();
     emit('change', data);
   });
 });
 
+/**
+ * Validate form fields
+ * Checks for required name field and duplicate names
+ * 
+ * @returns true if validation passes, false otherwise
+ */
 const isValid = (): boolean => {
+  // Clear previous errors
   nameError.value = false;
   nameRepeatFlag.value = false;
+  
   let errorNum = 0;
+  
+  // Validate name (required and unique)
   if (!name.value) {
     errorNum++;
     nameError.value = true;
@@ -113,25 +193,45 @@ const isValid = (): boolean => {
   return !errorNum;
 };
 
+/**
+ * Get transaction start configuration data
+ * Returns configuration object without ID
+ * 
+ * @returns TransStart configuration (excluding ID)
+ */
 const getData = (): Omit<TransStartConfig, 'id'> => {
   return {
     beforeName: '',
     transactionName: '',
-    description: description.value,
+    description: description.value || '',
     enabled: enabled.value,
-    name: name.value,
+    name: name.value || '',
     target: 'TRANS_START'
   };
 };
 
+/**
+ * Expose methods for parent component access
+ */
 defineExpose({
-  getData,
-  isValid,
-  getName: ():string => {
-    return name.value;
+  getData,    // Get configuration data
+  isValid,    // Validate form fields
+  
+  /**
+   * Get transaction name
+   * @returns Current name value
+   */
+  getName: (): string => {
+    return name.value || '';
   },
-  validateRepeatName: (value:string[]):boolean => {
-    if (value.includes(name.value)) {
+  
+  /**
+   * Validate if name is duplicate
+   * @param value - List of existing names to check against
+   * @returns true if name is unique, false if duplicate
+   */
+  validateRepeatName: (value: string[]): boolean => {
+    if (name.value && value.includes(name.value)) {
       nameError.value = true;
       nameRepeatFlag.value = true;
       return false;
@@ -143,6 +243,12 @@ defineExpose({
 </script>
 
 <template>
+  <!--
+    Transaction start collapsible panel
+    - Light blue header background
+    - Reduced opacity when disabled
+    - Collapsible section for description field
+  -->
   <Collapse
     :activeKey="activeKey"
     :class="{ 'opacity-70': !enabled }"
@@ -153,9 +259,15 @@ defineExpose({
       :key="UUID"
       :showArrow="false"
       collapsible="disabled">
+      <!-- Panel header: transaction configuration row -->
       <template #header>
         <div class="flex items-center flex-nowrap w-full whitespace-nowrap">
-          <Icon class="flex-shrink-0 mr-3 text-4" icon="icon-shiwu" />
+          <!-- Transaction icon -->
+          <Icon 
+            class="flex-shrink-0 mr-3 text-4" 
+            icon="icon-shiwu" />
+          
+          <!-- Name field with duplicate name tooltip -->
           <div class="flex-1 flex items-center">
             <Tooltip
               :title="t('httpPlugin.uiConfig.transStart.duplicateName')"
@@ -174,6 +286,8 @@ defineExpose({
                 @change="nameChange" />
             </Tooltip>
           </div>
+          
+          <!-- Action buttons: enable/disable, clone, delete, expand/collapse -->
           <ActionsGroup
             v-model:enabled="enabled"
             :open="activeKey === UUID"
@@ -183,10 +297,13 @@ defineExpose({
             @click="actionClick" />
         </div>
       </template>
+      
+      <!-- Panel content: description field (injected via slot) -->
       <slot name="default"></slot>
     </CollapsePanel>
   </Collapse>
 </template>
+
 <style scoped>
 .ant-collapse.trans-collapse-container {
   line-height: 20px;

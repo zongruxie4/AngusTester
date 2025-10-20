@@ -1,24 +1,20 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
-
+import { ThroughputConfig } from '@/plugins/test/types';
 import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
 
+// Initialize i18n for internationalization
 const { t } = useI18n();
 
+/**
+ * Component props interface
+ */
 export interface Props {
-  value: {
-    target: 'THROUGHPUT';
-    name: string;
-    description: string;
-    enabled: boolean;
-    beforeName: string;
-    transactionName: string;
-    permitsPerSecond: string;
-    timeoutInMs: string;
-  };
+  value: ThroughputConfig;  // Throughput controller configuration data
 }
 
+// Define props with default values
 const props = withDefaults(defineProps<Props>(), {
   value: undefined
 });
@@ -26,21 +22,45 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
+  <!--
+    Throughput controller display container
+    - Dashed border for visual distinction
+    - Fixed height (42px)
+    - Horizontal layout with icon, info, and status
+  -->
   <div class="dashed-border h-10.5 leading-5 flex items-center px-3 rounded border border-solid border-theme-text-box">
-    <Icon class="flex-shrink-0 text-4 mr-3" icon="icon-zusai" />
+    <!-- Throughput controller icon -->
+    <Icon 
+      class="flex-shrink-0 text-4 mr-3" 
+      icon="icon-zusai" />
+    
+    <!-- Throughput controller information section -->
     <div class="flex-1 flex items-center mr-3">
-      <div :title="props.value?.name" class="truncate min-w-55 max-w-100 mr-5 name">{{ props.value?.name }}</div>
+      <!-- Controller name (truncated with tooltip) -->
+      <div 
+        :title="props.value?.name" 
+        class="truncate min-w-55 max-w-100 mr-5 name">
+        {{ props.value?.name }}
+      </div>
+      
+      <!-- Permits per second (rate limit) -->
       <div class="flex items-center mr-5">
         <span class="mr-0.5">{{ t('httpPlugin.functionTestDetail.throughput.requestsPerSecond') }}</span>
         <span>{{ props.value?.permitsPerSecond }}</span>
       </div>
+      
+      <!-- Timeout in milliseconds (max wait time before timeout) -->
       <div class="flex items-center mr-5">
         <span class="mr-0.5">{{ t('httpPlugin.functionTestDetail.throughput.waitTimeout') }}</span>
         <span>{{ props.value?.timeoutInMs }}</span>
         <span>ms</span>
       </div>
     </div>
-    <StatusTag v-if="!props.value?.enabled" class="mr-7" />
+    
+    <!-- Status tag: shown only when disabled -->
+    <StatusTag 
+      v-if="!props.value?.enabled" 
+      class="mr-7" />
   </div>
 </template>
 
