@@ -685,7 +685,7 @@ const onLeftListVisibleChange = async (visible, item) => {
   }
 
   if (item?.status?.value === ApiStatus.RELEASED) {
-    auths.value = auths.value.filter(permission => ![ServicesPermission.MODIFY, ServicesPermission.DELETE].includes(permission));
+    auths.value = auths.value.filter(permission => ![ServicesPermission.MODIFY, ServicesPermission.DELETE].includes(permission as ServicesPermission));
   }
 
   listProps.value.dropdownProps.permissions = auths.value;
