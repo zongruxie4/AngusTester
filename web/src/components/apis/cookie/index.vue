@@ -17,7 +17,7 @@ import JsonContent from '@/components/form/JsonContent.vue';
 
 // Utility imports
 import { ParamsItem, getDefaultParams, API_EXTENSION_KEY, deconstruct, validateType, deepDelAttrFromObj, getModelDataByRef, VARIABLE_NAME_REG } from '@/utils/apis';
-import variableApi from '@/components/variable/apis.ts';
+import { variable as variableApi } from '@/api/tester';
 
 // Local imports
 import { cookieParameterItemTypes } from './interface';

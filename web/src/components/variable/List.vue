@@ -6,7 +6,7 @@ import { EnumMessage, ExtractionMethod, utils, enumUtils, TESTER, duration, Http
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 
-import variableApi from './apis';
+import { variable as variableApi } from '@/api/tester';
 import { VariableObj, TargetType, Scope } from './PropsType';
 import { RadioChangeEvent } from 'ant-design-vue/es/radio/interface';
 const { t } = useI18n();
@@ -149,7 +149,7 @@ const hanldeDelete = async (variable:VariableObj) => {
   }
 
   variable.delLoading = true;
-  const [error] = await variableApi.delVariables({ ids: [variable.id] });
+  const [error] = await variableApi.deleteVariables({ ids: [variable.id] });
   variable.delLoading = false;
   if (error) {
     return;
@@ -307,7 +307,7 @@ const variableSwitchChange = async (variable:VariableObj) => {
     return;
   }
   variable.enableLoading = true;
-  const [error] = await variableApi.patchVariableEnabled([{ id: variable.id, enabled: !variable.enabled }]);
+  const [error] = await variableApi.patchVariables([{ id: variable.id, enabled: !variable.enabled }]);
   variable.enableLoading = false;
   if (error) {
     return;
