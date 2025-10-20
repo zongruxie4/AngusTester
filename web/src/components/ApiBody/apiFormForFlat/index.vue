@@ -5,18 +5,17 @@ import { useI18n } from 'vue-i18n';
 
 // UI component imports
 import { Button, Checkbox } from 'ant-design-vue';
-import { Icon, Input, Select } from '@xcan-angus/vue-ui';
+import { Icon, Input, Select, SimpleEditableSelect } from '@xcan-angus/vue-ui';
 
 // Infrastructure imports
 import { http, TESTER } from '@xcan-angus/infra';
 
 // Local component imports
 import ApiUpload from '../upload/index.vue';
-import SimpleEditableSelect from '../../SimpleEditableSelect/index.vue';
 
 // Local imports
 import { basicFlatParameterItemTypes, flatFormDataParameterTypes } from './interface';
-import { qsJsonToParamList } from '../../ApiUtils';
+import { qsJsonToParamList } from '@/utils/apis/index';
 
 // Utility imports
 import { ParamsItem, API_EXTENSION_KEY, deepDelAttrFromObj, validateType } from '@/utils/apis/index';

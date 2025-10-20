@@ -722,7 +722,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId })); // Base API informa
           :disabled="!useAuth.includes(ServicesPermission.MODIFY)"
           :name="props.serviceInfo.name" />
       </template>
-      <template #cases>
+      <template #case>
         <TestCase
           v-if="activeDrawerKey === DrawerType.CASE"
           :id="mainState.id || mainState.serviceId"

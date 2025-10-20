@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 
 // UI component imports
 import { Button, Checkbox, Tooltip } from 'ant-design-vue';
-import { Icon, Input, Select, SelectSchema } from '@xcan-angus/vue-ui';
+import { Icon, Input, Select, SelectSchema, SimpleEditableSelect } from '@xcan-angus/vue-ui';
 
 // Infrastructure imports
 import SwaggerUI from '@xcan-angus/swagger-ui';
@@ -14,7 +14,6 @@ import { http, TESTER } from '@xcan-angus/infra';
 // Local component imports
 import ParamInput from '@/components/ParamInput/index.vue';
 import JsonContent from '@/components/JsonContent/index.vue';
-import SimpleEditableSelect from '@/components/SimpleEditableSelect/index.vue';
 
 // Utility imports
 import { deconstruct, getParamsByUri, getUriByParams, API_EXTENSION_KEY, getModelDataByRef, schemaTypeToOption, validateType, deepDelAttrFromObj } from 'src/utils/apis';
