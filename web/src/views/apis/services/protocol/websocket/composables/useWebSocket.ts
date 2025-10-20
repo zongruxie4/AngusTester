@@ -531,7 +531,9 @@ export function useWebSocket (props: any, deps: UseWebSocketDeps) {
     if (!props.id) {
       return;
     }
-    const [error, response] = await (props.valueObj.unarchived ? apis.getUnarchivedApiDetail(props.id) : apis.getApiDetail(props.id));
+    const [error, response] = await (props.valueObj.unarchived
+      ? apis.getUnarchivedApiDetail(props.id)
+      : apis.getApiDetail(props.id));
     if (error) {
       console.error('Failed to load API information:', error);
       return;

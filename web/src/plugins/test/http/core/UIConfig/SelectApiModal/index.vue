@@ -5,7 +5,7 @@ import { Icon, Modal, Tooltip, notification, SelectApisByService } from '@xcan-a
 import { Button } from 'ant-design-vue';
 import { apis, paramTarget } from '@/api/tester';
 
-import { ApiInfo } from '@/plugins/test/types';
+import { ApisDetail } from '@/views/apis/services/protocol/types';
 
 const { t } = useI18n();
 
@@ -30,10 +30,9 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: ''
 });
 
-
 const emit = defineEmits<{
   (e:'update:visible', value:boolean):void;
-  (e:'ok', value:ApiInfo[]):void;
+  (e:'ok', value:ApisDetail[]):void;
   (e:'cancel'):void;
 }>();
 
@@ -62,11 +61,11 @@ const ok = async (key:'link'|'copy') => {
     linking.value = true;
   }
 
-  const results:ApiInfo[] = [];
+  const results:ApisDetail[] = [];
   const ids = checkedApiIds.value;
   for (let i = 0, len = ids.length; i < len; i++) {
     const id = ids[i];
-    const [error, { data }]:[Error|null, { data: ApiInfo }] = await apis.getApiDetail(id, true, { silence: false });
+    const [error, { data }]:[Error|null, { data: ApisDetail }] = await apis.getApiDetail(id, true, { silence: false });
     if (error) {
       coping.value = false;
       linking.value = false;

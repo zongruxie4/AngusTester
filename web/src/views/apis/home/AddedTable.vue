@@ -9,7 +9,8 @@ import { BasicProps } from '@/types/types';
 import { apis } from '@/api/tester';
 import { getCurrentPage } from '@/utils/utils';
 
-import { ApiInfo } from '@/views/apis/types';
+
+import {ApiInfo} from "@/views/apis/services/protocol/types";
 
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,

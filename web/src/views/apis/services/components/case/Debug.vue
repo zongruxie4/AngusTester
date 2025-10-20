@@ -290,8 +290,7 @@ const loadApiInfo = async (apisId) => {
   }
 
   if (resp.data.availableServers?.length) {
-    const targetServer = resp.data.availableServers.find(item => item[serverSourceKey] === 'CURRENT_REQUEST') || resp.data.availableServers[0];
-    caseInfo.currentServer = targetServer;
+    caseInfo.currentServer = resp.data.availableServers.find(item => item[serverSourceKey] === 'CURRENT_REQUEST') || resp.data.availableServers[0];
     avariableServers.value = resp.data.availableServers;
   }
   caseInfo.method = resp.data.method.value;

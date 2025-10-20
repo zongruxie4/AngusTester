@@ -2,6 +2,27 @@ import { ActionOnEOF, EnumMessage, HttpMethod, SharingMode } from '@xcan-angus/i
 import { ApiImportSource, ApiSource, ApisProtocol, ApiStatus } from '@/enums/enums';
 import { OpenAPIV3_1 } from '@/types/openapi-types';
 
+export type ApiInfo = {
+  id: string;
+  source: EnumMessage<ApiSource>;
+  projectId: string;
+  projectName: string;
+  protocol: EnumMessage<ApisProtocol>;
+  method: string;
+  endpoint: string;
+  summary: string;
+  deprecated: boolean;
+  status: EnumMessage<ApiStatus>;
+  createdBy: string;
+  createdByName: string;
+  ownerId: string;
+  ownerName: string;
+  avatar: string;
+  createdDate: string;
+  lastModifiedDate: string;
+  auth: boolean;
+}
+
 export type ApisListInfo = {
   id: string;
   source: EnumMessage<ApiSource>;
