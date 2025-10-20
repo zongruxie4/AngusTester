@@ -7,8 +7,8 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import { deconstruct } from '@/utils/swagger';
 import { toClipboard } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
-
 import { SchemaType } from '@/types/openapi-types';
+
 import { API_EXTENSION_KEY, deepDelAttrFromObj, schemaTypeToOption } from '@/utils/apis';
 import { ParamsInfo } from '@/views/apis/services/protocol/http/types';
 import { API_PARAMETER_NAME_LENGTH, API_PARAMETER_VALUE_LENGTH } from '@/utils/constant';
@@ -412,7 +412,7 @@ const getResolvedModelData = () => {
 watch(() => props.value, (newValue) => {
   if (componentState.formData.length && componentState.formData.some(item =>
     !!item.name ||
-    (!!item.schema?.type && item.schema?.type !== 'string') ||
+    (!!item.schema?.type && item.schema?.type !== SchemaType.string) ||
     !!item[valueKey]
   )) {
     return;
@@ -491,7 +491,7 @@ defineExpose({
             @blur="handleParameterValueBlur($event,index,item )"
             @select="updateParameterData(index, { ...item, [valueKey]: $event, schema: {...item?.schema|| {}, [valueKey]: $event} })" />
           <ParamInput
-            v-else-if="!['array', 'object'].includes(item.schema.type)"
+            v-else-if="![SchemaType.array, SchemaType.object].includes(item.schema.type)"
             :placeholder="t('service.apiRequestCookie.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
             :maxLength="0"
             :value="item[valueKey]"
@@ -509,7 +509,7 @@ defineExpose({
         </Button>
         <Button
           size="small"
-          :disabled="!['array', 'object'].includes(item.schema.type) || (item.schema.type === 'object' && item.$ref)"
+          :disabled="![SchemaType.array, SchemaType.object].includes(item.schema.type) || (item.schema.type === SchemaType.object && item.$ref)"
           @click="addChildParameter(item, index)">
           <Icon icon="icon-jia" />
         </Button>
@@ -523,7 +523,7 @@ defineExpose({
         </Button>
       </div>
       <JsonContent
-        v-if="item.schema?.type === 'array' || item.schema?.type === 'object'"
+        v-if="item.schema?.type === SchemaType.array || item.schema?.type === SchemaType.object"
         :ref="dom => jsonContentRefs[index] = dom"
         v-model:data="item[valueKey]"
         :schema="item.schema || {}"
