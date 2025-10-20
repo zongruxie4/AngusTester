@@ -7,23 +7,34 @@ import { useI18n } from 'vue-i18n';
 import { init, insertHtmlAtCaret, stringToDomFragment } from './utils/selection';
 import { FunctionConfig, CallbackValue } from './utils/type';
 import Casecader from './Casecader/cascader';
+
+// Initialize i18n for internationalization
 const { t } = useI18n();
 
+/**
+ * Mock function interface
+ * Represents a function that can be inserted into the input
+ */
 export interface MockFunction {
-  name: string,
-  clazz: string,
-  constructors?: MockFunction[],
-  maxLength?: number;
+  name: string;              // Function name (e.g., "@randomInt()")
+  clazz: string;             // Function class/category
+  constructors?: MockFunction[];  // Constructor overloads
+  maxLength?: number;        // Maximum parameter length
 }
 
+/**
+ * Component props interface
+ */
 export interface Props {
-  value: string|number|boolean|undefined;
-  placeholder?:string;
-  height?:number;
-  error?: boolean;
-  maxLength: 0;
-  disabled?: boolean;
+  value: string | number | boolean | undefined;  // Input value
+  placeholder?: string;      // Placeholder text
+  height?: number;           // Input height in Tailwind units
+  error?: boolean;           // Error state (red border)
+  maxLength: number;         // Maximum input length (0 = unlimited)
+  disabled?: boolean;        // Disabled state
 }
+
+// Define props with default values
 const props = withDefaults(defineProps<Props>(), {
   value: '',
   placeholder: '',
@@ -32,71 +43,168 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
+/**
+ * Computed: Effective placeholder text
+ * Uses custom placeholder or default i18n text
+ * 
+ * @returns Placeholder string to display
+ */
 const placeholder = computed(() => {
   return props.placeholder || t('xcan_paramInput.enterParameterValue');
 });
 
+/**
+ * Ref: Search keyword for filtering functions
+ * Updated as user types after @ symbol
+ */
 const keyword = ref('');
+
+/**
+ * Injected: All available mock functions
+ * Provided by parent component or application context
+ */
 const allFunction = inject('allFunction', ref<MockFunction[]>([]));
+
+/**
+ * Injected: Function to load all mock functions
+ * Called on component mount if functions not already loaded
+ */
 const getAllFunctions = inject('getAllFunctions', () => Promise);
+
+/**
+ * Computed: Filtered functions based on keyword
+ * Shows only functions matching the search keyword
+ * 
+ * @returns Filtered array of mock functions
+ */
 const showFunctions = computed(() => {
-  // return data.filter(i => i.name.includes(keyword.value));
   return allFunction.value.filter(i => i.name.includes(keyword.value));
 });
 
+/**
+ * Ref: HTML content of the input (with function nodes)
+ * Contains rich text with function placeholders
+ */
 const inputValue = ref();
-const inputTextValue = ref();
-const inputValueRef = ref(); // input ref
 
+/**
+ * Ref: Plain text value of the input
+ * Text-only representation without HTML markup
+ */
+const inputTextValue = ref();
+
+/**
+ * Ref: Reference to the contenteditable div element
+ * Used for cursor manipulation and content insertion
+ */
+const inputValueRef = ref<HTMLElement>();
+
+/**
+ * Ref: Input composition state flag
+ * Tracks whether IME (Input Method Editor) composition is active
+ * Used to prevent duplicate input handling during composition
+ */
 const input = ref(true);
 
-// const currentSelect: {start?: number, end?: number} = { start: 0, end: 0 }; // 用于记录光标位置;
+/**
+ * Ref: Dropdown visibility state
+ * Controls whether the function selection dropdown is visible
+ */
+const dropVisible = ref(false);
 
-const dropVisible = ref(false); // 下拉显示隐藏
-
-
+/**
+ * Emitted events interface
+ */
 const emit = defineEmits<{
-  (e: 'blur', value:HTMLElement);
-  (e: 'keypress', value: Event);
-  (e: 'rendered', value: true);
+  (e: 'blur', value: HTMLElement): void;      // Emitted when input loses focus
+  (e: 'keypress', value: Event): void;        // Emitted on keypress events
+  (e: 'rendered', value: true): void;         // Emitted when component is rendered
 }>();
 
-const compositionend = (e): void => {
+/**
+ * Handle IME composition end event
+ * Fired when user finishes typing with Input Method Editor (e.g., Chinese/Japanese input)
+ * Updates input state and triggers change handling
+ * 
+ * @param e - Composition event
+ */
+const compositionend = (e: any): void => {
   input.value = false;
   handleChange(e);
 };
 
+/**
+ * Handle IME composition start event
+ * Fired when user starts typing with Input Method Editor
+ * Sets flag to prevent duplicate input handling
+ */
 const compositionstart = (): void => {
   input.value = true;
 };
 
-const limitLength = () => {
+/**
+ * Limit input text length to maxLength
+ * Truncates text if it exceeds maximum length
+ * Emits blur event to notify parent of the change
+ */
+const limitLength = (): void => {
   if (props.maxLength > 0) {
     if (inputTextValue.value.length > props.maxLength) {
+      // Truncate text to max length
       inputTextValue.value = inputTextValue.value.slice(0, props.maxLength);
-      inputValueRef.value.innerHTML = inputTextValue.value;
-      emit('blur', inputValueRef.value);
+      if (inputValueRef.value) {
+        inputValueRef.value.innerHTML = inputTextValue.value;
+        emit('blur', inputValueRef.value);
+      }
     }
   }
 };
 
-// 数据插入
-function insertTxtAndSetcursor (func: FunctionConfig) {
-  // window.Selection.
-  insertHtmlAtCaret(inputValueRef.value, func, keyword.value);
+/**
+ * Insert function text at cursor position
+ * Replaces the @ keyword with the selected function
+ * 
+ * @param func - Function configuration to insert
+ */
+function insertTxtAndSetcursor(func: FunctionConfig): void {
+  if (inputValueRef.value) {
+    insertHtmlAtCaret(inputValueRef.value, func, keyword.value);
+  }
 }
 
+/**
+ * Variable: Position where @ symbol was typed
+ * Used to track the start of function search
+ */
 let keyStart = 0;
+
+/**
+ * Constant: Window selection object
+ * Used for cursor position and text manipulation
+ */
 const selection = window.getSelection();
-// input 数据变化
-const handleChange = (event) => {
+
+/**
+ * Handle input change events
+ * Manages function dropdown visibility and keyword filtering
+ * 
+ * Logic:
+ * - @ symbol: Show dropdown at cursor position
+ * - Typing: Update keyword filter
+ * - Backspace: Update keyword or hide dropdown if @ is deleted
+ * 
+ * @param event - Input event
+ */
+const handleChange = (event: any): void => {
   if (event.data === '@') {
     dropVisible.value = true;
     const range = selection?.getRangeAt(0);
-    const { x, y } = range.getBoundingClientRect();
-    position.value.positionX = x;
-    position.value.positionY = y;
-    keyStart = range?.startOffset || 0;
+    if (range) {
+      const { x, y } = range.getBoundingClientRect();
+      position.value.positionX = x;
+      position.value.positionY = y;
+      keyStart = range?.startOffset || 0;
+    }
   } else if (dropVisible.value) {
     if (event.inputType === 'insertCompositionText') {
       return;
@@ -120,39 +228,64 @@ const handleChange = (event) => {
   }
 
   nextTick(() => {
-    inputTextValue.value = inputValueRef.value.innerText;
+    if (inputValueRef.value) {
+      inputTextValue.value = inputValueRef.value.innerText;
+    }
   });
 };
 
-const handleGeRange = (event) => {
+/**
+ * Handle double-click to select function node
+ * Selects the entire function node when double-clicked
+ * 
+ * @param event - Mouse event
+ */
+const handleGeRange = (event: any): void => {
   const nodeEle = event.target;
   if (nodeEle.className === 'parameter-tooltip' || nodeEle.className === 'fn-tooltip') {
     const range = selection?.getRangeAt(0);
-    range.setStart(nodeEle, 0);
-    range.setEndAfter(nodeEle);
+    if (range) {
+      range.setStart(nodeEle, 0);
+      range.setEndAfter(nodeEle);
+    }
   }
 };
 
+/**
+ * Handle keypress events
+ * Prevents Enter key default behavior (new line insertion)
+ * Allows Ctrl+Enter and Shift+Enter to pass through
+ * 
+ * @param event - Keyboard event
+ */
 const onKeypress = (event: KeyboardEvent): void => {
   const { code, ctrlKey, shiftKey } = event;
   const keyCode = code.toLowerCase();
+  
+  // Allow Ctrl+Enter and Shift+Enter
   if ((ctrlKey || shiftKey) && (keyCode === 'enter' || keyCode === 'numpadenter')) {
     event.preventDefault();
     event.stopPropagation();
     return;
   }
 
+  // Block plain Enter key
   if (!ctrlKey && !shiftKey && (keyCode === 'enter' || keyCode === 'numpadenter')) {
     event.preventDefault();
     event.stopPropagation();
   }
 };
 
-// input 失去焦点
-const handleBlur = () => {
-  inputTextValue.value = inputValueRef.value.innerText;
-  limitLength();
-  emit('blur', inputValueRef.value);
+/**
+ * Handle input blur event
+ * Updates text value, applies length limit, and emits blur event
+ */
+const handleBlur = (): void => {
+  if (inputValueRef.value) {
+    inputTextValue.value = inputValueRef.value.innerText;
+    limitLength();
+    emit('blur', inputValueRef.value);
+  }
 };
 
 const handlePaste = (event) => {
@@ -197,18 +330,27 @@ watch(() => props.value, newValue => {
   updataValueDom();
 });
 
-const updataValueDom = () => {
-  let propsValue = props.value;
-  if (typeof propsValue === 'boolean') {
-    propsValue = propsValue.toString();
-  }
-  if (propsValue === null) {
+/**
+ * Update DOM value from props
+ * Converts prop value to HTML with function placeholders
+ * Handles type conversion (boolean, number -> string)
+ */
+const updataValueDom = (): void => {
+  let propsValue: string | undefined = undefined;
+  
+  // Convert different types to string
+  if (typeof props.value === 'boolean') {
+    propsValue = props.value.toString();
+  } else if (props.value === null || props.value === undefined) {
     propsValue = undefined;
+  } else if (typeof props.value === 'number') {
+    propsValue = props.value.toString();
+  } else {
+    propsValue = props.value;
   }
-  if (typeof propsValue === 'number') {
-    propsValue = propsValue + '';
-  }
-  const inputValueDom = (propsValue || '').replaceAll(/@[a-zA-z0-9]+\(/g, (match) => {
+  
+  // Replace @function( patterns with function nodes
+  const inputValueDom = (propsValue || '').replace(/@[a-zA-z0-9]+\(/g, (match) => {
     const funcName = match.replace('(', '');
     const funObj: any = allFunction.value.find(val => val.name.replace('()', '') === funcName);
     if (!funObj) {
@@ -217,8 +359,11 @@ const updataValueDom = () => {
     const funNode = stringToDomFragment(funObj);
     return funNode.outerHTML + '(';
   });
+  
   inputValue.value = inputValueDom;
-  inputValueRef.value && (inputValueRef.value.innerHTML = inputValueDom);
+  if (inputValueRef.value) {
+    inputValueRef.value.innerHTML = inputValueDom;
+  }
   inputTextValue.value = propsValue;
 };
 
@@ -228,25 +373,36 @@ const closeDropOption = (e) => {
   }
 };
 
+/**
+ * Component mounted lifecycle hook
+ * Initializes functions, sets up event listeners, and configures selection behavior
+ */
 onMounted(async () => {
+  // Load functions if not already loaded
   if (!allFunction.value.length && typeof getAllFunctions === 'function') {
     await getAllFunctions();
   }
+  
+  // Initialize DOM value if props value exists
   if (props.value && props.value !== inputTextValue.value) {
     updataValueDom();
   }
 
+  // Close dropdown when clicking outside
   document.addEventListener('click', closeDropOption);
 
-  init(inputValueRef.value, (value: CallbackValue, node:HTMLElement) => {
-    ghostInputStyle.width = node.offsetWidth + 'px';
-    ghostInputStyle.left = node.offsetLeft + 'px';
-    funcName.value = value.name;
-    currentFunction.value = allFunction.value.find(i => i.name.includes(funcName.value));
-    popoverVisible.value = true;
-  }, () => {
-    popoverVisible.value = false;
-  });
+  // Initialize selection behavior and popover
+  if (inputValueRef.value) {
+    init(inputValueRef.value, (value: CallbackValue, node: HTMLElement) => {
+      ghostInputStyle.width = node.offsetWidth + 'px';
+      ghostInputStyle.left = node.offsetLeft + 'px';
+      funcName.value = value.name;
+      currentFunction.value = allFunction.value.find(i => i.name.includes(funcName.value));
+      popoverVisible.value = true;
+    }, () => {
+      popoverVisible.value = false;
+    });
+  }
 
   nextTick(() => {
     emit('rendered', true);
@@ -263,15 +419,43 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', closeDropOption);
 });
 
+/**
+ * Ref: Ghost input style for popover positioning
+ * Used to position the function documentation popover
+ */
 const ghostInputStyle = { width: '0', left: '0' };
+
+/**
+ * Ref: Popover visibility state
+ * Controls whether the function documentation popover is visible
+ */
 const popoverVisible = ref(false);
+
+/**
+ * Ref: Current function name
+ * Name of the function being hovered
+ */
 const funcName = ref();
+
+/**
+ * Ref: Current function object
+ * Full function details for the hovered function
+ */
 const currentFunction = ref();
+
+/**
+ * Table columns configuration for example values display
+ * Shows constructor and return values in popover
+ */
 const columns = [
-  { title: t('xcan_paramInput.constructor'), dataIndex: 'instance' },
-  { title: t('xcan_paramInput.returnValue'), dataIndex: 'values' }
+  { key: 'instance', title: t('xcan_paramInput.constructor'), dataIndex: 'instance' },
+  { key: 'values', title: t('xcan_paramInput.returnValue'), dataIndex: 'values' }
 ];
 
+/**
+ * Ref: Position for function dropdown
+ * Stores x, y coordinates where @ symbol was typed
+ */
 const position = ref({
   positionX: 0,
   positionY: 0

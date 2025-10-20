@@ -15,10 +15,8 @@ import SimpleEditableSelect from '../SimpleEditableSelect/index.vue';
 import {
   inOptions,
   itemTypes,
-  transJsonToList,
-  transListToJson,
-  transListToschema
 } from './util';
+import { transJsonToList, transListToJson, transListToSchema } from '@/utils/apis/index';
 const { t } = useI18n();
 
 const { valueKey } = API_EXTENSION_KEY;
@@ -69,7 +67,7 @@ const archivedId = inject('archivedId', ref());
 
 const emitHandle = () => {
   const data = transListToJson(dataSource.value, props.pType);
-  const schema = transListToschema(dataSource.value, props.pType);
+  const schema = transListToSchema(dataSource.value, props.pType);
   emit('update:data', data);
   emit('change', schema);
 };
@@ -340,7 +338,7 @@ const getModelResolve = (models) => {
   dataSource.value.forEach(i => {
     if (i.$ref) {
       const datas = dataSource.value.filter(i => i.idLine.includes(i.id));
-      models[i.$ref] = transListToschema(datas, i.type, i.pid);
+      models[i.$ref] = transListToSchema(datas, i.type, i.pid);
       delete models[i.$ref].schema?.$ref;
     }
   });
@@ -349,7 +347,7 @@ const getModelResolve = (models) => {
 const updateComp = async () => {
   const data = dataSource.value.filter(i => i.$ref);
   for (const i of data) {
-    const schema = transListToschema(i, i.type, i.pid);
+    const schema = transListToSchema(i, i.type, i.pid);
     await http.put(`${TESTER}/services/${apiBaseInfo.value.serviceId}/comp/schema/${i.name}`, schema);
   }
 };

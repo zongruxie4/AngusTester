@@ -107,7 +107,6 @@ export interface TagInfo extends OpenAPIV3_1.TagObject{
 
   // Temp fields in web
   id: string;
-  isEdit: boolean;
   isExpand: boolean;
   isAdd: boolean;
   delLoading: boolean;
