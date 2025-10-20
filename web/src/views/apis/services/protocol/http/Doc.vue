@@ -5,39 +5,72 @@ import { Button } from 'ant-design-vue';
 import '@xcan-angus/rapidoc';
 import { useI18n } from 'vue-i18n';
 
-const ExportApi = defineAsyncComponent(() => import('@/views/apis/services/components/ExportOptionalModal.vue'));
+const ExportApiModal = defineAsyncComponent(() => import('@/views/apis/services/components/ExportOptionalModal.vue'));
 
 interface Props {
   id: string;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   id: undefined
 });
 
-defineEmits<{(e: 'update:data', value: any):void}>();
+defineEmits<{(e: 'update:data', value: any): void}>();
 
 const { t } = useI18n();
 
-const docOrigin = ref();
-const accessToken = ref();
-const isPrivate = ref();
+/**
+ * API documentation origin URL
+ */
+const apiDocumentationOrigin = ref();
 
-const exportVisible = ref(false);
-const handleExportDoc = () => {
-  exportVisible.value = true;
+/**
+ * Access token for API authentication
+ */
+const userAccessToken = ref();
+
+/**
+ * Whether the application is in private edition
+ */
+const isPrivateEdition = ref();
+
+/**
+ * Export modal visibility state
+ */
+const isExportModalVisible = ref(false);
+
+/**
+ * Handles API documentation export
+ * <p>
+ * Shows the export modal when user clicks export button
+ * </p>
+ */
+const handleApiDocumentationExport = () => {
+  isExportModalVisible.value = true;
 };
 
+/**
+ * Component mounted lifecycle hook
+ * <p>
+ * Initializes component data including access token, edition type, and API URL
+ * </p>
+ */
 onMounted(async () => {
-  accessToken.value = cookieUtils.getTokenInfo().access_token;
-  isPrivate.value = appContext.isPrivateEdition();
-  docOrigin.value = ApiUrlBuilder.buildApiUrl(routerUtils.getTesterApiRouteConfig(ApiType.API), '');
+  userAccessToken.value = cookieUtils.getTokenInfo().access_token;
+  isPrivateEdition.value = appContext.isPrivateEdition();
+  apiDocumentationOrigin.value = ApiUrlBuilder.buildApiUrl(
+    routerUtils.getTesterApiRouteConfig(ApiType.API),
+    ''
+  );
 });
 </script>
 <template>
   <div class="">
     <rapi-doc
-      v-if="docOrigin"
-      :specUrl="`${docOrigin}${isPrivate ? `/${API}/${VERSION}` : TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken}`"
+      v-if="apiDocumentationOrigin"
+      :specUrl="`${apiDocumentationOrigin}${isPrivateEdition
+        ? `/${API}/${VERSION}`
+        : TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${userAccessToken}`"
       allowSpecFileDownload="false"
       allowSpecFileLoad="false"
       allowSpecUrlLoad="false"
@@ -52,18 +85,18 @@ onMounted(async () => {
       showInfo="true"
       theme="light"
       updateRoute="false">
-      <!-- Delete the default logo at the top -->
+      <!-- Export button for API documentation -->
       <Button
         slot="exportDoc"
         class="text-3 ml-2"
-        @click="handleExportDoc">
+        @click="handleApiDocumentationExport">
         {{ t('actions.export') }}
       </Button>
     </rapi-doc>
 
-    <ExportApi
+    <ExportApiModal
       :id="props.id"
-      v-model:visible="exportVisible"
+      v-model:visible="isExportModalVisible"
       type="API" />
   </div>
 </template>
