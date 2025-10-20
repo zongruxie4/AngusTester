@@ -3,7 +3,7 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { Modal, Scroll, List, Table, DropdownGroup, Icon, Input, Select, HttpMethodText, NoData, IconText } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import SelectApisCase from '@/components/apis/SelectApisCase/index.vue';
+import SelectApisCase from '@/components/apis/selector/SelectApisCase.vue';
 const { t } = useI18n();
 
 interface Props {

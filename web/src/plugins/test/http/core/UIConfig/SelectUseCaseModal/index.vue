@@ -7,7 +7,7 @@ import { paramTarget, apis } from '@/api/tester';
 
 import { UseCaseInfo } from './PropsType';
 
-const SelectApisCase = defineAsyncComponent(() => import('@/components/apis/SelectApisCase/index.vue'));
+const SelectApisCase = defineAsyncComponent(() => import('@/components/apis/selector/SelectApisCase.vue'));
 const { t } = useI18n();
 
 export type UseCaseItem = {

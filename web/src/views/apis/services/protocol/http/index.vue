@@ -38,7 +38,7 @@ import {
 } from '@/utils/apis';
 
 import { getServerData } from '@/views/apis/server/types';
-import { getShowAuthData } from '@/components/apis/ApiAuthencation/interface';
+import { getShowAuthData } from '@/components/apis/authencation/interface';
 import { getStatusText } from '@/views/apis/services/components/types';
 import { RequestSetting } from './types';
 

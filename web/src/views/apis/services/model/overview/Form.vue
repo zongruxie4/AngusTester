@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Composite, Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { Button, CheckableTag, Popover, Tag } from 'ant-design-vue';
-import ApiAuthencation from '@/components/apis/ApiAuthencation/index.vue';
+import ApiAuthencation from '@/components/apis/authencation/index.vue';
 
 interface Props {
     dataSource: {[key: string]: any}; // openapi json

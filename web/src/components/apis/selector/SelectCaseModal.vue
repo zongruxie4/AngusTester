@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n';
 import { Modal } from '@xcan-angus/vue-ui';
 
 // Local component imports
-import SelectApisCase from '@/components/apis/selectCaseModal/selectCase/index.vue';
+import SelectApisCase from '@/components/apis/selector/SelectCase.vue';
 
 const { t } = useI18n();
 

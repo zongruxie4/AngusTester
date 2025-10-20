@@ -6,7 +6,7 @@ import { Button } from 'ant-design-vue';
 import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { dataset } from '@/api/tester';
-import { DataSetItem } from './PropsType';
+import { DataSetItem } from './PropsType2';
 
 const { t } = useI18n();
 

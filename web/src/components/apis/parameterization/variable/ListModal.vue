@@ -15,7 +15,7 @@ import { debounce } from 'throttle-debounce';
 import { variable } from '@/api/tester';
 
 // Local imports
-import { VariableItem } from '../PropsType';
+import { VariableItem } from './PropsType';
 
 const { t } = useI18n();
 

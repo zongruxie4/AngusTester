@@ -17,7 +17,7 @@ import UrlForm from '@/views/apis/mock/detail/apis/components/UrlForm.vue';
 const Agent = defineAsyncComponent(() => import('@/views/config/proxy/RequestProxy.vue'));
 const InputGroup = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/content/InputGroup.vue'));
 const RequestBody = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/content/RequestBody.vue'));
-const ResponseStatus = defineAsyncComponent(() => import('@/components/apis/response/ResponseStatus/index.vue'));
+const ResponseStatus = defineAsyncComponent(() => import('@/components/apis/response/ResponseStatus.vue'));
 
 interface Props {
   serviceOptions: {label: string, value: string}[];

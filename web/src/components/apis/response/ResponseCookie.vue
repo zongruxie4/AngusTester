@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { watch, ref, onMounted, nextTick } from 'vue';
 import { Table } from '@xcan-angus/vue-ui';
-import { columns } from './interface';
+import { columns } from './interface3';
 import { XCanDexie } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 

@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Async component imports
-const VariableListModal = defineAsyncComponent(() => import('@/components/apis/parameterization/variable/listModal/index.vue'));
+const VariableListModal = defineAsyncComponent(() => import('@/components/apis/parameterization/variable/ListModal.vue'));
 
 // Component state
 const isDataLoaded = ref(false);

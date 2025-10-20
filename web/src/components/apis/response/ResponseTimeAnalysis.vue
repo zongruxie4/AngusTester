@@ -2,7 +2,7 @@
 import { reactive, ref, watch, onMounted, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { columns, Column } from './interface';
+import { columns, Column } from './interface2';
 const { t } = useI18n();
 
 interface Props {

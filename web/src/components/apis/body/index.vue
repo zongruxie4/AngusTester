@@ -66,8 +66,8 @@ const emit = defineEmits<{
 }>();
 
 // Async component definitions
-const ApiForm = defineAsyncComponent(() => import('./api-form/index.vue'));
-const ApiFormForFlat = defineAsyncComponent(() => import('./apiFormForFlat/index.vue'));
+const ApiForm = defineAsyncComponent(() => import('./ApiForm.vue'));
+const ApiFormForFlat = defineAsyncComponent(() => import('./ApiFormForFlat.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/editor/MonacoEditor/index.vue'));
 const ModelModal = defineAsyncComponent(() => import('./modelModal.vue'));
 

@@ -12,7 +12,7 @@ import { getDefaultParams } from './utils';
 import { ParameterUtils, type ParameterComponentProps, type ParameterComponentEmits } from './RequestParameter';
 
 import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
-import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
+import SimpleEditableSelect from '@/components/form/EditableSelector.vue';
 const ParamInput = defineAsyncComponent(() => import('@/components/form/ParamInput/index.vue'));
 
 const { t } = useI18n();

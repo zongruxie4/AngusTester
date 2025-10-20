@@ -1,11 +1,11 @@
-import uitlAssert from '@/components/apis/ApiAssert/utils/assert';
+import uitlAssert from '@/components/apis/assertion/utils/assert';
 
-import uitlExpression from '@/components/apis/ApiAssert/utils/expression';
-import extract from '@/components/apis/ApiAssert/utils/extract';
-import uitlJsonpath from '@/components/apis/ApiAssert/utils/jsonpath';
-import uitlProxy from '@/components/apis/ApiAssert/utils/proxy';
-import uitlRegexp from '@/components/apis/ApiAssert/utils/regexp';
-import uitlXpath from '@/components/apis/ApiAssert/utils/xpath';
+import uitlExpression from '@/components/apis/assertion/utils/expression';
+import extract from '@/components/apis/assertion/utils/extract';
+import uitlJsonpath from '@/components/apis/assertion/utils/jsonpath';
+import uitlProxy from '@/components/apis/assertion/utils/proxy';
+import uitlRegexp from '@/components/apis/assertion/utils/regexp';
+import uitlXpath from '@/components/apis/assertion/utils/xpath';
 
 export const assertUtil = {
   assert: uitlAssert,

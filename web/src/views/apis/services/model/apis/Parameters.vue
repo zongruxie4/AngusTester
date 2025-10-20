@@ -5,9 +5,9 @@ import { SchemaType, ParameterIn } from '@xcan-angus/infra';
 import { API_EXTENSION_KEYS } from '@/types/openapi-types';
 import { HTTP_HEADERS } from '@/utils/constant';
 
-import ApiCookie from '@/components/apis/ApiCookie/index.vue';
-import ApiParameter from '@/components/apis/ApiParameter/index.vue';
-import ApiHeader from '@/components/apis/ApiHeader/index.vue';
+import ApiCookie from '@/components/apis/cookie/index.vue';
+import ApiParameter from '@/components/apis/parameter/index.vue';
+import ApiHeader from '@/components/form/header/index.vue';
 
 interface Props {
     dataSource: {[key: string]: any}[]

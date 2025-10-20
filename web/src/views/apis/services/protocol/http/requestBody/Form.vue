@@ -24,7 +24,7 @@ import {
 
 const ApiUpload = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/Upload.vue'));
 const JsonContent = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/requestBody/Json.vue'));
-const SimpleEditableSelect = defineAsyncComponent(() => import('@/components/apis/editableSelector/index.vue'));
+const SimpleEditableSelect = defineAsyncComponent(() => import('@/components/form/EditableSelector.vue'));
 const ParamInput = defineAsyncComponent(() => import('@/components/form/ParamInput/index.vue'));
 
 // Define event types for better type safety
