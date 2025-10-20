@@ -2,21 +2,15 @@
 import { inject, reactive, ref, watch, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Tooltip } from 'ant-design-vue';
-import { Icon, Input, Select, SelectSchema, notification } from '@xcan-angus/vue-ui';
-import SwaggerUI from '@xcan-angus/swagger-ui';
-import { deconstruct } from '@/utils/swagger';
-import { toClipboard } from '@xcan-angus/infra';
-import { services } from '@/api/tester';
+import { Icon, Input, Select, SelectSchema } from '@xcan-angus/vue-ui';
 import { SchemaType } from '@/types/openapi-types';
 
-import { getDefaultParams, validateType } from './utils';
+import { getDefaultParams } from './utils';
 import { API_PARAMETER_NAME_LENGTH, API_PARAMETER_VALUE_LENGTH } from '@/utils/constant';
 import { ParamsInfo } from '@/views/apis/services/protocol/http/types';
+import { ParameterUtils, type ParameterComponentProps, type ParameterComponentEmits } from './RequestParameter';
 
 import {
-  API_EXTENSION_KEY,
-  deepDelAttrFromObj,
-  getModelDataByRef,
   getUriByParams,
   getParamsByUri,
   QueryAndPathInOption, schemaTypeToOption
@@ -26,27 +20,19 @@ import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vu
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 
-interface Props {
-  value: ParamsInfo[],
+interface Props extends ParameterComponentProps {
   apiUri?: string
 }
 
-// SwaggerUI.extension.sampleFromSchemaGeneric
 const props = withDefaults(defineProps<Props>(), {
   apiUri: ''
 });
 
 const { t } = useI18n();
 
-/**
- * API extension keys for value and enabled properties
- */
-const { valueKey, enabledKey } = API_EXTENSION_KEY;
-
 const apiBaseInfo = inject('apiBaseInfo', ref());
 
-const emits = defineEmits<{
-  (e: 'change', value: ParamsInfo[]): void,
+const emits = defineEmits<ParameterComponentEmits & {
   (e: 'update:apiUri', value: string)
 }>();
 
@@ -68,21 +54,9 @@ const componentState = reactive<{
 const jsonContentRefs = ref<any[]>([]);
 
 /**
- * Validation state
+ * Request parameter manager instance
  */
-const isValidationEnabled = ref(false);
-
-/**
- * Generates a unique key for form items
- * <p>
- * Creates a symbol-based key for tracking form items
- * </p>
- * @param index - Optional index for the key
- * @returns Unique symbol key
- */
-const generateUniqueKey = (index?: number): symbol => {
-  return Symbol(index);
-};
+const parameterManager = ParameterUtils.createManager(componentState, jsonContentRefs.value, apiBaseInfo);
 
 /**
  * Emits change event to parent component
@@ -94,155 +68,16 @@ const emitChangeToParent = () => {
   emits('change', componentState.formData);
 };
 
-/**
- * Handles Enter key press in input fields
- * <p>
- * Blurs the input field when Enter key is pressed
- * </p>
- * @param event - Keyboard event
- */
-const handleEnterKeyPress = (event: KeyboardEvent): void => {
-  if (event.key !== 'Enter') {
-    return;
-  }
-  (event.target as HTMLElement).blur();
-};
+// Use parameter manager methods
+const handleEnterKeyPress = parameterManager.handleEnterKeyPress.bind(parameterManager);
+const handleParameterValueBlur = parameterManager.handleParameterValueBlur.bind(parameterManager);
+const handleModelSelection = parameterManager.handleModelSelection.bind(parameterManager);
 
-/**
- * Handles parameter value blur event
- * <p>
- * Processes and validates parameter values when input loses focus
- * </p>
- * @param target - HTML element that lost focus
- * @param index - Index of the parameter in the form
- * @param parameterData - Parameter data object
- */
-const handleParameterValueBlur = (target: HTMLElement, index: number, parameterData: ParamsInfo): void => {
-  let processedValue = target?.innerText?.trim().replace('\n', '');
-  if ([SchemaType.integer, SchemaType.number, SchemaType.boolean].includes(parameterData.schema?.type)) {
-    try {
-      if (Number(processedValue) <= 9007199254740992) {
-        processedValue = JSON.parse(processedValue);
-      }
-    } catch {}
-  }
-  const updatedParameter = { ...parameterData, [valueKey]: processedValue } as ParamsInfo;
-  updateParameterData(index, updatedParameter);
-};
-
-/**
- * Fetches model data by reference
- * <p>
- * Retrieves component model data from the API service
- * </p>
- * @param reference - Model reference ID
- * @returns Deconstructed model data
- */
-const fetchModelDataByReference = async (reference: string) => {
-  const [error, { data }] = await getModelDataByRef(apiBaseInfo.value?.serviceId, reference);
-  if (error) {
-    return {};
-  }
-  return deconstruct(data || {});
-};
-
-/**
- * Handles model selection
- * <p>
- * Processes selected model and updates parameter data
- * </p>
- * @param _selectedValue - Selected value
- * @param selectedOption - Selected option object
- * @param parameterIndex - Index of the parameter
- */
-const handleModelSelection = async (_selectedValue: any, selectedOption: any, parameterIndex: number) => {
-  if (selectedOption) {
-    const modelData = await fetchModelDataByReference(selectedOption.ref);
-    const parameterSchema = modelData.schema
-      ? { ...modelData.schema, [valueKey]: modelData[valueKey] || modelData.schema?.[valueKey] }
-      : {};
-    const sampleValue = SwaggerUI.extension.sampleFromSchemaGeneric(parameterSchema, { useValue: true });
-
-    if (!parameterSchema.type) {
-      let valueType: string = typeof sampleValue;
-      if (valueType === SchemaType.object) {
-        if (Object.prototype.toString.call(sampleValue) === '[object Array]') {
-          valueType = SchemaType.array;
-        }
-      }
-      parameterSchema.type = valueType;
-    }
-    if (selectedOption.readonly) {
-      modelData.$ref = selectedOption.ref;
-    }
-    const updatedParameter = { ...modelData, schema: parameterSchema, [enabledKey]: true, [valueKey]: sampleValue };
-    updateParameterData(parameterIndex, updatedParameter);
-  }
-};
-
-/**
- * Changes parameter data type
- * <p>
- * Updates parameter schema and value based on selected data type
- * </p>
- * @param dataType - New data type
- * @param index - Index of the parameter
- * @param parameterItem - Parameter item object
- */
-const changeParameterDataType = (dataType: string, index: number, parameterItem: ParamsInfo) => {
-  const currentSchema = parameterItem.schema || {};
-  const updatedParameter = { ...parameterItem, schema: { ...currentSchema, type: dataType } } as any;
-  if (dataType === SchemaType.object) {
-    updatedParameter.deepObject = true;
-    updatedParameter[valueKey] = { '': '' };
-  } else {
-    updatedParameter[valueKey] = undefined;
-    if (dataType === SchemaType.array) {
-      updatedParameter[valueKey] = [''];
-      updatedParameter.schema.item = {
-        type: SchemaType.string
-      };
-    }
-    delete updatedParameter.deepObject;
-    delete updatedParameter.explode;
-  }
-  updateParameterData(index, updatedParameter);
-};
-
-/**
- * Handles form field blur event
- * <p>
- * Updates parameter data when form field loses focus
- * </p>
- * @param event - Change event from input field
- * @param index - Index of the parameter
- * @param parameterData - Parameter data object
- * @param fieldKey - Field key to update
- */
-const handleFormFieldBlur = (event: ChangeEvent, index: number, parameterData: ParamsInfo, fieldKey: string): void => {
-  const fieldValue = (event.target as HTMLInputElement).value?.trim() || '';
-  const updatedParameter = { ...parameterData, [fieldKey]: fieldValue } as ParamsInfo;
-  updateParameterData(index, updatedParameter);
-};
-
-/**
- * Handles checkbox change event
- * <p>
- * Enables or disables parameter based on checkbox state
- * </p>
- * @param event - Change event from checkbox
- * @param index - Index of the parameter
- * @param parameterData - Parameter data object
- */
-const handleCheckboxChange = (event: any, index: number, parameterData: ParamsInfo) => {
-  const isChecked = event?.target?.checked;
-  const updatedParameter = { ...parameterData, [enabledKey]: isChecked } as ParamsInfo;
-
-  updateParameterData(index, updatedParameter);
-  if (!isChecked && isValidationEnabled.value) {
-    jsonContentRefs.value[index] && jsonContentRefs.value[index].validate(false);
-  }
-};
+// Use parameter manager methods
+const changeParameterDataType = parameterManager.changeParameterDataType.bind(parameterManager);
+const handleFormFieldBlur = parameterManager.handleFormFieldBlur.bind(parameterManager);
+const handleCheckboxChange = parameterManager.handleCheckboxChange.bind(parameterManager);
+const copyParameterValue = parameterManager.copyParameterValue.bind(parameterManager);
 
 /**
  * Handles select change event
@@ -256,7 +91,9 @@ const handleCheckboxChange = (event: any, index: number, parameterData: ParamsIn
  */
 const handleSelectChange = (value: string, index: number, parameterData: ParamsInfo, fieldKey: string): void => {
   const updatedParameter = { ...parameterData, [fieldKey]: value } as ParamsInfo;
-  updateParameterData(index, updatedParameter);
+  parameterManager.updateParameterData(index, updatedParameter);
+  emitChangeToParent();
+  updateApiUriByParameters();
 };
 
 /**
@@ -269,26 +106,7 @@ const handleSelectChange = (value: string, index: number, parameterData: ParamsI
  * @param index - Index of the parameter
  */
 const updateParameterSchema = (newSchema: any, parameterItem: ParamsInfo, index: number) => {
-  const updatedParameter = { ...parameterItem, schema: newSchema };
-  updateParameterData(index, updatedParameter);
-};
-
-/**
- * Copies parameter value to clipboard
- * <p>
- * Copies the parameter value to the system clipboard
- * </p>
- * @param parameterData - Parameter data object
- */
-const copyParameterValue = async (parameterData: ParamsInfo) => {
-  let textToCopy = parameterData[valueKey];
-  if (typeof textToCopy !== 'string') {
-    textToCopy = JSON.stringify(textToCopy);
-  }
-
-  toClipboard(textToCopy).then(() => {
-    notification.success(t('actions.tips.copySuccess'));
-  });
+  parameterManager.updateParameterSchema(newSchema, parameterItem, index);
 };
 
 /**
@@ -300,13 +118,7 @@ const copyParameterValue = async (parameterData: ParamsInfo) => {
  * @param parameterData - Parameter data object
  */
 const handleParameterDeletion = (index: number, parameterData: ParamsInfo): void => {
-  const emptyParameters = componentState.formData.filter(item => !item.name);
-  // Keep at least one empty parameter
-  if (!parameterData.name && emptyParameters.length <= 1) {
-    return;
-  }
-  componentState.formData.splice(index, 1);
-  emitChangeToParent();
+  parameterManager.handleParameterDeletion(index, parameterData, emitChangeToParent);
   if (parameterData.in === 'path') {
     updateApiUriByParameters();
   }
@@ -321,7 +133,7 @@ const handleParameterDeletion = (index: number, parameterData: ParamsInfo): void
  * @param parameterData - Updated parameter data
  */
 const updateParameterData = (index: number, parameterData: ParamsInfo): void => {
-  componentState.formData[index] = parameterData;
+  parameterManager.updateParameterData(index, parameterData);
   emitChangeToParent();
   updateApiUriByParameters();
 };
@@ -335,12 +147,7 @@ const updateParameterData = (index: number, parameterData: ParamsInfo): void => 
  * @param index - Index of the parameter
  */
 const addChildParameter = (parentItem: ParamsInfo, index: number) => {
-  jsonContentRefs.value[index].addItem({
-    type: parentItem.schema.type,
-    id: -1,
-    idLine: [-1],
-    level: 0
-  });
+  parameterManager.addChildParameter(parentItem, index);
 };
 
 /**
@@ -351,7 +158,7 @@ const addChildParameter = (parentItem: ParamsInfo, index: number) => {
  */
 const updateApiUriByParameters = () => {
   const pathParameters = componentState.formData.filter(item =>
-    item?.[enabledKey] && item.name && item.in === 'path'
+    item?.[parameterManager.enabledKey] && item.name && item.in === 'path'
   );
   let currentApiUri = props.apiUri;
   if (pathParameters.length) {
@@ -382,10 +189,10 @@ const setParameterListFromUri = (): void => {
     if (!existingItem) {
       componentState.formData.splice(-1, 0, {
         ...currentParameter,
-        [enabledKey]: true
+        [parameterManager.enabledKey]: true
       } as any);
     } else {
-      existingItem[enabledKey] = true;
+      existingItem[parameterManager.enabledKey] = true;
     }
   });
 
@@ -393,7 +200,7 @@ const setParameterListFromUri = (): void => {
   componentState.formData?.forEach((currentParameter, index) => {
     if (currentParameter.in === 'path') {
       const uriItem = pathParameters.find(param => param.name === currentParameter.name);
-      if (!uriItem && currentParameter[enabledKey]) {
+      if (!uriItem && currentParameter[parameterManager.enabledKey]) {
         indicesToRemove.push(index);
       }
     }
@@ -403,37 +210,11 @@ const setParameterListFromUri = (): void => {
   emitChangeToParent();
 };
 
-/**
- * Validates form contents
- * <p>
- * Validates all enabled parameters in the form
- * </p>
- * @param enableValidation - Whether to enable validation
- */
-const validateFormContents = async (enableValidation = true) => {
-  isValidationEnabled.value = enableValidation;
-  for (const index in jsonContentRefs.value) {
-    if (componentState.formData[index][enabledKey]) {
-      jsonContentRefs.value[index].validate(enableValidation);
-    }
-  }
-};
-
-/**
- * Gets error state for parameter
- * <p>
- * Determines if parameter has validation errors
- * </p>
- * @param parameterItem - Parameter item to check
- * @returns True if parameter has errors
- */
-const getParameterErrorState = (parameterItem: ParamsInfo) => {
-  if (!isValidationEnabled.value || !parameterItem.name || !parameterItem[enabledKey]) {
-    return false;
-  }
-  const validationErrors = validateType(parameterItem[valueKey], deepDelAttrFromObj(parameterItem.schema, []));
-  return !!(validationErrors?.length);
-};
+// Use parameter manager methods
+const validateFormContents = parameterManager.validateFormContents.bind(parameterManager);
+const getParameterErrorState = parameterManager.getParameterErrorState.bind(parameterManager);
+const updateComponentData = parameterManager.updateComponentData.bind(parameterManager);
+const getResolvedModelData = parameterManager.getResolvedModelData.bind(parameterManager);
 
 /**
  * Filters data model options
@@ -444,31 +225,7 @@ const getParameterErrorState = (parameterItem: ParamsInfo) => {
  * @returns True if option should be excluded
  */
 const filterDataModelOptions = (option: any) => {
-  const model = JSON.parse(option.model);
-  return !(['query', 'path'].includes(model.in));
-};
-
-/**
- * Updates component data
- * <p>
- * Updates component data in the API service
- * </p>
- */
-const updateComponentData = async () => {
-  if (!apiBaseInfo.value?.serviceId) {
-    return;
-  }
-  for (let i = 0; i < componentState.formData.length; i++) {
-    if (componentState.formData[i].$ref) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { $ref, ...content } = componentState.formData[i];
-      await services.addComponent(apiBaseInfo.value?.serviceId, 'parameters', componentState.formData[i].name,
-        { ...content, schema: { ...(content.schema || {}), [valueKey]: content[valueKey] } });
-    }
-    if (jsonContentRefs.value[i]) {
-      await jsonContentRefs.value[i].updateComp();
-    }
-  }
+  return ParameterUtils.filterModelOptions(option, ['query', 'path']);
 };
 
 /**
@@ -483,25 +240,6 @@ const addParameters = (parameterData: any[]) => {
 };
 
 /**
- * Gets resolved model data
- * <p>
- * Returns resolved model data for all parameters with references
- * </p>
- * @returns Resolved model data object
- */
-const getResolvedModelData = () => {
-  const resolvedModels = {};
-  componentState.formData.forEach((parameterItem, index) => {
-    if (parameterItem.$ref) {
-      resolvedModels[parameterItem.$ref] = JSON.parse(JSON.stringify(parameterItem));
-      delete resolvedModels[parameterItem.$ref].schema.$ref;
-      jsonContentRefs.value[index] && jsonContentRefs.value[index].getModelResolve(resolvedModels);
-    }
-  });
-  return resolvedModels;
-};
-
-/**
  * Watches for changes in props value
  * <p>
  * Updates form data when props value changes
@@ -510,14 +248,14 @@ const getResolvedModelData = () => {
 watch(() => props.value, (newValue) => {
   if (componentState.formData.filter(item =>
     !!item.name ||
-    item[valueKey] ||
+    item[parameterManager.valueKey] ||
     item.schema?.type !== SchemaType.string ||
     item.in !== 'query'
   ).length > 0) {
     return;
   }
   componentState.formData = newValue.map((parameterItem) => {
-    return { ...parameterItem, key: parameterItem.key || generateUniqueKey() };
+    return { ...parameterItem, key: parameterItem.key || parameterManager.generateUniqueKey() };
   });
 }, {
   deep: true,
@@ -531,8 +269,8 @@ watch(() => props.value, (newValue) => {
  * </p>
  */
 watch(() => componentState.formData, () => {
-  if (componentState.formData.every(item => !!item.name || !!item[valueKey])) {
-    componentState.formData.push(getDefaultParams({ in: 'query', key: generateUniqueKey() }) as any);
+  if (componentState.formData.every(item => !!item.name || !!item[parameterManager.valueKey])) {
+    componentState.formData.push(getDefaultParams({ in: 'query', key: parameterManager.generateUniqueKey() }) as any);
   }
 }, {
   deep: true,
@@ -566,10 +304,10 @@ defineExpose({
       class="space-y-2">
       <div
         class="flex flex-nowrap whitespace-nowrap items-center space-x-2"
-        :class="{'opacity-50': !item[enabledKey]}">
+        :class="{'opacity-50': !item[parameterManager.enabledKey]}">
         <Checkbox
-          :disabled="!item.name && !item[valueKey]"
-          :checked="item[enabledKey] && (!!item.name || !!item[valueKey]) "
+          :disabled="!item.name && !item[parameterManager.valueKey]"
+          :checked="item[parameterManager.enabledKey] && (!!item.name || !!item[parameterManager.valueKey]) "
           @change="handleCheckboxChange($event, index, item)" />
         <Tooltip placement="topLeft">
           <div class="flex flex-col w-100 flex-shrink-0">
@@ -620,14 +358,14 @@ defineExpose({
             :placeholder="t('service.apiRequestParams.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
             :maxLength="0"
             :options="item.schema.enum"
-            :value="item[valueKey] || item.schema?.[valueKey]"
+            :value="item[parameterManager.valueKey] || item.schema?.[parameterManager.valueKey]"
             @blur="handleParameterValueBlur($event,index,item)"
-            @select="updateParameterData(index, { ...item, [valueKey]: $event,schema: {...item?.schema|| {}, [valueKey]: $event} } )" />
+            @select="updateParameterData(index, { ...item, [parameterManager.valueKey]: $event,schema: {...item?.schema|| {}, [parameterManager.valueKey]: $event} } )" />
           <ParamInput
             v-else-if="item.schema?.type !== SchemaType.array && item.schema?.type !== SchemaType.object"
             :placeholder="t('service.apiRequestParams.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
             :maxLength="0"
-            :value="item[valueKey]"
+            :value="item[parameterManager.valueKey]"
             :error="getParameterErrorState(item)"
             @blur="handleParameterValueBlur($event, index, item)" />
           <Input v-else disabled />
@@ -650,7 +388,7 @@ defineExpose({
         <Button
           size="small"
           class="ml-2"
-          :disabled="!item.name && !item[valueKey]"
+          :disabled="!item.name && !item[parameterManager.valueKey]"
           @click="handleParameterDeletion(index, item)">
           <Icon icon="icon-shanchuguanbi" />
         </Button>
@@ -658,7 +396,7 @@ defineExpose({
       <JsonContent
         v-if="item.schema?.type === SchemaType.array || item.schema?.type === SchemaType.object"
         :ref="dom => jsonContentRefs[index] = dom"
-        v-model:data="item[valueKey]"
+        v-model:data="item[parameterManager.valueKey]"
         :schema="item.schema || {}"
         :disabled="!!item.$ref"
         :pType="item.schema?.type"
