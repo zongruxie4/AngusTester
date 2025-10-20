@@ -1,31 +1,17 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
-
+import { ThroughputConfig } from '@/plugins/test/types';
 import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
 
 // Initialize i18n for internationalization
 const { t } = useI18n();
 
 /**
- * Throughput controller configuration interface
- */
-interface ThroughputValue {
-  target: 'THROUGHPUT';       // Target type identifier
-  name: string;               // Throughput controller name
-  description: string;        // Optional description
-  enabled: boolean;           // Whether this controller is enabled
-  beforeName: string;         // Name of step before this controller
-  transactionName: string;    // Associated transaction name
-  permitsPerSecond: string;   // Maximum requests per second (rate limit)
-  timeoutInMs: string;        // Max wait time in milliseconds before timeout
-}
-
-/**
  * Component props interface
  */
 export interface Props {
-  value: ThroughputValue;  // Throughput controller configuration data
+  value: ThroughputConfig;  // Throughput controller configuration data
 }
 
 // Define props with default values

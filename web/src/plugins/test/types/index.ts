@@ -9,19 +9,24 @@ import { TcpPipelineInfo } from '@/plugins/test/tcp/core/PropsType';
 import { WebSocketPipelineInfo } from '@/plugins/test/websocket/core/PropsType';
 
 import { ScriptType as ScriptTypeInfra, AssertionCondition,  BasicAssertionType, HttpMethod, EnumMessage, ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
-import { ScenarioType } from '@/enums/enums';
+import { ScenarioType, PiplineTarget } from '@/enums/enums';
 
 export type ScriptType = keyof typeof ScriptTypeInfra;
 export type AssertCondition = keyof typeof AssertionCondition;
 
 export type PluginType = 'Ftp' | 'Jms' | 'Ldap' | 'Mail' | 'Smtp' | 'Tcp' | 'WebSocket' | 'Jdbc' | 'Http';
 
+ /**
+* Pipline target types supported within a transaction
+*/
+export type PiplineTargetType = keyof typeof PiplineTarget;
+
 
 export type WaitingTimeConfig = {
     id: string; // 前端自动生成，用于给每条记录添加id
     beforeName:string;
     transactionName:string;
-    target: 'WAITING_TIME';
+    target: PiplineTarget.WAITING_TIME;
     name: string;
     description: string;
     enabled: boolean;
@@ -29,9 +34,10 @@ export type WaitingTimeConfig = {
     minWaitTimeInMs?: string;// 固定等待时间不用传
 }
 
+
 export type RendezvousConfig = {
     id: string; // 前端自动生成，用于给每条记录添加id
-    target: 'RENDEZVOUS';
+    target: PiplineTarget.RENDEZVOUS;
     name: string;
     description: string;
     enabled: boolean;
@@ -43,7 +49,7 @@ export type RendezvousConfig = {
 
 export type TransStartConfig = {
     id: string; // 前端自动生成，用于给每条记录添加id
-    target: 'TRANS_START';
+    target: PiplineTarget.TRANS_START;
     name: string;
     description: string;
     enabled: boolean;
@@ -53,13 +59,47 @@ export type TransStartConfig = {
 
 export type TransEndConfig = {
     id: string;
-    target: 'TRANS_END';
+    target: PiplineTarget.TRANS_END;
     name: string;
     description: string;
     beforeName: string;
     transactionName: string;
     enabled: boolean;
 }
+
+/**
+ * Timeline data interface
+ * Contains timing information for all phases of an HTTP request
+ * All values are in milliseconds
+ */
+export interface TimelineConfig {
+    fetchStart: string;              // Start of fetch operation
+    domainLookupStart: string;       // Start of DNS lookup
+    domainLookupEnd: string;         // End of DNS lookup
+    connectStart: string;            // Start of TCP connection
+    connectEnd: string;              // End of TCP connection
+    secureConnectionStart: string;   // Start of SSL/TLS handshake
+    secureConnectionEnd: string;     // End of SSL/TLS handshake
+    requestStart: string;            // Start of request
+    responseStart: string;           // Start of response (TTFB)
+    responseEnd: string;             // End of response (download complete)
+    total: string;                   // Total duration
+}
+
+/**
+ * Throughput controller configuration interface
+ */
+export interface ThroughputConfig {
+    target: PiplineTarget.THROUGHPUT;       // Target type identifier
+    name: string;               // Throughput controller name
+    description: string;        // Optional description
+    enabled: boolean;           // Whether this controller is enabled
+    beforeName: string;         // Name of step before this controller
+    transactionName: string;    // Associated transaction name
+    permitsPerSecond: string;   // Maximum requests per second (rate limit)
+    timeoutInMs: string;        // Max wait time in milliseconds before timeout
+}
+
 
 export type PipelineConfig = WebSocketPipelineInfo | TcpPipelineInfo | SmtpPipelineInfo | MailPipelineInfo | LdapPipelineInfo | JmsPipelineInfo | FtpPipelineInfo | HTTPConfig | JDBCConfig | WaitingTimeConfig | RendezvousConfig | TransStartConfig | TransEndConfig;
 export type PipelineInfo = WebSocketPipelineInfo | TcpPipelineInfo | SmtpPipelineInfo | MailPipelineInfo | LdapPipelineInfo | JmsPipelineInfo | FtpPipelineInfo | HTTPInfo | JDBCConfigInfo | WaitingTimeConfig | RendezvousConfig | TransStartConfig | TransEndConfig;
@@ -445,4 +485,4 @@ export type RequestServer = {
       }
     };
     description?:string;
-  }
+}

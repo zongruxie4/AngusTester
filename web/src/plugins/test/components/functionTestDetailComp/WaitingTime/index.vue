@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
+import { PiplineTargetType } from '@/plugins/test/types';
 
 import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
 
@@ -14,24 +15,10 @@ const { t } = useI18n();
 type WaitType = 'fixed' | 'random';
 
 /**
- * Waiting time configuration interface
- */
-interface WaitingTimeValue {
-  beforeName: string;           // Name of step before this wait
-  transactionName: string;      // Associated transaction name
-  target: 'WAITING_TIME';       // Target type identifier
-  name: string;                 // Waiting time name
-  description: string;          // Optional description
-  enabled: boolean;             // Whether this wait is enabled
-  maxWaitTimeInMs: string;      // Maximum wait time in milliseconds (or fixed time)
-  minWaitTimeInMs?: string;     // Minimum wait time in milliseconds (only for random wait)
-}
-
-/**
  * Component props interface
  */
 export interface Props {
-  value: WaitingTimeValue;  // Waiting time configuration data
+  value: PiplineTargetType;  // Waiting time configuration data
 }
 
 // Define props with default values

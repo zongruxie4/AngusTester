@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
+import { RendezvousConfig } from '@/plugins/test/types';
 
 import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
 
@@ -8,24 +9,10 @@ import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
 const { t } = useI18n();
 
 /**
- * Rendezvous configuration interface
- */
-interface RendezvousValue {
-  target: 'RENDEZVOUS';      // Target type identifier
-  name: string;              // Rendezvous point name
-  description: string;       // Optional description
-  enabled: boolean;          // Whether this rendezvous is enabled
-  beforeName: string;        // Name of step before this rendezvous
-  transactionName: string;   // Associated transaction name
-  timeoutInMs: string;       // Timeout in milliseconds (how long to wait)
-  threads: string;           // Number of threads to wait for
-}
-
-/**
  * Component props interface
  */
 export interface Props {
-  value: RendezvousValue;  // Rendezvous configuration data
+  value: RendezvousConfig;  // Rendezvous configuration data
 }
 
 // Define props with default values

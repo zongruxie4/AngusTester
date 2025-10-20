@@ -1,26 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
-
-/**
- * Transaction end configuration interface
- */
-interface TransEndValue {
-  target: 'TRANS_END';         // Target type identifier (should be TRANS_END, not RENDEZVOUS)
-  name: string;                // Transaction end marker name (typically ends with "_end")
-  description: string;         // Optional description
-  enabled: boolean;            // Whether this marker is enabled
-  beforeName: string;          // Name of step before this marker
-  transactionName: string;     // Associated transaction name
-  timeoutInMs: string;         // Timeout configuration (inherited from interface)
-  threads: string;             // Thread configuration (inherited from interface)
-}
+import { TransEndConfig } from '@/plugins/test/types';
 
 /**
  * Component props interface
  */
 export interface Props {
-  value: TransEndValue;  // Transaction end marker configuration data
+  value: TransEndConfig;  // Transaction end marker configuration data
 }
 
 // Define props with default values

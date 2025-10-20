@@ -2,28 +2,12 @@
 import { ref, watch, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { NoData } from '@xcan-angus/vue-ui';
+import { TimelineConfig } from '@/plugins/test/types';
 
 // Initialize i18n for internationalization
 const { t } = useI18n();
 
-/**
- * Timeline data interface
- * Contains timing information for all phases of an HTTP request
- * All values are in milliseconds
- */
-interface TimelineValue {
-  fetchStart: string;              // Start of fetch operation
-  domainLookupStart: string;       // Start of DNS lookup
-  domainLookupEnd: string;         // End of DNS lookup
-  connectStart: string;            // Start of TCP connection
-  connectEnd: string;              // End of TCP connection
-  secureConnectionStart: string;   // Start of SSL/TLS handshake
-  secureConnectionEnd: string;     // End of SSL/TLS handshake
-  requestStart: string;            // Start of request
-  responseStart: string;           // Start of response (TTFB)
-  responseEnd: string;             // End of response (download complete)
-  total: string;                   // Total duration
-}
+
 
 /**
  * Timeline item interface
@@ -40,7 +24,7 @@ interface TimelineItem {
  * Component props interface
  */
 export interface Props {
-  value: TimelineValue;  // Timeline data from HTTP request
+  value: TimelineConfig;  // Timeline data from HTTP request
 }
 
 // Define props with default values
@@ -177,12 +161,12 @@ onMounted(() => {
       const keys = key.split('-');
       if (keys?.length === 2 && keys[1]) {
         // Calculate duration: end time - start time
-        const endValue = +(newValue[keys[0] as keyof TimelineValue] || 0);
-        const startValue = +(newValue[keys[1] as keyof TimelineValue] || 0);
+        const endValue = +(newValue[keys[0] as keyof TimelineConfig] || 0);
+        const startValue = +(newValue[keys[1] as keyof TimelineConfig] || 0);
         time = (endValue - startValue) || 0;
       } else {
         // Direct value (fallback)
-        time = +(newValue[key as keyof TimelineValue] || 0);
+        time = +(newValue[key as keyof TimelineConfig] || 0);
       }
       
       // Calculate delay (start position on timeline)

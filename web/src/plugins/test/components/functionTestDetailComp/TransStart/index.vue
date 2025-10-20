@@ -5,20 +5,14 @@ import { Arrow, Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
-import { ExecContent } from '@/plugins/test/types';
-
-/**
- * Protocol target types supported within a transaction
- */
-type ProtocolTarget = 'JDBC' | 'TRANS_END' | 'RENDEZVOUS' | 'WAITING_TIME' | 
-  'THROUGHPUT' | 'HTTP' | 'FTP' | 'LDAP' | 'MAIL' | 'SMTP' | 'TCP' | 'WEBSOCKET' | 'JMS';
+import { ExecContent, PiplineTargetType } from '@/plugins/test/types';
 
 /**
  * Child step configuration interface
  * Represents a test step within the transaction
  */
 interface TransactionChild {
-  target: ProtocolTarget;      // Protocol or component type
+  target: PiplineTargetType;      // Protocol or component type
   name: string;                // Step name
   linkName: string;            // Linked name for content matching
   description: string;         // Optional description
