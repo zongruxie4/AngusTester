@@ -8,6 +8,15 @@ export const MAX_FILE_SIZE_MB_X2 = 20;
 export const UPLOAD_TEST_FILE_KEY = 'angusTesterCaseAttachments';
 export const UPLOAD_ISSUE_FILE_KEY = 'angusTesterTaskAttachments';
 
+export const API_SUMMARY_MAX_LENGTH = 400;
+export const API_OPERATION_ID_MAX_LENGTH = 400;
+export const API_DESC_MAX_LENGTH = 20000;
+export const API_URI_MAX_LENGTH = 800;
+export const API_PARAMETER_NAME_LENGTH = 400;
+export const API_PARAMETER_VALUE_LENGTH = 4096;
+export const API_DEBUG_MAX_FILE_SIZE = 10 * 1024 * 1024;
+export const API_DEBUG_MAX_FILES_SIZE = 500 * API_DEBUG_MAX_FILE_SIZE;
+
 export const SETTING_KEYS = {
   MAX_RESOURCE_ACTIVITIES: 'MAX_RESOURCE_ACTIVITIES'
 
@@ -39,7 +48,7 @@ export const cropperUploadOption = {
   limitMinSize: [100, 100]
 };
 
-export const CONTENT_TYPE = {
+export const CONTENT_TYPE_KEYS = {
   FORM_URLENCODED: 'application/x-www-form-urlencoded',
   MULTIPART_FORM_DATA: 'multipart/form-data',
   JSON: 'application/json',
@@ -50,7 +59,7 @@ export const CONTENT_TYPE = {
   WILDCARD: '*/*'
 } as const;
 
-export const RADIO_TYPE = {
+export const RADIO_TYPE_KEYS = {
   NONE: 'none',
   FORM_URLENCODED: 'application/x-www-form-urlencoded',
   MULTIPART_FORM_DATA: 'multipart/form-data',
@@ -71,5 +80,6 @@ export const HTTP_HEADERS = {
   ACCEPT: 'accept',
   COOKIE: 'Cookie',
   SET_COOKIE: 'Set-Cookie',
-  SET_COOKIE_LOWER: 'set-cookie'
+  SET_COOKIE_LOWER: 'set-cookie',
+  AUTHORIZATION: 'Authorization'
 } as const;

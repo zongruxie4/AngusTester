@@ -21,7 +21,7 @@ export interface Props {
   placeholder?:string;
   height?:number;
   error?: boolean;
-  maxLength: 0;
+  maxLength: number;
   disabled?: boolean;
 }
 const props = withDefaults(defineProps<Props>(), {

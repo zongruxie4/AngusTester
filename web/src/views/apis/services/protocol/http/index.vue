@@ -40,7 +40,7 @@ import { encode } from '@/utils/secure';
 import { formatBytes } from '@/utils/common';
 import { apis, services } from '@/api/tester';
 import { ApiPermission, ApiServerSource, ApiStatus, ApisShareScope } from '@/enums/enums';
-import { CONTENT_TYPE, HTTP_HEADERS } from '@/utils/constant';
+import { CONTENT_TYPE_KEYS, HTTP_HEADERS } from '@/utils/constant';
 
 // eslint-disable-next-line import/no-duplicates
 import apiUtils, {
@@ -54,7 +54,7 @@ import apiUtils, {
 } from '@/utils/apis';
 
 import { getServerData, ServerInfo } from '@/views/apis/server/types';
-import { rawTypeOptions, RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/interface';
+import { rawTypeOptions, RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/types';
 import { getShowAuthData } from '@/components/ApiAuthencation/interface';
 
 import { getStatusText } from '@/views/apis/services/components/types';
@@ -77,8 +77,8 @@ import {
   RequestHeader,
   RequestParams,
   ResponseState,
-  State
-} from './interface';
+  MainState
+} from './index';
 import {
   getDefaultParams,
   validateBodyForm,
@@ -260,7 +260,7 @@ const setting = ref<RequestSetting>({
   maxRedirects: 1
 });
 
-const state = reactive<State>({
+const state = reactive<MainState>({
   authentication: { type: null },
   parameter: {},
   assertTypeOptions: [],
@@ -595,7 +595,7 @@ const getParameter = async (isDebug = false) => {
           delete requestBody.content[key].schema[valueKey];
           delete requestBody.content[key].schema[fileNameKey];
         }
-        if (key === CONTENT_TYPE.MULTIPART_FORM_DATA) {
+        if (key === CONTENT_TYPE_KEYS.MULTIPART_FORM_DATA) {
           if (content[key]?.schema?.properties) {
             Object.keys(content[key]?.schema?.properties).forEach(name => {
               if (content[key].schema.properties[name].format === 'binary') {
@@ -721,7 +721,7 @@ const sendRequest = async () => {
   let requestBodyContents = await requestBodyRef.value.getBodyData(state.requestBody, contentType.value);
   let formData: any[] = [];
   const strParam: string[] = [];
-  if (contentType.value === CONTENT_TYPE.FORM_URLENCODED || contentType.value === CONTENT_TYPE.MULTIPART_FORM_DATA) {
+  if (contentType.value === CONTENT_TYPE_KEYS.FORM_URLENCODED || contentType.value === CONTENT_TYPE_KEYS.MULTIPART_FORM_DATA) {
     formData = requestBodyContents;
   } else if (typeof requestBodyContents === 'string') {
     strParam.push(requestBodyContents);
@@ -840,10 +840,10 @@ const sendRequest = async () => {
   // 组装 body 数据
   const showRequestBody: Record<string, any> = {};
   let requestBody;
-  if ((contentType.value === CONTENT_TYPE.FORM_URLENCODED ||
-    contentType.value === CONTENT_TYPE.MULTIPART_FORM_DATA) && funcValues[1]?.length) {
+  if ((contentType.value === CONTENT_TYPE_KEYS.FORM_URLENCODED ||
+    contentType.value === CONTENT_TYPE_KEYS.MULTIPART_FORM_DATA) && funcValues[1]?.length) {
     const bodyDataArr = funcValues[1];
-    if (contentType.value === CONTENT_TYPE.FORM_URLENCODED) {
+    if (contentType.value === CONTENT_TYPE_KEYS.FORM_URLENCODED) {
       requestBody = '';
       const content = {};
       bodyDataArr.forEach(item => {
@@ -858,7 +858,7 @@ const sendRequest = async () => {
         showRequestBody.urlencoded[key] = decodeURIComponent(value || '');
       });
     }
-    if (contentType.value === CONTENT_TYPE.MULTIPART_FORM_DATA) {
+    if (contentType.value === CONTENT_TYPE_KEYS.MULTIPART_FORM_DATA) {
       showRequestBody.formData = {};
       requestBody = new FormData();
       bodyDataArr.forEach(item => {
@@ -1111,9 +1111,9 @@ const onHttpResponse = async (resp, request) => {
       url: decodeURIComponent(resp.config.url),
       method: apiMethod.value,
       queryString: request.queryString,
-      forms: request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE.MULTIPART_FORM_DATA
+      forms: request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE_KEYS.MULTIPART_FORM_DATA
         ? request.requestBody.formData
-        : request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE.FORM_URLENCODED ? request.requestBody.urlencoded : {},
+        : request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE_KEYS.FORM_URLENCODED ? request.requestBody.urlencoded : {},
       body: request.requestBody.body || ''
     };
     responseState.headers = resp.response.headers;
@@ -1133,9 +1133,9 @@ const onHttpResponse = async (resp, request) => {
       url: decodeURIComponent(resp.config.url),
       method: apiMethod.value,
       queryString: request.queryString,
-      forms: request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE.MULTIPART_FORM_DATA
+      forms: request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE_KEYS.MULTIPART_FORM_DATA
         ? request.requestBody.formData
-        : request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE.FORM_URLENCODED
+        : request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE_KEYS.FORM_URLENCODED
           ? request.requestBody.urlencoded
           : {},
       body: request.requestBody.body || ''
@@ -1157,9 +1157,9 @@ const onHttpResponse = async (resp, request) => {
     localRequestInfo.query = request.query;
     localRequestInfo.path = request.path;
     localRequestInfo.header = request.header;
-    localRequestInfo.form = request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE.MULTIPART_FORM_DATA
+    localRequestInfo.form = request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE_KEYS.MULTIPART_FORM_DATA
       ? request.requestBody.formData
-      : request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE.FORM_URLENCODED
+      : request.header[HTTP_HEADERS.CONTENT_TYPE] === CONTENT_TYPE_KEYS.FORM_URLENCODED
         ? request.requestBody.urlencoded
         : undefined;
     localRequestInfo.rawBody = request.requestBody.body || undefined;

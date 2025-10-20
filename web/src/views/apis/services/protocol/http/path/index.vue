@@ -5,10 +5,11 @@ import { XCanDexie, utils, enumUtils, HttpMethod } from '@xcan-angus/infra';
 import { Button, Divider, Dropdown } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
-import { ApiPermission } from '@/enums/enums';
+import { ApiPermission, ApiServerSource } from '@/enums/enums';
 import { API_EXTENSION_KEY } from '@/utils/apis';
 import { ServerInfo } from '@/views/apis/server/types';
 import { getDefaultParams } from '@/views/apis/services/protocol/http/utils';
+import { API_URI_MAX_LENGTH } from '@/utils/constant';
 
 const ServerInput = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/path/ServerInput.vue'));
 const AddCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/AddCaseModal.vue'));
@@ -59,7 +60,6 @@ const { serverSourceKey, valueKey, idKey } = API_EXTENSION_KEY;
 
 const { useMutations, useState } = VuexHelper;
 
-const globalConfigs = inject('globalConfigs', { VITE_URI_MAX_LENGTH: 800 });
 const auths = inject('auths', ref<string[]>([]));
 const { stepVisible, stepKey, stepContent } = useState(['stepVisible', 'stepKey', 'stepContent'], 'guideStore') as { stepVisible: Ref<boolean>; stepKey: Ref<string>; stepContent: Ref<{ title: string; content: string; }> };
 const { updateGuideStep } = useMutations(['updateGuideStep'], 'guideStore');
@@ -358,21 +358,23 @@ onMounted(() => {
   });
 
   watch(() => props.availableServers, (newValue) => {
-    serversFromParent.value = (newValue || []).filter(item => item[serverSourceKey] === 'PARENT_SERVERS').map(item => {
-      return {
-        ...item,
-        ...item.extentions,
-        id: utils.uuid()
-      };
-    });
+    serversFromParent.value = (newValue || [])
+      .filter(item => item[serverSourceKey] === ApiServerSource.PARENT_SERVERS).map(item => {
+        return {
+          ...item,
+          ...item.extentions,
+          id: utils.uuid()
+        };
+      });
 
-    serversFromMock.value = (newValue || []).filter(item => item[serverSourceKey] === 'MOCK_SERVICE').map(item => {
-      return {
-        ...item,
-        ...item.extentions,
-        id: utils.uuid()
-      };
-    });
+    serversFromMock.value = (newValue || [])
+      .filter(item => item[serverSourceKey] === ApiServerSource.MOCK_SERVICE).map(item => {
+        return {
+          ...item,
+          ...item.extentions,
+          id: utils.uuid()
+        };
+      });
   }, {
     immediate: true
   });
@@ -472,11 +474,11 @@ onMounted(() => {
       </Dropdown>
       <Input
         v-model:value="apiUri"
-        :maxlength="globalConfigs.VITE_URI_MAX_LENGTH"
+        :maxlength="API_URI_MAX_LENGTH"
         :allowClear="false"
         trim
         class="input-container min-w-25"
-        placeholder="接口路径，以 “ / ” 起始"
+        placeholder="接口路径，以“/”开始"
         size="middle"
         @blur="(e: FocusEvent) => handleUriInputBlur(e as any)"
         @pressEnter="handleUriEnterKey"

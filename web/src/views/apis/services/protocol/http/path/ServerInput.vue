@@ -37,7 +37,7 @@ const serverObj = ref();
 const valueHtml = ref();
 const inputFlag = ref(true);
 const popoverVisible = ref(false);
-const showErrorPopover = ref(false); // 变量是否异常， 不存在则显示异常
+const showErrorPopover = ref(false);
 const popPosition = reactive({
   left: '0',
   width: '0'

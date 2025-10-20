@@ -1,9 +1,9 @@
 import { ContentEncoding, HttpMethod, ParameterIn, ResponseDelayMode } from '@xcan-angus/infra';
-import { CONTENT_TYPE, LANGUAGE, RADIO_TYPE } from '@/utils/constant';
+import { CONTENT_TYPE_KEYS, LANGUAGE, RADIO_TYPE_KEYS } from '@/utils/constant';
 
 // ==================== Types ====================
-export type RadioType = typeof RADIO_TYPE[keyof typeof RADIO_TYPE];
-export type ContentType = typeof CONTENT_TYPE[keyof typeof CONTENT_TYPE];
+export type RadioType = typeof RADIO_TYPE_KEYS[keyof typeof RADIO_TYPE_KEYS];
+export type ContentType = typeof CONTENT_TYPE_KEYS[keyof typeof CONTENT_TYPE_KEYS];
 export type Language = typeof LANGUAGE[keyof typeof LANGUAGE];
 
 export type DelayData = {

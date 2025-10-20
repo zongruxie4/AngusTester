@@ -6,16 +6,26 @@ import { deconstruct } from '@/utils/swagger';
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
 
-const ajv = new Ajv();
+/**
+ * AJV instance for JSON schema validation
+ */
+const ajvValidator = new Ajv();
 
-addFormats(ajv);
+addFormats(ajvValidator);
 
+/**
+ * Creates default parameter configuration
+ * <p>
+ * Generates a default parameter item with standard configuration
+ * </p>
+ * @param config - Additional configuration to merge
+ * @returns Default parameter item
+ */
 export const getDefaultParams = (config = {}): ParamsItem => {
   return {
     name: '',
     in: 'query',
     description: '',
-    // [exportVariableKey]: false,
     [valueKey]: '',
     [enabledKey]: true,
     schema: { type: 'string' },
@@ -23,6 +33,14 @@ export const getDefaultParams = (config = {}): ParamsItem => {
   };
 };
 
+/**
+ * Creates default body item configuration
+ * <p>
+ * Generates a default body item for form data
+ * </p>
+ * @param config - Additional configuration to merge
+ * @returns Default body item
+ */
 export const getBodyDefaultItem = (config = {}) => {
   return {
     name: '',
@@ -35,6 +53,15 @@ export const getBodyDefaultItem = (config = {}) => {
   };
 };
 
+/**
+ * Gets new item from metadata
+ * <p>
+ * Finds empty item in metadata or creates new default item
+ * </p>
+ * @param metaData - Array of parameter items
+ * @param config - Optional configuration for new item
+ * @returns New item or undefined
+ */
 const getNewItem = (metaData: ParamsItem[], config?: ParamsItem): ParamsItem | undefined => {
   const emptyItem = metaData?.find((item) => !item.name);
   if (!emptyItem) {
@@ -43,90 +70,140 @@ const getNewItem = (metaData: ParamsItem[], config?: ParamsItem): ParamsItem | u
   return undefined;
 };
 
-export const validateType = (data, schema) => {
+/**
+ * Validates data against schema
+ * <p>
+ * Uses AJV to validate data against JSON schema
+ * </p>
+ * @param data - Data to validate
+ * @param schema - JSON schema to validate against
+ * @returns Array of validation errors or empty array
+ */
+export const validateType = (data: any, schema: any) => {
   delete schema.exampleSetFlag;
-  const validate = ajv.compile(schema);
-  const valid = validate(data);
-  if (!valid) {
-    return validate.errors;
+  const validator = ajvValidator.compile(schema);
+  const isValid = validator(data);
+  if (!isValid) {
+    return validator.errors;
   }
   return [];
 };
 
-const validateParameter = (data, schema) => {
+/**
+ * Validates parameter data
+ * <p>
+ * Validates parameter data against its schema
+ * </p>
+ * @param data - Data to validate
+ * @param schema - Schema to validate against
+ * @returns Array of validation errors
+ */
+const validateParameterData = (data: any, schema: any) => {
   return validateType(data, schema);
 };
 
-const validateQueryParameter = (data) => {
+/**
+ * Validates query parameters
+ * <p>
+ * Validates all query parameters in the data array
+ * </p>
+ * @param data - Array of parameter data
+ * @returns True if all parameters are valid
+ */
+const validateQueryParameters = (data: any[]) => {
   if (!data.length) {
     return true;
   }
-  const errors: any[] = [];
+  const validationErrors: any[] = [];
   data.forEach(item => {
-    const schemaObj = item;
-    errors.push(...validateParameter(item[valueKey], deepDelAttrFromObj(schemaObj.schema, [])));
+    const schemaObject = item;
+    validationErrors.push(...validateParameterData(item[valueKey], deepDelAttrFromObj(schemaObject.schema, [])));
   });
-  return !errors.length;
+  return !validationErrors.length;
 };
 
-const validateBodyForm = (data) => {
+/**
+ * Validates body form data
+ * <p>
+ * Validates all form data parameters
+ * </p>
+ * @param data - Array of form data
+ * @returns True if all form data is valid
+ */
+const validateBodyFormData = (data: any[]) => {
   if (!data.length) {
     return true;
   }
-  const errors: any[] = [];
+  const validationErrors: any[] = [];
   data.forEach(item => {
-    const schemaObj = item;
-    errors.push(...validateParameter(item[valueKey], deepDelAttrFromObj(schemaObj, [valueKey, 'types', 'exampleSetFlag', 'name', enabledKey, 'key'])));
+    const schemaObject = item;
+    validationErrors.push(...validateParameterData(item[valueKey], deepDelAttrFromObj(schemaObject, [valueKey, 'types', 'exampleSetFlag', 'name', enabledKey, 'key'])));
   });
-  return !errors.length;
+  return !validationErrors.length;
 };
 
 export {
   getNewItem,
-  validateQueryParameter,
-  validateBodyForm
+  validateQueryParameters as validateQueryParameter,
+  validateBodyFormData as validateBodyForm
 };
 
-export const schemaTypeToOptions = [
-  'string',
-  'array',
-  'boolean',
-  'integer',
-  'object',
-  'number'
-].map(i => ({ value: i, label: i }));
-
-export const getRefData = async (ref, serviceId) => {
-  const [error, resp] = await getModelDataByRef(serviceId, ref);
+/**
+ * Gets reference data by reference ID
+ * <p>
+ * Fetches and deconstructs model data by reference
+ * </p>
+ * @param reference - Reference ID
+ * @param serviceId - Service ID
+ * @returns Deconstructed reference data
+ */
+export const getReferenceData = async (reference: string, serviceId: string) => {
+  const [error, response] = await getModelDataByRef(serviceId, reference);
   if (error) {
     return '';
   }
-  return deconstruct(resp.data || {});
+  return deconstruct(response.data || {});
 };
 
-export const transRefJsonToDataJson = async (schema: any = {}, serviceId) => {
-  // const keys = Object.keys(schema);
+/**
+ * Transforms reference JSON to data JSON
+ * <p>
+ * Recursively resolves all $ref references in schema
+ * </p>
+ * @param schema - Schema object to transform
+ * @param serviceId - Service ID for reference resolution
+ * @returns Transformed schema with resolved references
+ */
+export const transformRefJsonToDataJson = async (schema: any = {}, serviceId: string) => {
   for (const key in schema) {
     if (key === '$ref') {
-      const refData = await getRefData(schema.$ref, serviceId);
-      schema = { ...schema, ...refData };
+      const referenceData = await getReferenceData(schema.$ref, serviceId);
+      schema = { ...schema, ...referenceData };
       delete schema.$ref;
     }
     if (Object.prototype.toString.call(schema[key]) === '[object Object]') {
-      schema[key] = await transRefJsonToDataJson(schema[key], serviceId);
+      schema[key] = await transformRefJsonToDataJson(schema[key], serviceId);
     }
   }
   return schema;
 };
 
-export const deepParseJson = (jsonStr: string) => {
+/**
+ * Deep parses JSON string
+ * <p>
+ * Recursively parses JSON strings until a non-string result is obtained
+ * </p>
+ * @param jsonString - JSON string to parse
+ * @returns Parsed JSON object or original string if parsing fails
+ */
+export const deepParseJson = (jsonString: string) => {
   try {
-    const result = JSON.parse(jsonStr);
+    const result = JSON.parse(jsonString);
     if (typeof result === 'string') {
       return deepParseJson(result);
     }
     return result;
   } catch {
-    return jsonStr;
+    return jsonString;
   }
 };

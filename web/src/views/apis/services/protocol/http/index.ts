@@ -1,7 +1,7 @@
 import { Component, defineAsyncComponent } from 'vue';
-import { AuthItem } from './Authorization';
+import { AuthenticationItem } from './Authorization';
 import { i18n } from '@xcan-angus/infra';
-import { RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/interface';
+import { RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/types';
 import { ParamsItem } from '@/views/apis/services/protocol/types';
 
 import ApiAssertion from '@/components/ApiAssert/index.vue';
@@ -13,14 +13,12 @@ export const RequestBody: Component = defineAsyncComponent(() => import('@/views
 export const RequestHeader: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestHeader.vue'));
 export const RequestCookie: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestCookie.vue'));
 export const Authorization: Component = ApiAuthorization;
-// @TODO 临时调试，需要删除
 export const AssertForm: Component = ApiAssertion;
 
 export const ApiRequest: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Request.vue'));
 export const ApiResponse: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Response.vue'));
 export const ApiTimeline: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Timeline.vue'));
 export const ApiCookie: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Cookie.vue'));
-// @TODO 临时调试，需要删除
 export const ApiAssert: Component = ResponseAssert;
 
 const t = i18n.getI18n()?.global?.t || ((value: string) => value);
@@ -30,7 +28,7 @@ export interface OptionItem {
   value: string
 }
 
-export interface State {
+export interface MainState {
   parameter: Record<string, unknown>;
   assertTypeOptions: OptionItem[];
   assertConditionOptions: OptionItem[];
@@ -45,8 +43,8 @@ export interface State {
   headerList: ParamsItem[];
   cookieList: ParamsItem[];
   assertions: any[];
-  authentication: AuthItem;
-  authDefaultValue?: AuthItem;
+  authentication: AuthenticationItem;
+  authDefaultValue?: AuthenticationItem;
   secured: boolean;
   publishFlag?: boolean;
 }

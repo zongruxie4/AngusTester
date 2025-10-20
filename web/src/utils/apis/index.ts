@@ -1,18 +1,18 @@
 import qs from 'qs';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import {uniq} from 'lodash-es';
-import {decode as dt, encode as et} from 'js-base64';
-import {AssertionCondition, AssertionType, codeUtils, http, TESTER, utils} from '@xcan-angus/infra';
+import { uniq } from 'lodash-es';
+import { decode as dt, encode as et } from 'js-base64';
+import { AssertionCondition, AssertionType, codeUtils, http, TESTER, utils } from '@xcan-angus/infra';
 import SwaggerUI from '@xcan-angus/swagger-ui';
-import {notification} from '@xcan-angus/vue-ui';
+import { notification } from '@xcan-angus/vue-ui';
 
-import {Extraction} from '@/components/ApiAssert/utils/extract/PropsType';
-import {getExecShowAuthData} from '@/components/ExecAuthencation/interface';
+import { Extraction } from '@/components/ApiAssert/utils/extract/PropsType';
+import { getExecShowAuthData } from '@/components/ExecAuthencation/interface';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import {services} from '@/api/tester';
-import {API_EXTENSION_KEYS} from '@/types/openapi-types';
+import { services } from '@/api/tester';
+import { API_EXTENSION_KEYS } from '@/types/openapi-types';
 
 dayjs.extend(duration);
 
@@ -30,6 +30,51 @@ const CONTENT_TYPE = [
   'text/plain',
   '*/*'
 ];
+
+/**
+ * Schema type options for form selection
+ * <p>
+ * Available schema types for parameter configuration
+ * </p>
+ */
+export const schemaTypeToOption = [
+  'string',
+  'array',
+  'boolean',
+  'integer',
+  'object',
+  'number'
+].map(type => ({ value: type, label: type }));
+
+export enum SchemaWideType {
+  string = 'string',
+  array ='array',
+  array_json ='array(json)',
+  array_xml ='array(xml)',
+  boolean ='boolean',
+  integer ='integer',
+  object = 'object',
+  json ='json',
+  object_json ='object(json)',
+  xml = 'xml',
+  object_xml = 'object(xml)',
+  number ='number',
+  file ='file',
+  file_array ='file(array)'
+}
+
+export const schemaTypeToWideOption = [
+  'string',
+  'array(json)',
+  'array(xml)',
+  'boolean',
+  'integer',
+  'object(json)',
+  'object(xml)',
+  'number',
+  'file',
+  'file(array)'
+].map(i => ({ value: i, label: i }));
 
 /**
  * CSS class names for different API status states
@@ -60,6 +105,9 @@ const API_EXTENSION_KEY = API_EXTENSION_KEYS;
 
 // eslint-disable-next-line prefer-regex-literals
 const VARIABLE_NAME_REG = new RegExp(/^[a-zA-Z0-9!@$%^&*()_\-+=./]+$/);
+
+// Matches any alphanumeric character (uppercase or lowercase)
+const VARIABLE_NAME_WIDE_REG = /\{[a-zA-Z0-9_]+\}/g;
 
 export const QueryAndPathInOption = [
   {
@@ -660,8 +708,7 @@ const deepDelAttrFromObj = (data: any = {}, keys: string[]): any => {
  * @returns Array of validation errors
  */
 const validateParameter = (data: any, schema: any): any[] => {
-  const error = validateType(data, schema);
-  return error;
+  return validateType(data, schema);
 };
 
 /**
@@ -681,10 +728,7 @@ const validateQueryParameter = (data: ParamsItem[]): boolean => {
       errors.push(...validationErrors);
     }
   });
-  if (errors.length) {
-    return false;
-  }
-  return true;
+  return !errors.length;
 };
 
 /**
@@ -704,10 +748,7 @@ const validateBodyForm = (data: ParamsItem[]): boolean => {
       errors.push(...validationErrors);
     }
   });
-  if (errors.length) {
-    return false;
-  }
-  return true;
+  return !errors.length;
 };
 
 /**
@@ -778,28 +819,6 @@ const travelDelSchemaRef = (schame) => {
   }
   return schame;
 };
-
-export const schemaTypeToOption = [
-  'string',
-  'array',
-  'boolean',
-  'integer',
-  'object',
-  'number'
-].map(i => ({ value: i, label: i }));
-
-export const schemaTypeToWideOption = [
-  'string',
-  'array(json)',
-  'array(xml)',
-  'boolean',
-  'integer',
-  'object(json)',
-  'object(xml)',
-  'number',
-  'file',
-  'file(array)'
-].map(i => ({ value: i, label: i }));
 
 /**
  * Get data type from format string.
@@ -1000,7 +1019,7 @@ interface Server {
   url: string;
   variables?: Record<string, any>
 }
-const variableReg = /\{[a-zA-Z0-9_]+\}/g;
+
 /**
  * Get server data with variables replaced.
  * @param dataSource - Server configuration with URL and variables
@@ -1008,11 +1027,10 @@ const variableReg = /\{[a-zA-Z0-9_]+\}/g;
  */
 const getServerData = (dataSource: Server): string => {
   const url = dataSource.url;
-  const replaced = url.replace(variableReg, match => {
+  return url.replace(VARIABLE_NAME_WIDE_REG, match => {
     const key = match.replace('{', '').replace('}', '');
     return dataSource.variables?.[key]?.default || '';
   });
-  return replaced;
 };
 
 /**
@@ -1103,7 +1121,6 @@ const analysisParameters = (data: {name: string; schema?: Record<string, any>, $
       } catch {}
     }
   }
-
   return data;
 };
 
@@ -1152,7 +1169,6 @@ const analysisBody = (bodyObj: Record<string, any>, modelResolves: Record<string
         });
       }
     }
-
     return obj;
   }
 
@@ -1490,6 +1506,7 @@ export {
   decode,
   encode,
   VARIABLE_NAME_REG,
+  VARIABLE_NAME_WIDE_REG,
   fileToBuffer,
   convertBlob,
   getDataTypeFromFormat,
@@ -1537,7 +1554,8 @@ export default {
   getModelDataByRef,
   decode,
   encode,
-  variableNameReg: VARIABLE_NAME_REG,
+  VARIABLE_NAME_REG,
+  VARIABLE_NAME_WIDE_REG,
   fileToBuffer,
   convertBlob,
   getDataTypeFromFormat,

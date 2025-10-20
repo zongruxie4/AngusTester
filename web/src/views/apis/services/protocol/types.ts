@@ -216,14 +216,13 @@ export interface ApisUnarchivedDetail {
   lastModifiedDate?: string;
 }
 
-// TODO 替换类型
 export interface ParamsItem {
   name?: string,
   in?: string,
   [key: string]: any,
   description?: string,
   enabled?: boolean,
-  allowableValues?: string[] | null, // 枚举值
+  allowableValues?: string[] | null,
   valueType?: string | null,
   key?: symbol
 }
