@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { navs, menus } from './constants';
+import { navs, menus } from './useUIOptions';
 
 /**
  * UI state management composable

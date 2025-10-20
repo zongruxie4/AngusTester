@@ -21,7 +21,7 @@ export { useParameterManager } from './useParameterManager';
 export * from './registry';
 
 // Constants and utilities
-export * from './constants';
+export * from './useUIOptions';
 
 // Type definitions
 export type {
