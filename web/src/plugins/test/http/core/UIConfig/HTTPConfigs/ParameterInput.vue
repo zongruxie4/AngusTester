@@ -7,7 +7,7 @@ import { Input, Select, Icon } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
-const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
+const ParamInput = defineAsyncComponent(() => import('@/components/form/ParamInput/index.vue'));
 
 const { t } = useI18n();
 

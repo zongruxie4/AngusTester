@@ -11,8 +11,8 @@ import { getCurrentPage } from '@/utils/utils';
 import { CaseInfo } from '@/views/test/types';
 import { TestMenuKey } from '@/views/test/menu';
 
-import TestResult from '@/components/TestResult/index.vue';
-import TaskPriority from '@/components/TaskPriority/index.vue';
+import TestResult from '@/components/test/TestResult/index.vue';
+import TaskPriority from '@/components/task/TaskPriority/index.vue';
 
 // Props and Emits
 const props = withDefaults(defineProps<BasicProps>(), {

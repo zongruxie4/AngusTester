@@ -22,7 +22,7 @@ import {
   oneApiErrorColumns
 } from '@/plugins/test/components/performanceTestDetailComp/ChartConfig';
 import { getCurrentDuration, splitTime } from '../utils';
-const TestBasicInfo = defineAsyncComponent(() => import('@/components/TestBasicInfo/index.vue'));
+const TestBasicInfo = defineAsyncComponent(() => import('@/components/test/TestBasicInfo/index.vue'));
 interface Props {
   execInfo: Record<string, any>;
   delayInSeconds:number;

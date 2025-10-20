@@ -20,7 +20,7 @@ const { t } = useI18n();
 const notify = ref();
 
 // Async Components
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 /**
  * Remark items currently loaded in the scroll list

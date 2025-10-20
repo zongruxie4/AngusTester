@@ -30,8 +30,8 @@ const props = withDefaults(defineProps<BasicProps>(), {
 });
 
 // Async components
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 const TesterSelect = defineAsyncComponent(() => import('./TesterSelect.vue'));
 
 // Injected dependencies

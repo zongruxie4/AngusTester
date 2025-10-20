@@ -6,8 +6,8 @@ import { issue } from '@/api/tester';
 import { SearchCriteria } from '@xcan-angus/infra';
 import { TaskType } from '@/enums/enums';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import TaskStatus from '@/components/TaskStatus/index.vue';
+import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskStatus from '@/components/task/TaskStatus/index.vue';
 
 interface Props {
   apisId: string;

@@ -8,8 +8,8 @@ import { PageQuery } from '@xcan-angus/infra';
 import { CaseActionAuth, EnabledModuleGroup, GroupCaseList } from '../types';
 import { CaseDetail } from '@/views/test/types';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import TestResult from '@/components/TestResult/index.vue';
+import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TestResult from '@/components/test/TestResult/index.vue';
 
 interface Props {
   params: PageQuery;

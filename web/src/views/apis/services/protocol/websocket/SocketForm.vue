@@ -11,7 +11,7 @@ import { services } from '@/api/tester';
 import { FormData, getDefaultForm } from './types';
 
 import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
-const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
+const ParamInput = defineAsyncComponent(() => import('@/components/form/ParamInput/index.vue'));
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
 

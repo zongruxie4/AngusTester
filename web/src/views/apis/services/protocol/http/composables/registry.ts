@@ -1,7 +1,7 @@
 import { Component, defineAsyncComponent } from 'vue';
 
-import ApiAssertion from '@/components/ApiAssert/index.vue';
-import ResponseAssert from '@/components/ResponseAssert/index.vue';
+import ApiAssertion from '@/components/apis/ApiAssert/index.vue';
+import ResponseAssert from '@/components/apis/response/ResponseAssert/index.vue';
 import ApiAuthorization from '@/views/apis/services/protocol/http/Authorization.vue';
 
 export const RequestParams: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestParameter.vue'));

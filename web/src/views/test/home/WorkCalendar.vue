@@ -10,7 +10,7 @@ import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { CaseInfo, PlanProps } from '@/views/test/types';
 
-import TestResult from '@/components/TestResult/index.vue';
+import TestResult from '@/components/test/TestResult/index.vue';
 
 // Type Definitions
 type CalendarDataMap = { [key: string]: CaseInfo[] };

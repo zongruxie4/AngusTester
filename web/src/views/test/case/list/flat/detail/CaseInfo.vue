@@ -4,7 +4,7 @@ import { Grid, ReviewStatus } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { Tag } from 'ant-design-vue';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority/index.vue';
 
 const { t } = useI18n();
 

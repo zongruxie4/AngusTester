@@ -13,7 +13,7 @@ import { isValidUrl } from '@/utils/validate';
 import assertUtils from '@/utils/assertutils';
 import apiUtils, { API_EXTENSION_KEY, travelDelSchemaRef, travelEmptyObjToString } from '@/utils/apis';
 
-import { getShowAuthData } from '@/components/ApiAuthencation/interface';
+import { getShowAuthData } from '@/components/apis/ApiAuthencation/interface';
 
 import {
   ApiInfo,
@@ -51,20 +51,20 @@ const emits = defineEmits<{
   (e: 'apiChange', value?: string): void
 }>();
 
-const ApiParameter = defineAsyncComponent(() => import('@/components/ApiParameter/index.vue'));
-const ApiHeader = defineAsyncComponent(() => import('@/components/ApiHeader/index.vue'));
-const ApiCookie = defineAsyncComponent(() => import('@/components/ApiCookie/index.vue'));
-const ApiBody = defineAsyncComponent(() => import('@/components/ApiBody/index.vue'));
-const ApiAssert = defineAsyncComponent(() => import('@/components/ApiAssert/index.vue'));
+const ApiParameter = defineAsyncComponent(() => import('@/components/apis/ApiParameter/index.vue'));
+const ApiHeader = defineAsyncComponent(() => import('@/components/apis/ApiHeader/index.vue'));
+const ApiCookie = defineAsyncComponent(() => import('@/components/apis/ApiCookie/index.vue'));
+const ApiBody = defineAsyncComponent(() => import('@/components/apis/ApiBody/index.vue'));
+const ApiAssert = defineAsyncComponent(() => import('@/components/apis/ApiAssert/index.vue'));
 const DebugToolbar = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.DebugToolbar));
-const ResponseBase = defineAsyncComponent(() => import('@/components/ResponseBase/index.vue'));
-const ResponseBody = defineAsyncComponent(() => import('@/components/ResponseBody/index.vue'));
-const ResponseCookie = defineAsyncComponent(() => import('@/components/ResponseCookie/index.vue'));
-const ApiAuthencation = defineAsyncComponent(() => import('@/components/ApiAuthencation/index.vue'));
-const ResponseError = defineAsyncComponent(() => import('@/components/ResponseError/index.vue'));
-const ResponseTimeAnalysis = defineAsyncComponent(() => import('@/components/ResponseTimeAnalysis/index.vue'));
-const ResponseAssert = defineAsyncComponent(() => import('@/components/ResponseAssert/index.vue'));
-const ResponseStatus = defineAsyncComponent(() => import('@/components/ResponseStatus/index.vue'));
+const ResponseBase = defineAsyncComponent(() => import('@/components/apis/response/ResponseBase/index.vue'));
+const ResponseBody = defineAsyncComponent(() => import('@/components/apis/response/ResponseBody/index.vue'));
+const ResponseCookie = defineAsyncComponent(() => import('@/components/apis/response/ResponseCookie/index.vue'));
+const ApiAuthencation = defineAsyncComponent(() => import('@/components/apis/ApiAuthencation/index.vue'));
+const ResponseError = defineAsyncComponent(() => import('@/components/apis/response/ResponseError/index.vue'));
+const ResponseTimeAnalysis = defineAsyncComponent(() => import('@/components/apis/response/ResponseTimeAnalysis/index.vue'));
+const ResponseAssert = defineAsyncComponent(() => import('@/components/apis/response/ResponseAssert/index.vue'));
+const ResponseStatus = defineAsyncComponent(() => import('@/components/apis/response/ResponseStatus/index.vue'));
 
 const allFunction = inject('allFunction', ref([]));
 

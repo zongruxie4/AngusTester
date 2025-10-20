@@ -10,8 +10,8 @@ import { SoftwareVersionStatus } from '@/enums/enums';
 import { CaseActionAuth } from '@/views/test/case/types';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import TestResult from '@/components/TestResult/index.vue';
+import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TestResult from '@/components/test/TestResult/index.vue';
 
 interface Props {
   id?: number;

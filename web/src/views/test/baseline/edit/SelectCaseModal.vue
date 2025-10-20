@@ -8,8 +8,8 @@ import { testPlan } from '@/api/tester';
 
 import { BaselineCaseInfo } from '@/views/test/baseline/types';
 
-import TestResult from '@/components/TestResult/index.vue';
-import TaskPriority from '@/components/TaskPriority/index.vue';
+import TestResult from '@/components/test/TestResult/index.vue';
+import TaskPriority from '@/components/task/TaskPriority/index.vue';
 
 const { t } = useI18n();
 

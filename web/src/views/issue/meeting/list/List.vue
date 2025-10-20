@@ -10,7 +10,7 @@ import { TaskMeetingType } from '@/enums/enums';
 import dayjs from 'dayjs';
 import { IssueMenuKey } from '@/views/issue/menu';
 
-import RichTextEditor from '@/components/richEditor/textContent/index.vue';
+import RichTextEditor from '@/components/editor/richEditor/textContent/index.vue';
 
 withDefaults(defineProps<{
   meetingList: MeetingInfo[];

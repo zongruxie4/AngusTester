@@ -14,7 +14,7 @@ import { BasicProps } from '@/types/types';
  * Import Components
  */
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import RichEditor from '@/components/richEditor/index.vue';
+import RichEditor from '@/components/editor/richEditor/index.vue';
 
 // COMPONENT PROPS
 const props = withDefaults(defineProps<BasicProps>(), {

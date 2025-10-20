@@ -6,7 +6,7 @@ import { CaseDetail } from '@/views/test/types';
 import { CaseTestResult } from '@/enums/enums';
 import { CaseActionAuth } from '@/views/test/case/types';
 
-import TestResult from '@/components/TestResult/index.vue';
+import TestResult from '@/components/test/TestResult/index.vue';
 
 interface Props {
   id?: number;

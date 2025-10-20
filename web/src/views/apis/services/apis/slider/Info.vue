@@ -10,7 +10,7 @@ import { apis } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 const DescriptionModal = defineAsyncComponent(() => import('@/views/apis/services/components/MarkdownDescModal.vue'));
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const Security = defineAsyncComponent(() => import('@/views/apis/services/components/Security.vue'));
 const ExternalDocs = defineAsyncComponent(() => import('@/views/apis/services/components/ExternalDoc.vue'));
 

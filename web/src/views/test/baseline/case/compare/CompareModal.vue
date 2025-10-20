@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Modal, Select } from '@xcan-angus/vue-ui';
 import { test } from '@/api/tester';
 
-import RichEditor from '@/components/richEditor/index.vue';
+import RichEditor from '@/components/editor/richEditor/index.vue';
 import { Switch } from 'ant-design-vue';
 import lodash from 'lodash-es';
 

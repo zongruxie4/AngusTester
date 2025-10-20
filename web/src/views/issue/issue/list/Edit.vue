@@ -18,13 +18,13 @@ import { TaskEditState } from './types';
 import { TaskDetail, getTaskTypeName } from '../../types';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import TaskPriority from '@/components/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority/index.vue';
 
 // Component props & emits
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap',
   ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true })
 );
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 const props = withDefaults(defineProps<TaskEditState>(), {
   projectId: undefined,

@@ -20,7 +20,7 @@ import { ReviewEditState, ReviewCaseInfo, ReviewDetail } from '../types';
 import { UPLOAD_TEST_FILE_KEY } from '@/utils/constant';
 
 // Component imports
-import RichEditor from '@/components/richEditor/index.vue';
+import RichEditor from '@/components/editor/richEditor/index.vue';
 const SelectCaseModal = defineAsyncComponent(() => import('./SelectCaseModal.vue'));
 
 // Props and Context

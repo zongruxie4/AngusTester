@@ -38,7 +38,7 @@ import {
 } from '@/utils/apis';
 
 import { getServerData } from '@/views/apis/server/types';
-import { getShowAuthData } from '@/components/ApiAuthencation/interface';
+import { getShowAuthData } from '@/components/apis/ApiAuthencation/interface';
 import { getStatusText } from '@/views/apis/services/components/types';
 import { RequestSetting } from './types';
 
@@ -69,7 +69,7 @@ import {
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
-const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
+const HttpTestInfo = defineAsyncComponent(() => import('@/components/test/HttpTestInfo/index.vue'));
 const FunctionsButton = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.FunctionsButton));
 const APICaseParametric = defineAsyncComponent(() => import('@/components/apis/parameterization/index.vue'));
 const ExecDetail = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/exec/index.vue'));

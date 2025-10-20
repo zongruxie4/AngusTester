@@ -7,7 +7,7 @@ const props = defineProps<{ meetings: any[] }>();
 
 const { t } = useI18n();
 
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 // Expanded rows state: default expand the first meeting
 const expandedIds = ref<Set<string>>(new Set());

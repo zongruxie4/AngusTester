@@ -9,8 +9,8 @@ import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import TestResult from '@/components/TestResult/index.vue';
+import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TestResult from '@/components/test/TestResult/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 // Async sub-sections

@@ -8,7 +8,7 @@ import { ExecInfo } from './PropsType';
 import { ExecContent } from '@/plugins/test/types';
 
 import Collapse from './Collapse/index.vue';
-const TestBasicInfo = defineAsyncComponent(() => import('@/components/TestBasicInfo/index.vue'));
+const TestBasicInfo = defineAsyncComponent(() => import('@/components/test/TestBasicInfo/index.vue'));
 export interface Props {
   execInfo: ExecInfo;
   execContent: ExecContent[];

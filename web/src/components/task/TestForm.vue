@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { DatePicker, Select, SelectEnum } from '@xcan-angus/vue-ui';
 import { CombinedTargetType, Priority } from '@xcan-angus/infra';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority/index.vue';
 import { FormData } from './types';
 
 const { t } = useI18n();

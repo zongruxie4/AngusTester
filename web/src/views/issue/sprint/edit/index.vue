@@ -28,8 +28,8 @@ const props = withDefaults(defineProps<BasicProps>(), {
 });
 
 // Lazy load async components for better performance
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 // Dependency Injection & Context
 const { t } = useI18n();

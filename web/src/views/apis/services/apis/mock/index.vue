@@ -10,7 +10,7 @@ import { analysis, mock, services } from '@/api/tester';
 
 import { MockServicePermission } from '@/enums/enums';
 
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const AddMock = defineAsyncComponent(() => import('@/views/apis/services/apis/mock/AddMock.vue'));
 
 interface Props {

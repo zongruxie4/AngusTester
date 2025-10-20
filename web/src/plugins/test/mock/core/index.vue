@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const ChartInfo = defineAsyncComponent(() => import('./ChartInfo.vue'));
-const TestBasicInfo = defineAsyncComponent(() => import('@/components/TestBasicInfo/index.vue'));
+const TestBasicInfo = defineAsyncComponent(() => import('@/components/test/TestBasicInfo/index.vue'));
 const chartInfoRef = ref();
 const countCard = [
   {

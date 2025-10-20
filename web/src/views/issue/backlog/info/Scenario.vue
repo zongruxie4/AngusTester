@@ -10,9 +10,9 @@ import { TaskDetail } from '../../types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 import { SoftwareVersionStatus } from '@/enums/enums';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import TaskStatus from '@/components/TaskStatus/index.vue';
+import TaskStatus from '@/components/task/TaskStatus/index.vue';
 
 // Async Components
 const Description = defineAsyncComponent(() => import('@/views/issue/backlog/info/Description.vue'));

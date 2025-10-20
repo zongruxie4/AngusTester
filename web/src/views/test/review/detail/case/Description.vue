@@ -5,7 +5,7 @@ import { Icon } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 
 import { testCase } from '@/api/tester';
-import RichEditor from '@/components/richEditor/index.vue';
+import RichEditor from '@/components/editor/richEditor/index.vue';
 
 const { t } = useI18n();
 

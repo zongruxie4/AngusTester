@@ -12,8 +12,8 @@ import { TaskDetail } from '../../types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import TaskStatus from '@/components/TaskStatus/index.vue';
+import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskStatus from '@/components/task/TaskStatus/index.vue';
 
 const { t } = useI18n();
 

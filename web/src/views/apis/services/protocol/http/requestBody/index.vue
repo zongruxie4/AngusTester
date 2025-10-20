@@ -22,7 +22,7 @@ import { ParamsItem } from '@/views/apis/services/protocol/types';
 import { API_DEBUG_MAX_FILE_SIZE, API_DEBUG_MAX_FILES_SIZE, CONTENT_TYPE_KEYS, RADIO_TYPE_KEYS } from '@/utils/constant';
 
 const ApiForm = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/requestBody/Form.vue'));
-const MonacoEditor = defineAsyncComponent(() => import('@/components/MonacoEditor/index.vue'));
+const MonacoEditor = defineAsyncComponent(() => import('@/components/editor/MonacoEditor/index.vue'));
 const ModelModal = defineAsyncComponent(() => import('./ModelModal.vue'));
 
 const { t } = useI18n();

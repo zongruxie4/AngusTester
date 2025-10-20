@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<DetailProps>(), {
 });
 
 // Async component definitions
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 /** Project type configuration for tips display */
 const projectTypeTipConfig = getProjectTypeTipConfig();

@@ -10,8 +10,8 @@ import { useI18n } from 'vue-i18n';
 import { TestMenuKey } from '@/views/test/menu';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import TestResult from '@/components/TestResult/index.vue';
+import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TestResult from '@/components/test/TestResult/index.vue';
 
 const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/case/SelectByModuleModal.vue'));
 

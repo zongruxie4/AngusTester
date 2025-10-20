@@ -8,9 +8,9 @@ import {
 import { toClipboard, PageQuery } from '@xcan-angus/infra';
 import { issue } from '@/api/tester';
 import { TaskStatus as TaskStatusType } from '@/enums/enums';
-import TaskPriority from '@/components/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority/index.vue';
 
-import TaskStatus from '@/components/TaskStatus/index.vue';
+import TaskStatus from '@/components/task/TaskStatus/index.vue';
 import { TaskDetail } from '@/views/issue/types';
 import { ActionMenuItem } from '@/views/issue/issue/types';
 

@@ -7,7 +7,7 @@ import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { CaseActionAuth } from '@/views/test/case/types';
 
-import RichEditor from '@/components/richEditor/index.vue';
+import RichEditor from '@/components/editor/richEditor/index.vue';
 
 interface Props {
   id?: number;

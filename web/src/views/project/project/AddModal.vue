@@ -40,7 +40,7 @@ const emit = defineEmits<{
 }>();
 
 // Async component definitions
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 // Initialize composables
 const {

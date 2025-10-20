@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Grid } from '@xcan-angus/vue-ui';
 
-import TestResult from '@/components/TestResult/index.vue';
+import TestResult from '@/components/test/TestResult/index.vue';
 
 const { t } = useI18n();
 
