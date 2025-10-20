@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const AggregateVue = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/Aggregate/index.vue'));
-const TestBasicInfo = defineAsyncComponent(() => import('@/components/test/TestBasicInfo/index.vue'));
+const TestBasicInfo = defineAsyncComponent(() => import('@/components/test/TestBasicInfo.vue'));
 const StatusCode = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/StatusCode/index.vue'));
 const CountTemplate = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/CountTemplate.vue'));
 const ConterList = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/ConterList/index.vue'));

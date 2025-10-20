@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   execInfo: () => ({}),
   exception: undefined
 });
-const TestBasicInfo = defineAsyncComponent(() => import('@/components/test/TestBasicInfo/index.vue'));
+const TestBasicInfo = defineAsyncComponent(() => import('@/components/test/TestBasicInfo.vue'));
 const ChartInfo = defineAsyncComponent(() => import('./ChartInfo.vue'));
 
 const chartInfoRef = ref();

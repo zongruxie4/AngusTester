@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Input, Modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
 import { http, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
-import TestResult from '@/components/test/TestResult/index.vue';
+import TestResult from '@/components/test/TestResult.vue';
 import { ReviewCaseInfo } from '@/views/test/review/types';
 
 // Async component definitions

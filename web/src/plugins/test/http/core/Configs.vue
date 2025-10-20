@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-const HttpTestInfo = defineAsyncComponent(() => import('@/components/test/HttpTestInfo/index.vue'));
+const HttpTestInfo = defineAsyncComponent(() => import('@/components/test/httpTestInfo/index.vue'));
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const SaveForm = defineAsyncComponent(() => import('@/plugins/test/components/Drawer/SaveForm/index.vue'));

@@ -18,7 +18,7 @@ import { CaseTestResult } from '@/enums/enums';
 import { CaseViewMode } from '@/views/test/case/types';
 
 import TaskPriority from '@/components/task/TaskPriority.vue';
-import TestResult from '@/components/test/TestResult/index.vue';
+import TestResult from '@/components/test/TestResult.vue';
 
 // Type definitions
 type Props = {

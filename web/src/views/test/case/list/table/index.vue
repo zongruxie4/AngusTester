@@ -9,7 +9,7 @@ import { CaseActionAuth, EnabledModuleGroup, GroupCaseList } from '../types';
 import { CaseDetail } from '@/views/test/types';
 
 import TaskPriority from '@/components/task/TaskPriority.vue';
-import TestResult from '@/components/test/TestResult/index.vue';
+import TestResult from '@/components/test/TestResult.vue';
 
 interface Props {
   params: PageQuery;

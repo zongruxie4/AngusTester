@@ -11,7 +11,7 @@ import { TestMenuKey } from '@/views/test/menu';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import TaskPriority from '@/components/task/TaskPriority.vue';
-import TestResult from '@/components/test/TestResult/index.vue';
+import TestResult from '@/components/test/TestResult.vue';
 
 const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/SelectCaseByModuleModal.vue'));
 

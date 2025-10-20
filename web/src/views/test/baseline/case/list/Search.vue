@@ -10,7 +10,7 @@ import { CaseTestResult } from '@/enums/enums';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import TaskPriority from '@/components/task/TaskPriority.vue';
-import TestResult from '@/components/test/TestResult/index.vue';
+import TestResult from '@/components/test/TestResult.vue';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 const TagList = defineAsyncComponent(() => import('@/views/test/case/list/TagSelector.vue'));
 

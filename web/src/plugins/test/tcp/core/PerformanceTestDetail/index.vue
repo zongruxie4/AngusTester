@@ -61,7 +61,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{(e:'setCountTabKey', value:string):void;}>();
-const TestBasicInfo = defineAsyncComponent(() => import('@/components/test/TestBasicInfo/index.vue'));
+const TestBasicInfo = defineAsyncComponent(() => import('@/components/test/TestBasicInfo.vue'));
 const AggregateVue = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/Aggregate/index.vue'));
 const StatusCode = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/StatusCode/index.vue'));
 const CountTemplate = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/CountTemplate.vue'));

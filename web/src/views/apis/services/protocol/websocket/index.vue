@@ -12,7 +12,7 @@ import { useUIOptions } from './composables/useUIOptions';
 // Lazy-loaded components for better performance
 const ApiServer = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/Server.vue'));
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
-const HttpTestInfo = defineAsyncComponent(() => import('@/components/test/HttpTestInfo/index.vue'));
+const HttpTestInfo = defineAsyncComponent(() => import('@/components/test/httpTestInfo/index.vue'));
 const SocketForm = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/SocketForm.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/editor/MonacoEditor/index.vue'));
 const Toolbar = defineAsyncComponent(() => import('@/components/layout/toolbar/index.vue'));
