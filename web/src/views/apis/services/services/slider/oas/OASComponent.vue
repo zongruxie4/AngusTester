@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onMounted, ref } from 'vue';
-import { Arrow, AsyncComponent, Hints, Icon, IconRefresh, Input, Spin } from '@xcan-angus/vue-ui';
-import { Button } from 'ant-design-vue';
+import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { Arrow, AsyncComponent, Hints, IconRefresh, Input, Spin } from '@xcan-angus/vue-ui';
 import { services } from '@/api/tester';
-import { enumUtils, duration } from '@xcan-angus/infra';
+import { enumUtils, duration, EnumMessage } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 import { ServicesCompType } from '@/enums/enums';
@@ -26,9 +25,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-// Tab management from parent context
-const addTabPane = inject('addTabPane', (value: {[key: string]: any}) => ({ value }));
-
 // const updateTabPane = inject('updateTabPane', (value: {[key: string]: any}) => ({ value }));
 const loading = ref(false);
 const compList = ref<ServicesCompDetail[]>([]);
@@ -48,21 +44,15 @@ const getProjectCompList = async () => {
 };
 
 const visible = ref(false);
-// Open designer in a new tab (modeling view)
-const addComponent = () => {
-  // currEditData.value = undefined;
-  // modalType.value = 'add';
-  // visible.value = true;
-  addTabPane({
-    _id: props.id + 'model',
-    pid: props.id + 'model',
-    value: 'model',
-    id: props.id,
-    name: `${props.name}-${t('service.oas.comp')}`,
-    type: props.type,
-    data: undefined
-  });
+
+let servicesCompTypeEnum:EnumMessage<ServicesCompType>[] = [];
+const getServicesCompTypeEnum = () => {
+  if (!servicesCompTypeEnum.length) {
+    servicesCompTypeEnum = enumUtils.enumToMessages(ServicesCompType);
+  }
+  return servicesCompTypeEnum;
 };
+
 
 // Grouped components by collection type for rendering
 const compListObj = ref<Partial<Record<ServicesCompType, {
@@ -146,7 +136,7 @@ const oldCompListObj = ref<Partial<Record<ServicesCompType, {
 
 // Build grouped list from raw list using enum metadata
 const getCompTypesEnum = () => {
-  const data = enumUtils.enumToMessages(ServicesCompType);
+  const data = getServicesCompTypeEnum();
   for (let i = 0; i < data.length; i++) {
     if ([
       ServicesCompType.securitySchemes,
@@ -184,6 +174,7 @@ const handleExpand = (item) => {
 
 // Refresh grouped data
 const getData = async () => {
+  getServicesCompTypeEnum();
   await getProjectCompList();
   getCompTypesEnum();
 };
@@ -285,15 +276,6 @@ onMounted(() => {
         :placeholder="t('common.placeholders.searchKeyword')"
         :allowClear="true"
         @change="handleSearch" />
-      <Button
-        size="small"
-        type="primary"
-        class="flex items-center"
-        :disabled="props.disabled"
-        @click="addComponent">
-        <Icon icon="icon-jia" class="mr-1" />
-        {{ t('service.oas.designCompAction') }}
-      </Button>
       <IconRefresh class="text-3.5" @click="refreshList" />
     </div>
     <div

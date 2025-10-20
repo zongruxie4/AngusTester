@@ -62,7 +62,7 @@ const getCompTypesEnum = () => {
 const title = computed(() => {
   switch (props.modalType) {
     case 'view':
-      return t('common.view');
+      return t('actions.view');
     case 'edit':
       return t('actions.edit');
     case 'add':
