@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n';
 import qs from 'qs';
 import { services } from '@/api/tester';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 // Lazy-load heavy sub components to reduce initial bundle size
 const AddOrModifyParams = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/AddOrModifyParams.vue'));

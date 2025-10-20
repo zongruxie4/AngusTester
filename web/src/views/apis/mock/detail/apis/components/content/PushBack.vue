@@ -9,7 +9,7 @@ import { ContentType, DelayData, ParametersType, PushbackBody, ResponsePushbackC
 import { CONTENT_TYPE_KEYS, HTTP_HEADERS } from '@/utils/constant';
 import { API_EXTENSION_KEY, convertBlob } from '@/utils/apis';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import DelayParameter from './DelayParameter.vue';
 import RequestBody from './RequestBody.vue';
 import InputGroup from './InputGroup.vue';

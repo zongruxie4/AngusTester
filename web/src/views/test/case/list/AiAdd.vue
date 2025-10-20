@@ -20,7 +20,7 @@ import { DATE_TIME_FORMAT, TIME_FORMAT, UPLOAD_TEST_FILE_KEY } from '@/utils/con
 
 import CaseSteps from '@/views/test/case/list/CaseSteps.vue';
 import TaskPriority from '@/components/task/TaskPriority/index.vue';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import RichEditor from '@/components/editor/richEditor/index.vue';
 
 const { t } = useI18n();

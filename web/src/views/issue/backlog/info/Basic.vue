@@ -11,7 +11,7 @@ import { TaskType, SoftwareVersionStatus } from '@/enums/enums';
 import { TaskDetail } from '../../types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import TaskPriority from '@/components/task/TaskPriority/index.vue';
 import TaskStatus from '@/components/task/TaskStatus/index.vue';
 

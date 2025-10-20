@@ -66,7 +66,7 @@ import {
   useParameterManager
 } from './composables';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
 const HttpTestInfo = defineAsyncComponent(() => import('@/components/test/HttpTestInfo/index.vue'));

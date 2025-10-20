@@ -5,7 +5,7 @@ import { Hints, Modal, notification } from '@xcan-angus/vue-ui';
 import { apis, services } from '@/api/tester';
 import { ApiStatus } from '@/enums/enums';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 interface Props {
   visible: boolean;

@@ -6,7 +6,7 @@ import Draggable from 'vuedraggable';
 import { debounce } from 'throttle-debounce';
 import { Icon, NoData, Input, Tooltip, Colon, Arrow } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 import { PipelineConfig } from '../PropsType';
 

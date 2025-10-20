@@ -15,7 +15,7 @@ import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import TaskStatus from '@/components/task/TaskStatus/index.vue';
 import TaskPriority from '@/components/task/TaskPriority/index.vue';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 const EditTaskModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));
 const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/SelectByModuleModal.vue'));

@@ -9,7 +9,7 @@ import { CaseDetail } from '@/views/test/types';
 import { SoftwareVersionStatus } from '@/enums/enums';
 import { CaseActionAuth } from '@/views/test/case/types';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import TaskPriority from '@/components/task/TaskPriority/index.vue';
 import TestResult from '@/components/test/TestResult/index.vue';
 

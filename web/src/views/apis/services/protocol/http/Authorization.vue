@@ -17,7 +17,7 @@ import {
   createDefaultAuthItem, extractDisplayApiKeyData
 } from './Authorization';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 /**
  * Component props interface

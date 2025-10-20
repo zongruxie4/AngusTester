@@ -9,7 +9,7 @@ import { formatBytes } from '@/utils/common';
 import { StrategyWhenDuplicated, ApiImportSource } from '@/enums/enums';
 import { UploadRequestOption } from 'ant-design-vue/lib/vc-upload/interface';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 interface Props {
   serviceId?: string;

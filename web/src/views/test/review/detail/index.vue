@@ -18,7 +18,7 @@ import { ReviewCaseDetail, ReviewDetail } from '@/views/test/review/types';
 
 // Component imports
 import RichEditor from '@/components/editor/richEditor/index.vue';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import TaskPriority from '@/components/task/TaskPriority/index.vue';
 
 // Props and component definitions

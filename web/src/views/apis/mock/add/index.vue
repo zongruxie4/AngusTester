@@ -13,7 +13,7 @@ import { ANGUS_MOCK_DOMAIN, MockServiceEditForm } from '@/views/apis/mock/types'
 import { useMockUI } from '../composables/useMockUI';
 import { useMockForm, useNodeData, useFileUpload, useTabs } from './composables';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import ApiList from './ApiList.vue';
 
 const { t } = useI18n();

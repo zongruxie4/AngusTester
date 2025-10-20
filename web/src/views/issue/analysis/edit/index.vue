@@ -12,7 +12,7 @@ import { analysis } from '@/api/tester';
 
 import { BasicProps } from '@/types/types';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 // Component Props & Configuration
 const props = withDefaults(defineProps<BasicProps>(), {

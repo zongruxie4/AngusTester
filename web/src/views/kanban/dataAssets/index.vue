@@ -8,7 +8,7 @@ import { throttle } from 'throttle-debounce';
 import { kanban } from '@/api/tester';
 import { EnumMessage, enumUtils } from '@xcan-angus/infra';
 import { ReportCategory } from '@/enums/enums';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import { DataAssetsProps } from './types';
 import { useDataAssetsData } from './composables/useDataAssetsData';
 import { useChartConfigs } from './composables/useChartConfigs';

@@ -3,7 +3,7 @@ import { ref, reactive, watch } from 'vue';
 import { FormItem, Form } from 'ant-design-vue';
 import { useRoute } from 'vue-router';
 import { Icon, Input, Grid } from '@xcan-angus/vue-ui';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import { useI18n } from 'vue-i18n';
 
 /**
@@ -154,7 +154,7 @@ const infoConfig = [[
 /**
  * Validate form fields
  * Triggers Ant Design form validation
- * 
+ *
  * @returns Promise that resolves with validation result
  */
 const validate = () => {
@@ -164,7 +164,7 @@ const validate = () => {
 /**
  * Get editable form data
  * Extracts only the fields that can be modified
- * 
+ *
  * @returns Object containing name, type, and description
  */
 const getFormData = () => {
@@ -233,7 +233,7 @@ defineExpose({ getFormData, validate, isSpread, toggle });
             enumKey="ScriptType"
             :placeholder="t('ftpPlugin.performanceTestDetail.scriptInfo.form.scriptTypePlaceholder')" />
         </FormItem>
-        
+
         <!-- Script name field (required, max 200 chars) -->
         <FormItem
           :label="t('common.scriptName')"
@@ -245,7 +245,7 @@ defineExpose({ getFormData, validate, isSpread, toggle });
             :maxlength="200"
             :placeholder="t('ftpPlugin.performanceTestDetail.scriptInfo.form.scriptNamePlaceholder')" />
         </FormItem>
-        
+
         <!-- Description field (required, max 800 chars, textarea) -->
         <FormItem
           :label="t('common.description')"
@@ -260,7 +260,7 @@ defineExpose({ getFormData, validate, isSpread, toggle });
             :maxlength="800" />
         </FormItem>
       </Form>
-      
+
       <!-- Info mode: Display read-only grid -->
       <Grid
         v-else
@@ -272,8 +272,8 @@ defineExpose({ getFormData, validate, isSpread, toggle });
         <template #plugin="{ text }">
           <template v-if="text">
             <!-- Plugin badge with blue background -->
-            <span 
-              class="px-3 py-0.5 rounded-xl" 
+            <span
+              class="px-3 py-0.5 rounded-xl"
               style="background-color: rgba(0, 119, 255, 10%); color: rgba(0, 119, 255, 100%)">
               {{ text }}
             </span>
@@ -284,7 +284,7 @@ defineExpose({ getFormData, validate, isSpread, toggle });
         </template>
       </Grid>
     </template>
-    
+
     <!-- Toggle icon for expand/collapse functionality -->
     <div
       class="switch-icon"

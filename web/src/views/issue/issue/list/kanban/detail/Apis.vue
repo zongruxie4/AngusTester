@@ -13,7 +13,7 @@ import { IssueMenuKey } from '@/views/issue/menu';
 
 import TaskStatus from '@/components/task/TaskStatus/index.vue';
 import TaskPriority from '@/components/task/TaskPriority/index.vue';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 // Async Components
 const Description = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Description.vue'));

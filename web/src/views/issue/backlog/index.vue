@@ -14,7 +14,7 @@ import { IssueMenuKey } from '@/views/issue/menu';
 import { TaskDetail } from '../types';
 
 import TaskPriority from '@/components/task/TaskPriority/index.vue';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import { SprintInfo } from '@/views/issue/sprint/types';
 
 // Import composables
