@@ -4,18 +4,18 @@ import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import { Drawer, Icon, Input, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
-import { utils, duration, enumUtils, HttpMethod } from '@xcan-angus/infra';
+import { utils, duration, enumUtils, HttpMethod, ParameterIn } from '@xcan-angus/infra';
 import qs from 'qs';
 import elementResizeDetector from 'element-resize-detector';
 import useClipboard from 'vue-clipboard3';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import apiUtils from '@/utils/apis';
-
 import { apis } from '@/api/tester';
 import { ApiPermission } from '@/enums/enums';
 import { formatBytes } from '@/utils/utils';
+import { SchemaType } from '@/types/openapi-types';
 
-import { FormData, Message } from './types';
+import { FormData, Message, MessageType, WebsocketProxyMessageType } from './types';
 import { debounce } from 'throttle-debounce';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 
@@ -109,6 +109,22 @@ const messageTypeFilter = ref();
 let currentWebSocketUrl: string;
 
 /**
+ * Enum for WebSocket proxy response message types
+ */
+enum WebsocketProxyResponseType {
+  CONNECTION_MESSAGE = 'CONNECTION_MESSAGE',
+  SEND_RESULT_MESSAGE = 'SEND_RESULT_MESSAGE',
+  RECEIVED_MESSAGE = 'RECEIVED_MESSAGE',
+  CLOSE_MESSAGE = 'CLOSE_MESSAGE'
+}
+
+interface WebsocketProxyResponse {
+  type: WebsocketProxyResponseType;
+  success?: boolean;
+  rawContent?: string;
+}
+
+/**
  * Establishes WebSocket connection
  * <p>
  * Creates a WebSocket connection to the specified server with query parameters
@@ -145,7 +161,7 @@ const establishWebSocketConnection = async () => {
 
     // Send connection request through proxy
     WS.value.send(JSON.stringify({
-      messageType: 'WebsocketRequestProxy',
+      messageType: WebsocketProxyMessageType.WEBSOCKET_REQUEST_PROXY,
       type: 'CONNECTION',
       clientId: props.pid,
       parameters: connectionParams.parameters,
@@ -171,7 +187,7 @@ const closeWebSocketConnection = (changeProxy = false) => {
   if (WS.value) {
     isWebSocketClosing.value = true;
     WS.value.send(JSON.stringify({
-      messageType: 'WebsocketRequestProxy',
+      messageType: WebsocketProxyMessageType.WEBSOCKET_REQUEST_PROXY,
       type: 'DISCONNECTION',
       clientId: props.pid
     }));
@@ -180,7 +196,7 @@ const closeWebSocketConnection = (changeProxy = false) => {
       isWebSocketClosing.value = false;
       isWebSocketConnected.value = false;
       addMessageToList({
-        type: 'close',
+        type: MessageType.CLOSE,
         content: 'closed',
         size: calculateStringSize('closed'),
         date: dayjs().format(DATE_TIME_FORMAT),
@@ -317,7 +333,7 @@ const initializeWebSocketConnection = async () => {
     isWebSocketClosing.value = false;
     const successMessage = 'WebSocket connection success, address:' + currentWebSocketUrl;
     addMessageToList({
-      type: 'connect',
+      type: MessageType.CONNECT,
       content: successMessage,
       size: calculateStringSize(successMessage),
       date: dayjs().format(DATE_TIME_FORMAT),
@@ -342,8 +358,8 @@ const initializeWebSocketConnection = async () => {
     isWebSocketClosing.value = false;
     isWebSocketConnecting.value = false;
     const closeMessage = `WebSocket connection closed, code: ${closeEvent.code}, reason: ${closeEvent.reason || 'None'}`;
-    addMessageToList({
-      type: 'close',
+  addMessageToList({
+    type: MessageType.CLOSE,
       content: closeMessage,
       size: calculateStringSize(closeMessage),
       date: dayjs().format(DATE_TIME_FORMAT),
@@ -512,8 +528,8 @@ const loadApiInformation = async () => {
 
   // Filter parameters by type
   const allParameters = (apiConfiguration.parameters as FormData[]) || [];
-  queryParameters.value = allParameters.filter(param => param.in === 'query');
-  headerParameters.value = allParameters.filter(param => param.in === 'header');
+  queryParameters.value = allParameters.filter(param => param.in === ParameterIn.query);
+  headerParameters.value = allParameters.filter(param => param.in === ParameterIn.header);
 
   // Set server configuration
   if (props.valueObj.unarchived) {
@@ -535,7 +551,7 @@ const loadApiInformation = async () => {
 const sendWebSocketMessage = () => {
   if (WS.value) {
     WS.value.send(JSON.stringify({
-      messageType: 'WebsocketRequestProxy',
+      messageType: WebsocketProxyMessageType.WEBSOCKET_REQUEST_PROXY,
       type: 'SEND_MESSAGE',
       clientId: props.pid,
       rawContent: messageContent.value
@@ -547,7 +563,7 @@ const sendWebSocketMessage = () => {
 
   toolbarRef.value.handleSelected(toolbarMenuOptions.value[0]);
   addMessageToList({
-    type: 'send',
+    type: MessageType.SEND,
     content: messageContent.value,
     size: calculateStringSize(messageContent.value),
     date: dayjs().format(DATE_TIME_FORMAT),
@@ -566,7 +582,7 @@ const sendWebSocketMessage = () => {
 const handleReceivedMessage = (data: string) => {
   toolbarRef.value.handleSelected(toolbarMenuOptions.value[0]);
   addMessageToList({
-    type: 'receive',
+    type: MessageType.RECEIVE,
     content: data,
     size: calculateStringSize(data),
     date: dayjs().format(DATE_TIME_FORMAT),
@@ -582,9 +598,9 @@ const handleReceivedMessage = (data: string) => {
  * </p>
  */
 const handleWebSocketProxyResponse = async () => {
-  const response = JSON.parse(props.response);
+  const response = JSON.parse(props.response) as WebsocketProxyResponse;
 
-  if (response.type === 'CONNECTION_MESSAGE') {
+  if (response.type === WebsocketProxyResponseType.CONNECTION_MESSAGE) {
     isWebSocketConnecting.value = false;
     if (response.success === true) {
       isWebSocketConnected.value = true;
@@ -593,7 +609,7 @@ const handleWebSocketProxyResponse = async () => {
         url: currentWebSocketUrl
       });
       addMessageToList({
-        type: 'connect',
+        type: MessageType.CONNECT,
         content: connectionInfo,
         size: calculateStringSize(connectionInfo),
         date: dayjs().format(DATE_TIME_FORMAT),
@@ -603,9 +619,9 @@ const handleWebSocketProxyResponse = async () => {
     } else {
       notification.warning(t('status.connectionFailed') + ': ' + (response.rawContent || ''));
       addMessageToList({
-        type: 'connectErr',
-        content: response.rawContent,
-        size: calculateStringSize(response.rawContent),
+        type: MessageType.CONNECT_ERR,
+        content: response.rawContent ?? '',
+        size: calculateStringSize(response.rawContent ?? ''),
         date: dayjs().format(DATE_TIME_FORMAT),
         showContent: false,
         key: utils.uuid('key')
@@ -613,11 +629,11 @@ const handleWebSocketProxyResponse = async () => {
     }
   }
 
-  if (response.type === 'SEND_RESULT_MESSAGE') {
+  if (response.type === WebsocketProxyResponseType.SEND_RESULT_MESSAGE) {
     if (response.success === true) {
       toolbarRef.value.handleSelected(toolbarMenuOptions.value[0]);
       addMessageToList({
-        type: 'send',
+        type: MessageType.SEND,
         content: messageContent.value,
         size: calculateStringSize(messageContent.value),
         date: dayjs().format(DATE_TIME_FORMAT),
@@ -627,9 +643,9 @@ const handleWebSocketProxyResponse = async () => {
     } else {
       notification.warning(t('service.apiWebSocket.messages.sendFailed') + ' ' + (response.rawContent || ''));
       addMessageToList({
-        type: 'sendErr',
-        content: response.rawContent,
-        size: calculateStringSize(response.rawContent),
+        type: MessageType.SEND_ERR,
+        content: response.rawContent ?? '',
+        size: calculateStringSize(response.rawContent ?? ''),
         date: dayjs().format(DATE_TIME_FORMAT),
         showContent: false,
         key: utils.uuid('key')
@@ -637,20 +653,20 @@ const handleWebSocketProxyResponse = async () => {
     }
   }
 
-  if (response.type === 'RECEIVED_MESSAGE') {
-    handleReceivedMessage(response.rawContent);
+  if (response.type === WebsocketProxyResponseType.RECEIVED_MESSAGE) {
+    handleReceivedMessage(response.rawContent ?? '');
   }
 
-  if (response.type === 'CLOSE_MESSAGE') {
+  if (response.type === WebsocketProxyResponseType.CLOSE_MESSAGE) {
     if (response.success) {
       isWebSocketConnected.value = false;
       isWebSocketClosing.value = false;
       isWebSocketConnecting.value = false;
       toolbarRef.value.handleSelected(toolbarMenuOptions.value[0]);
       addMessageToList({
-        type: 'close',
-        content: response.rawContent,
-        size: calculateStringSize(response.rawContent),
+        type: MessageType.CLOSE,
+        content: response.rawContent ?? '',
+        size: calculateStringSize(response.rawContent ?? ''),
         date: dayjs().format(DATE_TIME_FORMAT),
         showContent: false,
         key: utils.uuid('key')
@@ -658,9 +674,9 @@ const handleWebSocketProxyResponse = async () => {
     } else {
       notification.warning(t('service.apiWebSocket.messages.closeFailed') + '：' + (response.rawContent || ''));
       addMessageToList({
-        type: 'closeErr',
-        content: response.rawContent,
-        size: calculateStringSize(response.rawContent),
+        type: MessageType.CLOSE_ERR,
+        content: response.rawContent ?? '',
+        size: calculateStringSize(response.rawContent ?? ''),
         date: dayjs().format(DATE_TIME_FORMAT),
         showContent: false,
         key: utils.uuid('key')
@@ -726,20 +742,20 @@ const handleEndpointBlur = () => {
         queryParameterFormRef.value.addItem({
           name: key,
           [valueKey]: value,
-          schema: { type: 'string' }
+          schema: { type: SchemaType.string }
         });
       } else {
         if (Object.prototype.toString.call(value) === '[object Object]') {
           queryParameterFormRef.value.addItem({
             name: key,
             [valueKey]: value,
-            schema: { type: 'object' }
+            schema: { type: SchemaType.object }
           });
         } else {
           queryParameterFormRef.value.addItem({
             name: key,
             [valueKey]: value,
-            schema: { type: 'array' }
+            schema: { type: SchemaType.array }
           });
         }
       }
