@@ -2,10 +2,11 @@
 import { computed, onBeforeUnmount, onMounted, ref, toRaw, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
-import { XCanDexie } from '@xcan-angus/infra';
+import { XCanDexie, HttpMethod } from '@xcan-angus/infra';
 import { Dropdown, Menu, MenuItem } from 'ant-design-vue';
 import { API_EXTENSION_KEY } from '@/utils/apis';
 import { ServerInfo } from '@/views/apis/server/types';
+import { ApiServerSource } from '@/enums/enums';
 
 import ServerInput from '@/views/apis/services/protocol/http/path/ServerInput.vue';
 
@@ -23,7 +24,7 @@ const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   isUnarchivedApi: true,
   id: '',
-  method: 'GET',
+  method: HttpMethod.GET,
   currentServer: () => ({ url: '' }),
   availableServers: () => ([]),
   readonly: false
@@ -40,161 +41,246 @@ const emit = defineEmits<{
 const dexie = new XCanDexie<{id:string;data: any}>('serverUrl');
 
 const { serverSourceKey } = API_EXTENSION_KEY;
-const showServerListDrop = ref(false);
-const currentServer = ref<ServerInfo>({ url: '' });
-const serverValue = ref<string>(props.currentServer?.url || '');
-const serversFromParent = ref<ServerInfo[]>([]);
-const serversFromMock = ref<ServerInfo[]>([]);
-const serversFromIndexDB = ref<ServerInfo[]>([]);
 
-const serverListOpt = computed(() => {
-  return [...serversFromParent.value, ...serversFromIndexDB.value, ...serversFromMock.value];
+const isServerDropdownVisible = ref(false);
+
+const selectedServer = ref<ServerInfo>({ url: '' });
+
+const serverUrlInput = ref<string>(props.currentServer?.url || '');
+
+/**
+ * Server lists from different sources
+ */
+const parentServers = ref<ServerInfo[]>([]);
+const mockServers = ref<ServerInfo[]>([]);
+const historicalServers = ref<ServerInfo[]>([]);
+
+/**
+ * Combined list of all available servers for dropdown display
+ * <p>
+ * Merges servers from parent, mock, and historical sources in priority order
+ * </p>
+ */
+const availableServerOptions = computed(() => {
+  return [...parentServers.value, ...historicalServers.value, ...mockServers.value];
 });
 
-const handleSelectServer = (value: string, item: ServerInfo) => {
-  currentServer.value = JSON.parse(JSON.stringify(item));
-  serverValue.value = value;
-  emit('update:currentServer', item);
+/**
+ * Handles server selection from dropdown
+ * <p>
+ * Updates the selected server and emits the change to parent component
+ * </p>
+ * @param serverUrl - The selected server URL
+ * @param serverInfo - The complete server information object
+ */
+const handleServerSelection = (serverUrl: string, serverInfo: ServerInfo) => {
+  selectedServer.value = JSON.parse(JSON.stringify(serverInfo));
+  serverUrlInput.value = serverUrl;
+  emit('update:currentServer', serverInfo);
 };
 
-// 前端数据库存储的 server
-const loadServerFromDB = async () => {
-  const [error, resp] = await dexie.get(props.id || '000');
+/**
+ * Loads server history from IndexedDB
+ * <p>
+ * Retrieves previously used servers for the current API and populates the historical servers list
+ * </p>
+ */
+const loadServerHistoryFromDB = async () => {
+  const [error, response] = await dexie.get(props.id || '000');
   if (error) {
+    console.warn('Failed to load server history from database:', error);
     return;
   }
-  serversFromIndexDB.value = resp?.data || [];
+  historicalServers.value = response?.data || [];
 };
 
-// SERVER 来源枚举
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const loadApiServerSourceEnum = async () => {
-};
-
-const handleRequest = async () => {
-  if (!currentServer.value || serversFromIndexDB.value.find(i => i.url === serverValue.value)) {
+/**
+ * Handles request sending with server history management
+ * <p>
+ * Sends the request and optionally saves the current server to history if it's not already stored
+ * </p>
+ */
+const handleRequestSubmission = async () => {
+  if (!selectedServer.value || historicalServers.value.find(server => server.url === serverUrlInput.value)) {
     emit('sendRequest');
     return;
   }
-  serversFromIndexDB.value.push({ ...currentServer.value, url: serverValue.value });
-  if (serversFromIndexDB.value.length > 10) {
-    serversFromIndexDB.value = serversFromIndexDB.value.slice(-10);
+
+  // Add current server to history
+  historicalServers.value.push({ ...selectedServer.value, url: serverUrlInput.value });
+
+  // Maintain history limit of 10 servers
+  if (historicalServers.value.length > 10) {
+    historicalServers.value = historicalServers.value.slice(-10);
   }
-  const data = toRaw(serversFromIndexDB.value);
-  await dexie.add({ id: props.id || '000', data });
+
+  // Save updated history to database
+  const historyData = toRaw(historicalServers.value);
+  await dexie.add({ id: props.id || '000', data: historyData });
   emit('sendRequest');
 };
 
-const handleServerEnter = () => {
-  emit('update:currentServer', currentServer.value);
+/**
+ * Handles server input enter key press
+ * <p>
+ * Updates the current server and triggers request submission
+ * </p>
+ */
+const handleServerInputEnter = () => {
+  emit('update:currentServer', selectedServer.value);
   setTimeout(() => {
-    handleRequest();
+    handleRequestSubmission();
   });
 };
 
-const handleServerBlur = () => {
-  currentServer.value.url = serverValue.value;
-  emit('update:currentServer', currentServer.value);
+/**
+ * Handles server input blur event
+ * <p>
+ * Updates server URL and hides the dropdown with a slight delay
+ * </p>
+ */
+const handleServerInputBlur = () => {
+  selectedServer.value.url = serverUrlInput.value;
+  emit('update:currentServer', selectedServer.value);
   setTimeout(() => {
-    showServerListDrop.value = false;
+    isServerDropdownVisible.value = false;
   }, 150);
 };
 
-const handleFocus = () => {
-  showServerListDrop.value = true;
+/**
+ * Handles server input focus event
+ * <p>
+ * Shows the server dropdown when input is focused
+ * </p>
+ */
+const handleServerInputFocus = () => {
+  isServerDropdownVisible.value = true;
 };
 
+/**
+ * Watches for changes in current server prop
+ * <p>
+ * Updates the selected server and input value when parent component changes the current server
+ * </p>
+ */
 watch(() => props.currentServer, newValue => {
-  currentServer.value = JSON.parse(JSON.stringify(newValue));
-  serverValue.value = newValue.url;
+  selectedServer.value = JSON.parse(JSON.stringify(newValue));
+  serverUrlInput.value = newValue.url;
 }, {
   immediate: true
 });
 
+/**
+ * Watches for changes in available servers prop
+ * <p>
+ * Categorizes available servers by source (parent, mock) and updates respective lists
+ * </p>
+ */
 watch(() => props.availableServers, newValue => {
-  serversFromParent.value = (newValue || []).filter(i => i[serverSourceKey] === 'PARENT_SERVERS').map(i => {
-    return {
-      ...i,
-      ...i.extentions
-    };
-  });
-  serversFromMock.value = (newValue || []).filter(i => i[serverSourceKey] === 'MOCK_SERVICE').map(i => {
-    return {
-      ...i,
-      ...i.extentions
-    };
-  });
+  parentServers.value = (newValue || [])
+    .filter(server => server[serverSourceKey] === ApiServerSource.PARENT_SERVERS).map(server => {
+      return {
+        ...server,
+        ...server.extentions
+      };
+    });
+  mockServers.value = (newValue || [])
+    .filter(server => server[serverSourceKey] === ApiServerSource.MOCK_SERVICE).map(server => {
+      return {
+        ...server,
+        ...server.extentions
+      };
+    });
 }, {
   immediate: true
 });
 
+/**
+ * Component mounted lifecycle hook
+ * <p>
+ * Initializes server history and API server source enumeration
+ * </p>
+ */
 onMounted(() => {
-  loadServerFromDB();
-  loadApiServerSourceEnum();
+  loadServerHistoryFromDB();
 });
 
+/**
+ * Component before unmount lifecycle hook
+ * <p>
+ * Cleans up UI state when component is being destroyed
+ * </p>
+ */
 onBeforeUnmount(() => {
-  showServerListDrop.value = false;
+  isServerDropdownVisible.value = false;
 });
 </script>
 <template>
-  <Dropdown :visible="showServerListDrop && !!serverListOpt.length">
+  <Dropdown :visible="isServerDropdownVisible && !!availableServerOptions.length">
     <ServerInput
-      v-model:value="serverValue"
-      :valueObj="currentServer"
+      v-model:value="serverUrlInput"
+      :valueObj="selectedServer"
       :readonly="props.readonly"
       class="w-100"
-      @enterPress="handleServerEnter"
-      @focus="handleFocus"
-      @handleBlur="handleServerBlur" />
+      @enterPress="handleServerInputEnter"
+      @focus="handleServerInputFocus"
+      @handleBlur="handleServerInputBlur" />
     <template #overlay>
       <Menu>
         <div class="px-2 text-3">
           <div v-show="props.defaultCurrentServer?.url">
             <div class="border-t border-border-divider border-dashed relative my-3.5">
-              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium"><Icon icon="icon-dangqian" class="mr-1" />{{ t('service.webSocketServer.labels.current') }}</div>
+              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium">
+                <Icon icon="icon-dangqian" class="mr-1" />{{ t('service.webSocketServer.labels.current') }}
+              </div>
             </div>
             <MenuItem
               :key="props.defaultCurrentServer?.url"
               style="max-width: 380px;"
-              @click="handleSelectServer(props.defaultCurrentServer?.url, props.defaultCurrentServer)">
+              @click="handleServerSelection(props.defaultCurrentServer?.url, props.defaultCurrentServer)">
               {{ props.defaultCurrentServer?.url }}
             </MenuItem>
           </div>
-          <div v-show="!!serversFromParent.length">
+          <div v-show="!!parentServers.length">
             <div class="border-t border-border-divider border-dashed relative mb-3.5 mt-5">
-              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium"><Icon icon="icon-changjingguanli" class="mr-1" />{{ t('service.webSocketServer.labels.public') }}</div>
+              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium">
+                <Icon icon="icon-changjingguanli" class="mr-1" />{{ t('service.webSocketServer.labels.public') }}
+              </div>
             </div>
             <MenuItem
-              v-for="item in serversFromParent"
-              :key="item.url"
+              v-for="server in parentServers"
+              :key="server.url"
               style="max-width: 380px;"
-              @click="handleSelectServer(item.url, item)">
-              {{ item.url }}
+              @click="handleServerSelection(server.url, server)">
+              {{ server.url }}
             </MenuItem>
           </div>
-          <div v-show="!!serversFromMock.length">
+          <div v-show="!!mockServers.length">
             <div class="border-t border-border-divider border-dashed relative mb-3.5 mt-5">
-              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium"><Icon icon="icon-changjingguanli" class="mr-1" />{{ t('service.webSocketServer.labels.mock') }}</div>
+              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium">
+                <Icon icon="icon-changjingguanli" class="mr-1" />{{ t('service.webSocketServer.labels.mock') }}
+              </div>
             </div>
             <MenuItem
-              v-for="item in serversFromMock"
-              :key="item.url"
+              v-for="server in mockServers"
+              :key="server.url"
               style="max-width: 380px;"
-              @click="handleSelectServer(item.url, item)">
-              {{ item.url }}
+              @click="handleServerSelection(server.url, server)">
+              {{ server.url }}
             </MenuItem>
           </div>
-          <div v-show="!!serversFromIndexDB.length">
+          <div v-show="!!historicalServers.length">
             <div class="border-t border-border-divider border-dashed relative mb-3.5 mt-5">
-              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium"><Icon icon="icon-lishijilu" class="mr-1" />{{ t('service.webSocketServer.labels.history') }}</div>
+              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium">
+                <Icon icon="icon-lishijilu" class="mr-1" />{{ t('service.webSocketServer.labels.history') }}
+              </div>
             </div>
             <MenuItem
-              v-for="item in serversFromIndexDB"
-              :key="item.url"
+              v-for="server in historicalServers"
+              :key="server.url"
               style="max-width: 380px;"
-              @click="handleSelectServer(item.url, item)">
-              {{ item.url }}
+              @click="handleServerSelection(server.url, server)">
+              {{ server.url }}
             </MenuItem>
           </div>
         </div>

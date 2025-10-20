@@ -14,55 +14,88 @@ const props = withDefaults(defineProps<Props>(), {
   value: () => ({})
 });
 
+/**
+ * Emits configuration updates to parent component
+ */
 const emits = defineEmits<{(e: 'update:value', value: Record<string, string>): void}>();
 
 const { t } = useI18n();
 
-const form = reactive({
+/**
+ * WebSocket configuration form data with default values
+ * <p>
+ * Contains connection timeout, maximum reconnection attempts, and reconnection interval settings
+ * </p>
+ */
+const webSocketConfig = reactive({
   connectTimeout: '60000',
   maxReconnections: '0',
-  reconnectionInterval: '200'
+  reconnectionInterval: '1000'
 });
 
 const formRef = ref();
 
-watch(() => form, () => {
-  emits('update:value', form);
+/**
+ * Watches for form changes and emits updates to parent component
+ * <p>
+ * Uses deep watching to detect changes in nested object properties
+ * </p>
+ */
+watch(() => webSocketConfig, () => {
+  emits('update:value', webSocketConfig);
 }, {
   deep: true
 });
 
+/**
+ * Initializes form with provided values or defaults
+ * <p>
+ * Called when component is mounted to set initial configuration values
+ * </p>
+ */
 onMounted(() => {
-  form.connectTimeout = props.value?.connectTimeout || '0';
-  form.maxReconnections = props.value?.maxReconnections || '0';
-  form.reconnectionInterval = props.value?.reconnectionInterval || '1000';
+  webSocketConfig.connectTimeout = props.value?.connectTimeout || '60000';
+  webSocketConfig.maxReconnections = props.value?.maxReconnections || '0';
+  webSocketConfig.reconnectionInterval = props.value?.reconnectionInterval || '1000';
 });
 
-const rules = {
+/**
+ * Form validation rules for WebSocket configuration
+ * <p>
+ * Defines required field validation with appropriate error messages
+ * </p>
+ */
+const validationRules: any = {
   connectTimeout: [{
-    required: true, message: t('service.webSocketSetting.validation.connectTimeout'), trigger: 'blur'
+    required: true,
+    message: t('service.webSocketSetting.validation.connectTimeout'),
+    trigger: 'blur'
   }],
   maxReconnections: [{
-    required: true, message: t('service.webSocketSetting.validation.maxReconnections'), trigger: 'change'
+    required: true,
+    message: t('service.webSocketSetting.validation.maxReconnections'),
+    trigger: 'change'
   }],
   reconnectionInterval: [{
-    required: true, message: t('service.webSocketSetting.validation.reconnectionInterval'), trigger: 'change'
+    required: true,
+    message: t('service.webSocketSetting.validation.reconnectionInterval'),
+    trigger: 'change'
   }]
 };
 </script>
 <template>
   <Form
     ref="formRef"
-    :model="form"
+    :model="webSocketConfig"
     labelAlign="left"
     :labelCol="{span: 22}"
-    :rules="rules">
+    :rules="validationRules">
     <FormItem name="connectTimeout">
       <template #label>
-        <p class="text-3">{{ t('common.description') }})</span></p>
+        <p class="text-3">{{ t('common.description') }}</p>
       </template>
       <Input
-        v-model:value="form.connectTimeout"
+        v-model:value="webSocketConfig.connectTimeout"
         :maxlength="40"
         :allowClear="false"
         dataType="number"
@@ -75,10 +108,10 @@ const rules = {
     </FormItem>
     <FormItem name="maxReconnections">
       <template #label>
-        <p class="text-3">{{ t('common.description') }})</span></p>
+        <p class="text-3">{{ t('common.description') }}</p>
       </template>
       <Input
-        v-model:value="form.maxReconnections"
+        v-model:value="webSocketConfig.maxReconnections"
         :max="10"
         :min="0"
         :allowClear="false"
@@ -88,10 +121,10 @@ const rules = {
     </FormItem>
     <FormItem name="reconnectionInterval">
       <template #label>
-        <p class="text-3">{{ t('common.description') }})</span></p>
+        <p class="text-3">{{ t('common.description') }}</p>
       </template>
       <Input
-        v-model:value="form.reconnectionInterval"
+        v-model:value="webSocketConfig.reconnectionInterval"
         class="rounded-border"
         dataType="number"
         :placeholder="t('service.webSocketSetting.form.reconnectionInterval.placeholder')"
