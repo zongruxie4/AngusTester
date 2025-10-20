@@ -13,8 +13,8 @@ import { IssueMenuKey } from '@/views/issue/menu';
 import { TaskDetail } from '@/views/issue/types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
-import TaskStatus from '@/components/task/TaskStatus/index.vue';
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskStatus from '@/components/task/TaskStatus.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 const EditTaskModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));

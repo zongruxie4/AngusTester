@@ -18,7 +18,7 @@ import { TaskEditState } from './types';
 import { TaskDetail, getTaskTypeName } from '../../types';
 
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 
 // Component props & emits
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap',

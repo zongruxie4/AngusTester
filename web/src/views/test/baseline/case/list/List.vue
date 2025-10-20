@@ -7,7 +7,7 @@ import { test } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { BasicProps } from '@/types/types';
 
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 
 const { t } = useI18n();
 

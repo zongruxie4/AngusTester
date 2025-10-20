@@ -14,7 +14,7 @@ import { TaskType } from '@/enums/enums';
 import { issue } from '@/api/tester';
 import { ai } from '@/api/gm';
 
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 import { TaskDetail } from '../types';

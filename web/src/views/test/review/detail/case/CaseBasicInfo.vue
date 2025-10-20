@@ -7,7 +7,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 
 import { testCase } from '@/api/tester';
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 
 const { t } = useI18n();
 

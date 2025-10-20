@@ -12,7 +12,7 @@ import { BasicProps } from '@/types/types';
 import { BaselineCaseInfo, BaselineDetail, BaselineEditState } from '@/views/test/baseline/types';
 
 // Components
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 import TestResult from '@/components/test/TestResult/index.vue';
 const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 const SelectCaseModal = defineAsyncComponent(() => import('./SelectCaseModal.vue'));

@@ -18,7 +18,7 @@ import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
 import { CaseEditState } from './types';
 
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 import RichEditor from '@/components/editor/richEditor/index.vue';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import CaseSteps from '@/views/test/case/list/CaseSteps.vue';

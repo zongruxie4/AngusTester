@@ -26,8 +26,8 @@ import { cloneDeep, isEqual } from 'lodash-es';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { SearchPanelMenuItem, SearchPanelOption, TaskViewMode } from '@/views/issue/issue/types';
 
-import TaskStatus from '@/components/task/TaskStatus/index.vue';
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskStatus from '@/components/task/TaskStatus.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 // Types & interfaces

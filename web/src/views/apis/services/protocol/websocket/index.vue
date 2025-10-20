@@ -21,7 +21,7 @@ const Save = defineAsyncComponent(() => import('@/views/apis/services/protocol/w
 const Config = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/Config.vue'));
 const RequestProxy = defineAsyncComponent(() => import('@/views/config/proxy/EditableRequestProxy.vue'));
 const SaveUnarchived = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/SaveUnarchived.vue'));
-const ShareListVue = defineAsyncComponent(() => import('@/components/share/list.vue'));
+const ShareListVue = defineAsyncComponent(() => import('@/components/share/List.vue'));
 
 interface Props {
   id: string;

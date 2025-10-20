@@ -5,7 +5,7 @@ import { Button, Divider, Tooltip } from 'ant-design-vue';
 import { toClipboard } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-import ColumnItem from '@/components/share/columnItem/index.vue';
+import ColumnItem from '@/components/share/ColumnItem.vue';
 import { apis } from '@/api/tester';
 
 const Share = defineAsyncComponent(() => import('@/components/share/index.vue'));

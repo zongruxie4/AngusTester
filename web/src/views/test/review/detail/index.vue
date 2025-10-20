@@ -19,7 +19,7 @@ import { ReviewCaseDetail, ReviewDetail } from '@/views/test/review/types';
 // Component imports
 import RichEditor from '@/components/editor/richEditor/index.vue';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 
 // Props and component definitions
 const props = withDefaults(defineProps<BasicProps>(), {

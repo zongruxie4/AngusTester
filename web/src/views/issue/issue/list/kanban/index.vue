@@ -13,7 +13,7 @@ import { TaskSprintPermission, TaskStatus, TaskType } from '@/enums/enums';
 import { issue } from '@/api/tester';
 import { IssueMenuKey } from '@/views/issue/menu';
 
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 import { TaskDetail } from '@/views/issue/types';
 import { ActionMenuItem } from '@/views/issue/issue/types';
 

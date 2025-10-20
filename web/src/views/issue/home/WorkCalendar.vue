@@ -10,7 +10,7 @@ import { TaskStatus } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
 
 import { DATE_TIME_FORMAT } from '@/utils/constant';
-import TaskStatusV from '@/components/task/TaskStatus/index.vue';
+import TaskStatusV from '@/components/task/TaskStatus.vue';
 import { TaskInfo } from '@/views/issue/types';
 
 /**

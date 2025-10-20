@@ -7,7 +7,7 @@ import { testCase } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { AssocCaseProps } from '@/views/test/case/types';
 
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 import TestResult from '@/components/test/TestResult/index.vue';
 
 const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/SelectCaseByModuleModal.vue'));

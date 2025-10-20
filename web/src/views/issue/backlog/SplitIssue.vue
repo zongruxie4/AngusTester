@@ -16,7 +16,7 @@ import { TaskType } from '@/enums/enums';
 import { TIME_FORMAT } from '@/utils/constant';
 import { TaskEditState, TaskDetailProps } from '@/views/issue/issue/list/types';
 
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 const { t } = useI18n();

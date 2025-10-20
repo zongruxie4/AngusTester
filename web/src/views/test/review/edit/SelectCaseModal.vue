@@ -8,7 +8,7 @@ import { testPlan } from '@/api/tester';
 import { ReviewCaseInfo } from '@/views/test/review/types';
 
 // Component imports
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 const ModuleTree = defineAsyncComponent(() => import('@/views/test/review/edit/ModuleTree.vue'));
 
 // Type Definitions

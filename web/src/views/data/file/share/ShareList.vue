@@ -4,7 +4,7 @@ import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, IconCopy, Input, NoData, notification } from '@xcan-angus/vue-ui';
 
-import ColumnItem from '@/components/share/columnItem/index.vue';
+import ColumnItem from '@/components/share/ColumnItem.vue';
 import { useShareList } from './composables/useShareList';
 import type { ShareListItem } from './types';
 

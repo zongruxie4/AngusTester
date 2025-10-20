@@ -77,7 +77,7 @@ const ExecDetail = defineAsyncComponent(() => import('@/views/apis/services/prot
 const UnarchivedEdit = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/slider/UnarchivedEdit.vue'));
 const InfoEdit = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/slider/InfoEdit.vue'));
 
-const ShareList = defineAsyncComponent(() => import('@/components/share/list.vue'));
+const ShareList = defineAsyncComponent(() => import('@/components/share/List.vue'));
 const RequestProxy = defineAsyncComponent(() => import('@/views/config/proxy/EditableRequestProxy.vue'));
 const CodeSnippet = defineAsyncComponent(() => import('@/views/apis/services/components/CodeSnippet.vue'));
 

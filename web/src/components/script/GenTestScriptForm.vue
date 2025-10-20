@@ -5,7 +5,7 @@ import { Form, FormItem, Switch, Tooltip } from 'ant-design-vue';
 import { Icon, Input, SelectEnum, ShortDuration } from '@xcan-angus/vue-ui';
 import { CombinedTargetType, Priority } from '@xcan-angus/infra';
 import { TestType } from '@/enums/enums';
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 
 import apiUtils from '@/utils/apis/index';
 

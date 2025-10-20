@@ -17,7 +17,7 @@ import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { CaseTestResult } from '@/enums/enums';
 import { CaseViewMode } from '@/views/test/case/types';
 
-import TaskPriority from '@/components/task/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 import TestResult from '@/components/test/TestResult/index.vue';
 
 // Type definitions

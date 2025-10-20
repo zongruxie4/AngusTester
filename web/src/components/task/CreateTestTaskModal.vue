@@ -12,7 +12,7 @@ import { ProjectInfo } from '@/layout/types';
 const { t } = useI18n();
 
 // Lazy load TestForm component to improve performance
-const TestForm = defineAsyncComponent(() => import('./TestForm.vue'));
+const TestForm = defineAsyncComponent(() => import('./GenerateTestForm.vue'));
 
 // Component Props and Emits
 interface Props {
