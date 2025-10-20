@@ -10,7 +10,7 @@ import { AssocCaseProps } from '@/views/test/case/types';
 import TaskPriority from '@/components/task/TaskPriority/index.vue';
 import TestResult from '@/components/test/TestResult/index.vue';
 
-const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/case/SelectByModuleModal.vue'));
+const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/SelectCaseByModuleModal.vue'));
 
 const props = withDefaults(defineProps<AssocCaseProps>(), {
   projectId: undefined,

@@ -13,7 +13,7 @@ import { TaskDetailProps } from '@/views/issue/issue/list/types';
 import TaskPriority from '@/components/task/TaskPriority/index.vue';
 import TestResult from '@/components/test/TestResult/index.vue';
 
-const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/case/SelectByModuleModal.vue'));
+const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/SelectCaseByModuleModal.vue'));
 
 /**
  * Props interface for AssocCase component
