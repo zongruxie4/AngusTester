@@ -3,6 +3,8 @@ import { onMounted, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { IconTask, Table } from '@xcan-angus/vue-ui';
 import { issue } from '@/api/tester';
+import { SearchCriteria } from '@xcan-angus/infra';
+import { TaskType } from '@/enums/enums';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TaskStatus from '@/components/TaskStatus/index.vue';
@@ -24,20 +26,28 @@ const pagination = ref({
   pageSize: 10,
   total: 0
 });
+
 const loading = ref(false);
 const taskList = ref([]);
 
+/**
+ * Load task list from API with pagination
+ * Updates taskList and pagination state based on API response
+ */
 const loadTasks = async () => {
   const { current, pageSize } = pagination.value;
   loading.value = true;
+
   const [error, { data }] = await issue.getTaskList({
     projectId: props.projectId,
-    taskType: 'APIS_TEST',
-    filters: [{ value: props.apisId, op: 'EQUAL', key: 'targetId' }],
+    taskType: TaskType.API_TEST,
+    filters: [{ value: props.apisId, op: SearchCriteria.OpEnum.Match, key: 'targetId' }],
     pageNo: current,
     pageSize
   });
+
   loading.value = false;
+
   if (error) {
     return;
   }
@@ -45,9 +55,15 @@ const loadTasks = async () => {
   pagination.value.total = +data.total || 0;
 };
 
+/**
+ * Handle pagination change event
+ * @param {Object} page - Page change event object
+ * @param {number} page.current - Current page number
+ * @param {number} page.pageSize - Page size
+ */
 const handleChange = (page) => {
-  pagination.value = page.current;
-  pagination.value = page.pageSize;
+  pagination.value.current = page.current;
+  pagination.value.pageSize = page.pageSize;
   loadTasks();
 };
 
@@ -55,8 +71,12 @@ onMounted(() => {
   loadTasks();
 });
 
+/**
+ * Generate table columns configuration for task list
+ * @returns {Array} Array of column configuration objects
+ */
 const columns = computed(() => {
-  const _columns: {
+  const tableColumns: {
     title: string;
     dataIndex: string;
     ellipsis?: boolean;
@@ -105,7 +125,7 @@ const columns = computed(() => {
       width: '17%'
     }
   ];
-  return _columns;
+  return tableColumns;
 });
 
 const emptyTextStyle = {

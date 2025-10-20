@@ -133,7 +133,12 @@ const TEST_STABILITY = computed(() => {
   return props.dataSource?.resultDetailVoMap?.TEST_STABILITY;
 });
 
-const getTpsIconName = (testData) => {
+/**
+ * Get TPS (Transactions Per Second) indicator icon based on performance comparison
+ * @param {Object} testData - Test data containing performance indicators
+ * @returns {string|undefined} Icon name for TPS indicator
+ */
+const getTpsIndicatorIcon = (testData) => {
   const indicatorTps = testData?.indicatorPerf?.tps || testData?.indicatorStability?.tps;
   if (!indicatorTps) {
     return undefined;
@@ -148,7 +153,12 @@ const getTpsIconName = (testData) => {
   return undefined;
 };
 
-const getTranIconName = (testData) => {
+/**
+ * Get transaction response time indicator icon based on performance comparison
+ * @param {Object} testData - Test data containing performance indicators
+ * @returns {string|undefined} Icon name for response time indicator
+ */
+const getResponseTimeIndicatorIcon = (testData) => {
   const indicatorArt = testData?.indicatorPerf?.art || testData?.indicatorStability?.art;
   if (!indicatorArt) {
     return undefined;
@@ -163,39 +173,56 @@ const getTranIconName = (testData) => {
   return undefined;
 };
 
-const getErrIconName = (testData) => {
+/**
+ * Get error rate indicator icon based on performance comparison
+ * @param {Object} testData - Test data containing performance indicators
+ * @returns {string|undefined} Icon name for error rate indicator
+ */
+const getErrorRateIndicatorIcon = (testData) => {
   const indicatorErrorRate = testData?.indicatorPerf?.errorRate || testData?.indicatorStability?.errorRate;
   if (!indicatorErrorRate) {
     return undefined;
   }
-  const sampleTps = +testData?.sampleSummary?.errorRate;
-  if (sampleTps > +indicatorErrorRate) {
+  const sampleErrorRate = +testData?.sampleSummary?.errorRate;
+  if (sampleErrorRate > +indicatorErrorRate) {
     return 'icon-shangjiantou';
   }
-  if (sampleTps < +indicatorErrorRate) {
+  if (sampleErrorRate < +indicatorErrorRate) {
     return 'icon-xiajiantou2';
   }
   return undefined;
 };
 
-const configInfo = [
+/**
+ * Configuration for test summary statistics display
+ * Defines layout and styling for test result statistics
+ */
+const testSummaryConfig = [
   [{ label: t('status.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' },
     { label: t('status.success'), dataIndex: 'successNum', bgColor: 'bg-status-success' }],
   [{ label: t('status.failed'), dataIndex: 'failNum', bgColor: 'bg-status-error' },
     { label: t('status.disabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
 ];
 
-const resize = () => {
+/**
+ * Resize chart when container size changes
+ * Ensures chart displays correctly after container resize
+ */
+const resizeChart = () => {
   testChart.resize();
 };
 
+/**
+ * Component mounted lifecycle hook
+ * Initializes ECharts with test result data and sets up resize listener
+ */
 onMounted(() => {
   echartConfig.series[0].data[0].value = +resultSummary.value?.testSuccessNum || 0;
   echartConfig.series[0].data[1].value = +resultSummary.value?.testFailureNum || 0;
   echartConfig.title.text = (resultSummary.value?.testSuccessRate || '--') + '%';
   testChart = echarts.init(testChartRef.value);
   testChart.setOption(echartConfig);
-  resizeDetector.listenTo(testChartRef.value, resize);
+  resizeDetector.listenTo(testChartRef.value, resizeChart);
 });
 
 </script>
@@ -232,7 +259,7 @@ onMounted(() => {
 
       <div class="space-y-2 text-3 px-1">
         <li
-          v-for="(line, idx) in configInfo"
+          v-for="(line, idx) in testSummaryConfig"
           :key="idx"
           class="flex space-x-2">
           <div
@@ -276,21 +303,21 @@ onMounted(() => {
         <div class="text-center flex-1 min-w-0">
           <div class="flex items-center justify-center space-x-0.5">
             <span class="text-4">{{ TEST_PERFORMANCE?.sampleSummary?.tps || '--' }}</span>
-            <Icon v-if="TEST_PERFORMANCE" :icon="getTpsIconName(TEST_PERFORMANCE)" />
+            <Icon v-if="TEST_PERFORMANCE" :icon="getTpsIndicatorIcon(TEST_PERFORMANCE)" />
           </div>
           <div>{{ t('service.apiExecDetail.indicators.tps') }}</div>
         </div>
         <div class="text-center flex-1 min-w-0">
           <div class="flex items-center justify-center space-x-0.5">
             <span class="text-4">{{ TEST_PERFORMANCE?.sampleSummary?.tranP90 || '--' }}</span>
-            <Icon v-if="TEST_PERFORMANCE" :icon="getTranIconName(TEST_PERFORMANCE)" />
+            <Icon v-if="TEST_PERFORMANCE" :icon="getResponseTimeIndicatorIcon(TEST_PERFORMANCE)" />
           </div>
           <div>{{ t('protocol.responseTime') }}</div>
         </div>
         <div class="text-center flex-1 min-w-0">
           <div class="flex items-center justify-center space-x-0.5">
             <span class="text-4">{{ TEST_PERFORMANCE?.sampleSummary?.errorRate || '--' }}%</span>
-            <Icon v-if="TEST_PERFORMANCE" :icon="getErrIconName(TEST_PERFORMANCE)" />
+            <Icon v-if="TEST_PERFORMANCE" :icon="getErrorRateIndicatorIcon(TEST_PERFORMANCE)" />
           </div>
           <div>{{ t('service.apiExecDetail.indicators.errorRate') }}</div>
         </div>
@@ -324,21 +351,21 @@ onMounted(() => {
         <div class="text-center flex-1 min-w-0">
           <div class="flex items-center justify-center space-x-0.5">
             <span class="text-4">{{ TEST_STABILITY?.sampleSummary?.tps || '--' }}</span>
-            <Icon v-if="TEST_STABILITY" :icon="getTpsIconName(TEST_STABILITY)" />
+            <Icon v-if="TEST_STABILITY" :icon="getTpsIndicatorIcon(TEST_STABILITY)" />
           </div>
           <div>{{ t('service.apiExecDetail.indicators.tps') }}</div>
         </div>
         <div class="text-center flex-1 min-w-0">
           <div class="flex items-center justify-center space-x-0.5">
             <span class="text-4">{{ TEST_STABILITY?.sampleSummary?.tranP90 || '--' }}</span>
-            <Icon v-if="TEST_STABILITY" :icon="getTranIconName(TEST_STABILITY)" />
+            <Icon v-if="TEST_STABILITY" :icon="getResponseTimeIndicatorIcon(TEST_STABILITY)" />
           </div>
           <div>{{ t('protocol.responseTime') }}</div>
         </div>
         <div class="text-center flex-1 min-w-0">
           <div class="flex items-center justify-center space-x-0.5">
             <span class="text-4">{{ TEST_STABILITY?.sampleSummary?.errorRate || '--' }}%</span>
-            <Icon v-if="TEST_STABILITY" :icon="getErrIconName(TEST_STABILITY)" />
+            <Icon v-if="TEST_STABILITY" :icon="getErrorRateIndicatorIcon(TEST_STABILITY)" />
           </div>
           <div>{{ t('service.apiExecDetail.indicators.errorRate') }}</div>
         </div>
