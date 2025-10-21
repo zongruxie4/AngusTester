@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import { ReviewStatus } from '@xcan-angus/vue-ui';
 import { CaseDetail } from '@/views/test/types';
+
+import ReviewStatus from '@/components/test/ReviewStatus.vue';
 
 const { t } = useI18n();
 

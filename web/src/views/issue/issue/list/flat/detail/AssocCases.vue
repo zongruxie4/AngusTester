@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
-import { AsyncComponent, Hints, Icon, modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Hints, Icon, modal, Table } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { FuncPlanStatus } from '@/enums/enums';
 import { Button } from 'ant-design-vue';
@@ -10,6 +10,7 @@ import { useI18n } from 'vue-i18n';
 import { TestMenuKey } from '@/views/test/menu';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
+import ReviewStatus from '@/components/test/ReviewStatus.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';
 import TestResult from '@/components/test/TestResult.vue';
 

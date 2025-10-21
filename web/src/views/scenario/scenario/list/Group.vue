@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
-import { Arrow, Image, ScriptTypeTag } from '@xcan-angus/vue-ui';
+import { Arrow, Image } from '@xcan-angus/vue-ui';
 
 // Import composables
 import { useScenarioGrouping } from './composables';
 
 import { GroupedKey, ScenarioInfo } from './types';
+
+import ScriptTypeTag from '@/components/script/ScriptTypeTag.vue';
 
 type Props = {
   dataSource: ScenarioInfo[];

@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Input, Modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
+import { Input, Modal, Table } from '@xcan-angus/vue-ui';
 import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { testPlan } from '@/api/tester';
 import { ReviewCaseInfo } from '@/views/test/review/types';
 
 // Component imports
+import ReviewStatus from '@/components/test/ReviewStatus.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';
 const ModuleTree = defineAsyncComponent(() => import('@/views/test/review/edit/ModuleTree.vue'));
 

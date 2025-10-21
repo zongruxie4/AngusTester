@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue';
-import { Icon, Input, Select, ReviewStatus, Toggle } from '@xcan-angus/vue-ui';
+import { Icon, Input, Select, Toggle } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { Priority, TESTER, utils, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
@@ -9,6 +9,7 @@ import { CaseDetail } from '@/views/test/types';
 import { SoftwareVersionStatus } from '@/enums/enums';
 import { CaseActionAuth } from '@/views/test/case/types';
 
+import ReviewStatus from '@/components/test/ReviewStatus.vue';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';
 import TestResult from '@/components/test/TestResult.vue';

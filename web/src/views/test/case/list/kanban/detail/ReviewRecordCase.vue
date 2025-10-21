@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { Grid, ReviewStatus } from '@xcan-angus/vue-ui';
+import { Grid } from '@xcan-angus/vue-ui';
 import { Tag } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
+import ReviewStatus from '@/components/test/ReviewStatus.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';
 
 interface Props {

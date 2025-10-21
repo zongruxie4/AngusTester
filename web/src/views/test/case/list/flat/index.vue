@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { Checkbox, Pagination } from 'ant-design-vue';
-import { Icon, ReviewStatus } from '@xcan-angus/vue-ui';
+import { Icon } from '@xcan-angus/vue-ui';
 import { ReviewStatus as ReviewStatusEnum, PageQuery } from '@xcan-angus/infra';
 import { CaseDetail } from '@/views/test/types';
 
+import ReviewStatus from '@/components/test/ReviewStatus.vue';
 import TestResult from '@/components/test/TestResult.vue';
 
 const { t } = useI18n();

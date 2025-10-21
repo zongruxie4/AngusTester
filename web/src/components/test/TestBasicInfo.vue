@@ -3,7 +3,9 @@ import { computed } from 'vue';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
-import { Icon, Tooltip, Grid, ScriptTypeTag, Colon } from '@xcan-angus/vue-ui';
+import { Icon, Tooltip, Grid, Colon } from '@xcan-angus/vue-ui';
+
+import ScriptTypeTag from '@/components/script/ScriptTypeTag.vue';
 
 const { t } = useI18n();
 

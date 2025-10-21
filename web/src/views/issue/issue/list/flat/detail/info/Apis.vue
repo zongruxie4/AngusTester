@@ -2,20 +2,19 @@
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import {
-  AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select, Toggle
-} from '@xcan-angus/vue-ui';
+import { AsyncComponent, Colon, Icon, IconTask, Input, Select, Toggle } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { issue } from '@/api/tester';
 import { SoftwareVersionStatus } from '@/enums/enums';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 import { IssueMenuKey } from '@/views/issue/menu';
+import { TaskDetail } from '@/views/issue/types';
 
 import TaskStatus from '@/components/task/TaskStatus.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
-import { TaskDetail } from '@/views/issue/types';
+import ScriptTypeTag from '@/components/script/ScriptTypeTag.vue';
 
 // Component props and emits
 const props = withDefaults(defineProps<TaskDetailProps>(), {

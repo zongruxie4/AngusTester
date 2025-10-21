@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Colon, Dropdown, Icon, Input, NoData, ScriptTypeTag, ShortDuration, Spin, Tooltip } from '@xcan-angus/vue-ui';
+import { Colon, Dropdown, Icon, Input, NoData, ShortDuration, Spin, Tooltip } from '@xcan-angus/vue-ui';
 import { appContext, ScriptType } from '@xcan-angus/infra';
 import { Button, Pagination, Progress, Switch } from 'ant-design-vue';
 import { ExecStatus } from '@/enums/enums';
@@ -9,6 +9,8 @@ import { getCurrentDuration } from '@/utils';
 import { useExecutionList } from './composables/useExecutionList';
 import { useExecutionAction } from './composables/useExecutionAction';
 import type { DropdownMenuItem, ExecutionInfo, ScriptTypeConfig, StatusColorMap } from './types';
+
+import ScriptTypeTag from '@/components/script/ScriptTypeTag.vue';
 
 // Lazy load components
 const Introduce = defineAsyncComponent(() => import('./Introduce.vue'));

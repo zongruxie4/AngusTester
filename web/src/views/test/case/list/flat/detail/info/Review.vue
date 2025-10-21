@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { ReviewStatus, Toggle } from '@xcan-angus/vue-ui';
+import { Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
 import { CaseActionAuth } from '@/views/test/case/types';
+
+import ReviewStatus from '@/components/test/ReviewStatus.vue';
 
 interface Props {
   id?: number;

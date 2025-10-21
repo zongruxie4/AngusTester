@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref } from 'vue';
 import { Button, TreeSelect } from 'ant-design-vue';
-import { AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Colon, Icon, IconTask, Input, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, issue } from '@/api/tester';
@@ -14,6 +14,7 @@ import { IssueMenuKey } from '@/views/issue/menu';
 import TaskStatus from '@/components/task/TaskStatus.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
+import ScriptTypeTag from '@/components/script/ScriptTypeTag.vue';
 
 // Async Components
 const Description = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Description.vue'));

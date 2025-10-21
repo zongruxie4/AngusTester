@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, nextTick, ref, Ref } from 'vue';
 import { Button } from 'ant-design-vue';
-import { Icon, Input, Popover, ReviewStatus, Select } from '@xcan-angus/vue-ui';
+import { Icon, Input, Popover, Select } from '@xcan-angus/vue-ui';
 import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
@@ -9,6 +9,7 @@ import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
 
+import ReviewStatus from '@/components/test/ReviewStatus.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';
 import TestResult from '@/components/test/TestResult.vue';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';

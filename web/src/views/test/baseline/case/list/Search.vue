@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Icon, Input, QuickSelect, ReviewStatus, SearchPanel, Select } from '@xcan-angus/vue-ui';
+import { Icon, Input, QuickSelect, SearchPanel } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { Button, Switch } from 'ant-design-vue';
 import { appContext, duration, Priority, ReviewStatus as ReviewStatusEnum, SearchCriteria } from '@xcan-angus/infra';
@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import { CaseTestResult } from '@/enums/enums';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 
+import ReviewStatus from '@/components/test/ReviewStatus.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';
 import TestResult from '@/components/test/TestResult.vue';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';

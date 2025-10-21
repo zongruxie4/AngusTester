@@ -1,5 +1,5 @@
-import { enumUtils, ReviewStatus } from '@xcan-angus/infra';
-import { TaskType, TaskStatus, CaseTestResult } from '@/enums/enums';
+import { enumUtils } from '@xcan-angus/infra';
+import { TaskType } from '@/enums/enums';
 import { useI18n } from 'vue-i18n';
 import { ChartConfig } from '../types';
 import noData from '../Image/nodata.png';

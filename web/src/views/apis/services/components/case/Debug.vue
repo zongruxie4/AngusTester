@@ -56,7 +56,7 @@ const ApiHeader = defineAsyncComponent(() => import('@/components/form/Header.vu
 const ApiCookie = defineAsyncComponent(() => import('@/components/apis/cookie/index.vue'));
 const ApiBody = defineAsyncComponent(() => import('@/components/apis/body/index.vue'));
 const ApiAssert = defineAsyncComponent(() => import('@/components/apis/assertion/index.vue'));
-const DebugToolbar = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.DebugToolbar));
+const DebugToolbar = defineAsyncComponent(() => import('@/components/apis/debug/DebugToolbar.vue'));
 const ResponseBase = defineAsyncComponent(() => import('@/components/apis/response/ResponseBase.vue'));
 const ResponseBody = defineAsyncComponent(() => import('@/components/apis/response/ResponseBody.vue'));
 const ResponseCookie = defineAsyncComponent(() => import('@/components/apis/response/ResponseCookie.vue'));

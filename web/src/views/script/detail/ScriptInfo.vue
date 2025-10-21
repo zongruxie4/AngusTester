@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import { Colon, ScriptTypeTag, Tooltip } from '@xcan-angus/vue-ui';
+import { Colon, Tooltip } from '@xcan-angus/vue-ui';
 import { Tag } from 'ant-design-vue';
 
 import { ScriptInfo } from '../types';
 import { useScriptInfo } from './composables/useScriptInfo';
+
+import ScriptTypeTag from '@/components/script/ScriptTypeTag.vue';
 
 const { t } = useI18n();
 

@@ -1,7 +1,9 @@
-import { i18n, enumUtils, ReviewStatus, ScriptType } from '@xcan-angus/infra';
+import { i18n, enumUtils, ScriptType } from '@xcan-angus/infra';
 import { TaskType, TaskStatus, TaskSprintStatus, FuncPlanStatus, CaseTestResult, ApiStatus } from '@/enums/enums';
 
 import { ChartConfig, ChartSeriesColorConfig, MethodColorConfig, RankIconConfig, TargetDataCategory } from '../types';
+
+import ReviewStatus from '@/components/test/ReviewStatus.vue';
 
 const I18nInstance = i18n.getI18n();
 const t = I18nInstance?.global?.t || ((value: string): string => value);

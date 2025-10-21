@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, inject, ref } from 'vue';
-import { AsyncComponent, Hints, Icon, modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Hints, Icon, modal, Table } from '@xcan-angus/vue-ui';
 import { TESTER, ReviewStatus as ReviewStatusEnum } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 import { testCase } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { AssocCaseProps } from '@/views/test/case/types';
 
+import ReviewStatus from '@/components/test/ReviewStatus.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';
 import TestResult from '@/components/test/TestResult.vue';
 

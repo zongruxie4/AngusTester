@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { Badge } from 'ant-design-vue';
-import { Dropdown, Icon, ReviewStatus, Table } from '@xcan-angus/vue-ui';
+import { Dropdown, Icon, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { PageQuery } from '@xcan-angus/infra';
 
 import { CaseActionAuth, EnabledModuleGroup, GroupCaseList } from '../types';
 import { CaseDetail } from '@/views/test/types';
 
+import ReviewStatus from '@/components/test/ReviewStatus.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';
 import TestResult from '@/components/test/TestResult.vue';
 

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, inject, onMounted, Ref, ref, watch } from 'vue';
 import { Badge, Button, Tooltip, TypographyParagraph } from 'ant-design-vue';
-import { AsyncComponent, Dropdown, GridList, Icon, Image, ScriptTypeTag } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Dropdown, GridList, Icon, Image } from '@xcan-angus/vue-ui';
 import { CombinedTargetType, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { ScenarioPermission, ExecStatus } from '@/enums/enums';
@@ -11,6 +11,8 @@ import { BasicDataSourceProps } from '@/types/types';
 import { useScenarioModals, useScenarioPermissions, useScenarioActions, useScenarioMenuItems } from './composables';
 
 import { MenuItem, MenuItemKey, ScenarioInfo } from './types';
+
+import ScriptTypeTag from '@/components/script/ScriptTypeTag.vue';
 
 const { t } = useI18n();
 
