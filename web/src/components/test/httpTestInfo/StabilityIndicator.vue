@@ -1,12 +1,8 @@
 <script lang="ts" setup>
-// Vue core imports
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-/**
- * Component props interface for stability indicator data
- */
 interface Props {
   dataSource: { [key: string]: string };
 }
@@ -68,7 +64,6 @@ const systemResourceUsageConfig = [
     unit: 'MB'
   }
 ];
-
 </script>
 <template>
   <div class="flex border rounded text-3">

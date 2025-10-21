@@ -1,11 +1,7 @@
 
 <script lang="ts" setup>
-// Vue core imports
 import { ref, computed, reactive, onUpdated, watchEffect } from 'vue';
 
-/**
- * Component props interface for virtual list functionality
- */
 interface Props {
   cache: number;
   data: any[];
@@ -206,7 +202,6 @@ watchEffect(() => {
   });
 });
 </script>
-
 <template>
   <div
     ref="wrapperRef"

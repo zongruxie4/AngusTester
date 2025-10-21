@@ -1,12 +1,7 @@
 <script setup lang="ts">
-// Vue core imports
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
 import { Icon } from '@xcan-angus/vue-ui';
-
-// Utility imports
 import ApiUtils from '@/utils/apis';
 
 const { t } = useI18n();

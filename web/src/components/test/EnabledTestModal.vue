@@ -1,26 +1,17 @@
 <script lang="ts" setup>
-// Vue core imports
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
 import { Hints, notification } from '@xcan-angus/vue-ui';
 import { Checkbox, Modal, Switch } from 'ant-design-vue';
-
-// API imports
 import { services } from '@/api/tester';
 
 const { t } = useI18n();
 
-/**
- * Component props interface for enabled test modal
- */
 interface Props {
   visible: boolean;
   id?: string; // serviceId
 }
 
-// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   id: ''
 });
