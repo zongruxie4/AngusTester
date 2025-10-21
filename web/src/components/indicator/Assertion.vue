@@ -4,19 +4,21 @@ import { Switch } from 'ant-design-vue';
 import { Input, SelectEnum, Select, Validate } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import MatchItemPopover from './MacthItemPopover.vue';
-import ExpectedPopover from './ExpectedPopover.vue';
-import jsonpath from './utils/JsonPath';
-import xpath from './utils/xpath';
-import regexp from './utils/Regexp';
-import { Extraction } from './utils/PropsType2';
-import { FormItem } from './PropsType';
+import jsonpath from '@/components/apis/assertion/utils/JsonPath';
+import xpath from '@/components/apis/assertion/utils/XPath';
+import regexp from '@/components/apis/assertion/utils/Regexp';
+import { Extraction } from '@/components/apis/assertion/utils/types';
+import { ApiAssertionFormItem } from '@/components/apis/assertion/PropsType';
+
 import { EnumMessage, HttpExtractionLocation, AssertionCondition, AssertionType, enumUtils, ExtractionMethod } from '@xcan-angus/infra';
+
+import MatchItemPopover from '@/components/apis/assertion/MacthItemPopover.vue';
+import ExpectedPopover from '@/components/apis/assertion/ExpectedPopover.vue';
 
 const { t } = useI18n();
 
 interface Props {
-  value: FormItem;
+  value: ApiAssertionFormItem;
   num?: number;
   viewType?: boolean;
   vertical: boolean;
@@ -44,7 +46,7 @@ const generateDefaultExtraction = (): Extraction => {
   };
 };
 
-const generateDefaultData = (): FormItem => {
+const generateDefaultData = (): ApiAssertionFormItem => {
   return {
     assertionCondition: undefined,
     description: undefined,
@@ -61,7 +63,7 @@ const nameRefs = ref();
 const extractionExpressionRefs = ref();
 
 const idList = ref<string[]>([]);
-const dataMap = ref<FormItem>(generateDefaultData());// 数据集合
+const dataMap = ref<ApiAssertionFormItem>(generateDefaultData());// 数据集合
 
 const focus = ref(false);
 // const extract = ref<<string>>(new ());
@@ -433,7 +435,7 @@ const toValidate = (): boolean => {
   );
 };
 
-const getData = ():{data:FormItem} => {
+const getData = ():{data:ApiAssertionFormItem} => {
   const data = dataMap.value;
   const _extract = extract.value;
 
@@ -474,7 +476,7 @@ onMounted(() => {
 
   watch(() => props.value, async (newValue) => {
     reset();
-    const data = newValue || {} as FormItem;
+    const data = newValue || {} as ApiAssertionFormItem;
     const extraction = data.extraction;
     const assertionCondition = data.assertionCondition?.value || data.assertionCondition;
 

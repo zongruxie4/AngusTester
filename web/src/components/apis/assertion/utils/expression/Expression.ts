@@ -1,4 +1,4 @@
-import { Operator, Typeof } from './PropsType';
+import { Operator, Typeof } from './types';
 
 export const COMPARISON_OPERATORS: readonly Operator[] = ['=', '!=', '>=', '<=', '>', '<'];
 export const TYPES: readonly Typeof[] = ['boolean', 'number', 'string', 'undefined'];

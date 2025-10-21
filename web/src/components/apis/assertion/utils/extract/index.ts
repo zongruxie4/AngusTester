@@ -1,9 +1,9 @@
 import { utils, ExtractionMethod, i18n } from '@xcan-angus/infra';
 
-import jsonpath from '../jsonpath';
-import xpath from '../xpath';
-import regexp from '../regexp';
-import { Parameter } from '../assert/PropsType';
+import jsonpath from '../JsonPath';
+import xpath from '../XPath';
+import regexp from '../Regexp';
+import { Parameter } from '../assert/types';
 
 const t = i18n.getI18n()?.global?.t || ((v: string) => v);
 

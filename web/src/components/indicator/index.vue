@@ -1,22 +1,17 @@
 <script setup lang="ts">
-// Vue core imports
 import { reactive, watch, onMounted, ref, defineAsyncComponent, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-// UI component imports
 import { Input, notification, Icon, Hints, ShortDuration } from '@xcan-angus/vue-ui';
 import { Form, FormItem, RadioButton, RadioGroup, Button, Switch, Tooltip } from 'ant-design-vue';
 import { SmokeCheckSetting, SecurityCheckSetting } from '@/enums/enums';
 
-// Infrastructure imports
 import { enumUtils, http, TESTER } from '@xcan-angus/infra';
 
-// Local component imports
-import IndicatorAssert from '@/components/indicator/assert/index.vue';
-
-// Local imports
-import { indicator } from './apis';
+import { indicator } from '@/api/tester';
 import { splitDuration, maxDuration } from 'src/utils/apis';
+
+import IndicatorAssert from '@/components/indicator/Assertion.vue';
 
 const { t } = useI18n();
 

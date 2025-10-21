@@ -6,47 +6,64 @@ export default class API {
     baseUrl = prefix + '/indicator';
   }
 
-  addStability (params = {}): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/stability`, params);
+  /**
+   * Update performance indicator configuration
+   * @param params - Performance indicator parameters
+   * @returns Promise with error and response data
+   */
+  updatePerformanceIndicator (params: {targetId: string; targetType: string; threads: string; tps: string; errorRate: string; duration: {value: string; unit: string}}): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/perf`, params);
   }
 
-  addPerf (params = {}): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/perf`, params);
+  /**
+   * Update stability indicator configuration
+   * @param params - Stability indicator parameters
+   * @returns Promise with error and response data
+   */
+  updateStabilityIndicator (params: {targetId: string; targetType: string; threads: string; tps: string; errorRate: string; duration: {value: string; unit: string}}): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/stability`, params);
   }
 
-  updateStability (params = {}): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/stability`, params);
+  /**
+   * Update functionality indicator configuration
+   * @param params - Functionality indicator parameters
+   * @returns Promise with error and response data
+   */
+  updateFunctionalityIndicator (params: {targetId: string; targetType: string; }): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/func`, params);
   }
 
-  updatePerf (params = {}): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/perf`, params);
+  /**
+   * Load performance indicator configuration
+   * @param targetType - Type of target (API, SERVICE, SCENARIO)
+   * @param targetId - ID of the target
+   * @returns Promise with error and response data
+   */
+  loadPerformanceIndicator (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${targetType}/${targetId}/perf/detailOrDefault`);
   }
 
-  deleteStability (ids: string[]): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/stability`, { ids });
+  /**
+   * Load stability indicator configuration
+   * @param targetType - Type of target (API, SERVICE, SCENARIO)
+   * @param targetId - ID of the target
+   * @returns Promise with error and response data
+   */
+  loadStabilityIndicator (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${targetType}/${targetId}/stability/detailOrDefault`);
   }
 
-  deletePerf (ids: string[]): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/perf`, { ids });
+  /**
+   * Load functionality indicator configuration
+   * @param targetType - Type of target (API, SERVICE, SCENARIO)
+   * @param targetId - ID of the target
+   * @returns Promise with error and response data
+   */
+  loadFunctionalityIndicator (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${targetType}/${targetId}/func/detailOrDefault`);
   }
 
-  getPerfDetail (id: string, targetType: string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${targetType}/${id}/perf`);
-  }
-
-  getStabilityDetail (id: string, targetType: string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${targetType}/${id}/stability`);
-  }
-
-  getStabilityList (params = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/stability`, { ...params, fullTextSearch: true });
-  }
-
-  getPerfList (params = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/perf`, { ...params, fullTextSearch: true });
-  }
-
-  getDefaultPerf (id: string, targetType?: 'API' | 'PROJECT' | 'SERVICE' | 'SCENARIO'): Promise<[Error | null, any]> {
+  getDefaultPerformance (id: string, targetType?: 'API' | 'PROJECT' | 'SERVICE' | 'SCENARIO'): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${targetType}/${id}/perf/detailOrDefault`);
   }
 
@@ -54,27 +71,33 @@ export default class API {
     return http.get(`${baseUrl}/${targetType}/${id}/stability/detailOrDefault`);
   }
 
-  cancelApiStability (id: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/API/${id}/stability/cancel`);
+  /**
+   * Delete performance indicator configuration
+   * @param targetType - Type of target (API, SERVICE, SCENARIO)
+   * @param targetId - ID of the target
+   * @returns Promise with error and response data
+   */
+  deletePerformanceIndicator (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${targetType}/${targetId}/perf`);
   }
 
-  cancelApiPerf (id: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/API/${id}/perf/cancel`);
+  /**
+   * Delete stability indicator configuration
+   * @param targetType - Type of target (API, SERVICE, SCENARIO)
+   * @param targetId - ID of the target
+   * @returns Promise with error and response data
+   */
+  deleteStabilityIndicator (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${targetType}/${targetId}/stability`);
   }
 
-  cancelProStability (id: string, targetType: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${targetType}/${id}/stability/cancel`);
-  }
-
-  cancelProPerf (id: string, targetType: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${targetType}/${id}/perf/cancel`);
-  }
-
-  cancelScenarioStability (id: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/SCENARIO/${id}/stability/cancel`);
-  }
-
-  cancelScenarioPerf (id: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/SCENARIO/${id}/perf/cancel`);
+  /**
+   * Delete functionality indicator configuration
+   * @param targetType - Type of target (API, SERVICE, SCENARIO)
+   * @param targetId - ID of the target
+   * @returns Promise with error and response data
+   */
+  deleteFunctionalityIndicator (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${targetType}/${targetId}/func`);
   }
 }

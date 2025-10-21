@@ -1,11 +1,11 @@
 import { isEqual } from 'lodash-es';
 import { i18n, AssertionCondition, AssertionType, utils } from '@xcan-angus/infra';
 
-import expressionUtils from '../expression';
-import { Operator } from '../expression/PropsType';
+import expressionUtils from '../expression/Expression';
+import { Operator } from '../expression/types';
 import extract from '../extract';
-import proxy, { VariableInfo } from '../proxy';
-import { AssertConfig, AssertResult, ConditionResult, Parameter } from './PropsType';
+import proxy, { VariableInfo } from './Proxy';
+import { AssertConfig, AssertResult, ConditionResult, Parameter } from './types';
 
 const t = i18n.getI18n()?.global?.t || ((v: string) => v);
 

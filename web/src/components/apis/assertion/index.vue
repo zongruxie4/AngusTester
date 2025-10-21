@@ -1,36 +1,36 @@
 <script setup lang="ts">
-// Vue core imports
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
-// UI component imports
 import { Checkbox, Switch } from 'ant-design-vue';
 import { CheckboxChangeEvent } from 'ant-design-vue/lib/checkbox/interface';
 import { Arrow, Icon, Input, SelectEnum, Select, Validate } from '@xcan-angus/vue-ui';
-// Infrastructure imports
 import { EnumMessage, AssertionCondition, AssertionType, HttpExtractionLocation, utils, enumUtils, ExtractionMethod } from '@xcan-angus/infra';
 import elementResizeDetector from 'element-resize-detector';
 import { useI18n } from 'vue-i18n';
 
-// Component imports
 import MatchItemPopover from './MacthItemPopover.vue';
 import ExpectedPopover from './ExpectedPopover.vue';
 import ConditionPopover from './ConditionPopover.vue';
-// Utility imports
-import expressionUtils from './utils/expression';
-import jsonpath from './utils/jsonpath';
-import xpath from './utils/xpath';
-import regexp from './utils/regexp';
-import { Extraction } from './utils/extract/PropsType';
+import expressionUtils from './utils/expression/Expression';
+import jsonpath from './utils/JsonPath';
+import xpath from './utils/XPath';
+import regexp from './utils/Regexp';
+import { Extraction } from './utils/types';
 import { FormItem } from './PropsType';
 
 const { t } = useI18n();
 
-// Component props interface
 interface Props {
   id: string | undefined;
   value: FormItem[];
   num?: number;
   viewType?: boolean;
 }
+
+// Component events
+const emit = defineEmits<{
+  (e: 'update:num', num: number): void;
+  (e: 'rendered', value: true);
+}>();
 
 // Element resize detector instance
 const elementResizeDetectorInstance = elementResizeDetector({ strategy: 'scroll' });
@@ -42,12 +42,6 @@ const props = withDefaults(defineProps<Props>(), {
   num: undefined,
   viewType: false
 });
-
-// Component events
-const emit = defineEmits<{
-  (e: 'update:num', num: number): void;
-  (e: 'rendered', value: true);
-}>();
 
 // Template refs
 const assertionWrapperRef = ref<HTMLElement>();
@@ -968,7 +962,7 @@ onMounted(() => {
 
         assertionIdList.value.push(assertionId);
         expandedAssertionMap.value[assertionId] = true;
-        
+
         assertionDataMap.value[assertionId] = {
           assertionCondition,
           condition: assertionData.condition,

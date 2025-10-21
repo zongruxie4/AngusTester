@@ -1,12 +1,8 @@
 <script setup lang="ts">
-// Vue composition API imports
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
 import { Popover } from 'ant-design-vue';
 import { Icon, Hints, Grid } from '@xcan-angus/vue-ui';
 
-// Third-party utility imports
 import beautify from 'js-beautify';
 
 const { t } = useI18n();

@@ -1,4 +1,4 @@
-import { Extraction } from '../extract/PropsType';
+import { Extraction } from '../types';
 import { AssertionCondition, AssertionType } from '@xcan-angus/infra';
 
 export type ConditionResult = {

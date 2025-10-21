@@ -15,7 +15,7 @@ import { utils } from '@xcan-angus/infra';
 import beautify from 'js-beautify';
 import { useI18n } from 'vue-i18n';
 
-import { AssertResult } from '@/components/apis/assertion/utils/assert/PropsType';
+import { AssertResult } from '@/components/apis/assertion/utils/assert/types';
 
 import { isJSON, isHtml, isXML, isYAML } from './utils';
 

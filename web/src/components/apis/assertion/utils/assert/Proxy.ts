@@ -1,4 +1,4 @@
-import expression from '../expression';
+import expression from '../expression/Expression';
 
 export type VariableInfo = {name: string;value: string;failureMessage:string;};
 

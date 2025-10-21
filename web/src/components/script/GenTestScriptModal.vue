@@ -95,7 +95,7 @@ const loadTestIndicator = async () => {
   if (!props.id) {
     return;
   }
-  const [perfErr, perfData] = await indicator.getDefaultPerf(props.id, props.type);
+  const [perfErr, perfData] = await indicator.getDefaultPerformance(props.id, props.type);
   if (perfErr) {
     notification.error(perfErr.message);
   } else {

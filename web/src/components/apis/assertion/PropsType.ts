@@ -2,7 +2,7 @@
 import { AssertionCondition, AssertionType } from '@xcan-angus/infra';
 
 // Local type imports
-import { Extraction } from './utils/extract/PropsType';
+import { Extraction } from './utils/types';
 
 // Result type definition for assertion execution results
 export interface AssertionExecutionResult {
