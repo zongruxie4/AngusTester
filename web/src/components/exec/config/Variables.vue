@@ -28,7 +28,7 @@ interface Props {
 }
 
 // Async component imports
-const VariableListModal = defineAsyncComponent(() => import('../Variables/VariableListModal/index.vue'));
+const VariableListModal = defineAsyncComponent(() => import('@/components/exec/variable/VariableListModal.vue'));
 
 // Component props with defaults
 const props = withDefaults(defineProps<Props>(), {

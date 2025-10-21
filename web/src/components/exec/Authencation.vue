@@ -7,7 +7,7 @@ import axios from 'axios';
 import ApiUtils from '@/utils/apis';
 import { useI18n } from 'vue-i18n';
 
-import { AuthItem, authTypeOptions as _authTypeOptions, flowAuthType, authLabels, flowAuthKeys, encryptionTypeOpt, inOpt, getAuthItem, getApiKeyData } from './interface';
+import { AuthItem, authTypeOptions as _authTypeOptions, flowAuthType, authLabels, flowAuthKeys, encryptionTypeOpt, inOpt, getAuthItem, getApiKeyData } from './Authencation';
 const { t } = useI18n();
 // import { API_EXTENSION_KEY, encode, getModelDataByRef } from '../_ApiUtils/index';
 

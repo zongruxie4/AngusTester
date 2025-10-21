@@ -11,7 +11,7 @@ import { useMonitorActions } from './composables/useMonitorActions';
 
 import Chart from '@/views/scenario/monitor/detail/Chart.vue';
 import DebugLog from '@/components/exec/DebugLog.vue';
-import ExecLog from '@/components/exec/ExecLog/index.vue';
+import ExecLog from '@/components/exec/ExecLog.vue';
 
 import ScenarioHttpDebugResult from '@/components/scenario/httpDebugResult/index.vue';
 import ScenarioJdbcDebugResult from '@/components/scenario/jdbcDebugResult/index.vue';

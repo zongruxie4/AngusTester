@@ -6,7 +6,7 @@ import { PageQuery, TESTER, http, duration } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 
-import { VariableItem } from '../PropsType';
+import { VariableItem } from './PropsType';
 
 const { t } = useI18n();
 

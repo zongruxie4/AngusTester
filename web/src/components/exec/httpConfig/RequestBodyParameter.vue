@@ -7,7 +7,7 @@ import { utils, duration, codeUtils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 
-import { RequestBodyFormItem } from '../PropsType';
+import { RequestBodyFormItem } from './PropsType2';
 
 const { t } = useI18n();
 

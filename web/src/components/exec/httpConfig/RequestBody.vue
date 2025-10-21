@@ -8,7 +8,7 @@ import { useI18n } from 'vue-i18n';
 import pretty from 'pretty';
 import jsBeautify from 'js-beautify';
 
-import { RequestBody, ContentType } from './PropsType';
+import { RequestBody, ContentType } from './PropsType2';
 
 const { t } = useI18n();
 
@@ -32,7 +32,7 @@ const emit = defineEmits<{
   (e: 'update:errorNum', value: number): void;
 }>();
 
-const RequestBodyParamster = defineAsyncComponent(() => import('./RequestBodyParamster/index.vue'));
+const RequestBodyParamster = defineAsyncComponent(() => import('./RequestBodyParameter.vue'));
 
 const ENCODED_TYPE = 'application/x-www-form-urlencoded';
 const STREAM_TYPE = 'application/octet-stream';

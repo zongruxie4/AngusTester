@@ -34,8 +34,8 @@ const emit = defineEmits<{
   (e: 'update:errorNum', value: number): void;
 }>();
 
-const ExecAuthencation = defineAsyncComponent(() => import('@/components/exec/ExecAuthencation/index.vue'));
-const RequestBody = defineAsyncComponent(() => import('./RequestBody/index.vue'));
+const ExecAuthencation = defineAsyncComponent(() => import('@/components/exec/Authencation.vue'));
+const RequestBody = defineAsyncComponent(() => import('@/components/exec/httpConfig/RequestBody.vue'));
 const ParameterInput = defineAsyncComponent(() => import('./ParameterInput.vue'));
 const ParameterPure = defineAsyncComponent(() => import('./ParameterPure.vue'));
 

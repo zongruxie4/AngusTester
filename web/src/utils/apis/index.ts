@@ -8,7 +8,7 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import { notification } from '@xcan-angus/vue-ui';
 
 import { Extraction } from '@/components/apis/assertion/utils/extract/PropsType';
-import { getExecShowAuthData } from '@/components/exec/ExecAuthencation/interface';
+import { getExecShowAuthData } from '@/components/exec/Authencation';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { services } from '@/api/tester';

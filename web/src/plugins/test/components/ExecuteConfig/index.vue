@@ -3,7 +3,7 @@
 import { ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { IconRequired, SelectEnum } from '@xcan-angus/vue-ui';
-import ExecSettingForm from '@/components/exec/ExecSettingForm/index.vue';
+import ExecSettingForm from '@/components/exec/config/index.vue';
 import { ScriptType } from '@xcan-angus/infra';
 
 import { ScenarioConfig } from '@/plugins/test/types/index';

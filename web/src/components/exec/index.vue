@@ -12,8 +12,8 @@ import { useI18n } from 'vue-i18n';
 import { ProjectInfo } from '@/layout/types';
 
 const LineChart = defineAsyncComponent(() => import('./LineChart.vue'));
-const Variables = defineAsyncComponent(() => import('./Variables/index.vue'));
-const SelectDataSourceModal = defineAsyncComponent(() => import('./SelectDataSourceModal/index.vue'));
+const Variables = defineAsyncComponent(() => import('@/components/exec/variable/index.vue'));
+const SelectDataSourceModal = defineAsyncComponent(() => import('../datasource/SelectDataSourceModal.vue'));
 
 const { t } = useI18n();
 

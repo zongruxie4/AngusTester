@@ -7,7 +7,7 @@ import { notification, Spin } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { exec } from '@/api/tester';
 
-import ExecSettingForm from '@/components/exec/ExecSettingForm/index.vue';
+import ExecSettingForm from '@/components/exec/config/index.vue';
 
 // Router instance for navigation
 const router = useRouter();

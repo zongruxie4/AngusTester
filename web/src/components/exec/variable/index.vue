@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: () => []
 });
 
-const VariableListModal = defineAsyncComponent(() => import('./VariableListModal/index.vue'));
+const VariableListModal = defineAsyncComponent(() => import('./VariableListModal.vue'));
 
 const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 
@@ -383,7 +383,7 @@ defineExpose({
       style="height: calc(100% - 41px);"
       class="flex flex-col">
       <div v-if="!searched && tableData.length === 0" class="flex-1 flex flex-col items-center justify-center">
-        <img class="w-25" src="./images/nodata.png">
+        <img class="w-25" src="../../../assets/images/nodata.png">
         <div class="flex items-center text-theme-sub-content leading-7">
           <span>{{ t('xcan_exec.variable.noVariablesReferenced') }}</span>
 

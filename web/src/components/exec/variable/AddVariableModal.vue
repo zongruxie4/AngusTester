@@ -6,11 +6,11 @@ import { TESTER, http, HttpExtractionLocation } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { ProjectInfo } from '@/layout/types';
 
-import { getRequestConfigs } from './getRequestConfigs';
-import { ListVariableObj } from './PropsType';
+import { getRequestConfigs } from '../getRequestConfigs';
+import { ListVariableObj } from '../PropsType';
 const { t } = useI18n();
 
-const HTTPConfigs = defineAsyncComponent(() => import('./HTTPConfigs/index.vue'));
+const HTTPConfigs = defineAsyncComponent(() => import('@/components/exec/httpConfig/index.vue'));
 
 interface Props {
   visible: boolean;
