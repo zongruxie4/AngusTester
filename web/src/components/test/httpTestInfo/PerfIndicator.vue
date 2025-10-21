@@ -1,17 +1,12 @@
 <script lang="ts" setup>
-// Vue core imports
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-/**
- * Component props interface for performance indicator data
- */
 interface Props {
   dataSource: { [key: string]: string };
 }
 
-// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ({})
 });
@@ -51,7 +46,6 @@ const performanceIndicatorConfig = [
     unit: '%'
   }
 ];
-
 </script>
 <template>
   <div class="flex border rounded text-3">

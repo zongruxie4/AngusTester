@@ -7,15 +7,11 @@ import { ProjectInfo } from '@/layout/types';
 
 const { t } = useI18n();
 
-/**
- * Component props interface for test configuration information display
- */
 interface Props {
   value: Record<string, any>;
   enabled?: boolean;
 }
 
-// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   value: () => ({}),
   enabled: undefined

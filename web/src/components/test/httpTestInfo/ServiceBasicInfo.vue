@@ -1,20 +1,13 @@
 <script lang="ts" setup>
-// Vue core imports
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
 import { Icon } from '@xcan-angus/vue-ui';
 
 const { t } = useI18n();
 
-/**
- * Component props interface for service basic information data
- */
 interface Props {
   value: Record<string, any>;
 }
 
-// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   value: () => ({})
 });
@@ -32,9 +25,7 @@ const serviceBasicInfoConfig = [
     icon: 'icon-renwuyicixingtongguo'
   }
 ];
-
 </script>
-
 <template>
   <div class="flex justify-around space-x-2">
     <div

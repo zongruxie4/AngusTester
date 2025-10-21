@@ -1,12 +1,8 @@
 <script lang="ts" setup>
-// Vue core imports
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-/**
- * Component props interface for service test case data
- */
 interface Props {
   dataSource: { [key: string]: string };
 }
@@ -27,7 +23,6 @@ const serviceTestCaseStatisticsConfig = [
     { label: t('xcan_httpTestInfo.stabilityTestCount'), dataIndex: 'enabledStabilityTestNum' }
   ]
 ];
-
 </script>
 <template>
   <div class="space-y-2 text-3">

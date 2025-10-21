@@ -1,27 +1,22 @@
 <script lang="ts" setup>
-// Vue core imports
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
 import { Icon, Tooltip, Grid } from '@xcan-angus/vue-ui';
-// import { Tooltip } from 'ant-design-vue';
 
 const { t } = useI18n();
 
-/**
- * Script item interface for script list display
- */
 interface ScriptItem {
   name: string;
   id: string;
 }
 
-/**
- * Component props interface for script list data
- */
 interface Props {
   dataSource: ScriptItem[];
 }
+
+// Component props with default values
+const props = withDefaults(defineProps<Props>(), {
+  dataSource: () => ([])
+});
 
 // Script tooltip table configuration
 const scriptTooltipTableColumns = [
@@ -33,12 +28,6 @@ const scriptTooltipTableColumns = [
     { dataIndex: 'createdDate', label: t('xcan_httpTestInfo.creationTime') }
   ]
 ];
-
-// Component props with default values
-const props = withDefaults(defineProps<Props>(), {
-  dataSource: () => ([])
-});
-
 </script>
 <template>
   <div class="text-3">

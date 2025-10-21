@@ -21,9 +21,6 @@ interface TaskItem {
   targetId: string;
 }
 
-/**
- * Component props interface for task list display
- */
 interface Props {
   dataSource: TaskItem[];
 }
@@ -61,15 +58,15 @@ const taskTooltipTableColumns = [
   [
     {
       dataIndex: 'sprintName',
-      label: t('xcan_httpTestInfo.sprintName')
+      label: t('common.sprint')
     },
     {
       dataIndex: 'assigneeName',
-      label: t('xcan_httpTestInfo.assigneeName')
+      label: t('common.assignee')
     },
     {
       dataIndex: 'confirmerName',
-      label: t('xcan_httpTestInfo.confirmerName')
+      label: t('common.confirmer')
     },
     {
       dataIndex: 'createdByName',

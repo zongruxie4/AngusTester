@@ -1,14 +1,9 @@
 <script lang="ts" setup>
-// Vue core imports
 import { defineAsyncComponent, reactive, computed, watch, ref, onMounted, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
 import { RadioGroup, RadioButton, Tabs, TabPane } from 'ant-design-vue';
 import { Spin } from '@xcan-angus/vue-ui';
-
-// Infrastructure imports
-import { TESTER, http } from '@xcan-angus/infra';
+import { TESTER, http, ScriptType, enumUtils } from '@xcan-angus/infra';
 
 const { t } = useI18n();
 
@@ -17,7 +12,7 @@ const ServiceTestCase = defineAsyncComponent(() => import('./ServiceTestCase.vue
 const ServiceBasicInfo = defineAsyncComponent(() => import('./ServiceBasicInfo.vue'));
 const ServiceProgress = defineAsyncComponent(() => import('./ServiceProgress.vue'));
 const ServiceTestApis = defineAsyncComponent(() => import('./ServiceTestApis.vue'));
-const ApiOrScenairoResult = defineAsyncComponent(() => import('./ApiOrScenairoResult.vue'));
+const ApiOrScenarioResult = defineAsyncComponent(() => import('./ApiOrScenarioResult.vue'));
 
 // Type definitions
 type TestType = 'API' | 'SERVICE' | 'SCENARIO';
@@ -45,7 +40,7 @@ const emit = defineEmits<{
  * Component state interface for test type selection
  */
 interface ComponentState {
-  checked: 'TEST_FUNCTIONALITY' | 'TEST_PERFORMANCE' | 'TEST_STABILITY';
+  checked: ScriptType.TEST_FUNCTIONALITY | ScriptType.TEST_PERFORMANCE | ScriptType.TEST_STABILITY;
   info: Record<string, any>;
 }
 
@@ -53,16 +48,12 @@ interface ComponentState {
  * Computed property for test type options
  */
 const testTypeOptions = computed(() => {
-  return [
-    { value: 'TEST_FUNCTIONALITY', message: t('xcan_httpTestInfo.functionalTest') },
-    { value: 'TEST_PERFORMANCE', message: t('xcan_httpTestInfo.performanceTest') },
-    { value: 'TEST_STABILITY', message: t('xcan_httpTestInfo.stabilityTest') }
-  ].filter(Boolean);
+  return enumUtils.enumToMessages(ScriptType, [ScriptType.TEST_CUSTOMIZATION, ScriptType.MOCK_APIS, ScriptType.MOCK_DATA]);
 });
 
 // Component state management
 const componentState: ComponentState = reactive({
-  checked: 'TEST_FUNCTIONALITY',
+  checked: ScriptType.TEST_FUNCTIONALITY,
   info: {}
 });
 
@@ -169,9 +160,9 @@ onMounted(() => {
           v-for="item in testTypeOptions"
           :key="item.value"
           :tab="item.message">
-          <ApiOrScenairoResult
+          <ApiOrScenarioResult
             :type="props.type as 'API' | 'SCENARIO'"
-            :testType="item.value as 'TEST_FUNCTIONALITY' | 'TEST_PERFORMANCE' | 'TEST_STABILITY'"
+            :testType="item.value as ScriptType.TEST_FUNCTIONALITY | ScriptType.TEST_PERFORMANCE | ScriptType.TEST_STABILITY"
             :dataSource="apiOrScenarioTestData" />
         </TabPane>
       </Tabs>
@@ -210,11 +201,10 @@ onMounted(() => {
 }
 
 .indicator-tabs > .ant-tabs-content-holder {
-  width:
-  100%;
+  width: 100%;
 }
 
-.ghost-tab>:deep(.ant-tabs-nav) {
+.ghost-tab > :deep(.ant-tabs-nav) {
   display: none;
 }
 </style>

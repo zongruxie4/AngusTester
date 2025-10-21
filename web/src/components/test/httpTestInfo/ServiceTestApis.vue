@@ -1,15 +1,8 @@
 <script lang="ts" setup>
-// Vue core imports
 import { watch, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
 import { Icon, Tooltip, Grid, Input, Select, NoData } from '@xcan-angus/vue-ui';
-
-// Local component imports
 import BaseVirtualList from './BaseVirtualList.vue';
-
-// Third-party library imports
 import { debounce } from 'throttle-debounce';
 import elementResizeDetector from 'element-resize-detector';
 
@@ -57,6 +50,17 @@ interface Props {
   dataSource: ApiTestItem[];
   enabledTestApiIds: EnabledTestApiIds;
 }
+
+// Component props with default values
+const props = withDefaults(defineProps<Props>(), {
+  dataSource: () => ([]),
+  enabledTestApiIds: () => ({
+    FUNCTIONAL: [],
+    PERFORMANCE: [],
+    STABILITY: []
+  })
+});
+
 // Element resize detector for responsive list
 const elementResizeDetectorInstance = elementResizeDetector({ strategy: 'scroll' });
 
@@ -84,16 +88,6 @@ const testStatusFilterOptions = [
     value: 'unTested'
   }
 ];
-
-// Component props with default values
-const props = withDefaults(defineProps<Props>(), {
-  dataSource: () => ([]),
-  enabledTestApiIds: () => ({
-    FUNCTIONAL: [],
-    PERFORMANCE: [],
-    STABILITY: []
-  })
-});
 
 // Case type icon configuration mapping
 const caseTypeIconMapping = {
@@ -167,7 +161,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   elementResizeDetectorInstance.removeListener(virtualListContainerRef.value, handleListHeightResize);
 });
-
 </script>
 <template>
   <div class="text-3 space-y-1 min-h-0 flex flex-col">

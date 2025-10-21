@@ -1,9 +1,6 @@
 <script lang="ts" setup>
-// Vue core imports
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// Third-party library imports
 import * as echarts from 'echarts';
 import elementResizeDetector from 'element-resize-detector';
 

@@ -1,17 +1,12 @@
 <script lang="ts" setup>
-// Vue core imports
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-/**
- * Component props interface for scenario test summary data
- */
 interface Props {
   dataSource: { [key: string]: string };
 }
 
-// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ({})
 });
@@ -27,7 +22,6 @@ const scenarioTestSummaryConfig = [
     { label: t('status.disabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }
   ]
 ];
-
 </script>
 <template>
   <div class="space-y-2 text-3">

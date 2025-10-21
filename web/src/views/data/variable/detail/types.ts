@@ -1,6 +1,5 @@
 import {
   ExtractionMethod,
-  ExtractionSource,
   ExtractionFileType,
   Encoding,
   HttpExtractionLocation

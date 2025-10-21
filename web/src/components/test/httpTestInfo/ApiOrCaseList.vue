@@ -1,11 +1,7 @@
 <script lang="ts" setup>
-// Vue core imports
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
 import { Icon, Tooltip, Grid } from '@xcan-angus/vue-ui';
 
-// Local component imports
 import BaseVirtualList from './BaseVirtualList.vue';
 
 const { t } = useI18n();
@@ -31,6 +27,11 @@ interface Props {
   dataSource: ApiOrCaseItem[];
 }
 
+// Component props with default values
+const props = withDefaults(defineProps<Props>(), {
+  dataSource: () => ([])
+});
+
 // Table configuration for tooltip display
 const tooltipTableColumns = [
   [
@@ -44,18 +45,12 @@ const tooltipTableColumns = [
   ]
 ];
 
-// Component props with default values
-const props = withDefaults(defineProps<Props>(), {
-  dataSource: () => ([])
-});
-
 // Case type icon configuration mapping
 const caseTypeIconMapping = {
   SMOKE: 'icon-maoyanceshi',
   SECURITY: 'icon-anquanceshi',
   USER_DEFINED: 'icon-zidingyiceshi'
 };
-
 </script>
 <template>
   <div class="text-3">
@@ -79,7 +74,9 @@ const caseTypeIconMapping = {
             </template>
             <div class="px-1 flex h-6 items-center">
               <Icon :icon="caseTypeIconMapping[item.caseType?.value] || 'icon-jiekouyongli2'" class="mr-1 text-4" />
-              <span class="min-w-0 truncate flex-1" :title="item.apisName || item.caseName || item.summary">{{ item.apisName || item.caseName || item.summary }}</span>
+              <span class="min-w-0 truncate flex-1" :title="item.apisName || item.caseName || item.summary">
+                {{ item.apisName || item.caseName || item.summary }}
+              </span>
               <span
                 v-if="!item.enabled"
                 class="px-2 rounded">{{ t('status.disabled') }}</span>

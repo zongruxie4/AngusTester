@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-// Vue core imports
 import { watch, onMounted, ref, defineAsyncComponent, inject, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
+import { ScriptType } from '@xcan-angus/infra';
 import { Tabs, TabPane } from 'ant-design-vue';
 
 const { t } = useI18n();
@@ -13,14 +11,14 @@ const { t } = useI18n();
  */
 interface Props {
   type: 'API' | 'SCENARIO';
-  testType: 'TEST_FUNCTIONALITY' | 'TEST_PERFORMANCE' | 'TEST_STABILITY';
+  testType: ScriptType.TEST_FUNCTIONALITY | ScriptType.TEST_PERFORMANCE | ScriptType.TEST_STABILITY;
   dataSource: Record<string, any>;
 }
 
 // Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   type: 'API',
-  testType: 'TEST_FUNCTIONALITY',
+  testType: ScriptType.TEST_FUNCTIONALITY,
   dataSource: () => ({})
 });
 
@@ -90,7 +88,7 @@ const processTestInformationData = () => {
   if (!basicTestInfo.value) {
     return;
   }
-  if (props.testType === 'TEST_FUNCTIONALITY' && props.type === 'API') {
+  if (props.testType === ScriptType.TEST_FUNCTIONALITY && props.type === 'API') {
     testCaseSummaryData.value = basicTestInfo.value.caseSummary;
     apiOrCaseTestData.value = basicTestInfo.value.caseResults;
   }
@@ -122,7 +120,6 @@ onMounted(() => {
     immediate: true
   });
 });
-
 </script>
 <template>
   <!-- API test information -->
@@ -131,34 +128,34 @@ onMounted(() => {
       {{ t('common.basicInfo') }}
     </div>
     <TestConfigInfo :value="basicTestInfo" :enabled="enabledTestTypes.includes(props.testType)" />
-    <template v-if="props.type === 'API' && props.testType === 'TEST_FUNCTIONALITY'">
+    <template v-if="props.type === 'API' && props.testType === ScriptType.TEST_FUNCTIONALITY">
       <div class="text-3 mt-4 mb-1 font-semibold">
         {{ t('xcan_httpTestInfo.testCase') }}
       </div>
       <ApiTestCase :dataSource="testCaseSummaryData" />
     </template>
-    <template v-if="props.testType === 'TEST_PERFORMANCE'">
+    <template v-if="props.testType === ScriptType.TEST_PERFORMANCE">
       <div class="text-3 mt-4 mb-1 font-semibold">
         {{ t('common.testResult') }}
       </div>
       <PerfResult :indicatorPerf="performanceIndicatorData" :result="performanceResultData" />
     </template>
-    <template v-if="props.testType === 'TEST_STABILITY'">
+    <template v-if="props.testType === ScriptType.TEST_STABILITY">
       <div class="text-3 mt-4 mb-1 font-semibold">
         {{ t('common.testResult') }}
       </div>
       <StabilityResult :indicatorStability="stabilityIndicatorData" :result="stabilityResultData" />
     </template>
     <Tabs size="small" class="mt-4 indicator-tabs">
-      <template v-if="['API'].includes(props.type) && props.testType === 'TEST_FUNCTIONALITY'">
+      <template v-if="['API'].includes(props.type) && props.testType === ScriptType.TEST_FUNCTIONALITY">
         <TabPane key="case" :tab="`${t('xcan_httpTestInfo.testedCase')}(${apiOrCaseTestData?.length || '0'})`">
           <ApiOrCaseList :dataSource="apiOrCaseTestData" />
         </TabPane>
       </template>
       <template v-else>
         <TabPane key="indicator" :tab="t('xcan_httpTestInfo.testIndicator')">
-          <PerfIndicator v-if="props.testType === 'TEST_PERFORMANCE'" :dataSource="performanceIndicatorData" />
-          <StabilityIndicator v-if="props.testType === 'TEST_STABILITY'" :dataSource="stabilityIndicatorData" />
+          <PerfIndicator v-if="props.testType === ScriptType.TEST_PERFORMANCE" :dataSource="performanceIndicatorData" />
+          <StabilityIndicator v-if="props.testType === ScriptType.TEST_STABILITY" :dataSource="stabilityIndicatorData" />
         </TabPane>
       </template>
       <TabPane
@@ -175,29 +172,29 @@ onMounted(() => {
       {{ t('common.basicInfo') }}
     </div>
     <TestConfigInfo :value="basicTestInfo" />
-    <template v-if="props.testType === 'TEST_FUNCTIONALITY'">
+    <template v-if="props.testType === ScriptType.TEST_FUNCTIONALITY">
       <div class="text-3 mt-4 mb-1 font-semibold">
         {{ t('xcan_httpTestInfo.testInterface') }}
       </div>
       <ScenarioTestSummary :dataSource="testCaseSummaryData" />
     </template>
-    <template v-if="props.testType === 'TEST_PERFORMANCE'">
+    <template v-if="props.testType === ScriptType.TEST_PERFORMANCE">
       <div class="text-3 mt-4 mb-1 font-semibold">
         {{ t('common.testResult') }}
       </div>
       <PerfResult :indicatorPerf="performanceIndicatorData" :result="performanceResultData" />
     </template>
-    <template v-if="props.testType === 'TEST_STABILITY'">
+    <template v-if="props.testType === ScriptType.TEST_STABILITY">
       <div class="text-3 mt-4 mb-1 font-semibold">
         {{ t('common.testResult') }}
       </div>
       <StabilityResult :indicatorStability="stabilityIndicatorData" :result="stabilityResultData" />
     </template>
     <Tabs size="small" class="mt-4 indicator-tabs">
-      <template v-if="['TEST_PERFORMANCE', 'TEST_STABILITY'].includes(props.testType)">
+      <template v-if="[ScriptType.TEST_PERFORMANCE, ScriptType.TEST_STABILITY].includes(props.testType)">
         <TabPane key="indicator" :tab="t('xcan_httpTestInfo.testIndicator')">
-          <PerfIndicator v-if="props.testType === 'TEST_PERFORMANCE'" :dataSource="performanceIndicatorData" />
-          <StabilityIndicator v-if="props.testType === 'TEST_STABILITY'" :dataSource="stabilityIndicatorData" />
+          <PerfIndicator v-if="props.testType === ScriptType.TEST_PERFORMANCE" :dataSource="performanceIndicatorData" />
+          <StabilityIndicator v-if="props.testType === ScriptType.TEST_STABILITY" :dataSource="stabilityIndicatorData" />
         </TabPane>
       </template>
 
