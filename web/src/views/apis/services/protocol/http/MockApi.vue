@@ -312,7 +312,7 @@ const gridColumnsConfiguration = [[
       </template>
       <template v-if="!mockApiInformation && !isLoading">
         <div class="p-2 border border-blue-border rounded bg-blue-bg-light">
-          <Hints :text="t('common.description')" />
+          <Hints :text="t('service.mockApi.description')" />
         </div>
         <div class=" mt-4">
           <RadioGroup
@@ -321,11 +321,11 @@ const gridColumnsConfiguration = [[
             class="flex flex-col space-y-3.5">
             <Radio value="1">
               <span class="font-semibold">{{ t('service.mockApi.createTypes.generate.title') }}</span>
-              <div>{{ t('common.description') }}</div>
+              <div>{{ t('service.mockApi.createTypes.generate.description') }}</div>
             </Radio>
             <Radio value="2">
               <span class="font-semibold">{{ t('service.mockApi.createTypes.associate.title') }}</span>
-              <div>{{ t('common.description') }}</div>
+              <div>{{ t('service.mockApi.createTypes.associate.description') }}</div>
             </Radio>
           </RadioGroup>
           <Modal
