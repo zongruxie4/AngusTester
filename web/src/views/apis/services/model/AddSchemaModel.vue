@@ -359,7 +359,7 @@ defineExpose({
       <div class="flex flex-col space-y-2">
         <Select
           v-model:value="type"
-          :placeholder="t('service.dataModel.form.typePlaceholder')"
+          :placeholder="t('common.type')"
           :options="dataTypeOpt"
           :error="validate && activeTab === 'attr' && !type"
           :readonly="props.disabledType || props.viewType"
@@ -367,7 +367,7 @@ defineExpose({
         <template v-if="['string', 'number', 'integer'].includes(type)">
           <Select
             v-model:value="format"
-            :placeholder="t('service.dataModel.form.formatPlaceholder')"
+            :placeholder="t('common.formatPlaceholder')"
             :readonly="props.viewType"
             :options="formatOpt" />
           <Input

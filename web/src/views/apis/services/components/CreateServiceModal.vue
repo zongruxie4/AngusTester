@@ -108,7 +108,7 @@ const handleCloseModal = () => {
 </script>
 <template>
   <Modal
-    :title="t('service.sidebar.addServiceModal.title')"
+    :title="t('service.service.addServiceModal.title')"
     :visible="props.visible"
     :confirmLoading="isCreatingService"
     @ok="handleCreateService"

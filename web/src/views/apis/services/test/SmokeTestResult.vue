@@ -17,8 +17,8 @@ const columns = [
     { dataIndex: 'serviceName', label: t('common.name') }
   ],
   [
-    { dataIndex: 'testByName', label: t('service.sidebar.smokeResult.testName') },
-    { dataIndex: 'testByDate', label: t('service.sidebar.smokeResult.testDate') }
+    { dataIndex: 'testByName', label: t('service.service.smokeResult.testName') },
+    { dataIndex: 'testByDate', label: t('service.service.smokeResult.testDate') }
   ],
   [
     { dataIndex: 'scriptId', label: t('common.scriptId') },
@@ -31,7 +31,7 @@ const columns = [
   <div class="p-5">
     <div class="flex items-center space-x-2">
       <Icon icon="icon-maoyanceshi" class="text-5" />
-      <span class="text-4 font-semibold">{{ t('service.sidebar.smokeResult.title') }}</span>
+      <span class="text-4 font-semibold">{{ t('service.service.smokeResult.title') }}</span>
     </div>
     <div class="flex items-center space-x-5 mt-2">
       <div class="rounded-full w-14 h-14 border text-5 text-center flex flex-col justify-center">

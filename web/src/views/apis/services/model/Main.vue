@@ -46,11 +46,11 @@ const modelOpt = [
     value: 'schemas'
   },
   {
-    label: t('service.dataModel.respModalOpt'),
+    label: t('protocol.response'),
     value: 'responses'
   },
   {
-    label: t('service.dataModel.paramsModelOpt'),
+    label: t('common.parameters'),
     value: 'parameters'
   },
   {
@@ -405,7 +405,7 @@ provide('serviceId', props.id);
           :readonly="props.data?.key"
           :error="validate && !schemaName"
           :maxlength="200"
-          :placeholder="t('service.dataModel.nameLabel')"
+          :placeholder="t('common.name')"
           data-type="en"
           includes="-_." />
         <Select
@@ -432,7 +432,7 @@ provide('serviceId', props.id);
             @change="changeModelType" />
         </template>
         <template v-if="schemaType === 'parameters'">
-          <span>{{ t('service.dataModel.paramsLabel') }}</span>
+          <span>{{ t('common.parameters') }}</span>
           <Select
             v-model:value="parameterIn"
             placeholder="in"

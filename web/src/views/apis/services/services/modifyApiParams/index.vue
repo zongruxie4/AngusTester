@@ -61,15 +61,15 @@ const refDatasetRef = ref();
 const modifyScopeOpt = ref([
   {
     value: ModifyScope.ALL,
-    label: t('service.sidebar.batchModifyModal.modifyScope_all')
+    label: t('service.service.batchModifyModal.modifyScope_all')
   },
   {
     value: ModifyScope.SELECTED_APIS,
-    label: t('service.sidebar.batchModifyModal.modifyScope_select')
+    label: t('service.service.batchModifyModal.modifyScope_select')
   },
   {
     value: ModifyScope.MATCH_APIS,
-    label: t('service.sidebar.batchModifyModal.modifyScope_match')
+    label: t('service.service.batchModifyModal.modifyScope_match')
   }
 ]);
 
@@ -98,13 +98,13 @@ const ok = () => {
     const noRegex = !matchEndpointRegex.value;
     const noTags = !filterTags.value?.length;
     if (noMatchMethod && noRegex && noTags) {
-      notification.error(t('service.sidebar.batchModifyModal.matchMethodTip'));
+      notification.error(t('service.service.batchModifyModal.matchMethodTip'));
       return;
     }
   }
   if (scope.value === ModifyScope.SELECTED_APIS) {
     if (!selectedApisIds.value?.length) {
-      notification.error(t('service.sidebar.batchModifyModal.selectedApisTip'));
+      notification.error(t('service.service.batchModifyModal.selectedApisTip'));
       return;
     }
   }
@@ -276,7 +276,7 @@ const referenceVariable = async () => {
   const config = getConfig();
   const parameters = refVariableRef.value.getData();
   if (!parameters.length) {
-    notification.error(t('service.sidebar.batchModifyModal.referenceVariableTip'));
+    notification.error(t('service.service.batchModifyModal.referenceVariableTip'));
     return;
   }
   const [error] = await services.batchUpdateReferenceVariable(props.serviceId, config, { names: parameters });
@@ -292,7 +292,7 @@ const referenceDataset = async () => {
   const config = getConfig();
   const parameters = refDatasetRef.value.getData();
   if (!parameters.length) {
-    notification.error(t('service.sidebar.batchModifyModal.referenceDatasetTip'));
+    notification.error(t('service.service.batchModifyModal.referenceDatasetTip'));
     return;
   }
   const [error] = await services.batchAddReferenceDataset(props.serviceId, config, { names: parameters });
@@ -308,7 +308,7 @@ const delReferenceVariable = async () => {
   const config = getConfig();
   const parameters = refVariableRef.value.getData();
   if (!parameters.length) {
-    notification.error(t('service.sidebar.batchModifyModal.delReferenceVariableTip'));
+    notification.error(t('service.service.batchModifyModal.delReferenceVariableTip'));
     return;
   }
   const [error] = await services.batchDeleteReferenceVariable(props.serviceId, config, { names: parameters });
@@ -324,7 +324,7 @@ const delReferenceDataset = async () => {
   const config = getConfig();
   const parameters = refDatasetRef.value.getData();
   if (!parameters.length) {
-    notification.error(t('service.sidebar.batchModifyModal.delReferenceDatasetTip'));
+    notification.error(t('service.service.batchModifyModal.delReferenceDatasetTip'));
     return;
   }
   const [error] = await services.batchDeleteReferenceDataset(props.serviceId, config, { names: parameters });
@@ -350,13 +350,13 @@ onMounted(() => {
 </script>
 <template>
   <Modal
-    :title="props.title || t('service.sidebar.batchModifyModal.title')"
+    :title="props.title || t('service.service.batchModifyModal.title')"
     :width="1000"
     :visible="props.visible"
     @cancel="cancel"
     @ok="ok">
     <div class="flex items-center">
-      <label class="w-20">{{ t('service.sidebar.batchModifyModal.scopeLabel') }}</label>
+      <label class="w-20">{{ t('service.service.batchModifyModal.scopeLabel') }}</label>
       <div>
         <RadioGroup
           v-model:value="scope"
@@ -366,7 +366,7 @@ onMounted(() => {
     </div>
 
     <div v-if="scope === 'SELECTED_APIS'" class="flex mt-3">
-      <label class="w-20">{{ t('service.sidebar.batchModifyModal.apisLabel') }}</label>
+      <label class="w-20">{{ t('service.service.batchModifyModal.apisLabel') }}</label>
       <div class="flex-1">
         <div class="inline-flex items-center space-x-2">
           <SelectApisTable
@@ -380,7 +380,7 @@ onMounted(() => {
 
     <div v-if="scope === 'MATCH_APIS'" class="flex mt-3 items-center">
       <div class="inline-flex items-center">
-        <label class="w-20">{{ t('service.sidebar.batchModifyModal.matchMethodLabel') }}</label>
+        <label class="w-20">{{ t('service.service.batchModifyModal.matchMethodLabel') }}</label>
         <div class="flex-1 w-30">
           <SelectEnum
             v-model:value="matchMethod"
@@ -392,20 +392,20 @@ onMounted(() => {
       </div>
 
       <div class="inline-flex ml-10 items-center">
-        <label class="w-24">{{ t('service.sidebar.batchModifyModal.matchEndpointRegexLabel') }}</label>
+        <label class="w-24">{{ t('service.service.batchModifyModal.matchEndpointRegexLabel') }}</label>
         <div class="flex-1 w-60">
           <Input
             v-model:value="matchEndpointRegex"
-            :placeholder="t('service.sidebar.batchModifyModal.matchEndpointRegexPlaceholder')" />
+            :placeholder="t('service.service.batchModifyModal.matchEndpointRegexPlaceholder')" />
         </div>
       </div>
 
       <div class="inline-flex ml-10 items-center">
-        <label class="w-20">{{ t('service.sidebar.batchModifyModal.tagsLabel') }}</label>
+        <label class="w-20">{{ t('service.service.batchModifyModal.tagsLabel') }}</label>
         <div class="flex-1 w-60">
           <Select
             v-model:value="filterTags"
-            :placeholder="t('service.sidebar.batchModifyModal.tagsPlaceholder')"
+            :placeholder="t('service.service.batchModifyModal.tagsPlaceholder')"
             :action="`${TESTER}/services/${props.serviceId}/schema/tag`"
             :fieldNames="{
               value: 'name',
@@ -420,39 +420,39 @@ onMounted(() => {
     </div>
 
     <div v-if="['batchAddParams', 'batchModifyParams', ].includes(props.type) && props.visible" class="space-y-2 mt-3">
-      <div v-if="props.type === 'batchAddParams'">{{ t('service.sidebar.batchModifyModal.addParams') }}</div>
-      <div v-if="props.type === 'batchModifyParams'">{{ t('service.sidebar.batchModifyModal.modifyParams') }}</div>
+      <div v-if="props.type === 'batchAddParams'">{{ t('service.service.batchModifyModal.addParams') }}</div>
+      <div v-if="props.type === 'batchModifyParams'">{{ t('service.service.batchModifyModal.modifyParams') }}</div>
       <div class="border px-2 pb-3 rounded">
         <AddOrModifyParams ref="addOrModifyParamsRef" />
       </div>
     </div>
 
     <div v-if="['batchDelParams', 'batchEnabledParams', 'batchDisabledParams'].includes(props.type) && props.visible" class="space-y-2 mt-3">
-      <div v-if="props.type === 'batchDelParams'">{{ t('service.sidebar.batchModifyModal.deleteParams') }}</div>
-      <div v-if="props.type === 'batchEnabledParams'">{{ t('service.sidebar.batchModifyModal.enabledParams') }}</div>
-      <div v-if="props.type === 'batchDisabledParams'">{{ t('service.sidebar.batchModifyModal.disabledParams') }}</div>
+      <div v-if="props.type === 'batchDelParams'">{{ t('service.service.batchModifyModal.deleteParams') }}</div>
+      <div v-if="props.type === 'batchEnabledParams'">{{ t('service.service.batchModifyModal.enabledParams') }}</div>
+      <div v-if="props.type === 'batchDisabledParams'">{{ t('service.service.batchModifyModal.disabledParams') }}</div>
       <EnabledOrdDelParams ref="enableOrDelParamsRef" />
     </div>
 
     <div v-if="props.type === 'batchModifyAuth' && props.visible" class="space-y-2 mt-3">
-      <div>{{ t('service.sidebar.batchModifyModal.modifyAuth') }}</div>
+      <div>{{ t('service.service.batchModifyModal.modifyAuth') }}</div>
       <ModifyAuth ref="modifyAuthRef" />
     </div>
 
     <div v-if="props.type === 'batchModifyServer' && props.visible" class="space-y-2 mt-3">
-      <div>{{ t('service.sidebar.batchModifyModal.modifyServer') }}</div>
+      <div>{{ t('service.service.batchModifyModal.modifyServer') }}</div>
       <ModifyServer ref="modifyServerRef" />
     </div>
 
     <div v-if="['batchLinkVariable', 'batchDelVariable'].includes(props.type) && props.visible" class="space-y-2 mt-3">
-      <div v-if="props.type === 'batchLinkVariable'">{{ t('service.sidebar.batchModifyModal.linkVariable') }}</div>
-      <div v-if="props.type === 'batchDelVariable'">{{ t('service.sidebar.batchModifyModal.unlinkVariable') }}</div>
+      <div v-if="props.type === 'batchLinkVariable'">{{ t('service.service.batchModifyModal.linkVariable') }}</div>
+      <div v-if="props.type === 'batchDelVariable'">{{ t('service.service.batchModifyModal.unlinkVariable') }}</div>
       <RefVariable ref="refVariableRef" :projectId="props.projectId" />
     </div>
 
     <div v-if="['batchLinkDataSet', 'batchDelDataSet'].includes(props.type) && props.visible" class="space-y-2 mt-3">
-      <div v-if="props.type === 'batchLinkDataSet'">{{ t('service.sidebar.batchModifyModal.linkDataset') }}</div>
-      <div v-if="props.type === 'batchDelDataSet'">{{ t('service.sidebar.batchModifyModal.unlinkDataset') }}</div>
+      <div v-if="props.type === 'batchLinkDataSet'">{{ t('service.service.batchModifyModal.linkDataset') }}</div>
+      <div v-if="props.type === 'batchDelDataSet'">{{ t('service.service.batchModifyModal.unlinkDataset') }}</div>
       <RefDataset ref="refDatasetRef" :projectId="props.projectId" />
     </div>
   </Modal>

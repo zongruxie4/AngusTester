@@ -1017,7 +1017,7 @@ const OAuth2AuthorizationTypeOptions = [
             <div>
               <div class="flex items-end mt-2">
                 <IconRequired />
-                <span>{{ t('service.securityModal.nameLabel') }}</span>
+                <span>{{ t('common.name') }}</span>
                 <Tooltip :title="t('service.securityModal.nameTip')" placement="topLeft">
                   <Icon icon="icon-tishi1" class="ml-1 text-tips cursor-pointer text-3.5" />
                 </Tooltip>
@@ -1056,7 +1056,7 @@ const OAuth2AuthorizationTypeOptions = [
                   :disabled="!auth.isEdit"
                   :placeholder="t('service.securityModal.usernamePlaceholder')"
                   @change="(event)=>handleUsernameChange(event.target.value,auth)" />
-                <div><IconRequired />{{ t('service.securityModal.passwordLabel') }}</div>
+                <div><IconRequired />{{ t('common.password') }}</div>
                 <Input
                   v-model:value="auth.model.password"
                   :error="auth.model.passwordErr"
@@ -1095,7 +1095,7 @@ const OAuth2AuthorizationTypeOptions = [
                     class="flex flex-col border-b border-dashed pb-4"
                     :class="{'border-b-0 pb-0': apikeyIndex === auth.model.apiKeyList.length-1}">
                     <div class="mt-4 flex justify-between">
-                      <span><IconRequired />{{ t('service.securityModal.nameLabel') }}</span>
+                      <span><IconRequired />{{ t('common.name') }}</span>
                       <span v-if="auth.isEdit" class="text-4 -mt-1">
                         <template v-if="auth.model.apiKeyList.length < 49">
                           <Icon
@@ -1275,7 +1275,7 @@ const OAuth2AuthorizationTypeOptions = [
                       @change="(event)=>handleUsernameChange(event.target.value,auth)" />
                     <div>
                       <IconRequired />
-                      {{ t('service.securityModal.passwordLabel') }}
+                      {{ t('common.password') }}
                     </div>
                     <Input
                       v-model:value="auth.model[oAuth2PasswordKey]"

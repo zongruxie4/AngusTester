@@ -276,8 +276,8 @@ const onContextMenuClick = (action: { key: string; }, item: ServicesInfo) => {
       break;
     case 'delete':
       leftDrawerRef.value.del(item.id, `${TESTER}/services/${item.id}`, {
-        title: t('service.sidebar.deleteService'),
-        content: t('service.sidebar.deleteServiceTip')
+        title: t('service.service.deleteService'),
+        content: t('service.service.deleteServiceTip')
       });
       break;
     case 'translate':
@@ -423,7 +423,7 @@ const restartContent = ref('');
 const openRestartTestTask = (item) => {
   modalsConfig.activeId = item.id;
   restartTestVisible.value = true;
-  restartContent.value = t('service.sidebar.restartServiceTip', { name: item.name });
+  restartContent.value = t('service.service.restartServiceTip', { name: item.name });
 };
 
 // Reopen test task
@@ -435,7 +435,7 @@ const reopenContent = ref('');
 const openReopenTestTask = (item) => {
   modalsConfig.activeId = item.id;
   reopenTestVisible.value = true;
-  reopenContent.value = t('service.sidebar.reopenServiceTip', { name: item.name });
+  reopenContent.value = t('service.service.reopenServiceTip', { name: item.name });
 };
 
 const translateVisible = ref(false);
@@ -445,19 +445,19 @@ const execTips = ref<string>();
 const execModalTitle = ref<string>();
 const okAction = ref<string>();
 const execTestTipConfig = {
-  funcTestExecSmoke: t('service.sidebar.funcTestExecSmokeTip'),
-  funcTestExecSecurity: t('service.sidebar.funcTestExecSecurityTip'),
-  funcTestExec: t('service.sidebar.funcTestExecTip'),
-  perfTestExec: t('service.sidebar.perfTestExecTip'),
-  stabilityTestExec: t('service.sidebar.stabilityTestExecTip')
+  funcTestExecSmoke: t('service.service.funcTestExecSmokeTip'),
+  funcTestExecSecurity: t('service.service.funcTestExecSecurityTip'),
+  funcTestExec: t('service.service.funcTestExecTip'),
+  perfTestExec: t('service.service.perfTestExecTip'),
+  stabilityTestExec: t('service.service.stabilityTestExecTip')
 };
 
 const execModalTitleConfig = {
-  funcTestExecSmoke: t('service.sidebar.execModalTitle.funcTestExecSmoke'),
-  funcTestExecSecurity: t('service.sidebar.execModalTitle.funcTestExecSecurity'),
-  funcTestExec: t('service.sidebar.execModalTitle.funcTestExec'),
-  perfTestExec: t('service.sidebar.execModalTitle.perfTestExec'),
-  stabilityTestExec: t('service.sidebar.execModalTitle.stabilityTestExec')
+  funcTestExecSmoke: t('service.service.execModalTitle.funcTestExecSmoke'),
+  funcTestExecSecurity: t('service.service.execModalTitle.funcTestExecSecurity'),
+  funcTestExec: t('service.service.execModalTitle.funcTestExec'),
+  perfTestExec: t('service.service.execModalTitle.perfTestExec'),
+  stabilityTestExec: t('service.service.execModalTitle.stabilityTestExec')
 };
 
 const getOkAction = (type:'funcTestExecSmoke'|'funcTestExecSecurity'|'funcTestExec'|'perfTestExec'|'stabilityTestExec', id:string) => {
@@ -624,7 +624,7 @@ const addSocketApiForService = async (item) => {
  */
 const onDeleteService = async (id: string) => {
   deleteTabPane([id + 'group', id + 'mock']);
-  notification.success(t('service.sidebar.deleteServiceSuccess'));
+  notification.success(t('service.service.deleteServiceSuccess'));
 };
 
 /**
@@ -758,7 +758,7 @@ const editInputProps = computed(() => ({
   createAction: `${TESTER}/services`, // Add directory URL
   createParams: { projectId: projectId.value }, // Parameters needed for adding directory
   allowClear: true,
-  placeholder: t('service.sidebar.serviceNamePlaceholder'),
+  placeholder: t('service.service.serviceNamePlaceholder'),
   maxlength: 100
 }));
 
@@ -790,18 +790,18 @@ defineExpose({
 });
 
 const modelTitleMap = {
-  SERVICE: t('service.sidebar.authModel.title')
+  SERVICE: t('service.service.authModel.title')
 };
 
 const tipMap = {
   SERVICE: {
-    on: t('service.sidebar.authModel.onTip'),
-    off: t('service.sidebar.authModel.offTip')
+    on: t('service.service.authModel.onTip'),
+    off: t('service.service.authModel.offTip')
   }
 };
 
 const searchInputProps = {
-  placeholder: t('service.sidebar.searchServicePlaceholder'),
+  placeholder: t('service.service.searchServicePlaceholder'),
   allowClear: true
 };
 
@@ -832,7 +832,7 @@ const sortProps = {
 
 const collapseOptions = ref<{ name: string; key: string; icon: string; total: number; }[]>([
   {
-    name: t('service.sidebar.unarchivedTitle'),
+    name: t('service.service.unarchivedTitle'),
     key: 'unarchived',
     icon: 'icon-weiguidang',
     total: 0

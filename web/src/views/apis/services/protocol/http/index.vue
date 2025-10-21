@@ -420,7 +420,7 @@ provide('selectHandle', () => closeDrawer(drawerRef));
             size="small">
             <RadioButton value="debug">{{ t('actions.debug') }}</RadioButton>
             <RadioButton value="case">{{ t('common.useCase') }}</RadioButton>
-            <RadioButton value="test">{{ t('service.apis.tabs.test') }}</RadioButton>
+            <RadioButton value="test">{{ t('common.test') }}</RadioButton>
             <RadioButton value="mock">{{ t('service.apis.tabs.mock') }}</RadioButton>
             <RadioButton value="doc">{{ t('common.doc') }}</RadioButton>
           </RadioGroup>
@@ -478,7 +478,7 @@ provide('selectHandle', () => closeDrawer(drawerRef));
               class="inner-container mt-2.5"
               size="small"
               centered>
-              <TabPane key="parameters" :tab="`${t('service.apis.requestTabs.parameters')}(${parametersNum})`">
+              <TabPane key="parameters" :tab="`${t('protocol.requestParameter')}(${parametersNum})`">
                 <div class="flex">
                   <RequestParams
                     ref="requestParamsRef"
@@ -490,7 +490,7 @@ provide('selectHandle', () => closeDrawer(drawerRef));
               </TabPane>
               <TabPane
                 key="header"
-                :tab="`${t('service.apis.requestTabs.header')}(${headerCount || 0})`"
+                :tab="`${t('protocol.requestHeader')}(${headerCount || 0})`"
                 :forceRender="true">
                 <div class="flex">
                   <RequestHeader

@@ -203,16 +203,16 @@ onMounted(async () => {
       <div class="flex">
         <div>
           <FormItem :label="t('service.mock.createTypeLabel')" required />
-          <FormItem :label="t('service.mock.nameLabel')" required />
+          <FormItem :label="t('common.name')" required />
           <FormItem
-            :label="t('service.mock.serviceDomainUrlLabel')"
+            :label="t('protocol.domain')"
             :required="!isPrivateEdition"
             :class="isPrivateEdition?'pl-2.25':''" />
-          <FormItem :label="t('service.mock.servicePortLabel')" required />
-          <FormItem :label="t('service.mock.nodeIdLabel')" required />
-          <FormItem :label="t('service.mock.serviceLabel')" required />
+          <FormItem :label="t('protocol.port')" required />
+          <FormItem :label="t('common.node')" required />
+          <FormItem :label="t('common.service')" required />
           <template v-if="mockServiceForm.serviceId && currentServiceInfo?.hasApis">
-            <FormItem :label="t('service.mock.apiIdsLabel')" />
+            <FormItem :label="t('common.api')" />
           </template>
         </div>
         <div class="w-150">

@@ -322,7 +322,7 @@ watch([() => apiDebugRef.value], () => {
           <div class="flex flex-col min-w-0 h-full">
             <div class="flex w-full">
               <FormItem
-                :label="t('service.case.addModal.nameLabel')"
+                :label="t('common.name')"
                 name="name"
                 class="pr-2 flex-1"
                 v-bind="validateInfos.name">
@@ -334,7 +334,7 @@ watch([() => apiDebugRef.value], () => {
                 </div>
               </FormItem>
               <FormItem
-                :label="t('service.case.addModal.typeLabel')"
+                :label="t('common.type')"
                 name="name"
                 class="pr-2"
                 required

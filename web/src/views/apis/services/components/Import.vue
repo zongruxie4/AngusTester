@@ -298,16 +298,16 @@ onMounted(() => {
         <div class="space-y-0.5 mb-5 leading-5">
           <div>{{ t('service.importForm.strategyWhenDuplicated') }}</div>
           <RadioGroup v-model:value="strategyWhenDuplicated">
-            <Radio value="COVER">{{ t('service.importForm.strategy_cover') }}</Radio>
-            <Radio value="IGNORE">{{ t('service.importForm.strategy_ignore') }}</Radio>
+            <Radio value="COVER">{{ t('actions.cover') }}</Radio>
+            <Radio value="IGNORE">{{ t('actions.ignore') }}</Radio>
           </RadioGroup>
         </div>
 
         <div class="space-y-0.5 leading-5">
           <div>{{ t('service.importForm.deleteWhenNotExisted') }}</div>
           <RadioGroup v-model:value="deleteWhenNotExisted">
-            <Radio :value="true">{{ t('service.importForm.delete_y') }}</Radio>
-            <Radio :value="false">{{ t('service.importForm.delete_n') }}</Radio>
+            <Radio :value="true">{{ t('status.yes') }}</Radio>
+            <Radio :value="false">{{ t('status.no') }}</Radio>
           </RadioGroup>
         </div>
       </template>

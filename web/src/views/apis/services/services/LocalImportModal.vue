@@ -48,7 +48,7 @@ const isLoading = ref<boolean>(false);
 </script>
 <template>
   <Modal
-    :title="t('service.sidebar.localImportModal.title')"
+    :title="t('service.service.localImportModal.title')"
     :visible="visible"
     :footer="false"
     @cancel="closeModal">

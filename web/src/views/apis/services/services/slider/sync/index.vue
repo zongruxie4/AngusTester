@@ -809,7 +809,7 @@ watch(() => notify.value, () => {
             <div class="relative mt-2 mb-5">
               <Input
                 v-model:value="sync.apiDocsUrl"
-                :placeholder="t('service.syncConfig.form.addressPlaceholder')"
+                :placeholder="t('common.address')"
                 size="small"
                 :maxlength="400"
                 :disabled="!sync.isEdit"
@@ -852,9 +852,9 @@ watch(() => notify.value, () => {
                   :key="aindex"
                   class="flex mb-5 items-center">
                   <div class="flex flex-col space-y-3 flex-none mr-2">
-                    <div class="h-7 leading-7">{{ t('service.syncConfig.form.paramName') }}</div>
+                    <div class="h-7 leading-7">{{ t('common.parameterName') }}</div>
                     <div class="h-7 leading-7">{{ t('service.syncConfig.form.paramPosition') }}</div>
-                    <div class="h-7 leading-7">{{ t('service.syncConfig.form.paramValue') }}</div>
+                    <div class="h-7 leading-7">{{ t('common.parameterValue') }}</div>
                   </div>
                   <div class="flex flex-col flex-1 space-y-3">
                     <Input
@@ -870,13 +870,13 @@ watch(() => notify.value, () => {
                       :options="inOptions"
                       :disabled="!sync.isEdit"
                       size="small"
-                      :placeholder="t('service.syncConfig.form.positionPlaceholder')" />
+                      :placeholder="t('common.position')" />
                     <Input
                       v-model:value="auth.value"
                       :disabled="!sync.isEdit"
                       :error="auth.valueErr"
                       :maxlength="1024"
-                      :placeholder="t('service.syncConfig.form.valuePlaceholder')"
+                      :placeholder="t('common.value')"
                       size="small"
                       @change="(event)=>authValueChange(event.target.value,auth)" />
                   </div>

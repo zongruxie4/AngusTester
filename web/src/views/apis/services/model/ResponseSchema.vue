@@ -222,7 +222,7 @@ defineExpose({
     </div>
     <div class="flex-1 min-w-0 px-2">
       <span class="text-3.5 mb-4">
-        {{ t('service.dataModel.responseTitle') }}
+        {{ t('protocol.responseHeader') }}
         <Icon
           v-show="!props.viewType"
           icon="icon-tianjiamokuai"

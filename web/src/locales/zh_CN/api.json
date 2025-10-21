@@ -32,7 +32,7 @@
       "authTabName": "权限",
       "mockTabName": "Mock服务"
     },
-    "sidebar": {
+    "service": {
       "deleteService": "删除服务",
       "deleteServiceTip": "删除服务会删除服务下接口，以及关联关注、收藏、指标、变量等信息，请确认是否删除？",
       "restartServiceTip": "将服务下所有已结束的任务状态更新为\"待测试\"， 相关统计计数和状态会被清除，您确认重新开始测试任务「{name}」吗？",
@@ -46,8 +46,6 @@
       "serviceNamePlaceholder": "最多输入100字符",
       "unarchivedTitle": "未归档",
       "searchServicePlaceholder": "查询服务名称",
-      "deleteAllSuccess": "全部删除成功",
-      "deleteAllAction": "全部删除",
       "actions": {
         "addApi": "添加接口",
         "httpApi": "Http接口",
@@ -190,15 +188,7 @@
         "serviceConfigDefault": "使用默认（接口生成脚本时服务器配置）",
         "serviceConfigModify": "修改变量配置（修改后会更新到接口和动态Http提取变量）",
         "selectServicePlaceholder": "请选择服务器",
-        "variableEmpty": "无变量",
-        "descLabel": "描述",
-        "descEmpty": "无描述",
-        "variableLabel": "变量",
-        "variableNameLabel": "名称",
-        "variableValueLabel": "值",
-        "variableValueDefault": "默认",
-        "variableDescLabel": "描述",
-        "more": "更多"
+        "variableEmpty": "无变量"
       },
       "addServiceModal": {
         "title": "添加服务",
@@ -208,12 +198,6 @@
     "mock": {
       "description": "Mock可快速生成并模拟所依赖的 API，使开发和测试先行，以实现更快的开发、更全面的测试，更早地交付稳定的产品或应用。通过Mock也可避免直接与生产系统联调造成的脏数据问题。",
       "createTypeLabel": "Mock方式",
-      "nameLabel": "名称",
-      "serviceDomainUrlLabel": "域名",
-      "servicePortLabel": "端口",
-      "nodeIdLabel": "节点",
-      "serviceLabel": "服务",
-      "apiIdsLabel": "接口",
       "namePlaceholder": "服务标识命名信息，最多允许100个字符",
       "mockNew": "生成Mock服务",
       "mockUpdate": "更新Mock服务",
@@ -234,43 +218,19 @@
       "cloneComp": "克隆组件",
       "compNameLabel": "新组件名称",
       "dataModelOpt": "数据模型",
-      "respModalOpt": "响应",
-      "paramsModelOpt": "参数",
       "requestBodyModelOpt": "请求体",
-      "nameLabel": "名称",
       "descriptionPlaceholder": "描述",
       "modelLabel": "数据模型",
-      "paramsLabel": "参数",
-      "responseTitle": "响应头",
       "addAttrTip": "已存在该属性",
       "addAttrTitle": "添加参数",
       "selectBodyCompPlaceholder": "选择使用body模型",
-      "navItems": {
-        "projectInfo": "服务信息",
-        "openapi": "文档信息",
-        "syncConfig": "同步配置",
-        "security": "安全方案配置",
-        "serverConfig": "服务器配置",
-        "performance": "测试指标",
-        "testInfo": "测试信息",
-        "activity": "活动",
-        "variable": "变量",
-        "shareList": "分享记录",
-        "agent": "代理",
-        "tag": "标签",
-        "component": "组件",
-        "serviceMock": "Mock服务"
-      },
       "form": {
         "deprecated": "弃用",
-        "format": "格式",
         "example": "example",
         "paramsNamePlaceholder": "参数名称",
         "attrTab": "属性",
         "refsTab": "引用",
         "compPlaceholder": "选择引用组件",
-        "typePlaceholder": "类型",
-        "formatPlaceholder": "格式",
         "defaultValuePlaceholder": "默认值",
         "examplePlaceholder": "示例值",
         "minLengthPlaceholder": "最小长度",
@@ -306,17 +266,12 @@
       "hints": "当前已添加{num}个用例，每个接口最大支持100条用例。",
       "addCaseAction": "添加用例",
       "execCaseAction": "执行测试",
-      "nameLabel": "名称",
-      "statusLabel": "状态",
       "statusNotTested": "未测试",
       "execModalTitle": "执行用例",
       "addModal": {
         "title": "生成接口用例",
         "editTitle": "编辑接口用例",
-        "restore": "恢复",
-        "nameLabel": "名称",
         "namePlaceholder": "输入用例名称，最多可输入400个字符",
-        "typeLabel": "类型",
         "typePlaceholder": "选择类型",
         "toolbarMenus": {
           "time": "耗时分析"
@@ -336,8 +291,6 @@
         "assertRule": "断言数据校验不通过",
         "apisLabel": "测试接口",
         "caseLabel": "测试用例",
-        "headerTab": "请求头",
-        "requestBodyTab": "请求体",
         "debugAction": "调试用例",
         "descriptionPlaceholder": "输入用例描述，最多可输入800个字符"
       }
@@ -354,11 +307,7 @@
       "fileLabel": "选择文件",
       "fileTip": "可直接将文件拖入此区域直接上传，文件大小不超过20M，支持.zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.yml类型文件。",
       "strategyWhenDuplicated": "遇到重复时的处理策略",
-      "strategy_cover": "覆盖",
-      "strategy_ignore": "忽略",
       "deleteWhenNotExisted": "当前接口在导入数据中不存在时是否删除",
-      "delete_y": "是",
-      "delete_n": "否",
       "fileRule": "请检查文件是否是Postman Collection V2/V2.1 版本JSON文件！",
       "sourceRule": "请选择导入来源",
       "fileRule_required": "请上传本地文件",
@@ -374,39 +323,23 @@
       "hints": "通过组件可以定义用于复用的对象集合。支持的定义组件类型包括：数据模型、响应、参数、示例、请求体、请求体、头和安全方案。注意：组件没有被API属性引用时对API没有任何影响。",
       "designCompAction": "设计组件",
       "addModal": {
-        "detail": "详情",
-        "typeLabel": "类型",
         "typePlaceholder": "选择类型",
-        "nameLabel": "名称",
         "namePlaceholder": "输入名称，最多400字符",
         "refLabel": "引用",
         "cancelRefs": "取消引用",
         "useRefs": "恢复引用",
         "summaryLabel": "摘要",
         "summaryPlaceholder": "输入摘要，最多400字符",
-        "exampleLabel": "示例",
         "examplePlaceholder": "输入示例",
         "schemaTypeLabel": "属性类型",
         "schemaTypePlaceholder": "选择类型",
-        "formatLabel": "格式",
-        "formatPlaceholder": "格式",
-        "valueLabel": "值",
         "valuePlaceholder": "输入值，最多4096字符",
-        "descriptionLabel": "描述",
         "descriptionPlaceholder": "输入描述，最多2000字符，支持Markdown语法"
       }
     },
     "apis": {
       "tabs": {
-        "debug": "调试",
-        "case": "用例",
-        "test": "测试",
-        "mock": "Mock",
-        "doc": "文档"
-      },
-      "requestTabs": {
-        "parameters": "请求参数",
-        "header": "请求头"
+        "mock": "Mock"
       },
       "errors": {
         "invalidUrl": "出错了！",
@@ -434,8 +367,7 @@
       },
       "menus": {
         "time": "耗时分析",
-        "define": "定义",
-        "generateCode": "代码"
+        "define": "定义"
       },
       "docInfo": {
         "pathParams": {
@@ -511,16 +443,12 @@
         "performance": "测试指标",
         "testInfo": "测试结果",
         "case": "接口用例",
-        "activity": "活动",
         "agent": "接口代理",
-        "coding": "代码",
         "apiMock": "Mock接口",
         "saveUnarchived": "保存到未归档",
         "archiveToService": "归档到服务",
         "indicator": "接口指标",
-        "test": "测试结果",
-        "variable": "变量",
-        "code": "代码"
+        "test": "测试结果"
       },
       "serviceNav": {
         "projectInfo": "服务信息",
@@ -528,15 +456,8 @@
         "syncConfig": "同步配置",
         "security": "安全方案配置",
         "serverConfig": "服务器配置",
-        "activity": "活动",
         "agent": "服务代理",
-        "tag": "标签",
         "component": "组件"
-      },
-      "socketNavs": {
-        "apiInfo": "接口信息",
-        "activity": "活动",
-        "agent": "接口代理"
       }
     },
     "security": {
@@ -555,13 +476,11 @@
         "implicit": "隐式模式（Implicit）",
         "clientCredentials": "客户端模式（ClientCredentials）"
       },
-      "nameLabel": "名称",
       "nameTip": "组件名称只能包含 A-Z a-z 0-9 - . _ 字符",
       "namePlaceholder": "请输入方案名称",
       "typeLabel": "认证类型",
       "usernameLabel": "用户名",
       "usernamePlaceholder": "请输入用户名",
-      "passwordLabel": "密码",
       "passwordPlaceholder": "请输入密码",
       "tokenLabel": "令牌",
       "tokenPlaceholder": "请输入访问令牌",
@@ -616,12 +535,8 @@
       "form": {
         "urlPlaceholder": "指向目标主机的URL前缀，例如：https://{env}.xcan.cloud:{prot}/{path}",
         "descriptionPlaceholder": "服务器描述，最大支持400字符",
-        "variables": "变量",
-        "variableName": "名称",
         "variableNamePlaceholder": "变量名称，最大支持100字符",
-        "variableValue": "值",
         "variableValuePlaceholder": "变量值，最大支持400字符",
-        "variableDescription": "描述",
         "variableDescriptionPlaceholder": "变量描述，最大支持400字符"
       },
       "tips": {
@@ -666,7 +581,6 @@
         "testSuccess": "配置测试通过",
         "syncSuccess": "同步成功",
         "syncAllSuccess": "同步所有成功",
-        "saveSuccess": "保存成功",
         "nameExists": "名称已存在",
         "authNameExists": "认证名称已存在",
         "noValidConfig": "未找到有效的同步配置，请先保存数据",
@@ -674,16 +588,10 @@
         "inputContent": "请输入内容"
       },
       "form": {
-        "namePlaceholder": "名称",
-        "addressPlaceholder": "地址",
         "duplicateStrategy": "遇到重复时处理策略",
         "deleteWhenNotExist": "同步接口不存在时是否删除本地接口",
         "authRequired": "当同步地址受到保护时，它是必需的。最多允许添加10个。",
-        "paramName": "参数名",
-        "paramPosition": "参数位置",
-        "paramValue": "参数值",
-        "positionPlaceholder": "位置",
-        "valuePlaceholder": "值"
+        "paramPosition": "参数位置"
       },
       "tips": {
         "addDemo": "添加示例数据",

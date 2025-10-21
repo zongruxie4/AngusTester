@@ -32,7 +32,7 @@
       "authTabName": "Auth",
       "mockTabName": "Mock Service"
     },
-    "sidebar": {
+    "service": {
       "deleteService": "Delete Service",
       "deleteServiceTip": "Deleting a service will delete all APIs under the service, as well as associated favorites, metrics, variables, and other information. Please confirm whether to delete?",
       "restartServiceTip": "All tasks under the service will be updated to \"Pending Test\", and related statistics and status will be cleared. Are you sure to restart the test task 「{name}」?",
@@ -46,8 +46,6 @@
       "serviceNamePlaceholder": "Maximum 100 characters",
       "unarchivedTitle": "Unarchived",
       "searchServicePlaceholder": "Search service name",
-      "deleteAllSuccess": "All deleted successfully",
-      "deleteAllAction": "Delete All",
       "actions": {
         "addApi": "Add API",
         "httpApi": "HTTP API",
@@ -189,15 +187,7 @@
         "serviceConfigDefault": "Use Default (Server Configuration When Generating Script)",
         "serviceConfigModify": "Modify Variable Configuration (Updated to Interface and Dynamic Http Extracted Variables)",
         "selectServicePlaceholder": "Please select server",
-        "variableEmpty": "No Variables",
-        "descLabel": "Description",
-        "descEmpty": "No Description",
-        "variableLabel": "Variables",
-        "variableNameLabel": "Name",
-        "variableValueLabel": "Value",
-        "variableValueDefault": "Default",
-        "variableDescLabel": "Description",
-        "more": "More"
+        "variableEmpty": "No Variables"
       },
       "addServiceModal": {
         "title": "Add Service",
@@ -207,12 +197,6 @@
     "mock": {
       "description": "Mock can quickly generate and simulate the dependencies of the API, enabling faster development, more comprehensive testing, and earlier delivery of stable products or applications. Mock can also avoid dirty data problems caused by direct production system debugging.",
       "createTypeLabel": "Mock Method",
-      "nameLabel": "Name",
-      "serviceDomainUrlLabel": "Domain Name",
-      "servicePortLabel": "Port",
-      "nodeIdLabel": "Node",
-      "serviceLabel": "Service",
-      "apiIdsLabel": "API",
       "namePlaceholder": "Service identifier naming information, up to 100 characters",
       "mockNew": "Generate Mock Service",
       "mockUpdate": "Update Mock Service",
@@ -233,40 +217,17 @@
       "cloneComp": "Clone component",
       "compNameLabel": "New component name",
       "dataModelOpt": "Data Model",
-      "respModalOpt": "Response",
-      "paramsModelOpt": "Parameters",
       "requestBodyModelOpt": "Request Body",
-      "nameLabel": "Name",
       "descriptionPlaceholder": "Description",
       "modelLabel": "Data Model",
-      "paramsLabel": "Parameters",
-      "responseTitle": "Response Header",
       "addAttrTip": "Attribute already exists",
       "addAttrTitle": "Add parameter",
       "selectBodyCompPlaceholder": "Select to use body model",
-      "navItems": {
-        "projectInfo": "Service Information",
-        "openapi": "Document Information",
-        "syncConfig": "Sync Configuration",
-        "security": "Security Scheme Configuration",
-        "serverConfig": "Server Configuration",
-        "performance": "Test Metrics",
-        "testInfo": "Test Information",
-        "activity": "Activity",
-        "variable": "Variables",
-        "shareList": "Share Records",
-        "agent": "Agent",
-        "tag": "Tags",
-        "component": "Components",
-        "serviceMock": "Mock Service"
-      },
       "form": {
         "paramsNamePlaceholder": "Parameter name",
         "attrTab": "Attributes",
         "refsTab": "References",
         "compPlaceholder": "Select referenced component",
-        "typePlaceholder": "Type",
-        "formatPlaceholder": "Format",
         "defaultValuePlaceholder": "Default value",
         "examplePlaceholder": "Example value",
         "minLengthPlaceholder": "Minimum length",
@@ -301,17 +262,12 @@
       "hints": "Currently added {num} cases, each interface supports a maximum of 100 cases.",
       "addCaseAction": "Add Case",
       "execCaseAction": "Execute Test",
-      "nameLabel": "Name",
-      "statusLabel": "Status",
       "statusNotTested": "Not Tested",
       "execModalTitle": "Execute Case",
       "addModal": {
         "title": "Generate API Case",
         "editTitle": "Edit API Case",
-        "restore": "Restore",
-        "nameLabel": "Name",
         "namePlaceholder": "Enter case name, up to 400 characters",
-        "typeLabel": "Type",
         "typePlaceholder": "Select type",
         "toolbarMenus": {
           "time": "Duration Analysis"
@@ -331,8 +287,6 @@
         "assertRule": "Assertion data verification failed",
         "apisLabel": "Test Interface",
         "caseLabel": "Test Case",
-        "headerTab": "Request Header",
-        "requestBodyTab": "Request Body",
         "debugAction": "Debug Case",
         "descriptionPlaceholder": "Enter case description, up to 800 characters"
       }
@@ -349,11 +303,7 @@
       "fileLabel": "Select File",
       "fileTip": "The file can be dragged directly into this area for upload, the file size is not more than 20M, and the supported file types are .zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.yml.",
       "strategyWhenDuplicated": "Strategy when encountering duplicates",
-      "strategy_cover": "Cover",
-      "strategy_ignore": "Ignore",
       "deleteWhenNotExisted": "Whether to delete the current interface when it does not exist in the imported data",
-      "delete_y": "Yes",
-      "delete_n": "No",
       "fileRule": "Please check if the file is a Postman Collection V2/V2.1 version JSON file!",
       "sourceRule": "Please select import source",
       "fileRule_required": "Please upload local file",
@@ -369,39 +319,23 @@
       "hints": "Components can be used to define reusable object collections. The supported component types include: data model, response, parameter, example, request body, request body, header, and security scheme. Note: when a component is not referenced by an API attribute, it has no effect on the API.",
       "designCompAction": "Design component",
       "addModal": {
-        "detail": "Detail",
-        "typeLabel": "Type",
         "typePlaceholder": "Select type",
-        "nameLabel": "Name",
         "namePlaceholder": "Enter name, up to 400 characters",
         "refLabel": "Reference",
         "cancelRefs": "Cancel reference",
         "useRefs": "Restore reference",
         "summaryLabel": "Summary",
         "summaryPlaceholder": "Enter summary, up to 400 characters",
-        "exampleLabel": "Example",
         "examplePlaceholder": "Enter example",
         "schemaTypeLabel": "Attribute type",
         "schemaTypePlaceholder": "Select type",
-        "formatLabel": "Format",
-        "formatPlaceholder": "Format",
-        "valueLabel": "Value",
         "valuePlaceholder": "Enter value, up to 4096 characters",
-        "descriptionLabel": "Description",
         "descriptionPlaceholder": "Enter description, up to 2000 characters, support Markdown syntax"
       }
     },
     "apis": {
       "tabs": {
-        "debug": "Debug",
-        "case": "Case",
-        "test": "Test",
-        "mock": "Mock",
-        "doc": "Document"
-      },
-      "requestTabs": {
-        "parameters": "Request Parameters",
-        "header": "Request Headers"
+        "mock": "Mock"
       },
       "errors": {
         "invalidUrl": "Error!",
@@ -429,8 +363,7 @@
       },
       "menus": {
         "time": "Duration Analysis",
-        "define": "Definition",
-        "generateCode": "Code"
+        "define": "Definition"
       },
       "docInfo": {
         "pathParams": {
@@ -505,16 +438,13 @@
         "apiInfo": "API Info",
         "performance": "Performance",
         "testInfo": "Test Result",
-        "activity": "Activity",
         "agent": "Agent",
         "apiMock": "Mock API",
         "saveUnarchived": "Save to Unarchived",
         "archiveToService": "Archive to Service",
         "indicator": "API Metrics",
         "test": "Test Results",
-        "case": "API Cases",
-        "variable": "Variables",
-        "code": "Code"
+        "case": "API Cases"
       },
       "serviceNav": {
         "projectInfo": "Service Info",
@@ -522,15 +452,8 @@
         "syncConfig": "Sync Config",
         "security": "Security Config",
         "serverConfig": "Server Config",
-        "activity": "Activity",
         "agent": "Service Agent",
-        "tag": "Tag",
         "component": "Component"
-      },
-      "socketNavs": {
-        "apiInfo": "API Info",
-        "activity": "Activity",
-        "agent": "Agent"
       }
     },
     "security": {
@@ -549,13 +472,11 @@
         "implicit": "Implicit",
         "clientCredentials": "Client Credentials"
       },
-      "nameLabel": "Name",
       "nameTip": "The component name can only contain A-Z a-z 0-9 - . _ characters",
       "namePlaceholder": "Please enter the scheme name",
       "typeLabel": "Type",
       "usernameLabel": "Username",
       "usernamePlaceholder": "Please enter the username",
-      "passwordLabel": "Password",
       "passwordPlaceholder": "Please enter the password",
       "tokenLabel": "Token",
       "tokenPlaceholder": "Please enter the access token",
@@ -612,12 +533,8 @@
         "urlPlaceholder": "URL prefix pointing to target host, e.g.: https://{env}.xcan.cloud:{prot}/{path}",
         "description": "Description",
         "descriptionPlaceholder": "Server description, maximum 400 characters",
-        "variables": "Variables",
-        "variableName": "Name",
         "variableNamePlaceholder": "Variable name, maximum 100 characters",
-        "variableValue": "Value",
         "variableValuePlaceholder": "Variable value, maximum 400 characters",
-        "variableDescription": "Description",
         "variableDescriptionPlaceholder": "Variable description, maximum 400 characters"
       },
       "tips": {
@@ -662,7 +579,6 @@
         "testSuccess": "Configuration test passed",
         "syncSuccess": "Sync successful",
         "syncAllSuccess": "Sync all successful",
-        "saveSuccess": "Saved successfully",
         "nameExists": "Name already exists",
         "authNameExists": "Authentication name already exists",
         "noValidConfig": "No valid sync configuration found, please save data first",
@@ -670,17 +586,11 @@
         "inputContent": "Please enter content"
       },
       "form": {
-        "namePlaceholder": "Name",
-        "addressPlaceholder": "Address",
         "duplicateStrategy": "Strategy when encountering duplicates",
         "deleteWhenNotExist": "Whether to delete local APIs when sync APIs do not exist",
         "authentication": "Authentication",
         "authRequired": "Required when sync address is protected. Maximum 10 allowed.",
-        "paramName": "Parameter Name",
-        "paramPosition": "Parameter Position",
-        "paramValue": "Parameter Value",
-        "positionPlaceholder": "Position",
-        "valuePlaceholder": "Value"
+        "paramPosition": "Parameter Position"
       },
       "tips": {
         "addDemo": "Add demo data",

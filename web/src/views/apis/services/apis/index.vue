@@ -449,7 +449,7 @@ onMounted(async () => {
     const [error] = await services.loadDetail(props.serviceInfo?.id);
     if (error) {
       showQuickStarted.value = true;
-      notification.warning(t('service.sidebar.apiGroup.messages.serviceNotExist'));
+      notification.warning(t('service.service.apiGroup.messages.serviceNotExist'));
     }
   }
 
@@ -550,7 +550,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId })); // Base API informa
               @loadApis="refresh"
               @openMock="openMock" />
           </TabPane>
-          <TabPane key="testResult" :tab="t('service.apis.tabs.test')">
+          <TabPane key="testResult" :tab="t('common.test')">
             <TestInfo
               :serviceId="mainState.serviceId" />
           </TabPane>

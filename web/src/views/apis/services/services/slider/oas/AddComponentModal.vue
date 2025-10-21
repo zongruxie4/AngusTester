@@ -303,7 +303,7 @@ onMounted(() => {
       <div class="flex flex-col">
         <div>
           <IconRequired />
-          {{ t('service.oas.addModal.typeLabel') }}
+          {{ t('common.type') }}
         </div>
         <Select
           v-model:value="compType"
@@ -313,7 +313,7 @@ onMounted(() => {
           class="w-full mb-2" />
         <div>
           <IconRequired />
-          {{ t('service.oas.addModal.nameLabel') }}
+          {{ t('common.name') }}
         </div>
         <Input
           v-model:value="compName"
@@ -354,7 +354,7 @@ onMounted(() => {
               type="textarea"
               :placeholder="t('service.oas.addModal.summaryPlaceholder')"
               class="w-full" />
-            <div class="mt-2 pl-1.75">{{ t('service.oas.addModal.descriptionLabel') }}</div>
+            <div class="mt-2 pl-1.75">{{ t('common.description') }}</div>
             <Input
               v-model:value="examples.description"
               :maxlength="2000"
@@ -364,7 +364,7 @@ onMounted(() => {
               class="w-full" />
             <div class="mt-2">
               <IconRequired />
-              {{ t('service.oas.addModal.exampleLabel') }}
+              {{ t('common.example') }}
             </div>
             <Input
               v-model:value="examples.value"
@@ -387,14 +387,14 @@ onMounted(() => {
               enumKey="ParameterType"
               :placeholder="t('service.oas.addModal.schemaTypePlaceholder')"
               class="w-full" />
-            <div class="mt-2 pl-1.75">{{ t('service.oas.addModal.formatLabel') }}</div>
+            <div class="mt-2 pl-1.75">{{ t('common.format') }}</div>
             <template v-if="['integer','number'].includes(schemaType as any)">
               <SelectEnum
                 v-model:value="schemaFormat"
                 :enumKey="enumKeyMap[schemaType as any]"
                 :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
                 size="small"
-                :placeholder="t('service.oas.addModal.formatPlaceholder')"
+                :placeholder="t('common.format')"
                 class="w-full" />
             </template>
             <template v-else-if="schemaType === 'string'">
@@ -403,7 +403,7 @@ onMounted(() => {
                 enumKey="StringParameterFormat"
                 :fieldNames="{label:'message',value:'value'}"
                 :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
-                :placeholder="t('service.oas.addModal.formatPlaceholder')"
+                :placeholder="t('common.format')"
                 class="w-full" />
             </template>
             <template v-else>
@@ -413,14 +413,14 @@ onMounted(() => {
                 class="w-full"
                 @change="()=>{schemaFormat = schemaType as any}" />
             </template>
-            <div class="pl-1.75 mt-2">{{ t('service.oas.addModal.valueLabel') }}</div>
+            <div class="pl-1.75 mt-2">{{ t('common.value') }}</div>
             <Input
               v-model:value="schemaExtValue"
               :maxlength="400"
               :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
               :placeholder="t('service.oas.addModal.valuePlaceholder')"
               class="w-full" />
-            <div class="mt-2 pl-1.75">{{ t('service.oas.addModal.descriptionLabel') }}</div>
+            <div class="mt-2 pl-1.75">{{ t('common.description') }}</div>
             <Input
               v-model:value="headers.description"
               :maxlength="2000"

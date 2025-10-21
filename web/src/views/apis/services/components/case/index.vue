@@ -222,7 +222,7 @@ watch(() => props.id, newValue => {
           :class="{'mr-2 w-1/4 min-w-25': props.layout === 'inline'}">
           <div class="flex items-center">
             <div class="flex items-center truncate flex-1">
-              <span class="text-gray-text">{{ t('service.case.nameLabel') }}<Colon /></span>
+              <span class="text-gray-text">{{ t('common.name') }}<Colon /></span>
               <span v-if="!editableMap[item.id]" class="pl-1 flex-1 min-w-0 truncate">
                 {{ item.name }}
               </span>
@@ -257,7 +257,7 @@ watch(() => props.id, newValue => {
           </div>
           <div class="flex items-center justify-between">
             <div class="inline-flex items-center truncate flex-1">
-              <span class="text-gray-text">{{ t('service.case.statusLabel') }} <Colon /></span>
+              <span class="text-gray-text">{{ t('common.status') }} <Colon /></span>
               <div class="pl-1" :class="getStatusColor(item.execResult?.value)">{{ item.execResult?.message || t('service.case.statusNotTested') }}</div>
               <div class="pl-1">{{ item.execFailureMessage }}</div>
             </div>

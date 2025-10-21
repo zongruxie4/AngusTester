@@ -174,7 +174,7 @@ export interface ModalConfig {
 export type FoldActionKey = 'creatService' | 'import' | 'export'|'authorization';
 
 export const globalActions = {
-  name: t('service.sidebar.topAction.addService'),
+  name: t('service.service.topAction.addService'),
   menuItems: [
     {
       name: t('actions.import'),
@@ -196,12 +196,12 @@ export const globalActions = {
 
 export const foldGlobalActions = ref<{ name: string; key: FoldActionKey; icon: string; }[]>([
   {
-    name: t('service.sidebar.foldAction.addService'),
+    name: t('service.service.foldAction.addService'),
     key: 'creatService',
     icon: 'icon-chuangjianfuwu'
   },
   {
-    name: t('service.sidebar.foldAction.localImport'),
+    name: t('service.service.foldAction.localImport'),
     key: 'import',
     icon: 'icon-shangchuan'
   },
@@ -219,20 +219,20 @@ export const foldGlobalActions = ref<{ name: string; key: FoldActionKey; icon: s
 
 export const menuActions = [
   {
-    name: t('service.sidebar.actions.addApi'),
+    name: t('service.service.actions.addApi'),
     icon: 'icon-tianjiajiekou',
     key: 'add',
     permission: 'ADD',
     disabled: false,
     children: [
       {
-        name: t('service.sidebar.actions.httpApi'),
+        name: t('service.service.actions.httpApi'),
         key: 'addApi',
         permission: 'ADD',
         disabled: false
       },
       {
-        name: t('service.sidebar.actions.webSocketApi'),
+        name: t('service.service.actions.webSocketApi'),
         key: 'addSocket',
         permission: 'ADD',
         disabled: false
@@ -240,42 +240,42 @@ export const menuActions = [
     ]
   },
   {
-    name: t('service.sidebar.actions.syncConfig'),
+    name: t('service.service.actions.syncConfig'),
     icon: 'icon-peizhifuwutongbu',
     key: 'sync-config',
     permission: 'MODIFY',
     disabled: false
   },
   {
-    name: t('service.sidebar.actions.securityConfig'),
+    name: t('service.service.actions.securityConfig'),
     icon: 'icon-renzhengtou',
     key: 'authentication-config',
     permission: 'MODIFY',
     disabled: false
   },
   {
-    name: t('service.sidebar.actions.serverConfig'),
+    name: t('service.service.actions.serverConfig'),
     icon: 'icon-host',
     key: 'server-config',
     permission: 'MODIFY',
     disabled: false
   },
   {
-    name: t('service.sidebar.actions.localImport'),
+    name: t('service.service.actions.localImport'),
     icon: 'icon-daoru',
     key: 'local-import',
     permission: 'ADD',
     disabled: false
   },
   {
-    name: t('service.sidebar.actions.exportApi'),
+    name: t('service.service.actions.exportApi'),
     icon: 'icon-daochujiekou',
     key: 'export-apis',
     permission: 'EXPORT',
     disabled: false
   },
   {
-    name: t('service.sidebar.actions.mockService'),
+    name: t('service.service.actions.mockService'),
     permission: 'VIEW',
     key: 'mock',
     icon: 'icon-mockjiedian',
@@ -296,7 +296,7 @@ export const menuActions = [
     disabled: false
   },
   {
-    name: t('service.sidebar.actions.translate'),
+    name: t('service.service.actions.translate'),
     icon: 'icon-yuyan',
     key: 'translate',
     disabled: false
@@ -316,81 +316,81 @@ export const menuActions = [
     disabled: false
   },
   {
-    name: t('service.sidebar.actions.modifyStatus'),
+    name: t('service.service.actions.modifyStatus'),
     key: 'setStatus',
     icon: 'icon-fabu',
     permission: 'MODIFY',
     disabled: false
   },
   {
-    name: t('service.sidebar.actions.batchModifyParams'),
+    name: t('service.service.actions.batchModifyParams'),
     key: 'batchModify',
     icon: 'icon-xiugai',
     permission: 'MODIFY',
     disabled: false,
     children: [
       {
-        name: t('service.sidebar.actions.batchAddParams'),
+        name: t('service.service.actions.batchAddParams'),
         key: 'batchAddParams',
         icon: 'icon-piliangtianjiacanshu',
         permission: 'MODIFY'
       },
       {
-        name: t('service.sidebar.actions.batchModifyParams'),
+        name: t('service.service.actions.batchModifyParams'),
         key: 'batchModifyParams',
         icon: 'icon-piliangxiugaicanshu',
         permission: 'MODIFY'
       },
       {
-        name: t('service.sidebar.actions.batchDelParams'),
+        name: t('service.service.actions.batchDelParams'),
         key: 'batchDelParams',
         icon: 'icon-piliangshanchucanshu',
         permission: 'MODIFY'
       },
       {
-        name: t('service.sidebar.actions.batchEnabledParams'),
+        name: t('service.service.actions.batchEnabledParams'),
         key: 'batchEnabledParams',
         icon: 'icon-piliangqiyongcanshu',
         permission: 'MODIFY'
       },
       {
-        name: t('service.sidebar.actions.batchDisabledParams'),
+        name: t('service.service.actions.batchDisabledParams'),
         key: 'batchDisabledParams',
         icon: 'icon-piliangjinyongcanshu',
         permission: 'MODIFY'
       },
       {
-        name: t('service.sidebar.actions.batchModifyAuth'),
+        name: t('service.service.actions.batchModifyAuth'),
         key: 'batchModifyAuth',
         icon: 'icon-piliangxiugairenzheng',
         permission: 'MODIFY'
       },
       {
-        name: t('service.sidebar.actions.batchModifyServer'),
+        name: t('service.service.actions.batchModifyServer'),
         key: 'batchModifyServer',
         icon: 'icon-piliangxiugaifuwuqi',
         permission: 'MODIFY'
       },
       {
-        name: t('service.sidebar.actions.batchLinkVariable'),
+        name: t('service.service.actions.batchLinkVariable'),
         key: 'batchLinkVariable',
         icon: 'icon-piliangyinyongbianliang',
         permission: 'MODIFY'
       },
       {
-        name: t('service.sidebar.actions.batchDelVariable'),
+        name: t('service.service.actions.batchDelVariable'),
         key: 'batchDelVariable',
         icon: 'icon-piliangquxiaoyinyongbianliang',
         permission: 'MODIFY'
       },
       {
-        name: t('service.sidebar.actions.batchLinkDataSet'),
+        name: t('service.service.actions.batchLinkDataSet'),
         key: 'batchLinkDataSet',
         icon: 'icon-piliangyinyongshujuji',
         permission: 'MODIFY'
       },
       {
-        name: t('service.sidebar.actions.batchDelDataSet'),
+        name: t('service.service.actions.batchDelDataSet'),
         key: 'batchDelDataSet',
         icon: 'icon-piliangquxiaoyinyongshujuji',
         permission: 'MODIFY'
@@ -398,51 +398,51 @@ export const menuActions = [
     ]
   },
   {
-    name: t('service.sidebar.actions.apiTestScript'),
+    name: t('service.service.actions.apiTestScript'),
     key: 'testScript',
     disabled: false,
     permission: 'TEST',
     icon: 'icon-ceshijiaoben',
     children: [
       {
-        name: t('service.sidebar.actions.generateTestScript'),
+        name: t('service.service.actions.generateTestScript'),
         key: 'setTestScript',
         permission: 'TEST',
         icon: 'icon-shengchengceshijiaoben',
-        tip: t('service.sidebar.actions.generateTestScriptTip')
+        tip: t('service.service.actions.generateTestScriptTip')
       },
       {
-        name: t('service.sidebar.actions.deleteTestScript'),
+        name: t('service.service.actions.deleteTestScript'),
         key: 'delTestScript',
         permission: 'TEST',
         icon: 'icon-shanchuceshijiaoben',
-        tip: t('service.sidebar.actions.deleteTestScriptTip')
+        tip: t('service.service.actions.deleteTestScriptTip')
       }
     ]
   },
   {
 
-    name: t('service.sidebar.actions.enableDisableTest'),
+    name: t('service.service.actions.enableDisableTest'),
     key: 'enabledTest',
     disabled: false,
     permission: 'MODIFY',
     icon: 'icon-zhibiao'
   },
   {
-    name: t('service.sidebar.actions.execServiceTest'),
+    name: t('service.service.actions.execServiceTest'),
     key: 'execService',
     disabled: false,
     permission: 'TEST',
     icon: 'icon-ceshijiaoben',
     children: [
       {
-        name: t('service.sidebar.actions.execSmokeTest'),
+        name: t('service.service.actions.execSmokeTest'),
         key: 'funcTestExecSmoke',
         permission: 'TEST',
         icon: 'icon-gengxinceshijiaoben'
       },
       {
-        name: t('service.sidebar.actions.execSecurityTest'),
+        name: t('service.service.actions.execSecurityTest'),
         key: 'funcTestExecSecurity',
         permission: 'TEST',
         icon: 'icon-shanchuceshijiaoben'
@@ -450,26 +450,26 @@ export const menuActions = [
     ]
   },
   {
-    name: t('service.sidebar.actions.execApiTest'),
+    name: t('service.service.actions.execApiTest'),
     key: 'exec',
     disabled: false,
     permission: 'TEST',
     icon: 'icon-ceshijiaoben',
     children: [
       {
-        name: t('service.sidebar.actions.execFuncTest'),
+        name: t('service.service.actions.execFuncTest'),
         key: 'funcTestExec',
         permission: 'TEST',
         icon: 'icon-shengchengceshijiaoben'
       },
       {
-        name: t('service.sidebar.actions.execPerfTest'),
+        name: t('service.service.actions.execPerfTest'),
         key: 'perfTestExec',
         permission: 'TEST',
         icon: 'icon-shanchuceshijiaoben'
       },
       {
-        name: t('service.sidebar.actions.execStabilityTest'),
+        name: t('service.service.actions.execStabilityTest'),
         key: 'stabilityTestExec',
         permission: 'TEST',
         icon: 'icon-shanchuceshijiaoben'
@@ -477,43 +477,43 @@ export const menuActions = [
     ]
   },
   {
-    name: t('service.sidebar.actions.apiTestTask'),
+    name: t('service.service.actions.apiTestTask'),
     key: 'testTask',
     disabled: false,
     permission: 'TEST',
     icon: 'icon-ceshirenwu',
     children: [
       {
-        name: t('service.sidebar.actions.generateTestTask'),
+        name: t('service.service.actions.generateTestTask'),
         key: 'setTest',
         icon: 'icon-shengchengceshirenwu1',
         permission: 'TEST',
         disabled: false,
-        tip: t('service.sidebar.actions.generateTestTaskTip')
+        tip: t('service.service.actions.generateTestTaskTip')
       },
       {
-        name: t('service.sidebar.actions.restartTestTask'),
+        name: t('service.service.actions.restartTestTask'),
         key: 'reTest',
         icon: 'icon-zhongxinkaishiceshi',
         permission: 'TEST',
         disabled: false,
-        tip: t('service.sidebar.actions.restartTestTaskTip')
+        tip: t('service.service.actions.restartTestTaskTip')
       },
       {
-        name: t('service.sidebar.actions.reopenTestTask'),
+        name: t('service.service.actions.reopenTestTask'),
         key: 'reopen',
         icon: 'icon-zhongxindakaiceshirenwu',
         permission: 'TEST',
         disabled: false,
-        tip: t('service.sidebar.actions.reopenTestTaskTip')
+        tip: t('service.service.actions.reopenTestTaskTip')
       },
       {
-        name: t('service.sidebar.actions.deleteTestTask'),
+        name: t('service.service.actions.deleteTestTask'),
         key: 'deleteTask',
         icon: 'icon-shanchuceshirenwu1',
         permission: 'TEST',
         disabled: false,
-        tip: t('service.sidebar.actions.deleteTestTaskTip')
+        tip: t('service.service.actions.deleteTestTaskTip')
       }
     ]
   }

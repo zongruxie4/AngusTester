@@ -222,18 +222,18 @@ const handleExport = async () => {
 
   // Validate service selection for SERVICE export type
   if (exportType.value === ExportType.SERVICE && !selectedServiceIds.value.length) {
-    notification.warning(t('service.sidebar.exportServiceModal.serviceTip'));
+    notification.warning(t('service.service.exportServiceModal.serviceTip'));
     return;
   }
 
   // Validate service and API selection for APIS export type
   if (exportType.value === ExportType.APIS) {
     if (!selectedServiceId.value || !selectedServiceId.value.length) {
-      notification.warning(t('service.sidebar.exportServiceModal.serviceTip'));
+      notification.warning(t('service.service.exportServiceModal.serviceTip'));
       return;
     }
     if (!selectedApiIds.value.length) {
-      notification.warning(t('service.sidebar.exportServiceModal.apiTip'));
+      notification.warning(t('service.service.exportServiceModal.apiTip'));
       return;
     }
   }
@@ -440,19 +440,19 @@ watch(() => props.visible, (isVisible) => {
 
 // Export type options for the radio group
 const exportTypeOptions = [{
-  label: t('service.sidebar.exportServiceModal.exportType_service'),
+  label: t('service.service.exportServiceModal.exportType_service'),
   value: 'SERVICE'
 }, {
-  label: t('service.sidebar.exportServiceModal.exportType_api'),
+  label: t('service.service.exportServiceModal.exportType_api'),
   value: 'APIS'
 }];
 
 // Component type options for the radio group
 const componentTypeOptions = [{
-  label: t('service.sidebar.exportServiceModal.compType_all'),
+  label: t('service.service.exportServiceModal.compType_all'),
   value: false
 }, {
-  label: t('service.sidebar.exportServiceModal.compType_api'),
+  label: t('service.service.exportServiceModal.compType_api'),
   value: true
 }];
 
@@ -487,14 +487,14 @@ onMounted(async () => {
   <Modal
     :visible="props.visible"
     :width="800"
-    :title="t('service.sidebar.exportServiceModal.title')"
+    :title="t('service.service.exportServiceModal.title')"
     @cancel="handleCloseModal"
     @ok="handleExport">
     <Spin :spinning="isExportLoading">
       <div class="flex flex-wrap">
         <template v-if="props.type !== ExportType.APIS && props.type !== ExportType.API">
           <div class="flex-1/2">
-            <span>{{ t('service.sidebar.exportServiceModal.exportTypeLabel') }}<Colon class="ml-1 mr-3.5" /></span>
+            <span>{{ t('service.service.exportServiceModal.exportTypeLabel') }}<Colon class="ml-1 mr-3.5" /></span>
             <RadioGroup
               :value="exportType"
               :options="exportTypeOptions"
@@ -505,7 +505,7 @@ onMounted(async () => {
 
         <template v-if="props.type !== ExportType.API">
           <div class="mt-1.5 flex-1/2">
-            <span>{{ t('service.sidebar.exportServiceModal.onlyApisComponentsLabel') }}<Colon class="ml-1 mr-3.5" /></span>
+            <span>{{ t('service.service.exportServiceModal.onlyApisComponentsLabel') }}<Colon class="ml-1 mr-3.5" /></span>
             <RadioGroup
               v-model:value="shouldExportOnlyApisComponents"
               :options="componentTypeOptions">
@@ -514,7 +514,7 @@ onMounted(async () => {
         </template>
 
         <div class="mt-1.5 flex-1/2">
-          <span>{{ t('service.sidebar.exportServiceModal.formatLabel') }}<Colon class="ml-1 mr-3.5" /></span>
+          <span>{{ t('service.service.exportServiceModal.formatLabel') }}<Colon class="ml-1 mr-3.5" /></span>
           <RadioGroup
             v-model:value="exportFormat"
             :options="formatOptions">
@@ -523,7 +523,7 @@ onMounted(async () => {
 
         <template v-if="exportType === ExportType.SERVICE">
           <Input
-            :placeholder="t('service.sidebar.exportServiceModal.serviceNamePlaceholder')"
+            :placeholder="t('service.service.exportServiceModal.serviceNamePlaceholder')"
             size="small"
             class="my-2 flex-1/2"
             allowClear
@@ -537,14 +537,14 @@ onMounted(async () => {
         <template v-if="exportType === ExportType.APIS">
           <div class="mt-2 inline-flex flex-1/2">
             <div class="inline-flex items-center">
-              <span>{{ t('service.sidebar.exportServiceModal.serviceLabel') }}<Colon class="ml-1 mr-3.5" /></span>
+              <span>{{ t('service.service.exportServiceModal.serviceLabel') }}<Colon class="ml-1 mr-3.5" /></span>
             </div>
             <TreeSelect
               ref="treeRef"
               :allowClear="true"
               :action="`${TESTER}/services?projectId=${projectId}&fullTextSearch=true`"
               :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
-              :placeholder="t('service.sidebar.exportServiceModal.servicePlaceholder')"
+              :placeholder="t('service.service.exportServiceModal.servicePlaceholder')"
               showSearch
               class="flex-1"
               v-bind="treeSelectProps"
@@ -571,7 +571,7 @@ onMounted(async () => {
               :checked="isProjectCheckAll"
               :indeterminate="isIndeterminate"
               @change="handleSelectAllChange">
-              {{ t('service.sidebar.exportServiceModal.serviceNameLabel') }}
+              {{ t('service.service.exportServiceModal.serviceNameLabel') }}
             </Checkbox>
           </div>
           <Spin

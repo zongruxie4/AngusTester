@@ -115,7 +115,7 @@ export const apiNavs: NavItem[] = [
   },
   {
     icon: 'icon-lishijilu',
-    name: t('service.apis.navs.activity'),
+    name: t('common.activity'),
     value: DrawerType.ACTIVITY,
     auth: ApiPermission.VIEW,
     disabled: true
@@ -129,7 +129,7 @@ export const apiNavs: NavItem[] = [
   },
   {
     icon: 'icon-daimashitu',
-    name: t('service.apis.navs.code'),
+    name: t('common.coding'),
     value: DrawerType.CODE,
     auth: ApiPermission.VIEW,
     disabled: true
@@ -146,20 +146,20 @@ export const apiNavs: NavItem[] = [
 export const socketNavs: NavItem[] = [
   {
     icon: 'icon-fuwuxinxi',
-    name: t('service.apis.socketNavs.apiInfo'),
+    name: t('service.apis.navs.apiInfo'),
     value: DrawerType.API_INFO,
     auth: ApiPermission.MODIFY
   },
   {
     icon: 'icon-lishijilu',
-    name: t('service.apis.socketNavs.activity'),
+    name: t('common.activity'),
     value: DrawerType.ACTIVITY,
     auth: ApiPermission.VIEW,
     disabled: true
   },
   {
     icon: 'icon-jiekoudaili',
-    name: t('service.apis.socketNavs.agent'),
+    name: t('service.apis.navs.agent'),
     value: DrawerType.PROXY,
     auth: ApiPermission.MODIFY,
     disabled: true
@@ -204,7 +204,7 @@ export const serviceNav: NavItem[] = [
   },
   {
     icon: 'icon-lishijilu',
-    name: t('service.apis.serviceNav.activity'),
+    name: t('common.activity'),
     auth: ServicesPermission.VIEW,
     value: DrawerType.ACTIVITY,
     disabled: true

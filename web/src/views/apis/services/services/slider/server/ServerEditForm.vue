@@ -661,7 +661,7 @@ defineExpose({
               <div class="flex items-center justify-between mb-0.5">
                 <div class="flex items-center">
                   <IconRequired />
-                  <span class="mr-1">{{ t('service.serverConfig.form.variableName') }}</span>
+                  <span class="mr-1">{{ t('common.name') }}</span>
                   <Tooltip :title="t('service.serverConfig.tips.variableNameNotRepeat')">
                     <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
                   </Tooltip>
@@ -690,7 +690,7 @@ defineExpose({
             <div class="mb-3.5">
               <div class="flex items-center mb-0.5">
                 <IconRequired />
-                <span class="mr-1">{{ t('service.serverConfig.form.variableValue') }}</span>
+                <span class="mr-1">{{ t('common.value') }}</span>
                 <Tooltip :title="t('service.serverConfig.tips.variableValueNotRepeat')">
                   <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
                 </Tooltip>
@@ -732,7 +732,7 @@ defineExpose({
 
             <div>
               <div class="flex items-center mb-0.5">
-                <span>{{ t('service.serverConfig.form.variableDescription') }}</span>
+                <span>{{ t('common.description') }}</span>
               </div>
               <Input
                 v-model:value="variableDataMap[item].description"

@@ -12,8 +12,8 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 const columns = [
   [
-    { dataIndex: 'testByName', label: t('service.sidebar.securityResult.testName') },
-    { dataIndex: 'testByDate', label: t('service.sidebar.securityResult.testerDate') }
+    { dataIndex: 'testByName', label: t('service.service.securityResult.testName') },
+    { dataIndex: 'testByDate', label: t('service.service.securityResult.testerDate') }
   ],
   [
     { dataIndex: 'scriptId', label: t('common.scriptId') },
@@ -26,7 +26,7 @@ const columns = [
   <div class="p-5">
     <div class="flex items-center space-x-2">
       <Icon icon="icon-anquanceshi" class="text-5" />
-      <span class="text-4 font-semibold">{{ t('service.sidebar.securityResult.title') }}</span>
+      <span class="text-4 font-semibold">{{ t('service.service.securityResult.title') }}</span>
     </div>
     <div class="flex items-center space-x-5 mt-2">
       <div class="rounded-full w-14 h-14 border text-5 text-center flex flex-col justify-center">

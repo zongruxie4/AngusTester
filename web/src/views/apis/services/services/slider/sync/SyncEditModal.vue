@@ -301,7 +301,7 @@ watch(() => props.visible, (newValue) => {
         <div class="relative mt-2 mb-5">
           <Input
             v-model:value="sync.apiDocsUrl"
-            :placeholder="t('service.syncConfig.form.addressPlaceholder')"
+            :placeholder="t('common.address')"
             size="small"
             :maxlength="400"
             :error="sync?.apiDocsUrlErr.emptyUrl || sync?.apiDocsUrlErr.errUrl"
@@ -343,16 +343,16 @@ watch(() => props.visible, (newValue) => {
               :key="aindex"
               class="flex mb-5 items-center">
               <div class="flex flex-col space-y-3 flex-none mr-2">
-                <div class="h-7 leading-7">{{ t('service.syncConfig.form.paramName') }}</div>
+                <div class="h-7 leading-7">{{ t('common.parameterName') }}</div>
                 <div class="h-7 leading-7">{{ t('service.syncConfig.form.paramPosition') }}</div>
-                <div class="h-7 leading-7">{{ t('service.syncConfig.form.paramValue') }}</div>
+                <div class="h-7 leading-7">{{ t('common.parameterValue') }}</div>
               </div>
               <div class="flex flex-col flex-1 space-y-3">
                 <Input
                   v-model:value="auth.keyName"
                   :error="auth.keyNameErr"
                   :maxlength="400"
-                  :placeholder="t('service.syncConfig.form.paramName')"
+                  :placeholder="t('common.parameterName')"
                   size="small"
                   @change="(event)=>keyNameChange(event.target.value,auth)" />
                 <Select
@@ -364,7 +364,7 @@ watch(() => props.visible, (newValue) => {
                   v-model:value="auth.value"
                   :error="auth.valueErr"
                   :maxlength="1024"
-                  :placeholder="t('service.syncConfig.form.paramValue')"
+                  :placeholder="t('common.parameterValue')"
                   size="small"
                   @change="(event)=>authValueChange(event.target.value,auth)" />
               </div>

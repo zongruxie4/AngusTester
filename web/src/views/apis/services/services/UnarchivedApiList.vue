@@ -215,7 +215,7 @@ defineExpose({
         type="text"
         @click="deleteAllUnarchived">
         <Icon icon="icon-qingchu" class="text-3.5 mr-1" />
-        <span>{{ t('service.sidebar.deleteAllAction') }}</span>
+        <span>{{ t('actions.deleteAll') }}</span>
       </Button>
       <Button
         :disabled="isLoading"

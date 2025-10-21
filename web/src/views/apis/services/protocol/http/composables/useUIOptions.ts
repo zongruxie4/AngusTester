@@ -7,7 +7,7 @@ export const navs = [
   { icon: 'icon-fuwuxinxi', name: t('actions.save'), value: 'save', disabled: false, auth: 'MODIFY' },
   { icon: 'icon-zhibiao', name: t('service.apis.navs.indicator'), value: 'performance', disabled: false, auth: 'MODIFY' },
   { icon: 'icon-zhihangceshi', name: t('service.apis.navs.test'), value: 'test', disabled: false, auth: 'VIEW' },
-  { icon: 'icon-lishijilu', name: t('service.apis.navs.activity'), value: 'activity', disabled: false, auth: 'VIEW' },
+  { icon: 'icon-lishijilu', name: t('common.activity'), value: 'activity', disabled: false, auth: 'VIEW' },
   { icon: 'icon-jiekoudaili', name: t('service.apis.navs.agent'), value: 'agent', auth: 'MODIFY', disabled: false }
 ];
 
@@ -19,7 +19,7 @@ export const menus: Menu[] = [
   { name: t('service.apis.menus.time'), value: 'time' },
   { name: t('protocol.cookie'), value: 'cookie' },
   { name: t('common.assertionResult'), value: 'assert' },
-  { name: t('service.apis.menus.generateCode'), value: 'generateCode' }
+  { name: t('common.coding'), value: 'generateCode' }
 ];
 
 export const getStatusColor = (status: number) => {
