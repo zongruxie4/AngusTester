@@ -1,3 +1,150 @@
+export type AuthType = 'basic' | 'bearer' | 'apiKey' | 'oauth2';
+export type ApiKeyIn = 'header' | 'query';
+export type ParameterIn = 'query' | 'path' |  'cookie' | 'header';
+export type AuthFlowKey = 'authorizationCode' | 'password' | 'implicit' | 'clientCredentials';
+export type ApiServerSource = 'CURRENT_REQUEST' | 'API_SERVERS' | 'PARENT_SERVERS' | 'MOCK_SERVICE';
+
+/**
+ * Defines standard OAuth2 authorization grant types (RFC 6749).
+ * Used to specify the OAuth2 flow when requesting an access token.
+ */
+export enum OAuth2GrantType {
+  /**
+   * Authorization Code Flow (Recommended for web apps).
+   * Flow: Client -> Authorization Server -> User Consent -> Authorization Code -> Token Exchange.
+   * Requires client_secret for confidential clients.
+   */
+  AUTHORIZATION_CODE = 'authorization_code',
+
+  /**
+   * Implicit Flow (Legacy, avoid for new projects).
+   * Flow: Directly returns tokens (no code exchange).
+   * Security Note: Tokens exposed in redirect URIs; use PKCE with Authorization Code instead.
+   */
+  IMPLICIT = 'implicit',
+
+  /**
+   * Resource Owner Password Credentials Flow (Discouraged).
+   * Flow: Client sends username/password -> Receives tokens.
+   * Warning: Only use for highly trusted clients (e.g., first-party apps).
+   */
+  PASSWORD = 'password',
+
+  /**
+   * Client Credentials Flow (Machine-to-machine).
+   * Flow: Client authenticates with its own credentials -> Receives tokens.
+   * Scope: Tokens are tied to client permissions, not a user.
+   */
+  CLIENT_CREDENTIALS = 'client_credentials',
+
+  /**
+   * Refresh Token Flow.
+   * Flow: Exchanges a refresh_token for a new access_token.
+   * Requirement: Initial token must include the `offline_access` scope.
+   */
+  REFRESH_TOKEN = 'refresh_token',
+}
+
+/**
+ * Non-standard OAuth2 grant types used by major providers.
+ */
+export enum ExtendedGrantType {
+  /**
+   * JWT Bearer Flow (RFC 7523).
+   * Used by: Azure AD, Google.
+   * Flow: Client submits a signed JWT -> Receives tokens.
+   */
+  JWT_BEARER = 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+
+  /**
+   * Device Authorization Flow (RFC 8628).
+   * Used by: GitHub, Microsoft, Google IoT.
+   * Flow: Device polls auth server after user approves via a separate browser.
+   */
+  DEVICE_CODE = 'urn:ietf:params:oauth:grant-type:device_code',
+}
+
+/**
+ * Schema
+ *
+ * <pre>
+ * | schema             | type    | format    |
+ * | ------------------ | ------- | --------- |
+ * | Array              | array   | null      |
+ * | Binary             | string  | binary    |
+ * | Boolean            | boolean | null      |
+ * | ByteArray(byte[])  | string  | byte      |
+ * | Date               | string  | date      |
+ * | DateTime           | string  | date-time |
+ * | Email              | string  | email     |
+ * | File               | string  | binary    |
+ * | integer(Number)    | integer | int32     |
+ * | Json               | object  | null      |
+ * | Map                | object  | null      |
+ * | Number(BigDecimal) | number  | null      |
+ * | Object             | object  | null      |
+ * | Password           | string  | password  |
+ * | String             | string  | null      |
+ * | UUID               | string  | uuid      |
+ * </pre>
+ *
+ * @see "https://github.com/OAI/OpenAPI-Specification/blob/3.0.1/versions/3.0.1.md#schemaObject"
+ * @see "https://github.com/OAI/OpenAPI-Specification/blob/3.1.0/versions/3.1.0.md#schemaObject"
+ */
+export enum SchemaType {
+  boolean = 'boolean',
+  object = 'object',
+  number = 'number',
+  string = 'string',
+  integer = 'integer',
+  array = 'array'
+}
+
+export enum SchemaFormat {
+  null = 'null',
+  binary = 'binary',
+  byte = 'byte',
+  date = 'date',
+  date_time = 'date-time',
+  email = 'email',
+  int32 = 'int32',
+  password = 'password',
+  uuid = 'uuid',
+  xml = 'xml',
+  json = 'json'
+}
+
+/**
+ * API extension keys for XCan custom properties.
+ */
+export const API_EXTENSION_KEYS = {
+  prefix: 'x-xc-', // Prefix
+  idKey: 'x-xc-id', // Unique identifier
+  valueKey: 'x-xc-value', // Value
+  enabledKey: 'x-xc-enabled', // Enable/disable
+  statusKey: 'x-xc-status', // Data status
+  contentEncoding : 'x-xc-contentEncoding', // Content encoding
+  exportVariableKey: 'x-xc-exportVariable', // Whether to set as variable
+  requestSettingKey: 'x-xc-requestSetting', // Request settings like timeout, object
+  serverNameKey: 'x-xc-serverName', // Server URL name
+  serverSourceKey: 'x-xc-serverSource', // Server source
+  securityApiKeyPrefix: 'x-xc-apiKey', // API key type extension
+  securitySubTypeKey: 'sx-xc-securitySubType', // Security scheme subtype
+  fileNameKey: 'x-xc-fileName', // File name
+  newTokenKey: 'x-xc-oauth2-newToken', // Whether to use generated auth token
+  oAuth2Key: 'x-xc-oauth2-authFlow', // Token generation authorization type
+  oAuth2Token: 'x-xc-oauth2-token', // Existing token
+  oAuth2CallbackUrlKey: 'x-xc-oauth2-callbackUrl', // OAuth2 callback URL
+  oAuth2ClientIdKey: 'x-xc-oauth2-clientId', // OAuth2 client id
+  oAuth2ClientSecretKey: 'x-xc-oauth2-clientSecret', // OAuth2 client secret
+  oAuth2UsernameKey: 'x-xc-oauth2-username', // OAuth2 resource owner username
+  oAuth2PasswordKey: 'x-xc-oauth2-password', // OAuth2 resource owner password
+  oAuth2ClientAuthTypeKey: 'x-xc-oauth2-clientAuthType', // OAuth2 client auth type
+  formContentTypeKey: 'x-xc-contentType',
+  basicAuthKey: 'x-xc-basicAuth',
+  wsMessageKey: 'x-wsMessage'
+};
+
 /* tslint:disable:no-namespace no-empty-interface */
 export namespace OpenAPI {
   export type Document<T extends {} = {}> =
