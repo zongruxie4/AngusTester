@@ -1,4 +1,6 @@
-import { EnumMessage, ExtractionMethod, ExtractionSource, ExtractionFileType, DatabaseType, Encoding } from '@xcan-angus/infra';
+import {
+  EnumMessage, ExtractionMethod, ExtractionSource, HttpExtractionLocation, ExtractionFileType, DatabaseType, Encoding
+} from '@xcan-angus/infra';
 
 export type VariableDetail = {
   id: string;
@@ -17,6 +19,7 @@ export type VariableDetail = {
     method: EnumMessage<ExtractionMethod>;
     name: string;
     source: EnumMessage<ExtractionSource>;
+    location: EnumMessage<HttpExtractionLocation>;
     value: string;
     fileType: EnumMessage<ExtractionFileType>;
     path: string;

@@ -194,7 +194,7 @@ export function useHttpVariable (
       return;
     }
 
-    requestConfigs.value = await requestConfigs(data);
+    requestConfigs.value = data;
   };
 
   /**
@@ -272,7 +272,6 @@ export function useHttpVariable (
     if (id) {
       params.id = id;
     }
-
     return params;
   };
 
@@ -290,7 +289,7 @@ export function useHttpVariable (
 
     // Initialize extraction configuration
     method.value = data.extraction.method.value;
-    location.value = data.extraction.location;
+    location.value = data.extraction.location?.value;
     parameterName.value = data.extraction.parameterName;
     defaultValue.value = data.extraction.defaultValue;
     expression.value = data.extraction.expression;
