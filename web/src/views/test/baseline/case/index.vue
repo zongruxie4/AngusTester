@@ -29,7 +29,7 @@ const currentPlanId = ref();
  * Load baseline information and update tab pane
  */
 const loadBaselineInfo = async () => {
-  const [error, res] = await test.getBaselineDetail(Number(props.data?.id));
+  const [error, res] = await test.getBaselineDetail(props.data?.id as string);
   if (error) {
     return;
   }
