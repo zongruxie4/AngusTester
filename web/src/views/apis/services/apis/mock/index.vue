@@ -269,7 +269,7 @@ const mockServiceCount = [
       </template>
       <template v-else>
         <div class="p-2 border border-blue-border rounded bg-blue-bg-light">
-          <Hints :text="t('common.description')" />
+          <Hints :text="t('service.mockService.description.title')" />
         </div>
         <div class=" mt-3">
           <RadioGroup
