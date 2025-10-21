@@ -1,4 +1,4 @@
-import { Extraction } from './utils/extract/PropsType';
+import { Extraction } from './utils/PropsType2';
 import { AssertionCondition, AssertionType } from '@xcan-angus/infra';
 
 export type FormItem = {

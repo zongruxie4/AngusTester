@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const HttpTestInfo = defineAsyncComponent(() => import('@/components/test/httpTestInfo/index.vue'));
-const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
+const Indicator = defineAsyncComponent(() => import('@/components/indicator/index.vue'));
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const SaveForm = defineAsyncComponent(() => import('@/plugins/test/components/Drawer/SaveForm/index.vue'));
 const ActivityTimeline = defineAsyncComponent(() => import('@/plugins/test/components/Drawer/ActivityTimeline/index.vue'));

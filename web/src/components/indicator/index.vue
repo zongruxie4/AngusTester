@@ -12,7 +12,7 @@ import { SmokeCheckSetting, SecurityCheckSetting } from '@/enums/enums';
 import { enumUtils, http, TESTER } from '@xcan-angus/infra';
 
 // Local component imports
-import IndicatorAssert from '@/components/Indicator/IndicatorAssert/index.vue';
+import IndicatorAssert from '@/components/indicator/assert/index.vue';
 
 // Local imports
 import { indicator } from './apis';
@@ -48,7 +48,7 @@ const emit = defineEmits<{
 }>();
 
 // Async component imports
-const ResponseTime = defineAsyncComponent(() => import('./response-time.vue'));
+const ResponseTime = defineAsyncComponent(() => import('./ResponseTime.vue'));
 
 // Indicator data loading configuration
 const loadInfoConfig = {
@@ -195,9 +195,9 @@ const SecurityEnumOpt = ref<{value: string; label: string}[]>([]);
  * Load functionality testing enum options
  */
 const loadFuncEnumOpt = async () => {
-  const data1 = enumUtils.enumToMessages(SmokeCheckSetting); // TODO: Feature needs redesign in later implementation
+  const data1 = enumUtils.enumToMessages(SmokeCheckSetting);
   smokeEnumOpt.value = (data1 || []).map(i => ({ ...i, label: i.message }));
-  const data2 = enumUtils.enumToMessages(SecurityCheckSetting); // TODO: Feature needs redesign in later implementation
+  const data2 = enumUtils.enumToMessages(SecurityCheckSetting);
   SecurityEnumOpt.value = (data2 || []).map(i => ({ ...i, label: i.message }));
 };
 

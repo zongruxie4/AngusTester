@@ -1,6 +1,8 @@
 // Infrastructure imports
 import { TESTER, http } from '@xcan-angus/infra';
 
+// TODO 删除重复API文件
+
 let baseUrl = '';
 
 /**
