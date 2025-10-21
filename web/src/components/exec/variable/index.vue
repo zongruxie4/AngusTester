@@ -6,14 +6,13 @@ import { debounce } from 'throttle-debounce';
 import { duration, http, utils, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { DataMenuKey } from '@/views/data/menu';
-
-import { VariableItem } from './PropsType';
+import { VariableDetail } from '@/views/data/variable/types';
 import { ProjectInfo } from '@/layout/types';
 
 const { t } = useI18n();
 
 type Props = {
-  dataSource: VariableItem[];
+  dataSource: VariableDetail[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -32,18 +31,18 @@ const searchValue = ref<string>();
 const pagination = ref<{ current: number; pageSize: number; total: number; showSizeChanger: false; }>({ current: 1, pageSize: 10, total: 0, showSizeChanger: false });
 const rowSelection = ref<{
   onChange:(key: string[]) => void;
-  getCheckboxProps: (data: VariableItem) => ({ disabled: boolean; });
+  getCheckboxProps: (data: VariableDetail) => ({ disabled: boolean; });
   selectedRowKeys: string[];
 }>();
-const tableData = ref<VariableItem[]>([]);
-const showTableData = ref<VariableItem[]>([]);
+const tableData = ref<VariableDetail[]>([]);
+const showTableData = ref<VariableDetail[]>([]);
 
 const modalVisible = ref(false);
 
 const visibilityIdSet = ref<Set<string>>(new Set());
 const errorMessageMap = ref<Map<string, string>>(new Map());
 
-const selectedVariablesOk = (data: VariableItem[]) => {
+const selectedVariablesOk = (data: VariableDetail[]) => {
   if (!data?.length) {
     return;
   }
@@ -73,11 +72,11 @@ const searchInputChange = debounce(duration.search, (event: { target: { value: s
   }
 });
 
-const toHide = (data: VariableItem) => {
+const toHide = (data: VariableDetail) => {
   visibilityIdSet.value.delete(data.id);
 };
 
-const toVisibility = (data: VariableItem) => {
+const toVisibility = (data: VariableDetail) => {
   const { id, value, extracted } = data;
   visibilityIdSet.value.add(id);
 
@@ -89,7 +88,7 @@ const toVisibility = (data: VariableItem) => {
   loadValue(data);
 };
 
-const loadValue = async (data: VariableItem) => {
+const loadValue = async (data: VariableDetail) => {
   const id = data.id;
   const params = {
     name: data.name,
@@ -115,7 +114,7 @@ const loadValue = async (data: VariableItem) => {
   }
 };
 
-const toDelete = (data: VariableItem) => {
+const toDelete = (data: VariableDetail) => {
   modal.confirm({
     content: t('xcan_exec.variable.confirmUnreferenceVariable', { name: data.name }),
     async onOk () {
@@ -331,7 +330,7 @@ const getData = (): {
     description: string;
     passwordValue: string;
     value: string;
-    extraction: VariableItem['extraction'];
+    extraction: VariableDetail['extraction'];
   }
 }[] => {
   const variables = tableData.value?.map(item => {

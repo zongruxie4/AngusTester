@@ -5,8 +5,7 @@ import { Button } from 'ant-design-vue';
 import { PageQuery, TESTER, http, duration } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
-
-import { VariableItem } from './PropsType';
+import { VariableDetail } from '@/views/data/variable/types';
 
 const { t } = useI18n();
 
@@ -28,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
     (e: 'update:visible', value: boolean): void;
-    (e: 'ok', value: VariableItem[]): void;
+    (e: 'ok', value: VariableDetail[]): void;
 }>();
 
 const loaded = ref(false);
@@ -39,11 +38,11 @@ const orderSort = ref<OrderSortKey>();
 const pagination = ref<{ current: number; pageSize: number; total: number; showSizeChanger:boolean;}>({ current: 1, pageSize: 10, total: 0, showSizeChanger: false });
 const rowSelection = ref<{
     onChange:(key: string[]) => void;
-    getCheckboxProps: (data: VariableItem) => ({ disabled: boolean; });
+    getCheckboxProps: (data: VariableDetail) => ({ disabled: boolean; });
     selectedRowKeys: string[];
 }>();
-const selectedDataMap = ref<Map<string, VariableItem>>(new Map());
-const tableData = ref<VariableItem[]>([]);
+const selectedDataMap = ref<Map<string, VariableDetail>>(new Map());
+const tableData = ref<VariableDetail[]>([]);
 
 const visibilityIdSet = ref<Set<string>>(new Set());
 const errorMessageMap = ref<Map<string, string>>(new Map());
@@ -98,7 +97,7 @@ const loadData = async () => {
   const data = res?.data || { total: 0, list: [] };
   if (data) {
     pagination.value.total = +data.total;
-    const _list = data.list as VariableItem[];
+    const _list = data.list as VariableDetail[];
     tableData.value = [];
 
     const names = props.selectedNames;
@@ -149,7 +148,7 @@ const loadData = async () => {
   }
 };
 
-const loadValue = async (data: VariableItem) => {
+const loadValue = async (data: VariableDetail) => {
   const id = data.id;
   loading.value = true;
   const [error, res] = await http.post(`${TESTER}/variable/value/preview`, { id: data.id }, { silence: true });
@@ -165,11 +164,11 @@ const loadValue = async (data: VariableItem) => {
   }
 };
 
-const toHide = (data: VariableItem) => {
+const toHide = (data: VariableDetail) => {
   visibilityIdSet.value.delete(data.id);
 };
 
-const toVisibility = (data: VariableItem) => {
+const toVisibility = (data: VariableDetail) => {
   const { id, value, extracted } = data;
   visibilityIdSet.value.add(id);
 

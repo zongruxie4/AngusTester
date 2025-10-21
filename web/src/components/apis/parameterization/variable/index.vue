@@ -1,17 +1,10 @@
 <script setup lang="ts">
-// Vue core imports
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
 import { Button, Popconfirm } from 'ant-design-vue';
 import { AsyncComponent, Icon, IconCopy, Spin, Table } from '@xcan-angus/vue-ui';
-
-// API imports
 import { paramTarget, variable } from '@/api/tester';
-
-// Local imports
-import { VariableItem } from './PropsType';
+import { VariableDetail } from '@/views/data/variable/types';
 
 const { t } = useI18n();
 
@@ -48,7 +41,7 @@ const VariableListModal = defineAsyncComponent(() => import('@/components/apis/p
 // Component state
 const isDataLoaded = ref(false);
 const isLoading = ref(false);
-const variableTableData = ref<VariableItem[]>([]);
+const variableTableData = ref<VariableDetail[]>([]);
 const isModalVisible = ref(false);
 const visibleVariableIdSet = ref<Set<string>>(new Set());
 const variableErrorMessageMap = ref<Map<string, string>>(new Map());
@@ -64,7 +57,7 @@ const handleOpenVariableModal = () => {
  * Handle selected variables confirmation
  * @param data - Selected variable items
  */
-const handleSelectedVariablesConfirmation = async (data: VariableItem[]) => {
+const handleSelectedVariablesConfirmation = async (data: VariableDetail[]) => {
   if (!data?.length) {
     return;
   }
@@ -84,7 +77,7 @@ const handleSelectedVariablesConfirmation = async (data: VariableItem[]) => {
  * Handle hiding variable value
  * @param data - Variable item to hide
  */
-const handleHideVariableValue = (data: VariableItem) => {
+const handleHideVariableValue = (data: VariableDetail) => {
   visibleVariableIdSet.value.delete(data.id);
 };
 
@@ -92,7 +85,7 @@ const handleHideVariableValue = (data: VariableItem) => {
  * Handle showing variable value
  * @param data - Variable item to show
  */
-const handleShowVariableValue = (data: VariableItem) => {
+const handleShowVariableValue = (data: VariableDetail) => {
   const { id, value, extracted } = data;
   visibleVariableIdSet.value.add(id);
 
@@ -108,7 +101,7 @@ const handleShowVariableValue = (data: VariableItem) => {
  * Load variable value from API
  * @param data - Variable item to load value for
  */
-const loadVariableValue = async (data: VariableItem) => {
+const loadVariableValue = async (data: VariableDetail) => {
   const variableId = data.id;
   const requestParams = {
     name: data.name,
@@ -138,7 +131,7 @@ const loadVariableValue = async (data: VariableItem) => {
  * Handle variable deletion
  * @param data - Variable item to delete
  */
-const handleVariableDeletion = async (data: VariableItem) => {
+const handleVariableDeletion = async (data: VariableDetail) => {
   const variableId = data.id;
   isLoading.value = true;
   const [error] = await paramTarget.deleteVariable(props.targetId, props.targetType, [variableId], { dataType: true });

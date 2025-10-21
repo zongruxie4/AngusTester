@@ -1,21 +1,16 @@
 <script setup lang="ts">
-// Vue core imports
 import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-// UI component imports
 import { Icon, IconCopy, Input, Modal, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 
-// Infrastructure imports
 import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
-// API imports
 import { variable } from '@/api/tester';
 
-// Local imports
-import { VariableItem } from './PropsType';
+import { VariableDetail } from '@/views/data/variable/types';
 
 const { t } = useI18n();
 
@@ -42,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
 // Component events
 const emit = defineEmits<{
     (e: 'update:visible', value: boolean): void;
-    (e: 'ok', value: VariableItem[]): void;
+    (e: 'ok', value: VariableDetail[]): void;
 }>();
 
 // Component state
@@ -54,11 +49,11 @@ const sortOrderDirection = ref<OrderSortKey>();
 const paginationConfig = ref<{ current: number; pageSize: number; total: number; showSizeChanger:boolean;}>({ current: 1, pageSize: 10, total: 0, showSizeChanger: false });
 const tableRowSelection = ref<{
     onChange:(key: string[]) => void;
-    getCheckboxProps: (data: VariableItem) => ({ disabled: boolean; });
+    getCheckboxProps: (data: VariableDetail) => ({ disabled: boolean; });
     selectedRowKeys: string[];
 }>();
-const selectedVariableDataMap = ref<Map<string, VariableItem>>(new Map());
-const variableTableData = ref<VariableItem[]>([]);
+const selectedVariableDataMap = ref<Map<string, VariableDetail>>(new Map());
+const variableTableData = ref<VariableDetail[]>([]);
 
 const visibleVariableIdSet = ref<Set<string>>(new Set());
 const variableErrorMessageMap = ref<Map<string, string>>(new Map());
@@ -123,7 +118,7 @@ const loadVariableData = async () => {
   const responseData = response?.data || { total: 0, list: [] };
   if (responseData) {
     paginationConfig.value.total = +responseData.total;
-    const variableList = responseData.list as VariableItem[];
+    const variableList = responseData.list as VariableDetail[];
     variableTableData.value = [];
 
     const selectedVariableNames = props.selectedNames;
@@ -180,7 +175,7 @@ const loadVariableData = async () => {
  * Load variable value from API
  * @param data - Variable item to load value for
  */
-const loadVariableValue = async (data: VariableItem) => {
+const loadVariableValue = async (data: VariableDetail) => {
   const variableId = data.id;
   isLoading.value = true;
   const [error, response] = await variable.previewVariableValue({ id: data.id }, { silence: true });
@@ -200,7 +195,7 @@ const loadVariableValue = async (data: VariableItem) => {
  * Handle hiding variable value
  * @param data - Variable item to hide
  */
-const handleHideVariableValue = (data: VariableItem) => {
+const handleHideVariableValue = (data: VariableDetail) => {
   visibleVariableIdSet.value.delete(data.id);
 };
 
@@ -208,7 +203,7 @@ const handleHideVariableValue = (data: VariableItem) => {
  * Handle showing variable value
  * @param data - Variable item to show
  */
-const handleShowVariableValue = (data: VariableItem) => {
+const handleShowVariableValue = (data: VariableDetail) => {
   const { id, value, extracted } = data;
   visibleVariableIdSet.value.add(id);
 

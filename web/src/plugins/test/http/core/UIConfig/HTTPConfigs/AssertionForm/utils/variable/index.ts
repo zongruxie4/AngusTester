@@ -1,10 +1,9 @@
 import { variable } from '@/api/tester';
-
-import { VariableItem } from './PropsType';
+import { VariableDetail } from '@/views/data/variable/types';
 
 const sorts = ['CURRENT-API', 'CURRENT-SERVICE', 'CURRENT-PROJECT', 'GLOBAL-API', 'GLOBAL-SERVICE', 'GLOBAL-PROJECT'];
-const enable = (variables: VariableItem[]): VariableItem | undefined => {
-  const map: { [key: string]: VariableItem } = {};
+const enable = (variables: VariableDetail[]): VariableDetail | undefined => {
+  const map: { [key: string]: VariableDetail } = {};
   for (let i = 0, len = variables.length; i < len; i++) {
     if (variables[i].enabled) {
       map[variables[i].scope.value + '-' + variables[i].targetType.value] = variables[i];
