@@ -519,7 +519,8 @@
         "archiveToService": "归档到服务",
         "indicator": "接口指标",
         "test": "测试结果",
-        "variable": "变量"
+        "variable": "变量",
+        "code": "代码"
       },
       "serviceNav": {
         "projectInfo": "服务信息",
@@ -1299,7 +1300,9 @@
         "deprecated": "是否弃用",
         "tags": "标签",
         "securityTitle": "安全需求",
-        "externalDocsTitle": "外部文档"
+        "externalDocsTitle": "外部文档",
+        "hasPermission": "有权限限制",
+        "noPermission": "无权限限制"
       },
       "messages": {
         "selectApiFirst": "请先选择接口,再来查看"
@@ -1354,7 +1357,9 @@
         "apisNum": "接口数量",
         "apisCaseNum": "用例数量",
         "createdByName": "添加人",
-        "securityTitle": "安全需求"
+        "securityTitle": "安全需求",
+        "hasPermission": "有权限限制",
+        "noPermission": "无权限限制"
       },
       "placeholder": {
         "nameInput": "100字符以内"

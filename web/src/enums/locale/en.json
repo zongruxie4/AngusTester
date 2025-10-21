@@ -533,6 +533,16 @@
         "MOCK_APIS": "Mock Apis",
         "EXECUTION": "Execution",
         "REPORT": "Report"
+      },
+      "SecurityCheckSetting": {
+        "NOT_SECURITY_CODE": "Check status code is not 401 or 403, default",
+        "IS_SECURITY_CODE": "Check status code is 401 or 403, negative case",
+        "USER_DEFINED_ASSERTION": "Detect based on custom assertions"
+      },
+      "SmokeCheckSetting": {
+        "SERVICE_AVAILABLE": "Check service availability (with response status code)",
+        "API_AVAILABLE": "Check API availability (2xx status code), default",
+        "USER_DEFINED_ASSERTION": "Detect based on custom assertions"
       }
     }
   }

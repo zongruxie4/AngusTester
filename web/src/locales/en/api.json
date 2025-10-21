@@ -513,7 +513,8 @@
         "indicator": "API Metrics",
         "test": "Test Results",
         "case": "API Cases",
-        "variable": "Variables"
+        "variable": "Variables",
+        "code": "Code"
       },
       "serviceNav": {
         "projectInfo": "Service Info",
@@ -1293,7 +1294,9 @@
         "summary": "Name",
         "operationId": "Code",
         "securityTitle": "Security Requirements",
-        "externalDocsTitle": "External Documentation"
+        "externalDocsTitle": "External Documentation",
+        "hasPermission": "Has Permission",
+        "noPermission": "No Permission"
       },
       "messages": {
         "selectApiFirst": "Please select an API first to view details"
@@ -1347,7 +1350,9 @@
       "columns": {
         "apisNum": "API Count",
         "apisCaseNum": "Case Count",
-        "securityTitle": "Security Requirements"
+        "securityTitle": "Security Requirements",
+        "hasPermission": "Has Permission",
+        "noPermission": "No Permission"
       },
       "placeholder": {
         "nameInput": "Within 100 characters"

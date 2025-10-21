@@ -171,7 +171,7 @@ const columns = computed(() => [
     { label: t('common.createdBy'), dataIndex: 'createdByName' },
     { label: t('common.createdDate'), dataIndex: 'createdDate' },
     { label: t('common.lastModifiedDate'), dataIndex: 'lastModifiedDate' },
-    { label: t('common.securityTitle'), dataIndex: 'securityTitle' },
+    { label: t('service.groupApiDetail.columns.securityTitle'), dataIndex: 'securityTitle' },
     { dataIndex: 'security', fullWidthContent: true }
   ].filter(Boolean)
 ]);
@@ -258,7 +258,7 @@ const columns = computed(() => [
     </template>
     <template #auth="{ text }">
       <div class="flex items-start">
-        <div class="flex-1">{{ text ? t('service.serviceDetail.auth.hasPermission') : t('service.serviceDetail.auth.noPermission') }}</div>
+        <div class="flex-1">{{ text ? t('service.serviceDetail.columns.hasPermission') : t('service.serviceDetail.columns.noPermission') }}</div>
         <Icon
           v-if="!props.disabled"
           icon="icon-shuxie"

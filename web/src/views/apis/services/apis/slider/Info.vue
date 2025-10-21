@@ -279,10 +279,10 @@ const columns = computed(() => {
       { label: t('service.groupApiDetail.columns.operationId'), dataIndex: 'operationId' },
       { label: t('common.source'), dataIndex: 'source', type: '1' },
       { label: t('common.status'), dataIndex: 'status' },
-      { label: t('service.groupApiDetail.columns.auth'), dataIndex: 'auth' },
+      { label: t('actions.permission'), dataIndex: 'auth' },
       { label: t('service.groupApiDetail.columns.deprecated'), dataIndex: 'deprecated' },
       { label: t('common.createdBy'), dataIndex: 'createdByName' },
-      { label: t('service.groupApiDetail.columns.ownerName'), dataIndex: 'ownerName' },
+      { label: t('common.owner'), dataIndex: 'ownerName' },
       { label: t('common.tag'), dataIndex: 'tags' },
       { label: t('common.createdDate'), dataIndex: 'createdDate' },
       { label: t('common.lastModifiedDate'), dataIndex: 'lastModifiedDate' },
@@ -342,7 +342,7 @@ const columns = computed(() => {
         </template>
       </template>
       <template #auth="{text}">
-        {{ text ? t('service.groupApiDetail.auth.hasPermission') : t('service.groupApiDetail.auth.noPermission') }}
+        {{ text ? t('service.groupApiDetail.columns.hasPermission') : t('service.groupApiDetail.columns.noPermission') }}
         <span v-show="!disabled">
           <Icon
             icon="icon-shuxie"

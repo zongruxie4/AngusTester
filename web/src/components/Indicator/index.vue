@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n';
 // UI component imports
 import { Input, notification, Icon, Hints, ShortDuration } from '@xcan-angus/vue-ui';
 import { Form, FormItem, RadioButton, RadioGroup, Button, Switch, Tooltip } from 'ant-design-vue';
+import { SmokeCheckSetting, SecurityCheckSetting } from '@/enums/enums';
 
 // Infrastructure imports
 import { enumUtils, http, TESTER } from '@xcan-angus/infra';
@@ -194,9 +195,9 @@ const SecurityEnumOpt = ref<{value: string; label: string}[]>([]);
  * Load functionality testing enum options
  */
 const loadFuncEnumOpt = async () => {
-  const data1 = enumUtils.enumToMessages('SmokeCheckSetting'); // TODO: Feature needs redesign in later implementation
+  const data1 = enumUtils.enumToMessages(SmokeCheckSetting); // TODO: Feature needs redesign in later implementation
   smokeEnumOpt.value = (data1 || []).map(i => ({ ...i, label: i.message }));
-  const data2 = enumUtils.enumToMessages('SecurityCheckSetting'); // TODO: Feature needs redesign in later implementation
+  const data2 = enumUtils.enumToMessages(SecurityCheckSetting); // TODO: Feature needs redesign in later implementation
   SecurityEnumOpt.value = (data2 || []).map(i => ({ ...i, label: i.message }));
 };
 

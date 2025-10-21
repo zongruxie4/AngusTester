@@ -567,6 +567,20 @@ export enum ReportStatus {
   FAILURE = 'FAILURE'
 }
 
+// Check Settings
+export enum SmokeCheckSetting {
+  SERVICE_AVAILABLE = 'SERVICE_AVAILABLE',
+  API_AVAILABLE = 'API_AVAILABLE',
+  USER_DEFINED_ASSERTION = 'USER_DEFINED_ASSERTION'
+}
+
+export enum SecurityCheckSetting {
+  NOT_SECURITY_CODE = 'NOT_SECURITY_CODE',
+  IS_SECURITY_CODE = 'IS_SECURITY_CODE',
+  USER_DEFINED_ASSERTION = 'USER_DEFINED_ASSERTION'
+}
+
+
 export enum ReportCategory {
   PROJECT = 'PROJECT',
   TASK = 'TASK',
@@ -741,5 +755,7 @@ export const enumNamespaceMap = new Map<any, string>([
   [ReportTemplate, 'xcm.enum.ReportTemplate'],
   [ExampleDataType, 'xcm.enum.ExampleDataType'],
   [AssociateTargetType, 'xcm.enum.AssociateTargetType'],
-  [CombinedTargetType, 'xcm.enum.CombinedTargetType']
+  [CombinedTargetType, 'xcm.enum.CombinedTargetType'],
+  [SmokeCheckSetting, 'xcm.enum.SmokeCheckSetting'],
+  [SecurityCheckSetting, 'xcm.enum.SecurityCheckSetting']
 ]);

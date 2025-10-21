@@ -533,6 +533,16 @@
         "MOCK_APIS": "Mock接口",
         "EXECUTION": "执行",
         "REPORT": "报告"
+      },
+      "SmokeCheckSetting": {
+        "SERVICE_AVAILABLE": "检测服务是否可用(有响应状态码)",
+        "API_AVAILABLE": "检测接口是否可用(返回状态码2xx）、默认",
+        "USER_DEFINED_ASSERTION": "根据自定义断言结果检测"
+      },
+      "SecurityCheckSetting": {
+        "NOT_SECURITY_CODE": "检测状态码不是401和403、默认",
+        "IS_SECURITY_CODE": "检测状态码是401或403、反例",
+        "USER_DEFINED_ASSERTION": "根据自定义断言结果检测"
       }
     }
   }

@@ -629,7 +629,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId })); // Base API informa
           :disabled="!useAuth.includes(ApiPermission.SHARE)"
           :name="props.serviceInfo.name" />
       </template>
-      <template #agent>
+      <template #proxy>
         <RequestProxy
           v-if="activeDrawerKey === DrawerType.PROXY"
           class="mt-2 pr-5"
@@ -652,7 +652,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId })); // Base API informa
           class="pt-2 pr-5"
           :disabled="!apiAuths.includes(ApiPermission.MODIFY)" />
       </template>
-      <template #projectInfo>
+      <template #serviceInfo>
         <div class="mt-2 pr-5">
           <ServiceInfo
             v-if="activeDrawerKey === DrawerType.SERVICE_INFO"
