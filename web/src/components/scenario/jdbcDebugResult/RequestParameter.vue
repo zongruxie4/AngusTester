@@ -5,7 +5,7 @@ import { utils } from '@xcan-angus/infra';
 import { Arrow, NoData, Table, Icon } from '@xcan-angus/vue-ui';
 
 import { useI18n } from 'vue-i18n';
-import { ExecContent, ExecInfo } from '../PropsType';
+import { ExecContent, ExecInfo } from './PropsType';
 const { t } = useI18n();
 
 export interface Props {

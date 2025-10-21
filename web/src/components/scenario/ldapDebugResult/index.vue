@@ -2,7 +2,7 @@
 import { defineAsyncComponent } from 'vue';
 import { ExecContent } from './PropsType';
 
-const LdapItem = defineAsyncComponent(() => import('./LDAP/index.vue'));
+const LdapItem = defineAsyncComponent(() => import('./Ldap.vue'));
 
 export interface Props {
   content: ExecContent[];

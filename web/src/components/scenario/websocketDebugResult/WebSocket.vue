@@ -6,7 +6,7 @@ import { utils } from '@xcan-angus/infra';
 
 import { useI18n } from 'vue-i18n';
 
-import StatusTag from './StatusTag/index.vue';
+import StatusTag from './StatusTag.vue';
 import { WebSocketInfo, ExecContent } from './PropsType';
 const { t } = useI18n();
 const formatTime = (timestamp:number):string => {

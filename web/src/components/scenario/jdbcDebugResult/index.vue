@@ -5,7 +5,7 @@ import { Arrow, Colon, Icon } from '@xcan-angus/vue-ui';
 
 import { useI18n } from 'vue-i18n';
 
-import StatusTag from './StatusTag/index.vue';
+import StatusTag from './StatusTag.vue';
 import { ExecContent, ExecInfo } from './PropsType';
 const { t } = useI18n();
 
@@ -60,8 +60,8 @@ const props = withDefaults(defineProps<Props>(), {
   ignoreAssertions: false
 });
 
-const RequestParameter = defineAsyncComponent(() => import('./RequestParameter/index.vue'));
-const AssertionsResult = defineAsyncComponent(() => import('./AssertionsResult/index.vue'));
+const RequestParameter = defineAsyncComponent(() => import('./RequestParameter.vue'));
+const AssertionsResult = defineAsyncComponent(() => import('./Assertion.vue'));
 
 const setGlobalTabActiveKey = inject<(key:'executeConfig')=>void>('setGlobalTabActiveKey');
 

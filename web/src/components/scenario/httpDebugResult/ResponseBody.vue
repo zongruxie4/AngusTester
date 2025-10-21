@@ -3,7 +3,7 @@ import { computed, ref, watch, onMounted } from 'vue';
 import { IconCopy, IconDownload, NoData, FormatHighlight } from '@xcan-angus/vue-ui';
 
 import { useI18n } from 'vue-i18n';
-import { ExecContent } from '../PropsType';
+import { ExecContent } from './PropsType';
 const { t } = useI18n();
 
 interface Props {

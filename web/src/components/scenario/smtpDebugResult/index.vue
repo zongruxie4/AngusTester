@@ -2,7 +2,7 @@
 import { defineAsyncComponent } from 'vue';
 import { ExecContent } from './PropsType';
 
-const SmtpItem = defineAsyncComponent(() => import('./Smtp/index.vue'));
+const SmtpItem = defineAsyncComponent(() => import('./Smtp.vue'));
 
 export interface Props {
   content: ExecContent[];

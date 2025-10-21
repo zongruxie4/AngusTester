@@ -4,7 +4,7 @@ import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { utils } from '@xcan-angus/infra';
 import { Arrow, NoData } from '@xcan-angus/vue-ui';
 
-import { ExecContent } from '../../PropsType';
+import { ExecContent } from './PropsType';
 
 export interface Props {
   value: ExecContent

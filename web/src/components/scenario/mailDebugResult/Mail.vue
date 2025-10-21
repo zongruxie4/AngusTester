@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { Alert, Collapse, CollapsePanel, Tabs, TabPane, Tag } from 'ant-design-vue';
-import { Arrow, Colon, Icon, NoData } from '@xcan-angus/vue-ui';
+import { Arrow, Colon, Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import { useI18n } from 'vue-i18n';
-import StatusTag from '../StatusTag/index.vue';
-import { SMTPInfo } from './PropsType';
-import { ExecContent } from '../PropsType';
-const { t } = useI18n();
 
+import StatusTag from './StatusTag.vue';
+import { HTTPInfo } from './PropsType2';
+import { ExecContent } from './PropsType';
+const { t } = useI18n();
 const formatTime = (timestamp:number):string => {
   const second = 1000;
   const minute = 60 * second;
@@ -50,7 +50,7 @@ const formatTime = (timestamp:number):string => {
 };
 
 export interface Props {
-  value: SMTPInfo;
+  value: HTTPInfo;
   content: ExecContent;
   ignoreAssertions: boolean;
 }
@@ -61,7 +61,8 @@ const props = withDefaults(defineProps<Props>(), {
   ignoreAssertions: undefined
 });
 
-const RequestHeaders = defineAsyncComponent(() => import('./RequestHeaders/index.vue'));
+const RequestHeaders = defineAsyncComponent(() => import('./RequestHeaders.vue'));
+const Response = defineAsyncComponent(() => import('./Response.vue'));
 
 const UUID = utils.uuid();
 const collapseActiveKey = ref<string>();
@@ -76,17 +77,27 @@ const arrowChange = (open: boolean) => {
 
   collapseActiveKey.value = undefined;
 };
-const smtpContent = computed(() => {
+
+const httpContent = computed(() => {
   return props.content;
   // const linkName = props.value?.name;
   // if (!linkName) {
   //   return undefined;
   // }
+
   // return props.content?.find(item => linkName === item.name);
 });
 
+const caseId = computed(() => {
+  return httpContent.value?.caseId;
+});
+
+const apisId = computed(() => {
+  return httpContent.value?.apisId;
+});
+
 const bodySize = computed(() => {
-  const size = smtpContent.value?.content?.response?.size;
+  const size = httpContent.value?.content?.response?.size;
   if (size === undefined || size === null) {
     return '0B';
   }
@@ -95,7 +106,7 @@ const bodySize = computed(() => {
 });
 
 const runtime = computed(() => {
-  const timeStamp = smtpContent.value?.content?.response?.timeline?.total;
+  const timeStamp = httpContent.value?.content?.response?.timeline?.total;
   if (timeStamp === undefined || timeStamp === null) {
     return '';
   }
@@ -104,15 +115,15 @@ const runtime = computed(() => {
 });
 
 const status = computed(() => {
-  if (!smtpContent.value) {
+  if (!httpContent.value) {
     return 'block';
   }
 
-  return smtpContent.value?.content?.success ? 'success' : 'fail';
+  return httpContent.value.content?.success ? 'success' : 'fail';
 });
 
 const failMessage = computed(() => {
-  return smtpContent.value?.content?.failMessage;
+  return httpContent.value?.content?.failMessage;
 });
 
 </script>
@@ -126,16 +137,26 @@ const failMessage = computed(() => {
       :showArrow="false"
       collapsible="disabled">
       <template #header>
-        <div class="w-full flex items-center px-3 py-2 cursor-pointer" @click="arrowChange(!arrowOpen)">
-          <Icon
-            class="flex-shrink-0 text-4 mr-3"
-            icon="icon-chajianpeizhi" />
-          <div :title="smtpContent?.name" class="truncate min-w-55 max-w-100 mr-5 name">{{ smtpContent?.name }}</div>
-          <Tag v-if="smtpContent?.content?.plainBody" class="!leading-5">{{ t('xcan_scenarioDebugResult.text') }}</Tag>
-          <Tag v-if="smtpContent?.content?.emlMessage" class="!leading-5">{{ t('xcan_scenarioDebugResult.emlFile') }}</Tag>
-          <Tag v-if="smtpContent?.content?.attachMessage" class="!leading-5">{{ t('common.attachment') }}</Tag>
+        <div class="w-full flex items-center px-3 py-2.5 cursor-pointer" @click="arrowChange(!arrowOpen)">
+          <template v-if="caseId">
+            <Icon class="flex-shrink-0 text-4 mr-3" icon="icon-cese" />
+          </template>
+          <template v-else>
+            <Icon
+              v-if="apisId"
+              class="flex-shrink-0 text-4 mr-3"
+              icon="icon-yinyonghttp" />
+            <Icon
+              v-else
+              class="flex-shrink-0 text-4 mr-3"
+              icon="icon-chajianpeizhi" />
+          </template>
+          <div :title="httpContent?.name" class="truncate min-w-55 max-w-100 mr-5 name">{{ httpContent?.name }}</div>
+          <Tag v-if="httpContent?.content?.protocol?.value" class="!leading-5">{{ t('protocol.name') }}：{{ httpContent?.content?.protocol?.value }}</Tag>
+          <Tag v-if="httpContent?.content?.response?.messageTotal" class="!leading-5">{{ t('xcan_scenarioDebugResult.totalEmails') }}{{ httpContent?.content?.response?.messageTotal }}{{ t('xcan_scenarioDebugResult.emails') }}</Tag>
+          <Tag v-if="httpContent?.content?.response?.messageRead" class="!leading-5">{{ t('xcan_scenarioDebugResult.readEmails') }}{{ httpContent?.content?.response?.messageRead }}{{ t('xcan_scenarioDebugResult.emails') }}</Tag>
           <div class="flex-1 justify-end flex items-center mr-3">
-            <template v-if="!smtpContent?.enabled">
+            <template v-if="!httpContent?.enabled">
               <StatusTag />
             </template>
             <template v-else>
@@ -162,17 +183,11 @@ const failMessage = computed(() => {
         type="card"
         size="small"
         class="mt-3 card-tabs">
-        <TabPane key="general" :tab="t('protocol.request')">
-          <RequestHeaders :value="smtpContent" class="py-3" />
+        <TabPane key="general" :tab="`${t('protocol.request')} (${utils.formatBytes(httpContent?.content?.request0?.size)})`">
+          <RequestHeaders :value="httpContent" class="py-3" />
         </TabPane>
-        <TabPane key="response" :tab="t('protocol.response')">
-          <NoData
-            v-if="!smtpContent?.content?.response?.data"
-            size="small"
-            class="my-2" />
-          <div v-else class="whitespace-pre">
-            {{ smtpContent?.content?.response?.data }}
-          </div>
+        <TabPane key="responses" :tab="`${t('protocol.response')} (${bodySize})`">
+          <Response :value="httpContent" class="py-3" />
         </TabPane>
       </Tabs>
     </CollapsePanel>

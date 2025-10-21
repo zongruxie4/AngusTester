@@ -5,7 +5,7 @@ import { Arrow, NoData } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-import { ExecContent } from '../../PropsType';
+import { ExecContent } from './PropsType';
 
 const { t } = useI18n();
 

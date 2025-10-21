@@ -5,7 +5,7 @@ import { utils } from '@xcan-angus/infra';
 import { Arrow, NoData, Icon, Spin } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { ExecContent } from '../PropsType';
+import { ExecContent } from './PropsType';
 const { t } = useI18n();
 
 export interface Props {
@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
   ignoreAssertions: undefined
 });
 
-const Result = defineAsyncComponent(() => import('./Result/index.vue'));
+const Result = defineAsyncComponent(() => import('./AssertionResult.vue'));
 
 const activeKeys = ref<string[]>([]);
 const loadingMap = ref<{[key:string]:boolean}>({});
@@ -44,7 +44,7 @@ const statusMap = computed(():{[key:string]:'Disabled'|'Ignored'|'Success'|'Fail
   return assertions.value.reduce((prev, cur) => {
     if (props.ignoreAssertions) {
       prev[cur.id] = 'Ignored';
-    } else if (cur.enabled === false) {
+    } else if (!cur.enabled) {
       prev[cur.id] = 'Disabled';
     } else if (cur?.ignore === true) {
       prev[cur.id] = 'Ignored';

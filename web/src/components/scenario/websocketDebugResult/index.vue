@@ -2,7 +2,7 @@
 import { defineAsyncComponent } from 'vue';
 import { ExecContent } from './PropsType';
 
-const WebsocketItem = defineAsyncComponent(() => import('./websocket.vue'));
+const WebsocketItem = defineAsyncComponent(() => import('./WebSocket.vue'));
 
 export interface Props {
   content: ExecContent[];

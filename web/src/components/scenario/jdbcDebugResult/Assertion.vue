@@ -5,7 +5,7 @@ import { utils } from '@xcan-angus/infra';
 import { Arrow, NoData, Icon, Spin } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { ExecContent } from '../PropsType';
+import { ExecContent } from './PropsType';
 const { t } = useI18n();
 
 export interface Props {
@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
   ignoreAssertions: undefined
 });
 
-const Result = defineAsyncComponent(() => import('./Result/index.vue'));
+const Result = defineAsyncComponent(() => import('@/components/scenario/jdbcDebugResult/AssertionResult.vue'));
 
 const activeKeys = ref<string[]>([]);
 const loadingMap = ref<{[key:string]:boolean}>({});

@@ -6,7 +6,7 @@ import { utils } from '@xcan-angus/infra';
 
 import { useI18n } from 'vue-i18n';
 
-import StatusTag from './StatusTag/index.vue';
+import StatusTag from './StatusTag.vue';
 // import { HTTPInfo } from './PropsType';
 import { ExecContent } from './PropsType';
 const { t } = useI18n();
@@ -22,11 +22,11 @@ const props = withDefaults(defineProps<Props>(), {
   ignoreAssertions: undefined
 });
 
-const RequestHeaders = defineAsyncComponent(() => import('./RequestHeaders/index.vue'));
-const RequestBody = defineAsyncComponent(() => import('./RequestBody/index.vue'));
-const ResponseBody = defineAsyncComponent(() => import('./ResponseBody/index.vue'));
-const TimeLine = defineAsyncComponent(() => import('./TimeLine/index.vue'));
-const AssertionsResult = defineAsyncComponent(() => import('./AssertionsResult/index.vue'));
+const RequestHeaders = defineAsyncComponent(() => import('./RequestHeaders.vue'));
+const RequestBody = defineAsyncComponent(() => import('./RequestBody.vue'));
+const ResponseBody = defineAsyncComponent(() => import('./ResponseBody.vue'));
+const TimeLine = defineAsyncComponent(() => import('./TimeLine.vue'));
+const AssertionsResult = defineAsyncComponent(() => import('./Assertion.vue'));
 
 const setGlobalTabActiveKey = inject<(key:'executeConfig')=>void>('setGlobalTabActiveKey');
 

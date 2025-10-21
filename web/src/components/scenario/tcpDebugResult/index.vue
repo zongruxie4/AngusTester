@@ -2,7 +2,7 @@
 import { defineAsyncComponent } from 'vue';
 import { ExecContent } from './PropsType';
 
-const TcpItem = defineAsyncComponent(() => import('./TCP/index.vue'));
+const TcpItem = defineAsyncComponent(() => import('./Tcp.vue'));
 
 export interface Props {
   content: ExecContent[];
