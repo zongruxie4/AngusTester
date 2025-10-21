@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { Modal } from '@xcan-angus/vue-ui';
-import EasyMd from '@/components/easyMd/index.vue';
+import EasyMd from '@/components/editor/easyMd/index.vue';
 
 interface Props {
   visible: boolean;

@@ -28,7 +28,7 @@ const emit = defineEmits<{
 }>();
 
 // Async components
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const CreateTestTaskModal = defineAsyncComponent(() => import('@/components/task/CreateTestTaskModal.vue'));
 const RestartTestTaskModal = defineAsyncComponent(() => import('@/components/task/RestartTestTaskModal.vue'));
 const ReopenTestTaskModal = defineAsyncComponent(() => import('@/components/task/ReopenTestTaskModal.vue'));

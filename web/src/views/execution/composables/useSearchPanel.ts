@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import { setting } from '@/api/gm';
 import { ExecStatus } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
-import { createAuditOptions, createTimeOptions, createEnumTypeConfig, type QuickSearchConfig } from '@/components/quickSearch';
+import { createAuditOptions, createTimeOptions, createEnumTypeConfig, type QuickSearchConfig } from 'src/components/form/quickSearch';
 
 export type OrderByKey = 'createdDate' | 'createdByName';
 

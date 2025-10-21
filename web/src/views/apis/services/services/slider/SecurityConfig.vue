@@ -11,7 +11,7 @@ import { ServicesCompType } from '@/enums/enums';
 
 import { AuthFlowKey } from '@/types/openapi-types';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 interface Props {
   id: string;

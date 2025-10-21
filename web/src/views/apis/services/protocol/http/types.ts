@@ -104,13 +104,13 @@ export type AssertResult = {
   /** Extracted value */
   extractValue?: string;
   /** Assertion type with message or condition */
-  type: { message: string; value: AssertionCondition; } | AssertionCondition;
+  type: { message: string; value: AssertionType; } | AssertionType;
   /** Parameter name */
   parameterName: string;
   /** Condition expression */
   condition: string;
   /** Whether this is extracting expected value */
-  extraction: boolean;
+  extraction: boolean | Extraction;
   /** Assertion condition type */
   assertionCondition: AssertionCondition;
   /** Execution result details */

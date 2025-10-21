@@ -13,7 +13,7 @@ import {
   createAuditOptions,
   createTimeOptions,
   type QuickSearchConfig
-} from '@/components/quickSearch';
+} from 'src/components/form/quickSearch';
 
 // TYPES & INTERFACES
 type OrderByKey = string;

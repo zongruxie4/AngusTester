@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Input, notification } from '@xcan-angus/vue-ui';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import { ResponseMatchConfig } from './types';
 import { FullMatchCondition, utils } from '@xcan-angus/infra';
 

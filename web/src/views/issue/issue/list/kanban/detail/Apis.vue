@@ -11,9 +11,9 @@ import { SoftwareVersionStatus } from '@/enums/enums';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 import { IssueMenuKey } from '@/views/issue/menu';
 
-import TaskStatus from '@/components/TaskStatus/index.vue';
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import TaskStatus from '@/components/task/TaskStatus.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 // Async Components
 const Description = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Description.vue'));

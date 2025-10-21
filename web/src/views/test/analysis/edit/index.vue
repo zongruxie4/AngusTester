@@ -14,7 +14,7 @@ import {
 } from '@/enums/enums';
 import { analysis } from '@/api/tester';
 import { BasicProps } from '@/types/types';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import { EditAnalysisState } from '@/views/test/analysis/types';
 
 // Component setup

@@ -4,7 +4,7 @@ import { Collapse, CollapsePanel, Tabs, TabPane, Badge, Radio } from 'ant-design
 import { Composite, Input, Icon, Tooltip, Popover, FunctionsButton } from '@xcan-angus/vue-ui';
 import { utils, i18n } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 import { HTTPConfig, HttpMethod } from './PropsType';
 
@@ -63,7 +63,7 @@ const emit = defineEmits<{
   (e: 'renderChange'): void;
 }>();
 
-const ExecAuthencation = defineAsyncComponent(() => import('@/components/ExecAuthencation/index.vue'));
+const ExecAuthencation = defineAsyncComponent(() => import('@/components/exec/ExecAuthencation/index.vue'));
 const ServerEndpoint = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/ServerEndpoint/index.vue'));
 const ActionsGroup = defineAsyncComponent(() => import('../ActionsGroup/index.vue'));
 const AssertionForm = defineAsyncComponent(() => import('./AssertionForm/index.vue'));

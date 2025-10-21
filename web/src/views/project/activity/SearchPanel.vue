@@ -4,7 +4,7 @@ import { IconCount, IconRefresh, SearchPanel, Hints } from '@xcan-angus/vue-ui';
 import { Tooltip } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { PageQuery, SearchCriteria, appContext } from '@xcan-angus/infra';
-import { QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
+import { QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig } from 'src/components/form/quickSearch';
 
 import { useActivitySearch } from './composables/useActivitySearch';
 

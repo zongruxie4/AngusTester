@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Validate } from '@xcan-angus/vue-ui';
 
-import MonacoEditor from '@/components/MonacoEditor/index.vue';
+import MonacoEditor from '@/components/editor/MonacoEditor/index.vue';
 import { isHtml, isJSON, isXML, isYAML } from '@/utils/dataFormat';
 
 // Props & Emits

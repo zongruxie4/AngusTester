@@ -6,8 +6,8 @@ import { Composite, HttpMethodText, Input } from '@xcan-angus/vue-ui';
 import { HttpMethod, ParameterIn, utils } from '@xcan-angus/infra';
 
 import angusUtils from '@/utils/apis/index';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
-import ExecAuthencation from '@/components/ExecAuthencation/index.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
+import ExecAuthencation from '@/components/exec/ExecAuthencation/index.vue';
 import { OASServer, RequestConfig } from '@/views/data/variable/detail/http/types';
 
 const { t } = useI18n();

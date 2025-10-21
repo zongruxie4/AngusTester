@@ -5,8 +5,8 @@ import { IconTask, Table } from '@xcan-angus/vue-ui';
 import { useTaskData } from './composables/useTaskData';
 import type { TaskProps } from './types';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import TaskStatus from '@/components/TaskStatus/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
+import TaskStatus from '@/components/task/TaskStatus.vue';
 
 const { t } = useI18n();
 

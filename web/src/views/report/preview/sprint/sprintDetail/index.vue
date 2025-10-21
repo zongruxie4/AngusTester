@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import dayjs from 'dayjs';
 import { utils } from '@xcan-angus/infra';
 import { Colon } from '@xcan-angus/vue-ui';
-import RichEditor from '@/components/richEditor/index.vue';
+import RichEditor from '@/components/editor/richEditor/index.vue';
 import { useI18n } from 'vue-i18n';
 
 import { ReportContent } from '../PropsType';

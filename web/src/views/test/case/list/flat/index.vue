@@ -5,7 +5,7 @@ import { Icon, ReviewStatus } from '@xcan-angus/vue-ui';
 import { ReviewStatus as ReviewStatusEnum, PageQuery } from '@xcan-angus/infra';
 import { CaseDetail } from '@/views/test/types';
 
-import TestResult from '@/components/TestResult/index.vue';
+import TestResult from '@/components/test/TestResult.vue';
 
 const { t } = useI18n();
 

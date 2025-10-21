@@ -12,8 +12,8 @@ import { BasicProps } from '@/types/types';
 import { getCurrentPage } from '@/utils/utils';
 import { TaskDetail } from '../types';
 
-import TaskStatusV from '@/components/TaskStatus/index.vue';
-import TaskPriority from '@/components/TaskPriority/index.vue';
+import TaskStatusV from '@/components/task/TaskStatus.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 
 const { t } = useI18n();
 

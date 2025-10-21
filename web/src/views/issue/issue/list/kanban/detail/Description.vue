@@ -9,7 +9,7 @@ import { TaskDetail } from '@/views/issue/types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 // Async components
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 // Component props and emits
 const props = withDefaults(defineProps<TaskDetailProps>(), {

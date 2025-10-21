@@ -48,7 +48,7 @@ const emit = defineEmits<{
 const ButtonGroup = defineAsyncComponent(() => import('@/views/data/variable/detail/ButtonGroup.vue'));
 const PreviewData = defineAsyncComponent(() => import('@/views/data/variable/detail/PreviewData.vue'));
 const VariableUsageList = defineAsyncComponent(() => import('@/views/data/variable/detail/UsageList.vue'));
-const ParamTextarea = defineAsyncComponent(() => import('@/components/ParamTextarea/index.vue'));
+const ParamTextarea = defineAsyncComponent(() => import('@/components/form/ParamTextarea.vue'));
 
 // Use the static variable composable for form logic
 const {

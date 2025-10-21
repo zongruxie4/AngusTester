@@ -4,7 +4,7 @@ import { Composite, HttpMethodTag, Icon, Input } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { API_EXTENSION_KEYS, OpenAPIV3_1 } from '@/types/openapi-types';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 interface Props {
     dataSource: {

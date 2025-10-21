@@ -15,7 +15,7 @@ import { CaseDetail } from '@/views/test/types';
 import { ActionMenuItem } from '@/views/test/case/list/types';
 import { TestMenuKey } from '@/views/test/menu';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 
 const EditTaskModal = defineAsyncComponent(() => import('@/views/test/case/list/Edit.vue'));
 const MoveModal = defineAsyncComponent(() => import('@/views/test/case/list/Move.vue'));

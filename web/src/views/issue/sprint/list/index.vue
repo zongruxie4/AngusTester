@@ -28,7 +28,7 @@ const Introduce = defineAsyncComponent(() => import('@/views/issue/sprint/list/I
 const BurndownChart = defineAsyncComponent(() => import('@/views/issue/sprint/list/BurndownChart.vue'));
 const MemberProgressModal = defineAsyncComponent(() => import('@/views/issue/sprint/list/MemberProgress.vue'));
 const WorkCalendarModal = defineAsyncComponent(() => import('@/views/issue/sprint/list/WorkCalendar.vue'));
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const SprintList = defineAsyncComponent(() => import('@/views/issue/sprint/list/List.vue'));
 
 // Injected dependencies

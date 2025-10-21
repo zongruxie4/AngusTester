@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
 });
 
 // Async components
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/test/home/WorkCalendar.vue'));
 const BurnDownChart = defineAsyncComponent(() => import('@/views/test/plan/detail/BurndownChart.vue'));
 const MemberProgress = defineAsyncComponent(() => import('@/views/test/plan/detail/MemberProgress.vue'));

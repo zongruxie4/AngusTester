@@ -84,7 +84,8 @@ export const validateType = (data: any, schema: any) => {
   const validator = ajvValidator.compile(schema);
   const isValid = validator(data);
   if (!isValid) {
-    return validator.errors;
+    // Always return an array to satisfy spread operations
+    return (validator.errors || []) as any[];
   }
   return [];
 };
@@ -116,8 +117,7 @@ const validateQueryParameters = (data: any[]) => {
   }
   const validationErrors: any[] = [];
   data.forEach(item => {
-    const schemaObject = item;
-    validationErrors.push(...validateParameterData(item[valueKey], deepDelAttrFromObj(schemaObject.schema, [])));
+    validationErrors.push(...validateParameterData(item[valueKey], deepDelAttrFromObj(item.schema, [])));
   });
   return !validationErrors.length;
 };
@@ -136,8 +136,9 @@ const validateBodyFormData = (data: any[]) => {
   }
   const validationErrors: any[] = [];
   data.forEach(item => {
-    const schemaObject = item;
-    validationErrors.push(...validateParameterData(item[valueKey], deepDelAttrFromObj(schemaObject, [valueKey, 'types', 'exampleSetFlag', 'name', enabledKey, 'key'])));
+    validationErrors.push(...validateParameterData(item[valueKey],
+      deepDelAttrFromObj(item, [valueKey, 'types', 'exampleSetFlag', 'name', enabledKey, 'key']))
+    );
   });
   return !validationErrors.length;
 };

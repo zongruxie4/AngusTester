@@ -10,7 +10,7 @@ import { ExecStatus } from '@/enums/enums';
 import { useExecutionDetail } from './composables/useExecutionDetail';
 
 // Async component imports
-const MonacoEditor = defineAsyncComponent(() => import('@/components/MonacoEditor/index.vue'));
+const MonacoEditor = defineAsyncComponent(() => import('@/components/editor/MonacoEditor/index.vue'));
 const ExecSetting = defineAsyncComponent(() => import('./Configuration.vue'));
 const ExecLog = defineAsyncComponent(() => import('./ExecLog.vue'));
 const PerformanceTest = defineAsyncComponent(() => import('./performance/index.vue'));

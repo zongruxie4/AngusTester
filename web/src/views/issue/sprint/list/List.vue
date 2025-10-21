@@ -8,7 +8,7 @@ import { TaskSprintPermission, TaskSprintStatus } from '@/enums/enums';
 import { SprintInfo } from '../types';
 import { IssueMenuKey } from '@/views/issue/menu';
 
-import RichTextEditor from '@/components/richEditor/textContent/index.vue';
+import RichTextEditor from '@/components/editor/richEditor/textContent/index.vue';
 
 const { t } = useI18n();
 

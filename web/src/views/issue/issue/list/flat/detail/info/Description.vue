@@ -26,7 +26,7 @@ const emit = defineEmits<{
 }>();
 
 // Async component
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 // Description editing state
 const richEditorRef = ref();

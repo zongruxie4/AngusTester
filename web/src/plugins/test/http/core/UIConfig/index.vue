@@ -15,7 +15,7 @@ import { RendezvousConfig } from '@/plugins/test/components/UIConfigComp/Rendezv
 import { ThroughputConfig } from './Throughput/PropsType';
 import { TransEndConfig } from '@/plugins/test/components/UIConfigComp/TransEnd/PropsType';
 import { TransStartConfig } from '@/plugins/test/components/UIConfigComp/TransStart/PropsType';
-import { ApiInfo } from '@/plugins/test/types';
+import { ApisDetail } from '@/views/apis/services/protocol/types';
 
 export interface Props {
   value: PipelineConfig[];
@@ -54,7 +54,6 @@ const flowAuthKeys = {
   password,
   clientCredentials
 };
-
 
 const emit = defineEmits<{
   (e: 'errorNumChange', value: number): void;
@@ -121,7 +120,6 @@ const insertHTTP = () => {
   if (typeof dragRef.value?.add === 'function') {
     dragRef.value.add(data);
   }
-
   scrollToBottom();
 };
 
@@ -137,9 +135,9 @@ const extractVar = (str: string): string => {
 
 const replaceApiVariable = async (
   id: string,
-  requestBody: ApiInfo['requestBody'],
+  requestBody: ApisDetail['requestBody'],
   parameters: HTTPConfig['request']['parameters'],
-  authentication: ApiInfo['authentication'],
+  authentication: ApisDetail['authentication'],
   apisId: string
 ) => {
   const variableNames = [];
@@ -432,7 +430,7 @@ const formApiAuthToScenarioAuth = (authentication) => {
   return authentication;
 };
 
-const transformOpenApiTo = async (data: ApiInfo, caseFlag?: true): Promise<HTTPConfig> => {
+const transformOpenApiTo = async (data: ApisDetail, caseFlag?: true): Promise<HTTPConfig> => {
   const {
     id,
     apisId,
@@ -471,7 +469,7 @@ const transformOpenApiTo = async (data: ApiInfo, caseFlag?: true): Promise<HTTPC
       }
     }
   } else {
-    let availableServer: ApiInfo['availableServers'][number];
+    let availableServer: ApisDetail['availableServers'][number];
     if (availableServers?.length) {
       availableServer = availableServers.find(i => i[serverSourceKey] === 'CURRENT_REQUEST') || availableServers[0];
       if (availableServer) {
@@ -650,7 +648,7 @@ const selectUseCase = () => {
   useCaseModalVisible.value = true;
 };
 
-const selectUseCaseOk = async (data: ApiInfo[]) => {
+const selectUseCaseOk = async (data: ApisDetail[]) => {
   for (let i = 0, len = data.length; i < len; i++) {
     const item = data[i];
     const httpData = await transformOpenApiTo(item, true);

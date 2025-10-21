@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Spin } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { useConfigData } from './composables/useConfigData';
-import ExecSettingForm from '@/components/ExecSettingForm/index.vue';
+import ExecSettingForm from '@/components/exec/ExecSettingForm/index.vue';
 
 /**
  * Props for the Configuration component

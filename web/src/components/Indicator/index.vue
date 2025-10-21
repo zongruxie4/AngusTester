@@ -12,7 +12,7 @@ import { SmokeCheckSetting, SecurityCheckSetting } from '@/enums/enums';
 import { enumUtils, http, TESTER } from '@xcan-angus/infra';
 
 // Local component imports
-import IndicatorAssert from '@/components/IndicatorAssert/index.vue';
+import IndicatorAssert from '@/components/Indicator/IndicatorAssert/index.vue';
 
 // Local imports
 import { indicator } from './apis';

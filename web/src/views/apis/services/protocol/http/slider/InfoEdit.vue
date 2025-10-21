@@ -21,7 +21,7 @@ import { ApiStatus } from '@/enums/enums';
 import { ApisFormEdit } from '@/views/apis/services/protocol/types';
 import { API_SUMMARY_MAX_LENGTH, API_OPERATION_ID_MAX_LENGTH, API_DESC_MAX_LENGTH } from '@/utils/constant';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 /**
  * Props interface for InfoEdit component

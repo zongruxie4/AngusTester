@@ -7,7 +7,7 @@ import { testCase } from '@/api/tester';
 
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
 
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 const { t } = useI18n();
 

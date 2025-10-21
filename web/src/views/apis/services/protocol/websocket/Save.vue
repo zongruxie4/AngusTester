@@ -9,7 +9,7 @@ import { ApiStatus, ApiPermission, ApisProtocol } from '@/enums/enums';
 import { apis, services } from '@/api/tester';
 import { Props } from '@/views/apis/services/protocol/websocket/types';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 const props = withDefaults(defineProps<Props>(), {
   getParameter: () => ({})

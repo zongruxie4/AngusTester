@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue';
 import { PageQuery, SearchCriteria, appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { createAuditOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
+import { createAuditOptions, createTimeOptions, type QuickSearchConfig } from 'src/components/form/quickSearch';
 
 /**
  * Composable function for managing search panel functionality

@@ -16,7 +16,7 @@ const Introduce = defineAsyncComponent(() => import('@/views/test/plan/list/Intr
 const SearchPanel = defineAsyncComponent(() => import('@/views/test/plan/list/SearchPanel.vue'));
 const List = defineAsyncComponent(() => import('@/views/test/plan/list/List.vue'));
 
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 
 // Composables
 const { t } = useI18n();

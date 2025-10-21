@@ -36,11 +36,11 @@ const emit = defineEmits<{
 }>();
 
 // Async component imports
-const DataSetModal = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/listModal/index.vue'));
-const DataSetUseList = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/useList/index.vue'));
-const PreviewData = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/previewData/index.vue'));
-const StaticParameters = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/staticParameter/index.vue'));
-const ExtractParameters = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/extractParameter/index.vue'));
+const DataSetModal = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/ListModal.vue'));
+const DataSetUseList = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/UseList.vue'));
+const PreviewData = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/PreviewData.vue'));
+const StaticParameters = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/StaticParameter.vue'));
+const ExtractParameters = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/ExtractParameter.vue'));
 
 // Component state
 const isDataLoaded = ref(false);

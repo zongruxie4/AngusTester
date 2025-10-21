@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, IconRefresh, IconText, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import { TESTER, SearchCriteria } from '@xcan-angus/infra';
-import { QuickSearchOptions } from '@/components/quickSearch';
+import { QuickSearchOptions } from 'src/components/form/quickSearch';
 import { BasicProps } from '@/types/types';
 import { useScriptSearch } from './composables/useScriptSearch';
 

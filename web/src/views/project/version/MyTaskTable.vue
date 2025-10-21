@@ -6,8 +6,8 @@ import { IconTask, Table } from '@xcan-angus/vue-ui';
 import type { MyTaskTableProps, TaskInfo } from './types';
 import { IssueMenuKey } from '@/views/issue/menu';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import TaskStatus from '@/components/TaskStatus/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
+import TaskStatus from '@/components/task/TaskStatus.vue';
 
 // Component props with default values
 const props = withDefaults(defineProps<MyTaskTableProps>(), {

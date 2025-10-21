@@ -44,7 +44,7 @@ const Move = defineAsyncComponent(() => import('@/views/issue/issue/list/Move.vu
 const Upload = defineAsyncComponent(() => import('@/views/issue/issue/list/Upload.vue'));
 const FlowChart = defineAsyncComponent(() => import('@/views/issue/issue/list/FlowChart.vue'));
 
-const ModuleTree = defineAsyncComponent(() => import('@/components/ModuleSelectTree/index.vue'));
+const ModuleTree = defineAsyncComponent(() => import('@/components/module/ModuleSelectTree/index.vue'));
 const KanbanView = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/index.vue'));
 const GanttView = defineAsyncComponent(() => import('@/views/issue/issue/list/gantt/index.vue'));
 const TableView = defineAsyncComponent(() => import('@/views/issue/issue/list/table/index.vue'));

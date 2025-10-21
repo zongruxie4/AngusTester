@@ -4,7 +4,7 @@ import { Form, FormItem, Button } from 'ant-design-vue';
 import { Select, Input, Icon, Popover, AsyncComponent, FunctionsModal } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import type { Rule } from 'ant-design-vue/es/form';
-const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
+const ParamInput = defineAsyncComponent(() => import('@/components/form/ParamInput.vue'));
 
 export interface FieldItem {
   name:string, type:string, value:string | undefined

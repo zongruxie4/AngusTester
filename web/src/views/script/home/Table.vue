@@ -30,7 +30,7 @@ const emit = defineEmits<{
 }>();
 
 // Async components
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
 
 // I18n

@@ -10,10 +10,10 @@ import { useI18n } from 'vue-i18n';
 import { TestMenuKey } from '@/views/test/menu';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import TestResult from '@/components/TestResult/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
+import TestResult from '@/components/test/TestResult.vue';
 
-const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/case/SelectByModuleModal.vue'));
+const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/SelectCaseByModuleModal.vue'));
 
 /**
  * Props interface for AssocCase component

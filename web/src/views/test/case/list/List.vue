@@ -24,7 +24,7 @@ const FlatView = defineAsyncComponent(() => import('@/views/test/case/list/flat/
 const TableView = defineAsyncComponent(() => import('@/views/test/case/list/table/index.vue'));
 const KanbanView = defineAsyncComponent(() => import('@/views/test/case/list/kanban/index.vue'));
 
-const ModuleTree = defineAsyncComponent(() => import('@/components/ModuleSelectTree/index.vue'));
+const ModuleTree = defineAsyncComponent(() => import('@/components/module/ModuleSelectTree/index.vue'));
 const CaseDetailPage = defineAsyncComponent(() => import('@/views/test/case/detail/index.vue'));
 const AddModal = defineAsyncComponent(() => import('@/views/test/case/list/Edit.vue'));
 const AiAddModal = defineAsyncComponent(() => import('@/views/test/case/list/AiAdd.vue'));

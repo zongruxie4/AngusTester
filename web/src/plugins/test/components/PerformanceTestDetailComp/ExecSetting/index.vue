@@ -7,7 +7,7 @@ import { notification, Spin } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { exec } from '@/api/tester';
 
-import ExecSettingForm from '@/components/ExecSettingForm/index.vue';
+import ExecSettingForm from '@/components/exec/ExecSettingForm/index.vue';
 
 // Router instance for navigation
 const router = useRouter();
@@ -77,33 +77,33 @@ const execSettingFormRef = ref();
 /**
  * Scroll to the first error element in a form
  * Finds the form by class name, locates the first error field, and scrolls it into view
- * 
+ *
  * @param formName - Form class name to search for
  * @param errors - Validation errors object containing error fields
  */
 const scrollToErrorElement = (
-  formName: string, 
+  formName: string,
   errors: Record<string, FormErrors>
 ): void => {
   // Find form element by class name
   const formElement = document.querySelector(`.${formName}`);
-  
+
   // Early return if form not found or no errors
   if (!formElement || !errors[formName]?.errorFields?.length) {
     return;
   }
-  
+
   // Build error element class name from field path
   const errEleClass = errors[formName].errorFields![0].name.join('-');
-  
+
   // Find error element within form
   const errorElement = formElement.querySelector(`.${errEleClass}`);
-  
+
   // Early return if error element not found
   if (!errorElement) {
     return;
   }
-  
+
   // Scroll error element into view, centered vertically
   errorElement.scrollIntoView({
     block: 'center',
@@ -132,7 +132,7 @@ const saveSetting = async (): Promise<void> => {
   const data: ValidationResult = await execSettingFormRef.value.isValid();
   const isValid = data.valid;
   const errors = data.errors;
-  
+
   // Check each form for validation errors
   for (const formName of FORM_NAMES) {
     if (errors[formName]?.errorFields?.length) {
@@ -169,12 +169,12 @@ const saveSetting = async (): Promise<void> => {
   emit('update:loading', true);
   const [error] = await exec.putExecScriptConfig(props.execId, params.value);
   emit('update:loading', false);
-  
+
   // Handle error
   if (error) {
     return;
   }
-  
+
   // Show success message and navigate to execution list
   notification.success(t('actions.tips.modifySuccess'));
   router.push('/execution');
@@ -194,7 +194,7 @@ const saveSetting = async (): Promise<void> => {
         ref="execSettingFormRef"
         :scriptId="props.scriptInfo.id"
         :scriptInfo="props.scriptInfo" />
-      
+
       <!-- Action buttons: Save and Cancel -->
       <div class="flex pl-3.5 mt-10 pb-8">
         <!-- Save button (validates and saves settings) -->
@@ -205,7 +205,7 @@ const saveSetting = async (): Promise<void> => {
           @click="saveSetting">
           {{ t('actions.save') }}
         </Button>
-        
+
         <!-- Cancel button (navigates back to execution list) -->
         <RouterLink to="/execution">
           <Button size="small">{{ t('actions.cancel') }}</Button>

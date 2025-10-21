@@ -2,7 +2,7 @@ import { ComputedRef, Ref } from 'vue';
 import { AuthObjectType, EnumMessage, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { ScenarioMonitorStatus } from '@/enums/enums';
 import { CreateTimeSetting } from '@/types/types';
-import { QuickSearchConfig } from '@/components/quickSearch';
+import { QuickSearchConfig } from 'src/components/form/quickSearch';
 
 export type OrderByKey = 'createdDate' | 'createdByName';
 

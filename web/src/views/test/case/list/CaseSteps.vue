@@ -6,7 +6,7 @@ import { Button } from 'ant-design-vue';
 import { CaseTestStep } from '@/views/test/types';
 import { CaseStepView } from '@/enums/enums';
 
-import RichEditor from '@/components/richEditor/index.vue';
+import RichEditor from '@/components/editor/richEditor/index.vue';
 
 const { t } = useI18n();
 

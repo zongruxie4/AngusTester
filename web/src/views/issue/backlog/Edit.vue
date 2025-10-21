@@ -15,12 +15,12 @@ import { DATE_TIME_FORMAT, TIME_FORMAT, MAX_FILE_SIZE_MB, UPLOAD_ISSUE_FILE_KEY 
 import { BugLevel, SoftwareVersionStatus, TaskType, TestType } from '@/enums/enums';
 import { TaskEditState } from '@/views/issue/issue/list/types';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import { TaskDetail, getTaskTypeName } from '../types';
 
 // Async Components
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 // Component Props & Emits
 const props = withDefaults(defineProps<TaskEditState>(), {

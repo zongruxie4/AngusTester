@@ -7,7 +7,7 @@ import { DataSourceProps } from '@/types/types';
 import { ScriptInfo } from '../types';
 import { useScriptForm } from './composables/useScriptForm';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 const { t } = useI18n();
 

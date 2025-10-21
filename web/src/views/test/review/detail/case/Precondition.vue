@@ -24,7 +24,7 @@ const emit = defineEmits<{
   (event: 'change'): void;
 }>();
 
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 const descRichRef = ref();
 const openFlag = ref(true);

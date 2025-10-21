@@ -8,7 +8,7 @@ import { SmtpPipelineInfo } from '@/plugins/test/smtp/core/PropsType';
 import { TcpPipelineInfo } from '@/plugins/test/tcp/core/PropsType';
 import { WebSocketPipelineInfo } from '@/plugins/test/websocket/core/PropsType';
 
-import { ScriptType as ScriptTypeInfra, AssertionCondition,  BasicAssertionType, HttpMethod, EnumMessage, ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
+import { ScriptType as ScriptTypeInfra, AssertionCondition, EnumMessage, ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
 import { ScenarioType, PiplineTarget } from '@/enums/enums';
 
 export type ScriptType = keyof typeof ScriptTypeInfra;
@@ -100,10 +100,8 @@ export interface ThroughputConfig {
     timeoutInMs: string;        // Max wait time in milliseconds before timeout
 }
 
-
 export type PipelineConfig = WebSocketPipelineInfo | TcpPipelineInfo | SmtpPipelineInfo | MailPipelineInfo | LdapPipelineInfo | JmsPipelineInfo | FtpPipelineInfo | HTTPConfig | JDBCConfig | WaitingTimeConfig | RendezvousConfig | TransStartConfig | TransEndConfig;
 export type PipelineInfo = WebSocketPipelineInfo | TcpPipelineInfo | SmtpPipelineInfo | MailPipelineInfo | LdapPipelineInfo | JmsPipelineInfo | FtpPipelineInfo | HTTPInfo | JDBCConfigInfo | WaitingTimeConfig | RendezvousConfig | TransStartConfig | TransEndConfig;
-
 
 export type ScenarioInfo = {
     description: string;
@@ -357,77 +355,6 @@ export type ExecContent = {
     timestamp: string;
 }
 
-
-export type ApiInfo = {
-    projectId: string;
-    caseId: string;
-    apisId: string;
-    id: string;
-    endpoint: string;
-    server?: { [key: string]: any };
-    description: string;
-    summary: string;
-    name: string;
-    method: EnumMessage<HttpMethod>;
-    parameters: {
-        name: string;
-        in: string;
-        description: string;
-        enabled:boolean;
-    }[];
-    requestBody: {
-        $ref:string;
-        description: string;
-        content: {
-            [key:string]: {
-                schema: {[key:string]:any};
-                exampleSetFlag: boolean;
-                'x-xc-value': string;
-            }
-        };
-        required: boolean;
-    };
-    authentication:{
-        type: string;
-        enabled: boolean;
-        'x-xc-value': string;
-        'x-scheme': string;
-        $ref?:string;
-    };
-    variables:{[key:string]:any}[];
-    assertions: {
-        name: string;
-        enabled: boolean;
-        type: EnumMessage<BasicAssertionType>;
-        expected: string;
-        assertionCondition: EnumMessage<AssertionCondition>;
-        expression: string;
-        description: string;
-        parameterName: string;
-        condition: string;
-        extraction: {
-            method: { value: string; message: string; };
-            expression: string;
-            matchItem: string;
-            defaultValue: string;
-            location: string;
-            parameterName: string;
-        };
-    }[];
-    resolvedRefModels: { [key: string]: string };
-    availableServers: {
-        url: string;
-        description?: string;
-        variables?: {
-            [key: string]: {
-                default: string;
-                description: string;
-                enum: string[];
-            }
-        };
-    }[];
-}
-
 export type DatasetItem = {
     createdBy: string;
     createdByName: string;
@@ -474,15 +401,3 @@ export type DatasetItem = {
     source?: string;// 前端自动添加
     previewFlag?: boolean;// 前端自动添加
 };
-
-export type RequestServer = {
-    url: string;
-    variables: {
-      [key:string]: {
-        defaultValue: string;
-        allowableValues: string[];
-        description?: string;
-      }
-    };
-    description?:string;
-}

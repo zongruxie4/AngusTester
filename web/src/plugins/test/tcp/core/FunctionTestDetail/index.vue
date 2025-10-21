@@ -12,7 +12,7 @@ import { ExecContent } from '@/plugins/test/types';
 import Collapse from './Collapse/index.vue';
 
 const { t } = useI18n();
-const TestBasicInfo = defineAsyncComponent(() => import('@/components/TestBasicInfo/index.vue'));
+const TestBasicInfo = defineAsyncComponent(() => import('@/components/test/TestBasicInfo.vue'));
 export interface Props {
   execInfo: ExecInfo;
   execContent: ExecContent[];

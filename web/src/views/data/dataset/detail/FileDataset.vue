@@ -31,7 +31,7 @@ const ParameterNameInput = defineAsyncComponent(() => import('@/views/data/datas
 const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/detail/PreviewData.vue'));
 const DataSetUseList = defineAsyncComponent(() => import('@/views/data/dataset/detail/UseList.vue'));
 const MatchItemPopover = defineAsyncComponent(() => import('@/views/data/dataset/detail/MatchItemPopover.vue'));
-const SelectEnum = defineAsyncComponent(() => import('@/components/enum/SelectEnum.vue'));
+const SelectEnum = defineAsyncComponent(() => import('@/components/form/enum/SelectEnum.vue'));
 
 // Use the composable for file dataset logic
 const {

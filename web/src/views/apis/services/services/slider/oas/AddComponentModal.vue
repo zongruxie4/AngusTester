@@ -11,7 +11,7 @@ import { OpenAPIV3_1 } from '@/types/openapi-types';
 import { ServicesCompType } from '@/enums/enums';
 import { ServicesCompDetail } from '@/views/apis/services/services/types';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 // Props for Add/Edit/View component modal
 interface Props {

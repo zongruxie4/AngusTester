@@ -52,7 +52,7 @@ const emits = defineEmits<{
   (e:'scrollChange', value: any[]):void;
 }>();
 
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const GenTestScriptModal = defineAsyncComponent(() => import('@/components/script/GenTestScriptModal.vue'));
 const DeleteScriptModal = defineAsyncComponent(() => import('@/components/script/DeleteScriptModal.vue'));
 const ShareModal = defineAsyncComponent(() => import('@/components/share/index.vue'));

@@ -103,7 +103,6 @@ const loadTagList = async () => {
  * Toggle tag expand/collapse state
  */
 const toggleTagExpand = (tag: TagInfo) => {
-
   tag.isExpand = !tag.isExpand;
   setOtherTagsToNonEdit(tagList.value, tag.id);
   isAddButtonDisabled.value = false;
@@ -189,7 +188,6 @@ onMounted(() => {
           :class="tag.isExpand ? 'open-info' : 'stop-info'"
           class="transition-height duration-500 overflow-hidden leading-3 text-3">
           <template v-if="tag.isExpand">
-
             <template v-if="tag.description">
               <TypographyParagraph
                 class="break-all whitespace-break-spaces leading-5 mt-1"

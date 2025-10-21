@@ -3,7 +3,7 @@
 import { ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { IconRequired, SelectEnum } from '@xcan-angus/vue-ui';
-import ExecSettingForm from '@/components/ExecSettingForm/index.vue';
+import ExecSettingForm from '@/components/exec/ExecSettingForm/index.vue';
 import { ScriptType } from '@xcan-angus/infra';
 
 import { ScenarioConfig } from '@/plugins/test/types/index';
@@ -49,13 +49,13 @@ const scriptTypeError = ref(false);       // Script type validation error state
  * Handle script type selection change
  * Updates local state, clears error, and emits change event with slight delay
  * for smooth UI updates
- * 
+ *
  * @param value - Selected script type value
  */
 const scriptTypeChange = (value: string): void => {
   scriptType.value = value;
   scriptTypeError.value = false;
-  
+
   // Emit change event after ~1 frame delay (16.67ms) for smoother UI updates
   setTimeout(() => {
     emit('scriptTypeChange', value);
@@ -70,7 +70,7 @@ onMounted(() => {
   // Watch for value prop changes and update script type
   watch(() => props.value, (newValue) => {
     scriptTypeError.value = false;
-    
+
     if (!newValue) {
       return;
     }
@@ -85,12 +85,12 @@ onMounted(() => {
 /**
  * Validate form data
  * Checks both script type selection and execution settings form validity
- * 
+ *
  * @returns Promise that resolves to true if valid, false otherwise
  */
 const isValid = async (): Promise<boolean> => {
   let errorNum = 0;
-  
+
   // Validate script type is selected
   if (!scriptType.value) {
     errorNum++;
@@ -109,7 +109,7 @@ const isValid = async (): Promise<boolean> => {
 /**
  * Get complete configuration data
  * Combines script type with execution settings form data
- * 
+ *
  * @returns Complete script configuration object
  */
 const getData = () => {
@@ -136,7 +136,7 @@ defineExpose({ isValid, getData });
         <IconRequired />
         <span>{{ t('common.scriptType') }}</span>
       </div>
-      
+
       <!-- Script type enum selector -->
       <SelectEnum
         :value="scriptType"
@@ -147,7 +147,7 @@ defineExpose({ isValid, getData });
         class="w-104"
         @change="scriptTypeChange" />
     </div>
-    
+
     <!-- Execution settings form (dynamic based on script type) -->
     <ExecSettingForm
       ref="formRef"

@@ -11,7 +11,7 @@ import { useReportData } from './composables/useReportData';
 import { useTableColumns } from './composables/useTableColumns';
 
 // Async components
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const Summary = defineAsyncComponent(() => import('@/views/report/home/Introduce.vue'));
 const SearchPanel = defineAsyncComponent(() => import('@/views/report/home/SearchPanel.vue'));
 const PieChart = defineAsyncComponent(() => import('@/views/report/home/PieChart.vue'));

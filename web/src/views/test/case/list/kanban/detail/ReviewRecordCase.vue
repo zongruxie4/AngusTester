@@ -4,7 +4,7 @@ import { Grid, ReviewStatus } from '@xcan-angus/vue-ui';
 import { Tag } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
 
 interface Props {
   caseInfo?: {[key: string]: any}

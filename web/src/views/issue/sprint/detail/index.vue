@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
 });
 
 // Async Components
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 const Meeting = defineAsyncComponent(() => import('./Meeting.vue'));
 const BasicInfo = defineAsyncComponent(() => import('./BasicInfo.vue'));
 const BurnDownChart = defineAsyncComponent(() => import('@/views/issue/sprint/detail/BurndownChart.vue'));

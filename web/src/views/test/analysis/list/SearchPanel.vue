@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 import { DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { cloneDeep } from 'lodash-es';
 import { XCanDexie, SearchCriteria, PageQuery } from '@xcan-angus/infra';
-import { QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
+import { QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig } from 'src/components/form/quickSearch';
 
 // Component setup
 const { t } = useI18n();

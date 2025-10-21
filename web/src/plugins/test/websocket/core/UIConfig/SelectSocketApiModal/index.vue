@@ -5,8 +5,7 @@ import { Button } from 'ant-design-vue';
 import { AssociateSelect, Modal, IconText } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
-
-import { ApiInfo } from '@/plugins/test/types';
+import { ApisDetail } from '@/views/apis/services/protocol/types';
 
 const { t } = useI18n();
 
@@ -22,10 +21,9 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: ''
 });
 
-
 const emit = defineEmits<{
   (e:'update:visible', value:boolean):void;
-  (e:'ok', value:ApiInfo):void;
+  (e:'ok', value:ApisDetail):void;
   (e:'cancel'):void;
 }>();
 
@@ -39,7 +37,7 @@ const ok = async (key:'link'|'copy') => {
   } else {
     linking.value = true;
   }
-  const [error, { data }]:[Error|null, { data: ApiInfo }] = await apis.getApiDetail(checkedId.value, true);
+  const [error, { data }]:[Error|null, { data: ApisDetail }] = await apis.getApiDetail(checkedId.value, true);
   coping.value = false;
   linking.value = false;
   if (error) {

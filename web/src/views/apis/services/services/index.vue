@@ -28,11 +28,11 @@ const ExportApis = defineAsyncComponent(() => import('@/views/apis/services/comp
 const ShareService = defineAsyncComponent(() => import('@/components/share/index.vue'));
 const TranslateService = defineAsyncComponent(() => import('@/views/apis/services/components/TranslateService.vue'));
 const ModifyStatus = defineAsyncComponent(() => import('@/views/apis/services/components/ModifyStatus.vue'));
-const Authorize = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const Authorize = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const BatchModifyApiParams = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/index.vue'));
 const GenTestScript = defineAsyncComponent(() => import('@/components/script/GenTestScriptModal.vue'));
 const DelTestScript = defineAsyncComponent(() => import('@/components/script/DeleteScriptModal.vue'));
-const EnabledApiTest = defineAsyncComponent(() => import('@/components/apis/enabledTestModal/index.vue'));
+const EnabledApiTest = defineAsyncComponent(() => import('@/components/test/EnabledTestModal.vue'));
 const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/test/ExecServiceTestModal.vue'));
 const CreateTestTask = defineAsyncComponent(() => import('@/components/task/CreateTestTaskModal.vue'));
 const RestartTestTask = defineAsyncComponent(() => import('@/components/task/RestartTestTaskModal.vue'));

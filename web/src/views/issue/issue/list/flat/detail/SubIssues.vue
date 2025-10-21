@@ -13,9 +13,9 @@ import { IssueMenuKey } from '@/views/issue/menu';
 import { TaskDetail } from '@/views/issue/types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
-import TaskStatus from '@/components/TaskStatus/index.vue';
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import TaskStatus from '@/components/task/TaskStatus.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 const EditTaskModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));
 const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/SelectByModuleModal.vue'));

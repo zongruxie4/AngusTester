@@ -7,10 +7,10 @@ import { TESTER, appContext } from '@xcan-angus/infra';
 import { ApiStatus } from '@/enums/enums';
 import { apis } from '@/api/tester';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 const DescriptionModal = defineAsyncComponent(() => import('@/views/apis/services/components/MarkdownDescModal.vue'));
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const Security = defineAsyncComponent(() => import('@/views/apis/services/components/Security.vue'));
 const ExternalDocs = defineAsyncComponent(() => import('@/views/apis/services/components/ExternalDoc.vue'));
 

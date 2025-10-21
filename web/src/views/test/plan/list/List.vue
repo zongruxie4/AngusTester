@@ -9,7 +9,7 @@ import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 import { PlanDetail } from '../types';
 import { TestMenuKey } from '@/views/test/menu';
 
-const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
+const RichText = defineAsyncComponent(() => import('@/components/editor/richEditor/textContent/index.vue'));
 
 // Props definition
 interface Props {

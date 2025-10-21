@@ -35,7 +35,7 @@ const emit = defineEmits<{
  * <p>
  * Provides a rich text editing interface for creating and editing remarks
  */
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 /**
  * Reference to the rich text editor component instance

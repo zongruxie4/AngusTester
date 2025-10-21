@@ -7,7 +7,7 @@ import { PageQuery, SearchCriteria, appContext } from '@xcan-angus/infra';
 import { LoadingProps } from '@/types/types';
 import {
   QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig
-} from '@/components/quickSearch';
+} from 'src/components/form/quickSearch';
 
 const props = withDefaults(defineProps<LoadingProps>(), {
   loading: false

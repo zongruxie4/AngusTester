@@ -36,11 +36,11 @@ const OASComponent = defineAsyncComponent(() => import('@/views/apis/services/se
 // API drawer components (displayed when API is selected)
 const ApiInfo = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/Info.vue'));
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
-const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
+const HttpTestInfo = defineAsyncComponent(() => import('@/components/test/httpTestInfo/index.vue'));
 const TestCase = defineAsyncComponent(() => import('@/views/apis/services/components/case/index.vue'));
 const CodeSnippet = defineAsyncComponent(() => import('@/views/apis/services/components/CodeSnippet.vue'));
 const MockApi = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/MockApi.vue'));
-const ShareList = defineAsyncComponent(() => import('@/components/share/list.vue'));
+const ShareList = defineAsyncComponent(() => import('@/components/share/List.vue'));
 const WebSocketConfig = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/Config.vue'));
 
 interface Props {

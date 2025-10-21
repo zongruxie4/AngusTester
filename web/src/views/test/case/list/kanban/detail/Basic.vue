@@ -9,9 +9,9 @@ import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import TestResult from '@/components/TestResult/index.vue';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
+import TestResult from '@/components/test/TestResult.vue';
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 // Async sub-sections
 const Description = defineAsyncComponent(() => import('@/views/test/case/list/kanban/detail/Description.vue'));

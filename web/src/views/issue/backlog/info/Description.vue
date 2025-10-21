@@ -24,7 +24,7 @@ const emit = defineEmits<{
 }>();
 
 // Async Components
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 // Reactive State Variables
 const isDescriptionExpanded = ref(true);

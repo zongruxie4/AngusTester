@@ -7,8 +7,8 @@ import { AssertionCondition, AssertionType, codeUtils, http, TESTER, utils } fro
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { notification } from '@xcan-angus/vue-ui';
 
-import { Extraction } from '@/components/ApiAssert/utils/extract/PropsType';
-import { getExecShowAuthData } from '@/components/ExecAuthencation/interface';
+import { Extraction } from '@/components/apis/assertion/utils/extract/PropsType';
+import { getExecShowAuthData } from '@/components/exec/ExecAuthencation/interface';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { services } from '@/api/tester';

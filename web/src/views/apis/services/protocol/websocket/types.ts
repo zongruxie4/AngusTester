@@ -27,8 +27,23 @@ export const getDefaultForm = (form = {}) => {
   };
 };
 
+export enum MessageType {
+  RECEIVE = 'receive',
+  SEND = 'send',
+  CONNECT = 'connect',
+  CLOSE = 'close',
+  SEND_ERR = 'sendErr',
+  CONNECT_ERR = 'connectErr',
+  CLOSE_ERR = 'closeErr'
+}
+
+// message payload field: messageType
+export enum WebsocketProxyMessageType {
+  WEBSOCKET_REQUEST_PROXY = 'WebsocketRequestProxy'
+}
+
 export interface Message {
-  type: 'receive'|'send'|'connect'|'close'|'sendErr'|'connectErr'|'closeErr',
+  type: MessageType,
   date: string,
   size: string,
   content?: string,

@@ -4,7 +4,7 @@ import { Checkbox, Pagination } from 'ant-design-vue';
 import { IconTask } from '@xcan-angus/vue-ui';
 
 import { TaskDetail } from '@/views/issue/types';
-import TaskStatus from '@/components/TaskStatus/index.vue';
+import TaskStatus from '@/components/task/TaskStatus.vue';
 
 /**
  * Component props interface for task list display

@@ -20,7 +20,7 @@ const EditSpaceModal = defineAsyncComponent(() => import('@/views/data/file/Edit
 const Shared = defineAsyncComponent(() => import('@/views/data/file/share/ShareList.vue'));
 const GlobalAuth = defineAsyncComponent(() => import('@/views/data/file/auth/index.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/data/file/Introduce.vue'));
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 
 // Dependency injection for app context
 const appInfo = appContext.getAccessApp();

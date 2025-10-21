@@ -38,7 +38,7 @@ const emits = defineEmits<{(e: 'delOk', value: string[]);}>();
 
 // Async component definitions
 const Introduce = defineAsyncComponent(() => import('@/views/project/project/Introduce.vue'));
-const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
+const RichText = defineAsyncComponent(() => import('@/components/editor/richEditor/textContent/index.vue'));
 
 // Initialize composables
 const {

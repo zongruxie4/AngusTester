@@ -8,7 +8,7 @@ import { MeetingInfo } from '../types';
 import { DATE_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { BasicProps } from '@/types/types';
 
-import RichEditor from '@/components/richEditor/index.vue';
+import RichEditor from '@/components/editor/richEditor/index.vue';
 
 // COMPONENT PROPS
 const props = withDefaults(defineProps<BasicProps>(), {

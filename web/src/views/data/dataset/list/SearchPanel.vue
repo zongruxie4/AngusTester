@@ -6,7 +6,7 @@ import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { LoadingProps } from '@/types/types';
 
-import { QuickSearchOptions } from '@/components/quickSearch';
+import { QuickSearchOptions } from 'src/components/form/quickSearch';
 import { useSearchPanel } from '@/views/data/dataset/list/composables/useSearchPanel';
 
 const { t } = useI18n();

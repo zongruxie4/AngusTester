@@ -7,10 +7,10 @@ import { testCase } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { AssocCaseProps } from '@/views/test/case/types';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import TestResult from '@/components/TestResult/index.vue';
+import TaskPriority from '@/components/task/TaskPriority.vue';
+import TestResult from '@/components/test/TestResult.vue';
 
-const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/case/SelectByModuleModal.vue'));
+const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/SelectCaseByModuleModal.vue'));
 
 const props = withDefaults(defineProps<AssocCaseProps>(), {
   projectId: undefined,

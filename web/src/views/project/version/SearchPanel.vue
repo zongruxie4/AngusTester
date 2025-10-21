@@ -6,7 +6,7 @@ import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { SoftwareVersionStatus } from '@/enums/enums';
 import { LoadingProps } from '@/types/types';
-import { QuickSearchOptions, createEnumOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
+import { QuickSearchOptions, createEnumOptions, createTimeOptions, type QuickSearchConfig } from 'src/components/form/quickSearch';
 
 // Component props with default values
 const props = withDefaults(defineProps<LoadingProps>(), {

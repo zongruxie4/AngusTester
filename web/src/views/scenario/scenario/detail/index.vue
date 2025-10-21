@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<ScenarioDetailProps>(), {
 const deleteTabPane = inject<(data: string[]) => void>('deleteTabPane', () => {});
 
 // Async components
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const ExecDetail = defineAsyncComponent(() => import('@/views/execution/detail/index.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
 const TestSummary = defineAsyncComponent(() => import('./TestSummary.vue'));

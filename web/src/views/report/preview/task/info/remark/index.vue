@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 const taskType = computed(() => {
   return props.dataSource?.content?.task?.taskType?.value;

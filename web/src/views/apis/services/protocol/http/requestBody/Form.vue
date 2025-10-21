@@ -24,8 +24,8 @@ import {
 
 const ApiUpload = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/Upload.vue'));
 const JsonContent = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/requestBody/Json.vue'));
-const SimpleEditableSelect = defineAsyncComponent(() => import('@/components/apis/editableSelector/index.vue'));
-const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
+const SimpleEditableSelect = defineAsyncComponent(() => import('@/components/form/EditableSelector.vue'));
+const ParamInput = defineAsyncComponent(() => import('@/components/form/ParamInput.vue'));
 
 // Define event types for better type safety
 interface ChangeEvent extends Event {

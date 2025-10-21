@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Tooltip, Popover } from '@xcan-angus/vue-ui';
 import { Radio } from 'ant-design-vue';
-import { RequestServer } from '@/plugins/test/types';
+import { ServerInfo } from '@/views/apis/server/types';
 
 // Initialize i18n for internationalization
 const { t } = useI18n();
@@ -12,8 +12,8 @@ const { t } = useI18n();
  * Component props interface
  */
 export interface Props {
-  server: RequestServer;  // Server configuration with URL, variables, and description
-  endpoint: string;       // API endpoint path
+  server: ServerInfo; // Server configuration with URL, variables, and description
+  endpoint: string; // API endpoint path
 }
 
 // Define props with default values
@@ -26,13 +26,13 @@ const props = withDefaults(defineProps<Props>(), {
  * Event emitters
  */
 const emit = defineEmits<{
-  (e: 'change', value: RequestServer): void;  // Emit server configuration changes
+  (e: 'change', value: ServerInfo): void; // Emit server configuration changes
 }>();
 
 /**
  * Computed array of server variables
  * Converts variables object to array format for rendering
- * 
+ *
  * @returns Array of variable objects with name and properties
  */
 const variables = computed(() => {
@@ -67,19 +67,19 @@ const description = computed(() => {
 /**
  * Handle variable default value change
  * Updates the selected variable's default value and emits change
- * 
+ *
  * @param key - Variable name/key
  * @param value - New default value
  */
 const radioChange = (key: string, value: string): void => {
   // Deep clone server data to avoid mutation
-  const data: RequestServer = JSON.parse(JSON.stringify(props.server));
-  
+  const data: ServerInfo = JSON.parse(JSON.stringify(props.server));
+
   // Update variable default value
   if (data?.variables?.[key]) {
     data.variables[key].defaultValue = value;
   }
-  
+
   emit('change', data);
 };
 
@@ -93,7 +93,7 @@ const overlayStyle = {
 </script>
 
 <template>
-  <!-- 
+  <!--
     Composite container showing server URL and endpoint
     - Flexbox layout with 40% server URL, 60% endpoint
     - White background with rounded corners
@@ -101,8 +101,8 @@ const overlayStyle = {
   -->
   <div class="flex-1 flex items-center h-7 leading-7 bg-white rounded composite-container">
     <!-- Server URL section with variable configuration popover -->
-    <Popover 
-      :overlayStyle="overlayStyle" 
+    <Popover
+      :overlayStyle="overlayStyle"
       placement="bottomLeft">
       <!-- Popover content: variable configuration list -->
       <template #content>
@@ -117,7 +117,7 @@ const overlayStyle = {
               <div class="w-1 h-1 rounded-lg bg-slate-600"></div>
               <div class="text-theme-title font-bold">{{ item._name }}</div>
             </div>
-            
+
             <!-- Variable allowable values list -->
             <div class="text-theme-content space-y-0.5">
               <div
@@ -126,16 +126,16 @@ const overlayStyle = {
                 class="flex items-center pl-7">
                 <!-- Value text (truncated) -->
                 <div class="flex-1 truncate">{{ _ele }}</div>
-                
+
                 <!-- Radio button with default label -->
                 <div class="flex items-center flex-shrink-0 space-x-1">
                   <!-- "Default" label for currently selected value -->
-                  <div 
-                    v-if="props.server?.variables?.[item._name]?.defaultValue === _ele" 
+                  <div
+                    v-if="props.server?.variables?.[item._name]?.defaultValue === _ele"
                     class="text-theme-sub-content">
                     <span>{{ t('common.default') }}</span>
                   </div>
-                  
+
                   <!-- Radio button for value selection -->
                   <Radio
                     :checked="props.server?.variables?.[item._name]?.defaultValue === _ele"
@@ -146,7 +146,7 @@ const overlayStyle = {
           </div>
         </template>
       </template>
-      
+
       <!-- Popover title: server URL and description -->
       <template #title>
         <div class="leading-4 py-2 space-y-2">
@@ -154,21 +154,21 @@ const overlayStyle = {
           <div class="text-theme-content break-all">{{ description }}</div>
         </div>
       </template>
-      
+
       <!-- Server URL display (40% width, clickable to open popover) -->
       <div style="flex:1 1 40%;" class="truncate px-1.75 text-3">
         {{ serverUrl }}
       </div>
     </Popover>
-    
+
     <!-- Vertical divider between server URL and endpoint -->
     <div class="w-0 h-3.5 border-r border-solid border-theme-divider"></div>
-    
+
     <!-- Endpoint path section with tooltip -->
     <Tooltip placement="topLeft">
       <!-- Tooltip content: full endpoint path -->
       <template #title>{{ props.endpoint }}</template>
-      
+
       <!-- Endpoint path display (60% width, truncated) -->
       <div style="flex:1 1 60%;" class="truncate px-1.75 text-3">
         {{ props.endpoint }}

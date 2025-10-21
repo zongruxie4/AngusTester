@@ -8,7 +8,7 @@ import { ApiStatus, ServicesPermission } from '@/enums/enums';
 import { services } from '@/api/tester';
 import { ServicesDetail } from '@/views/apis/services/services/types';
 
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const Security = defineAsyncComponent(() => import('@/views/apis/services/components/Security.vue'));
 
 interface Props {
