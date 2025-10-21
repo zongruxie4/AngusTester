@@ -12,7 +12,7 @@ import TaskPriority from '@/components/task/TaskPriority.vue';
 const { t } = useI18n();
 
 // Async components for case management
-const ModuleTree = defineAsyncComponent(() => import('@/components/module/ModuleSelectTree/index.vue'));
+const ModuleTree = defineAsyncComponent(() => import('@/components/module/ModuleTree.vue'));
 const SelectCaseModal = defineAsyncComponent(() => import('@/views/test/baseline/edit/SelectCaseModal.vue'));
 
 // Async components for case details

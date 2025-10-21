@@ -20,7 +20,7 @@ import { GroupedKey } from './types';
 
 const { t } = useI18n();
 
-const ModuleTree = defineAsyncComponent(() => import('@/components/module/ModuleSelectTree/index.vue'));
+const ModuleTree = defineAsyncComponent(() => import('@/components/module/ModuleTree.vue'));
 
 type Props = {
   projectId: string;
