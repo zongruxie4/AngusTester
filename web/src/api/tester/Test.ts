@@ -90,7 +90,7 @@ export default class API {
     });
   }
 
-  getBaselineDetail (baselineId: number): Promise<[Error | null, any]> {
+  getBaselineDetail (baselineId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/baseline/${baselineId}`);
   }
 
@@ -98,27 +98,27 @@ export default class API {
     return http.get(`${baseUrl}/baseline`, { ...params, fullTextSearch: true });
   }
 
-  addBaselineCase (baselineId: number, caseIds) : Promise<[Error | null, any]> {
+  addBaselineCase (baselineId: string, caseIds) : Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/baseline/${baselineId}/case`, caseIds);
   }
 
-  deleteBaselineCase (baselineId: number, caseIds): Promise<[Error | null, any]> {
+  deleteBaselineCase (baselineId: string, caseIds): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/baseline/${baselineId}/case`, caseIds, {
       dataType: true
     });
   }
 
-  deleteBaselineCaseById (baselineCaseId: number[]): Promise<[Error | null, any]> {
+  deleteBaselineCaseById (baselineCaseId: string[]): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/baseline/case`, baselineCaseId, {
       dataType: true
     });
   }
 
-  getBaselineCaseList (baselineId: number, params): Promise<[Error | null, any]> {
+  getBaselineCaseList (baselineId: string, params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/baseline/${baselineId}/case`, { ...params, fullTextSearch: true });
   }
 
-  getBaselineCaseDetail (baselineId: number, caseId: number): Promise<[Error | null, any]> {
+  getBaselineCaseDetail (baselineId: string, caseId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/baseline/${baselineId}/case/${caseId}`, null, {
       silence: false
     });
