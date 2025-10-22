@@ -2,6 +2,8 @@ import { ref } from 'vue';
 import { AssertionCondition, AssertionType } from '@xcan-angus/infra';
 import assertUtils from '@/utils/assertutils';
 import { AssertResult, ConditionResult } from '@/views/apis/services/protocol/http/types';
+import { useI18n } from 'vue-i18n'
+
 
 /**
  * Assertion handling composable
@@ -12,6 +14,8 @@ import { AssertResult, ConditionResult } from '@/views/apis/services/protocol/ht
 export function useAssertionHandler () {
   // Assertion count
   const assertNum = ref(0);
+
+  const { t } = useI18n();
 
   // Assertion results
   const assertResult = ref<AssertResult[]>();
@@ -251,7 +255,7 @@ export function useAssertionHandler () {
         failureMessage: '',
         value: '',
         ignored: false,
-        message: '条件消息为空'
+        message: t('service.apis.assertion.conditionMessages.empty')
       };
 
       let ignored = true;
@@ -269,7 +273,7 @@ export function useAssertionHandler () {
             failureMessage: '',
             value: '',
             ignored: false,
-            message: '条件消息为空'
+            message: t('service.apis.assertion.conditionMessages.empty')
           };
         } else {
           const matchsMap = assertionVariableExtra?.matchs || {};
@@ -280,11 +284,11 @@ export function useAssertionHandler () {
             _condition = {
               failure: false,
               name: '',
-              conditionMessage: '条件消息格式错误',
-              failureMessage: '条件消息格式失败',
+              conditionMessage: t('service.apis.assertion.conditionMessages.formatError'),
+              failureMessage: t('service.apis.assertion.conditionMessages.formatFailed'),
               value: '',
               ignored: true,
-              message: '条件消息格式错误'
+              message: t('service.apis.assertion.conditionMessages.formatError')
             };
           } else {
             const [leftOperand] = matchs;
@@ -296,7 +300,7 @@ export function useAssertionHandler () {
               value = varValue.value;
               failureMessage = varValue.failureMessage;
             } else {
-              failureMessage = '条件消息定义失败';
+              failureMessage = t('service.apis.assertion.conditionMessages.defineFailed');
               value = leftOperand;
             }
 
@@ -308,7 +312,7 @@ export function useAssertionHandler () {
                 failureMessage,
                 value,
                 ignored: true,
-                message: '条件消息忽略'
+                message: t('service.apis.assertion.conditionMessages.ignored')
               };
             } else {
               _condition = {
@@ -318,7 +322,7 @@ export function useAssertionHandler () {
                 failureMessage,
                 value,
                 ignored: false,
-                message: '条件消息执行'
+                message: t('service.apis.assertion.conditionMessages.executed')
               };
             }
           }

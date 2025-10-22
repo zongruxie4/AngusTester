@@ -471,7 +471,7 @@ const validRepeatName = () => {
     const id = ids[i];
     if (repeatMap[dataMap[id].name] && repeatMap[dataMap[id].name] > 1) {
       nameErrorSet.value.add(id);
-      nameErrorMsgMap.value[id] = '变量名称重复';
+      nameErrorMsgMap.value[id] = t('service.serverConfig.messages.variableNameRepeat');
     } else {
       if (nameErrorMsgMap.value[id]) {
         nameErrorSet.value.delete(id);
@@ -500,7 +500,7 @@ const validRepeatValue = (id:string) => {
     const { id: _id, value: _value } = enumList[i];
     if (repeatMap[_value] && repeatMap[_value] > 1) {
       valueErrorSet.value.add(_id);
-      valueErrorMsgMap.value[_id] = '变量值重复';
+      valueErrorMsgMap.value[_id] = t('service.serverConfig.messages.variableValueRepeat');
     } else {
       if (valueErrorMsgMap.value[_id]) {
         valueErrorSet.value.delete(_id);

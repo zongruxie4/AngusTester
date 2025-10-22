@@ -1,5 +1,6 @@
 import { ref, reactive, computed } from 'vue';
 import { AssertionType, AssertionCondition, utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 import { dataURLtoBlob } from '@/utils/blob';
 import { convertBlob } from '@/utils/apis';
 import { HTTP_HEADERS, CONTENT_TYPE_KEYS } from '@/utils/constant';
@@ -31,6 +32,9 @@ export interface ResponseState {
  * </p>
  */
 export function useResponseHandler () {
+  // Initialize i18n for internationalization
+  const { t } = useI18n();
+
   // Response state
   const responseState = reactive<ResponseState>({
     config: {},
@@ -287,7 +291,7 @@ export function useResponseHandler () {
     status: number;
     responseHeader: string[];
     rawContent: string;
-    extractValue: string; // 用于regex、xpath、jsonpath匹配条件的左值
+    extractValue: string; // Left value for regex, xpath, jsonpath matching conditions
   }, parameterName: string): {
     data: string | null;
     message: string;
@@ -414,7 +418,7 @@ export function useResponseHandler () {
         failureMessage: '', // reason for extraction failure
         value: '', // extracted variable value
         ignored: false, // whether to ignore this assertion
-        message: '条件消息为空'
+        message: t('service.apis.assertion.conditionMessages.empty')
       };
 
       let ignored = true;
@@ -431,7 +435,7 @@ export function useResponseHandler () {
             failureMessage: '', // reason for extraction failure
             value: '', // extracted variable value
             ignored: false, // whether to ignore this assertion
-            message: '条件消息为空'
+            message: t('service.apis.assertion.conditionMessages.empty')
           };
         } else {
           const matchsMap = assertionVariableExtra.value?.matchs || {};
@@ -441,11 +445,11 @@ export function useResponseHandler () {
             _condition = {
               failure: false, // execution result
               name: '', // extracted variable name
-              conditionMessage: '条件消息格式错误', // reason for assertion expression error
-              failureMessage: '条件消息格式失败', // reason for extraction failure
+              conditionMessage: t('service.apis.assertion.conditionMessages.formatError'), // reason for assertion expression error
+              failureMessage: t('service.apis.assertion.conditionMessages.formatFailed'), // reason for extraction failure
               value: '', // extracted variable value
               ignored: true, // whether to ignore this assertion
-              message: '条件消息格式错误'
+              message: t('service.apis.assertion.conditionMessages.formatError')
             };
           } else {
             const [leftOperand] = matchs;
@@ -456,7 +460,7 @@ export function useResponseHandler () {
               value = varValue.value;
               failureMessage = varValue.failureMessage;
             } else {
-              failureMessage = '条件消息定义失败';
+              failureMessage = t('service.apis.assertion.conditionMessages.defineFailed');
               value = leftOperand;
             }
 
@@ -468,7 +472,7 @@ export function useResponseHandler () {
                 failureMessage, // reason for extraction failure
                 value, // extracted variable value
                 ignored: true, // whether to ignore this assertion
-                message: '条件消息忽略'
+                message: t('service.apis.assertion.conditionMessages.ignored')
               };
             } else {
               _condition = {
@@ -478,14 +482,14 @@ export function useResponseHandler () {
                 failureMessage, // reason for extraction failure
                 value, // extracted variable value
                 ignored: false, // whether to ignore this assertion
-                message: '条件消息执行'
+                message: t('service.apis.assertion.conditionMessages.executed')
               };
             }
           }
         }
       }
 
-      // 期望值处理
+      // Expected value processing
       const expectedData: { data: string | null; message: string; errorMessage: string; } = {
         data: (expected ?? null),
         message: '',
@@ -570,12 +574,12 @@ export function useResponseHandler () {
   };
 
   /**
-   * 重置响应状态
+   * Reset response state
    * <p>
-   * 清空所有响应相关的状态
+   * Clear all response-related state
    * </p>
    */
-  const resetResponseState = () => {
+  const resetResponseState = (): void => {
     Object.assign(responseState, {
       config: {},
       headers: {},

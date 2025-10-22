@@ -164,7 +164,7 @@ const delCase = async (item) => {
   if (error) {
     return;
   }
-  notification.success('删除成功');
+  notification.success(t('actions.tips.deleteSuccess'));
   const delIdx = caseData.value.findIndex(i => i.id === item.id);
   caseData.value.splice(delIdx, 1);
 };
@@ -265,7 +265,7 @@ watch(() => props.id, newValue => {
         </template>
         <template v-if="column.dataIndex === 'status'">
           <div class="inline-flex items-center truncate flex-1">
-            <div class="pl-1" :class="getStatusColor(record.execResult?.value)">{{ record.execResult?.message || '未测试' }}</div>
+            <div class="pl-1" :class="getStatusColor(record.execResult?.value)">{{ record.execResult?.message || t('status.notTested') }}</div>
             <div class="pl-1">{{ record.execFailureMessage }}</div>
           </div>
         </template>

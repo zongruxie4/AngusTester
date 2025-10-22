@@ -1,4 +1,6 @@
-import { decode as dt, encode as et } from 'js-base64';
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.global?.getI18n() || (v => v);
 
 import apiUtils from '@/utils/apis';
 
@@ -7,15 +9,15 @@ const { valueKey, enabledKey } = API_EXTENSION_KEY;
 
 export const ToolBarMenus = [
   {
-    name: '基本',
+    name: t('common.basic'),
     value: 'request'
   },
   {
-    name: '响应',
+    name: t('protocol.response'),
     value: 'response'
   },
   {
-    name: '耗时分析',
+    name: t('common.timeAnalysis'),
     value: 'time'
   },
   {
@@ -23,7 +25,7 @@ export const ToolBarMenus = [
     value: 'cookie'
   },
   {
-    name: '断言结果',
+    name: t('common.assertionResult'),
     value: 'assert'
   }
 ];

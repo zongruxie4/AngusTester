@@ -336,7 +336,7 @@ onMounted(() => {
                         class="text-theme-text-hover cursor-pointer text-3.5"
                         @click="toEdit(item)" />
                     </Tooltip>
-                    <!-- <Tooltip title="删除" placement="top"> -->
+
                     <Popconfirm
                       placement="topRight"
                       :title="t('service.serverConfig.messages.confirmDelete')"
@@ -357,7 +357,7 @@ onMounted(() => {
                   </div>
                   <TypographyParagraph
                     class="break-all"
-                    :ellipsis="{ rows: 4, expandable: true, symbol: '更多' }"
+                    :ellipsis="{ rows: 4, expandable: true, symbol: t('actions.more') }"
                     :content="item.url" />
                 </div>
 
@@ -368,7 +368,7 @@ onMounted(() => {
                   </div>
                   <TypographyParagraph
                     class="break-all"
-                    :ellipsis="{ rows: 4, expandable: true, symbol: '更多' }"
+                    :ellipsis="{ rows: 4, expandable: true, symbol: t('actions.more') }"
                     :content="item.description" />
                 </div>
 
@@ -409,7 +409,7 @@ onMounted(() => {
                         </div>
                         <TypographyParagraph
                           class="break-all"
-                          :ellipsis="{ rows: 4, expandable: true, symbol: '更多' }"
+                          :ellipsis="{ rows: 4, expandable: true, symbol: t('actions.more') }"
                           :content="_variable.description" />
                       </div>
 

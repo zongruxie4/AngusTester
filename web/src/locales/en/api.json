@@ -264,6 +264,10 @@
       "execCaseAction": "Execute Test",
       "statusNotTested": "Not Tested",
       "execModalTitle": "Execute Case",
+      "messages": {
+        "nameRequired": "Please enter case name",
+        "descriptionlimit": "Description too long (maximum 2000 characters), please reduce content"
+      },
       "addModal": {
         "title": "Generate API Case",
         "editTitle": "Edit API Case",
@@ -360,6 +364,16 @@
         "serializationDescription": "AngusTester serialization rules are based on a subset of UR templates defined by RFC6570. Supports OAS3 Schema data types including: string, boolean, integer, number, object, array.",
         "serializationDescription_pre": "AngusTester serialization rules are based on a subset of UR templates defined by",
         "serializationDescription_later": ". Supports OAS3 Schema data types including: string, boolean, integer, number, object, array."
+      },
+      "assertion": {
+        "conditionMessages": {
+          "empty": "Condition message is empty",
+          "formatError": "Condition message format error",
+          "formatFailed": "Condition message format failed",
+          "defineFailed": "Condition message definition failed",
+          "ignored": "Condition message ignored",
+          "executed": "Condition message executed"
+        }
       },
       "menus": {
         "time": "Duration Analysis",
@@ -1076,10 +1090,12 @@
       "hints": {
         "authDescription": "Grant operation permissions for specified \"projects, services, interfaces\" to users, departments, and groups. When granting permissions, \"view\" permission is required. Users can only authorize projects/services/interfaces for which they have authorization permissions."
       },
+      "permessionControl": "Permission Control",
       "placeholder": {
         "searchDept": "Search department",
         "searchGroup": "Search group",
-        "searchUser": "Search user"
+        "searchUser": "Search user",
+        "searchName": "Search name"
       }
     },
     "groupApiDetail": {

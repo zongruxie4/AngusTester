@@ -471,9 +471,9 @@ const copyText = async (text: string) => {
       document.execCommand('copy');
       document.body.removeChild(textarea);
     }
-    notification.success(t('actions.copied') || '已复制');
+    notification.success(t('actions.tips.copied'));
   } catch (e) {
-    notification.error(t('messages.copyFailed') || '复制失败');
+    notification.error(t('actions.tips.copiedFailed'));
   }
 };
 

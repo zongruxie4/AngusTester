@@ -778,13 +778,13 @@ onBeforeUnmount(() => {
     <Input
       :value="searchInputValue"
       :allowClear="true"
-      placeholder="查询名称"
+      :placeholder="t('service.authSetting.placeholder.searchName')"
       class="mb-2"
       @change="handleSearchInputChange" />
     <div v-if="props.authObjectId" class="flex items-center h-11 pr-1.75 rounded bg-gray-light text-theme-title">
-      <div class="flex-1 px-2 truncate">名称</div>
-      <div style="width:70px;" class="flex-shrink-0 px-2">权限控制</div>
-      <div style="width:52%">权限</div>
+      <div class="flex-1 px-2 truncate">{{ t('common.name') }}</div>
+      <div style="width:70px;" class="flex-shrink-0 px-2">{{ t('service.authSetting.permessionControl') }}</div>
+      <div style="width:52%">{{ t('common.permission') }}</div>
     </div>
     <NoData
       v-show="!isLoading && !visibleItemList?.length"

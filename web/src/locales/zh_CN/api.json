@@ -268,6 +268,10 @@
       "execCaseAction": "执行测试",
       "statusNotTested": "未测试",
       "execModalTitle": "执行用例",
+      "messages": {
+        "nameRequired": "请输入用例名称",
+        "descriptionlimit": "备注内容过长(最多2000字符),请减少内容"
+      },
       "addModal": {
         "title": "生成接口用例",
         "editTitle": "编辑接口用例",
@@ -364,6 +368,16 @@
         "serializationDescription": "AngusTester 序列化规则基于 RFC6570 定义的UR模板的子集。支持OAS3 Schema数据类型包括：string、boolean、integer、number、object、array。",
         "serializationDescription_pre": "AngusTester 序列化规则基于",
         "serializationDescription_later": "定义的UR模板的子集。支持OAS3 Schema数据类型包括：string、boolean、integer、number、object、array。"
+      },
+      "assertion": {
+        "conditionMessages": {
+          "empty": "条件消息为空",
+          "formatError": "条件消息格式错误",
+          "formatFailed": "条件消息格式失败",
+          "defineFailed": "条件消息定义失败",
+          "ignored": "条件消息忽略",
+          "executed": "条件消息执行"
+        }
       },
       "menus": {
         "time": "耗时分析",
@@ -1076,10 +1090,12 @@
       "hints": {
         "authDescription": "授权给指定的\"项目、服务、接口\"操作权限给用户、部门、组，授予权限时\"查看\"权限是必须的。用户只能授权自己有授权权限的项目/服务/接口。"
       },
+      "permessionControl": "权限控制",
       "placeholder": {
         "searchDept": "查询部门",
         "searchGroup": "查询组",
-        "searchUser": "查询用户"
+        "searchUser": "查询用户",
+        "searchName": "查询名称"
       }
     },
     "groupApiDetail": {

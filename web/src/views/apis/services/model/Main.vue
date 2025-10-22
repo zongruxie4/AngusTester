@@ -248,16 +248,6 @@ const submitSchema = async () => {
   notification.success(t('actions.tips.saveSuccess'));
   emits('ok');
 };
-// const activeDrawerKey = ref('component');
-// const drawerCompNav = computed(() => {
-//   return serviceNavItem.map(item => {
-//     return {
-//       ...item,
-//       key: item.value,
-//       name: (item.value === 'projectInfo' && props.type === 'PROJECT') ? '项目信息' : item.name
-//     };
-//   });
-// });
 
 const schemaData = ref({});
 const parameterData = ref({});
@@ -267,7 +257,6 @@ const requestBodiesDataRef:any[] = [];
 const responseSchemaData = ref({});
 const parameterSchemaRef = ref();
 
-// 获取需要编辑的数据模型
 const loadSchemaContent = async () => {
   const [error, { data }] = await services.getComponentRef(props.id, props.data?.ref);
   if (error) {

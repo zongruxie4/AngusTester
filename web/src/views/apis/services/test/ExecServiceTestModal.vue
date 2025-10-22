@@ -253,7 +253,7 @@ const modalTitle = computed(() => {
               </div>
               <TypographyParagraph
                 class="break-all"
-                :ellipsis="{ rows: 2, expandable: true, symbol: '更多' }"
+                :ellipsis="{ rows: 2, expandable: true, symbol: t('actions.more') }"
                 :content="item.url" />
             </div>
 
@@ -265,7 +265,7 @@ const modalTitle = computed(() => {
               <TypographyParagraph
                 v-if="item.description"
                 class="break-all"
-                :ellipsis="{ rows: 2, expandable: true, symbol: '更多' }"
+                :ellipsis="{ rows: 2, expandable: true, symbol: t('actions.more') }"
                 :content="item.description" />
               <div v-else>{{ t('common.noDescription') }}</div>
             </div>
@@ -307,7 +307,6 @@ const modalTitle = computed(() => {
                             style="transform: translateY(-4px);"
                             @change="_variable.default=_enum.value" />
                         </div>
-                        <!-- <div :class="{ invisible: _enum.value !== _variable.default }" class="flex-shrink-0">默认</div> -->
                       </div>
                     </div>
                   </div>

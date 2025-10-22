@@ -57,7 +57,7 @@ const formState = ref({
 });
 
 const rulesRef = reactive({
-  name: [{ required: true, message: '请输入用例名称' }],
+  name: [{ required: true, message: t('api.case.messages.nameRequired') }],
   type: [{ required: true }]
 });
 
@@ -191,7 +191,7 @@ const getParams = async (first = false) => {
 const loading = ref(false);
 const editSave = async (closeModal = true) => {
   if (formState.value.description?.length > 2000) {
-    notification.warning('备注内容过长(最多2000字符),请减少内容');
+    notification.warning(t('api.case.messages.descriptionlimit'));
     return;
   }
   loading.value = true;
@@ -208,7 +208,7 @@ const editSave = async (closeModal = true) => {
   if (error) {
     return;
   }
-  notification.success('修改成功');
+  notification.success(t('actions.tips.updateSuccess'));
   closeModal && close();
   emits('ok');
 };
@@ -220,7 +220,7 @@ const addSave = async (closeModal = false) => {
   if (error) {
     return;
   }
-  notification.success('添加成功');
+  notification.success(t('actions.tips.addSuccess'));
   closeModal && close();
   emits('ok');
 };

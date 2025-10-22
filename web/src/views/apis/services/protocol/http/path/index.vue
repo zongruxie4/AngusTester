@@ -478,7 +478,7 @@ onMounted(() => {
         :allowClear="false"
         trim
         class="input-container min-w-25"
-        placeholder="接口路径，以“/”开始"
+        :placeholder="t('service.apiServerPath.form.pathPlaceholder')"
         size="middle"
         @blur="(e: FocusEvent) => handleUriInputBlur(e as any)"
         @pressEnter="handleUriEnterKey"
