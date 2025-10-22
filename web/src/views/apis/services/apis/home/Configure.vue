@@ -27,7 +27,7 @@ const dataSource = computed(() => [
       key: 'syncConfig',
       icon: 'icon-peizhifuwutongbu',
       title: t('actions.sync'),
-      content: t('apis.configuration.syncDescription'),
+      content: t('service.protocal.configuration.syncDescription'),
       linkText: t('common.actions'),
       disabled: !props.serviceAuths.includes(ServicesPermission.MODIFY)
     },
@@ -35,8 +35,8 @@ const dataSource = computed(() => [
       id: 'security',
       key: 'security',
       icon: 'icon-renzhengtou',
-      title: t('apis.configuration.security'),
-      content: t('apis.configuration.securityDescription'),
+      title: t('service.protocal.configuration.security'),
+      content: t('service.protocal.configuration.securityDescription'),
       linkText: t('common.actions'),
       disabled: !props.serviceAuths.includes(ServicesPermission.MODIFY)
     },
@@ -44,8 +44,8 @@ const dataSource = computed(() => [
       id: 'serverConfig',
       key: 'serverConfig',
       icon: 'icon-host',
-      title: t('apis.configuration.server'),
-      content: t('apis.configuration.serverDescription'),
+      title: t('service.protocal.configuration.server'),
+      content: t('service.protocal.configuration.serverDescription'),
       linkText: t('common.actions'),
       disabled: !props.serviceAuths.includes(ServicesPermission.MODIFY)
     }
@@ -60,7 +60,7 @@ const openDrawer = (key: string) => {
 <template>
   <div class="space-y-2">
     <div class="text-3.5 font-semibold">
-      {{ t('apis.messages.serviceConfig') }}
+      {{ t('service.protocal.messages.serviceConfig') }}
     </div>
     <div class="space-y-5 px-4">
       <div
