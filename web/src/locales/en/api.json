@@ -782,7 +782,7 @@
         "simulateErrorNum": "Simulate Error Count",
         "successNum": "Success Count",
         "exceptionNum": "Exception Count"
-      },
+      }
     },
     "apiRequestBody": {
       "actions": {
@@ -813,7 +813,6 @@
         "debugFileSizeLimit": "Total upload file size for request body during debugging cannot exceed 100MB"
       }
     },
-
     "apiRequestParams": {
       "form": {
         "namePlaceholder": "Parameter Name",
@@ -839,7 +838,7 @@
         "copyUrl": "Copy URL"
       },
       "tips": {
-        "variableNotFound": "Variable not found, please define the variable first or refresh and try again",
+        "variableNotFound": "Variable not found, please define the variable first or refresh and try again"
       },
       "labels": {
         "current": "Current",
