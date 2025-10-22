@@ -21,7 +21,8 @@ import {
   errorColumns,
   oneApiErrorColumns
 } from '@/plugins/test/components/performanceTestDetailComp/ChartConfig';
-import { getCurrentDuration, splitTime } from '../utils';
+// import { getCurrentDuration, splitTime } from '../utils';
+import { getCurrentDuration, splitTime } from '@/plugins/test/components/utils';
 const TestBasicInfo = defineAsyncComponent(() => import('@/components/test/TestBasicInfo.vue'));
 interface Props {
   execInfo: Record<string, any>;

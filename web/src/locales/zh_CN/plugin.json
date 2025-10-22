@@ -68,6 +68,28 @@
     },
     "execLog": {
       "downloadFileName": "runner.log"
+    },
+    "transEnd": {
+      "suffix": "结束"
+    },
+    "node": {
+      "columns": {
+        "name": "名称",
+        "average": "平均值",
+        "high": "最高",
+        "low": "最低",
+        "latest": "最新值"
+      }
+    },
+    "parametricDataset": {
+      "sourceTypes": {
+        "static": "静态值",
+        "exact": "精确值",
+        "extracted": "提取值",
+        "file": "文件",
+        "http": "Http",
+        "jdbc": "Jdbc"
+      }
     }
   },
   "httpPlugin": {

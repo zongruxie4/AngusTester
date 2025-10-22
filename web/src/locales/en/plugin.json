@@ -68,6 +68,28 @@
     },
     "execLog": {
       "downloadFileName": "runner.log"
+    },
+    "transEnd": {
+      "suffix": "End"
+    },
+    "node": {
+      "columns": {
+        "name": "Name",
+        "average": "Average",
+        "high": "High",
+        "low": "Low",
+        "latest": "Latest"
+      }
+    },
+    "parametricDataset": {
+      "sourceTypes": {
+        "static": "Static Value",
+        "exact": "Exact Value",
+        "extracted": "Extracted Value",
+        "file": "File",
+        "http": "Http",
+        "jdbc": "Jdbc"
+      }
     }
   },
   "httpPlugin": {

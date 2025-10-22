@@ -169,26 +169,26 @@ const loadData = async (): Promise<void> => {
       // Determine source type label
       if (!extraction || !['FILE', 'HTTP', 'JDBC'].includes(extraction.source)) {
         // Static value (no extraction)
-        item.source = '静态值';
+        item.source = t('commonPlugin.parametricDataset.sourceTypes.static');
       } else {
         const { source } = extraction;
         if (!extracted) {
           // Exact value (with source type)
-          item.source = '精确值';
+          item.source = t('commonPlugin.parametricDataset.sourceTypes.exact');
           if (source === 'FILE') {
-            item.source += ' (文件)';
+            item.source += ` (${t('commonPlugin.parametricDataset.sourceTypes.file')})`;
           } else if (source === 'HTTP') {
-            item.source += ' (Http)';
+            item.source += ` (${t('commonPlugin.parametricDataset.sourceTypes.http')})`;
           } else if (source === 'JDBC') {
-            item.source += ' (Jdbc)';
+            item.source += ` (${t('commonPlugin.parametricDataset.sourceTypes.jdbc')})`;
           }
         } else {
           // Extracted value (with source type)
-          item.source = '提取值';
+          item.source = t('commonPlugin.parametricDataset.sourceTypes.extracted');
           if (source === 'FILE') {
-            item.source += ' (文件)';
+            item.source += ` (${t('commonPlugin.parametricDataset.sourceTypes.file')})`;
           } else if (source === 'JDBC') {
-            item.source += ' (Jdbc)';
+            item.source += ` (${t('commonPlugin.parametricDataset.sourceTypes.jdbc')})`;
           }
         }
       }

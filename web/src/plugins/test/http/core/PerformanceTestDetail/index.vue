@@ -20,7 +20,8 @@ import {
   errorCvsKeys,
   errorColumns,
   oneApiErrorColumns } from '@/plugins/test/components/performanceTestDetailComp/ChartConfig';
-import { getCurrentDuration, splitTime } from '../utils';
+// import { getCurrentDuration, splitTime } from '../utils';
+import { getCurrentDuration, splitTime } from '@/plugins/test/components/utils';
 
 const { t } = useI18n();
 

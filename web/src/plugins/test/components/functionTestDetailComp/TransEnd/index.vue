@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import { TransEndConfig } from '@/plugins/test/types';
 
 /**
@@ -14,6 +15,9 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   value: undefined
 });
+
+// Initialize i18n for internationalization
+const { t } = useI18n();
 
 /**
  * Computed: Display name for transaction end
@@ -36,7 +40,7 @@ const showName = computed(() => {
   // Return formatted name with " End" suffix
   // Note: Using hardcoded "结束" (End in Chinese) for compatibility
   // This should be replaced with i18n in future updates
-  return _name ? (_name + '结束') : '';
+  return _name ? (_name + t('plugin.commonPlugin.transEnd.suffix')) : '';
 });
 </script>
 

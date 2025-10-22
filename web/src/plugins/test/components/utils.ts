@@ -1,34 +1,44 @@
-import { select } from 'xpath-next/dist/xpath';
 import { i18n } from '@xcan-angus/infra';
 const I18nInstance = i18n.getI18n();
 const t = I18nInstance?.global?.t || ((value: string):string => value);
 
-const isValidRegular = (regexp: string): boolean => {
-  try {
-    RegExp(regexp);
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
-
-const isValidXPath = (xpath: string): boolean => {
-  try {
-    const doc = new DOMParser().parseFromString('<root></root>', 'text/xml');
-    select(xpath, doc, false);
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
-
-// @TODO 暂不实现
-const isValidJSONPath = (jsonpath: string): boolean => {
-  if (jsonpath) {
-    return true;
+const formatTime = (timestamp:number):string => {
+  const second = 1000;
+  const minute = 60 * second;
+  const hour = 60 * minute;
+  if (timestamp < second) {
+    return timestamp + t('commonPlugin.utils.formatTime.milliseconds');
   }
 
-  return true;
+  if (timestamp < minute) {
+    return timestamp / second + t('commonPlugin.utils.formatTime.seconds');
+  }
+
+  if (timestamp < hour) {
+    const remainder = timestamp % minute;
+    if (remainder === 0) {
+      return timestamp / minute + t('commonPlugin.utils.formatTime.minutes');
+    }
+
+    return Math.floor(timestamp / minute) + t('commonPlugin.utils.formatTime.minutes') + remainder / second + t('commonPlugin.utils.formatTime.seconds');
+  }
+
+  const remainder = timestamp % hour;
+  if (remainder === 0) {
+    return timestamp / hour + t('commonPlugin.utils.formatTime.hours');
+  }
+
+  let suffix = '';
+  if (remainder < hour) {
+    const _remainder = remainder % minute;
+    if (_remainder === 0) {
+      suffix += remainder / minute + t('commonPlugin.utils.formatTime.minutes');
+    } else {
+      suffix += Math.floor(remainder / minute) + t('commonPlugin.utils.formatTime.minutes') + _remainder / second + t('commonPlugin.utils.formatTime.seconds');
+    }
+  }
+
+  return Math.floor(timestamp / hour) + t('commonPlugin.utils.formatTime.hours') + suffix;
 };
 
 const letterMap = {
@@ -58,7 +68,7 @@ const splitTime = (str: string): [string, string] => {
 
 const getCurrentDuration = (_currentDurationStr, _durationStr) => {
   if (!_currentDurationStr) {
-    return '--';
+    return t('common.defaultValue');
   }
 
   const _durationUnit = _durationStr.replace(/\d/g, '');
@@ -112,43 +122,4 @@ const keepTwoDecimals = (num) => {
   }
 };
 
-const formatTime = (timestamp:number):string => {
-  const second = 1000;
-  const minute = 60 * second;
-  const hour = 60 * minute;
-  if (timestamp < second) {
-    return timestamp + t('commonPlugin.utils.formatTime.milliseconds');
-  }
-
-  if (timestamp < minute) {
-    return timestamp / second + t('commonPlugin.utils.formatTime.seconds');
-  }
-
-  if (timestamp < hour) {
-    const remainder = timestamp % minute;
-    if (remainder === 0) {
-      return timestamp / minute + t('commonPlugin.utils.formatTime.minutes');
-    }
-
-    return Math.floor(timestamp / minute) + t('commonPlugin.utils.formatTime.minutes') + remainder / second + t('commonPlugin.utils.formatTime.seconds');
-  }
-
-  const remainder = timestamp % hour;
-  if (remainder === 0) {
-    return timestamp / hour + t('commonPlugin.utils.formatTime.hours');
-  }
-
-  let suffix = '';
-  if (remainder < hour) {
-    const _remainder = remainder % minute;
-    if (_remainder === 0) {
-      suffix += remainder / minute + t('commonPlugin.utils.formatTime.minutes');
-    } else {
-      suffix += Math.floor(remainder / minute) + t('commonPlugin.utils.formatTime.minutes') + _remainder / second + t('commonPlugin.utils.formatTime.seconds');
-    }
-  }
-
-  return Math.floor(timestamp / hour) + t('commonPlugin.utils.formatTime.hours') + suffix;
-};
-
-export { isValidRegular, isValidXPath, isValidJSONPath, getCurrentDuration, splitTime, formatTime };
+export { formatTime, getCurrentDuration, splitTime };
