@@ -270,7 +270,7 @@ onMounted(() => {
               </span>
               <template #content>
                 <div class="flex">
-                  <span class="w-20">{{ t('service.apiList.test.functionalTest') }}：</span>
+                  <span class="w-20">{{ t('commonExecTest.functionalTest') }}：</span>
                   <div class="flex-1 min-w-0" :class="getTestResultTextColor(item.testFunc, item.testFuncPassed)">
                     {{
                       !item.testFunc ? t('status.disabled') : item.testFuncPassed
@@ -279,7 +279,7 @@ onMounted(() => {
                   </div>
                 </div>
                 <div class="flex">
-                  <span class="w-20">{{ t('service.apiList.test.performanceTest') }}：</span>
+                  <span class="w-20">{{ t('commonExecTest.performanceTest') }}：</span>
                   <div class="flex-1 min-w-0" :class="getTestResultTextColor(item.testPerf, item.testPerfPassed)">
                     {{
                       !item.testPerf ? t('status.disabled') : item.testPerfPassed
@@ -288,7 +288,7 @@ onMounted(() => {
                   </div>
                 </div>
                 <div class="flex">
-                  <span class="w-20">{{ t('service.apiList.test.stabilityTest') }}：</span>
+                  <span class="w-20">{{ t('commonExecTest.stabilityTest') }}：</span>
                   <div class="flex-1 min-w-0" :class="getTestResultTextColor(item.testStability, item.testStabilityPassed)">
                     {{
                       !item.testStability ? t('status.disabled') : item.testStabilityPassed

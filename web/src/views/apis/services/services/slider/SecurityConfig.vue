@@ -934,7 +934,7 @@ const apiKeyInOptions = [
 const OAuth2AuthorizationTypeOptions = [
   {
     value: 'authorizationCode',
-    label: t('service.securityModal.oauth2Opt.authorizationCode')
+    label: t('service.apiAuthorization.flowTypes.authorizationCode')
   },
   {
     value: 'password',
@@ -942,11 +942,11 @@ const OAuth2AuthorizationTypeOptions = [
   },
   {
     value: 'implicit',
-    label: t('service.securityModal.oauth2Opt.implicit')
+    label: t('service.apiAuthorization.flowTypes.implicit')
   },
   {
     value: 'clientCredentials',
-    label: t('service.securityModal.oauth2Opt.clientCredentials')
+    label: t('service.apiAuthorization.flowTypes.clientCredentials')
   }
 ];
 </script>
@@ -1054,7 +1054,7 @@ const OAuth2AuthorizationTypeOptions = [
                   :error="auth.model.usernameErr"
                   :allowClear="false"
                   :disabled="!auth.isEdit"
-                  :placeholder="t('service.securityModal.usernamePlaceholder')"
+                  :placeholder="t('service.apiAuthorization.basicusernamePlaceholder')"
                   @change="(event)=>handleUsernameChange(event.target.value,auth)" />
                 <div><IconRequired />{{ t('common.password') }}</div>
                 <Input
@@ -1065,18 +1065,18 @@ const OAuth2AuthorizationTypeOptions = [
                   class="mt-2 mb-5"
                   type="password"
                   size="small"
-                  :placeholder="t('service.securityModal.passwordPlaceholder')"
+                  :placeholder="t('service.apiAuthorization.basic.passwordPlaceholder')"
                   @change="(event)=>handlePasswordChange(event.target.value,auth)" />
               </template>
               <template v-if="auth.model.type === 'bearer'">
-                <div><IconRequired />{{ t('service.securityModal.tokenLabel') }} </div>
+                <div><IconRequired />{{ t('service.apiAuthorization.bearer.token') }} </div>
                 <template v-if="auth.isEdit">
                   <Input
                     v-model:value="auth.model.token"
                     size="small"
                     class="mt-2 mb-5"
                     prefix="Bearer"
-                    :placeholder="t('service.securityModal.tokenPlaceholder')"
+                    :placeholder="t('service.apiAuthorization.bearer.tokenPlaceholder')"
                     :error="auth.model.tokenErr"
                     :disabled="!auth.isEdit"
                     @change="(event)=>handleTokenChange(event.target.value,auth)" />
@@ -1149,11 +1149,11 @@ const OAuth2AuthorizationTypeOptions = [
                   v-model:value="auth.model[newTokenKey]"
                   class="mt-2 mb-5"
                   :disabled="!auth.isEdit">
-                  <Radio :value="false">{{ t('service.securityModal.token_had') }}</Radio>
-                  <Radio :value="true">{{ t('service.securityModal.token_generate') }}</Radio>
+                  <Radio :value="false">{{ t('service.apiAuthorization.oauth2.existingToken') }}</Radio>
+                  <Radio :value="true">{{ t('service.apiAuthorization.oauth2.generateToken') }}</Radio>
                 </RadioGroup>
                 <template v-if="!auth.model[newTokenKey]">
-                  <div>{{ t('service.securityModal.tokenLabel') }}</div>
+                  <div>{{ t('service.apiAuthorization.bearer.token') }}</div>
                   <template v-if="auth.isEdit">
                     <Input
                       v-model:value="auth.model[oAuth2Token]"
@@ -1179,7 +1179,7 @@ const OAuth2AuthorizationTypeOptions = [
                     :disabled="!auth.isEdit"
                     :options="OAuth2AuthorizationTypeOptions" />
                   <template v-if="['authorizationCode','implicit'].includes(auth.model[oAuth2Key])">
-                    <div><IconRequired />{{ t('service.securityModal.authorizationUrlLabel') }}</div>
+                    <div><IconRequired />{{ t('service.apiAuthorization.oauth2Fields.authorizationUrl') }}</div>
                     <Input
                       v-model:value="auth.model.authorizationUrl"
                       size="small"
@@ -1195,7 +1195,7 @@ const OAuth2AuthorizationTypeOptions = [
                       </template>
                     </div>
                     <div class="pl-1.75">
-                      {{ t('service.securityModal.callbackUrlLabel') }}
+                      {{ t('service.apiAuthorization.oauth2Fields.callbackUrl') }}
                     </div>
                     <Input
                       v-model:value="auth.model[oAuth2CallbackUrlKey]"
@@ -1212,7 +1212,7 @@ const OAuth2AuthorizationTypeOptions = [
                     </div>
                   </template>
                   <template v-if="!['implicit'].includes(auth.model[oAuth2Key])">
-                    <div><IconRequired />{{ t('service.securityModal.tokenUrlLabel') }}</div>
+                    <div><IconRequired />{{ t('service.apiAuthorization.oauth2Fields.tokenUrl') }}</div>
                     <Input
                       v-model:value="auth.model.tokenUrl"
                       size="small"
@@ -1228,7 +1228,7 @@ const OAuth2AuthorizationTypeOptions = [
                       </template>
                     </div>
                   </template>
-                  <div class="pl-1.75">{{ t('service.securityModal.refreshUrlLabel') }}</div>
+                  <div class="pl-1.75">{{ t('service.apiAuthorization.oauth2Fields.refreshUrl') }}</div>
                   <Input
                     v-model:value="auth.model.refreshUrl"
                     size="small"
@@ -1271,7 +1271,7 @@ const OAuth2AuthorizationTypeOptions = [
                       :error="auth.model.usernameErr"
                       :allowClear="false"
                       :disabled="!auth.isEdit"
-                      :placeholder="t('service.securityModal.usernamePlaceholder')"
+                      :placeholder="t('service.apiAuthorization.basicusernamePlaceholder')"
                       @change="(event)=>handleUsernameChange(event.target.value,auth)" />
                     <div>
                       <IconRequired />
@@ -1285,7 +1285,7 @@ const OAuth2AuthorizationTypeOptions = [
                       class="mt-2 mb-5"
                       type="password"
                       size="small"
-                      :placeholder="t('service.securityModal.passwordPlaceholder')"
+                      :placeholder="t('service.apiAuthorization.basic.passwordPlaceholder')"
                       @change="(event)=>handlePasswordChange(event.target.value,auth)" />
                   </template>
                   <div><IconRequired />Scopes</div>
@@ -1299,7 +1299,7 @@ const OAuth2AuthorizationTypeOptions = [
                     :tokenSeparators="[',']"
                     :placeholder="t('service.securityModal.scopesPlaceholder')"
                     @change="(value)=>handleScopesChange(value,auth)" />
-                  <div class="pl-1.75">{{ t('service.securityModal.clientAuthTypeLabel') }}</div>
+                  <div class="pl-1.75">{{ t('service.apiAuthorization.oauth2.clientAuth') }}</div>
                   <SelectEnum
                     v-model:value="auth.model[oAuth2ClientAuthTypeKey]"
                     :disabled="!auth.isEdit"

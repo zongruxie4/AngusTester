@@ -163,7 +163,7 @@ onMounted(() => {
 </script>
 <template>
   <Modal
-    :title="t('service.mockService.form.title')"
+    :title="t('service.mock.mockNew')"
     :visible="props.visible"
     :width="760"
     :footer="null"
@@ -211,7 +211,7 @@ onMounted(() => {
               <Input
                 v-model:value="formState.servicePort"
                 dataType="number"
-                :placeholder="t('service.mockService.form.portPlaceholder')"
+                :placeholder="t('service.mock.servicePortPlaceholder')"
                 :disabled="serviceDetail?.mockServiceId"
                 :min="1"
                 :max="65535" />
@@ -224,7 +224,7 @@ onMounted(() => {
                 :fieldNames="{label:'name',value:'id'}"
                 :maxlength="100"
                 showSearch
-                :placeholder="t('service.mockService.form.nodePlaceholder')"
+                :placeholder="t('service.mock.nodePlaceholder')"
                 size="small">
                 <template #option="item">
                   {{ t('service.mockService.form.nodeFormat', { name: item.name, ip: item.ip }) }}
@@ -241,7 +241,7 @@ onMounted(() => {
                 disabled
                 showSearch
                 allowClear
-                :placeholder="t('service.mockService.form.servicePlaceholder')"
+                :placeholder="t('service.mock.servicePlaceholder')"
                 @change="treeSelectChange">
                 <template #title="item">
                   <div class="text-3 leading-3 flex items-center h-6.5">

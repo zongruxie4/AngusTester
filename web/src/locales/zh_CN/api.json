@@ -470,38 +470,24 @@
       "title": "安全方案配置",
       "rule": "数据未保存，请先保存数据或者取消编辑",
       "hints": "定义当前服务下所有接口可以使用的安全方案(Authorization)。",
-      "oauth2Opt": {
-        "authorizationCode": "授权码模式（AuthorizationCode）",
-        "password": "密码模式（PasswordCredentials）",
-        "implicit": "隐式模式（Implicit）",
-        "clientCredentials": "客户端模式（ClientCredentials）"
-      },
       "nameTip": "组件名称只能包含 A-Z a-z 0-9 - . _ 字符",
       "namePlaceholder": "请输入方案名称",
       "typeLabel": "认证类型",
       "usernameLabel": "用户名",
-      "usernamePlaceholder": "请输入用户名",
-      "passwordPlaceholder": "请输入密码",
-      "tokenLabel": "令牌",
-      "tokenPlaceholder": "请输入访问令牌",
       "apiKeyNamePlaceholder": "输入名称",
       "apiKeyValuePlaceholder": "输入值",
       "apiKeyInPlaceholder": "选择位置",
       "configToken": "配置令牌",
-      "token_had": "已有令牌",
-      "token_generate": "生成令牌",
       "authKeyPlaceholder": "请输入授权KEY",
       "authFlowLabel": "授权类型",
-      "authorizationUrlLabel": "授权URL",
+
       "authorizationUrlPlaceholder": "请输入授权URL",
       "authorizationUrlRule": "请输入正确的url地址",
-      "callbackUrlLabel": "回调URL",
+
       "callbackUrlPlaceholder": "请输入回调URL",
       "callbackUrlRule": "请输入正确的url地址",
-      "tokenUrlLabel": "访问令牌URL",
       "tokenUrlPlaceholder": "请输入访问令牌URL",
       "tokenUrlRule": "请输入正确的url地址",
-      "refreshUrlLabel": "刷新令牌URL",
       "refreshUrlPlaceholder": "请输入刷新令牌URL",
       "refreshUrlRule": "请输入正确的url地址",
       "clientIdLabel": "客户ID",
@@ -509,7 +495,6 @@
       "clientSecretLabel": "客户端秘钥",
       "clientSecretPlaceholder": "请输入客户Secret",
       "scopesPlaceholder": "输入scope，多个scope以英文逗号分隔",
-      "clientAuthTypeLabel": "客户端认证",
       "clientAuthTypePlaceholder": "选择客户端认证",
       "descriptionPlaceholder": "输入描述，支持Markdown语法"
     },
@@ -609,8 +594,6 @@
         "sub": "每个标签名必须是唯一的；并非所有接口都需要关联标签；最多添加2000个。"
       },
       "messages": {
-        "deleteSuccess": "删除成功",
-        "saveSuccess": "保存成功",
         "nameExists": "标签名称已存在",
         "dataNotSaved": "数据未保存，请先保存数据或者取消编辑"
       },
@@ -739,10 +722,6 @@
     },
     "apiExecDetail": {
       "tabs": {
-        "functionalTest": "功能测试",
-        "performanceTest": "性能测试",
-        "stabilityTest": "稳定性测试",
-        "customTest": "自定义测试",
         "testTask": "测试任务"
       },
       "testSummary": {
@@ -764,39 +743,40 @@
     },
     "mockApi": {
       "description": "Mock接口可快速生成并模拟您所依赖的API，使开发和测试能够并行进行，从而加快开发速度，实现更全面的测试，并更早地交付稳定的产品或应用。您可以通过\"生成Mock接口\"或\"关联Mock接口\"两种方式，为当前接口创建对应的模拟接口。模拟接口将提供模拟数据，便于进行接口调试和测试。",
+      "generateMockApi": "生成Mock接口",
+      "associateMockApi": "关联Mock接口",
       "columns": {
         "apiName": "接口名称",
         "mockServiceName": "模拟服务名称",
-        "mockServiceHostUrl": "服务地址"
+        "mockServiceHostUrl": "服务地址",
+        "mockServiceId": "服务ID"
       },
       "actions": {
         "cancelAssociation": "取消关联",
-        "generateMockApi": "生成Mock接口",
-        "associateMockApi": "关联Mock接口"
+        "cancelAssociate": "取消关联"
       },
       "messages": {
         "generateSuccess": "生成Mock接口成功",
         "associateSuccess": "关联成功",
         "cancelAssociationSuccess": "取消关联成功"
       },
+      "hints": {
+        "selectMockServiceFirst": "生成或关联Mock接口请先选择Mock服务。",
+        "generateMockApi": "基于当前接口生成Mock接口。",
+        "associateMockApi": "关联Mock服务下已存在的接口。"
+      },
+      "placeholder": {
+        "selectMockService": "请选择Mock服务",
+        "selectMockApi": "请选择Mock接口",
+        "inputMockApiName": "请输入对应Mock接口名称，不指定时默认使用当前接口名称"
+      },
       "createTypes": {
         "generate": {
-          "title": "生成Mock接口",
           "description": "基于当前接口创建新的模拟版本。创建后，您可以使用Mock接口进行数据模拟和状态测试，从而实现更高效的接口调试。"
         },
         "associate": {
-          "title": "关联Mock接口",
           "description": "将当前接口与已有的Mock服务接口关联。关联后可以在接口调试中进行数据模拟和状态测试。"
         }
-      },
-      "modal": {
-        "generateTitle": "生成Mock接口",
-        "associateTitle": "关联Mock接口",
-        "mockServicePlaceholder": "请选择Mock服务",
-        "mockApiPlaceholder": "请选择Mock接口",
-        "summaryPlaceholder": "请输入对应Mock接口名称，不指定时默认使用当前接口名称",
-        "generateHint": "基于当前接口生成Mock接口。",
-        "associateHint": "关联Mock服务下已存在的接口。"
       },
       "statistics": {
         "requestNum": "请求数",
@@ -810,7 +790,6 @@
       "actions": {
         "importComponent": "引入组件",
         "copyComponent": "复制组件",
-        "format": "格式化",
         "compress": "压缩",
         "uploadFile": "上传文件",
         "cancelReference": "取消引用"
@@ -822,96 +801,27 @@
       "modal": {
         "title": "组件",
         "columns": {
-          "componentName": "组件名称",
-          "modifiedBy": "修改人",
-          "modifiedTime": "修改时间"
+          "componentName": "组件名称"
         }
       },
       "form": {
-        "namePlaceholder": "请输入参数名称",
         "typePlaceholder": "请选择参数类型",
-        "required": "必填",
-        "descriptionPlaceholder": "请输入描述",
         "valuePlaceholder": "请输入调试值，最大支持{maxLength}个字符",
-        "formatPlaceholder": "请选择格式",
-        "examplePlaceholder": "请输入示例值",
-        "defaultValuePlaceholder": "请输入默认值",
-        "minLength": "最小长度",
-        "minLengthPlaceholder": "请输入最小长度",
-        "maxLength": "最大长度",
-        "maxLengthPlaceholder": "请输入最大长度",
-        "minimum": "最小值",
-        "minimumPlaceholder": "请输入最小值",
-        "maximum": "最大值",
-        "maximumPlaceholder": "请输入最大值",
-        "pattern": "正则表达式",
-        "patternPlaceholder": "请输入正则表达式",
-        "enum": "枚举值",
-        "enumPlaceholder": "请输入枚举值，多个值用逗号分隔",
-        "variable": "变量",
-        "setVariable": "设为变量",
-        "cancelVariable": "取消变量"
+        "setVariable": "设为变量"
       },
       "messages": {
-        "fileUploadSuccess": "文件上传成功",
-        "fileUploadFailed": "文件上传失败",
-        "fileRemoveSuccess": "文件移除成功",
-        "formatSuccess": "格式化成功",
-        "compressSuccess": "压缩成功",
-        "componentImportSuccess": "组件导入成功",
-        "componentCopySuccess": "组件复制成功",
         "setVariableSuccess": "设置变量成功",
         "variableNameInvalid": "名称不符合变量要求,允许数字字母!@$%^&*()_-+=./等",
         "debugFileSizeLimit": "调试时请求体总上传文件大小不能超过100MB"
       }
     },
-    "apiRequestCookie": {
-      "form": {
-        "namePlaceholder": "参数名称",
-        "inputNamePlaceholder": "请输入参数名称",
-        "valuePlaceholder": "请输入调试值，最大支持{maxLength}个字符"
-      },
-      "actions": {
-        "copyValue": "复制值"
-      },
-      "tips": {
-        "componentReference": "组件引用：{ref}"
-      },
-      "messages": {
-        "copySuccess": "成功复制值到剪贴板"
-      }
-    },
-    "apiRequestHeader": {
-      "form": {
-        "namePlaceholder": "参数名称",
-        "inputNamePlaceholder": "请输入参数名称",
-        "valuePlaceholder": "请输入调试值，最大支持{maxLength}个字符"
-      },
-      "actions": {
-        "copyValue": "复制值"
-      },
-      "tips": {
-        "componentReference": "组件引用：{ref}"
-      },
-      "messages": {
-        "copySuccess": "成功复制值到剪贴板"
-      }
-    },
     "apiRequestParams": {
       "form": {
-        "namePlaceholder": "参数名称",
         "inputNamePlaceholder": "请输入参数名称",
-        "typePlaceholder": "请选择参数类型",
         "valuePlaceholder": "请输入调试值，最大支持{maxLength}个字符"
-      },
-      "actions": {
-        "copyValue": "复制值"
       },
       "tips": {
         "componentReference": "组件引用：{ref}"
-      },
-      "messages": {
-        "copySuccess": "成功复制值到剪贴板"
       }
     },
     "apiServerPath": {
@@ -928,8 +838,7 @@
         "copyUrl": "复制Url"
       },
       "tips": {
-        "variableNotFound": "找不到该变量，请先定义变量或刷新再试",
-        "default": "默认"
+        "variableNotFound": "找不到该变量，请先定义变量或刷新再试"
       },
       "labels": {
         "current": "当前",
@@ -978,7 +887,6 @@
       "labels": {
         "summary": "接口名称",
         "operationId": "编码",
-        "description": "描述",
         "externalDocs": "外部文档"
       },
       "tips": {
@@ -992,9 +900,6 @@
         "ownerRequired": "请选择接口负责人",
         "serviceRequired": "请选择所属服务",
         "statusRequired": "请选择接口状态"
-      },
-      "messages": {
-        "saveSuccess": "保存成功"
       },
       "options": {
         "normal": "正常",
@@ -1010,17 +915,13 @@
         "descriptionPlaceholder": "限制输入20000字符以内，支持使用markdown语法"
       },
       "labels": {
-        "summary": "接口名称",
-        "description": "描述"
+        "summary": "接口名称"
       },
       "tips": {
         "unarchivedApiDescription": "未归档接口为用户临时调试接口，只对添加用户可见"
       },
       "validation": {
         "summaryRequired": "请输入接口名称，100字符以内"
-      },
-      "messages": {
-        "saveSuccess": "保存成功"
       }
     },
     "apiUpload": {
@@ -1048,7 +949,6 @@
       "navigation": {
         "saveToUnarchived": "保存到未归档",
         "archiveToService": "归档到服务",
-        "variable": "变量",
         "agent": "代理"
       },
       "messages": {
@@ -1061,14 +961,6 @@
       "options": {
         "receiveMessage": "接收消息",
         "sendMessage": "发送消息"
-      }
-    },
-    "webSocketServer": {
-      "labels": {
-        "current": "当前",
-        "public": "公共",
-        "mock": "Mock",
-        "history": "历史记录"
       }
     },
     "webSocketSetting": {
@@ -1130,12 +1022,10 @@
           "validation": "请选择所属服务"
         },
         "tags": {
-          "label": "标签",
           "placeholder": "请输入或选择标签，输入需按Enter确认",
           "description": "标签作为API附加元信息用于对其分组。"
         },
         "status": {
-          "label": "状态",
           "validation": "请选择状态"
         },
         "deprecated": {
@@ -1146,7 +1036,6 @@
           }
         },
         "description": {
-          "label": "描述",
           "placeholder": "限制输入200字符以内"
         }
       },
@@ -1180,20 +1069,12 @@
     },
     "webSocketForm": {
       "placeholder": {
-        "parameterName": "参数名称",
-        "inputParameterName": "输入参数名",
-        "inputParameterValue": "输入参数值",
         "inputParameterDescription": "输入参数描述"
       }
     },
     "authSetting": {
       "hints": {
         "authDescription": "授权给指定的\"项目、服务、接口\"操作权限给用户、部门、组，授予权限时\"查看\"权限是必须的。用户只能授权自己有授权权限的项目/服务/接口。"
-      },
-      "tabs": {
-        "user": "用户",
-        "dept": "部门",
-        "group": "组"
       },
       "placeholder": {
         "searchDept": "查询部门",
@@ -1203,10 +1084,8 @@
     },
     "groupApiDetail": {
       "columns": {
-        "summary": "名称",
         "operationId": "编码",
         "deprecated": "是否弃用",
-        "tags": "标签",
         "securityTitle": "安全需求",
         "externalDocsTitle": "外部文档",
         "hasPermission": "有权限限制",
@@ -1219,45 +1098,6 @@
         "title": "接口权限",
         "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有接口相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级服务权限将自动授权查看权限。",
         "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前接口，查看用户同时需要有当前接口父级或服务权限。"
-      }
-    },
-    "ApiMock": {
-      "columns": {
-        "mockServiceId": "服务ID",
-        "mockServiceName": "服务名称",
-        "mockServiceHostUrl": "服务地址"
-      },
-      "messages": {
-        "createSuccess": "生成Mock接口成功",
-        "associateSuccess": "关联成功",
-        "cancelAssociateSuccess": "取消关联成功"
-      },
-      "stats": {
-        "requestNum": "请求数",
-        "pushbackNum": "回推数",
-        "simulateErrorNum": "模拟异常数",
-        "successNum": "成功数",
-        "exceptionNum": "异常数"
-      },
-      "actions": {
-        "cancelAssociate": "取消关联"
-      },
-      "hints": {
-        "selectMockServiceFirst": "生成或关联Mock接口请先选择Mock服务。",
-        "generateMockApi": "基于当前接口生成Mock接口。",
-        "associateMockApi": "关联Mock服务下已存在的接口。"
-      },
-      "options": {
-        "generateMockApi": "生成Mock接口",
-        "associateMockApi": "关联Mock接口"
-      },
-      "placeholder": {
-        "selectMockService": "请选择Mock服务",
-        "selectMockApi": "请选择Mock接口",
-        "inputMockApiName": "请输入对应Mock接口名称，不指定时默认使用当前接口名称"
-      },
-      "buttons": {
-        "confirm": "确定"
       }
     },
     "serviceDetail": {
@@ -1292,9 +1132,7 @@
     },
     "mockService": {
       "columns": {
-        "serviceDomainUrl": "服务地址",
-        "servicePort": "端口",
-        "nodeName": "节点"
+        "serviceDomainUrl": "服务地址"
       },
       "stats": {
         "apisNum": "接口数",
@@ -1327,12 +1165,7 @@
         "associateTitle": "关联Mock服务"
       },
       "form": {
-        "title": "生成Mock服务",
-        "namePlaceholder": "服务标识命名信息，最多允许100个字符",
         "domainPlaceholder": "为服务设置域名后，您可以通过域名访问Mock接口",
-        "portPlaceholder": "服务所监听的端口，服务添加后不允许修改(1~65535)",
-        "nodePlaceholder": "服务所运行的节点，服务添加后不允许修改",
-        "servicePlaceholder": "选择或查询服务",
         "domainSuffix": ".angusmock.cloud",
         "nodeFormat": "{name} ( {ip} )",
         "serviceFormat": "S"
@@ -1355,15 +1188,13 @@
     },
     "serviceOpenApi": {
       "columns": {
-        "title": "名称",
         "summary": "摘要",
         "openapi": "OpenAPI",
         "termsOfService": "服务条款",
         "contact": "联系人",
         "license": "许可协议",
         "version": "文档版本",
-        "externalDocs": "外部文档",
-        "description": "描述"
+        "externalDocs": "外部文档"
       },
       "placeholder": {
         "title": "100字符以内",
@@ -1377,9 +1208,6 @@
         "version": "100字符以内",
         "externalDocsUrl": "url",
         "externalDocsDescription": "描述（800字符以内）"
-      },
-      "tooltips": {
-        "view": "查看"
       }
     },
     "serviceTestDetail": {
@@ -1400,11 +1228,6 @@
         "testApiStats": "测试接口统计",
         "testTypeStats": "接口测试类型统计",
         "totalTestNum": "总测试数",
-        "functionalTest": "功能测试",
-        "performanceTest": "性能测试",
-        "stabilityTest": "稳定性测试"
-      },
-      "columns": {
         "functionalTest": "功能测试",
         "performanceTest": "性能测试",
         "stabilityTest": "稳定性测试"
@@ -1449,11 +1272,6 @@
         "followSuccess": "关注成功",
         "unfollowSuccess": "取消关注成功",
         "execSuccess": "执行成功"
-      },
-      "test": {
-        "functionalTest": "功能测试",
-        "performanceTest": "性能测试",
-        "stabilityTest": "稳定性测试"
       },
       "buttons": {
         "mockApi": "Mock接口",
@@ -1503,10 +1321,7 @@
           "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前接口，查看用户同时需要有当前接口父级项目或服务权限。"
         },
         "testTask": {
-          "infoText": "接口测试任务不存在时生成对应任务，如果任务已存在则覆盖当前测试信息。",
-          "funcTest": "功能测试",
-          "perfTest": "性能测试",
-          "stabilityTest": "稳定性测试"
+          "infoText": "接口测试任务不存在时生成对应任务，如果任务已存在则覆盖当前测试信息。"
         }
       }
     },
@@ -1523,8 +1338,7 @@
         "selectServer": "请选择服务器"
       },
       "labels": {
-        "noVariables": "无变量",
-        "variables": "变量"
+        "noVariables": "无变量"
       }
     }
   },

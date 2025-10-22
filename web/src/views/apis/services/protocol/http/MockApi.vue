@@ -320,17 +320,17 @@ const gridColumnsConfiguration = [[
             :disabled="props.disabled"
             class="flex flex-col space-y-3.5">
             <Radio value="1">
-              <span class="font-semibold">{{ t('service.mockApi.createTypes.generate.title') }}</span>
+              <span class="font-semibold">{{ t('service.mockApi.generateMockApi') }}</span>
               <div>{{ t('service.mockApi.createTypes.generate.description') }}</div>
             </Radio>
             <Radio value="2">
-              <span class="font-semibold">{{ t('service.mockApi.createTypes.associate.title') }}</span>
+              <span class="font-semibold">{{ t('service.mockApi.associateMockApi') }}</span>
               <div>{{ t('service.mockApi.createTypes.associate.description') }}</div>
             </Radio>
           </RadioGroup>
           <Modal
             :visible="!!mockApiCreationType"
-            :title="mockApiCreationType === '1' ? t('service.mockApi.modal.generateTitle') : t('service.mockApi.modal.associateTitle')"
+            :title="mockApiCreationType === '1' ? t('service.mockApi.generateMockApi') : t('service.mockApi.associateMockApi')"
             :okButtonProps="{loading: isCreatingMockApi || isAssociatingMockApi, disabled: !mockServiceId || (mockApiCreationType === '2' && !selectedMockApiId)}"
             @ok="handleModalConfirmation"
             @cancel="handleModalCancellation">
@@ -340,14 +340,14 @@ const gridColumnsConfiguration = [[
               :fieldNames="{label:'name',value:'id'}"
               :maxlength="100"
               class="w-full mb-4"
-              :placeholder="t('service.mockApi.modal.mockServicePlaceholder')"
+              :placeholder="t('service.mockApi.placeholder.selectMockService')"
               showSearch />
             <template v-if="mockApiCreationType === '1'">
-              <Hints :text="t('service.mockApi.modal.generateHint')" class="mb-2" />
-              <Input v-model:value="apiSummary" :placeholder="t('service.mockApi.modal.summaryPlaceholder')" />
+              <Hints :text="t('service.mockApi.hints.generateMockApi')" class="mb-2" />
+              <Input v-model:value="apiSummary" :placeholder="t('service.mockApi.placeholder.inputMockApiName')" />
             </template>
             <template v-else>
-              <Hints :text="t('service.mockApi.modal.associateHint')" class="mb-2" />
+              <Hints :text="t('service.mockApi.hints.associateMockApi')" class="mb-2" />
               <Select
                 v-model:value="selectedMockApiId"
                 :disabled="!mockServiceId"
@@ -358,7 +358,7 @@ const gridColumnsConfiguration = [[
                 :format="formatMockApiData"
                 :maxlength="100"
                 allowClear
-                :placeholder="t('service.mockApi.modal.mockApiPlaceholder')"
+                :placeholder="t('service.mockApi.placeholder.selectMockApi')"
                 showSearch />
             </template>
           </Modal>

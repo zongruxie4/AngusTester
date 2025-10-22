@@ -275,7 +275,7 @@ const columns = computed(() => {
   return [
     [
       { label: t('common.id'), dataIndex: 'id' },
-      { label: t('service.groupApiDetail.columns.summary'), dataIndex: 'summary' },
+      { label: t('common.name'), dataIndex: 'summary' },
       { label: t('service.groupApiDetail.columns.operationId'), dataIndex: 'operationId' },
       { label: t('common.source'), dataIndex: 'source', type: '1' },
       { label: t('common.status'), dataIndex: 'status' },

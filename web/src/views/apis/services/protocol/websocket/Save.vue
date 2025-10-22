@@ -305,7 +305,7 @@ const validationRules: any = {
     <FormItem name="tags">
       <template #label>
         <div>
-          <span>{{ t('service.webSocketSave.form.tags.label') }}</span>
+          <span>{{ t('common.tag') }}</span>
           <Tooltip placement="left">
             <Icon icon="icon-tishi1" class="text-blue-tips ml-0.5 text-3.5" />
             <template #title> {{ t('common.description') }} </template>
@@ -321,7 +321,7 @@ const validationRules: any = {
         @dropdownVisibleChange="loadTagsFromProject">
       </Select>
     </FormItem>
-    <FormItem :label="t('service.webSocketSave.form.status.label')" name="status">
+    <FormItem :label="t('common.status')" name="status">
       <SelectEnum
         v-model:value="apiForm.status"
         :disabled="!userPermissions.includes(ApiPermission.MODIFY)"
@@ -339,7 +339,7 @@ const validationRules: any = {
         @change="(value) => apiForm.deprecated = value === 'true'">
       </Select>
     </FormItem>
-    <FormItem :label="t('service.webSocketSave.form.description.label')">
+    <FormItem :label="t('common.description')">
       <Input
         v-model:value="apiForm.description"
         type="textarea"

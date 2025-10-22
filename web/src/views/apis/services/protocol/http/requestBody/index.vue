@@ -1010,7 +1010,7 @@ defineExpose({
           type="link"
           size="small"
           @click="formatRawContent">
-          {{ t('service.apiRequestBody.actions.format') }}
+          {{ t('common.format') }}
         </Button>
         <Button
           type="link"

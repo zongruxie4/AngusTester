@@ -164,7 +164,7 @@ defineExpose({
               @change="(value, option) => handleModelSelection(value, option, index)" />
             <Input
               v-else
-              :placeholder="t('service.apiRequestCookie.form.inputNamePlaceholder')"
+              :placeholder="t('common.placeholders.enterParameterName')"
               :value="item.name"
               :allowClear="false"
               :maxLength="API_PARAMETER_NAME_LENGTH"
@@ -173,7 +173,7 @@ defineExpose({
               @keypress="handleEnterKeyPress" />
           </div>
           <template v-if="item.$ref" #title>
-            {{ t('service.apiRequestCookie.tips.componentReference', { ref: item.$ref }) }}
+            {{ t('service.apiRequestParams.tips.componentReference', { ref: item.$ref }) }}
           </template>
         </Tooltip>
         <Select
@@ -184,7 +184,7 @@ defineExpose({
         <div class="flex flex-col flex-1 flex-shrink-0">
           <SimpleEditableSelect
             v-if="item.schema?.enum"
-            :placeholder="t('service.apiRequestCookie.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
+            :placeholder="t('service.apiRequestParams.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
             :maxLength="API_PARAMETER_VALUE_LENGTH"
             :options="item.schema.enum || item.schema?.[parameterManager.valueKey]"
             :value="item[parameterManager.valueKey]"
@@ -192,7 +192,7 @@ defineExpose({
             @select="updateParameterData(index, { ...item, [parameterManager.valueKey]: $event, schema: {...item?.schema|| {}, [parameterManager.valueKey]: $event} })" />
           <ParamInput
             v-else-if="![SchemaType.array, SchemaType.object].includes(item.schema.type)"
-            :placeholder="t('service.apiRequestCookie.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
+            :placeholder="t('service.apiRequestParams.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
             :maxLength="0"
             :value="item[parameterManager.valueKey]"
             :error="getParameterErrorState(item)"
@@ -202,7 +202,7 @@ defineExpose({
         <Button
           type="primary"
           size="small"
-          :title="t('service.apiRequestCookie.actions.copyValue')"
+          :title="t('actions.copyValue')"
           class="ml-2"
           @click="copyParameterValue(item)">
           <Icon icon="icon-fuzhi" />

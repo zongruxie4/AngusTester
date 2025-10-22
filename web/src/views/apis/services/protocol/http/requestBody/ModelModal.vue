@@ -138,8 +138,8 @@ watch(() => props.visible, (isVisible) => {
     <div class="leading-8 text-text-content">
       <div style="background-color: #fafafa;" class="flex items-center px-3 rounded">
         <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.componentName') }}</div>
-        <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.modifiedBy') }}</div>
-        <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.modifiedTime') }}</div>
+        <div class="flex-1/3">{{ t('common.modifier') }}</div>
+        <div class="flex-1/3">{{ t('common.lastModifiedDate') }}</div>
       </div>
       <Spin :spinning="isLoading">
         <template v-if="!isLoading && !filteredModelOptions?.length">

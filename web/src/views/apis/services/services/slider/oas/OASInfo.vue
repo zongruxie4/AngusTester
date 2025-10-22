@@ -333,7 +333,7 @@ onMounted(() => {
 
 // Table Configuration
 const columns = [[
-  { label: t('service.serviceOpenApi.columns.title'), dataIndex: 'title' },
+  { label: t('common.name'), dataIndex: 'title' },
   { label: t('service.serviceOpenApi.columns.summary'), dataIndex: 'summary' },
   { label: t('service.serviceOpenApi.columns.openapi'), dataIndex: 'openapi' },
   { label: t('service.serviceOpenApi.columns.termsOfService'), dataIndex: 'termsOfService' },

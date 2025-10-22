@@ -111,9 +111,9 @@ onBeforeUnmount(() => {
 // Grid columns for per-type results inside tooltip
 const columns = [
   [
-    { dataIndex: 'funcTestPassed', label: t('service.serviceTestDetail.columns.functionalTest') },
-    { dataIndex: 'perfTestPassed', label: t('service.serviceTestDetail.columns.performanceTest') },
-    { dataIndex: 'stabilityTestPassed', label: t('service.serviceTestDetail.columns.stabilityTest') }
+    { dataIndex: 'funcTestPassed', label: t('commonExecTest.functionalTest') },
+    { dataIndex: 'perfTestPassed', label: t('commonExecTest.performanceTest') },
+    { dataIndex: 'stabilityTestPassed', label: t('commonExecTest.stabilityTest') }
   ]
 ];
 

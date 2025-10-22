@@ -231,7 +231,7 @@ onBeforeUnmount(() => {
           <div v-show="props.defaultCurrentServer?.url">
             <div class="border-t border-border-divider border-dashed relative my-3.5">
               <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium">
-                <Icon icon="icon-dangqian" class="mr-1" />{{ t('service.webSocketServer.labels.current') }}
+                <Icon icon="icon-dangqian" class="mr-1" />{{ t('service.apiServerPath.labels.current') }}
               </div>
             </div>
             <MenuItem
@@ -244,7 +244,7 @@ onBeforeUnmount(() => {
           <div v-show="!!parentServers.length">
             <div class="border-t border-border-divider border-dashed relative mb-3.5 mt-5">
               <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium">
-                <Icon icon="icon-changjingguanli" class="mr-1" />{{ t('service.webSocketServer.labels.public') }}
+                <Icon icon="icon-changjingguanli" class="mr-1" />{{ t('service.apiServerPath.labels.public') }}
               </div>
             </div>
             <MenuItem
@@ -258,7 +258,7 @@ onBeforeUnmount(() => {
           <div v-show="!!mockServers.length">
             <div class="border-t border-border-divider border-dashed relative mb-3.5 mt-5">
               <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium">
-                <Icon icon="icon-changjingguanli" class="mr-1" />{{ t('service.webSocketServer.labels.mock') }}
+                <Icon icon="icon-changjingguanli" class="mr-1" />{{ t('service.apiServerPath.labels.mock') }}
               </div>
             </div>
             <MenuItem
@@ -272,7 +272,7 @@ onBeforeUnmount(() => {
           <div v-show="!!historicalServers.length">
             <div class="border-t border-border-divider border-dashed relative mb-3.5 mt-5">
               <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium">
-                <Icon icon="icon-lishijilu" class="mr-1" />{{ t('service.webSocketServer.labels.history') }}
+                <Icon icon="icon-lishijilu" class="mr-1" />{{ t('service.apiServerPath.labels.history') }}
               </div>
             </div>
             <MenuItem

@@ -334,7 +334,7 @@ defineExpose({
             :id="apiBaseInfo.projectId"
             v-model:value="parameter.name"
             :disabled="!!parameter.$ref"
-            :placeholder="t('service.webSocketForm.placeholder.parameterName')"
+            :placeholder="t('common.parameterName')"
             mode="pure"
             :type="['parameters']"
             :params="{types: 'parameters', ignoreModel: false}"
@@ -345,7 +345,7 @@ defineExpose({
             v-else
             v-model:value="parameter.name"
             size="small"
-            :placeholder="t('service.webSocketForm.placeholder.inputParameterName')"
+            :placeholder="t('common.enterParameterName')"
             class="flex-1"
             dataType="mixin-en"
             @blur="handleFormFieldBlur" />
@@ -361,7 +361,7 @@ defineExpose({
           :value="String(parameter[valueKey] || '')"
           size="small"
           class="flex-1 min-w-15"
-          :placeholder="t('service.webSocketForm.placeholder.inputParameterValue')"
+          :placeholder="t('common.enterParameterValue')"
           :maxLength="0"
           @blur="handleParameterValueBlur($event, index, parameter)" />
         <Input

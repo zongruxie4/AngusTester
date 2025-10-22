@@ -555,6 +555,7 @@
     "expandAll": "全部展开",
     "collapseAll": "全部收起",
     "share": "分享",
+    "copyValue": "复制值",
     "tips": {
       "confirmUpdate": "确定更新「{name}」吗？",
       "confirmDelete": "确定删除「{name}」吗？",
@@ -734,5 +735,11 @@
     "responseSize": "响应大小",
     "responseTime": "响应时间(RT)",
     "responseTimeP90": "响应时间(P90)"
+  },
+  "commonExecTest": {
+   "functionalTest": "功能测试",
+    "performanceTest": "性能测试",
+    "stabilityTest": "稳定性测试",
+    "customTest": "自定义测试"
   }
 }

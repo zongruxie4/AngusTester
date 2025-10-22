@@ -466,38 +466,22 @@
       "title": "Security Scheme Configuration",
       "rule": "Data not saved, please save data or cancel editing",
       "hints": "Define security schemes that can be used by all interfaces under the current service (Authorization).",
-      "oauth2Opt": {
-        "authorizationCode": "Authorization Code",
-        "password": "Password Credentials",
-        "implicit": "Implicit",
-        "clientCredentials": "Client Credentials"
-      },
       "nameTip": "The component name can only contain A-Z a-z 0-9 - . _ characters",
       "namePlaceholder": "Please enter the scheme name",
       "typeLabel": "Type",
       "usernameLabel": "Username",
-      "usernamePlaceholder": "Please enter the username",
-      "passwordPlaceholder": "Please enter the password",
-      "tokenLabel": "Token",
-      "tokenPlaceholder": "Please enter the access token",
       "apiKeyNamePlaceholder": "Enter name",
       "apiKeyValuePlaceholder": "Enter value",
       "apiKeyInPlaceholder": "Select position",
       "configToken": "Configure token",
-      "token_had": "Existing token",
-      "token_generate": "Generate token",
       "authKeyPlaceholder": "Please enter the authorization key",
       "authFlowLabel": "Authorization Type",
-      "authorizationUrlLabel": "Authorization URL",
       "authorizationUrlPlaceholder": "Please enter the authorization URL",
       "authorizationUrlRule": "Please enter the correct URL address",
-      "callbackUrlLabel": "Callback URL",
       "callbackUrlPlaceholder": "Please enter the callback URL",
       "callbackUrlRule": "Please enter the correct URL address",
-      "tokenUrlLabel": "Access Token URL",
       "tokenUrlPlaceholder": "Please enter the access token URL",
       "tokenUrlRule": "Please enter the correct URL address",
-      "refreshUrlLabel": "Refresh Token URL",
       "refreshUrlPlaceholder": "Please enter the refresh token URL",
       "refreshUrlRule": "Please enter the correct URL address",
       "clientIdLabel": "Client ID",
@@ -505,7 +489,6 @@
       "clientSecretLabel": "Client Secret",
       "clientSecretPlaceholder": "Please enter the client secret",
       "scopesPlaceholder": "Enter scope, multiple scopes separated by commas",
-      "clientAuthTypeLabel": "Client Authentication",
       "clientAuthTypePlaceholder": "Select client authentication",
       "description": "Description",
       "descriptionPlaceholder": "Enter description, support Markdown syntax"
@@ -608,8 +591,6 @@
         "sub": "Each tag name must be unique; not all interfaces need to be associated with tags; maximum 2000 tags can be added."
       },
       "messages": {
-        "deleteSuccess": "Deleted successfully",
-        "saveSuccess": "Saved successfully",
         "nameExists": "Tag name already exists",
         "dataNotSaved": "Data not saved, please save data or cancel editing first"
       },
@@ -739,10 +720,6 @@
     },
     "apiExecDetail": {
       "tabs": {
-        "functionalTest": "Functional Test",
-        "performanceTest": "Performance Test",
-        "stabilityTest": "Stability Test",
-        "customTest": "Custom Test",
         "testTask": "Test Task"
       },
       "testSummary": {
@@ -763,40 +740,41 @@
       }
     },
     "mockApi": {
-      "description": "Mock APIs can quickly generate and simulate the APIs you depend on, enabling parallel development and testing, thereby accelerating development speed, achieving more comprehensive testing, and delivering stable products or applications earlier. You can create corresponding mock interfaces for the current interface through two methods: \"Generate Mock API\" or \"Associate Mock API\". Mock interfaces will provide simulated data for convenient interface debugging and testing.",
+      "description": "Mock APIs can quickly generate and simulate the APIs you depend on, enabling development and testing to proceed in parallel, thereby accelerating development speed, achieving more comprehensive testing, and delivering stable products or applications earlier. You can create corresponding mock APIs for the current API through two methods: \"Generate Mock API\" or \"Associate Mock API\". Mock APIs will provide simulated data for convenient API debugging and testing.",
+      "generateMockApi": "Generate Mock API",
+      "associateMockApi": "Associate Mock API",
       "columns": {
         "apiName": "API Name",
         "mockServiceName": "Mock Service Name",
-        "mockServiceHostUrl": "Service Address"
+        "mockServiceHostUrl": "Service Address",
+        "mockServiceId": "Service ID"
       },
       "actions": {
         "cancelAssociation": "Cancel Association",
-        "generateMockApi": "Generate Mock API",
-        "associateMockApi": "Associate Mock API"
+        "cancelAssociate": "Cancel Association"
       },
       "messages": {
         "generateSuccess": "Mock API generated successfully",
         "associateSuccess": "Association successful",
         "cancelAssociationSuccess": "Association cancelled successfully"
       },
+      "hints": {
+        "selectMockServiceFirst": "Please select a Mock service first to generate or associate a Mock API.",
+        "generateMockApi": "Generate a Mock API based on the current API.",
+        "associateMockApi": "Associate with an existing API under the Mock service."
+      },
+       "placeholder": {
+        "selectMockService": "Please select Mock service",
+        "selectMockApi": "Please select Mock API",
+        "inputMockApiName": "Please enter the corresponding Mock API name, defaults to current API name if not specified"
+      },
       "createTypes": {
         "generate": {
-          "title": "Generate Mock API",
-          "description": "Create a new mock version based on the current interface. After creation, you can use the Mock API for data simulation and status testing, thereby achieving more efficient interface debugging."
+          "description": "Create a new mock version based on the current API. After creation, you can use the Mock API for data simulation and status testing, enabling more efficient API debugging."
         },
         "associate": {
-          "title": "Associate Mock API",
-          "description": "Associate the current interface with an existing Mock service interface. After association, data simulation and status testing can be performed during interface debugging."
+          "description": "Associate the current API with an existing Mock service API. After association, you can perform data simulation and status testing during API debugging."
         }
-      },
-      "modal": {
-        "generateTitle": "Generate Mock API",
-        "associateTitle": "Associate Mock API",
-        "mockServicePlaceholder": "Please select Mock service",
-        "mockApiPlaceholder": "Please select Mock API",
-        "summaryPlaceholder": "Please enter the corresponding Mock API name, if not specified, the current interface name will be used by default",
-        "generateHint": "Generate Mock API based on the current interface.",
-        "associateHint": "Associate with existing interfaces under Mock service."
       },
       "statistics": {
         "requestNum": "Request Count",
@@ -804,13 +782,12 @@
         "simulateErrorNum": "Simulate Error Count",
         "successNum": "Success Count",
         "exceptionNum": "Exception Count"
-      }
+      },
     },
     "apiRequestBody": {
       "actions": {
         "importComponent": "Import Component",
         "copyComponent": "Copy Component",
-        "format": "Format",
         "compress": "Compress",
         "uploadFile": "Upload File",
         "cancelReference": "Cancel Reference"
@@ -822,80 +799,21 @@
       "modal": {
         "title": "Component",
         "columns": {
-          "componentName": "Component Name",
-          "modifiedBy": "Modified By",
-          "modifiedTime": "Modified Time"
+          "componentName": "Component Name"
         }
       },
       "form": {
-        "namePlaceholder": "Please enter parameter name",
         "typePlaceholder": "Please select parameter type",
-        "descriptionPlaceholder": "Please enter description",
         "valuePlaceholder": "Please enter debug value, maximum {maxLength} characters supported",
-        "formatPlaceholder": "Please select format",
-        "examplePlaceholder": "Please enter example value",
-        "defaultValuePlaceholder": "Please enter default value",
-        "minLength": "Min Length",
-        "minLengthPlaceholder": "Please enter minimum length",
-        "maxLength": "Max Length",
-        "maxLengthPlaceholder": "Please enter maximum length",
-        "minimum": "Minimum",
-        "minimumPlaceholder": "Please enter minimum value",
-        "maximum": "Maximum",
-        "maximumPlaceholder": "Please enter maximum value",
-        "pattern": "Pattern",
-        "patternPlaceholder": "Please enter regular expression",
-        "enum": "Enum Values",
-        "enumPlaceholder": "Please enter enum values, multiple values separated by commas",
-        "variable": "Variable",
-        "setVariable": "Set as Variable",
-        "cancelVariable": "Cancel Variable"
+        "setVariable": "Set as Variable"
       },
       "messages": {
-        "fileUploadSuccess": "File uploaded successfully",
-        "fileUploadFailed": "File upload failed",
-        "fileRemoveSuccess": "File removed successfully",
-        "formatSuccess": "Formatted successfully",
-        "compressSuccess": "Compressed successfully",
-        "componentImportSuccess": "Component imported successfully",
-        "componentCopySuccess": "Component copied successfully",
         "setVariableSuccess": "Variable set successfully",
         "variableNameInvalid": "Name does not meet variable requirements, allows numbers, letters, !@$%^&*()_-+=./ etc.",
         "debugFileSizeLimit": "Total upload file size for request body during debugging cannot exceed 100MB"
       }
     },
-    "apiRequestCookie": {
-      "form": {
-        "namePlaceholder": "Parameter Name",
-        "inputNamePlaceholder": "Please enter parameter name",
-        "valuePlaceholder": "Please enter debug value, maximum {maxLength} characters supported"
-      },
-      "actions": {
-        "copyValue": "Copy Value"
-      },
-      "tips": {
-        "componentReference": "Component Reference: {ref}"
-      },
-      "messages": {
-        "copySuccess": "Successfully copied value to clipboard"
-      }
-    },
-    "apiRequestHeader": {
-      "form": {
-        "namePlaceholder": "Parameter Name",
-        "inputNamePlaceholder": "Please enter parameter name",
-        "valuePlaceholder": "Please enter debug value, maximum {maxLength} characters supported"
-      },
-      "actions": {
-        "copyValue": "Copy Value"
-      },
-      "tips": {
-        "componentReference": "Component Reference: {ref}"
-      },
-      "messages": {
-        "copySuccess": "Successfully copied value to clipboard"
-      }
-    },
+
     "apiRequestParams": {
       "form": {
         "namePlaceholder": "Parameter Name",
@@ -903,14 +821,8 @@
         "typePlaceholder": "Please select parameter type",
         "valuePlaceholder": "Please enter debug value, maximum {maxLength} characters supported"
       },
-      "actions": {
-        "copyValue": "Copy Value"
-      },
       "tips": {
         "componentReference": "Component Reference: {ref}"
-      },
-      "messages": {
-        "copySuccess": "Successfully copied value to clipboard"
       }
     },
     "apiServerPath": {
@@ -928,7 +840,6 @@
       },
       "tips": {
         "variableNotFound": "Variable not found, please define the variable first or refresh and try again",
-        "default": "Default"
       },
       "labels": {
         "current": "Current",
@@ -991,9 +902,6 @@
         "serviceRequired": "Please select service",
         "statusRequired": "Please select status"
       },
-      "messages": {
-        "saveSuccess": "Saved successfully"
-      },
       "options": {
         "normal": "Normal",
         "deprecated": "Deprecated"
@@ -1008,17 +916,13 @@
         "descriptionPlaceholder": "Limit input to 20000 characters, supports markdown syntax"
       },
       "labels": {
-        "summary": "API Name",
-        "description": "Description"
+        "summary": "API Name"
       },
       "tips": {
         "unarchivedApiDescription": "Unarchived APIs are temporary debugging interfaces for users, only visible to the user who added them"
       },
       "validation": {
         "summaryRequired": "Please enter API name, within 100 characters"
-      },
-      "messages": {
-        "saveSuccess": "Saved successfully"
       }
     },
     "apiUpload": {
@@ -1046,7 +950,6 @@
       "navigation": {
         "saveToUnarchived": "Save to Unarchived",
         "archiveToService": "Archive to Service",
-        "variable": "Variable",
         "agent": "Agent"
       },
       "messages": {
@@ -1059,14 +962,6 @@
       "options": {
         "receiveMessage": "Receive Message",
         "sendMessage": "Send Message"
-      }
-    },
-    "webSocketServer": {
-      "labels": {
-        "current": "Current",
-        "public": "Public",
-        "mock": "Mock",
-        "history": "History"
       }
     },
     "webSocketSetting": {
@@ -1128,12 +1023,10 @@
           "validation": "Please select service"
         },
         "tags": {
-          "label": "Tags",
           "placeholder": "Please enter or select tags, press Enter to confirm",
           "description": "Tags are used as additional metadata for API grouping."
         },
         "status": {
-          "label": "Status",
           "validation": "Please select status"
         },
         "deprecated": {
@@ -1144,7 +1037,6 @@
           }
         },
         "description": {
-          "label": "Description",
           "placeholder": "Limit input to 200 characters"
         }
       },
@@ -1178,20 +1070,12 @@
     },
     "webSocketForm": {
       "placeholder": {
-        "parameterName": "Parameter Name",
-        "inputParameterName": "Enter parameter name",
-        "inputParameterValue": "Enter parameter value",
         "inputParameterDescription": "Enter parameter description"
       }
     },
     "authSetting": {
       "hints": {
         "authDescription": "Grant operation permissions for specified \"projects, services, interfaces\" to users, departments, and groups. When granting permissions, \"view\" permission is required. Users can only authorize projects/services/interfaces for which they have authorization permissions."
-      },
-      "tabs": {
-        "user": "User",
-        "dept": "Department",
-        "group": "Group"
       },
       "placeholder": {
         "searchDept": "Search department",
@@ -1201,8 +1085,8 @@
     },
     "groupApiDetail": {
       "columns": {
-        "summary": "Name",
-        "operationId": "Code",
+        "operationId": "Operation ID",
+        "deprecated": "Deprecated",
         "securityTitle": "Security Requirements",
         "externalDocsTitle": "External Documentation",
         "hasPermission": "Has Permission",
@@ -1215,45 +1099,6 @@
         "title": "API Permission",
         "onTips": "After enabling \"has permission control\", you need to manually authorize service permissions to have corresponding API operation permissions. \"Has permission control\" is enabled by default. Note: If the authorized object does not have parent service permissions, view permissions will be automatically granted.",
         "offTips": "After enabling \"no permission control\", all users will be allowed to publicly view and operate the current API. Users viewing the API must also have current API parent or service permissions."
-      }
-    },
-    "ApiMock": {
-      "columns": {
-        "mockServiceId": "Service ID",
-        "mockServiceName": "Service Name",
-        "mockServiceHostUrl": "Service URL"
-      },
-      "messages": {
-        "createSuccess": "Mock API created successfully",
-        "associateSuccess": "Associated successfully",
-        "cancelAssociateSuccess": "Association cancelled successfully"
-      },
-      "stats": {
-        "requestNum": "Request Count",
-        "pushbackNum": "Pushback Count",
-        "simulateErrorNum": "Simulated Error Count",
-        "successNum": "Success Count",
-        "exceptionNum": "Exception Count"
-      },
-      "actions": {
-        "cancelAssociate": "Cancel Association"
-      },
-      "hints": {
-        "selectMockServiceFirst": "Please select a Mock service first to generate or associate Mock API.",
-        "generateMockApi": "Generate Mock API based on current API.",
-        "associateMockApi": "Associate with existing API under Mock service."
-      },
-      "options": {
-        "generateMockApi": "Generate Mock API",
-        "associateMockApi": "Associate Mock API"
-      },
-      "placeholder": {
-        "selectMockService": "Please select Mock service",
-        "selectMockApi": "Please select Mock API",
-        "inputMockApiName": "Please enter corresponding Mock API name, current API name will be used by default if not specified"
-      },
-      "buttons": {
-        "confirm": "Confirm"
       }
     },
     "serviceDetail": {
@@ -1287,9 +1132,7 @@
     },
     "mockService": {
       "columns": {
-        "serviceDomainUrl": "Service URL",
-        "servicePort": "Port",
-        "nodeName": "Node"
+        "serviceDomainUrl": "Service URL"
       },
       "stats": {
         "apisNum": "API Count",
@@ -1322,12 +1165,7 @@
         "associateTitle": "Associate Mock Service"
       },
       "form": {
-        "title": "Generate Mock Service",
-        "namePlaceholder": "Service identification naming information, maximum 100 characters allowed",
         "domainPlaceholder": "After setting a domain for the service, you can access Mock APIs through the domain",
-        "portPlaceholder": "Port that the service listens on, cannot be modified after service is added (1~65535)",
-        "nodePlaceholder": "Node where the service runs, cannot be modified after service is added",
-        "servicePlaceholder": "Select or search service",
         "domainSuffix": ".angusmock.cloud",
         "nodeFormat": "{name} ( {ip} )",
         "serviceFormat": "S"
@@ -1350,15 +1188,13 @@
     },
     "serviceOpenApi": {
       "columns": {
-        "title": "Name",
         "summary": "Summary",
         "openapi": "OpenAPI",
         "termsOfService": "Terms of Service",
         "contact": "Contact",
         "license": "License",
         "version": "Document Version",
-        "externalDocs": "External Documentation",
-        "description": "Description"
+        "externalDocs": "External Documentation"
       },
       "placeholder": {
         "title": "Within 100 characters",
@@ -1372,9 +1208,6 @@
         "version": "Within 100 characters",
         "externalDocsUrl": "URL",
         "externalDocsDescription": "Description (within 800 characters)"
-      },
-      "tooltips": {
-        "view": "View"
       }
     },
     "serviceTestDetail": {
@@ -1395,11 +1228,6 @@
         "testApiStats": "Test API Statistics",
         "testTypeStats": "API Test Type Statistics",
         "totalTestNum": "Total Tests",
-        "functionalTest": "Functional Test",
-        "performanceTest": "Performance Test",
-        "stabilityTest": "Stability Test"
-      },
-      "columns": {
         "functionalTest": "Functional Test",
         "performanceTest": "Performance Test",
         "stabilityTest": "Stability Test"
@@ -1444,11 +1272,6 @@
         "followSuccess": "Followed successfully",
         "unfollowSuccess": "Unfollowed successfully",
         "execSuccess": "Executed successfully"
-      },
-      "test": {
-        "functionalTest": "Functional Test",
-        "performanceTest": "Performance Test",
-        "stabilityTest": "Stability Test"
       },
       "buttons": {
         "mockApi": "Mock API",
@@ -1498,10 +1321,7 @@
           "offTips": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current API. Users viewing the API must also have parent project or service permissions."
         },
         "testTask": {
-          "infoText": "Generate corresponding task when API test task doesn't exist. If task already exists, it will override current test information.",
-          "funcTest": "Functional Test",
-          "perfTest": "Performance Test",
-          "stabilityTest": "Stability Test"
+          "infoText": "Generate corresponding task when API test task doesn't exist. If task already exists, it will override current test information."
         }
       }
     },
@@ -1518,8 +1338,7 @@
         "selectServer": "Please select server"
       },
       "labels": {
-        "noVariables": "No Variables",
-        "variables": "Variables"
+        "noVariables": "No Variables"
       }
     }
   },

@@ -189,7 +189,7 @@ defineExpose({
       <Checkbox :checked="true" />
       <div class="flex flex-col w-100 ml-2  flex-shrink-0">
         <Input
-          :placeholder="t('service.apiRequestHeader.form.inputNamePlaceholder')"
+          :placeholder="t('service.apiRequestParams.form.inputNamePlaceholder')"
           value="Content-Type"
           size="small"
           :allowClear="false"
@@ -202,7 +202,7 @@ defineExpose({
         class="w-25 ml-2 flex-shrink-0" />
       <div class="flex flex-col flex-25 ml-2">
         <Input
-          :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
+          :placeholder="t('service.apiRequestParams.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
           :value="props.contentType"
           :allowClear="false"
           size="small"
@@ -219,7 +219,7 @@ defineExpose({
       <Checkbox :checked="true" />
       <div class="flex flex-col w-100 ml-2 flex-shrink-0">
         <Input
-          :placeholder="t('service.apiRequestHeader.form.inputNamePlaceholder')"
+          :placeholder="t('service.apiRequestParams.form.inputNamePlaceholder')"
           :value="key"
           size="small"
           :allowClear="false"
@@ -232,7 +232,7 @@ defineExpose({
         class="w-25 ml-2 flex-shrink-0" />
       <div class="flex flex-col flex-1 ml-2">
         <Input
-          :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
+          :placeholder="t('service.apiRequestParams.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
           :value="value"
           :allowClear="false"
           size="small"
@@ -271,7 +271,7 @@ defineExpose({
               @change="(value, option) => handleModelSelection(value, option, index)" />
             <Input
               v-else
-              :placeholder="t('service.apiRequestHeader.form.inputNamePlaceholder')"
+              :placeholder="t('service.apiRequestParams.form.inputNamePlaceholder')"
               :value="item.name"
               :allowClear="false"
               :maxLength="API_PARAMETER_NAME_LENGTH"
@@ -282,7 +282,7 @@ defineExpose({
               @keypress="handleEnterKeyPress" />
           </div>
           <template v-if="item.$ref" #title>
-            {{ t('service.apiRequestHeader.tips.componentReference', { ref: item.$ref }) }}
+            {{ t('service.apiRequestParams.tips.componentReference', { ref: item.$ref }) }}
           </template>
         </Tooltip>
         <Select
@@ -293,7 +293,7 @@ defineExpose({
         <div class="flex flex-col flex-1">
           <SimpleEditableSelect
             v-if="item.schema?.enum"
-            :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
+            :placeholder="t('service.apiRequestParams.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
             :options="item.schema.enum || item.schema?.[parameterManager.valueKey]"
             :value="item[parameterManager.valueKey]"
             :maxLength="0"
@@ -301,7 +301,7 @@ defineExpose({
             @select="updateParameterData(index, { ...item, [parameterManager.valueKey]: $event, schema: {...item?.schema|| {}, [parameterManager.valueKey]: $event}})" />
           <ParamInput
             v-else-if="![SchemaType.array, SchemaType.object].includes(item.schema.type)"
-            :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
+            :placeholder="t('service.apiRequestParams.form.valuePlaceholder', { maxLength: API_PARAMETER_VALUE_LENGTH })"
             :maxLength="0"
             :value="item[parameterManager.valueKey]"
             :error="getParameterErrorState(item)"
@@ -311,7 +311,7 @@ defineExpose({
         <Button
           type="primary"
           size="small"
-          :title="t('service.apiRequestHeader.actions.copyValue')"
+          :title="t('actions.copyValue')"
           class="ml-2"
           @click="copyParameterValue(item)">
           <Icon icon="icon-fuzhi" />

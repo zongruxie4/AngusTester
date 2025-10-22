@@ -733,5 +733,11 @@
     "responseSize": "Response Size",
     "responseTime": "Response Time (RT)",
     "responseTimeP90": "RT (P90)"
+  },
+  "commonExecTest": {
+   "functionalTest": "Functional Test",
+    "performanceTest": "Performance Test",
+    "stabilityTest": "Stability Test",
+    "customTest": "Custom Test"
   }
 }

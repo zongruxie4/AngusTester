@@ -149,7 +149,7 @@ const columns = [[
 ], [
 
   { label: t('common.status'), dataIndex: 'status' },
-  { label: t('service.mockService.columns.servicePort'), dataIndex: 'servicePort' },
+  { label: t('protocol.port'), dataIndex: 'servicePort' },
   { label: t('service.mockService.columns.serviceDomainUrl'), dataIndex: 'serviceDomainUrl' }
 ], [
   { label: t('common.createdBy'), dataIndex: 'createdByName' },

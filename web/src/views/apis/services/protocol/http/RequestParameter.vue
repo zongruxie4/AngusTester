@@ -373,7 +373,7 @@ defineExpose({
         <Button
           type="primary"
           size="small"
-          :title="t('service.apiRequestParams.actions.copyValue')"
+          :title="t('actions.copyValue')"
           class="ml-2"
           @click="copyParameterValue(item)">
           <Icon icon="icon-fuzhi" />

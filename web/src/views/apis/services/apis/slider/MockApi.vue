@@ -68,7 +68,7 @@ const relatedMockServiceApi = async () => {
     return;
   }
   mockApisId.value = selectedMockApiId.value;
-  notification.success(t('service.ApiMock.messages.associateSuccess'));
+  notification.success(t('service.mockApi.messages.associateSuccess'));
   await loadMockApiInfo(props.id);
 };
 
@@ -83,7 +83,7 @@ const cancelServiceMock = async () => {
   const [error] = await mock.cancelMockApiAssoc([id]);
   loading.value = false;
   if (error) { return; }
-  notification.success(t('service.ApiMock.messages.cancelAssociateSuccess'));
+  notification.success(t('service.mockApi.messages.cancelAssociationSuccess'));
   mockApiInfo.value = undefined;
   mockServiceId.value = '';
 };
@@ -120,36 +120,36 @@ watch(() => props.id, async (newValue) => {
 const columns = [[
   { label: t('common.id'), dataIndex: 'id' },
   { label: t('common.name'), dataIndex: 'name' },
-  { label: t('service.ApiMock.columns.mockServiceId'), dataIndex: 'mockServiceId' },
-  { label: t('service.ApiMock.columns.mockServiceName'), dataIndex: 'mockServiceName' },
-  { label: t('service.ApiMock.columns.mockServiceHostUrl'), dataIndex: 'mockServiceHostUrl' },
+  { label: t('service.mockApi.columns.mockServiceId'), dataIndex: 'mockServiceId' },
+  { label: t('service.mockApi.columns.mockServiceName'), dataIndex: 'mockServiceName' },
+  { label: t('service.mockApi.columns.mockServiceHostUrl'), dataIndex: 'mockServiceHostUrl' },
   { label: t('common.createdBy'), dataIndex: 'createdBy' },
   { label: t('common.createdDate'), dataIndex: 'createdDate' }
 ]];
 
 const mockServiceCount = [
   {
-    name: t('service.ApiMock.stats.requestNum'),
+    name: t('service.mockApi.stats.requestNum'),
     key: 'requestNum',
     icon: 'icon-qingqiushu'
   },
   {
-    name: t('service.ApiMock.stats.pushbackNum'),
+    name: t('service.mockApi.stats.pushbackNum'),
     key: 'pushbackNum',
     icon: 'icon-huituishu'
   },
   {
-    name: t('service.ApiMock.stats.simulateErrorNum'),
+    name: t('service.mockApi.stats.simulateErrorNum'),
     key: 'simulateErrorNum',
     icon: 'icon-moniyichangshu'
   },
   {
-    name: t('service.ApiMock.stats.successNum'),
+    name: t('service.mockApi.stats.successNum'),
     key: 'successNum',
     icon: 'icon-chenggongshu1'
   },
   {
-    name: t('service.ApiMock.stats.exceptionNum'),
+    name: t('service.mockApi.stats.exceptionNum'),
     key: 'exceptionNum',
     icon: 'icon-yichangshu1'
   }
@@ -171,12 +171,12 @@ const mockServiceCount = [
               <span>{{ text }}</span>
               <template v-if="props.disabled">
                 <a class="whitespace-nowrap text-text-disabled cursor-not-allowed ml-2">
-                  {{ t('service.ApiMock.actions.cancelAssociate') }}
+                  {{ t('service.mockApi.actions.cancelAssociate') }}
                 </a>
               </template>
               <template v-else>
                 <a class="whitespace-nowrap text-text-link ml-2" @click="cancelServiceMock">
-                  {{ t('service.ApiMock.actions.cancelAssociate') }}
+                  {{ t('service.mockApi.actions.cancelAssociate') }}
                 </a>
               </template>
             </div>
@@ -217,21 +217,21 @@ const mockServiceCount = [
       </template>
       <template v-if="!mockApiInfo && !loading">
         <div class="flex flex-col space-y-3.5">
-          <Hints :text="t('service.ApiMock.hints.selectMockServiceFirst')" />
+          <Hints :text="t('service.mockApi.hints.selectMockServiceFirst')" />
           <RadioGroup v-model:value="createType">
-            <Radio value="1">{{ t('service.ApiMock.options.generateMockApi') }}</Radio>
-            <Radio value="2">{{ t('service.ApiMock.options.associateMockApi') }}</Radio>
+            <Radio value="1">{{ t('service.mockApi.generateMockApi') }}</Radio>
+            <Radio value="2">{{ t('service.mockApi.associateMockApi') }}</Radio>
           </RadioGroup>
           <Select
             v-model:value="mockServiceId"
             :action="`${TESTER}/mock/service?projectId=${projectId}&fullTextSearch=true`"
             :fieldNames="{label:'name',value:'id'}"
             :maxlength="100"
-            :placeholder="t('service.ApiMock.placeholder.selectMockService')"
+            :placeholder="t('service.mockApi.placeholder.selectMockService')"
             showSearch />
           <template v-if="createType === '1'">
-            <Hints :text="t('service.ApiMock.hints.generateMockApi')" />
-            <Input v-model:value="summary" :placeholder="t('service.ApiMock.placeholder.inputMockApiName')" />
+            <Hints :text="t('service.mockApi.hints.generateMockApi')" />
+            <Input v-model:value="summary" :placeholder="t('service.mockApi.placeholder.inputMockApiName')" />
             <div class="flex justify-end">
               <Button
                 :disabled="!mockServiceId || props.disabled"
@@ -244,7 +244,7 @@ const mockServiceCount = [
             </div>
           </template>
           <template v-else>
-            <Hints :text="t('service.ApiMock.hints.associateMockApi')" />
+            <Hints :text="t('service.mockApi.hints.associateMockApi')" />
             <Select
               v-model:value="selectedMockApiId"
               :disabled="!mockServiceId"
@@ -254,7 +254,7 @@ const mockServiceCount = [
               :format="format"
               :maxlength="100"
               allowClear
-              :placeholder="t('service.ApiMock.placeholder.selectMockApi')"
+              :placeholder="t('service.mockApi.placeholder.selectMockApi')"
               showSearch />
             <div class="flex justify-end">
               <Button

@@ -102,7 +102,7 @@ onMounted(() => {
       size="small"
       type="card"
       class="flex-1 min-h-0">
-      <TabPane key="func" :tab="t('service.apiExecDetail.tabs.functionalTest')">
+      <TabPane key="func" :tab="t('commonExecTest.functionalTest')">
         <ExecDetail
           class="p-0"
           :showBackBtn="false"
@@ -111,7 +111,7 @@ onMounted(() => {
           :scriptType="ScriptType.TEST_FUNCTIONALITY"
           @del="handleTestDeletion" />
       </TabPane>
-      <TabPane key="perf" :tab="t('service.apiExecDetail.tabs.performanceTest')">
+      <TabPane key="perf" :tab="t('commonExecTest.performanceTest')">
         <ExecDetail
           :showBackBtn="false"
           :execId="performanceTestExecId"
@@ -119,7 +119,7 @@ onMounted(() => {
           :scriptType="ScriptType.TEST_PERFORMANCE"
           @del="handleTestDeletion" />
       </TabPane>
-      <TabPane key="stability" :tab="t('service.apiExecDetail.tabs.stabilityTest')">
+      <TabPane key="stability" :tab="t('commonExecTest.stabilityTest')">
         <ExecDetail
           :showBackBtn="false"
           :execId="stabilityTestExecId"
@@ -127,7 +127,7 @@ onMounted(() => {
           :scriptType="ScriptType.TEST_STABILITY"
           @del="handleTestDeletion" />
       </TabPane>
-      <TabPane key="custom" :tab="t('service.apiExecDetail.tabs.customTest')">
+      <TabPane key="custom" :tab="t('commonExecTest.customTest'')">
         <ExecDetail
           :showBackBtn="false"
           :execId="customTestExecId"
