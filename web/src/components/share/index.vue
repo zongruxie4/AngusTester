@@ -21,14 +21,17 @@ import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { randomString } from '@/utils/utils';
 import { ShareObj, TargetType } from './PropsType';
 
+/**
+ * Component props definition
+ */
 interface Props {
-  source: 'add' | 'edit' | 'all'
-  sharedId: string,
-  visible: boolean,
-  id: string,
-  name: string,
-  type: TargetType,
-  share?: ShareObj
+  source: 'add' | 'edit' | 'all'; // Operation mode: add new share, edit existing, or view all
+  sharedId: string; // ID of shared item
+  visible: boolean; // Modal visibility state
+  id: string; // Target resource ID (service/API ID)
+  name: string; // Target resource name
+  type: TargetType; // Target resource type (SERVICE/API)
+  share?: ShareObj; // Existing share object for editing
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -41,7 +44,9 @@ const props = withDefaults(defineProps<Props>(), {
   share: undefined
 });
 
-
+/**
+ * Component event emitters
+ */
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void,
   (e: 'ok', value: { url: string, password: string, type: 'add' | 'edit' }): void
@@ -49,7 +54,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-// 默认展开新家分享数据
+// Share list data - default to showing the "add new share" entry expanded
 const shareList = ref<ShareObj[]>([{
   id: props.sharedId || 'add',
   name: t('commonComp.shareModal.addShare'),
@@ -72,53 +77,69 @@ const shareList = ref<ShareObj[]>([{
   apiList: []
 }]);
 
-const expiredDate = ref<string>(dayjs().add(1, 'day').format(DATE_TIME_FORMAT));
+// Expiration date state - defaults to 1 day from now
+const expirationDate = ref<string>(dayjs().add(1, 'day').format(DATE_TIME_FORMAT));
 
-// 设置添加数据的默认URL
-const getDefaultShareUrl = async () => {
+/**
+ * Generate default share URL based on current domain
+ */
+const generateDefaultShareUrl = async () => {
   const host = DomainManager.getInstance().getAppDomain(AppOrServiceRoute.tester);
   const route = '/share/api';
   shareList.value[0].url = host + route;
-  formState.value.url = host + route;
+  shareFormData.value.url = host + route;
 };
 
-// 保存所有接口的ID
-const allAipIds = ref<string[]>([]);
-// 保存所有选择的接口的ID
-const apiIds = ref<string[]>([]);
+// All available API IDs from the service
+const allAvailableApiIds = ref<string[]>([]);
 
-// 服务下的接口列表
-const apiList = ref<{ id: string, summary: string; method: string }[]>([]);
-// 保存服务下所有的接口数据
-const allApiList = ref<{ id: string, summary: string; method: string }[]>([]);
+// Currently selected API IDs for sharing
+const selectedApiIds = ref<string[]>([]);
 
-const apiParams = ref<{ pageSize: number }>({ pageSize: 2000 });
-// 获取服务下的接口列表
+// Filtered API list (for search results)
+const filteredApiList = ref<{ id: string, summary: string; method: string }[]>([]);
+
+// Complete API list from the service
+const completeApiList = ref<{ id: string, summary: string; method: string }[]>([]);
+
+// API query parameters
+const apiQueryParams = ref<{ pageSize: number }>({ pageSize: 2000 });
+
+/**
+ * Load API list from the service
+ * Fetches all APIs associated with the target service
+ */
 const loadApiList = async () => {
-  const [error, { data }] = await services.loadApisByServicesId(props.id, apiParams.value);
+  const [error, { data }] = await services.loadApisByServicesId(props.id, apiQueryParams.value);
   if (error) {
     return;
   }
-  allAipIds.value = [];
-  apiList.value = data?.list.map(item => {
-    allAipIds.value.push(item.id);
+  
+  allAvailableApiIds.value = [];
+  filteredApiList.value = data?.list.map(item => {
+    allAvailableApiIds.value.push(item.id);
     return {
       id: item.id,
       summary: item.summary,
       method: item.method
     };
   }) || [];
-  shareList.value[0].apiList = apiList.value;
-  allApiList.value = apiList.value;
+  
+  shareList.value[0].apiList = filteredApiList.value;
+  completeApiList.value = filteredApiList.value;
 };
 
-// 加载分享历史列表
-const loadSharedList = async () => {
+/**
+ * Load share history list
+ * Fetches all existing shares for the target resource
+ */
+const loadShareHistory = async () => {
   const params = { targetId: props.id, targetType: props.type };
   const [error, { data = { list: [] } }] = await apis.getShareList(params);
   if (error || !data?.list?.length) {
     return;
   }
+  
   shareList.value = [shareList.value[0], ...data.list.map(item => ({
     ...item,
     isEdit: false,
@@ -127,77 +148,95 @@ const loadSharedList = async () => {
   }))];
 };
 
-const formState = ref({
-  public0: true,
+// Share form data state
+const shareFormData = ref({
+  public0: true, // Is share public (true) or private (false)
   url: '',
   name: '',
   targetId: '',
   targetType: 'API',
-  expiredFlag: true
+  expiredFlag: true // true = permanent, false = has expiration
 });
 
-// 当前编辑的分享数据 todo
-const editShare = ref<ShareObj>();
-// 编辑之前的数据，用于取消编辑恢复数据
-const oldShare = ref<ShareObj>();
+// Currently editing share object
+const currentlyEditingShare = ref<ShareObj>();
 
+// Previous share data before editing (for restore on cancel)
+const previousShareData = ref<ShareObj>();
+
+// Reference to share list DOM element for scrolling
 const shareListRef = ref<HTMLElement | null>(null);
-// 开启编辑
-const handleEdit = (share, index: number) => {
-  if (allApiList.value.length) {
-    share.apiList = allApiList.value;
-    allAipIds.value = allApiList.value.map(item => item.id);
+
+/**
+ * Handle edit action for a share item
+ * Opens the edit form and populates it with existing data
+ * @param share - The share object to edit
+ * @param index - Index in the share list for scrolling
+ */
+const handleEditShare = (share, index: number) => {
+  // Load complete API list if available
+  if (completeApiList.value.length) {
+    share.apiList = completeApiList.value;
+    allAvailableApiIds.value = completeApiList.value.map(item => item.id);
   }
-  // 保存编辑之前的数据
-  oldShare.value = share;
-  // 如果点击的是已经展开的数据 不做任何处理
-  if (editShare.value?.id === share?.id && share.isEdit) {
+  
+  // Save data before editing for potential rollback
+  previousShareData.value = share;
+  
+  // If clicking on already expanded item, do nothing
+  if (currentlyEditingShare.value?.id === share?.id && share.isEdit) {
     return;
   }
-  // 开启编辑
-  seePassword.value = true;
+  
+  // Show password field
+  isPasswordVisible.value = true;
   share.isEdit = true;
-  // 同时只能编辑一条数据
+  
+  // Only allow editing one share at a time
   for (let i = 0; i < shareList.value.length; i++) {
     if (shareList.value[i]?.id !== share?.id && share.isEdit) {
       shareList.value[i].isEdit = false;
     }
   }
 
-  // 保存正在编辑的数据
-  editShare.value = share;
-  shareId.value = share.id;
-  formState.value.name = share.id === 'add' ? '' : share.name;
-  formState.value.url = share.url;
-  formState.value.expiredFlag = !share.expiredFlag;
-  formState.value.public0 = share.public0;
-  formState.value.targetId = share.targetId;
-  formState.value.targetType = share.targetType.value;
-  password.value = share.password || '';
-  apiIds.value = share.apiIds || [];
-  expiredDate.value = share.expiredDate;
-  // 校验数据是否有修改需要用到 old是恢复旧数据 校验时用不到全部数据
-  historyData.value.name = share.id === 'add' ? '' : share.name;
-  historyData.value.id = share.id;
-  historyData.value.url = share.url;
-  historyData.value.expiredFlag = !share.expiredFlag;
+  // Set current editing share
+  currentlyEditingShare.value = share;
+  currentShareId.value = share.id;
+  
+  // Populate form with share data
+  shareFormData.value.name = share.id === 'add' ? '' : share.name;
+  shareFormData.value.url = share.url;
+  shareFormData.value.expiredFlag = !share.expiredFlag;
+  shareFormData.value.public0 = share.public0;
+  shareFormData.value.targetId = share.targetId;
+  shareFormData.value.targetType = share.targetType.value;
+  sharePassword.value = share.password || '';
+  selectedApiIds.value = share.apiIds || [];
+  expirationDate.value = share.expiredDate;
+  
+  // Save original data for comparison (to detect changes)
+  originalShareData.value.name = share.id === 'add' ? '' : share.name;
+  originalShareData.value.id = share.id;
+  originalShareData.value.url = share.url;
+  originalShareData.value.expiredFlag = !share.expiredFlag;
   if (!share.expiredFlag) {
-    historyData.value.expiredDate = share.expiredDate;
+    originalShareData.value.expiredDate = share.expiredDate;
   }
-  historyData.value.targetId = share.targetId;
-  historyData.value.targetType = share.targetType.value;
-  historyData.value.public0 = share.public0;
+  originalShareData.value.targetId = share.targetId;
+  originalShareData.value.targetType = share.targetType.value;
+  originalShareData.value.public0 = share.public0;
   if (!share.public0) {
-    historyData.value.password = share.password;
+    originalShareData.value.password = share.password;
   }
   if (share.apiIds?.length) {
-    historyData.value.apiIds = share.apiIds;
+    originalShareData.value.apiIds = share.apiIds;
   }
 
   if (props.source === 'edit') {
     shareList.value[0].url = share.url;
   }
 
+  // Scroll to the edited item
   const timer = setTimeout(() => {
     if (shareListRef.value) {
       shareListRef.value.scrollTop = 42 * index;
@@ -206,8 +245,11 @@ const handleEdit = (share, index: number) => {
   }, 500);
 };
 
-// 取消编辑 并恢复数据
-const cancelEdit = (share) => {
+/**
+ * Cancel edit and restore previous data
+ * @param share - The share object being edited
+ */
+const handleCancelEdit = (share) => {
   if (props.source === 'all') {
     if (shareList.value.length === 1) {
       if (shareList.value[0].isEdit) {
@@ -216,14 +258,15 @@ const cancelEdit = (share) => {
       return;
     }
     share.isEdit = false;
-    share = oldShare.value;
+    share = previousShareData.value;
     return;
   }
 
   emit('update:visible', false);
 };
 
-const publicFlagOptions = [{
+// Public/Private share options
+const publicAccessOptions = [{
   label: t('commonComp.shareModal.publicFlagOptions.public'),
   value: true
 }, {
@@ -231,7 +274,8 @@ const publicFlagOptions = [{
   value: false
 }];
 
-const expirationTimeOptions = [{
+// Expiration time options
+const expirationOptions = [{
   label: t('commonComp.shareModal.expirationTimeOptions.permanent'),
   value: true
 }, {
@@ -239,131 +283,164 @@ const expirationTimeOptions = [{
   value: false
 }];
 
-const password = ref('');
-const publicFlagChange = e => {
+// Share password state
+const sharePassword = ref('');
+
+/**
+ * Handle public/private flag change
+ * Generates random password when switching to private
+ */
+const handlePublicAccessChange = (e) => {
   if (!e.target.value) {
-    password.value = randomString();
-    realPassd.value = password.value;
-    seePassword.value = true;
+    sharePassword.value = randomString();
+    actualPassword.value = sharePassword.value;
+    isPasswordVisible.value = true;
   }
 };
 
-const resetPassword = () => {
-  password.value = randomString();
-  passdErr.value = false;
+/**
+ * Reset password to a new random value
+ */
+const handleResetPassword = () => {
+  sharePassword.value = randomString();
+  hasPasswordError.value = false;
 };
 
-const dateUnitOptions = ref<EnumMessage<string>[]>([]);
+// Time unit options for date picker
+const timeUnitOptions = ref<EnumMessage<string>[]>([]);
 
-const loadUnit = () => {
-  const excludeUnit = [ShortTimeUnit.Millisecond, ShortTimeUnit.Second];
+/**
+ * Load time unit options
+ * Excludes milliseconds and seconds
+ */
+const loadTimeUnits = () => {
+  const excludedUnits = [ShortTimeUnit.Millisecond, ShortTimeUnit.Second];
   const data = enumUtils.enumToMessages(ShortTimeUnit);
-  dateUnitOptions.value = data.filter(unit => !excludeUnit.includes(unit.value)).map(item => ({
-    label: item.message,
-    value: item.value
-  }));
+  timeUnitOptions.value = data.filter(unit => !excludedUnits.includes(unit.value as ShortTimeUnit));
 };
 
-const apiIndeterminate = ref<boolean>(false);
-const apiCheckAll = ref<boolean>(false);
-const selectALLApi = (e) => {
+// API checkbox states
+const isApiSelectionIndeterminate = ref<boolean>(false);
+const isAllApisChecked = ref<boolean>(false);
+
+/**
+ * Handle select/deselect all APIs
+ * @param e - Checkbox change event
+ */
+const handleSelectAllApis = (e) => {
   if (e.target.checked) {
-    apiIds.value = allAipIds.value;
-    apiCheckAll.value = true;
+    selectedApiIds.value = allAvailableApiIds.value;
+    isAllApisChecked.value = true;
   } else {
-    apiCheckAll.value = false;
-    apiIds.value = [];
+    isAllApisChecked.value = false;
+    selectedApiIds.value = [];
   }
-  apiIndeterminate.value = false;
+  isApiSelectionIndeterminate.value = false;
 };
 
-const apiChecked = (checkedValue: string[]) => {
-  apiIds.value = checkedValue;
-  if (checkedValue.length) {
-    const isEuqal = utils.deepCompare(allAipIds.value, checkedValue);
-    if (isEuqal) {
-      apiIndeterminate.value = false;
-      apiCheckAll.value = true;
+/**
+ * Handle individual API checkbox change
+ * Updates select all checkbox state based on selected count
+ * @param checkedValues - Array of checked API IDs
+ */
+const handleApiSelectionChange = (checkedValues: (string | number | boolean)[]) => {
+  // Convert to string array for consistency
+  const stringValues = checkedValues.map(v => String(v));
+  selectedApiIds.value = stringValues;
+  
+  if (stringValues.length) {
+    const isEqual = utils.deepCompare(allAvailableApiIds.value, stringValues);
+    if (isEqual) {
+      isApiSelectionIndeterminate.value = false;
+      isAllApisChecked.value = true;
       return;
     }
 
-    apiIndeterminate.value = true;
-    apiCheckAll.value = true;
+    isApiSelectionIndeterminate.value = true;
+    isAllApisChecked.value = true;
     return;
   }
 
-  apiIndeterminate.value = false;
-  apiCheckAll.value = false;
+  isApiSelectionIndeterminate.value = false;
+  isAllApisChecked.value = false;
 };
 
-// 保存分享
-const handleOk = async (share) => {
-  // 校验分享名称
-  nameErr.value = !formState.value.name;
-  if (nameErr.value) {
+/**
+ * Save share configuration
+ * Validates form data and submits create/update request
+ * @param share - The share object being saved
+ */
+const handleSaveShare = async (share) => {
+  // Validate share name
+  hasNameError.value = !shareFormData.value.name;
+  if (hasNameError.value) {
     return;
   }
 
   let params: Record<string, any> = {
-    ...formState.value,
-    expiredFlag: !formState.value.expiredFlag
+    ...shareFormData.value,
+    expiredFlag: !shareFormData.value.expiredFlag
   };
-  // 选择私有 参数提交密码
-  if (!formState.value.public0) {
-    // 校验密码
-    passdErr.value = !password.value;
-    if (passdErr.value) {
+  
+  // If private share, include password
+  if (!shareFormData.value.public0) {
+    // Validate password
+    hasPasswordError.value = !sharePassword.value;
+    if (hasPasswordError.value) {
       return;
     }
     params = {
       ...params,
-      password: password.value
+      password: sharePassword.value
     };
   }
-  // 选择失效时间 参数提交失效时间（expiredDuration）
-  if (!formState.value.expiredFlag) {
-    // 校验时间
-    const isExpired = isWithin5Minutes(expiredDate.value);
+  
+  // If has expiration time, include it
+  if (!shareFormData.value.expiredFlag) {
+    // Validate expiration time (must be at least 30 minutes in future)
+    const isExpired = isExpirationTooSoon(expirationDate.value);
 
     if (isExpired) {
-      dateErr.value = true;
+      hasDateError.value = true;
       notification.warning(t('commonComp.shareModal.expiredTimeTip'));
       return;
     }
 
     params = {
       ...params,
-      expiredDate: expiredDate.value
+      expiredDate: expirationDate.value
     };
   }
+  
+  // For service shares, validate API selection
   if (props.type !== 'API') {
-    if (!apiList.value.length) {
+    if (!filteredApiList.value.length) {
       notification.warning(t('commonComp.shareModal.noShareApis'));
       return;
     }
 
-    // 如果勾选了分享接口 参数提交接口id
-    if (!apiIds.value.length) {
+    // Ensure at least one API is selected
+    if (!selectedApiIds.value.length) {
       notification.warning(t('commonComp.shareModal.noSelectedApis'));
       return;
     }
 
     params = {
       ...params,
-      apiIds: apiIds.value
+      apiIds: selectedApiIds.value
     };
   }
 
-  // 如果是不是添加的数据 参数提交历史id 请求发送pantch请求
+  // If editing existing share, use PATCH request
   if (share.id !== 'add') {
     params = {
       ...params,
-      id: shareId.value
+      id: currentShareId.value
     };
-    return patchShare(params, share);
+    return updateExistingShare(params, share);
   }
 
-  // 添加分享 发送post请求
+  // Creating new share - use POST request
   share.isLoading = true;
   const [error, res = { data: [] }] = await apis.addShare(params);
   share.isLoading = false;
@@ -371,25 +448,26 @@ const handleOk = async (share) => {
     return;
   }
 
-  share.name = formState.value.name;
+  share.name = shareFormData.value.name;
   share.url = res.data.url;
   share.password = res.data.password;
-  share.public0 = formState.value.public0;
+  share.public0 = shareFormData.value.public0;
   emit('ok', { url: res.data.url, password: params.password, type: 'add' });
-  copy(share);
+  copyShareInfo(share);
   emit('update:visible', false);
 };
 
-const historyData = ref<{
+// Original share data for comparison (to detect changes)
+const originalShareData = ref<{
   public0: boolean;
   url: string;
   targetId: string;
   targetType: TargetType;
   expiredFlag: boolean;
-  historyData?: string;
+  expiredDate?: string;
   password?: string;
-  id: '',
-  name: '',
+  id: string;
+  name: string;
   apiIds?: string[];
 }>({
   public0: false,
@@ -402,59 +480,76 @@ const historyData = ref<{
   apiIds: []
 });
 
-const patchShare = async (params, share) => {
-  if (utils.deepCompare(historyData.value, params)) {
-    copy(share);
+/**
+ * Update existing share via PATCH request
+ * Only updates if data has changed
+ * @param params - Update parameters
+ * @param share - Share object being updated
+ */
+const updateExistingShare = async (params, share) => {
+  // Skip update if no changes detected
+  if (utils.deepCompare(originalShareData.value, params)) {
+    copyShareInfo(share);
     return;
   }
+  
   share.isLoading = true;
   const [error] = await apis.patchShared(params);
   share.isLoading = false;
   if (error) {
     return;
   }
+  
   emit('ok', { url: params.url, password: params.password, type: 'edit' });
-  copy(params);
+  copyShareInfo(params);
   emit('update:visible', false);
 };
 
-const shareId = ref(props.sharedId);
+// Current share ID being edited
+const currentShareId = ref(props.sharedId);
 
-const nameErr = ref(false);
-const nameChange = (event: ChangeEvent) => {
+// Form validation error states
+const hasNameError = ref(false);
+const handleNameChange = (event: ChangeEvent) => {
   const value = event.target.value;
-  nameErr.value = !value;
+  hasNameError.value = !value;
 };
 
-const passdErr = ref(false);
-const passdChange = (event: ChangeEvent) => {
+const hasPasswordError = ref(false);
+const handlePasswordChange = (event: ChangeEvent) => {
   const value = event.target.value;
-  passdErr.value = !value;
+  hasPasswordError.value = !value;
 };
 
-const dateErr = ref(false);
-const dateChange = (value: string) => {
+const hasDateError = ref(false);
+const handleDateChange = (value: string) => {
   if (!value) {
-    dateErr.value = true;
+    hasDateError.value = true;
     return;
   }
 
-  const isExpired = isWithin5Minutes(value);
+  const isExpired = isExpirationTooSoon(value);
 
   if (isExpired) {
-    dateErr.value = true;
+    hasDateError.value = true;
     notification.warning(t('commonComp.shareModal.expiredTimeTip'));
   } else {
-    dateErr.value = false;
+    hasDateError.value = false;
   }
 };
 
-const handleCancel = () => {
+/**
+ * Handle modal cancel action
+ */
+const handleModalCancel = () => {
   emit('update:visible', false);
 };
 
-// 删除分享
-const delShare = async (id: string) => {
+/**
+ * Delete a share
+ * @param id - Share ID to delete
+ */
+const handleDeleteShare = async (id: string) => {
   const [error] = await apis.deleteShare(id);
   if (error) {
     return;
@@ -463,12 +558,21 @@ const delShare = async (id: string) => {
   shareList.value = shareList.value.filter(item => item.id !== id);
 };
 
-const clickCopyIcon = (item: ShareObj) => {
-  copy(item, true);
+/**
+ * Handle copy icon click
+ * @param item - Share object to copy
+ */
+const handleCopyClick = (item: ShareObj) => {
+  copyShareInfo(item, true);
 };
 
-// 复制名称、密码和链接?
-const copy = (item: ShareObj, isCopy?: boolean) => {
+/**
+ * Copy share information to clipboard
+ * Copies password for private shares, URL for public shares
+ * @param item - Share object containing info to copy
+ * @param showCopySuccess - Whether to show copy success message
+ */
+const copyShareInfo = (item: ShareObj, showCopySuccess?: boolean) => {
   let message;
   if (!item.public0) {
     message = `${t('common.password')}: ${item.password || ''}`;
@@ -476,32 +580,47 @@ const copy = (item: ShareObj, isCopy?: boolean) => {
     message = `${t('common.link')}: ${item.url}`;
   }
   toClipboard(message).then(() => {
-    notification.success(isCopy ? t('actions.tips.copySuccess') : t('actions.tips.shareSuccess'));
+    notification.success(showCopySuccess ? t('actions.tips.copySuccess') : t('actions.tips.shareSuccess'));
   });
 };
 
-const queryApisByName = debounce(duration.search, (event: ChangeEvent, share: ShareObj) => {
-  const value = event.target.value as string;
-  // 如果没有条件 展示所有的接口
-  if (!value) {
-    share.apiList = allApiList.value;
-    allAipIds.value = allApiList.value?.map(item => item.id) || [];
+/**
+ * Search/filter APIs by name (debounced)
+ * @param event - Input change event
+ * @param share - Share object to update API list
+ */
+const searchApisByName = debounce(duration.search, (event: ChangeEvent, share: ShareObj) => {
+  const searchTerm = event.target.value as string;
+  
+  // If no search term, show all APIs
+  if (!searchTerm) {
+    share.apiList = completeApiList.value;
+    allAvailableApiIds.value = completeApiList.value?.map(item => item.id) || [];
+    return;
   }
 
-  apiList.value = [];
-  for (let i = 0; i < allApiList.value.length; i++) {
-    const apiItem = allApiList.value[i];
-    if (apiItem.summary.includes(value)) {
-      apiList.value.push({ id: apiItem.id, summary: apiItem.summary, method: apiItem.method });
+  // Filter APIs by search term
+  filteredApiList.value = [];
+  for (let i = 0; i < completeApiList.value.length; i++) {
+    const apiItem = completeApiList.value[i];
+    if (apiItem.summary.includes(searchTerm)) {
+      filteredApiList.value.push({ id: apiItem.id, summary: apiItem.summary, method: apiItem.method });
     }
   }
+  share.apiList = filteredApiList.value;
 });
 
-const seePassword = ref(true);
-const realPassd = ref('');
+// Password visibility state
+const isPasswordVisible = ref(true);
+// Actual password value (for display purposes)
+const actualPassword = ref('');
 
-const initData = () => {
-  // 默认展开新家分享数据
+/**
+ * Initialize/reset all data to default state
+ * Called when modal opens
+ */
+const initializeData = () => {
+  // Reset share list to default "add new" entry
   shareList.value = [{
     id: props.sharedId || 'add',
     name: t('commonComp.shareModal.addShare'),
@@ -524,12 +643,14 @@ const initData = () => {
     apiList: []
   }];
 
-  expiredDate.value = dayjs().add(24.1, 'hour').format(DATE_TIME_FORMAT);
-  allAipIds.value = [];
-  apiIds.value = [];
-  apiList.value = [];
-  allApiList.value = [];
-  formState.value = {
+  // Reset all state values
+  expirationDate.value = dayjs().add(24.1, 'hour').format(DATE_TIME_FORMAT);
+  allAvailableApiIds.value = [];
+  selectedApiIds.value = [];
+  filteredApiList.value = [];
+  completeApiList.value = [];
+  
+  shareFormData.value = {
     public0: true,
     url: '',
     name: '',
@@ -537,12 +658,15 @@ const initData = () => {
     targetType: 'API',
     expiredFlag: true
   };
-  editShare.value = undefined;
-  oldShare.value = undefined;
-  password.value = '';
-  apiIndeterminate.value = false;
-  apiCheckAll.value = false;
-  historyData.value = {
+  
+  currentlyEditingShare.value = undefined;
+  previousShareData.value = undefined;
+  sharePassword.value = '';
+  
+  isApiSelectionIndeterminate.value = false;
+  isAllApisChecked.value = false;
+  
+  originalShareData.value = {
     public0: false,
     url: '',
     targetId: '',
@@ -552,41 +676,62 @@ const initData = () => {
     name: '',
     apiIds: []
   };
-  shareId.value = props.sharedId;
-  nameErr.value = false;
-  passdErr.value = false;
-  dateErr.value = false;
-  seePassword.value = true;
-  realPassd.value = '';
+  
+  currentShareId.value = props.sharedId;
+  
+  // Reset error states
+  hasNameError.value = false;
+  hasPasswordError.value = false;
+  hasDateError.value = false;
+  
+  // Reset password visibility
+  isPasswordVisible.value = true;
+  actualPassword.value = '';
 };
 
+/**
+ * Component lifecycle - mounted
+ * Sets up watchers for modal visibility
+ */
 onMounted(async () => {
-  await loadUnit();
+  await loadTimeUnits();
+  
   watch(() => props.visible, async (newValue) => {
     if (!newValue) {
       return;
     }
-    initData();
+    
+    // Initialize data when modal opens
+    initializeData();
     await loadApiList();
+    
+    // Load share history for 'all' mode
     if (props.source === 'all') {
-      await loadSharedList();
+      await loadShareHistory();
     }
 
+    // Pre-populate form for 'edit' mode
     if (props.source === 'edit') {
-      handleEdit(props.share as ShareObj, 0);
+      handleEditShare(props.share as ShareObj, 0);
     } else {
-      getDefaultShareUrl();
+      generateDefaultShareUrl();
     }
 
-    formState.value.targetType = props.type;
-    formState.value.targetId = props.id;
+    // Set target type and ID
+    shareFormData.value.targetType = props.type;
+    shareFormData.value.targetId = props.id;
   }, {
     immediate: true
   });
 });
 
-const getBgColorByApiMethod = (apiMethods: string) => {
-  switch (apiMethods) {
+/**
+ * Get CSS class for API method badge color
+ * @param method - HTTP method string
+ * @returns CSS class name
+ */
+const getApiMethodColorClass = (method: string) => {
+  switch (method) {
     case 'GET':
       return 'text-http-get';
     case 'POST':
@@ -603,15 +748,27 @@ const getBgColorByApiMethod = (apiMethods: string) => {
       return 'text-http-options';
     case 'TRACE':
       return 'text-http-trace';
+    default:
+      return '';
   }
 };
 
-const disabledDate = current => {
+/**
+ * Disable dates in the past for date picker
+ * @param current - Current date being evaluated
+ * @returns true if date should be disabled
+ */
+const isDateDisabled = (current) => {
   return current && current < dayjs().subtract(1, 'day').endOf('day');
 };
 
-// 校验提交的时间是否是当前时间24小时之后的时间（主要用来处理用户点开时间弹框或者选择了时间一直不提交的情况）
-function isWithin5Minutes (timeStr: string) {
+/**
+ * Check if expiration time is too soon (less than 30 minutes from now)
+ * Validates that user hasn't selected a time that's too close to current time
+ * @param timeStr - ISO date/time string
+ * @returns true if expiration is less than 30 minutes away
+ */
+function isExpirationTooSoon(timeStr: string) {
   const currentTime = dayjs();
   const targetTime = dayjs(timeStr);
   const diffInMinutes = targetTime.diff(currentTime, 'minute');
@@ -625,7 +782,7 @@ function isWithin5Minutes (timeStr: string) {
     :reverse="true"
     :width="600"
     :footer="null"
-    @cancel="handleCancel">
+    @cancel="handleModalCancel">
     <Hints :text="t('commonComp.shareModal.tooltip.publicShareDesc')" />
     <div
       ref="shareListRef"
@@ -639,17 +796,17 @@ function isWithin5Minutes (timeStr: string) {
           <div class="flex items-start justify-between">
             <template v-if="item.isEdit">
               <Input
-                v-model:value="formState.name"
+                v-model:value="shareFormData.name"
                 :maxlength="100"
-                :error="nameErr"
+                :error="hasNameError"
                 :placeholder="t('common.placeholders.searchKeyword')"
-                @change="nameChange" />
+                @change="handleNameChange" />
             </template>
             <template v-else>
               <template v-if="item.id === 'add'">
                 <div
                   class="flex-1 mr-2 truncate cursor-pointer text-text-link hover:text-text-link-hover"
-                  @click="handleEdit(item,index)">
+                  @click="handleEditShare(item,index)">
                   {{ item.name }}
                 </div>
               </template>
@@ -668,20 +825,20 @@ function isWithin5Minutes (timeStr: string) {
                   <IconCopy
                     v-if="item.id !== 'add'"
                     class="ml-3.5"
-                    @click="clickCopyIcon(item)" />
+                    @click="handleCopyClick(item)" />
                 </Tooltip>
                 <Tooltip :title="t('actions.edit')" placement="top">
                   <Icon
                     icon="icon-shuxie"
                     class="cursor-pointer ml-2"
-                    @click="handleEdit(item,index)" />
+                    @click="handleEditShare(item,index)" />
                 </Tooltip>
                 <Tooltip :title="t('actions.delete')" placement="top">
                   <Icon
                     v-if="item.id !== 'add'"
                     icon="icon-qingchu"
                     class="cursor-pointer ml-2 text-3.5"
-                    @click="delShare(item.id)" />
+                    @click="handleDeleteShare(item.id)" />
                 </Tooltip>
               </template>
             </div>
@@ -706,31 +863,31 @@ function isWithin5Minutes (timeStr: string) {
             </div>
             <div class="flex items-center h-7 -mt-0.5 px-2">
               <RadioGroup
-                v-model:value="formState.public0"
+                v-model:value="shareFormData.public0"
                 size="small"
                 class="w-1/2 flex"
-                @change="publicFlagChange">
+                @change="handlePublicAccessChange">
                 <Radio
-                  v-for="option,oIndex in publicFlagOptions"
+                  v-for="option,oIndex in publicAccessOptions"
                   :key="oIndex"
                   :value="option.value"
                   class="w-1/2 whitespace-nowrap">
                   {{ option.label }}
                 </Radio>
               </RadioGroup>
-              <template v-if="!formState.public0">
+              <template v-if="!shareFormData.public0">
                 <Input
-                  v-model:value="password"
-                  :error="passdErr"
+                  v-model:value="sharePassword"
+                  :error="hasPasswordError"
                   :maxlength="20"
                   type="password"
                   dataType="mixin-en"
                   size="small"
                   :placeholder="t('commonComp.shareModal.form.passwordPlaceholder')"
                   class="flex-1"
-                  @change="passdChange">
+                  @change="handlePasswordChange">
                   <template #addonAfter>
-                    <a class="text-3 text-text-sub-content" @click="resetPassword">
+                    <a class="text-3 text-text-sub-content" @click="handleResetPassword">
                       <Icon icon="icon-shuaxin" class="mr-1 -mt-0.5" />
                       {{ t('actions.refresh') }}</a>
                   </template>
@@ -743,30 +900,30 @@ function isWithin5Minutes (timeStr: string) {
             </div>
             <div class="flex items-center h-7 -mt-0.5  px-2">
               <RadioGroup
-                v-model:value="formState.expiredFlag"
+                v-model:value="shareFormData.expiredFlag"
                 size="small"
                 class="w-1/2 flex">
                 <Radio
-                  v-for="option,oIndex in expirationTimeOptions"
+                  v-for="option,oIndex in expirationOptions"
                   :key="oIndex"
                   :value="option.value"
                   class="w-1/2 whitespace-nowrap">
                   {{ option.label }}
                 </Radio>
               </RadioGroup>
-              <template v-if="!formState.expiredFlag">
+              <template v-if="!shareFormData.expiredFlag">
                 <DatePicker
-                  v-model:value="expiredDate"
+                  v-model:value="expirationDate"
                   :allowClear="false"
                   :showNow="false"
-                  :disabledDate="disabledDate"
+                  :disabledDate="isDateDisabled"
                   :showTime="{hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) }"
-                  :error="dateErr"
+                  :error="hasDateError"
                   internal
                   size="small"
                   type="date"
                   class="flex-grow"
-                  @change="dateChange" />
+                  @change="handleDateChange" />
               </template>
             </div>
             <template v-if="props.type !== 'API'">
@@ -774,32 +931,32 @@ function isWithin5Minutes (timeStr: string) {
                 {{ t('commonComp.shareModal.selectApis') }}
                 <Colon />
               </div>
-              <div class=" border border-border-divider p-2 rounded" :class="allApiList.length > 0 ? 'h-73' : 'h-40'">
+              <div class=" border border-border-divider p-2 rounded" :class="completeApiList.length > 0 ? 'h-73' : 'h-40'">
                 <Input
-                  v-if="allApiList.length > 0"
+                  v-if="completeApiList.length > 0"
                   :placeholder="t('commonComp.shareModal.form.apiSearchPlaceholder')"
                   size="small"
                   class="mb-2"
                   allowClear
-                  @change="(event)=>queryApisByName(event,item)">
+                  @change="(event)=>searchApisByName(event,item)">
                   <template #suffix>
                     <Icon icon="icon-sousuo" class="text-4 text-theme-sub-content" />
                   </template>
                 </Input>
-                <template v-if="apiList.length">
+                <template v-if="item.apiList.length">
                   <div
                     class="overflow-hidden hover:overflow-y-auto -mr-2 pr-2.5 -mt-1.5"
                     style="scrollbar-gutter: stable;max-height: 216px;">
                     <CheckboxGroup
-                      v-model:value="apiIds"
+                      v-model:value="selectedApiIds"
                       class="text-3 w-full"
-                      @change="apiChecked">
+                      @change="handleApiSelectionChange">
                       <div
                         v-for="api in item.apiList"
                         :key="api.id"
                         class="flex items-center space-x-2 mt-1.75 h-5 leading-5">
                         <Checkbox :value="api.id" class="-mt-0.25" />
-                        <div class="w-13 whitespace-nowrap" :class="getBgColorByApiMethod(api.method)">
+                        <div class="w-13 whitespace-nowrap" :class="getApiMethodColorClass(api.method)">
                           {{
                             api.method
                           }}
@@ -815,10 +972,10 @@ function isWithin5Minutes (timeStr: string) {
                   </div>
                   <div class="flex mt-2 text-text-title text-3 font-normal">
                     <Checkbox
-                      v-model:checked="apiCheckAll"
+                      v-model:checked="isAllApisChecked"
                       class="checkbox-border-black"
-                      :indeterminate="apiIndeterminate"
-                      @change="selectALLApi">
+                      :indeterminate="isApiSelectionIndeterminate"
+                      @change="handleSelectAllApis">
                       {{ t('actions.selectAll') }}
                     </Checkbox>
                   </div>
@@ -832,14 +989,14 @@ function isWithin5Minutes (timeStr: string) {
                 class="mr-2"
                 size="small"
                 :loading="item.isLoading"
-                @click="handleOk(item)">
+                @click="handleSaveShare(item)">
                 {{ t('actions.saveAndCopy') }}
               </Button>
               <Button
                 type="link"
                 size="small"
                 class="-mx-2"
-                @click="cancelEdit(item)">
+                @click="handleCancelEdit(item)">
                 {{ t('actions.cancel') }}
               </Button>
             </div>
