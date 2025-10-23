@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { download, TESTER } from '@xcan-angus/infra';
+import { download, TESTER, DomainManager, AppOrServiceRoute } from '@xcan-angus/infra';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Button, Table, Tag } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
@@ -140,8 +140,9 @@ const transformMultiTableData = (rawData: any[]) => {
  */
 const handleExportDetail = async () => {
   isExporting.value = true;
+  const domainManager = DomainManager.getInstance().getApiDomain(AppOrServiceRoute.tester);
   try {
-    await download(`${TESTER}/analysis/${props.data?.id}/overview/export`);
+    await download(`${domainManager}${TESTER}/analysis/${props.data?.id}/overview/export`);
   } finally {
     isExporting.value = false;
   }
