@@ -21,8 +21,12 @@ import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
 const { t } = useI18n();
 
+interface Props extends TaskDetailProps {
+  visible: boolean
+}
+
 // Component Props & Emits
-const props = withDefaults(defineProps<TaskDetailProps>(), {
+const props = withDefaults(defineProps<Props>(), {
   visible: false,
   projectId: undefined,
   dataSource: undefined
@@ -411,27 +415,11 @@ const resetForm = () => {
 
 // Lifecycle Hooks
 onMounted(() => {
-  watch(() => props.dataSource, (newDataSource) => {
-    if (!newDataSource) {
+  watch([() => props.dataSource, () => props.visible], () => {
+    if (!props.dataSource || !props.visible) {
       return;
     }
-
-    const newTaskId = utils.uuid();
-    taskIdList.value = [newTaskId];
-    taskDataMap.value[newTaskId] = {
-      assigneeId: newDataSource.assigneeId,
-      confirmerId: newDataSource.confirmerId,
-      deadlineDate: newDataSource.deadlineDate,
-      evalWorkload: '1',
-      moduleId: newDataSource.moduleId,
-      parentTaskId: newDataSource.id,
-      priority: newDataSource.priority?.value,
-      projectId: newDataSource.projectId,
-      sprintId: newDataSource.sprintId,
-      taskType: TaskType.TASK,
-      testType: newDataSource.testType?.value,
-      name: ''
-    };
+    addNewSubTask();
   }, { immediate: true, deep: true });
 });
 </script>
