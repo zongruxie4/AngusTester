@@ -149,6 +149,11 @@
       "evalWorkloadMethodTip": "Workload assessment method estimates task effort to help the team plan sprints better",
       "attachmentTip": "Supports uploading relevant documents, designs, requirement specifications, etc. for team reference"
     },
+    "authorization": {
+      "title": "Sprint Permissions",
+      "onTips": "When 'Permission Control' is enabled, users need to be manually granted sprint permissions to perform corresponding operations. Permission control is enabled by default. Note: If the authorized user does not have parent project permissions, view permissions will be automatically granted.",
+      "offTips": "When 'No Permission Control' is enabled, all users can publicly view and operate the current sprint. Users also need to have permissions for the parent project of the current sprint."
+    },
     "messages": {
       "nameRequired": "Sprint name is required",
       "dateRequired": "Time plan is required",
