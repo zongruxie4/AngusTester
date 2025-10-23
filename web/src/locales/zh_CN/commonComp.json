@@ -1422,7 +1422,8 @@
     "totalEmails": "总共",
     "readEmails": "读取",
     "emails": "个邮件",
-    "requestContent": "请求内容"
+    "requestContent": "请求内容",
+    "requestHeaders": "请求头"
   },
   "xcan_intervalTimestamp": {
     "autoRefresh": "自动刷新",
