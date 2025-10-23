@@ -35,10 +35,10 @@ const index = computed(() => {
 
 const indexText = computed(() => {
   if (index.value === 8) {
-    return '八';
+    return t('reportPreview.serial.8');
   }
 
-  return '九';
+  return t('reportPreview.serial.9');
 });
 
 const remarks = computed(() => {

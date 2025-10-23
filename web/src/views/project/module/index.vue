@@ -415,8 +415,6 @@ onMounted(() => {
   line-height: 1.3;
 }
 
-/* 使用 antd 默认 hover/selected 背景，不做覆盖 */
-
 ::deep(.ant-tree .ant-tree-switcher) {
   width: 14px;
   height: 14px;
@@ -458,10 +456,6 @@ onMounted(() => {
   flex: 1 1 auto;
   min-width: 0;
 }
-
-/* 下拉菜单使用 antd 默认样式，不做覆盖 */
-
-/* 输入框使用 antd 默认样式，不做覆盖 */
 
 /* Spin styling */
 ::deep(.ant-spin-container) {
