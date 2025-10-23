@@ -3,8 +3,11 @@ import { ref } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { utils } from '@xcan-angus/infra';
 import { Arrow, NoData } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { ExecContent } from './PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: ExecContent
@@ -17,12 +20,12 @@ const props = withDefaults(defineProps<Props>(), {
 const panels:{id:string;name:string;key:'general'|'request'|'response'}[] = [
   {
     id: utils.uuid(),
-    name: '请求头',
+    name: t('xcan_scenarioDebugResult.requestHeaders'),
     key: 'request'
   },
   {
     id: utils.uuid(),
-    name: `请求内容(${utils.formatBytes(props.value?.content?.request0?.size) || '0B'})`,
+    name: `${t('xcan_scenarioDebugResult.requestContent')}(${utils.formatBytes(props.value?.content?.request0?.size) || '0B'})`,
     key: 'response'
   }
 ];

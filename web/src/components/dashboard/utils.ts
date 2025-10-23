@@ -3,6 +3,9 @@ import { SummaryQueryParams, SummaryData, LineChartData, PieChartData } from './
 import { GroupBy, DateRangeType } from './enums';
 import dayjs from 'dayjs';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global.t || ((v) => v);
 
 /**
  * Statistical data query utility method
@@ -315,15 +318,15 @@ export const getDateFiltersAndUnit = (startDate: string, endDate: string) => {
   let unit: string[] = [];
 
   if (diffDays <= 1) {
-    unit = ['HOUR', '小时'];
+    unit = ['HOUR', t('common.unit.hour')];
   } else if (diffDays > 1 && diffDays <= 30) {
-    unit = ['DAY', '天'];
+    unit = ['DAY', t('common.unit.day')];
   } else if (diffDays > 30 && diffDays <= 120) {
-    unit = ['WEEK', '周'];
+    unit = ['WEEK', t('common.unit.week')];
   } else if (diffDays > 120 && diffDays <= 730) {
-    unit = ['MONTH', '月'];
+    unit = ['MONTH', t('common.unit.month')];
   } else {
-    unit = ['YEAR', '年'];
+    unit = ['YEAR', t('common.unit.year')];
   }
 
   return {

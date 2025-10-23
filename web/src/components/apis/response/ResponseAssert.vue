@@ -635,7 +635,7 @@ const editorDataMap = computed(() => {
             <DescriptionsItem>
               <template #label>
                 <div class="flex items-center">
-                  <div class="mr-1.5">{{ item._condition.name || t('common.variables') }}值</div>
+                  <div class="mr-1.5">{{ item._condition.name || t('common.variables') }} {{ t('common.value') }}</div>
                   <template v-if="item._condition.failureMessage">
                     <Tooltip>
                       <template #title>{{ item._condition.failureMessage }}</template>
