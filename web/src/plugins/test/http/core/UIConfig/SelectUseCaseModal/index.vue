@@ -22,13 +22,13 @@ export type UseCaseItem = {
 export interface Props {
   visible:boolean;
   linkIds:Set<string>;
+  projectId: string;
 }
 
-// Inject project information
-const projectId = inject<Ref<string>>('projectId', ref(''));
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
-  linkIds: () => new Set()
+  linkIds: () => new Set(),
+  projectId: ''
 });
 
 
@@ -183,7 +183,7 @@ watch(() => props.visible, () => {
       v-if="props.visible"
       ref="selectApisCaseRef"
       :visible="props.visible"
-      :projectId="projectId"
+      :projectId="props.projectId"
       @change="changeSelectCase" />
     <template #footer>
       <div class="flex items-center justify-end">

@@ -1,6 +1,6 @@
 /**
 <script setup lang="ts">
-import { computed, ref, onMounted, watch, inject, Ref } from 'vue';
+import { computed, ref, onMounted, watch, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Checkbox } from 'ant-design-vue';
 import { Modal, Scroll, Input, Icon, notification } from '@xcan-angus/vue-ui';
@@ -48,7 +48,8 @@ const emit = defineEmits<{
  * Inject project ID from parent context
  * Used for filtering scripts by project
  */
-const projectId = inject<Ref<string>>('projectId', ref(''));
+const projectInfo = inject('projectInfo', ref({id: ''}));
+const projectId = computed(() => projectInfo.value?.id);
 
 /**
  * State Management

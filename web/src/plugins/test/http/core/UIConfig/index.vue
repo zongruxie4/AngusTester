@@ -20,17 +20,17 @@ import { ApisDetail } from '@/views/apis/services/protocol/types';
 export interface Props {
   value: PipelineConfig[];
   loaded: boolean;
+  projectId: string;
 }
 
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   value: undefined,
-  loaded: false
+  loaded: false,
+  projectId: ''
 });
 
-// Inject project information
-const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const password = [
   'tokenUrl',
@@ -962,16 +962,13 @@ defineExpose({
         :projectId="projectId"
         :linkIds="linkApiIds"
         @ok="selectApiOk" />
-        <!-- <SelectApisByService
-          v-model:visible="apiModalVisible"
-          :projectId="projectId"
-          @ok="selectApiOk" /> -->
     </AsyncComponent>
 
     <AsyncComponent :visible="useCaseModalVisible">
       <SelectUseCaseModal
         v-model:visible="useCaseModalVisible"
         :linkIds="linkCaseIds"
+        :projectId="projectId"
         @ok="selectUseCaseOk" />
     </AsyncComponent>
   </div>

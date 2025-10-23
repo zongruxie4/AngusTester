@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, Ref, onMounted, inject } from 'vue';
-import { STORAGE, routerUtils } from '@xcan-angus/infra';
+import { ref, onMounted, inject, computed } from 'vue';
+import { STORAGE, routerUtils, appContext } from '@xcan-angus/infra';
 import { Select, Input, Hints } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
@@ -19,8 +19,9 @@ const { t } = useI18n();
 
 const formRef = ref();
 // Inject project information
-const projectId = inject<Ref<string>>('projectId', ref(''));
-const appInfo = inject('appInfo', ref({ code: '' }));
+const projectInfo = inject('projectInfo', ref({id: ''}));
+const projectId = computed(() => projectInfo.value?.id);
+const appInfo = appContext.getAccessApp();
 
 onMounted(async () => {
   // const host = await site.getUrl('files');

@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref, Ref, inject } from 'vue';
+import { ref, inject, computed } from 'vue';
 import { TESTER } from '@xcan-angus/infra';
 import { Input, Icon, SelectEnum, Select, Hints } from '@xcan-angus/vue-ui';
 import { Checkbox, FormItem, Tooltip, Form } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
 // Inject project information
-const projectId = inject<Ref<string>>('projectId', ref(''));
+const projectInfo = inject('projectInfo', ref({id: ''}));
+const projectId = computed(() => projectInfo.value?.id);
 
 const { t } = useI18n();
 

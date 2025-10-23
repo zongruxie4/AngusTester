@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent, ref, inject } from 'vue';
 
 interface Props {
   type:'configs'|'detail';
@@ -8,6 +8,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   type: 'configs'
 });
+
+const projectInfo = inject('projectInfo', ref({id: ''}));
 
 const Configs = defineAsyncComponent(() => import('./Configs.vue'));
 const Detail = defineAsyncComponent(() => import('./Detail.vue'));
@@ -29,10 +31,11 @@ defineExpose({
 </script>
 
 <template>
-  <Configs v-if="props.type==='configs'" v-bind="props" />
+  <Configs v-if="props.type==='configs'" v-bind="props" :projectId="projectInfo?.id" />
   <Detail
     v-else
     ref="detailRef"
     v-bind="props"
+    :projectId="projectInfo?.id" 
     @setCountTabKey="setCountTabKey" />
 </template>
