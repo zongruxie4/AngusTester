@@ -17,12 +17,14 @@ import ExpectedPopover from '@/components/apis/assertion/ExpectedPopover.vue';
 
 const { t } = useI18n();
 
+/**
+ * Component props definition
+ */
 interface Props {
   value: ApiAssertionFormItem;
   num?: number;
-  viewType?: boolean;
-  vertical: boolean;
-
+  viewType?: boolean; // Whether to display in read-only view mode
+  vertical: boolean; // Whether to use vertical layout
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,6 +33,9 @@ const props = withDefaults(defineProps<Props>(), {
   viewType: false,
   vertical: true
 });
+/**
+ * Generate default extraction object with all fields undefined
+ */
 const generateDefaultExtraction = (): Extraction => {
   return {
     defaultValue: undefined,
@@ -46,9 +51,13 @@ const generateDefaultExtraction = (): Extraction => {
   };
 };
 
+/**
+ * Generate default assertion form data
+ */
 const generateDefaultData = (): ApiAssertionFormItem => {
   return {
     assertionCondition: undefined,
+    condition: undefined,
     description: undefined,
     expression: undefined,
     matchItem: undefined,
@@ -56,78 +65,94 @@ const generateDefaultData = (): ApiAssertionFormItem => {
     extraction: generateDefaultExtraction(),
     parameterName: undefined,
     name: undefined,
-    type: undefined
+    type: undefined,
+    enabled: true
   };
 };
+
+// Template refs
 const nameRefs = ref();
 const extractionExpressionRefs = ref();
 
+// State management
 const idList = ref<string[]>([]);
-const dataMap = ref<ApiAssertionFormItem>(generateDefaultData());// 数据集合
+const assertionFormData = ref<ApiAssertionFormItem>(generateDefaultData());
 
-const focus = ref(false);
-// const extract = ref<<string>>(new ());
-const extract = ref(false);
-const extractDisabled = ref(false);// 禁止选择提取值集合
+const isFocused = ref(false);
+const shouldExtractValue = ref(false); // Whether to extract value for expected field
+const isExtractionDisabled = ref(false); // Whether extraction toggle is disabled
 
-// const typeError = ref<<string>>(new ());
-const typeError = ref(false);
-const headerNameeError = ref(false);
-const assertionConditionError = ref(false);
-const expectedError = ref(false);
+// Validation error states
+const hasTypeError = ref(false);
+const hasHeaderNameError = ref(false);
+const hasAssertionConditionError = ref(false);
+const hasExpectedError = ref(false);
 
-const extractionExpressionError = ref(false);
-const extractionExpressionErrorMsgMap = ref();
+const hasExtractionExpressionError = ref(false);
+const extractionExpressionErrorMsg = ref();
 
-const locationError = ref(false);
-const methodError = ref(false);
-const parameterNameError = ref(false);
+const hasLocationError = ref(false);
+const hasMethodError = ref(false);
+const hasParameterNameError = ref(false);
 
-// 不允许输入提取参数名称
-const NOT_PARAMETER_NAME: readonly ['REQUEST_RAW_BODY', 'RESPONSE_BODY'] = ['REQUEST_RAW_BODY', 'RESPONSE_BODY'];
+// Locations that don't require parameter name input
+const LOCATIONS_WITHOUT_PARAMETER_NAME: readonly ['REQUEST_RAW_BODY', 'RESPONSE_BODY'] = ['REQUEST_RAW_BODY', 'RESPONSE_BODY'];
 
-// 是否显示期望值或提取值的输入框，只有断言条件不是['为空','不为空','为null','不为null']才显示
-// const showExpected = ref<<string>>(new ());
-const showExpected = ref(false);
-const NOT_SHOW_CONDITION: readonly Partial<AssertionCondition>[] = ['IS_NULL', 'IS_EMPTY', 'NOT_EMPTY', 'NOT_NULL'];
+// Display expected value input only when assertion condition is not in this list
+const shouldShowExpectedInput = ref(false);
+const CONDITIONS_WITHOUT_EXPECTED = ['IS_NULL', 'IS_EMPTY', 'NOT_EMPTY', 'NOT_NULL'] as const;
 
-// 只有断言条件为正则表达式、xpath表达式、jsonpath表达式才显示
-const expressionShow = ref();
-const expressionError = ref(false);
-const expressionErrorMsgMap = ref();
+// Show expression input only for regex, xpath, and jsonpath match conditions
+const shouldShowExpressionInput = ref();
+const hasExpressionError = ref(false);
+const expressionErrorMsg = ref();
 
-// 断言条件枚举
+// Assertion condition options
 const assertionConditionOptions = ref<EnumMessage<AssertionCondition>[]>([]);
 const loadAssertionConditionOptions = async () => {
   assertionConditionOptions.value = enumUtils.enumToMessages(AssertionCondition);
 };
 
-const NUMBER_CONDITION = ['EQUAL', 'NOT_EQUAL', 'GREATER_THAN', 'GREATER_THAN_EQUAL', 'LESS_THAN', 'LESS_THAN_EQUAL'];
-const optionsMap = computed(() => {
-  const map = dataMap.value;
-  const type = map.type;
+// Conditions that only support numeric comparisons
+const NUMERIC_CONDITIONS = ['EQUAL', 'NOT_EQUAL', 'GREATER_THAN', 'GREATER_THAN_EQUAL', 'LESS_THAN', 'LESS_THAN_EQUAL'];
+
+/**
+ * Filtered assertion condition options based on assertion type
+ * Numeric types (like STATUS, SIZE, etc.) only show numeric comparison conditions
+ */
+const filteredAssertionConditions = computed(() => {
+  const formData = assertionFormData.value;
+  const type = formData.type;
   const options = assertionConditionOptions.value;
+  
   if (type) {
+    // BODY and HEADER support all conditions
     if (type === 'BODY' || type === 'HEADER') {
       return options;
     } else {
-      return options.filter((item) => NUMBER_CONDITION.includes(item.value));
+      // Other types only support numeric conditions
+      return options.filter((item) => NUMERIC_CONDITIONS.includes(item.value));
     }
   } else {
     return options;
   }
 });
 
-// 提取位置枚举
+// Extraction location options
 const locationOptions = ref<EnumMessage<HttpExtractionLocation>[]>([]);
 const loadLocationOptions = async () => {
   locationOptions.value = enumUtils.enumToMessages(HttpExtractionLocation);
 };
 
-const locationOptionsMap = computed(() => {
-  const map = dataMap.value;
+/**
+ * Filtered location options based on extraction method
+ * EXACT_VALUE method excludes certain locations like RESPONSE_BODY, RESPONSE_HEADER, etc.
+ */
+const filteredLocationOptions = computed(() => {
+  const formData = assertionFormData.value;
   const options = locationOptions.value;
-  const method = map.extraction.method;
+  const method = formData.extraction.method;
+  
   if (method && method === 'EXACT_VALUE') {
     return options.filter((item) => !['RESPONSE_BODY', 'RESPONSE_HEADER', 'REQUEST_RAW_BODY'].includes(item.value));
   } else {
@@ -135,140 +160,186 @@ const locationOptionsMap = computed(() => {
   }
 });
 
-const switchChange = async (checked: boolean | number | string) => {
-  expectedError.value = false;
-  parameterNameError.value = false;
-  locationError.value = false;
-  methodError.value = false;
-  expectedError.value = false;
-  dataMap.value.expected = '';
+/**
+ * Handle extraction toggle switch change
+ * When toggling between expected value and extraction mode
+ */
+const handleExtractionToggle = async (checked: boolean | number | string) => {
+  hasExpectedError.value = false;
+  hasParameterNameError.value = false;
+  hasLocationError.value = false;
+  hasMethodError.value = false;
+  assertionFormData.value.expected = '';
 
-  if (checked) {
-    extract.value = true;
-    return;
-  }
-
-  extract.value = false;
+  shouldExtractValue.value = Boolean(checked);
 };
 
-const inputFocus = () => {
-  focus.value = true;
+/**
+ * Handle input focus event
+ */
+const handleInputFocus = () => {
+  isFocused.value = true;
 };
 
-const inputBlur = () => {
-  focus.value = false;
+/**
+ * Handle input blur event
+ */
+const handleInputBlur = () => {
+  isFocused.value = false;
 };
 
-const typeChange = (value: AssertionType) => {
-  typeError.value = false;
+/**
+ * Handle assertion type change
+ * Updates form state and validation based on selected type
+ */
+const handleTypeChange = (value: AssertionType) => {
+  hasTypeError.value = false;
 
+  // Clear parameter name if not HEADER type
   if (value !== 'HEADER') {
-    dataMap.value.parameterName = '';
-    headerNameeError.value = false;
+    assertionFormData.value.parameterName = '';
+    hasHeaderNameError.value = false;
   }
 
-  const _condition = dataMap.value.assertionCondition || '';
-  // 如果断言类型是
+  const currentCondition = assertionFormData.value.assertionCondition || '';
+  
+  // STATUS type has special handling
   if (['STATUS'].includes(value)) {
-    if (expressionShow.value) {
-      expressionShow.value = false;
-      dataMap.value.expression = undefined;
-      dataMap.value.matchItem = undefined;
-      dataMap.value.expected = undefined;
+    if (shouldShowExpressionInput.value) {
+      shouldShowExpressionInput.value = false;
+      assertionFormData.value.expression = undefined;
+      assertionFormData.value.matchItem = undefined;
+      assertionFormData.value.expected = undefined;
     }
 
-    if (!NUMBER_CONDITION.includes(_condition)) {
-      dataMap.value.assertionCondition = 'EQUAL';
-      showExpected.value = true;
+    // Force numeric condition for STATUS type
+    if (!NUMERIC_CONDITIONS.includes(currentCondition)) {
+      assertionFormData.value.assertionCondition = 'EQUAL' as AssertionCondition;
+      shouldShowExpectedInput.value = true;
     }
 
-    // 禁止选择提取值
-    extract.value = false;
-    extractDisabled.value = true;
+    // Disable extraction for STATUS type
+    shouldExtractValue.value = false;
+    isExtractionDisabled.value = true;
     return;
   }
 
-  if (!['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(_condition)) {
-    extractDisabled.value = false;
+  // Enable extraction if condition allows
+  if (!['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(currentCondition)) {
+    isExtractionDisabled.value = false;
   }
 };
 
-const headerNameeChange = () => {
-  headerNameeError.value = false;
+/**
+ * Handle header name input change
+ */
+const handleHeaderNameChange = () => {
+  hasHeaderNameError.value = false;
 };
 
-const assertionConditionChange = (value: typeof NOT_SHOW_CONDITION[number]) => {
-  assertionConditionError.value = false;
-  expressionShow.value = false;
-  showExpected.value = true;
+/**
+ * Handle assertion condition change
+ * Updates UI state based on selected condition
+ */
+const handleAssertionConditionChange = (value: typeof CONDITIONS_WITHOUT_EXPECTED[number]) => {
+  hasAssertionConditionError.value = false;
+  shouldShowExpressionInput.value = false;
+  shouldShowExpectedInput.value = true;
 
+  // Expression match conditions require special handling
   if (['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(value)) {
-    extract.value = false;
-    extractDisabled.value = true;
-    expressionShow.value = true;
+    shouldExtractValue.value = false;
+    isExtractionDisabled.value = true;
+    shouldShowExpressionInput.value = true;
     return;
   }
 
-  if (NOT_SHOW_CONDITION.includes(value)) {
-    extractDisabled.value = true;
-    showExpected.value = false;
+  // Conditions without expected value
+  if (CONDITIONS_WITHOUT_EXPECTED.includes(value)) {
+    isExtractionDisabled.value = true;
+    shouldShowExpectedInput.value = false;
     return;
   }
 
-  extractDisabled.value = false;
+  isExtractionDisabled.value = false;
 };
 
-const expressionChange = () => {
-  expressionError.value = false;
-  expressionErrorMsgMap.value = undefined;
+/**
+ * Handle expression input change
+ */
+const handleExpressionChange = () => {
+  hasExpressionError.value = false;
+  expressionErrorMsg.value = undefined;
 };
 
-const methodChange = () => {
-  methodError.value = false;
-  if (dataMap.value.extraction.method === 'EXACT_VALUE') {
-    dataMap.value.extraction.expression = '';
-    extractionExpressionError.value = false;
-    extractionExpressionErrorMsgMap.value = undefined;
+/**
+ * Handle extraction method change
+ * Clears expression and validates location when method changes
+ */
+const handleMethodChange = () => {
+  hasMethodError.value = false;
+  
+  // EXACT_VALUE method doesn't need expression
+  if (assertionFormData.value.extraction.method === 'EXACT_VALUE') {
+    assertionFormData.value.extraction.expression = '';
+    hasExtractionExpressionError.value = false;
+    extractionExpressionErrorMsg.value = undefined;
 
-    const location = dataMap.value.extraction.location;
+    // Clear incompatible locations
+    const location = assertionFormData.value.extraction.location;
     if (location && ['RESPONSE_BODY', 'RESPONSE_HEADER'].includes(location)) {
-      dataMap.value.extraction.location = undefined;
+      assertionFormData.value.extraction.location = undefined;
     }
 
     return;
   }
 
-  const expression = dataMap.value.extraction.expression;
+  // Validate existing expression if present
+  const expression = assertionFormData.value.extraction.expression;
   if (expression) {
     validateExtractionExpression(expression);
   }
 };
 
-const locationChange = () => {
-  locationError.value = false;
+/**
+ * Handle extraction location change
+ */
+const handleLocationChange = () => {
+  hasLocationError.value = false;
 
-  const _location = dataMap.value.extraction.location || '';
-  if (!_location) {
-    parameterNameError.value = false;
+  const location = assertionFormData.value.extraction.location || '';
+  if (!location) {
+    hasParameterNameError.value = false;
   }
 
-  if (['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(_location)) {
-    dataMap.value.extraction.parameterName = undefined;
-    parameterNameError.value = false;
+  // Some locations don't require parameter name
+  if (['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(location)) {
+    assertionFormData.value.extraction.parameterName = undefined;
+    hasParameterNameError.value = false;
   }
 };
 
-const parameterNameChange = () => {
-  parameterNameError.value = false;
+/**
+ * Handle parameter name input change
+ */
+const handleParameterNameChange = () => {
+  hasParameterNameError.value = false;
 };
 
-const extractionExpressionChange = () => {
-  extractionExpressionError.value = false;
-  extractionExpressionErrorMsgMap.value = undefined;
+/**
+ * Handle extraction expression input change
+ */
+const handleExtractionExpressionChange = () => {
+  hasExtractionExpressionError.value = false;
+  extractionExpressionErrorMsg.value = undefined;
 };
 
-const expressionBlur = (event: { target: { value: string } }) => {
-  inputBlur();
+/**
+ * Handle extraction expression blur event
+ * Validates the expression when user leaves the input
+ */
+const handleExtressionBlur = (event: { target: { value: string } }) => {
+  handleInputBlur();
 
   const value = event.target.value?.trim();
   if (!value) {
@@ -278,7 +349,10 @@ const expressionBlur = (event: { target: { value: string } }) => {
   validateExtractionExpression(value);
 };
 
-const expressionEnter = () => {
+/**
+ * Handle extraction expression enter key press
+ */
+const handleExtressionEnter = () => {
   if (!extractionExpressionRefs.value) {
     return;
   }
@@ -286,43 +360,59 @@ const expressionEnter = () => {
   extractionExpressionRefs.value?.blur?.();
 };
 
-const expectedChange = () => {
-  expectedError.value = false;
+/**
+ * Handle expected value input change
+ */
+const handleExpectedChange = () => {
+  hasExpectedError.value = false;
 };
 
-const resetError = () => {
-  typeError.value = false;
-  headerNameeError.value = false;
-  assertionConditionError.value = false;
-  expectedError.value = false;
+/**
+ * Reset all error states
+ */
+const resetErrorStates = () => {
+  hasTypeError.value = false;
+  hasHeaderNameError.value = false;
+  hasAssertionConditionError.value = false;
+  hasExpectedError.value = false;
 
-  extractionExpressionError.value = false;
-  extractionExpressionErrorMsgMap.value = undefined;
+  hasExtractionExpressionError.value = false;
+  extractionExpressionErrorMsg.value = undefined;
 
-  expressionError.value = false;
-  expressionErrorMsgMap.value = undefined;
+  hasExpressionError.value = false;
+  expressionErrorMsg.value = undefined;
 
-  parameterNameError.value = false;
-  locationError.value = false;
-  methodError.value = false;
+  hasParameterNameError.value = false;
+  hasLocationError.value = false;
+  hasMethodError.value = false;
 };
 
-const reset = () => {
+/**
+ * Reset all form data and states to initial values
+ */
+const resetForm = () => {
   idList.value = [];
   nameRefs.value = [];
-  focus.value = false;
-  extract.value = false;
-  extractDisabled.value = false;
-  showExpected.value = false;
-  expressionShow.value = false;
-  dataMap.value = { ...generateDefaultData() };
+  isFocused.value = false;
+  shouldExtractValue.value = false;
+  isExtractionDisabled.value = false;
+  shouldShowExpectedInput.value = false;
+  shouldShowExpressionInput.value = false;
+  assertionFormData.value = { ...generateDefaultData() };
 
-  resetError();
+  resetErrorStates();
 };
 
-const validateExtractionExpression = (value: string) => {
-  const method = dataMap.value.extraction.method;
-  let validResult:{ valid: boolean; message: string; } = { valid: false, message: '' };
+/**
+ * Validate extraction expression based on extraction method
+ * @param value - The expression string to validate
+ * @returns true if valid, false otherwise
+ */
+const validateExtractionExpression = (value: string): boolean => {
+  const method = assertionFormData.value.extraction.method;
+  let validResult: { valid: boolean; message: string } = { valid: false, message: '' };
+  
+  // Validate based on extraction method
   if (method === 'JSON_PATH') {
     validResult = jsonpath.isValid(value);
   } else if (method === 'X_PATH') {
@@ -332,156 +422,206 @@ const validateExtractionExpression = (value: string) => {
   }
 
   if (validResult.valid) {
-    extractionExpressionError.value = false;
-    extractionExpressionErrorMsgMap.value = undefined;
+    hasExtractionExpressionError.value = false;
+    extractionExpressionErrorMsg.value = undefined;
     return true;
   }
 
-  extractionExpressionError.value = true;
-  extractionExpressionErrorMsgMap.value = validResult.message;
+  hasExtractionExpressionError.value = true;
+  extractionExpressionErrorMsg.value = validResult.message;
   return false;
 };
 
-const validateExpression = (value: string) => {
-  const method = dataMap.value.assertionCondition;
-  let validResult:{ valid: boolean; message: string; } = { valid: false, message: '' };
-  if (method === 'JSON_PATH_MATCH') {
+/**
+ * Validate assertion expression based on assertion condition
+ * @param value - The expression string to validate
+ * @returns true if valid, false otherwise
+ */
+const validateExpression = (value: string): boolean => {
+  const condition = assertionFormData.value.assertionCondition;
+  let validResult: { valid: boolean; message: string } = { valid: false, message: '' };
+  
+  // Validate based on assertion condition type
+  if (condition === 'JSON_PATH_MATCH') {
     validResult = jsonpath.isValid(value);
-  } else if (method === 'XPATH_MATCH') {
+  } else if (condition === 'XPATH_MATCH') {
     validResult = xpath.isValid(value);
   } else {
     validResult = regexp.isValid(value);
   }
 
   if (validResult.valid) {
-    expressionError.value = false;
-    expressionErrorMsgMap.value = undefined;
+    hasExpressionError.value = false;
+    expressionErrorMsg.value = undefined;
     return true;
   }
 
-  expressionError.value = true;
-  expressionErrorMsgMap.value = validResult.message;
+  hasExpressionError.value = true;
+  expressionErrorMsg.value = validResult.message;
   return false;
 };
 
 /**
- * @description true - 校验通过，false - 校验失败
+ * Validate the entire assertion form
+ * @returns true if validation passes, false otherwise
  */
-const toValidate = (): boolean => {
-  resetError();
-  const currentInfo = dataMap.value;
-  if (!currentInfo.type) {
-    typeError.value = true;
+const validateForm = (): boolean => {
+  resetErrorStates();
+  const formData = assertionFormData.value;
+  
+  // Validate assertion type
+  if (!formData.type) {
+    hasTypeError.value = true;
   } else {
-    // 断言类型是响应头时，响应头名称必须
-    if (currentInfo.type === 'HEADER') {
-      if (!currentInfo.parameterName) {
-        headerNameeError.value = true;
+    // Header type requires parameter name (header name)
+    if (formData.type === 'HEADER') {
+      if (!formData.parameterName) {
+        hasHeaderNameError.value = true;
       }
     }
   }
 
-  if (!currentInfo.assertionCondition) {
-    assertionConditionError.value = true;
+  // Validate assertion condition
+  if (!formData.assertionCondition) {
+    hasAssertionConditionError.value = true;
   }
 
-  if (['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(currentInfo.assertionCondition!)) {
-    if (!currentInfo.expression) {
-      expressionError.value = true;
+  // Validate expression for match conditions
+  if (['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(formData.assertionCondition!)) {
+    if (!formData.expression) {
+      hasExpressionError.value = true;
     } else {
-      validateExpression(currentInfo.expression!);
+      validateExpression(formData.expression!);
     }
-  } else if (showExpected.value) {
-    // 期望值
-    if (!extract.value) {
-      if (!currentInfo.expected) {
-        expectedError.value = true;
+  } else if (shouldShowExpectedInput.value) {
+    // Validate expected value or extraction
+    if (!shouldExtractValue.value) {
+      // Direct expected value
+      if (!formData.expected) {
+        hasExpectedError.value = true;
       }
-    } else { // 提取期望值
-      if (currentInfo.extraction.method !== 'EXACT_VALUE') {
-        if (!currentInfo.extraction.expression) {
-          extractionExpressionError.value = true;
+    } else {
+      // Extraction mode validation
+      if (formData.extraction.method !== 'EXACT_VALUE') {
+        if (!formData.extraction.expression) {
+          hasExtractionExpressionError.value = true;
         } else {
-          validateExtractionExpression(currentInfo.extraction.expression!);
+          validateExtractionExpression(formData.extraction.expression!);
         }
       }
 
-      // raw请求体和响应体不用校验
-      if (!['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(currentInfo.extraction.location!)) {
-        if (!currentInfo.extraction.parameterName) {
-          parameterNameError.value = true;
+      // Validate parameter name (except for raw body locations)
+      if (!['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(formData.extraction.location!)) {
+        if (!formData.extraction.parameterName) {
+          hasParameterNameError.value = true;
         }
       }
 
-      if (!currentInfo.extraction.location) {
-        locationError.value = true;
+      // Validate location and method
+      if (!formData.extraction.location) {
+        hasLocationError.value = true;
       }
 
-      if (!currentInfo.extraction.method) {
-        methodError.value = true;
+      if (!formData.extraction.method) {
+        hasMethodError.value = true;
       }
     }
   }
 
-  return !(typeError.value ||
-    headerNameeError.value ||
-    assertionConditionError.value ||
-    expressionError.value ||
-    expectedError.value ||
-    extractionExpressionError.value ||
-    parameterNameError.value ||
-    locationError.value ||
-    methodError.value
+  // Return true only if no errors exist
+  return !(hasTypeError.value ||
+    hasHeaderNameError.value ||
+    hasAssertionConditionError.value ||
+    hasExpressionError.value ||
+    hasExpectedError.value ||
+    hasExtractionExpressionError.value ||
+    hasParameterNameError.value ||
+    hasLocationError.value ||
+    hasMethodError.value
   );
 };
 
-const getData = ():{data:ApiAssertionFormItem} => {
-  const data = dataMap.value;
-  const _extract = extract.value;
+/**
+ * Get form data for submission
+ * Cleans up empty values and converts them to null
+ * @returns Object containing the cleaned form data
+ */
+const getFormData = (): { data: ApiAssertionFormItem } => {
+  const data = assertionFormData.value;
+  const isExtracting = shouldExtractValue.value;
 
-  const temp = JSON.parse(JSON.stringify(data));
+  // Deep clone to avoid mutating original data
+  const cleanedData = JSON.parse(JSON.stringify(data));
 
-  if (['IS_EMPTY', 'NOT_EMPTY', 'IS_NULL', 'NOT_NULL'].includes(temp.assertionCondition) || temp.expected === '' || temp.expected === undefined) {
-    temp.expected = null;
+  // Set expected to null for conditions that don't use it
+  if (['IS_EMPTY', 'NOT_EMPTY', 'IS_NULL', 'NOT_NULL'].includes(cleanedData.assertionCondition) || 
+      cleanedData.expected === '' || 
+      cleanedData.expected === undefined) {
+    cleanedData.expected = null;
   }
 
-  if (!_extract) {
-    temp.extraction = null;
+  // Handle extraction data
+  if (!isExtracting) {
+    cleanedData.extraction = null;
   } else {
-    for (const key in temp.extraction) {
-      if (temp.extraction[key] === '' || temp.extraction[key] === undefined) {
-        temp.extraction[key] = null;
+    // Convert empty extraction fields to null
+    for (const key in cleanedData.extraction) {
+      if (cleanedData.extraction[key] === '' || cleanedData.extraction[key] === undefined) {
+        cleanedData.extraction[key] = null;
       }
     }
   }
 
-  if (temp.parameterName === '' || temp.parameterName === undefined) {
-    temp.parameterName = null;
+  // Convert empty parameter name to null
+  if (cleanedData.parameterName === '' || cleanedData.parameterName === undefined) {
+    cleanedData.parameterName = null;
   }
 
-  return { data: temp };
+  return { data: cleanedData };
 };
 
+/**
+ * Expose methods to parent component
+ */
 defineExpose({
-  getData,
-  validate: toValidate
+  getData: getFormData,
+  validate: validateForm
 });
 
+/**
+ * Component lifecycle - mounted
+ * Load enum options and set up watchers
+ */
 onMounted(() => {
-  // 加载断言条件枚举选项
+  // Load assertion condition enum options
   loadAssertionConditionOptions();
 
-  // 加载提取位置枚举选项
+  // Load extraction location enum options
   loadLocationOptions();
 
+  /**
+   * Watch for props.value changes and update form data accordingly
+   */
   watch(() => props.value, async (newValue) => {
-    reset();
+    resetForm();
     const data = newValue || {} as ApiAssertionFormItem;
     const extraction = data.extraction;
-    const assertionCondition = data.assertionCondition?.value || data.assertionCondition;
+    
+    // Extract assertion condition value (handle both enum and object formats)
+    const assertionCondition = typeof data.assertionCondition === 'object' && data.assertionCondition !== null
+      ? (data.assertionCondition as any).value
+      : data.assertionCondition;
 
-    dataMap.value = {
+    // Extract type value (handle both enum and object formats)
+    // Note: We store the raw enum value internally for easier comparisons
+    const typeValue: any = typeof data.type === 'object' && data.type !== null
+      ? (data.type as any).value
+      : data.type;
+
+    // Update form data with incoming props
+    assertionFormData.value = {
       assertionCondition,
+      condition: data.condition,
       description: data.description,
       expression: data.expression,
       matchItem: data.matchItem,
@@ -489,50 +629,65 @@ onMounted(() => {
       extraction: data.extraction || generateDefaultExtraction(),
       parameterName: data.parameterName,
       name: data.name,
-      type: data.type?.value || data.type
+      type: typeValue,
+      enabled: data.enabled !== undefined ? data.enabled : true
     };
 
+    // Enable extraction mode if extraction data exists
     if (extraction) {
-      extract.value = true;
+      shouldExtractValue.value = true;
     }
-    // @TODO 设置showExpected，只有断言条件不为['为空','不为空','为null','不为null']才显示
-    if (!NOT_SHOW_CONDITION.includes(assertionCondition)) {
-      showExpected.value = true;
+    
+    // Show expected input unless condition is null/empty check
+    if (!CONDITIONS_WITHOUT_EXPECTED.includes(assertionCondition)) {
+      shouldShowExpectedInput.value = true;
+      
+      // Expression match conditions require special handling
       if (['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(assertionCondition)) {
-        extract.value = false;
-        expressionShow.value = true;
+        shouldExtractValue.value = false;
+        shouldShowExpressionInput.value = true;
       }
     }
 
+    // Disable extraction for certain conditions
     if (['IS_EMPTY', 'NOT_EMPTY', 'IS_NULL', 'NOT_NULL', 'REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(assertionCondition)) {
-      extractDisabled.value = true;
+      isExtractionDisabled.value = true;
     }
   });
 });
 
+/**
+ * Computed placeholder text for expression input based on assertion condition
+ */
 const expressionPlaceholder = computed(() => {
-  const _dataMap = dataMap.value;
-  let map = '';
-  switch (_dataMap.assertionCondition) {
+  const formData = assertionFormData.value;
+  let placeholder = '';
+  
+  switch (formData.assertionCondition) {
     case 'REG_MATCH':
-      map = t('xcan_indicatorAssert.expressionPlaceholder.regexMatch');
+      placeholder = t('xcan_indicatorAssert.expressionPlaceholder.regexMatch');
       break;
     case 'XPATH_MATCH':
-      map = t('xcan_indicatorAssert.expressionPlaceholder.xpathMatch');
+      placeholder = t('xcan_indicatorAssert.expressionPlaceholder.xpathMatch');
       break;
     case 'JSON_PATH_MATCH':
-      map = t('xcan_indicatorAssert.expressionPlaceholder.jsonPathMatch');
+      placeholder = t('xcan_indicatorAssert.expressionPlaceholder.jsonPathMatch');
       break;
     default:
-      map = t('xcan_indicatorAssert.expressionPlaceholder.regexMatch');
+      placeholder = t('xcan_indicatorAssert.expressionPlaceholder.regexMatch');
   }
-  return map;
+  
+  return placeholder;
 });
 
+// UI configuration
 const textAreaAutoSize = { minRows: 1, maxRows: 5 };
-
 const enumFieldNames = { label: 'message', value: 'value' };
 
+/**
+ * Filter out status-type assertions from the list
+ * These are excluded as they have special handling
+ */
 const filterStatus = (value) => {
   return ['BODY_SIZE', 'SIZE', 'DURATION'].includes(value.value);
 };
@@ -543,143 +698,143 @@ const filterStatus = (value) => {
       <div class="" :class="{'space-x-2 flex items-start': !props.vertical, 'space-y-2': props.vertical}">
         <div class="flex-1">
           <SelectEnum
-            v-model:value="dataMap.type"
+            v-model:value="(assertionFormData.type as any)"
             :enumKey="AssertionType"
             class="w-full"
             :placeholder="t('xcan_indicatorAssert.assertionType')"
             :title="t('xcan_indicatorAssert.assertionType')"
             :excludes="filterStatus"
             :readonly="props.viewType"
-            :error="typeError"
-            @change="typeChange($event)" />
+            :error="hasTypeError"
+            @change="handleTypeChange($event)" />
         </div>
         <div class="flex-1">
           <Input
-            v-model:value="dataMap.parameterName"
-            :disabled="dataMap.type !== 'HEADER'"
+            v-model:value="assertionFormData.parameterName"
+            :disabled="assertionFormData.type !== 'HEADER'"
             :readonly="props.viewType"
-            :error="headerNameeError"
+            :error="hasHeaderNameError"
             :maxlength="400"
             :placeholder="t('xcan_indicatorAssert.headerName')"
             :title="t('xcan_indicatorAssert.headerName')"
-            @focus="inputFocus"
-            @blur="inputBlur"
-            @change="headerNameeChange" />
+            @focus="handleInputFocus"
+            @blur="handleInputBlur"
+            @change="handleHeaderNameChange" />
         </div>
         <div class="flex items-center flex-nowrap space-x-2" style="flex: 1;min-width: 100px;">
           <Select
-            v-model:value="dataMap.assertionCondition"
+            v-model:value="assertionFormData.assertionCondition"
             :placeholder="t('xcan_indicatorAssert.assertionCondition')"
             :title="t('xcan_indicatorAssert.assertionCondition')"
             class="flex-1"
-            :disabled="!dataMap.type"
+            :disabled="!assertionFormData.type"
             :readonly="props.viewType"
-            :options="optionsMap"
+            :options="filteredAssertionConditions"
             :fieldNames="enumFieldNames"
-            :error="assertionConditionError"
-            @change="assertionConditionChange($event)" />
+            :error="hasAssertionConditionError"
+            @change="handleAssertionConditionChange($event)" />
           <Switch
             class="flex-shrink-0 flex-grow-0"
-            :disabled="extractDisabled || props.viewType"
-            :checked="extract"
+            :disabled="isExtractionDisabled || props.viewType"
+            :checked="shouldExtractValue"
             :checkedChildren="t('xcan_indicatorAssert.extractExpectedValue')"
             :unCheckedChildren="t('xcan_indicatorAssert.expectedValue')"
-            @change="switchChange($event)" />
+            @change="handleExtractionToggle($event)" />
         </div>
       </div>
       <div class="transition-all space-y-2 overflow-hidden mt-2">
-        <template v-if="showExpected">
-          <template v-if="extract">
+        <template v-if="shouldShowExpectedInput">
+          <template v-if="shouldExtractValue">
             <div class="" :class="{'flex items-start space-x-2': !props.vertical, 'space-y-2': props.vertical}">
               <SelectEnum
-                v-model:value="dataMap.extraction.method"
+                v-model:value="assertionFormData.extraction.method"
                 style="flex: 0 0 calc((100% - 40px)/6);"
                 class="block"
                 :enumKey="ExtractionMethod"
                 :placeholder="t('xcan_indicatorAssert.extractionMethod')"
                 :title="t('xcan_indicatorAssert.extractionMethod')"
                 :readonly="props.viewType"
-                :error="methodError"
-                @change="methodChange()" />
+                :error="hasMethodError"
+                @change="handleMethodChange()" />
               <Select
-                v-model:value="dataMap.extraction.location"
+                v-model:value="assertionFormData.extraction.location"
                 style="flex: 0 0 calc((100% - 40px)/6);"
                 :placeholder="t('xcan_indicatorAssert.extractionLocation')"
                 :title="t('xcan_indicatorAssert.extractionLocation')"
                 class="block"
                 :readonly="props.viewType"
                 :fieldNames="enumFieldNames"
-                :options="locationOptionsMap"
-                :error="locationError"
-                @change="locationChange" />
+                :options="filteredLocationOptions"
+                :error="hasLocationError"
+                @change="handleLocationChange" />
               <Input
-                v-model:value="dataMap.extraction.parameterName"
+                v-model:value="assertionFormData.extraction.parameterName"
                 style="flex: 0 0 calc((100% - 40px)/6);"
                 :placeholder="t('xcan_indicatorAssert.extractionParameterName')"
                 :title="t('xcan_indicatorAssert.extractionParameterName')"
                 :maxlength="400"
-                :disabled="NOT_PARAMETER_NAME.includes(dataMap.extraction.location as any)"
+                :disabled="LOCATIONS_WITHOUT_PARAMETER_NAME.includes(assertionFormData.extraction.location as any)"
                 :readonly="props.viewType"
-                :error="parameterNameError"
-                @focus="inputFocus"
-                @blur="inputBlur"
-                @change="parameterNameChange" />
+                :error="hasParameterNameError"
+                @focus="handleInputFocus"
+                @blur="handleInputBlur"
+                @change="handleParameterNameChange" />
               <Input
-                v-model:value="dataMap.extraction.defaultValue"
+                v-model:value="assertionFormData.extraction.defaultValue"
                 style="flex: 0 0 calc((100% - 40px)/6);"
                 :placeholder="t('xcan_indicatorAssert.extractionDefaultValue')"
                 :title="t('xcan_indicatorAssert.extractionDefaultValue')"
                 :readonly="props.viewType"
-                @focus="inputFocus"
-                @blur="inputBlur" />
-              <Validate style="flex: 0 0 calc((100% - 40px)/6);" :text="extractionExpressionErrorMsgMap">
+                @focus="handleInputFocus"
+                @blur="handleInputBlur" />
+              <Validate style="flex: 0 0 calc((100% - 40px)/6);" :text="extractionExpressionErrorMsg">
                 <Input
                   :ref="el => { extractionExpressionRefs = el }"
-                  v-model:value="dataMap.extraction.expression"
+                  v-model:value="assertionFormData.extraction.expression"
                   :placeholder="t('xcan_indicatorAssert.extractionExpression')"
                   :title="t('xcan_indicatorAssert.extractionExpression')"
-                  :disabled="dataMap.extraction.method === 'EXACT_VALUE'"
+                  :disabled="assertionFormData.extraction.method === 'EXACT_VALUE'"
                   :readonly="props.viewType"
-                  :error="extractionExpressionError"
-                  @focus="inputFocus"
-                  @blur="expressionBlur($event)"
-                  @change="extractionExpressionChange"
-                  @pressEnter="expressionEnter" />
+                  :error="hasExtractionExpressionError"
+                  @focus="handleInputFocus"
+                  @blur="handleExtressionBlur($event)"
+                  @change="handleExtractionExpressionChange"
+                  @pressEnter="handleExtressionEnter" />
               </Validate>
               <div class="flex items-center space-x-2" style="flex: 0 0 calc((100% - 40px)/6);">
                 <Input
-                  v-model:value="dataMap.extraction.matchItem"
+                  v-model:value="assertionFormData.extraction.matchItem"
                   :placeholder="t('xcan_indicatorAssert.matchItem')"
                   :title="t('xcan_indicatorAssert.matchItem')"
-                  :disabled="dataMap.extraction.method === 'EXACT_VALUE'"
+                  :disabled="assertionFormData.extraction.method === 'EXACT_VALUE'"
                   :readonly="props.viewType"
                   :max="2000"
                   :maxlength="4"
                   dataType="number"
-                  @focus="inputFocus"
-                  @blur="inputBlur" />
+                  @focus="handleInputFocus"
+                  @blur="handleInputBlur" />
                 <MatchItemPopover />
               </div>
             </div>
           </template>
           <template v-else>
             <div :class="{'space-x-2 flex items-start': !props.vertical, 'space-y-2': props.vertical}">
-              <template v-if="expressionShow">
-                <Validate style="flex: 0 0 calc((100% - 40px)/6*2 + 8px);" :text="expressionErrorMsgMap">
+              <template v-if="shouldShowExpressionInput">
+                <Validate style="flex: 0 0 calc((100% - 40px)/6*2 + 8px);" :text="expressionErrorMsg">
                   <Input
-                    v-model:value="dataMap.expression"
+                    v-model:value="assertionFormData.expression"
                     :placeholder="expressionPlaceholder"
                     :title="expressionPlaceholder"
-                    :error="expressionError"
+                    :error="hasExpressionError"
                     :maxlength="400"
                     :readonly="props.viewType"
-                    @focus="inputFocus"
-                    @blur="inputBlur"
-                    @change="expressionChange" />
+                    @focus="handleInputFocus"
+                    @blur="handleInputBlur"
+                    @change="handleExpressionChange" />
                 </Validate>
 
                 <Input
-                  v-model:value="dataMap.matchItem"
+                  v-model:value="assertionFormData.matchItem"
                   :placeholder="t('xcan_indicatorAssert.matchItem')"
                   :title="t('xcan_indicatorAssert.matchItem')"
                   style="flex: 0 0 calc((100% - 40px)/6);"
@@ -687,34 +842,34 @@ const filterStatus = (value) => {
                   :maxlength="4"
                   :readonly="props.viewType"
                   dataType="number"
-                  @focus="inputFocus"
-                  @blur="inputBlur" />
+                  @focus="handleInputFocus"
+                  @blur="handleInputBlur" />
 
                 <div class="flex items-center space-x-2" style="flex: 1;">
                   <Input
-                    v-model:value="dataMap.expected"
+                    v-model:value="assertionFormData.expected"
                     :placeholder="t('xcan_indicatorAssert.expectedValueOptional')"
                     :title="t('xcan_indicatorAssert.expectedValue')"
                     :readonly="props.viewType"
-                    :error="expectedError"
-                    @focus="inputFocus"
-                    @blur="inputBlur"
-                    @change="expectedChange" />
+                    :error="hasExpectedError"
+                    @focus="handleInputFocus"
+                    @blur="handleInputBlur"
+                    @change="handleExpectedChange" />
                   <ExpectedPopover class="flex-shrink-0" />
                 </div>
               </template>
               <template v-else>
                 <Input
-                  v-model:value="dataMap.expected"
+                  v-model:value="assertionFormData.expected"
                   type="textarea"
                   :placeholder="t('xcan_indicatorAssert.expectedValue')"
                   :title="t('xcan_indicatorAssert.expectedValue')"
                   :readonly="props.viewType"
                   :autoSize="textAreaAutoSize"
-                  :error="expectedError"
-                  @focus="inputFocus"
-                  @blur="inputBlur"
-                  @change="expectedChange" />
+                  :error="hasExpectedError"
+                  @focus="handleInputFocus"
+                  @blur="handleInputBlur"
+                  @change="handleExpectedChange" />
               </template>
             </div>
           </template>
