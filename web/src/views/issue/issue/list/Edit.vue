@@ -837,7 +837,7 @@ onMounted(() => {
     <Form
       ref="formRef"
       :model="formState"
-      :labelCol="{style: {width: '120px'}}"
+      :labelCol="{}"
       layout="vertical"
       class="overflow-y-auto overflow-x-hidden"
       size="small"
@@ -1517,7 +1517,6 @@ onMounted(() => {
 </template>
 <style scoped>
 :deep(.ant-form-item-label) {
-  max-width: 120px;
   font-size: 12px;
   font-weight: 600;
 }

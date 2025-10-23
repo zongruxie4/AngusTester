@@ -1460,6 +1460,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
     <AsyncComponent :visible="isSplitTaskVisible">
       <SplitIssue
         v-model:visible="isSplitTaskVisible"
+        :dataSource="currentTaskInfo"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
         :appInfo="props.appInfo"
