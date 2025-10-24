@@ -44,7 +44,7 @@ const responseData = ref<string>('');
 // Computed properties for WebSocket state
 const ws = computed(() => angusProxy.getWebSocket());
 const readyState = computed(() => angusProxy.getReadyState());
-const uuid = computed(() => angusProxy.getCurrentUuid());
+const uuid = ref('');
 const responseCount = computed(() => angusProxy.getResponseCount());
 
 // User and project context
@@ -59,8 +59,9 @@ const projectId = computed(() => projectInfo.value?.id);
  * WebSocket event handlers
  */
 const wsEventHandlers: WebSocketEventHandlers = {
-  onMessage: (data: string) => {
+  onMessage: (data: string, response) => {
     responseData.value = data;
+    uuid.value = response?.requestId || response?.clientId || '';
   }
 };
 
@@ -346,12 +347,12 @@ defineExpose({
           <HttpApi
             :id="record.id"
             :valueObj="record"
-            :ws="ws as any"
+            :ws="angusProxy"
             :uuid="uuid"
             :response="responseData"
             :pid="record._id"
-            :userInfo="userInfo as any"
-            :appInfo="appInfo as any"
+            :userInfo="userInfo"
+            :appInfo="appInfo"
             :projectId="projectId?.toString()" />
         </template>
 
@@ -360,7 +361,7 @@ defineExpose({
           <WebSocketApi
             :id="record.id"
             :pid="record._id"
-            :ws="ws as any"
+            :ws="angusProxy as any"
             :uuid="uuid"
             :valueObj="record"
             :name="record.name"

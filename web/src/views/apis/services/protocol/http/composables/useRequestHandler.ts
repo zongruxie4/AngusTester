@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import type { ResponseType, Method } from 'axios';
-import { HttpMethod, ParameterIn, axiosClient } from '@xcan-angus/infra';
+import { HttpMethod, ParameterIn, axiosClient, utils } from '@xcan-angus/infra';
 import { notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import qs from 'qs';
@@ -9,6 +9,8 @@ import { CONTENT_TYPE_KEYS, HTTP_HEADERS } from '@/utils/constant';
 import apiUtils, { API_EXTENSION_KEY } from '@/utils/apis';
 import { ApisProtocol } from '@/enums/enums';
 import { SchemaType, SchemaFormat } from '@/types/openapi-types';
+import  { services } from '@/api/tester';
+import assertUtils from '@/utils/assertutils';
 
 import { getServerData, ServerInfo } from '@/views/apis/server/types';
 import { RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/types';
@@ -25,6 +27,7 @@ import { validateBodyForm, validateQueryParameter } from '@/views/apis/services/
  */
 export function useRequestHandler () {
   const { t } = useI18n();
+  const uuid = ref('');
   const { valueKey, enabledKey, fileNameKey, idKey, serverSourceKey, requestSettingKey } = API_EXTENSION_KEY;
 
   // HTTP client
@@ -225,20 +228,25 @@ export function useRequestHandler () {
     apiMethod: HttpMethod,
     contentType: string | null,
     saveParams: any,
+    requestParamsRef: any,
+    requestHeaderRef: any,
     requestBodyRef: any,
     authorizationRef: any,
     assertFormRef: any,
     isUnarchivedApi: boolean,
     ws: WebSocket | undefined,
     allFuncNames: string[],
+    assertionVariableExtra: any,
     onHttpResponse: (resp: any, request: any) => Promise<void>,
-    onWebSocketResponse: (params: any) => void
+    openToolBar: () => void
   ) => {
+    debugger;
     // 处理请求取消（如果已在进行中）
     if (loading.value) {
       handleAbort();
     }
     loading.value = true;
+    assertionVariableExtra.value = {};
 
     // Validate URL configuration
     if (!currentServer.url && !apiUri) {
@@ -438,6 +446,8 @@ export function useRequestHandler () {
 
     // Parse query params for display
     const requestQueryJson = qs.parse(apiPathQuery.split('?')[1] || '');
+    uuid.value = utils.uuid('api-request');
+    
 
     // Build final request URL
     let apiHref = '';
@@ -555,7 +565,57 @@ export function useRequestHandler () {
         true, state, setting, currentServer, apiUri, apiMethod, contentType,
         saveParams, requestBodyRef, authorizationRef, assertFormRef, isUnarchivedApi
       );
-      onWebSocketResponse(params);
+
+      if (!params?.authentication.type && !params?.authentication.$ref) {
+        delete params.authentication;
+      } else if (params?.authentication.$ref) {
+        const [_error, resp] = await services.getComponentRef(saveParams.value.serviceId, params?.authentication.$ref);
+        params.authentication = JSON.parse(resp.data.model);
+      }
+      delete params.responses;
+      if (requestBody?.content) {
+        Object.keys(requestBody.content).forEach(key => {
+          if (rawTypeOptions.includes(key)) {
+            if (requestBody.content[key][valueKey]) {
+              delete requestBody.content[key].schema;
+            }
+          }
+        });
+      }
+  
+      // 过滤掉没有启用的断言
+      if (params.assertions?.length) {
+        params.assertions = params.assertions.filter((item) => item.enabledFlag);
+      }
+  
+      const resolvedRefModels = {
+        ...requestParamsRef.value.getModelResolve(),
+        ...requestHeaderRef.value.getModelResolve(),
+        ...requestBodyRef.value.getModelResolve(),
+        ...authorizationRef.value.getModelResolve()
+      };
+      Object.keys(resolvedRefModels).forEach(key => {
+        if (typeof resolvedRefModels[key] !== 'string') {
+          resolvedRefModels[key] = JSON.stringify(resolvedRefModels[key]);
+        }
+      });
+      if (!isUnarchivedApi) {
+        const conditions = params.assertions.filter(item => item.condition).map(item => item.condition);
+        const { extra } = assertUtils.proxy.execute(conditions, variableValues);
+        assertionVariableExtra.value = extra;
+      }
+      const jsonStr = JSON.stringify({
+        ...params,
+        requestBody,
+        server: currentServer,
+        requestId: uuid.value,
+        messageType: 'HttpRequestProxy',
+        endpoint: params.endpoint,
+        resolvedRefModels,
+        variables: [...variableValues]
+      });
+      ws.send(jsonStr);
+      openToolBar();
     }
   };
 
@@ -573,6 +633,7 @@ export function useRequestHandler () {
   };
 
   return {
+    requestUuid: uuid,
     loading,
     sendRequest,
     handleAbort,

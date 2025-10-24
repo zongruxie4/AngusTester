@@ -142,6 +142,7 @@ const {
 } = useApiState(props);
 
 const {
+  requestUuid,
   loading,
   sendRequest,
   handleAbort,
@@ -154,6 +155,7 @@ const {
   responseError,
   assertResult,
   isResponseEmpty,
+  assertionVariableExtra,
   handleHttpResponse,
   onResponse
 } = useResponseHandler();
@@ -178,7 +180,8 @@ const {
   handleShare,
   toolbarChange,
   setErrTitle,
-  closeDrawer
+  closeDrawer,
+  openToolBar
 } = useUIState(props);
 
 const {
@@ -204,7 +207,6 @@ const replaceTabPane = inject<(key: string, data: any) => void>('replaceTabPane'
 const allFunction = inject('allFunction', ref([]));
 
 let ws: WebSocket | undefined;
-const uuid = '';
 
 // Component refs
 const requestParamsRef = ref();
@@ -322,6 +324,31 @@ const saveUnarchived = async (): Promise<void> => {
   drawerRef.value.open('saveUnarchived');
 };
 
+const handleOpenToolBar = () => {
+  openToolBar(toolbarRef);
+};
+
+const handleSendRequest = () => {
+  sendRequest(state,
+  setting.value,
+  currentServer.value || { url: '' },
+  apiUri.value || '',
+  apiMethod.value,
+  contentType.value,
+  saveParams.value,
+  requestParamsRef,
+  requestHeaderRef,
+  requestBodyRef,
+  authorizationRef,
+  assertFormRef,
+  isUnarchivedApi.value,
+  ws,
+  allFunction.value.map(i => i.name),
+  assertionVariableExtra,
+  handleHttpResponse,
+  handleOpenToolBar);
+};
+
 // Watchers
 watch(() => state.authentication, async newValue => {
   const data = await getShowAuthData(newValue);
@@ -331,14 +358,14 @@ watch(() => state.authentication, async newValue => {
 });
 
 watch(() => props.uuid, newValue => {
-  if (newValue === uuid) {
+  if (newValue === requestUuid.value) {
+    loading.value = false;
     onResponse(props.response);
   } else {
     try {
       const data = JSON.parse(props.response);
       authorizationRef.value.onResponse(data);
-    } catch {
-    }
+    } catch {}
   }
 });
 
@@ -466,7 +493,7 @@ provide('selectHandle', () => closeDrawer(drawerRef));
               :isUnarchivedApi="isUnarchivedApi"
               :availableServers="availableServers"
               :defaultCurrentServer="defaultCurrentServer"
-              @sendRequest="() => sendRequest(state, setting, currentServer || { url: '' }, apiUri || '', apiMethod, contentType, saveParams, requestBodyRef, authorizationRef, assertFormRef, isUnarchivedApi, ws, allFunction.map(i => i.name), handleHttpResponse, () => {})"
+              @sendRequest="handleSendRequest"
               @save="save"
               @archived="archivedApi"
               @abort="handleAbort"
