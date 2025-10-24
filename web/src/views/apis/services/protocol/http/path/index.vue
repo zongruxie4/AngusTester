@@ -485,58 +485,37 @@ onMounted(() => {
         @keypress="handlePathEnterKey" />
     </div>
     <div class="flex flex-nowrap whitespace-nowrap flex-freeze ml-3 space-x-2">
-      <Tooltip
-        :visible="stepVisible && stepKey === 'debugApiTwo'"
-        placement="bottomLeft"
-        destroyTooltipOnHide>
-        <template #title>
-          <div class="p-2 text-3">
-            <div class="text-4 text-text-title">{{ stepContent.title }}</div>
-            <div class="mt-2">{{ stepContent.content }}</div>
-            <div class="flex justify-end mt-5">
-              <Button
-                size="small"
-                type="primary"
-                @click="handleGuideStep('debugApiThree')">
-                {{ t('actions.nextStep') }}
-              </Button>
-            </div>
-          </div>
-        </template>
-        <Button
-          v-if="!props.loading"
-          type="primary"
-          :disabled="!auths.includes(ApiPermission.DEBUG)"
-          @click="executeApiRequest">
+      <Button
+        v-if="!props.loading"
+        type="primary"
+        :disabled="!props.isUnarchivedApi && !auths.includes(ApiPermission.DEBUG)"
+        @click="executeApiRequest">
+        <template #icon>
+          <Icon class="mr-2" icon="icon-fasong" />
+        </template>{{ t('service.apiServerPath.actions.sendRequest') }}
+      </Button>
+      <Spin
+        v-else
+        indicator="circle"
+        class="cursor-pointer"
+        :spinning="props.loading"
+        @click="handleRequestAbort">
+        <Button type="primary" danger>
           <template #icon>
-            <Icon class="mr-2" icon="icon-fasong" />
-          </template>{{ t('service.apiServerPath.actions.sendRequest') }}
+            <Icon class="mr-2" icon="icon-duankai" />
+          </template>
+          <span>{{ t('service.apiServerPath.actions.abortRequest') }}</span>
         </Button>
-        <Spin
-          v-else
-          indicator="circle"
-          class="cursor-pointer"
-          :spinning="props.loading"
-          @click="handleRequestAbort">
-          <Button type="primary" danger>
-            <template #icon>
-              <Icon class="mr-2" icon="icon-duankai" />
-            </template>
-            <span>{{ t('service.apiServerPath.actions.abortRequest') }}</span>
-          </Button>
-        </Spin>
-      </Tooltip>
+      </Spin>
       <template v-if="props.isUnarchivedApi">
         <template v-if="props.id">
           <Button
             class="ml-2"
-            :disabled="!auths.includes(ApiPermission.MODIFY)"
             @click="emit('save')">
             {{ t('actions.save') }}
           </Button>
           <Button
             class="ml-2"
-            :disabled="!auths.includes(ApiPermission.MODIFY)"
             @click="emit('archived')">
             {{ t('service.apiServerPath.actions.archive') }}
           </Button>
@@ -544,7 +523,6 @@ onMounted(() => {
         <template v-else>
           <Button
             class="ml-2"
-            :disabled="!auths.includes(ApiPermission.MODIFY)"
             @click="emit('save')">
             {{ t('service.apiServerPath.actions.saveToUnarchived') }}
           </Button>
@@ -568,7 +546,6 @@ onMounted(() => {
             </template>
             <Button
               class="ml-2"
-              :disabled="!auths.includes(ApiPermission.MODIFY)"
               @click="emit('archived')">
               {{ t('service.apiServerPath.actions.archive') }}
             </Button>

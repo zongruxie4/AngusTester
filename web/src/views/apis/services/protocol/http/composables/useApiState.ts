@@ -193,7 +193,7 @@ export function useApiState (props: {
     datasetSharingMode.value = _datasetSharingMode?.value || _datasetSharingMode || SharingMode.ALL_THREAD;
 
     // 为已归档API加载API权限
-    if (!isUnarchivedApi.value && auth && serviceAuth) {
+    if (!isUnarchivedApi.value) {
       await loadApiAuth();
     }
 

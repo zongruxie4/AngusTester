@@ -30,7 +30,7 @@ const debugging = () => {
   addTabPane({
     value: 'API',
     unarchived: true,
-    name: t('service.protocal.quickStarted.addApiTabName'),
+    name: t('service.protocol.quickStarted.addApiTabName'),
     _id: utils.uuid('api') + 'API',
     serviceId: props.serviceInfo.id,
     serviceName: props.serviceInfo.name
@@ -44,7 +44,7 @@ const openImport = () => {
 <template>
   <div>
     <div class="text-3.5 font-semibold mb-3">
-      {{ t('service.protocal.quickStarted.title') }}
+      {{ t('service.protocol.quickStarted.title') }}
     </div>
 
     <div class="flex space-x-3.75 flex-1 ">
@@ -52,9 +52,9 @@ const openImport = () => {
         <div class="text-theme-content mb-3.5">
           <div class="flex items-center space-x-2 mb-2">
             <Icon icon="icon-jiekoutiaoshi" class="text-5" />
-            <span class="title-normal">{{ t('service.protocal.quickStarted.debug.title') }}</span>
+            <span class="title-normal">{{ t('service.protocol.quickStarted.debug.title') }}</span>
           </div>
-          <div>{{ t('service.protocal.quickStarted.debug.description') }}</div>
+          <div>{{ t('service.protocol.quickStarted.debug.description') }}</div>
         </div>
 
         <div class="flex items-start">
@@ -73,9 +73,9 @@ const openImport = () => {
         <div class="text-theme-content mb-3.5">
           <div class="flex items-center space-x-2 mb-2">
             <Icon icon="icon-daoruxiangmufuwu" class="text-5" />
-            <span class="title-normal">{{ t('service.protocal.quickStarted.import.title') }}</span>
+            <span class="title-normal">{{ t('service.protocol.quickStarted.import.title') }}</span>
           </div>
-          <div>{{ t('service.protocal.quickStarted.import.description') }}</div>
+          <div>{{ t('service.protocol.quickStarted.import.description') }}</div>
         </div>
 
         <div class="flex items-start">
