@@ -1664,6 +1664,7 @@ export default {
   getUriByParams,
   getParamsByUri,
   getNameValue,
+  ...getNameValue,
   isValidUrl,
   validateQueryParameter,
   validateBodyForm,

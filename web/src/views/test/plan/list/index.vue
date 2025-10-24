@@ -440,7 +440,7 @@ onMounted(() => {
         :initStatusUrl="`${TESTER}/func/plan/${selectedData?.id}/auth/status`"
         :onTips="t('testPlan.list.permissionControlOnTips')"
         :offTips="t('testPlan.list.permissionControlOffTips')"
-        :title="t('common.permission')"
+        :title="t('actions.permission')"
         @change="handleAuthFlagChange" />
     </AsyncComponent>
   </div>

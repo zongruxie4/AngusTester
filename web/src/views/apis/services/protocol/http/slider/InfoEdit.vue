@@ -420,7 +420,7 @@ const rules = {
           enumKey="ApiStatus">
         </SelectEnum>
       </FormItem>
-      <FormItem :label="t('service.apiSliderSave.labels.deprecated')" name="deprecated">
+      <FormItem :label="t('service.apiSliderSave.ifDeprecated')" name="deprecated">
         <Select
           :value="form.deprecated ? 'true' : 'false'"
           :disabled="disabled"

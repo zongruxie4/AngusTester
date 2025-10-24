@@ -915,6 +915,7 @@
         "serviceRequired": "请选择所属服务",
         "statusRequired": "请选择接口状态"
       },
+      "ifDeprecated": "是否弃用",
       "options": {
         "normal": "正常",
         "deprecated": "已弃用"
@@ -958,7 +959,10 @@
       },
       "actions": {
         "saveToUnarchived": "保存到未归档",
-        "archive": "归档"
+        "archive": "归档",
+        "disconnect": "断开连接",
+        "connect": "连接",
+        "copyUrl": "复制Url"
       },
       "navigation": {
         "saveToUnarchived": "保存到未归档",

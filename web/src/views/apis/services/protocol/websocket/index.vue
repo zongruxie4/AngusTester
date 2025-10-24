@@ -192,7 +192,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
             type="primary"
             class="ml-2"
             :loading="isWebSocketConnecting"
-            :disabled="isConnectButtonDisabled"
+            :disabled="!props.valueObj?.unarchived && isConnectButtonDisabled"
             @click="establishWebSocketConnection">
             <Icon icon="icon-lianjie2" class="mr-2" />{{ t('service.apiWebSocket.actions.connect') }}
           </Button>

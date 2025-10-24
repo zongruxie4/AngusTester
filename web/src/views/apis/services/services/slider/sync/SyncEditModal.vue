@@ -328,7 +328,7 @@ watch(() => props.visible, (newValue) => {
           <Radio :value="false">{{ t('status.no') }}</Radio>
         </RadioGroup>
         <div class="flex items-center">
-          <span class="mr-3.5">{{ t('common.auth') }}</span>
+          <span class="mr-3.5">{{ t('actions.permission') }}</span>
           <Switch
             v-model:checked="sync.auth"
             size="small"

@@ -119,8 +119,8 @@ export function useWebSocket (props: any, deps: UseWebSocketDeps) {
   };
 
   const buildQueryString = async (): Promise<string> => {
-    const queryObjectList = (apiUtils as any).getQueryParamFromApi(queryParameters.value);
-    const [processedData] = await (apiUtils as any).replaceFuncValue({ parameter: [queryObjectList] });
+    const queryObjectList = apiUtils.getQueryParamFromApi(queryParameters.value);
+    const [processedData] = await apiUtils.replaceFuncValue({ parameter: [queryObjectList] });
     return processedData[0].map((item: any) => `${item.name}=${item[valueKey]}`).join('&');
   };
 
@@ -504,6 +504,7 @@ export function useWebSocket (props: any, deps: UseWebSocketDeps) {
    */
   const loadApiPermissions = async () => {
     if (props.valueObj.unarchived) {
+      userPermissions.value = enumUtils.getEnumValues(ApiPermission);
       return;
     }
     const [error, response] = await apis.getCurrentAuth(props.id);

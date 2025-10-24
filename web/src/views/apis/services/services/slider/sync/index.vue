@@ -666,7 +666,7 @@ watch(() => notify.value, () => {
           :disabled="props.disabled || syncList.filter(f=>!f.isAdd).length > 9 || addDemoBtnDisabled"
           @click="addSyncInfoDemo">
           <Icon icon="icon-jia" class="mr-1" />
-          {{ t('service.syncConfig.actions.demo') }}
+          {{ t('service.syncConfig.tips.addDemo') }}
           <Tooltip :title="t('service.syncConfig.tips.addDemo')" placement="top">
             <Icon icon="icon-tishi1" class="ml-1 text-tips text-3.5" />
           </Tooltip>
@@ -836,7 +836,7 @@ watch(() => notify.value, () => {
               <Radio :value="false">{{ t('status.no') }}</Radio>
             </RadioGroup>
             <div class="flex items-center">
-              <span class="mr-3.5">{{ t('common.auth') }}</span>
+              <span class="mr-3.5">{{ t('actions.permission') }}</span>
               <Switch
                 v-model:checked="sync.auth"
                 size="small"

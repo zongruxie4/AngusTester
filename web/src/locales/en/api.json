@@ -915,6 +915,7 @@
         "serviceRequired": "Please select service",
         "statusRequired": "Please select status"
       },
+      "ifDeprecated": "Deprecated",
       "options": {
         "normal": "Normal",
         "deprecated": "Deprecated"
@@ -958,7 +959,10 @@
       },
       "actions": {
         "saveToUnarchived": "Save to Unarchived",
-        "archive": "Archive"
+        "archive": "Archive",
+        "disconnect": "Disconnect",
+        "connect": "Connect",
+        "copyUrl": "Copy URL"
       },
       "navigation": {
         "saveToUnarchived": "Save to Unarchived",

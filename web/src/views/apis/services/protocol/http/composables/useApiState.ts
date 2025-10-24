@@ -1,5 +1,5 @@
 import { ref, reactive, computed, watch } from 'vue';
-import { HttpMethod, ParameterIn, SchemaType, ActionOnEOF, SharingMode } from '@xcan-angus/infra';
+import { HttpMethod, ParameterIn, SchemaType, ActionOnEOF, SharingMode, enumUtils } from '@xcan-angus/infra';
 import { apis, services } from '@/api/tester';
 import { ApiPermission, ApiServerSource, ApiStatus } from '@/enums/enums';
 import { API_EXTENSION_KEY, getModelDataByRef } from '@/utils/apis';
@@ -361,6 +361,7 @@ export function useApiState (props: {
   watch(() => props.id, () => {
     if (props.valueObj.unarchived || !props.id) {
       isUnarchivedApi.value = true;
+      apiAuths.value = enumUtils.getEnumValues(ApiPermission);
       if (props.id) {
         loadApiDetail();
       }
