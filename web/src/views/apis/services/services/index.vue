@@ -27,7 +27,7 @@ const ServerConfig = defineAsyncComponent(() => import('@/views/apis/services/se
 const ExportApis = defineAsyncComponent(() => import('@/views/apis/services/components/ExportOptionalModal.vue'));
 const ShareService = defineAsyncComponent(() => import('@/components/share/index.vue'));
 const TranslateService = defineAsyncComponent(() => import('@/views/apis/services/components/TranslateService.vue'));
-const ModifyStatus = defineAsyncComponent(() => import('@/views/apis/services/components/ModifyStatus.vue'));
+const ModifyStatus = defineAsyncComponent(() => import('@/views/apis/services/components/ModifyStatusModal.vue'));
 const Authorize = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const BatchModifyApiParams = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/index.vue'));
 const GenTestScript = defineAsyncComponent(() => import('@/components/script/GenTestScriptModal.vue'));

@@ -46,7 +46,7 @@ onMounted(() => {
       - Visual indicator for error state
       - Provides immediate visual feedback
     -->
-    <img src="response-error.png" alt="Error" />
+    <img src="./response-error.png" alt="Error" />
 
     <!--
       Error Title

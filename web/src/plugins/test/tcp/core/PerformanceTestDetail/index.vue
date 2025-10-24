@@ -69,7 +69,7 @@ const CountTemplate = defineAsyncComponent(() => import('@/plugins/test/componen
 const ConterList = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/ConterList/index.vue'));
 const Sampling = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/Sampling.vue'));
 const NodeData = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/NodeData/index.vue'));
-const SuperimposeAnalysis = defineAsyncComponent(() => import('./components/SuperimposeAnalysis/index.vue'));
+const SuperimposeAnalysis = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/SuperimposeAnalysis/index.vue'));
 
 const nodeDataRef = ref();
 const counTabKey = ref('aggregation');

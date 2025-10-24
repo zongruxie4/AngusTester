@@ -237,7 +237,7 @@ const updateItemPermissions = async (permissions: string[], itemId: string) => {
       return;
     }
 
-    permissionsMap.value[itemId]?.permissions = permissions;
+    permissionsMap.value[itemId]!.permissions = permissions;
     return;
   }
 

@@ -15,7 +15,7 @@ import TaskPriority from '@/components/task/TaskPriority.vue';
 const { t } = useI18n();
 
 // Async Components
-const ModuleTree = defineAsyncComponent(() => import('@/views/test/baseline/case/list/ModuleTree.vue'));
+const ModuleTree = defineAsyncComponent(() => import('@/components/module/ModuleTree.vue'));
 
 // Props Definition
 interface Props {

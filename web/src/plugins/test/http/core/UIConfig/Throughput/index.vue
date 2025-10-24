@@ -5,7 +5,7 @@ import { Input, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import { ThroughputConfig } from './PropsType';
-import ActionsGroup from '../ActionsGroup/index.vue';
+import ActionsGroup from '@/plugins/test/components/UIConfigComp/ActionsGroup/index.vue';
 
 const { t } = useI18n();
 

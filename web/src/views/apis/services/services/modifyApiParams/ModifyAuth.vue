@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
 
-const Authorization = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/Authorization.vue'));
+const Authorization = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/Authorization.vue'));
 
 const authData = ref();
 const auth = ref(false);

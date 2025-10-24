@@ -114,7 +114,7 @@ watch(() => props.dataSource, () => {
 /**
  * Column definitions for the cookie table
  */
-export const CookieColumns = [
+const CookieColumns = [
   {
     title: 'Name',
     dataIndex: 'name',

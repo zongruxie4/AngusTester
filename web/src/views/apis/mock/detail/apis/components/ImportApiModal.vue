@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Radio, RadioGroup } from 'ant-design-vue';
-import { StrategyWhenDuplicated } from '@xcan-angus/infra';
+import { StrategyWhenDuplicated } from '@/enums/enums';
 import { Hints, Modal, notification, SingleUpload } from '@xcan-angus/vue-ui';
 import { mock } from '@/api/tester';
 

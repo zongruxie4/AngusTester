@@ -3,7 +3,7 @@ import { inject, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, Select } from '@xcan-angus/vue-ui';
 import { useProxyOptions, useProxyStatus } from './composables';
-import { ProxyType } from '../types';
+import { ProxyType } from './types';
 
 const { t } = useI18n();
 

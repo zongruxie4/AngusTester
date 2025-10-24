@@ -8,7 +8,7 @@ import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { useI18n } from 'vue-i18n';
 
 import apiUtils from '@/utils/apis/index';
-import { ListData, useExecCount } from './useExecCount';
+import { ListData, useExecCount } from '@/plugins/test/components/utils';
 import { allCvsKeys, allResponseTimeColumns, allErrorsColumns, allErrorRateColumns, allRowsColumns } from './ChartConfig';
 
 const { t } = useI18n();

@@ -13,7 +13,7 @@ import { travelTreeData } from '@/utils/utils';
  * Module item interface for tree display
  */
 type ModuleItem = {
-  id: number;
+  id: string;
   name: string;
   showName?: string;
   showTitle?: string;
@@ -23,13 +23,13 @@ type ModuleItem = {
  * Component props interface for module tree
  */
 type Props = {
-  projectId: number;
+  projectId: string;
   projectName: string;
-  userInfo: { id: number; };
-  appInfo: { id: number; };
+  userInfo: { id: string; };
+  appInfo: { id: string; };
   notify: string;
   dataList: ModuleItem[];
-  moduleId: number;
+  moduleId: string;
   readonly: boolean;
 }
 
@@ -45,7 +45,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 
 // Emits
-const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value?: number):void}>();
+const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value?: string):void}>();
 
 // Async components
 const CreateModal = defineAsyncComponent(() => import('@/views/project/module/Add.vue'));
@@ -62,8 +62,8 @@ const moduleTreeData = ref<ModuleItem[]>([{ name: t('common.noModule'), id: -1 }
 const nameInputRef = ref();
 const isLoading = ref(false);
 const searchKeywords = ref();
-const currentEditId = ref<number>();
-const parentModuleId = ref<number>();
+const currentEditId = ref<string>();
+const parentModuleId = ref<string>();
 const isCreateModalVisible = ref(false);
 const isMoveModalVisible = ref(false);
 const activeModuleData = ref();
@@ -72,7 +72,7 @@ const activeModuleData = ref();
  * Handles module selection change
  * @param selectedKeys - Array of selected module keys
  */
-const handleModuleSelectionChange = (selectedKeys: number[]) => {
+const handleModuleSelectionChange = (selectedKeys: string[]) => {
   if (!selectedKeys.length) {
     return;
   }
@@ -120,7 +120,7 @@ const handleEditCancel = () => {
  * @param moduleId - ID of module being edited
  * @param event - Input event with new value
  */
-const handleModuleNameUpdate = async (moduleId: number, event: { target: { value: string } }) => {
+const handleModuleNameUpdate = async (moduleId: string, event: { target: { value: string } }) => {
   const newName = event.target.value;
   if (!newName) {
     return;
@@ -142,7 +142,7 @@ const handleModuleNameUpdate = async (moduleId: number, event: { target: { value
  * @param moduleId - ID of module being edited
  * @param event - Input event with new value
  */
-const handleModuleNameBlur = (moduleId: number, event: { target: { value: string } }) => {
+const handleModuleNameBlur = (moduleId: string, event: { target: { value: string } }) => {
   setTimeout(() => {
     if (currentEditId.value === moduleId) {
       handleModuleNameUpdate(moduleId, event);

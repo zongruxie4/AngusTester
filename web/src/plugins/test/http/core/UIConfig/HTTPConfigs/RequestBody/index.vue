@@ -31,7 +31,7 @@ const emit = defineEmits<{
   (e: 'update:errorNum', value: number): void;
 }>();
 
-const requestBodyParameter = defineAsyncComponent(() => import('./requestBodyParameter/index.vue'));
+const requestBodyParameter = defineAsyncComponent(() => import('./RequestBodyParameter/index.vue'));
 
 const ENCODED_TYPE = 'application/x-www-form-urlencoded';
 const STREAM_TYPE = 'application/octet-stream';

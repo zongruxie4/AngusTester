@@ -3,7 +3,7 @@ import { defineAsyncComponent, ref } from 'vue';
 import { Progress } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
-import { formatBytes } from './useExecCount';
+import { formatBytes } from '@/plugins/test/components/utils';
 
 const { t } = useI18n();
 

@@ -35,7 +35,7 @@ export const enum ContentTypeRadioItem {
 }
 
 // Legacy export alias for backward compatibility
-export const enum RadioItem = ContentTypeRadioItem;
+export type RadioItem = ContentTypeRadioItem;
 
 /**
  * Request body parameter interface

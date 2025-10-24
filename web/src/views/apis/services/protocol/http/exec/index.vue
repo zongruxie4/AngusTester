@@ -24,7 +24,7 @@ const { t } = useI18n();
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 
 const activeTab = ref('func');
-const dataSource = ref();
+const dataSource = ref<any>();
 
 /**
  * Load API test results from backend
@@ -40,18 +40,18 @@ const loadApisResult = async () => {
 
 /**
  * Get execution ID for functional test
- * @returns {string|undefined} Functional test execution ID
+ * @returns string|undefined Functional test execution ID
  */
 const functionalTestExecId = computed(() => {
-  return dataSource.value?.resultDetailVoMap?.TEST_FUNCTIONALITY?.execId;
+  return dataSource.value?.resultDetailVoMap?.TEST_FUNCTIONALITY?.execId as string;
 });
 
 /**
  * Get execution ID for performance test
- * @returns {string|undefined} Performance test execution ID
+ * @returns string|undefined Performance test execution ID
  */
 const performanceTestExecId = computed(() => {
-  return dataSource.value?.resultDetailVoMap?.TEST_PERFORMANCE?.execId;
+  return dataSource.value?.resultDetailVoMap?.TEST_PERFORMANCE?.execId as string;
 });
 
 /**
@@ -59,7 +59,7 @@ const performanceTestExecId = computed(() => {
  * @returns {string|undefined} Custom test execution ID
  */
 const customTestExecId = computed(() => {
-  return dataSource.value?.resultDetailVoMap?.TEST_CUSTOMIZATION?.execId;
+  return dataSource.value?.resultDetailVoMap?.TEST_CUSTOMIZATION?.execId as string;
 });
 
 /**
@@ -67,7 +67,7 @@ const customTestExecId = computed(() => {
  * @returns {string|undefined} Stability test execution ID
  */
 const stabilityTestExecId = computed(() => {
-  return dataSource.value?.resultDetailVoMap?.TEST_STABILITY?.execId;
+  return dataSource.value?.resultDetailVoMap?.TEST_STABILITY?.execId as string;
 });
 
 /**
@@ -127,7 +127,7 @@ onMounted(() => {
           :scriptType="ScriptType.TEST_STABILITY"
           @del="handleTestDeletion" />
       </TabPane>
-      <TabPane key="custom" :tab="t('commonExecTest.customTest'')">
+      <TabPane key="custom" :tab="t('commonExecTest.customTest')">
         <ExecDetail
           :showBackBtn="false"
           :execId="customTestExecId"
