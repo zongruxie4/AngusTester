@@ -68,23 +68,23 @@ onMounted(async () => {
   <div class="">
     <rapi-doc
       v-if="apiDocumentationOrigin"
-      :specUrl="`${apiDocumentationOrigin}${isPrivateEdition
+      :spec-url="`${apiDocumentationOrigin}${isPrivateEdition
         ? `/${API}/${VERSION}`
-        : TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${userAccessToken}`"
-      allowSpecFileDownload="false"
-      allowSpecFileLoad="false"
-      allowSpecUrlLoad="false"
-      allowTry="false"
-      allowAdvancedSearch="false"
-      bgColor="#fff"
-      headerColor="#fff"
-      renderStyle="view"
-      schemaExpandLevel="20"
-      schemaStyle="table"
-      showHeader="true"
-      showInfo="true"
+        : ''}/apis/${props.id}/openapi/export?format=yaml&access_token=${userAccessToken}`"
+      allow-spec-file-download="false"
+      allow-spec-file-load="false"
+      allow-spec-url-load="false"
+      allow-try="false"
+      allow-advanced-search="false"
+      bg-color="#fff"
+      header-color="#fff"
+      render-style="view"
+      schema-expand-level="20"
+      schema-style="table"
+      show-header="true"
+      show-info="true"
       theme="light"
-      updateRoute="false">
+      update-route="false">
       <!-- Export button for API documentation -->
       <Button
         slot="exportDoc"

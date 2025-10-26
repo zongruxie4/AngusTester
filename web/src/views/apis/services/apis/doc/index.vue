@@ -49,7 +49,6 @@ const accessToken = ref();
 const docOrigin = ref();
 onMounted(async () => {
   accessToken.value = cookieUtils.getTokenInfo().access_token;
-  // docOrigin.value = await site.getUrl('apis');
   docOrigin.value = DomainManager.getInstance().getApiDomain(AppOrServiceRoute.tester);
   await loadData();
 });
@@ -68,23 +67,23 @@ defineExpose({
   <div v-if="props.mode === 'UI'">
     <rapi-doc
       v-if="docOrigin"
-      :specUrl="openapiMetaDataStr"
-      specIsContent="true"
+      :spec-url="openapiMetaDataStr"
+      spec-is-content="true"
       theme="light"
-      renderStyle="focused"
-      headerColor="#fff"
-      updateRoute="false"
-      navBgColor="#fff"
-      showInfo="true"
-      bgColor="#fff"
-      allowAdvancedSearch="false"
-      allowSpecUrlLoad="false"
-      allowSpecFileLoad="false"
-      allowSpecFileDownload="false"
-      allowTry="false"
-      schemaStyle="table"
-      showHeader="false"
-      schemaExpandLevel="20">
+      render-style="focused"
+      header-color="#fff"
+      update-route="false"
+      nav-bg-color="#fff"
+      show-info="true"
+      bg-color="#fff"
+      allow-advanced-search="false"
+      allow-spec-url-load="false"
+      allow-spec-file-load="false"
+      allow-spec-file-download="false"
+      allow-try="false"
+      schema-style="table"
+      show-header="false"
+      schema-expand-level="20">
       <Button
         v-if="docOrigin"
         slot="extra"
