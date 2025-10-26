@@ -42,8 +42,8 @@ const currentProxy = ref<string>();
 const responseData = ref<string>('');
 
 // Computed properties for WebSocket state
-const ws = computed(() => angusProxy.getWebSocket());
-const readyState = computed(() => angusProxy.getReadyState());
+const ws = ref();
+const readyState = ref(-1);
 const uuid = ref('');
 const responseCount = computed(() => angusProxy.getResponseCount());
 
@@ -62,6 +62,9 @@ const wsEventHandlers: WebSocketEventHandlers = {
   onMessage: (data: string, response) => {
     responseData.value = data;
     uuid.value = response?.requestId || response?.clientId || '';
+  },
+  onOpen: () => {
+    readyState.value = angusProxy.getReadyState();
   }
 };
 
@@ -257,10 +260,16 @@ onMounted(async () => {
   watch([() => currentProxyUrl.value, () => currentProxy.value], ([newValue]) => {
     if (newValue) {
       angusProxy.connect(newValue, wsEventHandlers);
+      ws.value = angusProxy.getWebSocket();
+      readyState.value = angusProxy.getReadyState();
     } else if (currentProxy.value === 'NO_PROXY') {
       angusProxy.disconnect();
+      ws.value = undefined;
+      readyState.value = -1;
     } else {
       angusProxy.updateConnection(navigator.onLine, currentProxyUrl.value, currentProxy.value);
+      ws.value = angusProxy.getWebSocket();
+      readyState.value = angusProxy.getReadyState();
     }
   }, { immediate: true });
 
@@ -347,7 +356,7 @@ defineExpose({
           <HttpApi
             :id="record.id"
             :valueObj="record"
-            :ws="angusProxy"
+            :ws="ws as any"
             :uuid="uuid"
             :response="responseData"
             :pid="record._id"
@@ -361,7 +370,7 @@ defineExpose({
           <WebSocketApi
             :id="record.id"
             :pid="record._id"
-            :ws="angusProxy as any"
+            :ws="ws"
             :uuid="uuid"
             :valueObj="record"
             :name="record.name"

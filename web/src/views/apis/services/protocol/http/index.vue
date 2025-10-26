@@ -3,7 +3,8 @@ import {
   computed,
   defineAsyncComponent,
   inject,
-  nextTick,
+  nextTick, 
+  reactive,
   onBeforeUnmount,
   onMounted,
   provide,
@@ -24,6 +25,8 @@ import useClipboard from 'vue-clipboard3';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 
+import { RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/types';
+import { ParamsItem, ApisFormEdit } from '@/views/apis/services/protocol/types';
 import { formatBytes } from '@/utils/common';
 import { apis } from '@/api/tester';
 import { ApiPermission, ApisShareScope } from '@/enums/enums';
@@ -112,6 +115,27 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: ''
 });
 
+ // Main state
+ const state = reactive({
+    authentication: { type: null } as AuthenticationItem,
+    parameter: {},
+    assertTypeOptions: [],
+    assertConditionOptions: [],
+    paramTypeOptions: [],
+    bodyParamTypeOptions: [],
+    contentTypeOptions: [],
+    formDataTypeOptions: [],
+    methodOptions: [],
+    authTypeOptions: [],
+    parameters: [] as ParamsItem[],
+    requestBody: {} as RequestBodyParam,
+    headerList: [] as ParamsItem[],
+    cookieList: [] as ParamsItem[],
+    assertions: [] as any[],
+    secured: false,
+    publishFlag: false
+  });
+
 // Use composables
 const {
   saveParams,
@@ -124,7 +148,6 @@ const {
   availableServers,
   apiMethod,
   apiUri,
-  state,
   setting,
   defaultAuthentication,
   authInHeader,
@@ -139,7 +162,7 @@ const {
   handleStatusChange,
   updateApiInfo,
   updateUnarchivedApiInfo
-} = useApiState(props);
+} = useApiState(props, state);
 
 const {
   requestUuid,
@@ -190,7 +213,7 @@ const {
   changeCookieList,
   changeRequestBody,
   addQueryParam
-} = useParameterManager();
+} = useParameterManager(state);
 
 // Other state
 const erd = elementResizeDetector({ strategy: 'scroll' });

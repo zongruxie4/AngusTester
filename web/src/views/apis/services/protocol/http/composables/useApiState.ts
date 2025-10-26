@@ -1,12 +1,11 @@
-import { ref, reactive, computed, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { HttpMethod, ParameterIn, SchemaType, ActionOnEOF, SharingMode, enumUtils } from '@xcan-angus/infra';
 import { apis, services } from '@/api/tester';
 import { ApiPermission, ApiServerSource, ApiStatus } from '@/enums/enums';
 import { API_EXTENSION_KEY, getModelDataByRef } from '@/utils/apis';
 import { deconstruct } from '@/utils/swagger';
 import { ServerInfo } from '@/views/apis/server/types';
-import { RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/types';
-import { ParamsItem, ApisFormEdit } from '@/views/apis/services/protocol/types';
+import { ApisFormEdit } from '@/views/apis/services/protocol/types';
 import { AuthenticationItem } from '@/views/apis/services/protocol/http/Authorization';
 import { RequestSetting } from '@/views/apis/services/protocol/http/types';
 
@@ -21,7 +20,7 @@ export function useApiState (props: {
   serviceId?: string;
   projectId: string;
   valueObj: Record<string, any>;
-}) {
+}, state) {
   const { serverSourceKey, requestSettingKey, valueKey, enabledKey } = API_EXTENSION_KEY;
 
   // API base info
@@ -52,26 +51,7 @@ export function useApiState (props: {
   const apiMethod = ref<HttpMethod>(HttpMethod.GET);
   const apiUri = ref<string>();
 
-  // Main state
-  const state = reactive({
-    authentication: { type: null } as AuthenticationItem,
-    parameter: {},
-    assertTypeOptions: [],
-    assertConditionOptions: [],
-    paramTypeOptions: [],
-    bodyParamTypeOptions: [],
-    contentTypeOptions: [],
-    formDataTypeOptions: [],
-    methodOptions: [],
-    authTypeOptions: [],
-    parameters: [] as ParamsItem[],
-    requestBody: {} as RequestBodyParam,
-    headerList: [] as ParamsItem[],
-    cookieList: [] as ParamsItem[],
-    assertions: [] as any[],
-    secured: false,
-    publishFlag: false
-  });
+ 
 
   // Request setting
   const setting = ref<RequestSetting>({

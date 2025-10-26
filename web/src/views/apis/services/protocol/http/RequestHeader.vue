@@ -95,11 +95,48 @@ const parameterNameInputProps = {
 };
 
 // Use parameter manager methods
-const handleEnterKeyPress = parameterManager.handleEnterKeyPress.bind(parameterManager);
-const handleParameterValueBlur = parameterManager.handleParameterValueBlur.bind(parameterManager);
-const handleModelSelection = parameterManager.handleModelSelection.bind(parameterManager);
-const handleFormFieldBlur = parameterManager.handleFormFieldBlur.bind(parameterManager);
-const handleCheckboxChange = parameterManager.handleCheckboxChange.bind(parameterManager);
+// const handleEnterKeyPress = () => {
+//   parameterManager.handleEnterKeyPress.bind(parameterManager);
+//   // emitChangeToParent();
+// };
+
+const handleEnterKeyPress = (event: any) => {
+  parameterManager.handleEnterKeyPress(event);
+  // emitChangeToParent();
+};
+// const handleParameterValueBlur = () => {
+//   parameterManager.handleParameterValueBlur.bind(parameterManager);
+//   // emitChangeToParent();
+// };
+const handleParameterValueBlur = (event: any, index: number, parameterData: ParamsInfo) => {
+  parameterManager.handleParameterValueBlur(event, index, parameterData);
+  emitChangeToParent();
+};
+// const handleModelSelection = () => {
+//   parameterManager.handleModelSelection.bind(parameterManager);
+//   // emitChangeToParent();
+// };
+const handleModelSelection = (value: any, option: any, index: number) => {
+  parameterManager.handleModelSelection(value, option, index);
+  emitChangeToParent();
+}; 
+
+const handleFormFieldBlur = (event: any, index: number, parameterData: ParamsInfo, fieldKey: string) => {
+  parameterManager.handleFormFieldBlur(event, index, parameterData, fieldKey);
+  emitChangeToParent();
+};
+
+// const handleCheckboxChange = () => {
+//   parameterManager.handleCheckboxChange.bind(parameterManager);
+//   // emitChangeToParent();
+// };
+
+const handleCheckboxChange = (event: any, index: number, parameterData: ParamsInfo) => {
+  parameterManager.handleCheckboxChange(event, index, parameterData);
+  emitChangeToParent();
+};
+
+
 const copyParameterValue = parameterManager.copyParameterValue.bind(parameterManager);
 
 /**

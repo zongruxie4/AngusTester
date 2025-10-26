@@ -12,7 +12,7 @@ import { HTTP_HEADERS } from '@/utils/constant';
  * Manages various API parameters including query, path, headers, and cookies.
  * </p>
  */
-export function useParameterManager () {
+export function useParameterManager (state: any) {
   const { valueKey, enabledKey } = API_EXTENSION_KEY;
 
   // Parameter state
@@ -23,15 +23,15 @@ export function useParameterManager () {
   const contentType = ref<string | null>(null);
 
   // Computed
-  const parametersNum = computed(() => parameters.value.length);
+  const parametersNum = computed(() => state.parameters.length);
   const headerCount = computed(() => {
-    let base = headerList.value.filter(i => !!i.name).length;
+    let base = state.headerList.filter(i => !!i.name).length;
     if (contentType.value) {
       base += 1;
     }
     return base;
   });
-  const cookieCount = computed(() => cookieList.value.filter(i => !!i.name).length);
+  const cookieCount = computed(() => state.cookieList.filter(i => !!i.name).length);
 
   /**
    * Update parameter list
@@ -41,7 +41,8 @@ export function useParameterManager () {
    * @param data - New parameter list
    */
   const changeParamList = (data: ParamsItem[]): void => {
-    parameters.value = data.filter(i => !!i.name || !!i[valueKey]);
+    // parameters.value = data.filter(i => !!i.name || !!i[valueKey]);
+    state.parameters = data.filter(i => !!i.name || !!i[valueKey]);
   };
 
   /**
@@ -52,7 +53,7 @@ export function useParameterManager () {
    * @param data - New header list
    */
   const changeHeaderList = (data: ParamsItem[]): void => {
-    headerList.value = data;
+    state.headerList = data;
   };
 
   /**
@@ -63,7 +64,7 @@ export function useParameterManager () {
    * @param data - New cookie list
    */
   const changeCookieList = (data: ParamsItem[]): void => {
-    cookieList.value = data;
+    state.cookieList = data;
   };
 
   /**
@@ -74,7 +75,7 @@ export function useParameterManager () {
    * @param data - New request body data
    */
   const changeRequestBody = (data: RequestBodyParam): void => {
-    requestBody.value = data;
+    state.requestBody = data;
   };
 
   /**
@@ -211,10 +212,14 @@ export function useParameterManager () {
    * </p>
    */
   const resetParameterState = () => {
-    parameters.value = [];
-    headerList.value = [];
-    cookieList.value = [];
-    requestBody.value = {};
+    // parameters.value = [];
+    // headerList.value = [];
+    // cookieList.value = [];
+    // requestBody.value = {};
+    state.parameters = [];
+    state.headerList = [];
+    state.cookieList = [];
+    state.requestBody = {};
     contentType.value = null;
   };
 

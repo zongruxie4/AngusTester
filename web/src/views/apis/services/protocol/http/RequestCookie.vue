@@ -46,11 +46,26 @@ const jsonContentRefs = ref<any[]>([]);
 const parameterManager = ParameterUtils.createManager(componentState, jsonContentRefs.value, apiBaseInfo);
 
 // Use parameter manager methods
-const handleEnterKeyPress = parameterManager.handleEnterKeyPress.bind(parameterManager);
-const handleParameterValueBlur = parameterManager.handleParameterValueBlur.bind(parameterManager);
-const handleModelSelection = parameterManager.handleModelSelection.bind(parameterManager);
-const handleFormFieldBlur = parameterManager.handleFormFieldBlur.bind(parameterManager);
-const handleCheckboxChange = parameterManager.handleCheckboxChange.bind(parameterManager);
+const handleEnterKeyPress = (event: any) => {
+  parameterManager.handleEnterKeyPress(event);
+  // emitChangeToParent();
+};
+const handleParameterValueBlur = (event: any, index: number, parameterData: ParamsInfo) => {
+  parameterManager.handleParameterValueBlur(event, index, parameterData);
+  emitChangeToParent();
+};
+const handleModelSelection = (value: any, option: any, index: number) => {
+  parameterManager.handleModelSelection(value, option, index);
+  emitChangeToParent();
+};
+const handleFormFieldBlur = (event: any, index: number, parameterData: ParamsInfo, fieldKey: string) => {
+  parameterManager.handleFormFieldBlur(event, index, parameterData, fieldKey);
+  emitChangeToParent();
+};
+const handleCheckboxChange = (event: any, index: number, parameterData: ParamsInfo) => {
+  parameterManager.handleCheckboxChange(event, index, parameterData);
+  emitChangeToParent();
+};
 const copyParameterValue = parameterManager.copyParameterValue.bind(parameterManager);
 
 /**
@@ -71,10 +86,17 @@ const addDefaultParameter = () => {
 };
 
 // Use parameter manager methods
-const changeParameterDataType = parameterManager.changeParameterDataType.bind(parameterManager);
-const handleParameterDeletion = (index: number, parameterData: ParamsInfo) =>
+const changeParameterDataType = (dataType: string, index: number, parameterItem: ParamsInfo) => {
+  parameterManager.changeParameterDataType(dataType, index, parameterItem);
+  emitChangeToParent();
+};
+const handleParameterDeletion = (index: number, parameterData: ParamsInfo) => {
   parameterManager.handleParameterDeletion(index, parameterData, emitChangeToParent);
-const addChildParameter = parameterManager.addChildParameter.bind(parameterManager);
+};
+const addChildParameter = (parentItem: ParamsInfo, index: number) => {
+  parameterManager.addChildParameter(parentItem, index);
+  emitChangeToParent();
+};
 const updateParameterData = (index: number, parameterData: ParamsInfo) => {
   parameterManager.updateParameterData(index, parameterData);
   if (componentState.formData.every(item => !!item.name)) {

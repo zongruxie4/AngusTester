@@ -12,8 +12,9 @@ import { SchemaType, SchemaFormat } from '@/types/openapi-types';
 import  { services } from '@/api/tester';
 import assertUtils from '@/utils/assertutils';
 
+
 import { getServerData, ServerInfo } from '@/views/apis/server/types';
-import { RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/types';
+import { RequestBodyParam, rawTypeOptions } from '@/views/apis/services/protocol/http/requestBody/types';
 import { ParamsItem } from '@/views/apis/services/protocol/types';
 import { AuthenticationItem } from '@/views/apis/services/protocol/http/Authorization';
 import { RequestSetting } from '@/views/apis/services/protocol/http/types';
@@ -240,7 +241,6 @@ export function useRequestHandler () {
     onHttpResponse: (resp: any, request: any) => Promise<void>,
     openToolBar: () => void
   ) => {
-    debugger;
     // 处理请求取消（如果已在进行中）
     if (loading.value) {
       handleAbort();
@@ -555,6 +555,8 @@ export function useRequestHandler () {
         assertions,
         variableValues
       });
+      loading.value = false;
+      openToolBar();
     } else if (ws.readyState !== 1) {
       // Handle WebSocket connection error
       loading.value = false;

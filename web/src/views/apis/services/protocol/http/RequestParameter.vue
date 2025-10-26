@@ -69,14 +69,31 @@ const emitChangeToParent = () => {
 };
 
 // Use parameter manager methods
-const handleEnterKeyPress = parameterManager.handleEnterKeyPress.bind(parameterManager);
-const handleParameterValueBlur = parameterManager.handleParameterValueBlur.bind(parameterManager);
-const handleModelSelection = parameterManager.handleModelSelection.bind(parameterManager);
+const handleEnterKeyPress = (event: any) => {
+  parameterManager.handleEnterKeyPress(event);
+};
+const handleParameterValueBlur = (event: any, index: number, parameterData: ParamsInfo) => {
+  parameterManager.handleParameterValueBlur(event, index, parameterData);
+  emitChangeToParent();
+};
+const handleModelSelection = (value: any, option: any, index: number) => {
+  parameterManager.handleModelSelection(value, option, index);
+  emitChangeToParent();
+};
 
 // Use parameter manager methods
-const changeParameterDataType = parameterManager.changeParameterDataType.bind(parameterManager);
-const handleFormFieldBlur = parameterManager.handleFormFieldBlur.bind(parameterManager);
-const handleCheckboxChange = parameterManager.handleCheckboxChange.bind(parameterManager);
+const changeParameterDataType = (dataType: string, index: number, parameterItem: ParamsInfo) => {
+  parameterManager.changeParameterDataType(dataType, index, parameterItem);
+  emitChangeToParent();
+};
+const handleFormFieldBlur = (event: any, index: number, parameterData: ParamsInfo, fieldKey: string) => {
+  parameterManager.handleFormFieldBlur(event, index, parameterData, fieldKey);
+  emitChangeToParent();
+};
+const handleCheckboxChange = (event: any, index: number, parameterData: ParamsInfo) => {
+  parameterManager.handleCheckboxChange(event, index, parameterData);
+  emitChangeToParent();
+};
 const copyParameterValue = parameterManager.copyParameterValue.bind(parameterManager);
 
 /**
