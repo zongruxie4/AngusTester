@@ -88,18 +88,19 @@ const validationRules: any = {
     ref="formRef"
     :model="webSocketConfig"
     labelAlign="left"
+    layout="vertical"
     :labelCol="{span: 22}"
     :rules="validationRules">
     <FormItem name="connectTimeout">
       <template #label>
-        <p class="text-3">{{ t('common.description') }}</p>
+        <p class="text-3">{{ t('service.webSocketSetting.form.connectTimeout.label') }}<span class="text-gray-text">({{ t('service.webSocketSetting.form.connectTimeout.description') }})</span></p>
       </template>
       <Input
         v-model:value="webSocketConfig.connectTimeout"
         :maxlength="40"
         :allowClear="false"
         dataType="number"
-        class="rounded"
+        class="rounded w-80"
         :placeholder="t('service.webSocketSetting.form.connectTimeout.placeholder')">
         <template #suffix>
           <span>ms</span>
@@ -108,7 +109,7 @@ const validationRules: any = {
     </FormItem>
     <FormItem name="maxReconnections">
       <template #label>
-        <p class="text-3">{{ t('common.description') }}</p>
+        <p class="text-3">{{ t('service.webSocketSetting.form.maxReconnections.label') }}<span class="text-gray-text">({{ t('service.webSocketSetting.form.maxReconnections.description') }})</span></p>
       </template>
       <Input
         v-model:value="webSocketConfig.maxReconnections"
@@ -116,16 +117,16 @@ const validationRules: any = {
         :min="0"
         :allowClear="false"
         dataType="number"
-        class="rounded"
+        class="rounded  w-80"
         :placeholder="t('service.webSocketSetting.form.maxReconnections.placeholder')" />
     </FormItem>
     <FormItem name="reconnectionInterval">
       <template #label>
-        <p class="text-3">{{ t('common.description') }}</p>
+        <p class="text-3">{{ t('service.webSocketSetting.form.reconnectionInterval.label') }}<span class="text-gray-text">({{ t('service.webSocketSetting.form.reconnectionInterval.description') }})</span></p>
       </template>
       <Input
         v-model:value="webSocketConfig.reconnectionInterval"
-        class="rounded-border"
+        class="rounded-border w-80"
         dataType="number"
         :placeholder="t('service.webSocketSetting.form.reconnectionInterval.placeholder')"
         :allowClear="false">

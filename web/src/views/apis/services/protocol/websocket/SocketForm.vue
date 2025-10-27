@@ -345,7 +345,7 @@ defineExpose({
             v-else
             v-model:value="parameter.name"
             size="small"
-            :placeholder="t('common.enterParameterName')"
+            :placeholder="t('common.placeholders.enterParameterName')"
             class="flex-1"
             dataType="mixin-en"
             @blur="handleFormFieldBlur" />
@@ -361,7 +361,7 @@ defineExpose({
           :value="String(parameter[valueKey] || '')"
           size="small"
           class="flex-1 min-w-15"
-          :placeholder="t('common.enterParameterValue')"
+          :placeholder="t('common.placeholders.enterParameterValue')"
           :maxLength="0"
           @blur="handleParameterValueBlur($event, index, parameter)" />
         <Input
