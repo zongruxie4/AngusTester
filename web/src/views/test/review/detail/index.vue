@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, onUnmounted, ref, wa
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, TabPane, Tabs, Tag } from 'ant-design-vue';
 import {
-  AsyncComponent, Icon, Image, Input, modal, notification, ReviewStatus as ReviewStatusView, Spin, Table
+  AsyncComponent, Icon, Image, Input, modal, notification, Spin, Table
 } from '@xcan-angus/vue-ui';
 import { appContext, download, duration, enumUtils, SearchCriteria, ReviewStatus } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
@@ -17,6 +17,7 @@ import { BasicProps } from '@/types/types';
 import { ReviewCaseDetail, ReviewDetail } from '@/views/test/review/types';
 
 // Component imports
+import ReviewStatusView from '@/components/test/ReviewStatus.vue';
 import RichEditor from '@/components/editor/richEditor/index.vue';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';

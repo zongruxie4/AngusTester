@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button, Switch, Tag } from 'ant-design-vue';
 import {
   Colon, Dropdown, DropdownGroup, DropdownSort, Icon, IconCount,
-  IconRefresh, Input, ReviewStatus, SearchPanel, Select, Tooltip
+  IconRefresh, Input, SearchPanel, Select, Tooltip
 } from '@xcan-angus/vue-ui';
 import {
   duration, EnumMessage, enumUtils, NumberCompareCondition,
@@ -17,6 +17,7 @@ import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { CaseTestResult } from '@/enums/enums';
 import { CaseViewMode } from '@/views/test/case/types';
 
+import ReviewStatus from '@/components/test/ReviewStatus.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';
 import TestResult from '@/components/test/TestResult.vue';
 
