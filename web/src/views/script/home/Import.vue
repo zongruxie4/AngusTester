@@ -50,7 +50,7 @@ const {
   fileEmptyFlag,
   errorFlag,
   rules
-} = useScriptImport();
+} = useScriptImport(props);
 
 /**
  * Handle OK action

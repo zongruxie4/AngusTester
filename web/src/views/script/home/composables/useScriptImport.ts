@@ -6,10 +6,10 @@ import { useI18n } from 'vue-i18n';
 /**
  * Composable for managing script import functionality
  */
-export function useScriptImport () {
+export function useScriptImport (props:{projectId:string}) {
   const { t } = useI18n();
 
-  const projectId = ref('');
+  const projectId = ref(props.projectId);
 
   // Form state
   const formState = ref<{

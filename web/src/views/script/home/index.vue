@@ -24,7 +24,7 @@ const router = useRouter();
 // Injected values
 const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
-const projectId = computed(() => projectInfo.value?.id);
+const projectId = computed(() => projectInfo.value?.id );
 const appInfo = ref(appContext.getAccessApp());
 
 // Computed values with proper type conversion
@@ -58,7 +58,7 @@ const {
 const {
   importProjectId,
   handleImport
-} = useScriptImport();
+} = useScriptImport({ projectId: projectId.value });
 
 // Modal visibility states
 const importVisible = ref(false);
@@ -118,7 +118,7 @@ const permissionsMapForProps = computed((): { [key: string]: ScriptPermission[] 
 });
 
 // Watch for project ID changes with better error handling
-watch(projectId, (newId, oldId) => {
+watch(() => projectId.value, (newId, oldId) => {
   // Only load data if we have a valid project ID and it's different from the previous one
   if (newId && newId !== '' && newId !== oldId) {
     dataProjectId.value = newId;

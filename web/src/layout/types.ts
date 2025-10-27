@@ -11,15 +11,15 @@ export interface LeftMenuItem<T> {
  * Project information interface
  */
 export interface ProjectInfo {
-  id: number;
+  id: string;
   avatar: string;
   name: string;
   type: EnumMessage<ProjectType>;
-  ownerId: number;
+  ownerId: string;
   description: string;
-  createdBy: number;
+  createdBy: string;
   createdDate: string;
-  lastModifiedBy: number;
+  lastModifiedBy: string;
   lastModifiedDate: string;
 }
 
@@ -27,11 +27,11 @@ export interface ProjectInfo {
  * Simplified project info for display
  */
 export interface ProjectDisplayInfo {
-  id: number;
+  id: string;
   avatar?: string;
   name: string;
-  createdBy?: number;
-  ownerId?: number;
+  createdBy?: string;
+  ownerId?: string;
   type?: EnumMessage<ProjectType>;
 }
 
