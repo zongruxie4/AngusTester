@@ -45,7 +45,7 @@ export function useExecutionList () {
   const letterMap = {
     ms: t('execution.letterMap.ms'),
     s: t('execution.letterMap.s'),
-    min: t('chart.min'),
+    min: t('execution.letterMap.min'),
     h: t('execution.letterMap.h'),
     d: t('execution.letterMap.d')
   };
