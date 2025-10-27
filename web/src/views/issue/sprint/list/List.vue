@@ -158,7 +158,7 @@ const getSprintStatusDotStyle = (statusValue: string) => {
                 <div class="flex flex-col">
                   <span class="text-xs text-theme-sub-content">{{ t('common.members') }}</span>
                   <span class="text-sm font-medium text-theme-content">
-                    {{ item.members?.length || 0 }} {{ t('common.unit.user') }}
+                    {{ item.members?.length || 0 }} {{ t('unit.user') }}
                   </span>
                 </div>
                 <div class="flex -space-x-1">
