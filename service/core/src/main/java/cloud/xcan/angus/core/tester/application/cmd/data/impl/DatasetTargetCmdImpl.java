@@ -73,7 +73,7 @@ public class DatasetTargetCmdImpl extends CommCmd<DatasetTarget, Long> implement
         // Check the target quota
         List<Long> datasetIdsDb = datasetTargetRepo.findByDatasetIdByTargetIdAndType(
             targetId, targetType);
-        datasetIds.removeAll(datasetIdsDb);
+        datasetIdsDb.forEach(datasetIds::remove);
         if (isNotEmpty(datasetIds)) {
           datasetTargetQuery.checkTargetQuota(datasetIdsDb.size(), targetId, type);
         }

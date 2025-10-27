@@ -88,8 +88,7 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
 
   @Override
   public List<IdKey<Long, Object>> add(List<FuncCaseAddDto> dto) {
-    List<FuncCase> cases = dto.stream().map(FuncCaseAssembler::addDtoToDomain)
-        .toList();
+    List<FuncCase> cases = dto.stream().map(FuncCaseAssembler::addDtoToDomain).toList();
     return funcCaseCmd.add(cases);
   }
 

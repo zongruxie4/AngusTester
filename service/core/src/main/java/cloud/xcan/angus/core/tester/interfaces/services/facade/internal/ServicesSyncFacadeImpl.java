@@ -56,8 +56,7 @@ public class ServicesSyncFacadeImpl implements ServicesSyncFacade {
   @Override
   public List<ServicesSyncDetailVo> list(Long serviceId) {
     List<ServicesSync> syncs = servicesSyncQuery.find(serviceId);
-    return isEmpty(syncs) ? null : syncs.stream().map(ServicesSyncAssembler::toDetailVo)
-        .toList();
+    return isEmpty(syncs) ? null : syncs.stream().map(ServicesSyncAssembler::toDetailVo).toList();
   }
 
 }

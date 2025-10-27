@@ -81,8 +81,7 @@ public class ScenarioFacadeImpl implements ScenarioFacade {
   @NameJoin
   @Override
   public List<ScenarioListVo> list(Set<Long> ids) {
-    return scenarioQuery.findByIds(ids).stream().map(ScenarioAssembler::toListVo)
-        .toList();
+    return scenarioQuery.findByIds(ids).stream().map(ScenarioAssembler::toListVo).toList();
   }
 
   @NameJoin

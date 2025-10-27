@@ -74,7 +74,7 @@ public class VariableTargetCmdImpl extends CommCmd<VariableTarget, Long> impleme
         // Check the target quota
         List<Long> variableIdsDb = variableTargetRepo.findByVariableIdByTargetIdAndType(
             targetId, targetType);
-        variableIds.removeAll(variableIdsDb);
+        variableIdsDb.forEach(variableIds::remove);
         if (isNotEmpty(variableIds)) {
           variableTargetQuery.checkTargetQuota(variableIdsDb.size(), targetId, type);
         }

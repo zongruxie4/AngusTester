@@ -826,7 +826,8 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
           // Filter out existing parameters with the same names and add new ones
           List<Parameter> finalParameters = apis.getParameters().stream()
-              .filter(x -> !addParameterNames.contains(x.getName())).toList();
+              .filter(x -> !addParameterNames.contains(x.getName()))
+              .collect(Collectors.toList());
           finalParameters.addAll(parameters);
           apis.setParameters(finalParameters);
         }

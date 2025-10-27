@@ -48,6 +48,7 @@ import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.NameJoin;
+import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.biz.exception.QuotaException;
 import cloud.xcan.angus.core.event.EventSender;
 import cloud.xcan.angus.core.event.source.EventContent;
@@ -814,7 +815,7 @@ public class ApisQueryImpl implements ApisQuery {
    */
   @Override
   public void checkOwnerExist(Collection<Apis> apis) {
-    List<Long> ids = apis.stream().map(Apis::getOwnerId).toList();
+    List<Long> ids = apis.stream().map(Apis::getOwnerId).collect(Collectors.toList());
     if (isNotEmpty(ids)) {
       // Prevent user sync failure after user deletion
       List<Long> userIds = userManager.findUserIdsByIdIn(ids);
