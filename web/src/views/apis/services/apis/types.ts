@@ -106,13 +106,13 @@ export const apiNavs: NavItem[] = [
     auth: ApiPermission.MODIFY,
     disabled: true
   },
-  {
-    icon: 'icon-yongliku',
-    name: t('common.useCase'),
-    value: DrawerType.CASE,
-    auth: ApiPermission.MODIFY,
-    disabled: true
-  },
+  // {
+  //   icon: 'icon-yongliku',
+  //   name: t('common.useCase'),
+  //   value: DrawerType.CASE,
+  //   auth: ApiPermission.MODIFY,
+  //   disabled: true
+  // },
   {
     icon: 'icon-lishijilu',
     name: t('common.activity'),

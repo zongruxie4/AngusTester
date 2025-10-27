@@ -18,7 +18,7 @@ const text = computed(() => {
   }
 
   if (props.value === 'success') {
-    return t('rstatus.passed');
+    return t('status.passed');
   }
 
   if (props.value === 'block') {

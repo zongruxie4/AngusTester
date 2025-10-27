@@ -41,7 +41,7 @@ const caseInfo = computed(() => {
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.info.personnel.fields.addPerson') }}
+          {{ t('common.creator') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseInfo?.createdByName }}
@@ -58,7 +58,7 @@ const caseInfo = computed(() => {
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.info.personnel.fields.lastModifiedPerson') }}
+          {{ t('common.modifier') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseInfo?.lastModifiedByName }}

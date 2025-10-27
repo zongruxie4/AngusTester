@@ -907,6 +907,7 @@
         "testSteps": {
           "title": "Test Steps",
           "fields": {
+            "stepNumber": "Step Number",
             "testStep": "Test Step",
             "expectedResult": "Expected Result"
           }
@@ -927,6 +928,7 @@
       "review": {
         "title": "Review Information",
         "fields": {
+          "isReview": "Is Review",
           "enableReview": "Enable Review",
           "reviewCount": "Review Count",
           "reviewFailCount": "Review Failure Count",
@@ -1412,6 +1414,9 @@
         },
         "stabilityTestResult": {
           "title": "Stability Test",
+          "indicatorsAndResults": "Test Indicators and Results",
+          "stabilityIndicators": "Stability Indicators",
+          "results": "结果",
           "basicInfo": {
             "title": "Test Basic Information",
             "fields": {

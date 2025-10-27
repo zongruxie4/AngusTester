@@ -38,11 +38,11 @@ const DashedLine = defineAsyncComponent(() => import('./dashedLine.vue'));
         <DashedLine />
       </a>
       <a href="#a6" class="flex items-center space-x-2.5">
-        <span>3.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.execPerf.catalog.sections.sampling.throughput') }}</span>
+        <span>3.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.execPerf.catalog.sections.throughput') }}</span>
         <DashedLine />
       </a>
       <a href="#a7" class="flex items-center space-x-2.5">
-        <span>3.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.execPerf.catalog.sections.sampling.concurrency') }}</span>
+        <span>3.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.execPerf.catalog.sections.concurrency') }}</span>
         <DashedLine />
       </a>
       <a href="#a8" class="flex items-center space-x-2.5">
@@ -50,7 +50,7 @@ const DashedLine = defineAsyncComponent(() => import('./dashedLine.vue'));
         <DashedLine />
       </a>
       <a href="#a9" class="flex items-center space-x-2.5">
-        <span>3.4<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.execPerf.catalog.sections.sampling.error') }}</span>
+        <span>3.4<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.execPerf.catalog.sections.error') }}</span>
         <DashedLine />
       </a>
       <!-- <a href="#a10" class="flex items-center space-x-2.5">

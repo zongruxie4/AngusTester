@@ -46,7 +46,7 @@ const len = computed(() => {
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.info.testSteps.fields.step') }}
+          {{ t('reportPreview.functionCase.info.testSteps.fields.testStep') }}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5">

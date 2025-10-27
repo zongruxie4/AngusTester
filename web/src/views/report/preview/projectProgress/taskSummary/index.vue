@@ -159,7 +159,7 @@ const burnDownCharts = computed(() => {
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.projectProgress.taskSummary.summary.fields.oneTimePassedCount') }}
+          {{ t('reportPreview.projectProgress.taskSummary.summary.fields.oneTimePassCount') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ totalOverview?.oneTimePassedNum }}
@@ -169,7 +169,7 @@ const burnDownCharts = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.projectProgress.taskSummary.summary.fields.oneTimePassedRate') }}
+          {{ t('reportPreview.projectProgress.taskSummary.summary.fields.oneTimePassRate') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ oneTimePassedRate }}

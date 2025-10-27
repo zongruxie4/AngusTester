@@ -614,7 +614,7 @@ const sysItems = computed(() => [
     <!-- <NoData v-else size="small" class="my-5"/> -->
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.functionalTest.testCaseResults') }}</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.funcTestResult.caseResultDetail.title') }}</span>
     </li>
 
     <div class="mb-5">
@@ -704,7 +704,7 @@ const sysItems = computed(() => [
     </div>
 
     <h1 class="text-theme-title font-medium mb-3.5 mt-5">
-      <span id="a3.3" class="text-3.5 text-theme-title font-medium">3.3、<em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.stabilityTest.title') }}</span>
+      <span id="a3.3" class="text-3.5 text-theme-title font-medium">3.3、<em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.stabilityTestResult.title') }}</span>
     </h1>
 
     <li class="mb-2">
@@ -731,13 +731,13 @@ const sysItems = computed(() => [
     </div>
     <!-- <NoData v-else size="small" class="my-5"/> -->
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.stabilityTest.indicatorsAndResults') }}</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.stabilityTestResult.indicatorsAndResults') }}</span>
     </li>
 
     <div>
       <div class="flex border border-solid border-border-input bg-blue-table">
-        <div class="flex-1 p-1.5 border-r border-border-input">{{ t('reportPreview.scenario.testResultDetail.stabilityTest.stabilityIndicators') }}</div>
-        <div class="flex-1 p-1.5">{{ t('reportPreview.scenario.testResultDetail.stabilityTest.results') }}</div>
+        <div class="flex-1 p-1.5 border-r border-border-input">{{ t('reportPreview.scenario.testResultDetail.stabilityTestResult.stabilityIndicators') }}</div>
+        <div class="flex-1 p-1.5">{{ t('reportPreview.scenario.testResultDetail.stabilityTestResult.results') }}</div>
       </div>
       <div v-for="stability in indicatorStabilityItem" class="flex border-l border-border-input">
         <div
@@ -777,7 +777,7 @@ const sysItems = computed(() => [
       <div class="flex border-l border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-b border-solid border-border-input">
-          {{ t('reportPreview.scenario.testResultDetail.stabilityTest.systemLoad') }}
+          {{ t('reportPreview.scenario.testResultDetail.stabilityTestResult.systemLoad.title') }}
         </div>
         <div class="flex-1">
           <div
