@@ -112,7 +112,7 @@ const len = computed(() => {
           {{ item.caseName }}
         </div>
         <div class="w-27 px-1.5 py-1.5 break-all whitespace-pre-wrap">
-          {{ item.passed ? t('rstatus.passed') : t('status.failed') }}
+          {{ item.passed ? t('status.passed') : t('status.failed') }}
         </div>
       </div>
     </div>

@@ -615,7 +615,7 @@ const sysItems = [
     </div>
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.testResultDetail.funcTestResult.caseResultDetail.title') }}</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.testResultDetail.functionalTest.testCaseResults') }}</span>
     </li>
 
     <div class="mb-5">

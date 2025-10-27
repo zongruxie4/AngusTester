@@ -224,6 +224,8 @@
     "taskConfig": "Task Config",
     "permission": "Permission",
     "permissionControl": "Permission Control",
+    "storyPoint": "Story Point",
+    "workloadEvalMethod": "Workload Estimation Method",
     "counts": {
       "progress": "Progress",
       "totalCount": "Total",

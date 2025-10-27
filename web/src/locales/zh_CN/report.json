@@ -508,6 +508,7 @@
       },
       "testResultDetail": {
         "title": "场景测试结果详细信息",
+        
         "functionalTest": {
           "title": "功能测试结果",
           "testCaseResults": "测试用例结果明细"
@@ -905,6 +906,7 @@
         "testSteps": {
           "title": "测试步骤",
           "fields": {
+            "stepNumber": "编号",
             "testStep": "测试步骤",
             "expectedResult": "预期结果"
           }
@@ -925,6 +927,7 @@
       "review": {
         "title": "评审信息",
         "fields": {
+          "isReview": "是否评审",
           "enableReview": "是否开启评审",
           "reviewCount": "评审次数",
           "reviewFailCount": "评审失败次数",
@@ -1418,6 +1421,9 @@
         },
         "stabilityTestResult": {
           "title": "稳定性测试",
+          "indicatorsAndResults": "测试指标和结果",
+          "stabilityIndicators": "稳定性指标",
+          "results": "结果",
           "basicInfo": {
             "title": "测试基本信息",
             "fields": {

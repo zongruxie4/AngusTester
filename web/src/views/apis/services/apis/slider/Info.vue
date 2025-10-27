@@ -288,9 +288,9 @@ const columns = computed(() => {
       { label: t('common.lastModifiedDate'), dataIndex: 'lastModifiedDate' },
       { label: t('common.description'), dataIndex: 'description' },
       { label: t('service.groupApiDetail.columns.securityTitle'), dataIndex: 'securityTitle' },
-      { label: 'security', dataIndex: 'security', fullWidthContent: true } as any,
+      { label: '', dataIndex: 'security', fullWidthContent: true } as any,
       { label: t('service.groupApiDetail.columns.externalDocsTitle'), dataIndex: 'externalDocsTitle' },
-      { label: 'externalDocs', dataIndex: 'externalDocs', fullWidthContent: true } as any
+      { label: '', dataIndex: 'externalDocs', fullWidthContent: true } as any
     ].filter(Boolean)
   ];
 });
