@@ -24,6 +24,7 @@ export function useChart (props: ChartProps) {
       left: '35%',
       bottom: '10%',
       padding: 2,
+      subtext: t('common.progress'),
       subtext: t('issueAnalysis.detail.progress.chartTitles.issueProgress'),
       itemGap: 50,
       textAlign: 'center',

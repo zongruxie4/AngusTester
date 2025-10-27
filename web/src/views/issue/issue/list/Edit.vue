@@ -579,7 +579,7 @@ const handleTaskCreation = async (shouldContinue = false) => {
     return;
   }
 
-  notification.success(t('actions.tip.addSuccess'));
+  notification.success(t('actions.tips.addSuccess'));
   emit('ok', res?.data, true);
 
   if (!shouldContinue) {

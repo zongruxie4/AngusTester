@@ -186,7 +186,7 @@ const handleMeetingCreation = async () => {
     return;
   }
 
-  notification.success(t('actions.tip.addSuccess'));
+  notification.success(t('actions.tips.addSuccess'));
 
   const currentTabId = props.data?._id;
   const newMeetingId = response?.data?.id;

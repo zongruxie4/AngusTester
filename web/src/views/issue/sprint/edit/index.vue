@@ -825,7 +825,7 @@ onMounted(() => {
         <SelectUser
           v-model:value="formState.ownerId"
           size="small"
-          :placeholder="t('common.placeholder.selectOwner')"
+          :placeholder="t('common.placeholders.selectOwner')"
           :defaultOptions="ownerSelectionOptions"
           :action="`${TESTER}/project/${props.projectId}/member/user`"
           :maxlength="80" />
