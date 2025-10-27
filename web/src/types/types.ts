@@ -19,7 +19,7 @@ export type DataSourceProps<T> = {
 }
 
 export type BasicProps = {
-  projectId: number;
+  projectId: string;
   projectName?: string;
   userInfo?: { id: number; fullName?: string } | User;
   appInfo?: { id: number; } | AppInfo;

@@ -21,7 +21,7 @@ import {
   errorCvsKeys,
   errorColumns,
   oneApiErrorColumns
-} from '@/plugins/test/components/performanceTestDetailComp/ChartConfig';
+} from '@/plugins/test/components/PerformanceTestDetailComp/ChartConfig';
 // import { getCurrentDuration, splitTime } from '../utils';
 import { getCurrentDuration, splitTime } from '@/plugins/test/components/utils';
 
@@ -63,13 +63,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{(e:'setCountTabKey', value:string):void;}>();
 const TestBasicInfo = defineAsyncComponent(() => import('@/components/test/TestBasicInfo.vue'));
-const AggregateVue = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/Aggregate/index.vue'));
-const StatusCode = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/StatusCode/index.vue'));
-const CountTemplate = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/CountTemplate.vue'));
-const ConterList = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/ConterList/index.vue'));
-const Sampling = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/Sampling.vue'));
-const NodeData = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/NodeData/index.vue'));
-const SuperimposeAnalysis = defineAsyncComponent(() => import('@/plugins/test/components/performanceTestDetailComp/SuperimposeAnalysis/index.vue'));
+const AggregateVue = defineAsyncComponent(() => import('@/plugins/test/components/PerformanceTestDetailComp/Aggregate/index.vue'));
+const StatusCode = defineAsyncComponent(() => import('@/plugins/test/components/PerformanceTestDetailComp/StatusCode/index.vue'));
+const CountTemplate = defineAsyncComponent(() => import('@/plugins/test/components/PerformanceTestDetailComp/CountTemplate.vue'));
+const ConterList = defineAsyncComponent(() => import('@/plugins/test/components/PerformanceTestDetailComp/ConterList/index.vue'));
+const Sampling = defineAsyncComponent(() => import('@/plugins/test/components/PerformanceTestDetailComp/Sampling.vue'));
+const NodeData = defineAsyncComponent(() => import('@/plugins/test/components/PerformanceTestDetailComp/NodeData/index.vue'));
+const SuperimposeAnalysis = defineAsyncComponent(() => import('@/plugins/test/components/PerformanceTestDetailComp/SuperimposeAnalysis/index.vue'));
 
 const nodeDataRef = ref();
 const counTabKey = ref('aggregation');

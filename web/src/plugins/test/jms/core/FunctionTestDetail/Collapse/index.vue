@@ -25,12 +25,12 @@ const props = withDefaults(defineProps<Props>(), {
   execContent: () => []
 });
 
-const TransStart = defineAsyncComponent(() => import('@/plugins/test/components/functionTestDetailComp/TransStart/index.vue'));
-const WaitingTime = defineAsyncComponent(() => import('@/plugins/test/components/functionTestDetailComp/WaitingTime/index.vue'));
-const Throughput = defineAsyncComponent(() => import('@/plugins/test/components/functionTestDetailComp/Throughput/index.vue'));
-const Rendezvous = defineAsyncComponent(() => import('@/plugins/test/components/functionTestDetailComp/Rendezvous/index.vue'));
+const TransStart = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp/TransStart/index.vue'));
+const WaitingTime = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp/WaitingTime/index.vue'));
+const Throughput = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp/Throughput/index.vue'));
+const Rendezvous = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp/Rendezvous/index.vue'));
 const JMS = defineAsyncComponent(() => import('./JMS/index.vue'));
-const TransEnd = defineAsyncComponent(() => import('@/plugins/test/components/functionTestDetailComp/TransEnd/index.vue'));
+const TransEnd = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp/TransEnd/index.vue'));
 
 const UUID = utils.uuid();
 const collapseActiveKey = ref<string>(UUID);
