@@ -13,7 +13,7 @@ const t = I18nInstance?.global?.t || ((value: string): string => value);
 // Grid column configuration for node information display
 export const infoItem = [
   [{
-    label: t('node.list.interface.formItems.name'),
+    label: t('common.name'),
     dataIndex: 'name'
   },
   {
