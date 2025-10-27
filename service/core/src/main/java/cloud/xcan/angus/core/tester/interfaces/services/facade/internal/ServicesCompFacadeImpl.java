@@ -59,8 +59,7 @@ public class ServicesCompFacadeImpl implements ServicesCompFacade {
   public List<ServicesCompDetailVo> listByType(Long serviceId, Set<ServicesCompType> types,
       Set<String> keys, Boolean ignoreModel) {
     List<ServicesComp> comps = servicesCompQuery.listByType(serviceId, types, keys);
-    return isEmpty(comps) ? null : comps.stream()
-        .map(x -> toDetailVo(x, ignoreModel)).toList();
+    return isEmpty(comps) ? null : comps.stream().map(x -> toDetailVo(x, ignoreModel)).toList();
   }
 
   @NameJoin
@@ -68,16 +67,14 @@ public class ServicesCompFacadeImpl implements ServicesCompFacade {
   public List<ServicesCompDetailVo> listByRef(Long serviceId, Set<String> refs,
       Boolean ignoreModel) {
     List<ServicesComp> comps = servicesCompQuery.listByRef(serviceId, refs);
-    return isEmpty(comps) ? null : comps.stream()
-        .map(x -> toDetailVo(x, ignoreModel)).toList();
+    return isEmpty(comps) ? null : comps.stream().map(x -> toDetailVo(x, ignoreModel)).toList();
   }
 
   @NameJoin
   @Override
   public List<ServicesCompDetailVo> listAll(Long serviceId, Boolean ignoreModel) {
     List<ServicesComp> comps = servicesCompQuery.listAll(serviceId);
-    return isEmpty(comps) ? null : comps.stream()
-        .map(x -> toDetailVo(x, ignoreModel)).toList();
+    return isEmpty(comps) ? null : comps.stream().map(x -> toDetailVo(x, ignoreModel)).toList();
   }
 
 }

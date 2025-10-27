@@ -83,8 +83,7 @@ public class ProjectFacadeImpl implements ProjectFacade {
   public List<UserInfo> userMember(Long id) {
     List<UserBase> users = projectQuery.userMember(id);
     return users.stream().map(x -> new UserInfo().setId(x.getId())
-            .setFullName(x.getFullName()).setAvatar(x.getAvatar()))
-        .toList();
+            .setFullName(x.getFullName()).setAvatar(x.getAvatar())).toList();
   }
 
   @Override

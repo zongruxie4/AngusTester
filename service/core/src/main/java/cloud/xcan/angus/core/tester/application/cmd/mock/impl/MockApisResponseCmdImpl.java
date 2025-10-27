@@ -206,8 +206,7 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
     // Delete if it doesn't exist in param
     List<Long> exitedIds = mockApisResponseRepo.findIdsByApisId(apisId);
     if (isNotEmpty(exitedIds)) {
-      List<Long> requestIds = responses.stream().map(MockApisResponse::getId)
-          .toList();
+      List<Long> requestIds = responses.stream().map(MockApisResponse::getId).toList();
       exitedIds.removeAll(requestIds);
       if (isNotEmpty(exitedIds)) {
         mockApisResponseRepo.deleteByIdIn(exitedIds);

@@ -30,13 +30,13 @@ import org.springframework.data.domain.PageRequest;
 
 /**
  * Implementation of unarchived API query operations for personal API management.
- * 
+ *
  * <p>This class provides comprehensive functionality for querying and managing
  * unarchived APIs, including personal API storage, pagination, search, and validation.</p>
- * 
+ *
  * <p>It handles personal API lifecycle management, project association,
  * and user-specific API organization with proper permission validation.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>Unarchived API detail and list queries with pagination</li>
@@ -65,10 +65,10 @@ public class ApisUnarchivedQueryImpl implements ApisUnarchivedQuery {
 
   /**
    * Retrieves detailed unarchived API information.
-   * 
+   *
    * <p>This method fetches detailed information for an unarchived API,
    * ensuring the API belongs to the current user.</p>
-   * 
+   *
    * @param id the unarchived API ID to retrieve details for
    * @return the detailed unarchived API information
    * @throws ResourceNotFound if the API is not found or doesn't belong to current user
@@ -87,10 +87,10 @@ public class ApisUnarchivedQueryImpl implements ApisUnarchivedQuery {
 
   /**
    * Counts unarchived APIs for the current user with optional project filtering.
-   * 
+   *
    * <p>This method returns the total number of unarchived APIs owned by the current user,
    * optionally filtered by project ID.</p>
-   * 
+   *
    * @param projectId the project ID to filter count by (can be null for all projects)
    * @return the total number of unarchived APIs for the current user
    */
@@ -109,13 +109,13 @@ public class ApisUnarchivedQueryImpl implements ApisUnarchivedQuery {
 
   /**
    * Lists unarchived APIs with pagination, filtering, and optional full-text search.
-   * 
+   *
    * <p>This method retrieves unarchived APIs owned by the current user based on
    * specification criteria with support for pagination and optional full-text search.</p>
-   * 
+   *
    * <p>The method validates project member permissions and automatically filters
    * results to show only APIs owned by the current user.</p>
-   * 
+   *
    * @param spec the specification for filtering unarchived APIs
    * @param pageable the pagination and sorting parameters
    * @param fullTextSearch whether to use full-text search
@@ -137,7 +137,7 @@ public class ApisUnarchivedQueryImpl implements ApisUnarchivedQuery {
         // Add current user filter to ensure only user's APIs are returned
         Set<SearchCriteria> criteria = spec.getCriteria();
         criteria.add(SearchCriteria.equal("createdBy", getUserId()));
-        
+
         // Execute search with full-text or standard search
         return fullTextSearch
             ? apisUnarchivedSearchRepo.find(criteria, pageable, ApisUnarchived.class,
@@ -162,7 +162,7 @@ public class ApisUnarchivedQueryImpl implements ApisUnarchivedQuery {
     List<Long> existIds = apisUnarchivedRepo.findApisUnarchiveCreateBy(
         apis.stream().map(ApisUnarchived::getId).collect(Collectors.toSet()), getUserId());
 
-    List<Long> requestIds = apis.stream().map(ApisUnarchived::getId).toList();
+    List<Long> requestIds = apis.stream().map(ApisUnarchived::getId).collect(Collectors.toList());
     requestIds.removeAll(existIds);
     BizAssert.assertTrue(isEmpty(requestIds), APIS_UNARCHIVED_NO_PERMISSION_CODE,
         APIS_UNARCHIVED_NO_PERMISSION_T, new Object[]{requestIds});

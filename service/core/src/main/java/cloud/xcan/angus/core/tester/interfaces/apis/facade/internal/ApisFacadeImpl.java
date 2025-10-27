@@ -56,22 +56,19 @@ public class ApisFacadeImpl implements ApisFacade {
 
   @Override
   public List<IdKey<Long, Object>> archive(List<ApisArchiveDto> dto) {
-    List<Apis> apis = dto.stream().map(ApisAssembler::archiveDtoToDomain)
-        .toList();
+    List<Apis> apis = dto.stream().map(ApisAssembler::archiveDtoToDomain).toList();
     return apisCmd.archive(apis);
   }
 
   @Override
   public void update(List<ApisUpdateDto> dto) {
-    List<Apis> apis = dto.stream().map(ApisAssembler::updateDtoToDomain)
-        .toList();
+    List<Apis> apis = dto.stream().map(ApisAssembler::updateDtoToDomain).toList();
     apisCmd.update(apis, true);
   }
 
   @Override
   public List<IdKey<Long, Object>> replace(List<ApisReplaceDto> dto) {
-    List<Apis> apis = dto.stream().map(ApisAssembler::replaceDtoToDomain)
-        .toList();
+    List<Apis> apis = dto.stream().map(ApisAssembler::replaceDtoToDomain).toList();
     return apisCmd.replace(apis);
   }
 

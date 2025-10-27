@@ -260,8 +260,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
 
       @Override
       protected void checkParams() {
-        updatedApis = mockApis.stream().filter(x -> nonNull(x.getId()))
-            .toList();
+        updatedApis = mockApis.stream().filter(x -> nonNull(x.getId())).toList();
         if (isNotEmpty(updatedApis)) {
           // Check the mock apis exists
           updatedApisDb = mockApisQuery.checkAndFind(mockApis.stream().map(MockApis::getId)
@@ -518,7 +517,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
    * Checks existence, permission, and updates association.
    * <p>
    * Logs association activity.
-   * 
+   *
    * Note: Each mock API can only be associated with one apis.
    */
   @Transactional(rollbackFor = Exception.class)

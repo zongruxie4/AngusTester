@@ -216,8 +216,7 @@ public class TaskFacadeImpl implements TaskFacade {
   @Override
   public List<TaskInfoVo> notAssociatedSubtask(Long id, Long moduleId) {
     List<TaskInfo> caseInfos = taskQuery.notAssociatedSubtask(id, moduleId);
-    return isEmpty(caseInfos) ? null : caseInfos.stream().map(TaskAssembler::toInfoVo)
-        .toList();
+    return isEmpty(caseInfos) ? null : caseInfos.stream().map(TaskAssembler::toInfoVo).toList();
   }
 
   @Override
@@ -234,8 +233,7 @@ public class TaskFacadeImpl implements TaskFacade {
   @Override
   public List<TaskInfoVo> notAssociatedTask(Long id, Long moduleId, TaskType taskType) {
     List<TaskInfo> caseInfos = taskQuery.notAssociatedTaskInTask(id, moduleId, taskType);
-    return isEmpty(caseInfos) ? null : caseInfos.stream().map(TaskAssembler::toInfoVo)
-        .toList();
+    return isEmpty(caseInfos) ? null : caseInfos.stream().map(TaskAssembler::toInfoVo).toList();
   }
 
   @Override
@@ -252,8 +250,7 @@ public class TaskFacadeImpl implements TaskFacade {
   @Override
   public List<FuncCaseListVo> notAssociatedCase(Long id, Long moduleId) {
     List<FuncCaseInfo> caseInfos = funcCaseQuery.notAssociatedCaseInTask(id, moduleId);
-    return isEmpty(caseInfos) ? null : caseInfos.stream().map(FuncCaseAssembler::toListVo)
-        .toList();
+    return isEmpty(caseInfos) ? null : caseInfos.stream().map(FuncCaseAssembler::toListVo).toList();
   }
 
   @Override
