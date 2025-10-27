@@ -188,6 +188,10 @@ const saveApiInfo = async () => {
     if (error) {
       return;
     }
+    // Refresh unarchived list if needed
+    if (isUnarchivedApi.value) {
+      refreshUnarchived();
+    }
 
     // Update parent component with new API info
     setApiInfo({
@@ -196,11 +200,6 @@ const saveApiInfo = async () => {
       ownerId,
       serviceId
     });
-
-    // Refresh unarchived list if needed
-    if (isUnarchivedApi.value) {
-      refreshUnarchived();
-    }
 
     notification.success(t('actions.tips.saveSuccess'));
     handleClose();
