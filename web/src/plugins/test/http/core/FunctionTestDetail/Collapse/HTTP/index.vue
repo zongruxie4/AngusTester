@@ -23,11 +23,11 @@ const props = withDefaults(defineProps<Props>(), {
   ignoreAssertions: undefined
 });
 
-const RequestHeaders = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp/RequestHeaders/index.vue'));
-const RequestBody = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp/RequestBody/index.vue'));
-const ResponseBody = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp/ResponseBody/index.vue'));
-const TimeLine = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp/TimeLine/index.vue'));
-const AssertionsResult = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp/AssertionsResult/index.vue'));
+const RequestHeaders = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp_/RequestHeaders/index.vue'));
+const RequestBody = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp_/RequestBody/index.vue'));
+const ResponseBody = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp_/ResponseBody/index.vue'));
+const TimeLine = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp_/TimeLine/index.vue'));
+const AssertionsResult = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp_/AssertionsResult/index.vue'));
 
 const setGlobalTabActiveKey = inject<(key:'executeConfig')=>void>('setGlobalTabActiveKey');
 
