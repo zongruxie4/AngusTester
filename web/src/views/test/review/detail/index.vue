@@ -676,7 +676,7 @@ onUnmounted(() => {
                     ...pagination,
                     showSizeChanger: true,
                     showQuickJumper: true,
-                    showTotal: (total, range) => `${range[0]}-${range[1]} / ${total} t('pagination.items')`
+                    showTotal: (total, range) => `${range[0]}-${range[1]} / ${total} ${ t('pagination.items') }`
                   }"
                   class="review-case-table"
                   @change="changePage">
