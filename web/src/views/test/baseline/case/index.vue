@@ -65,13 +65,13 @@ onMounted(() => {
       <TabPane key="baselinecase" :tab="t('testCaseBaseline.case.baselineCases')">
         <BaselineCaseList
           v-bind="props"
-          :baselineId="Number(props.data?.id)"
+          :baselineId="props.data?.id"
           :planId="currentPlanId" />
       </TabPane>
       <TabPane key="baselineCompare" :tab="t('testCaseBaseline.case.baselineCompare')">
         <BaselineCompare
           v-bind="props"
-          :baselineId="Number(props.data?.id)"
+          :baselineId="props.data?.id"
           :planId="currentPlanId" />
       </TabPane>
     </Tabs>

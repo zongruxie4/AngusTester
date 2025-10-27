@@ -10,7 +10,7 @@ export interface VisibleProps {
 }
 
 export type BaseProps = {
-  id: number;
+  id: string;
   notify?: string;
 }
 
@@ -24,7 +24,7 @@ export type BasicProps = {
   userInfo?: { id: number; fullName?: string } | User;
   appInfo?: { id: number; } | AppInfo;
   total?: 0,
-  userId?: number,
+  userId?: string,
   notify?: string;
   onShow?: boolean;
   disabled?: false,
@@ -32,6 +32,7 @@ export type BasicProps = {
   deletedNotify?: string;
   params?: any
   data?: Record<string, string>;
+  baselineId?: string;
 }
 
 export type BasicDataSourceProps<T> = {
