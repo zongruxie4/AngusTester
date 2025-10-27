@@ -114,6 +114,10 @@
         "generateSuccess": "生成测试脚本成功，请在\"脚本\"中查看详情",
         "updateSuccess": "更新测试脚本成功，请在\"脚本\"中查看详情",
         "testForm": {
+          "basicConfig": "基本配置",
+          "performanceConfig": "性能配置",
+          "stabilityConfig": "稳定性配置",
+          "advancedConfig": "高级配置",
           "concurrentThreads": "并发数（线程）",
           "executionTime": "执行时间",
           "rampUpThreads": "增压并发数",
@@ -199,7 +203,10 @@
       "generateSuccess": "生成任务成功",
       "validation": {
         "testTypeRequired": "请选择测试类型"
-      }
+      },
+      "basicConfig": "基本配置",
+      "testTaskConfig": "测试任务配置",
+      "testType": "测试类型"
     },
     "delTaskTestModal": {
       "title": "删除测试任务",

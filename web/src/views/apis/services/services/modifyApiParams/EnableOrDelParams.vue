@@ -31,7 +31,7 @@ defineExpose({
       <Input
         v-model:value="names[idx]"
         class="w-60"
-        :placeholder="t('service.service.batchModifyApi.paramsNamePlaceholder')" />
+        :placeholder="t('service.service.batchModifyModal.paramsNamePlaceholder')" />
 
       <Button
         size="small"

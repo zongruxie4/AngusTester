@@ -165,11 +165,11 @@ defineExpose({
       class="test-form">
       <!-- Basic configuration section -->
       <div class="form-section">
-        <h4 class="section-subtitle">{{ t('commonComp.genTestScriptModal.testForm.basicConfig') }}</h4>
+        <h4 class="section-subtitle">{{ t('commonComp.apis.genTestScriptModal.testForm.basicConfig') }}</h4>
 
         <!-- Concurrent threads -->
         <FormItem
-          :label="t('commonComp.genTestScriptModal.testForm.concurrentThreads')"
+          :label="t('commonComp.apis.genTestScriptModal.testForm.concurrentThreads')"
           required
           class="form-item">
           <Input
@@ -200,7 +200,7 @@ defineExpose({
         <!-- Execution time (for performance/stability tests) -->
         <template v-else>
           <FormItem
-            :label="t('commonComp.genTestScriptModal.testForm.executionTime')"
+            :label="t('commonComp.apis.genTestScriptModal.testForm.executionTime')"
             required
             class="form-item">
             <ShortDuration
@@ -217,11 +217,11 @@ defineExpose({
       <!-- Performance-specific configuration -->
       <template v-if="props.testType === TestType.PERFORMANCE">
         <div class="form-section">
-          <h4 class="section-subtitle">{{ t('commonComp.genTestScriptModal.testForm.performanceConfig') }}</h4>
+          <h4 class="section-subtitle">{{ t('commonComp.apis.genTestScriptModal.testForm.performanceConfig') }}</h4>
 
           <!-- Ramp-up threads -->
           <FormItem
-            :label="t('commonComp.genTestScriptModal.testForm.rampUpThreads')"
+            :label="t('commonComp.apis.genTestScriptModal.testForm.rampUpThreads')"
             class="form-item">
             <div class="input-with-tooltip">
               <Input
@@ -229,7 +229,7 @@ defineExpose({
                 class="form-input" />
               <Tooltip placement="rightTop">
                 <template #title>
-                  {{ t('commonComp.genTestScriptModal.testForm.rampUpTooltip') }}
+                  {{ t('commonComp.apis.genTestScriptModal.testForm.rampUpTooltip') }}
                 </template>
                 <Icon
                   icon="icon-tishi1"
@@ -240,7 +240,7 @@ defineExpose({
 
           <!-- Ramp-up duration -->
           <FormItem
-            :label="t('commonComp.genTestScriptModal.testForm.rampUpDuration')"
+            :label="t('commonComp.apis.genTestScriptModal.testForm.rampUpDuration')"
             class="form-item">
             <ShortDuration
               v-model:value="formData.rampUpInterval"
@@ -255,11 +255,11 @@ defineExpose({
 
       <!-- Advanced configuration section -->
       <div class="form-section">
-        <h4 class="section-subtitle">{{ t('commonComp.genTestScriptModal.testForm.advancedConfig') }}</h4>
+        <h4 class="section-subtitle">{{ t('commonComp.apis.genTestScriptModal.testForm.advancedConfig') }}</h4>
 
         <!-- Ignore assertions -->
         <FormItem
-          :label="t('commonComp.genTestScriptModal.testForm.ignoreAssertions')"
+          :label="t('commonComp.apis.genTestScriptModal.testForm.ignoreAssertions')"
           class="form-item">
           <div class="switch-with-tooltip">
             <Switch
@@ -267,7 +267,7 @@ defineExpose({
               size="small" />
             <Tooltip placement="rightTop">
               <template #title>
-                {{ t('commonComp.genTestScriptModal.testForm.ignoreAssertionsTooltip') }}
+                {{ t('commonComp.apis.genTestScriptModal.testForm.ignoreAssertionsTooltip') }}
               </template>
               <Icon
                 icon="icon-tishi1"
@@ -278,7 +278,7 @@ defineExpose({
 
         <!-- Update test result -->
         <FormItem
-          :label="t('commonComp.genTestScriptModal.testForm.updateTestResult')"
+          :label="t('commonComp.apis.genTestScriptModal.testForm.updateTestResult')"
           class="form-item">
           <div class="switch-with-tooltip">
             <Switch
@@ -286,7 +286,7 @@ defineExpose({
               size="small" />
             <Tooltip placement="rightTop">
               <template #title>
-                {{ t('commonComp.genTestScriptModal.testForm.updateTestResultTooltip') }}
+                {{ t('commonComp.apis.genTestScriptModal.testForm.updateTestResultTooltip') }}
               </template>
               <Icon
                 icon="icon-tishi1"
@@ -323,7 +323,7 @@ defineExpose({
               size="small" />
             <Tooltip placement="rightTop">
               <template #title>
-                {{ t('commonComp.genTestScriptModal.testForm.authControlTooltip') }}
+                {{ t('commonComp.apis.genTestScriptModal.testForm.authControlTooltip') }}
               </template>
               <Icon
                 icon="icon-tishi1"

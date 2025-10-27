@@ -86,7 +86,7 @@ watch(() => props.visible, () => {
 <template>
   <Modal
     class="delete-script-modal"
-    :title="t('commonComp.delScriptModal.title')"
+    :title="t('commonComp.apis.delScriptModal.title')"
     :confirmLoading="loading"
     :visible="visible"
     :width="500"
@@ -104,7 +104,7 @@ watch(() => props.visible, () => {
             class="script-type-checkboxes" />
         </div>
         <div v-show="validated && !checked.length" class="validation-error">
-          {{ t('commonComp.delScriptModal.selectScriptType') }}
+          {{ t('commonComp.apis.delScriptModal.selectScriptType') }}
         </div>
       </div>
     </div>

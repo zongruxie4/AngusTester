@@ -78,6 +78,9 @@ export function useProjectData () {
     const localTarget = list.find(item => item.id === localId);
     if (localTarget) {
       currentProject.value = list.find(item => item.id === localId);
+      if (currentProject.value && !currentProject.value?.type) {
+        currentProject.value.type = { value: ProjectType.AGILE, message: 'Agile' };
+      }
       currentProjectId.value = currentProject.value?.id;
     } else {
       selectProject(list[0]);
@@ -90,6 +93,9 @@ export function useProjectData () {
   const selectProject = (project: ProjectInfo): void => {
     const { id, avatar, name, createdBy, ownerId, type } = project;
     currentProject.value = { id, avatar, name, createdBy, ownerId, type };
+    if (currentProject.value && !currentProject.value?.type) {
+      currentProject.value.type = { value: ProjectType.AGILE, message: 'Agile' };
+    }
     currentProjectId.value = currentProject.value?.id;
     localStore.set(PROJECT_ID_STORE_KEY, id);
   };
@@ -119,6 +125,9 @@ export function useProjectData () {
 
     const { avatar, id, name, createdBy, ownerId, type } = data;
     currentProject.value = { avatar, id, name, createdBy, ownerId, type };
+    if (currentProject.value && !currentProject.value?.type) {
+      currentProject.value.type = { value: ProjectType.AGILE, message: 'Agile' };
+    }
     currentProjectId.value = currentProject.value?.id;
   };
 

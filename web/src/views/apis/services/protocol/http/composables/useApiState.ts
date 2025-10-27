@@ -1,5 +1,5 @@
 import { ref, computed, watch } from 'vue';
-import { HttpMethod, ParameterIn, SchemaType, ActionOnEOF, SharingMode, enumUtils } from '@xcan-angus/infra';
+import { HttpMethod, ParameterIn, ActionOnEOF, SharingMode, enumUtils, SchemaType } from '@xcan-angus/infra';
 import { apis, services } from '@/api/tester';
 import { ApiPermission, ApiServerSource, ApiStatus } from '@/enums/enums';
 import { API_EXTENSION_KEY, getModelDataByRef } from '@/utils/apis';

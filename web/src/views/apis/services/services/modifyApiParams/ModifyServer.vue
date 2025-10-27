@@ -6,7 +6,18 @@ const serverFormRef = ref();
 
 defineExpose({
   getData: () => {
-    return serverFormRef.value.getData();
+    const data = serverFormRef.value.getData();
+    return {
+      ...data,
+      variables: data.variables.reduce((pre, cur) => {
+        pre[cur.name] = {
+          default: cur.default,
+          description: cur.description,
+          enum: (cur.enum || []).map(item => item.value)
+        }
+        return pre;
+      }, {})
+    };
   }
 });
 </script>

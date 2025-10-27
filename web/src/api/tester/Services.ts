@@ -217,7 +217,7 @@ export default class API {
   }
 
   batchAddParams (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/${serviceId}/apis/parameter?${queryStr}`, parameters);
+    return http.put(`${baseUrl}/${serviceId}/apis/parameter?${queryStr}`, parameters);
   }
 
   batchUpdateParams (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
@@ -243,7 +243,7 @@ export default class API {
   }
 
   batchUpdateReferenceVariable (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/${serviceId}/apis/variable/reference?${queryStr}`, parameters, {
+    return http.put(`${baseUrl}/${serviceId}/apis/variable/reference?${queryStr}`, parameters, {
       paramsType: true
     });
   }
@@ -255,7 +255,7 @@ export default class API {
   }
 
   batchAddReferenceDataset (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/${serviceId}/apis/variable/dataset/reference?${queryStr}`, parameters);
+    return http.put(`${baseUrl}/${serviceId}/apis/variable/dataset/reference?${queryStr}`, parameters);
   }
 
   batchDeleteReferenceDataset (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {

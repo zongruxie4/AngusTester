@@ -115,6 +115,10 @@
         "generateSuccess": "Test script generated successfully, please check details in 'Scripts'",
         "updateSuccess": "Test script updated successfully, please check details in 'Scripts'",
         "testForm": {
+          "basicConfig": "Basic Configuration",
+          "performanceConfig": "Performance Configuration",
+          "stabilityConfig": "Stability Configuration",
+          "advancedConfig": "Advanced Configuration",
           "concurrentThreads": "Concurrent Threads",
           "executionTime": "Execution Time",
           "rampUpThreads": "Ramp-up Threads",
@@ -200,7 +204,10 @@
       "generateSuccess": "Task generated successfully",
       "validation": {
         "testTypeRequired": "Please select test type"
-      }
+      },
+      "basicConfig": "Basic Configuration",
+      "testTaskConfig": "Test Task Configuration",
+      "testType": "Test Type"
     },
     "delTaskTestModal": {
       "title": "Delete Test Task",

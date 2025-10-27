@@ -208,6 +208,7 @@ const validateAllTestForms = () => {
  * Resets the form and closes the modal on successful submission.
  */
 const handleConfirm = async () => {
+  debugger;
   const isFormValid = validateAllTestForms();
   sprintFormRef.value.validate();
   if (!isFormValid) {

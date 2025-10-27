@@ -36,9 +36,9 @@ const submitting = ref(false);
 
 // Test type options for checkbox group
 const testTypeOpt = [
-  { value: 'func', label: t('commonComp.genTestScriptModal.functionalTest') },
-  { value: 'perf', label: t('commonComp.genTestScriptModal.performanceTest') },
-  { value: 'stability', label: t('commonComp.genTestScriptModal.stabilityTest') }
+  { value: 'func', label: t('commonComp.apis.genTestScriptModal.functionalTest') },
+  { value: 'perf', label: t('commonComp.apis.genTestScriptModal.performanceTest') },
+  { value: 'stability', label: t('commonComp.apis.genTestScriptModal.stabilityTest') }
 ];
 
 // Test data for different test types
@@ -81,7 +81,7 @@ const funcOpen = ref(true);
  * @returns The modal title string
  */
 const getTitle = computed(() => {
-  return t('commonComp.genTestScriptModal.title');
+  return t('commonComp.apis.genTestScriptModal.title');
 });
 
 // ===== API Methods =====
@@ -140,7 +140,7 @@ const submit = async () => {
     if (error) {
       return;
     }
-    notification.success(t('commonComp.genTestScriptModal.generateSuccess'));
+    notification.success(t('commonComp.apis.genTestScriptModal.generateSuccess'));
     cancel();
   } else {
     const [error] = await (props.type === 'API' ? apis.updateTestScript(props.id, params) : services.updateApiScript(props.id, params));
@@ -189,15 +189,15 @@ watch(() => props.visible, newValue => {
         <div class="notice-content">
           <Icon icon="icon-tishi1" class="notice-icon" />
           <div class="notice-text">
-            <span class="notice-main">{{ t('commonComp.genTestScriptModal.note') }}</span>
-            <span class="notice-highlight">{{ t('commonComp.genTestScriptModal.noteHighlight') }}</span>
+            <span class="notice-main">{{ t('commonComp.apis.genTestScriptModal.note') }}</span>
+            <span class="notice-highlight">{{ t('commonComp.apis.genTestScriptModal.noteHighlight') }}</span>
           </div>
         </div>
       </div>
 
       <!-- Test type selection section -->
       <div class="selection-section">
-        <h3 class="section-title">{{ t('commonComp.genTestScriptModal.title') }}</h3>
+        <h3 class="section-title">{{ t('commonComp.apis.genTestScriptModal.title') }}</h3>
         <div class="checkbox-container">
           <CheckboxGroup
             v-model:value="checked"
@@ -214,7 +214,7 @@ watch(() => props.visible, newValue => {
             key="func"
             v-model:open="funcOpen"
             class="test-form-toggle"
-            :title="t('commonComp.genTestScriptModal.functionalTestConfig')">
+            :title="t('commonComp.apis.genTestScriptModal.functionalTestConfig')">
             <TestForm
               key="func"
               ref="funcRef"
@@ -231,7 +231,7 @@ watch(() => props.visible, newValue => {
             key="perf"
             v-model:open="perfOpen"
             class="test-form-toggle"
-            :title="t('commonComp.genTestScriptModal.performanceTestConfig')">
+            :title="t('commonComp.apis.genTestScriptModal.performanceTestConfig')">
             <TestForm
               key="perf"
               ref="perfRef"
@@ -248,7 +248,7 @@ watch(() => props.visible, newValue => {
             key="stability"
             v-model:open="stabilityOpen"
             class="test-form-toggle"
-            :title="t('commonComp.genTestScriptModal.stabilityTestConfig')">
+            :title="t('commonComp.apis.genTestScriptModal.stabilityTestConfig')">
             <TestForm
               key="stability"
               ref="stabilityRef"
