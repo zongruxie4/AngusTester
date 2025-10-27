@@ -193,7 +193,7 @@ onMounted(async () => {
 </script>
 <template>
   <div class="p-4 overflow-y-auto h-full">
-    <HeadInfo :text="t('common.description')" />
+    <HeadInfo :text="t('service.mock.description')" />
     <Form
       ref="formRef"
       size="small"

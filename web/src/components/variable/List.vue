@@ -557,7 +557,7 @@ onMounted(() => {
         :disabled="props.disabled || variableList.length > 49 || addBtnDisabled || total > 49"
         @click="addVariable">
         <Icon icon="icon-jia" class="mr-1" />
-        {{ t('common.add') }}
+        {{ t('actions.add') }}
       </Button>
     </template>
   </div>

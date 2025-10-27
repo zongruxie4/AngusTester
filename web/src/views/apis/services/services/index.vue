@@ -2,7 +2,8 @@
 import { computed, defineAsyncComponent, inject, reactive, ref, Ref, watch } from 'vue';
 import { AsyncComponent, LeftDrawer, notification, IconText, VuexHelper } from '@xcan-angus/vue-ui';
 import {
-  TESTER, localStore, utils, duration, appContext, enumUtils, PageQuery, HttpMethod, SearchCriteria
+  TESTER, localStore, utils, duration, appContext, enumUtils, PageQuery, HttpMethod, SearchCriteria,
+  
 } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { Button } from 'ant-design-vue';
@@ -44,7 +45,7 @@ const userInfo = ref(appContext.getUser());
 const isAdmin = computed(() => appContext.isAdmin());
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
-const appInfo = inject('appInfo') as Ref<Record<string, any>>;
+const appInfo = ref(appContext.getAccessApp());
 
 // TODO proTypeShowMap logic seems incorrect
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));

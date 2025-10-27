@@ -309,6 +309,9 @@ const handleCheckAllChange = async (checked: boolean, record: any) => {
  * Load authorization enums
  */
 const loadAuthorizationEnums = async () => {
+  if (authorizationOptions.value.length > 0) {
+    return authorizationOptions.value;
+  }
   const enumData = enumUtils.enumToMessages(props.enumKey);
   authorizationOptions.value = (enumData || [])?.map(item => {
     if (item.value === 'VIEW') {
@@ -501,6 +504,7 @@ const initializeAuthorizationStatus = async () => {
 
 // Component initialization
 onMounted(() => {
+  loadAuthorizationEnums()
   if (props.initStatusUrl) {
     initializeAuthorizationStatus();
   }
@@ -670,7 +674,7 @@ onMounted(() => {
               <template #icon>
                 <Icon icon="icon-jia" class="mr-1" />
               </template>
-              {{ t('common.add') }}
+              {{ t('actions.add') }}
             </Button>
           </div>
           <Table

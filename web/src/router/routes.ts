@@ -145,7 +145,7 @@ const routes: Array<RouteRecordRaw> = [
               name: t('common.mock'),
               path: `/apis#${ApiMenuKey.MOCK}`
             },
-            { name: t('common.add') }
+            { name: t('actions.add') }
           ]
         }
       },

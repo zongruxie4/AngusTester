@@ -201,7 +201,7 @@ watch(() => props.params, (newValue) => {
         type="primary"
         size="small"
         @click="generatedata">
-        {{ t('common.add') }}
+        {{ t('actions.add') }}
       </Button>
       <Button size="small" @click="cancel">{{ t('actions.cancel') }}</Button>
     </div>
