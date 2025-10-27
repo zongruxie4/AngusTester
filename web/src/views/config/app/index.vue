@@ -8,7 +8,7 @@ import { TabPane, Tabs } from 'ant-design-vue';
 // Async component imports
 const MemberTab = defineAsyncComponent(() => import('./MemberTab.vue'));
 const Quota = defineAsyncComponent(() => import('./Quota.vue'));
-const LicenseInfo = defineAsyncComponent(() => import('./license.vue'));
+const LicenseInfo = defineAsyncComponent(() => import('./License.vue'));
 
 // Reactive data for application information
 const appInfo = ref(appContext.getAccessApp());
