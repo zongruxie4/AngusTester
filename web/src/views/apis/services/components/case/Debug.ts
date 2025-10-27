@@ -1,6 +1,6 @@
 import { i18n } from '@xcan-angus/infra';
 
-const t = i18n.global?.getI18n() || (v => v);
+const t = i18n.getI18n()?.global?.t || (v => v);
 
 import apiUtils from '@/utils/apis';
 

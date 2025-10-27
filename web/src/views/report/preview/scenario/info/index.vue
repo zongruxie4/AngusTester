@@ -74,7 +74,7 @@ const columns = computed(() => [
     },
     {
       dataIndex: 'lastModifiedByName',
-      name: t('actions.astModifiedBy')
+      name: t('common.lastModifiedBy')
     }
   ],
   [

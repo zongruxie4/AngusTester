@@ -61,7 +61,7 @@ const columns = [
   },
   {
     dataIndex: 'enabled',
-    title: t('service.case.columns.isEnabled'),
+    title: t('common.enabledStatus'),
     customRender: ({ text }) => text ? t('status.enabled') : t('status.disabled')
   },
   {
@@ -84,7 +84,7 @@ const columns = [
   },
   {
     dataIndex: 'lastModifiedByName',
-    title: t('actions.astModifiedBy'),
+    title: t('common.lastModifiedBy'),
     groupName: 'modify'
   },
   {
