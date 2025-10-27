@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch
 import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem, TabPane, Tabs, Upload } from 'ant-design-vue';
 import {
-  AsyncComponent, Icon, Input, modal, notification, ReviewStatus, Select, Spin, Table, Tooltip, SelectUser
+  AsyncComponent, Icon, Input, modal, notification, Select, Spin, Table, Tooltip, SelectUser
 } from '@xcan-angus/vue-ui';
 import {
   EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils, upload, duration, appContext
@@ -20,6 +20,7 @@ import { ReviewEditState, ReviewCaseInfo, ReviewDetail } from '../types';
 import { UPLOAD_TEST_FILE_KEY } from '@/utils/constant';
 
 // Component imports
+import ReviewStatus from '@/components/test/ReviewStatus.vue';
 import RichEditor from '@/components/editor/richEditor/index.vue';
 const SelectCaseModal = defineAsyncComponent(() => import('./SelectCaseModal.vue'));
 
