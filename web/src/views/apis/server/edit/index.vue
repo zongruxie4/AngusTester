@@ -10,7 +10,7 @@ import { ServerInfo } from '@/views/apis/server/types';
 import { BasicProps } from '@/types/types';
 import { API_EXTENSION_KEYS, OpenAPIV3_1 } from '@/types/openapi-types';
 
-const EditForm = defineAsyncComponent(() => import('./edit.vue'));
+const EditForm = defineAsyncComponent(() => import('./Edit.vue'));
 
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
