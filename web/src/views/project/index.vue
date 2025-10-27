@@ -57,7 +57,7 @@ onMounted(() => {
     :menuItems="menuItems">
     <template #project>
       <Projects
-        :projectId="String(projectId)"
+        :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo" />
     </template>
