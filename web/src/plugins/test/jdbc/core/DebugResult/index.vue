@@ -41,11 +41,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const TransStartTestDetail = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp_/TransStart/index.vue'));
-const WaitingTimeTestDetail = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp_/WaitingTime/index.vue'));
-const RendezvousTestDetail = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp_/Rendezvous/index.vue'));
+const TransStartTestDetail = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp/TransStart/index.vue'));
+const WaitingTimeTestDetail = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp/WaitingTime/index.vue'));
+const RendezvousTestDetail = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp/Rendezvous/index.vue'));
 const JdbcTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/Jdbc/index.vue'));
-const TransEndTestDetail = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp_/TransEnd/index.vue'));
+const TransEndTestDetail = defineAsyncComponent(() => import('@/plugins/test/components/FunctionTestDetailComp/TransEnd/index.vue'));
 
 const pipelines = computed(() => {
   if (!props?.value?.task?.pipelines?.length) {
