@@ -194,7 +194,7 @@ onMounted(() => {
                   size="small"
                   class="text-xs py-0 px-1 text-blue-600"
                   @click="openCreateModal">
-                  {{ t('tag.acctions.addTag') }}
+                  {{ t('tag.actions.addTag') }}
                 </Button>
               </div>
               <div v-else class="text-gray-500 text-xs">
