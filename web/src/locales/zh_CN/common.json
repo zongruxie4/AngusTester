@@ -222,6 +222,8 @@
     "jsonPathExpression": "JSONPath表达式",
     "execConfig": "执行配置",
     "taskConfig": "任务配置",
+    "permission": "权限",
+    "permissionControl": "权限控制",
     "counts": {
       "progress": "进度",
       "totalCount": "总数",
@@ -525,6 +527,7 @@
     "cancelFavourite": "取消收藏",
     "assignToMe": "指派给我",
     "permission": "权限",
+    "permissionControl": "权限控制",
     "refresh": "刷新",
     "autoRefresh": "自动刷新",
     "debug": "调试",

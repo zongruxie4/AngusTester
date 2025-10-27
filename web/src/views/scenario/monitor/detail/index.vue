@@ -343,7 +343,7 @@ const statusColorConfig = getStatusColorConfig();
           </template>
         </TabPane>
 
-        <TabPane key="debuglog" :tab="t('scenarioMonitor.detail.tabs.scheduleLog')">
+        <TabPane key="debuglog" :tab="t('common.scheduleLog')">
           <DebugLog
             v-if="historyExecData?.schedulingResult"
             :value="historyExecData?.schedulingResult" />

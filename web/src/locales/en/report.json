@@ -39,6 +39,23 @@
         "execution": "Execution"
       }
     },
+    "globalAuth": {
+      "title": "Report Permission",
+      "description": "Grant operation permissions for specified 'functions' to users, departments, and groups. 'View' permission is required when granting permissions. Users can only authorize functions they have permission to authorize.",
+      "authSet": {
+        "searchPlaceholder": "Search name",
+        "name": "Name",
+        "permissionControl": "Permission Control",
+        "permission": "Permission",
+        "loading": "Loading...",
+        "all": "All"
+      },
+      "groupSet": {
+        "searchUser": "Search user",
+        "searchDept": "Search department",
+        "searchGroup": "Search group"
+      }
+    },
     "reportDetail": {
       "title": "View Report",
       "tabs": {

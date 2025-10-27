@@ -1,5 +1,6 @@
 import { scenario } from '@/api/tester';
-import type { AuthObjectType, PermissionMapItem } from '../types';
+import type { PermissionMapItem } from '../types';
+import { AuthObjectType as AuthObjectTypeEnum } from '@xcan-angus/infra';
 
 /**
  * Composable for handling authentication actions (enable/disable, permission changes)
@@ -11,7 +12,7 @@ export function useAuthActions (
   updatingMap: { [key: string]: boolean },
   permissionValues: string[],
   authObjectId: string,
-  authObjectType: AuthObjectType
+  authObjectType: AuthObjectTypeEnum
 ) {
   /**
    * Handle switch change for enabling/disabling scenario auth

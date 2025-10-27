@@ -40,6 +40,23 @@
         "execution": "执行"
       }
     },
+    "globalAuth": {
+      "title": "报告权限",
+      "description": "授权给指定的\"功能\"操作权限给用户、部门、组，授予权限时\"查看\"权限是必须的。用户只能授权自己有授权权限的功能。",
+      "authSet": {
+        "searchPlaceholder": "查询名称",
+        "name": "名称",
+        "permissionControl": "权限控制",
+        "permission": "权限",
+        "loading": "加载中...",
+        "all": "全部"
+      },
+      "groupSet": {
+        "searchUser": "查询用户",
+        "searchDept": "查询部门",
+        "searchGroup": "查询组"
+      }
+    },
     "reportDetail": {
       "title": "查看报告",
       "tabs": {

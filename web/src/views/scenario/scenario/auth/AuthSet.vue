@@ -9,6 +9,7 @@ import { useAuthData } from './composables/useAuthData';
 import { useAuthActions } from './composables/useAuthActions';
 import { usePagination } from './composables/usePagination';
 import type { AuthSetProps, CheckboxChangeEvent } from './types';
+import { AuthObjectType as AuthObjectTypeEnum } from '@xcan-angus/infra';
 
 const { t } = useI18n();
 
@@ -16,7 +17,7 @@ const { t } = useI18n();
 const props = withDefaults(defineProps<AuthSetProps>(), {
   projectId: undefined,
   authObjectId: undefined,
-  type: 'user',
+  type: AuthObjectTypeEnum.USER,
   permissions: () => []
 });
 
@@ -110,7 +111,7 @@ onBeforeUnmount(() => {
     <!-- Table Header -->
     <div v-if="props.authObjectId" class="flex items-center h-11 pr-1.75 rounded bg-gray-light text-theme-title">
       <div class="flex-1 px-2 truncate">{{ t('common.name') }}</div>
-      <div style="width:70px;" class="flex-shrink-0 px-2">{{ t('scenario.auth.authSet.table.columns.permissionControl') }}</div>
+      <div style="width:70px;" class="flex-shrink-0 px-2">{{ t('common.permissionControl') }}</div>
       <div style="width:52%">{{ t('actions.permission') }}</div>
     </div>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { enumUtils } from '@xcan-angus/infra';
+import { enumUtils, AuthObjectType as AuthObjectTypeEnum } from '@xcan-angus/infra';
 import { ScenarioPermission } from '@/enums/enums';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints } from '@xcan-angus/vue-ui';
@@ -50,7 +50,7 @@ onMounted(() => {
 });
 
 // Computed properties
-const descriptionText = t('common.description');
+const descriptionText = t('scenario.permission.description');
 </script>
 <!-- TODO 调试权限功能、页面不展示、功能未验证 -->
 <template>
@@ -72,7 +72,7 @@ const descriptionText = t('common.description');
         <AuthSet
           v-if="loaded"
           key="user"
-          type="user"
+          :type="AuthObjectTypeEnum.USER"
           :authObjectId="checkedUserId"
           :permissions="permissions"
           :projectId="props.projectId"
@@ -90,7 +90,7 @@ const descriptionText = t('common.description');
         <AuthSet
           v-if="loaded"
           key="dept"
-          type="dept"
+          :type="AuthObjectTypeEnum.DEPT"
           :authObjectId="checkedDeptId"
           :permissions="permissions"
           :projectId="props.projectId"
@@ -108,7 +108,7 @@ const descriptionText = t('common.description');
         <AuthSet
           v-if="loaded"
           key="group"
-          type="group"
+          :type="AuthObjectTypeEnum.GROUP"
           :authObjectId="checkedGroupId"
           :permissions="permissions"
           :projectId="props.projectId"

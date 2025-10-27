@@ -222,6 +222,8 @@
     "jsonPathExpression": "JSONPath Expression",
     "execConfig": "Execution Config",
     "taskConfig": "Task Config",
+    "permission": "Permission",
+    "permissionControl": "Permission Control",
     "counts": {
       "progress": "Progress",
       "totalCount": "Total",
@@ -525,6 +527,7 @@
     "cancelFavourite": "Cancel Favourite",
     "assignToMe": "Assign to Me",
     "permission": "Permission",
+    "permissionControl": "Permission Control",
     "refresh": "Refresh",
     "autoRefresh": "Auto Refresh",
     "debug": "Debug",

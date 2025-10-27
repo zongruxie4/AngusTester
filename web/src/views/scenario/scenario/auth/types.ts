@@ -1,3 +1,5 @@
+import { AuthObjectType as AuthObjectTypeEnum } from '@xcan-angus/infra';
+
 // Base data item interface for scenario items
 export interface DataItem {
   id: string;
@@ -14,6 +16,8 @@ export interface Permission {
 // Auth object type enumeration
 export type AuthObjectType = 'user' | 'dept' | 'group';
 
+
+
 // Permission map item interface
 export interface PermissionMapItem {
   id: string;
@@ -25,7 +29,7 @@ export interface PermissionMapItem {
 export interface AuthSetProps {
   projectId: string;
   authObjectId: string;
-  type: AuthObjectType;
+  type: AuthObjectTypeEnum;
   permissions: Permission[];
 }
 
@@ -59,7 +63,7 @@ export interface SearchParams {
 export interface AuthSearchParams {
   pageSize: number;
   authObjectId: string;
-  authObjectType: AuthObjectType;
+  authObjectType: AuthObjectTypeEnum;
   filters?: Array<{
     key: 'scenarioId';
     op: 'IN';

@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints, Modal } from '@xcan-angus/vue-ui';
 import { useAuthPermissions } from './composables/useAuthPermissions';
+import { AuthObjectType as AuthObjectTypeEnum } from '@xcan-angus/infra';
 
 const { t } = useI18n();
 
@@ -78,7 +79,7 @@ const bodyStyle = {
     wrapClassName="authorize-modal-wrapper"
     @cancel="cancel">
     <div class="h-full pt-2">
-      <Hints :text="t('common.description')" />
+      <Hints :text="t('reportHome.globalAuth.description')" />
       <Tabs
         v-model:activeKey="activeKey"
         size="small"
@@ -95,7 +96,7 @@ const bodyStyle = {
           <AuthSet
             v-if="loaded"
             key="user"
-            type="user"
+            :type="AuthObjectTypeEnum.USER"
             class="flex-1"
             :projectId="props.projectId"
             :authObjectId="checkedUserId"
@@ -113,7 +114,7 @@ const bodyStyle = {
           <AuthSet
             v-if="loaded"
             key="dept"
-            type="dept"
+            :type="AuthObjectTypeEnum.DEPT"
             class="flex-1"
             :projectId="props.projectId"
             :authObjectId="checkedDeptId"
@@ -131,7 +132,7 @@ const bodyStyle = {
           <AuthSet
             v-if="loaded"
             key="group"
-            type="group"
+            :type="AuthObjectTypeEnum.GROUP"
             class="flex-1"
             :projectId="props.projectId"
             :authObjectId="checkedGroupId"

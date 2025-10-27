@@ -2,6 +2,9 @@ import { computed, ref, watch } from 'vue';
 import { debounce } from 'throttle-debounce';
 import { duration, GM } from '@xcan-angus/infra';
 import type { GroupSetProps } from '../types';
+import { useI18n } from 'vue-i18n';
+
+
 
 /**
  * Interface for list item data
@@ -15,6 +18,8 @@ interface ListInfo {
  * Composable for managing group/user/dept data and selection
  */
 export function useGroupData (props: GroupSetProps) {
+
+  const { t } = useI18n();
   // Reactive state
   const dataSource = ref<ListInfo[]>([]);
   const inputValue = ref<string>();
@@ -81,19 +86,19 @@ export function useGroupData (props: GroupSetProps) {
       case 'dept':
         nameKey.value = 'name';
         idKey.value = 'id';
-        placeholder.value = 'scenario.auth.groupSet.searchPlaceholders.dept';
+        placeholder.value = t('organization.placeholders.selectDept');
         apiPath.value = `${GM}/app/${props.appId}/auth/dept`;
         break;
       case 'group':
         nameKey.value = 'name';
         idKey.value = 'id';
-        placeholder.value = 'scenario.auth.groupSet.searchPlaceholders.group';
+        placeholder.value = t('organization.placeholders.selectGroup');
         apiPath.value = `${GM}/app/${props.appId}/auth/group`;
         break;
       case 'user':
         nameKey.value = 'fullName';
         idKey.value = 'id';
-        placeholder.value = 'scenario.auth.groupSet.searchPlaceholders.user';
+        placeholder.value = t('organization.placeholders.selectUser');
         apiPath.value = `${GM}/app/${props.appId}/auth/user`;
         break;
     }

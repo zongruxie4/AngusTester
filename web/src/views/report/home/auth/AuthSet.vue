@@ -2,6 +2,7 @@
 import { useI18n } from 'vue-i18n';
 import { Checkbox, Switch } from 'ant-design-vue';
 import { Icon, Input, NoData, Spin } from '@xcan-angus/vue-ui';
+import { AuthObjectType as AuthObjectTypeEnum } from '@xcan-angus/infra';
 
 import CheckboxGroup from './CheckboxGroup.vue';
 import { useAuthData } from './composables/useAuthData';
@@ -14,14 +15,14 @@ const { t } = useI18n();
 type Props = {
   projectId: string;
   authObjectId: string | undefined;
-  type: 'user' | 'dept' | 'group';
+  type: AuthObjectTypeEnum;
   permissions: { value: string; label: string }[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   authObjectId: undefined,
-  type: 'user',
+  type: AuthObjectTypeEnum.USER,
   permissions: () => []
 });
 

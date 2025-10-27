@@ -66,13 +66,15 @@ watch(activeId, (newId) => {
 });
 
 // Watch for loaded changes and emit update
-watch(() => props.loaded, (newLoaded) => {
-  if (!newLoaded && dataSource.value.length > 0 && !activeId.value) {
+watch([() => props.loaded, () => dataSource.value], ([newLoaded]) => {
+  if (!newLoaded && dataSource.value.length > 0) {
     const id = dataSource.value[0]?.id;
     activeId.value = id;
     emit('update:checkedId', id);
     emit('update:loaded', true);
   }
+}, {
+  immediate: true
 });
 </script>
 <template>

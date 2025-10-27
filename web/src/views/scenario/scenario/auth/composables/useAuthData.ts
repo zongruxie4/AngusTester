@@ -1,13 +1,13 @@
 import { computed, ref, watch } from 'vue';
 import { debounce, throttle } from 'throttle-debounce';
-import { duration } from '@xcan-angus/infra';
+import { duration, AuthObjectType as AuthObjectTypeEnum } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
-import type { AuthObjectType, AuthSearchParams, DataItem, PermissionMapItem, SearchParams } from '../types';
+import type { AuthSearchParams, DataItem, PermissionMapItem, SearchParams } from '../types';
 
 /**
  * Composable for managing authentication data and API calls
  */
-export function useAuthData (projectId: string, authObjectId: string, type: AuthObjectType) {
+export function useAuthData (projectId: string, authObjectId: string, type: AuthObjectTypeEnum) {
   // Reactive state
   const loading = ref(true);
   const pageNo = ref(1);

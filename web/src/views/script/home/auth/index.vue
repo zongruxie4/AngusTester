@@ -99,7 +99,7 @@ const bodyStyle = {
     @cancel="cancel">
     <div class="h-full pt-2">
       <!-- Description hints -->
-      <Hints :text="t('common.description')" />
+      <Hints :text="t('scriptHome.globalAuth.description')" />
 
       <!-- Tab navigation -->
       <Tabs

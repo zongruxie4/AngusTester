@@ -102,19 +102,19 @@ export function useGroupData (type: 'user' | 'dept' | 'group', appId: string | u
       case 'dept':
         nameKey.value = 'name';
         idKey.value = 'id';
-        placeholder.value = t('scriptHome.globalAuth.groupSet.deptPlaceholder');
+        placeholder.value = t('organization.placeholders.selectDept');
         apiPath.value = `${GM}/app/${appId}/auth/dept`;
         break;
       case 'group':
         nameKey.value = 'name';
         idKey.value = 'id';
-        placeholder.value = t('scriptHome.globalAuth.groupSet.groupPlaceholder');
+        placeholder.value = t('organization.placeholders.selectGroup');
         apiPath.value = `${GM}/app/${appId}/auth/group`;
         break;
       case 'user':
         nameKey.value = 'fullName';
         idKey.value = 'id';
-        placeholder.value = t('scriptHome.globalAuth.groupSet.userPlaceholder');
+        placeholder.value = t('organization.placeholders.selectUser');
         apiPath.value = `${GM}/app/${appId}/auth/user`;
         break;
     }
@@ -145,19 +145,19 @@ export function useGroupData (type: 'user' | 'dept' | 'group', appId: string | u
       case 'dept':
         nameKey.value = 'name';
         idKey.value = 'id';
-        placeholder.value = t('scriptHome.globalAuth.groupSet.deptPlaceholder');
+        placeholder.value = t('organization.placeholders.selectDept');
         apiPath.value = `${GM}/app/${_appId}/auth/dept`;
         break;
       case 'group':
         nameKey.value = 'name';
         idKey.value = 'id';
-        placeholder.value = t('scriptHome.globalAuth.groupSet.groupPlaceholder');
+        placeholder.value = t('organization.placeholders.selectGroup');
         apiPath.value = `${GM}/app/${_appId}/auth/group`;
         break;
       case 'user':
         nameKey.value = 'fullName';
         idKey.value = 'id';
-        placeholder.value = t('scriptHome.globalAuth.groupSet.userPlaceholder');
+        placeholder.value = t('organization.placeholders.selectUser');
         apiPath.value = `${GM}/app/${_appId}/auth/user`;
         break;
     }
