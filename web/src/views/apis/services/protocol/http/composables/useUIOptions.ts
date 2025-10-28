@@ -32,37 +32,37 @@ export const docInfo = [
   {
     title: t('service.apis.docInfo.pathParams.title'),
     rules: [
-      t('service.apis.docInfo.pathParams.rules.primitive'),
-      t('service.apis.docInfo.pathParams.rules.array'),
-      t('service.apis.docInfo.pathParams.rules.object'),
-      t('service.apis.docInfo.pathParams.rules.limit')
+      'Primitive id = 5 -> /users/5',
+      'Array id = 「3, 4, 5」 -> /users/3,4,5',
+      'Object id = {"role": "admin", "firstName": "Alex"} -> /users/role=admin,firstName=Alex',
+      '> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed.'
     ]
   },
   {
     title: t('service.apis.docInfo.queryFormParams.title'),
     rules: [
-      t('service.apis.docInfo.queryFormParams.rules.primitive'),
-      t('service.apis.docInfo.queryFormParams.rules.array'),
-      t('service.apis.docInfo.queryFormParams.rules.object'),
-      t('service.apis.docInfo.queryFormParams.rules.support')
+      'Primitive id = 5 -> id=5',
+      'Array id = 「3, 4, 5」 -> id「0」=3&id「1」=4&id「2」=5',
+      'Object id = {"role": "admin", "firstName": "Alex"} -> id.role=admin&id.firstName=Alex',
+      '> Supports all types, including object and array type nesting.'
     ]
   },
   {
     title: t('service.apis.docInfo.headerParams.title'),
     rules: [
-      t('service.apis.docInfo.headerParams.rules.primitive'),
-      t('service.apis.docInfo.headerParams.rules.array'),
-      t('service.apis.docInfo.headerParams.rules.object'),
-      t('service.apis.docInfo.headerParams.rules.limit')
+      'Primitive X-MyHeader = 5 ->  X-MyHeader: 5',
+      'Array X-MyHeader = 「3, 4, 5」 -> X-MyHeader: 3,4,5',
+      'Object X-MyHeader = {"role": "admin", "firstName": "Alex"} -> X-MyHeader: role=admin,firstName=Alex',
+      '> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed.'
     ]
   },
   {
     title: t('service.apis.docInfo.cookieParams.title'),
     rules: [
-      t('service.apis.docInfo.cookieParams.rules.primitive'),
-      t('service.apis.docInfo.cookieParams.rules.array'),
-      t('service.apis.docInfo.cookieParams.rules.object'),
-      t('service.apis.docInfo.cookieParams.rules.limit')
+      'Primitive id = 5 ->  Cookie: id=5',
+      'Array id = 「3, 4, 5」 -> Cookie: id=3,4,5',
+      'Object id = {"role": "admin", "firstName": "Alex"} -> Cookie: id=role,admin,firstName,Alex',
+      '> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed.'
     ]
   }
 ];

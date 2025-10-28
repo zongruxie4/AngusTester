@@ -655,7 +655,7 @@ const isValidServerUrl = (urlStr: string): boolean => {
   // url中包含变量
   if (/[{|}]/g.test(urlStr)) {
     // 不能出现{{、}}
-    if (/\{{2,}|\}{2,}/g.test(urlStr)) {
+    if (/\{2,}|}{2,}/g.test(urlStr)) {
       serverUrlError.value = true;
       serverUrlFormatError.value = true;
       return false;
@@ -725,7 +725,7 @@ const isValidEndpoint = (pathStr: string): boolean => {
   }
 
   // 不能出现{{、}}
-  if (/\{{2,}|\}{2,}/g.test(pathStr)) {
+  if (/\{2,}|}{2,}/g.test(pathStr)) {
     endpointError.value = true;
     endpointFormatError.value = true;
     return false;
@@ -1173,7 +1173,7 @@ const overlayStyle = {
                 :title="name"
                 trim
                 class="http-name-input"
-                :placeholder="t('common.placeholders.searchKeyword')"
+                :placeholder="t('common.placeholders.inputName2')"
                 @change="nameChange" />
             </Tooltip>
             <SelectEnum

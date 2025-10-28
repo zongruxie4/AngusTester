@@ -565,12 +565,12 @@ const position = ref({
     </Popover>
     <div
       v-if="!inputTextValue"
-      class="-z-1 absolute left-2 top-1.25 text-3 text-theme-placeholder overflow-hidden whitespace-nowrap select-none"
+      class="absolute left-2 top-1.25 text-3 text-theme-placeholder overflow-hidden whitespace-nowrap select-none"
       style="max-width: calc(100% - 20px)">
       {{ placeholder }}
     </div>
     <div
-      class="w-full overflow-hidden rounded border flex justify-between px-2 relative z-9"
+      class="w-full overflow-hidden rounded border flex justify-between px-2 relative"
       :class="[props.error && '!border-rule', `h-${props.height}`, props.disabled ? 'ant-input-affix-wrapper-disabled' : 'border-theme-text-box border-theme-divider-hover']">
       <div
         ref="inputValueRef"
