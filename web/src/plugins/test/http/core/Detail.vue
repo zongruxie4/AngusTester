@@ -8,6 +8,7 @@ interface Props {
   updateTabPane: (data: any) => void;
   getTabPane: (data: any) => any;
   replaceTabPane: (key:string, data: {_id:string;name:string;value:'Http', scenarioInfo:{id:string;}}) => any;
+  statusCodeData: Record<string, any>;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -16,7 +17,8 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined,
   updateTabPane: undefined,
   getTabPane: undefined,
-  replaceTabPane: undefined
+  replaceTabPane: undefined,
+  statusCodeData: undefined
 });
 
 const FunctionTestDetail = defineAsyncComponent(() => import('./FunctionTestDetail/index.vue'));

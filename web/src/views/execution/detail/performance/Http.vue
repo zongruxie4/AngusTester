@@ -22,9 +22,9 @@ interface Props {
   isLoaded:boolean;
   brpsUnit:'KB' | 'MB';
   bwpsUnit: 'KB' | 'MB';
-  stutasCodeData:Record<string, any>;
   errCountList: Record<string, any>[];
   sampleList: Record<string, any>[];
+  statusCodeData: Record<string, any>;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -49,6 +49,7 @@ defineExpose({
 });
 </script>
 <template>
+  {{ props.statusCodeData }}
   <ExecHttpPerfExecDetail
     ref="detailRef"
     type="detail"
@@ -60,7 +61,7 @@ defineExpose({
     :timestampData="props.timestampData"
     :errCountList="props.errCountList"
     :sampleList="props.sampleList"
-    :stutasCodeData="props.stutasCodeData"
+    :statusCodeData="props.statusCodeData"
     :isLoaded="props.isLoaded"
     :brpsUnit="props.brpsUnit"
     :bwpsUnit="props.bwpsUnit"

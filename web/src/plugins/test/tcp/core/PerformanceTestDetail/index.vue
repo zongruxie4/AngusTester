@@ -43,7 +43,7 @@ interface Props {
   minBwpsUnit: 'KB' | 'MB';
   maxBwpsUnit:'KB' | 'MB';
   meanBwpsUnit:'KB' | 'MB';
-  stutasCodeData:Record<string, any>;
+  statusCodeData:Record<string, any>;
   errCountList: Record<string, any>[];
   sampleList: Record<string, any>[];
   exception?:{
@@ -429,7 +429,7 @@ defineExpose({
           <template v-if="isLoaded">
             <StatusCode
               :isSingleInterface="props.execInfo?.singleTargetPipeline"
-              :stutasCodeData="props.stutasCodeData" />
+              :statusCodeData="props.statusCodeData" />
           </template>
         </TabPane>
         <TabPane key="node" :tab="t('common.node')">

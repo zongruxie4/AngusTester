@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, Ref } from 'vue';
 import dayjs from 'dayjs';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { SearchCriteria } from '@xcan-angus/infra';
@@ -11,7 +11,7 @@ import { ErrorCountListItem, SampleErrorContent, StatusCodeData } from '../types
  * Handles error count loading, sample error content management, and status code data processing
  * for performance monitoring and error analysis.
  */
-export function useErrorManagement () {
+export function useErrorManagement (statusCodeData: Ref<StatusCodeData>) {
   /**
    * Error count list for displaying error statistics
    */
@@ -48,7 +48,7 @@ export function useErrorManagement () {
   /**
    * HTTP status code data organized by pipeline hierarchy
    */
-  const statusCodeData = ref<StatusCodeData>({});
+  // const statusCodeData = ref<StatusCodeData>({});
 
   /**
    * Load latest error counters and compute error rates based on last sample summary
@@ -312,7 +312,6 @@ export function useErrorManagement () {
     errParams,
     errTotal,
     errTimestamp,
-    statusCodeData,
 
     // Methods
     loadErrorCount,
