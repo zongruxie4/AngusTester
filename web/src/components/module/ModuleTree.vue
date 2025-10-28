@@ -73,7 +73,6 @@ const activeModuleData = ref();
  * @param selectedKeys - Array of selected module keys
  */
 const handleModuleSelectionChange = (selectedKeys: string[]) => {
-  debugger;
   if (!selectedKeys.length) {
     return;
   }

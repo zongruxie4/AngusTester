@@ -62,7 +62,7 @@ const openDrawer = (key: string) => {
     <div class="text-3.5 font-semibold">
       {{ t('service.protocol.messages.serviceConfig') }}
     </div>
-    <div class="space-y-5 px-4">
+    <div class="space-y-5">
       <div
         v-for="(element, index) in dataSource"
         :key="index"

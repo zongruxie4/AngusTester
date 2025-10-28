@@ -72,7 +72,6 @@ const {
 } = usePerformanceData();
 
 // Error Management
-debugger;
 const {
   loadErrorCount: loadErrorCountData,
   loadSampleErrorContent: loadSampleErrorContentData,
