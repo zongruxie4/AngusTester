@@ -46,7 +46,8 @@
     "edit": {
       "modal": {
         "editProject": "Edit Project",
-        "addProject": "Add Project"
+        "addProject": "Add Project",
+        "noJoinedProjects": "No projects added or joined"
       },
       "rules": {
         "maxCharacters": "Cannot exceed 2000 characters",
