@@ -223,6 +223,7 @@
     "jsonPathExpression": "JSONPath Expression",
     "execConfig": "Execution Config",
     "taskConfig": "Task Config",
+    "pluginConfig": "Plugin Config",
     "permission": "Permission",
     "permissionControl": "Permission Control",
     "storyPoint": "Story Point",

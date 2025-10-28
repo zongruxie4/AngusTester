@@ -72,11 +72,12 @@ const {
 } = usePerformanceData();
 
 // Error Management
+debugger;
 const {
   loadErrorCount: loadErrorCountData,
   loadSampleErrorContent: loadSampleErrorContentData,
   loadStatusCodeData: loadStatusCodeDataData
-} = useErrorManagement();
+} = useErrorManagement(statusCodeData);
 
 // Exception Handling
 const { setException: setExceptionInfo } = useExceptionHandling();

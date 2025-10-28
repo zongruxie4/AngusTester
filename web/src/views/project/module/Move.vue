@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+
 // Vue composition API imports
-import { onMounted, ref, watch, computed } from 'vue';
+import { onMounted, ref, watch, computed, inject, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // Ant Design components
@@ -33,6 +34,8 @@ const props = withDefaults(defineProps<MoveModuleProps>(), {
     pid: ''
   })
 });
+
+const projectInfo = inject('projectInfo', ref({ name: '' }));
 
 // Emit events for parent component communication
 const emits = defineEmits<{
@@ -96,7 +99,7 @@ const loadModuleTree = async (): Promise<void> => {
 
     // Build complete tree with project root
     treeData.value = [{
-      name: props.projectName,
+      name: props.projectName || projectInfo.value.name,
       level: -1,
       id: '-1',
       children: processedChildren

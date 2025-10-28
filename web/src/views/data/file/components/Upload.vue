@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { Progress, Upload } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
@@ -18,7 +17,7 @@ const emit = defineEmits<{(e:'close'):void, (e: 'success'):void}>();
 const { t } = useI18n();
 
 // Use the upload composable
-const { state, headers, uploadInput, uploadFileLength, triggerUpload, handleUpload, init } = useUpload(props);
+const { state, headers, uploadInput, uploadFileLength, triggerUpload, handleUpload, init } = useUpload(props, emit);
 
 // Initialize the composable
 init();
@@ -37,12 +36,6 @@ const close = (): void => {
   emit('close');
 };
 
-/**
- * Handle successful upload
- */
-const onSuccess = (): void => {
-  emit('success');
-};
 
 // Expose closeUpload method to the composable
 // This is a workaround since we can't directly pass the emit function to the composable
@@ -52,7 +45,7 @@ const onSuccess = (): void => {
     v-show="uploadFileLength == 0"
     :showUploadList="false"
     :multiple="true"
-    :customRequest="toUpload"
+    :customRequest="handleUpload"
     :headers="headers">
     <div
       ref="uploadInput"

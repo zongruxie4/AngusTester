@@ -1543,11 +1543,11 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
 
         <Toolbar
           ref="toolbarRef"
-          :clientHeight="height"
-          :isFull="isFull"
-          :isOpen="isOpen"
-          :isMoving="isMoving"
-          :activeKey="toolbarActiveKey"
+          v-model:clientHeight="height"
+          v-model:isFull="isFull"
+          v-model:isOpen="isOpen"
+          v-model:isMoving="isMoving"
+          v-model:activeKey="toolbarActiveKey"
           :menuItems="TOOLBAR_MENUITEMS"
           :extraMenuItems="TOOLBAR_EXTRA_MENUITEMS"
           :destroyInactiveTabPane="false"

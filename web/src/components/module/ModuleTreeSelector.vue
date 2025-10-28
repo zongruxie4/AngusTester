@@ -9,11 +9,11 @@ import { travelTreeData } from '@/utils/utils';
 const { t } = useI18n();
 
 type Props = {
-  projectId: number;
-  userInfo: { id: number; };
-  appInfo: { id: number; };
+  projectId: string;
+  userInfo: { id: string; };
+  appInfo: { id: string; };
   notify: string;
-  moduleId: number;
+  moduleId: string;
   projectName: string;
   title: string;
 }

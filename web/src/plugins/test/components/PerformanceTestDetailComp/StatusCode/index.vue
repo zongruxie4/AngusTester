@@ -30,13 +30,13 @@ interface SeriesData {
  */
 interface Props {
   isSingleInterface: boolean;           // Whether testing single API or multiple
-  stutasCodeData: Record<string, any>;  // Status code statistics data
+  statusCodeData: Record<string, any>;  // Status code statistics data
 }
 
 // Define props with default values
 const props = withDefaults(defineProps<Props>(), {
   isSingleInterface: false,
-  stutasCodeData: undefined
+  statusCodeData: undefined
 });
 
 /**
@@ -140,7 +140,8 @@ const getXDataAndYData = (data: Record<string, any>) => {
  * Watch for status code data changes
  * Transforms and updates chart data when new statistics arrive
  */
-watch(() => props.stutasCodeData, (newValue) => {
+watch(() => props.statusCodeData, (newValue) => {
+  debugger;
   // Transform data for bar charts
   chartData.value = getXDataAndYData(newValue) as any;
   

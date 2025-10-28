@@ -34,16 +34,16 @@ export const createMenuItems = (
       : null,
     visibility.hasProjectId
       ? {
-          icon: 'icon-mokuai1',
-          name: t('module.title'),
-          key: ProjectMenuKey.MODULE
+          icon: 'icon-banben1',
+          name: t('version.title'),
+          key: ProjectMenuKey.VERSION
         }
       : null,
     visibility.hasProjectId
       ? {
-          icon: 'icon-banben1',
-          name: t('version.title'),
-          key: ProjectMenuKey.VERSION
+          icon: 'icon-mokuai1',
+          name: t('module.title'),
+          key: ProjectMenuKey.MODULE
         }
       : null,
     visibility.hasProjectId

@@ -15,7 +15,7 @@ interface Props {
  * @param props - Component props containing parent directory ID
  * @returns Object containing reactive state and methods for file upload management
  */
-export function useUpload (props: Props) {
+export function useUpload (props: Props, emit: any) {
   const route = useRoute();
 
   // Space ID from route parameters
@@ -100,6 +100,8 @@ export function useUpload (props: Props) {
     }
 
     state.fileList[fileId].status = 2; // Completed
+
+    emit('success');
   };
 
   /**
