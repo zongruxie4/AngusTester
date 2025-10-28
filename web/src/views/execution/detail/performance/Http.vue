@@ -49,7 +49,6 @@ defineExpose({
 });
 </script>
 <template>
-  {{ props.statusCodeData }}
   <ExecHttpPerfExecDetail
     ref="detailRef"
     type="detail"
