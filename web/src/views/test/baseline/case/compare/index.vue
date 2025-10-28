@@ -24,9 +24,9 @@ const props = withDefaults(defineProps<BasicProps>(), {
 
 // Reactive Data
 const availableBaselines = ref<BaselineDetail[]>([]);
-const allCaseIdentifiers = ref<number[]>([]);
+const allCaseIdentifiers = ref<string[]>([]);
 const isCompareModalVisible = ref(false);
-const selectedCompareBaselineId = ref<number>();
+const selectedCompareBaselineId = ref<string>();
 const baseCaseData = ref<BaselineCaseInfo>({} as BaselineCaseInfo);
 const compareCaseData = ref({});
 
@@ -75,7 +75,7 @@ const loadBaseCaseData = async () => {
  * Load compare case data from the selected baseline
  */
 const loadCompareCaseData = async () => {
-  const [error, { data }] = await test.getBaselineCaseList(Number(selectedCompareBaselineId.value), {
+  const [error, { data }] = await test.getBaselineCaseList(selectedCompareBaselineId.value, {
     pageSize: 2000,
     pageNo: 1,
     projectId: props.projectId

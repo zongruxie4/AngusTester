@@ -21,8 +21,8 @@ export type DataSourceProps<T> = {
 export type BasicProps = {
   projectId: string;
   projectName?: string;
-  userInfo?: { id: number; fullName?: string } | User;
-  appInfo?: { id: number; } | AppInfo;
+  userInfo?: { id: string; fullName?: string } | User;
+  appInfo?: { id: string; } | AppInfo;
   total?: 0,
   userId?: string,
   notify?: string;
@@ -36,10 +36,10 @@ export type BasicProps = {
 }
 
 export type BasicDataSourceProps<T> = {
-  projectId: number;
+  projectId: string;
   projectName?: string;
-  userInfo?: { id: number; fullName?: string } | User;
-  appInfo?: { id: number; } | AppInfo;
+  userInfo?: { id: string; fullName?: string } | User;
+  appInfo?: { id: string; } | AppInfo;
   notify?: string;
   onShow?: boolean;
   disabled?: false,
@@ -48,7 +48,7 @@ export type BasicDataSourceProps<T> = {
 }
 
 export type UserInfo = {
-  id: number;
+  id: string;
   username: string;
   fullName: string;
   mobile: string;
@@ -68,13 +68,13 @@ export interface CreateTimeSetting {
 }
 
 export type ActivityInfo = {
-  id: number;
-  projectId: number;
-  userId: number;
+  id: string;
+  projectId: string;
+  userId: string;
   fullName: string;
   avatar: string;
-  targetId: number;
-  parentTargetId: number;
+  targetId: string;
+  parentTargetId: string;
   targetType: EnumMessage<CombinedTargetType>;
   targetName: string;
   optDate: string;
@@ -90,7 +90,7 @@ export type AttachmentInfo = {
 }
 
 export type TagInfo = {
-  id: number;
+  id: string;
   name: string;
 }
 

@@ -18,10 +18,10 @@ const Attachment = defineAsyncComponent(() => import('@/views/test/review/detail
 // Props and Emits
 interface Props {
   visible: boolean;
-  caseId: number;
-  baselineId: number;
-  compareBaselineId: number;
-  projectId: number;
+  caseId: string;
+  baselineId: string;
+  compareBaselineId: string;
+  projectId: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {

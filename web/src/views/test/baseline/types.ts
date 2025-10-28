@@ -1,30 +1,30 @@
 import { CaseInfo } from '@/views/test/types';
 
 export type BaselineDetail = {
-  id: number;
+  id: string;
   name: string;
-  planId: number;
+  planId: string;
   planName: string;
   established: boolean;
   description: string;
-  caseIds?: number[];
-  tenantId: number;
-  createdBy: number;
+  caseIds?: string[];
+  tenantId: string;
+  createdBy: string;
   createdByName: string;
   createdDate: string;
-  lastModifiedBy: number;
+  lastModifiedBy: string;
   lastModifiedByName: string;
   lastModifiedDate: string;
 }
 
 export type BaselineCaseInfo = {
-  baselineId: number;
+  baselineId: string;
 } & CaseInfo;
 
 export type BaselineEditState = {
-  id?: number;
+  id?: string;
   name: string;
   planId: string;
   description?: string;
-  caseIds?: number[],
+  caseIds?: string[],
 }
