@@ -41,22 +41,23 @@ const tableColumns = [
   {
     title: t('common.code'),
     dataIndex: 'code',
-    width: 150
+    width: 100
   },
   {
     title: t('common.name'),
-    dataIndex: 'name'
+    dataIndex: 'name',
+    ellipsis: true
   },
   {
     title: t('common.version'),
     dataIndex: 'version',
     customRender: ({ text }) => 'v' + text || '--',
-    width: 100
+    width: 80
   },
   {
     title: t('common.priority'),
     dataIndex: 'priority',
-    width: 100
+    width: 80
   },
   {
     title: t('common.creator'),
@@ -84,7 +85,7 @@ const paginationConfig = ref({
 });
 const searchFilters = ref([]);
 const isSelectCaseModalVisible = ref(false);
-const selectedModuleId = ref<number|undefined>();
+const selectedModuleId = ref<string|undefined>();
 const baselineCaseList = ref([]);
 
 // Data Loading Methods
@@ -94,7 +95,7 @@ const baselineCaseList = ref([]);
  */
 const handleCaseSelectionConfirm = async (caseIds: string[] = []) => {
   isSelectCaseModalVisible.value = false;
-  const [error] = await test.addBaselineCase(props.baselineId, caseIds);
+  const [error] = await test.addBaselineCase(props.baselineId as string, caseIds);
   if (error) {
     return;
   }
@@ -106,7 +107,7 @@ const handleCaseSelectionConfirm = async (caseIds: string[] = []) => {
  */
 const loadBaselineCaseList = async () => {
   const { current, pageSize } = paginationConfig.value;
-  const [error, { data }] = await test.getBaselineCaseList(props.baselineId, {
+  const [error, { data }] = await test.getBaselineCaseList(props.baselineId as string, {
     moduleId: selectedModuleId.value,
     projectId: props.projectId,
     pageNo: current,
@@ -124,7 +125,7 @@ const loadBaselineCaseList = async () => {
  * Load baseline information
  */
 const loadBaselineInfo = async () => {
-  const [error, res] = await test.getBaselineDetail(props.baselineId);
+  const [error, res] = await test.getBaselineDetail(props.baselineId as string);
   if (error) {
     return;
   }
@@ -161,7 +162,7 @@ const deleteCaseFromBaseline = (record) => {
   modal.confirm({
     content: t('testCaseBaseline.case.confirmUnlinkCase', { name: record.name }),
     onOk () {
-      return test.deleteBaselineCase(props.baselineId, [record.id])
+      return test.deleteBaselineCase(props.baselineId as string, [record.id])
         .then(([error]) => {
           if (error) {
             return;
@@ -225,7 +226,7 @@ const createRowClickHandler = (record) => {
         selectedRowKey.value = '';
       } else {
         selectedRowKey.value = record.id;
-        const [error, { data }] = await test.getBaselineCaseDetail(props.baselineId, record.id);
+        const [error, { data }] = await test.getBaselineCaseDetail(props.baselineId as string, record.id);
         if (error) {
           selectedCaseInfo.value = record;
           return;

@@ -332,7 +332,7 @@ const startActualWorkloadEditing = () => {
  */
 const handleActualWorkloadBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const newWorkload = Number(target?.value);
+  const newWorkload = target?.value;
   if (newWorkload === actualWorkload.value) {
     isActualWorkloadEditing.value = false;
     return;
@@ -382,7 +382,7 @@ const startEvalWorkloadEditing = () => {
  */
 const handleEvalWorkloadBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const newWorkload = Number(target?.value);
+  const newWorkload = target?.value;
   if (newWorkload === evalWorkload.value) {
     isEvalWorkloadEditing.value = false;
     return;

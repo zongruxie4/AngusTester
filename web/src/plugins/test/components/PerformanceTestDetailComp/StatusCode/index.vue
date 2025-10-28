@@ -141,7 +141,6 @@ const getXDataAndYData = (data: Record<string, any>) => {
  * Transforms and updates chart data when new statistics arrive
  */
 watch(() => props.statusCodeData, (newValue) => {
-  debugger;
   // Transform data for bar charts
   chartData.value = getXDataAndYData(newValue) as any;
   

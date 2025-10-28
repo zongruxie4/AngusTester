@@ -40,12 +40,12 @@ const taskNameInputValue = ref<string>();
 // Evaluation workload editing state
 const evalWorkloadInputRef = ref();
 const isEvalWorkloadEditing = ref(false);
-const evalWorkloadInputValue = ref<number>();
+const evalWorkloadInputValue = ref<string>();
 
 // Actual workload editing state
 const actualWorkloadInputRef = ref();
 const isActualWorkloadEditing = ref(false);
-const actualWorkloadInputValue = ref<number>();
+const actualWorkloadInputValue = ref<string>();
 
 // Priority editing state
 const prioritySelectRef = ref();
@@ -139,7 +139,7 @@ const startActualWorkloadEditing = () => {
  */
 const handleActualWorkloadBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const newValue = Number(target?.value);
+  const newValue = target?.value;
   if (newValue === currentActualWorkload.value) {
     isActualWorkloadEditing.value = false;
     return;
@@ -190,7 +190,7 @@ const startEvalWorkloadEditing = () => {
  */
 const handleEvalWorkloadBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const newValue = Number(target?.value);
+  const newValue = target?.value;
   if (newValue === currentEvalWorkload.value) {
     isEvalWorkloadEditing.value = false;
     return;

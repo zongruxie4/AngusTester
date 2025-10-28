@@ -95,7 +95,7 @@ const changeFailMessage = (value: any) => {
   if (value === 'other') {
     formState.value.reviewRemark = '';
   } else {
-    formState.value.reviewRemark = failMessage[Number(value)];
+    formState.value.reviewRemark = failMessage[value];
   }
 };
 

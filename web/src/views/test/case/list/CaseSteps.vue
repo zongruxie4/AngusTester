@@ -319,7 +319,7 @@ const menus = [
               style="min-width: 48px;">
               <Dropdown
                 :menuItems="menus"
-                @click="handleClick($event.key, item, Number(index))">
+                @click="handleClick($event.key, item, index)">
                 <Icon
                   class="cursor-pointer text-theme-text-hover mx-auto"
                   icon="icon-gengduo" />

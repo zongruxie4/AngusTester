@@ -369,7 +369,7 @@ const handleSprintSelection = (value: any, option: any) => {
   isSprintSelectorVisible.value = false;
 
   selectedSprintOption.value = formatDisplayData({ id: String(value), name: option.name });
-  checkedSprintId.value = Number(value);
+  checkedSprintId.value = value;
 };
 
 /**

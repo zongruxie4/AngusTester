@@ -133,7 +133,7 @@ const loadModuleTreeData = async () => {
  * @param id - Task ID
  * @returns Partial task information
  */
-const loadTaskInfoById = async (id: number): Promise<Partial<TaskDetail>> => {
+const loadTaskInfoById = async (id: string): Promise<Partial<TaskDetail>> => {
   emit('loadingChange', true);
   const [error, res] = await issue.getTaskDetail(id);
   emit('loadingChange', false);
@@ -214,7 +214,7 @@ const enterActualWorkloadEditMode = () => {
  */
 const handleActualWorkloadInputBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const inputValue = Number(target.value);
+  const inputValue = target.value;
   if (inputValue === currentActualWorkload.value) {
     isActualWorkloadEditing.value = false;
     return;
@@ -262,7 +262,7 @@ const enterEvalWorkloadEditMode = () => {
  */
 const handleEvalWorkloadInputBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const inputValue = Number(target.value);
+  const inputValue = target.value;
   if (inputValue === currentEvalWorkload.value) {
     isEvalWorkloadEditing.value = false;
     return;
@@ -328,7 +328,7 @@ const handleSprintSelectionBlur = async () => {
   emit('loadingChange', true);
   const moveTaskParams = {
     taskIds: [currentTaskId.value],
-    targetSprintId: Number(selectedValue)
+    targetSprintId: selectedValue
   };
   const [error] = await issue.moveTask(moveTaskParams);
   emit('loadingChange', false);

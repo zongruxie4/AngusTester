@@ -312,7 +312,7 @@ const enterActualWorkloadEditMode = () => {
  * @param event - Input blur event
  */
 const handleActualWorkloadInputBlur = async (event: FocusEvent) => {
-  const value = Number((event.target as HTMLInputElement).value);
+  const value = (event.target as HTMLInputElement).value;
   if (value === currentActualWorkload.value) {
     isActualWorkloadEditing.value = false;
     return;
@@ -359,7 +359,7 @@ const enterEvalWorkloadEditMode = () => {
  * @param event - Input blur event
  */
 const handleEvalWorkloadInputBlur = async (event: FocusEvent) => {
-  const value = Number((event.target as HTMLInputElement).value);
+  const value = (event.target as HTMLInputElement).value;
   if (value === currentEvalWorkload.value) {
     isEvalWorkloadEditing.value = false;
     return;
