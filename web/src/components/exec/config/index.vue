@@ -1085,7 +1085,7 @@ const getData = () => {
 
   let params:any = {
     configuration: {
-      ...configurationtends.value,
+      ...configurationTends.value,
       thread: _thread
     }
   };
