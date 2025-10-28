@@ -56,6 +56,7 @@
     "password": "Password",
     "default": "Default",
     "subject": "Subject",
+    "language": "Language",
     "link": "Link",
     "method": "Method",
     "path": "Path",

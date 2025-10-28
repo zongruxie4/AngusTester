@@ -2653,7 +2653,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               <SelectEnum
                 v-model:value="globalSettingsParams.lang"
                 :enumKey="SupportedLanguage"
-                placeholder="t('xcan_execSettingForm.langPlaceholder')" />
+                :placeholder="t('xcan_execSettingForm.langPlaceholder')" />
               <Tooltip
                 :title="t('xcan_execSettingForm.languageTooltip')"
                 placement="topLeft"
@@ -2837,7 +2837,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                         :value="httpSettingsParams.httpSetting.connectTimeout + httpSettingConnectTimeoutUnit"
                         size="small"
                         class="w-full"
-                        placeholder="t('xcan_execSettingForm.connectionTimeoutTime')"
+                        :placeholder="t('xcan_execSettingForm.connectionTimeoutTime')"
                         :max="100000"
                         :selectProps="shutdownTimeoutSelectProps"
                         @change="httpConnectTimeoutChange" />
@@ -2856,7 +2856,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                         :value="httpSettingsParams.httpSetting.readTimeout + httpSettingReadTimeoutUnit"
                         size="small"
                         class="w-full"
-                        placeholder="t('xcan_execSettingForm.readTimeoutTime')"
+                        :placeholder="t('xcan_execSettingForm.readTimeoutTime')"
                         :max="100000"
                         :selectProps="shutdownTimeoutSelectProps"
                         @change="httpReadTimeoutChange" />
