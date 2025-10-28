@@ -378,11 +378,11 @@ onMounted(() => {
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <div class="flex">
       <Introduce class="mb-7 flex-1" />
-      <div class="flex flex-col w-155 ml-10">
+      <!-- <div class="flex flex-col w-155 ml-10">
         <div class="flex-1 flex flex-col justify-center">
           <img :src="ProcessPng" class="mt-2 items-center" />
         </div>
-      </div>
+      </div>-->
     </div>
 
     <div class="text-3.5 font-semibold mb-1">{{ t('testPlan.addedPlans') }}</div>
