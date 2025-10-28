@@ -17,12 +17,12 @@ import Template from '/file/Import_Task_Template.xlsx?url';
 
 // Component props interface for task list page
 type Props = {
-  sprintId: number;
+  sprintId: string;
   sprintName: string;
-  projectId: number;
+  projectId: string;
   projectName: string;
-  userInfo: { id: number; fullName: string; };
-  appInfo: { id: number; };
+  userInfo: { id: string; fullName: string; };
+  appInfo: { id: string; };
   notify: string;
 }
 
@@ -535,7 +535,7 @@ const updateTaskListData = (taskData: Partial<TaskDetail>) => {
 };
 
 // MODULE MANAGEMENT
-const currentModuleId = ref<number>();
+const currentModuleId = ref<string>();
 
 /**
  * Component mounted lifecycle hook
@@ -546,6 +546,7 @@ onMounted(async () => {
 
   watch(() => props.projectId, () => {
     currentModuleId.value = undefined;
+    console.log('projectId', props.projectId);
   });
 
   watch(() => listRefreshNotify.value, (newNotificationValue) => {
@@ -557,11 +558,7 @@ onMounted(async () => {
   }, { immediate: true });
 
   watch(() => isModuleGroupEnabled.value, () => {
-    if (isModuleGroupEnabled.value) {
-      currentModuleId.value = undefined;
-    } else {
-      currentModuleId.value = undefined;
-    }
+    currentModuleId.value = undefined;
   });
 
   watch(() => currentModuleId.value, () => {

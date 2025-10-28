@@ -1024,7 +1024,7 @@ defineExpose({
         class="flex-shrink-0 h-full overflow-hidden pb-3 bg-gray-1 text-3"
         :class="{'w-65 mr-2': enabledModuleGroup , 'w-0': !enabledModuleGroup}">
         <ModuleTree
-          :moduleId="moduleId as number"
+          v-model:moduleId="moduleId"
           :projectId="projectInfo?.id"
           :projectName="projectInfo?.name" />
       </div>
