@@ -522,7 +522,7 @@ const handleTagSelectionChange = async (_value: any, options: any) => {
  * Handle tag selection blur and update task tags
  */
 const handleTagSelectionBlur = async () => {
-  const selectedIds = selectedTagIdList.value.map(id => Number(id));
+  const selectedIds = selectedTagIdList.value.map(id => id);
   if (isEqual(selectedIds, currentTagIds.value)) {
     isTagEditing.value = false;
     return;

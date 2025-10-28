@@ -9,7 +9,7 @@ import { CaseDetail } from '@/views/test/types';
 import { CaseActionAuth } from '@/views/test/case/types';
 
 interface Props {
-  id?: number;
+  id?: string;
   dataSource?: CaseDetail;
   projectId?: string;
   actionAuth?: CaseActionAuth[];
@@ -33,12 +33,12 @@ const { t } = useI18n();
 const testerSelectRef = ref();
 const isTesterEditing = ref(false);
 const testerSelectMessage = ref<string>();
-const testerSelectValue = ref<number | string>();
+const testerSelectValue = ref<string>();
 
 const developerSelectRef = ref();
 const isDeveloperEditing = ref(false);
 const developerSelectMessage = ref<string>();
-const developerSelectValue = ref<number | string>();
+const developerSelectValue = ref<string>();
 
 // Computed properties for case personnel data
 const currentCaseId = computed(() => props.dataSource?.id);
@@ -224,7 +224,7 @@ const handleTesterBlur = async () => {
   }
 
   isTesterEditing.value = false;
-  emit('change', { id: currentCaseId.value, testerId: Number(newValue), testerName: testerSelectMessage.value! });
+  emit('change', { id: currentCaseId.value, testerId: newValue, testerName: testerSelectMessage.value! });
 };
 
 /**
@@ -266,7 +266,7 @@ const handleDeveloperBlur = async () => {
   }
 
   isDeveloperEditing.value = false;
-  emit('change', { id: currentCaseId.value, developerId: Number(newValue), developerName: developerSelectMessage.value! });
+  emit('change', { id: currentCaseId.value, developerId: newValue, developerName: developerSelectMessage.value! });
 };
 
 </script>

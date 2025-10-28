@@ -57,13 +57,13 @@ const startEvalWorkloadEditing = () => {
 
 const handleEvalWorkloadBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const newValue = Number(target?.value);
+  const newValue = target?.value;
   if (newValue === currentEvalWorkload.value) {
     isEvalWorkloadEditing.value = false;
     return;
   }
   emit('loadingChange', true);
-  const [error] = await testCase.putEvalWorkload((props.dataSource?.id) as number, { workload: newValue });
+  const [error] = await testCase.putEvalWorkload(props.dataSource?.id as string, { workload: newValue });
   emit('loadingChange', false);
   isEvalWorkloadEditing.value = false;
   if (error) {
@@ -93,13 +93,13 @@ const startActualWorkloadEditing = () => {
 
 const handleActualWorkloadBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const newValue = Number(target?.value);
+  const newValue = target?.value;
   if (newValue === currentActualWorkload.value) {
     isActualWorkloadEditing.value = false;
     return;
   }
   emit('loadingChange', true);
-  const [error] = await testCase.putActualWorkload((props.dataSource?.id) as number, { workload: newValue });
+  const [error] = await testCase.putActualWorkload(props.dataSource?.id as string, { workload: newValue });
   emit('loadingChange', false);
   isActualWorkloadEditing.value = false;
   if (error) {

@@ -87,15 +87,15 @@ export type TaskInfo = {
 }
 
 export type TaskDetail = {
-  id: number;
+  id: string;
   name: string;
   code: string;
-  projectId: number;
+  projectId: string;
   projectName: string;
-  sprintId: number;
+  sprintId: string;
   sprintName: string;
   sprintAuth: boolean;
-  moduleId: number;
+  moduleId: string;
   moduleName: string;
   backlog: boolean;
   priority: EnumMessage<Priority>;
@@ -112,20 +112,20 @@ export type TaskDetail = {
   canceledDate: string;
   completedDate: string;
   processedDate: string;
-  assigneeId: number;
+  assigneeId: string;
   assigneeName: string;
   assigneeAvatar: string;
-  confirmerId: number;
+  confirmerId: string;
   confirmerName: string;
-  testerId: number;
+  testerId: string;
   testerName: string;
   escapedBug: boolean;
   unplanned: boolean;
-  parentTaskId: number;
+  parentTaskId: string;
   parentTaskName: string;
   evalWorkloadMethod: EnumMessage<EvalWorkloadMethod>;
-  evalWorkload: number;
-  actualWorkload: number;
+  evalWorkload: string;
+  actualWorkload: string;
   failNum: number;
   totalNum: number;
   attachments?: AttachmentInfo[] | undefined;
@@ -133,19 +133,19 @@ export type TaskDetail = {
   currentAssociateType: EnumMessage<AssociateUserType>[];
   confirmTask: boolean;
   overdue: boolean;
-  targetId: number;
+  targetId: string;
   targetName: string;
-  targetParentId: number;
+  targetParentId: string;
   targetParentName: string;
-  scriptId: number;
+  scriptId: string;
   scriptName: string;
   execResult: EnumMessage<ExecResult>;
   execFailureMessage: string;
   execTestNum: number;
   execTestFailureNum: number;
-  execId: number;
+  execId: string;
   execName: string;
-  execBy: number;
+  execBy: string;
   execByName: string;
   execDate: string;
   favourite: boolean;
@@ -154,12 +154,12 @@ export type TaskDetail = {
   refTaskInfos: TaskInfo[];
   refCaseInfos: CaseInfo[];
   subTaskInfos: TaskInfo[];
-  tenantId: number;
-  createdBy: number;
+  tenantId: string;
+  createdBy: string;
   createdByName: string;
   createdDate: string;
   avatar: string;
-  lastModifiedBy: number;
+  lastModifiedBy: string;
   lastModifiedByName: string;
   lastModifiedDate: string;
   linkUrl?: string

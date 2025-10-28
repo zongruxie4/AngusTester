@@ -31,7 +31,7 @@ const { t } = useI18n();
  * @returns Review pass status string
  */
 const getOneReviewPass = computed(() => {
-  if (props.dataSource?.reviewNum && Number(props.dataSource.reviewNum) > 0) {
+  if (props.dataSource?.reviewNum && props.dataSource.reviewNum > 0) {
     return props.dataSource?.reviewFailNum === 0 &&
     props.dataSource?.reviewStatus?.value === ReviewStatus.PASSED
       ? t('status.yes')

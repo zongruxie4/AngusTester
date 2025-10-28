@@ -32,7 +32,7 @@ const { t } = useI18n();
  * @returns Test pass status string
  */
 const getOneTestPass = computed(() => {
-  if (props.dataSource?.testNum && Number(props.dataSource.testNum) > 0) {
+  if (props.dataSource?.testNum && props.dataSource.testNum > 0) {
     return props.dataSource?.testFailNum === 0 &&
     props.dataSource?.testResult?.value === CaseTestResult.PASSED
       ? t('status.yes')

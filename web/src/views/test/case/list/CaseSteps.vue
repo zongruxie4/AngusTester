@@ -260,9 +260,9 @@ const menus = [
             <div
               class="w-8 flex justify-center pt-1 flex-none"
               :draggable="!props.readonly"
-              @drop="(e)=>handleDrop(e,Number(index))"
+              @drop="(e)=>handleDrop(e,index)"
               @dragend="handleDragEnd"
-              @dragstart="(e)=>handleDragStart(e,Number(index),item)"
+              @dragstart="(e)=>handleDragStart(e,index,item)"
               @dragover.prevent="handleDragOver">
               <div class="h-4 text-center leading-4 mt-1.25 whitespace-nowrap">{{ index+1 }}.</div>
             </div>

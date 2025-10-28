@@ -62,14 +62,14 @@ export type CaseTestStep = {
 }
 
 export type CaseDetail = {
-  id: number;
+  id: string;
   name: string;
   code: string;
   description: string;
-  projectId: number;
-  planId: number;
+  projectId: string;
+  planId: string;
   planName: string;
-  moduleId: number;
+  moduleId: string;
   moduleName: string;
   softwareVersion: string;
   priority: EnumMessage<Priority>;
@@ -79,20 +79,20 @@ export type CaseDetail = {
   deadlineDate: string;
   overdue: boolean;
   evalWorkloadMethod: EnumMessage<EvalWorkloadMethod>;
-  evalWorkload: number;
-  actualWorkload: number;
+  evalWorkload: string;
+  actualWorkload: string;
   review: boolean;
-  reviewerId: number;
+  reviewerId: string;
   reviewerName: string;
   reviewDate: string;
   reviewStatus: EnumMessage<ReviewStatus>;
   reviewRemark: string;
   reviewNum: number;
   reviewFailNum: number;
-  testerId: number;
+  testerId: string;
   testerName: string;
   testerAvatar: string;
-  developerId: number;
+  developerId: string;
   developerName: string;
   testNum: number;
   testFailNum: number;
@@ -110,33 +110,33 @@ export type CaseDetail = {
   activityNum: number;
   favourite: boolean;
   follow: boolean;
-  tenantId: number;
-  createdBy: number;
+  tenantId: string;
+  createdBy: string;
   createdByName: string;
   avatar: string;
   createdDate: string;
-  lastModifiedBy: number;
+  lastModifiedBy: string;
   lastModifiedByName: string;
   lastModifiedDate: string;
   /** Optional reference map used when updating associations */
-  refMap?: { TASK: number[]; CASE: number[] };
+  refMap?: { TASK: string[]; CASE: string[] };
   checked?: boolean;
 }
 
 export type CaseReviewRecord = {
-  id?: number;
+  id?: string;
   name?: string;
-  planId?: number;
-  reviewCaseId?: number;
-  reviewId?: number;
-  caseId?: number;
+  planId?: string;
+  reviewCaseId?: string;
+  reviewId?: string;
+  caseId?: string;
   reviewedCase?: CaseInfo;
-  reviewerId?: number;
+  reviewerId?: string;
   reviewerName?: string;
   reviewDate?: Date | string;
   reviewStatus?: EnumMessage<ReviewStatus>;
   reviewRemark?: string;
-  createdBy?: number;
+  createdBy?: string;
   createdByName?: string;
   avatar?: string;
   createdDate?: Date | string;

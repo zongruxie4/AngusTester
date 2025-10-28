@@ -102,12 +102,12 @@ const isModuleGroupingEnabled = ref(false);
 // Sprint selection state
 const isSprintSelectorVisible = ref(false);
 const selectedSprintOption = ref<SearchPanelOption>();
-const checkedSprintId = ref<number>();
+const checkedSprintId = ref<string>();
 
 // Tag selection state
 const isTagSelectorVisible = ref(false);
 const selectedTagOptions = ref<SearchPanelOption[]>([]);
-const checkedTagIds = ref<number[]>([]);
+const checkedTagIds = ref<string[]>([]);
 
 // Search criteria filters
 const searchFilters = ref<SearchCriteria[]>([]);
@@ -388,7 +388,7 @@ const toggleSprintSelection = () => {
     checkedSprintId.value = undefined;
     return;
   }
-  checkedSprintId.value = Number(id);
+  checkedSprintId.value = id;
 };
 
 /**
@@ -423,7 +423,7 @@ const handleTagSelection = (value: any, option: any) => {
   }
 
   selectedTagOptions.value.push(formatDisplayData({ id: stringValue, name: option.name }));
-  checkedTagIds.value.push(Number(value));
+  checkedTagIds.value.push(value);
 };
 
 /**
@@ -438,7 +438,7 @@ const hideTagSelector = () => {
  * @param data - Tag option data
  */
 const toggleTagSelection = (data: SearchPanelOption) => {
-  const id = Number(data.id);
+  const id = data.id;
   if (checkedTagIds.value.includes(id)) {
     checkedTagIds.value = checkedTagIds.value.filter(item => item !== id);
     return;
@@ -453,7 +453,7 @@ const toggleTagSelection = (data: SearchPanelOption) => {
 const removeSelectedTag = (data: SearchPanelOption) => {
   const id = data.id;
   selectedTagOptions.value = selectedTagOptions.value.filter(item => item.id !== id);
-  checkedTagIds.value = checkedTagIds.value.filter(item => item !== Number(id));
+  checkedTagIds.value = checkedTagIds.value.filter(item => item !== id);
 };
 
 /**
@@ -900,7 +900,7 @@ onMounted(async () => {
 
     const { sprintId, sprintName } = queryParameters;
     if (sprintId) {
-      checkedSprintId.value = Number(sprintId);
+      checkedSprintId.value = sprintId;
     }
 
     if (sprintName) {
@@ -1581,7 +1581,7 @@ const sortMenuItems = [
           <template v-if="selectedSprintOption?.id">
             <Tag
               :title="selectedSprintOption?.showTitle"
-              :class="checkedSprintId === Number(selectedSprintOption.id) ? 'sprint tag-checked' : ''"
+              :class="checkedSprintId === selectedSprintOption.id ? 'sprint tag-checked' : ''"
               closable
               class="h-6 mr-5 mb-3 rounded-xl px-2.5"
               @click="toggleSprintSelection"
@@ -1616,7 +1616,7 @@ const sortMenuItems = [
             v-for="item in selectedTagOptions"
             :key="item.id"
             :title="item.showTitle"
-            :class="checkedTagIds.includes(Number(item.id)) ? 'tag tag-checked' : ''"
+            :class="checkedTagIds.includes(item.id) ? 'tag tag-checked' : ''"
             closable
             class="h-6 mb-3 rounded-xl px-2.5"
             @click="toggleTagSelection(item)"

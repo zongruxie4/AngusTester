@@ -18,15 +18,15 @@ export default class API {
     return http.patch(`${baseUrl}`, params);
   }
 
-  deleteCase (caseIds: number[]): Promise<[Error | null, any]> {
+  deleteCase (caseIds: string[]): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}`, caseIds, { dataType: true });
   }
 
-  cloneCase (caseIds: number[]): Promise<[Error | null, any]> {
+  cloneCase (caseIds: string[]): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/clone`, caseIds);
   }
 
-  getCaseDetail (CaseId: number): Promise<[Error | null, any]> {
+  getCaseDetail (CaseId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${CaseId}`);
   }
 
@@ -42,51 +42,51 @@ export default class API {
     return http.patch(`${baseUrl}/result`, params);
   }
 
-  resetCaseResult (caseIds: number[]): Promise<[Error | null, any]> {
+  resetCaseResult (caseIds: string[]): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/result/reset`, caseIds, { dataType: true });
   }
 
-  resetReviewCase (caseIds: number[]): Promise<[Error | null, any]> {
+  resetReviewCase (caseIds: string[]): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/review/reset`, caseIds, { dataType: true });
   }
 
-  getReviewRecord (CaseId: number): Promise<[Error | null, any]> {
+  getReviewRecord (CaseId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${CaseId}/review`);
   }
 
-  retestResult (caseIds: number[]): Promise<[Error | null, any]> {
+  retestResult (caseIds: string[]): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/result/retest`, caseIds, { dataType: true });
   }
 
-  putDeadline (caseId: number, deadline: string): Promise<[Error | null, any]> {
+  putDeadline (caseId: string, deadline: string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${caseId}/deadline/${deadline}`);
   }
 
-  moveCase (targetPlanId: number | undefined, caseIds: number[]): Promise<[Error | null, any]> {
+  moveCase (targetPlanId: string | undefined, caseIds: string[]): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/move?targetPlanId=${targetPlanId}`, caseIds, { paramsType: false });
   }
 
-  putAttachment (caseId: number, params): Promise<[Error | null, any]> {
+  putAttachment (caseId: string, params): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${caseId}/attachment`, params);
   }
 
-  putName (caseId: number, name: string): Promise<[Error | null, any]> {
+  putName (caseId: string, name: string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${caseId}/name?name=${name}`);
   }
 
-  putPriority (caseId: number, value): Promise<[Error | null, any]> {
+  putPriority (caseId: string, value): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${caseId}/priority/${value}`);
   }
 
-  putEvalWorkload (caseId: number, params): Promise<[Error | null, any]> {
+  putEvalWorkload (caseId: string, params): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${caseId}/evalWorkload`, params);
   }
 
-  putActualWorkload (caseId: number, params): Promise<[Error | null, any]> {
+  putActualWorkload (caseId: string, params): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${caseId}/actualWorkload`, params);
   }
 
-  putTag (caseId: number, params): Promise<[Error | null, any]> {
+  putTag (caseId: string, params): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${caseId}/tag`, params);
   }
 
@@ -94,35 +94,35 @@ export default class API {
     return http.post(`${baseUrl}/import`, formData);
   }
 
-  putAssociationCase (caseId: number, assocCaseIds: number[]): Promise<[Error | null, any]> {
+  putAssociationCase (caseId: string, assocCaseIds: string[]): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${caseId}/association/case`, { assocCaseIds }, { paramsType: true });
   }
 
-  cancelAssociationCase (caseId: number, assocCaseIds: number[]): Promise<[Error | null, any]> {
+  cancelAssociationCase (caseId: string, assocCaseIds: string[]): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${caseId}/association/case/cancel`, { assocCaseIds }, { paramsType: true });
   }
 
-  putAssociationTask (caseId: number, assocTaskIds: number[]) : Promise<[Error | null, any]> {
+  putAssociationTask (caseId: string, assocTaskIds: string[]) : Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${caseId}/association/task`, { assocTaskIds }, { paramsType: true });
   }
 
-  cancelAssociationTask (caseId: number, assocTaskIds: number[]): Promise<[Error | null, any]> {
+  cancelAssociationTask (caseId: string, assocTaskIds: string[]): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${caseId}/association/task/cancel`, { assocTaskIds }, { paramsType: true });
   }
 
-  AddFavouriteCase (caseId: number): Promise<[Error | null, any]> {
+  AddFavouriteCase (caseId: string): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${caseId}/favourite`);
   }
 
-  addFollowCase (caseId: number): Promise<[Error | null, any]> {
+  addFollowCase (caseId: string): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${caseId}/follow`);
   }
 
-  cancelFavouriteCase (caseId: number): Promise<[Error | null, any]> {
+  cancelFavouriteCase (caseId: string): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${caseId}/favourite`);
   }
 
-  cancelFollowCase (caseId: number): Promise<[Error | null, any]> {
+  cancelFollowCase (caseId: string): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${caseId}/follow`);
   }
 

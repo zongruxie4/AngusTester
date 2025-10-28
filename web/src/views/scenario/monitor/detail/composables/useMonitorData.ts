@@ -24,6 +24,7 @@ export function useMonitorData () {
     loading.value = true;
     try {
       const [error, res] = await scenario.getMonitorDetail(id);
+      debugger;
 
       if (error) {
         console.error('Failed to load monitor data:', error);
@@ -54,6 +55,7 @@ export function useMonitorData () {
   const loadScenarioPlugin = async (scenarioId: string): Promise<void> => {
     try {
       const [error, { data }] = await scenario.getScenarioDetail(scenarioId);
+      debugger;
 
       if (error) {
         console.error('Failed to load scenario data:', error);
