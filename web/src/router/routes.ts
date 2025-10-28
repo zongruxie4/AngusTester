@@ -92,10 +92,10 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           breadcrumb: [
             {
-              name: 'execute.execute',
+              name: 'common.execution',
               path: '/execution'
             },
-            { name: 'execute.createExecution' }
+            { name: 'execution.actions.createExecution' }
           ],
           className: 'my-tabs'
         }
@@ -106,7 +106,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           breadcrumb: [
             {
-              name: 'execute.execute',
+              name: 'common.execution',
               path: '/execution'
             },
             { name: t('actions.experienceExec') }
@@ -120,7 +120,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           breadcrumb: [
             {
-              name: 'execute.execute',
+              name: 'common.execution',
               path: '/execution'
             },
             { name: t('actions.modifyExecConfig') }
