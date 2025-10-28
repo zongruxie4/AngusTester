@@ -46,7 +46,8 @@
     "edit": {
       "modal": {
         "editProject": "编辑项目",
-        "addProject": "添加项目"
+        "addProject": "添加项目",
+        "noJoinedProjects": "没有添加或加入任何项目"
       },
       "rules": {
         "maxCharacters": "不能超过2000字符",

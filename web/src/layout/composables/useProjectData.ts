@@ -48,7 +48,7 @@ export function useProjectData () {
     projectSearchState.value.filteredList = list;
 
     if (list.length < 1) {
-      notification.warning(t('project.noJoinedProjects'));
+      notification.warning(t('project.edit.modal.noJoinedProjects'));
       currentProject.value = undefined;
       addProjectVisible.value = true;
       return;

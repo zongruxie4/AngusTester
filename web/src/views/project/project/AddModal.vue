@@ -74,9 +74,7 @@ const descRichRef = ref();
 /** Project type configuration for tips display */
 const projectTypeTipConfig = getProjectTypeTipConfig();
 /** Project type name mapping for UI display */
-const projectTypeName = computed(() => {
-  return getProjectTypeName();
-});
+const projectTypeName = getProjectTypeName();
 
 // Computed properties
 const modalTitle = computed(() => {
@@ -177,7 +175,7 @@ watch(() => props.visible, (newValue) => {
     <div class="modal-content">
       <!-- Project type selection area -->
       <div class="project-type-section">
-        <h3 class="section-title">{{ t('project.edit.form.selectProjectType') }}</h3>
+        <h3 class="section-title">{{ t('project.edit.form.projectType') }}</h3>
         <div class="project-type-cards">
           <div
             class="project-type-card"
@@ -259,7 +257,7 @@ watch(() => props.visible, (newValue) => {
 
           <!-- Project name -->
           <FormItem
-            :label="t('project.edit.form.name')"
+            :label="t('common.name')"
             name="name"
             class="form-field"
             required>
@@ -276,7 +274,7 @@ watch(() => props.visible, (newValue) => {
             class="form-field with-tooltip"
             :rules="[{ required: true, message: t('project.edit.rules.timeRequired')}]">
             <template #label>
-              <span>{{ t('project.edit.form.time') }}</span>
+              <span>{{ t('common.planTime') }}</span>
             </template>
             <DatePicker
               v-model:value="formData.dateRange"
