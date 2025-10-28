@@ -20,15 +20,33 @@ const designContent = ref();
 const openApiDesignerRef = ref();
 const isLoading = ref(false);
 
+function blobToJson(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsText(blob, 'utf-8');
+        reader.onload = function(e) {
+            try {
+                const jsonData = JSON.parse(reader.result as string);
+                resolve(jsonData);
+            } catch (error) {
+                reject(new Error('parse blob to json failed: ' + (error as Error).message));
+            }
+        };
+        reader.onerror = function(e) {
+            reject(new Error('read blob failed'));
+        };
+    });
+}
 /**
  * Fetch the openapi content for current design and cache as string.
  */
 const fetchDesignContent = async () => {
-  const [error, resp] = await apis.exportDesign({ format: 'json', id: props.designId });
+  const [error, resp] = await apis.exportDesign({ format: 'json', id: props.designId }, {responseType: 'blob'});
   if (error) {
     return;
   }
-  designContent.value = JSON.stringify(resp?.data || {});
+  const text = await blobToJson(resp.data);
+  designContent.value = JSON.stringify(text);
 };
 
 /**
