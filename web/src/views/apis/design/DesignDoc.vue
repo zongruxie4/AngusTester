@@ -29,7 +29,7 @@ function blobToJson(blob) {
                 const jsonData = JSON.parse(reader.result as string);
                 resolve(jsonData);
             } catch (error) {
-                reject(new Error('parse blob to json failed: ' + (error as Error).message));
+              resolve({});
             }
         };
         reader.onerror = function(e) {
