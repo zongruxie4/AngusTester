@@ -863,6 +863,7 @@
     "parameterValue": "Parameter Value",
     "readTimeoutTime": "Read Timeout Time",
     "retryCountRange": "Retry Count Range: 1~10",
+    "taskThreadRange": "Task thread support range: 1~10000",
     "publicVariables": "Public Variables",
     "maxThreads": "Max Threads",
     "maxThreadsTooltip": "Maximum thread count, will be evenly distributed across multiple nodes. Note: Mock data tasks support up to 1000 threads; functional tests only allow setting one thread.",

@@ -1952,7 +1952,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
           <Form
             ref="executionFormRef"
             class="flex-1"
-            :model="executParams"
+            :model="executionParams"
             :colon="false"
             layout="horizontal">
             <FormItem
@@ -1960,7 +1960,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               :name="['thread', 'threads']"
               :rules="{ required: true, validator: threadsValidator, trigger: ['change', 'blur'] }">
               <Input
-                :value="executionParams.thread.threads"
+                v-model:value="executionParams.thread.threads"
                 dataType="number"
                 :min="1"
                 :max="threadsMax"
@@ -1981,7 +1981,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                 name="iterations"
                 :rules="{ required: false, validator: iterationsValidator, trigger: ['change', 'blur'] }">
                 <Input
-                  :value="executionParams.iterations"
+                v-model:value="executionParams.iterations"
                   dataType="number"
                   :min="1"
                   :max="props.addType === 'expr' ? 100000 : 100000000000"
@@ -2021,7 +2021,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               </FormItem>
               <FormItem class="h-7 leading-7">
                 <RadioGroup
-                  :value="isRampUpEnabled"
+                  v-model:value="isRampUpEnabled"
                   class="space-x-6 -ml-5 mt-0.5"
                   :disabled="executionParams.duration === '0'"
                   :options="[{ value: false, message: t('xcan_execSettingForm.directPressure') }, { value: true, message: t('xcan_execSettingForm.gradualPressure') }]"
@@ -2089,7 +2089,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               </template>
               <FormItem class="h-7 leading-7">
                 <RadioGroup
-                  :value="isRampDownEnabled"
+                  v-model:value="isRampDownEnabled"
                   class="space-x-6 -ml-5 mt-0.5"
                   :disabled="executionParams.duration === '0'"
                   :options="[{ value: false, message: t('xcan_execSettingForm.directReduction') }, { value: true, message: t('xcan_execSettingForm.gradualReduction') }]"
@@ -2105,7 +2105,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       :name="['thread', 'rampDownInterval']"
                       :rules="{ required: stressReliever, message: t('xcan_execSettingForm.pleaseEnterRampDownInterval'), trigger: ['change', 'blur'] }">
                       <Input
-                        :value="executionParams.thread.rampDownInterval"
+                        v-model:value="executionParams.thread.rampDownInterval"
                         class="w-24"
                         :min="0"
                         :max="+executionParams.duration"
@@ -2122,7 +2122,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       :name="['thread', 'rampDownThreads']"
                       :rules="{ required: stressReliever, message: t('xcan_execSettingForm.pleaseEnterRampDownThreads'), trigger: ['change', 'blur'] }">
                       <Input
-                        :value="executionParams.thread.rampDownThreads"
+                        v-model:value="executionParams.thread.rampDownThreads"
                         dataType="number"
                         class="w-24"
                         :min="0"
