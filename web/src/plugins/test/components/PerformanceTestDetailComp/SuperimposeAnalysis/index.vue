@@ -98,7 +98,7 @@ const checkboxGroupValue = ref<string[]>([]);
 /**
  * Handle checkbox group change
  * Updates selected metrics and refreshes chart data
- * 
+ *
  * @param values - Array of selected metric identifiers
  */
 const CheckboxGroupChange = (values: any): void => {
@@ -110,12 +110,12 @@ const CheckboxGroupChange = (values: any): void => {
 /**
  * Handle time range slider change
  * Updates chart to show data for selected time range
- * 
+ *
  * @param value - New slider range [start, end]
  */
 const sliderChange = (value: number | [number, number]): void => {
   const rangeValue = Array.isArray(value) ? value : [0, value] as [number, number];
-  
+
   // Track whether user is manually sliding
   if (rangeValue[1] < props.timestampData.length - 1) {
     isSliding.value = true;
@@ -133,34 +133,34 @@ const sliderChange = (value: number | [number, number]): void => {
 /**
  * Build chart series data from selected metrics
  * Parses metric identifiers, extracts data, and builds series array
- * 
+ *
  * @param values - Array of selected metric identifiers (format: "APIName-metricKey")
  */
 const setCharData = (values: string[]): void => {
   seriesData.value = [];
-  
+
   for (let i = 0; i < values.length; i++) {
     // Parse metric identifier: "APIName-metricKey"
     const apiName = values[i].slice(0, values[i].lastIndexOf('-'));
     const cvsKey = values[i].slice(values[i].lastIndexOf('-')).slice(1);
-    
+
     // Extract data for selected time range or full range
-    const data = isSliding.value 
+    const data = isSliding.value
       ? props.indexDimensionObj[cvsKey][apiName].slice(sliderValue.value[0], sliderValue.value[1] + 1)
       : props.indexDimensionObj[cvsKey][apiName];
-    
+
     // Add series with formatted name
-    seriesData.value.push({ 
-      name: `${apiName}-${allCvsNames[cvsKey]}`, 
-      key: cvsKey, 
-      data 
+    seriesData.value.push({
+      name: `${apiName}-${allCvsNames[cvsKey]}`,
+      key: cvsKey,
+      data
     });
   }
 };
 
 /**
  * Format slider tooltip to show timestamp
- * 
+ *
  * @param value - Slider index value (optional)
  * @returns Formatted timestamp string or empty
  */
@@ -252,7 +252,7 @@ const responseTimeOptions = [
     value: 'tranP99'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.p999'),
+    label: t('chart.p999'),
     value: 'tranP999'
   }
 ];
@@ -300,12 +300,12 @@ watch(() => props.timestampData, (newVal) => {
   // Auto-update to latest data if not manually sliding
   if (!isSliding.value) {
     xData.value = cloneDeep(newVal);
-    
+
     // Initialize with default throughput metrics if none selected
     if (!checkboxGroupValue.value.length) {
       checkboxGroupValue.value = throughputOptions.map(item => 'Total-' + item.value);
     }
-    
+
     setCharData(checkboxGroupValue.value);
   }
 }, {
@@ -347,7 +347,7 @@ defineExpose({
       :brpsUnit="brpsUnit"
       :bwpsUnit="bwpsUnit"
       tabKey="analyze" />
-    
+
     <!-- Time range slider (shown only when multiple data points exist) -->
     <div v-if="props.timestampData.length >= 2" class="-mt-5 pl-10 pr-12">
       <Slider
@@ -358,7 +358,7 @@ defineExpose({
         range
         @change="sliderChange" />
     </div>
-    
+
     <!-- Metric selection panel with collapsible sections -->
     <div class="pl-10 text-3 mt-5">
       <CheckboxGroup :value="checkboxGroupValue" @change="CheckboxGroupChange">
@@ -373,21 +373,21 @@ defineExpose({
             class="flex">
             <!-- API name label (truncated) -->
             <div class="w-60 truncate" :title="apiName">{{ apiName }}</div>
-            
+
             <!-- Throughput metric checkboxes (ops, tps, brps, bwps) -->
             <div class="space-x-5">
               <Checkbox
                 v-for="option in throughputOptions"
                 :key="apiName + '-' + option.value"
                 :value="apiName + '-' + option.value"
-                :disabled="(!checkboxGroupValue.includes(apiName + '-' + option.value) && checkboxGroupValue.length >= 10) || 
+                :disabled="(!checkboxGroupValue.includes(apiName + '-' + option.value) && checkboxGroupValue.length >= 10) ||
                            (checkboxGroupValue.includes(apiName + '-' + option.value) && checkboxGroupValue.length === 1)">
                 {{ option.label }}
               </Checkbox>
             </div>
           </div>
         </Toggle>
-        
+
         <!-- Thread/concurrency metrics section -->
         <Toggle
           v-model:open="threadExpand"
@@ -399,21 +399,21 @@ defineExpose({
             :key="apiName"
             class="flex">
             <div class="w-60 truncate" :title="apiName">{{ apiName }}</div>
-            
+
             <!-- Thread metric checkboxes (pool size, max, active) -->
             <div class="space-x-5">
               <Checkbox
                 v-for="option in threadOptions"
                 :key="apiName + '-' + option.value"
                 :value="apiName + '-' + option.value"
-                :disabled="(!checkboxGroupValue.includes(apiName + '-' + option.value) && checkboxGroupValue.length >= 10) || 
+                :disabled="(!checkboxGroupValue.includes(apiName + '-' + option.value) && checkboxGroupValue.length >= 10) ||
                            (checkboxGroupValue.includes(apiName + '-' + option.value) && checkboxGroupValue.length === 1)">
                 {{ option.label }}
               </Checkbox>
             </div>
           </div>
         </Toggle>
-        
+
         <!-- Response time metrics section -->
         <Toggle
           v-model:open="responseTimeExpand"
@@ -425,21 +425,21 @@ defineExpose({
             :key="apiName"
             class="flex">
             <div class="w-60 truncate" :title="apiName">{{ apiName }}</div>
-            
+
             <!-- Response time metric checkboxes (avg, min, max, percentiles) -->
             <div class="space-x-5">
               <Checkbox
                 v-for="option in responseTimeOptions"
                 :key="apiName + '-' + option.value"
                 :value="apiName + '-' + option.value"
-                :disabled="(!checkboxGroupValue.includes(apiName + '-' + option.value) && checkboxGroupValue.length >= 10) || 
+                :disabled="(!checkboxGroupValue.includes(apiName + '-' + option.value) && checkboxGroupValue.length >= 10) ||
                            (checkboxGroupValue.includes(apiName + '-' + option.value) && checkboxGroupValue.length === 1)">
                 {{ option.label }}
               </Checkbox>
             </div>
           </div>
         </Toggle>
-        
+
         <!-- Error metrics section -->
         <Toggle
           v-model:open="errorExpand"
@@ -451,14 +451,14 @@ defineExpose({
             :key="apiName"
             class="flex">
             <div class="w-60 truncate" :title="apiName">{{ apiName }}</div>
-            
+
             <!-- Error metric checkboxes (error count, error rate) -->
             <div class="space-x-5">
               <Checkbox
                 v-for="option in errorOptions"
                 :key="apiName + '-' + option.value"
                 :value="apiName + '-' + option.value"
-                :disabled="(!checkboxGroupValue.includes(apiName + '-' + option.value) && checkboxGroupValue.length >= 10) || 
+                :disabled="(!checkboxGroupValue.includes(apiName + '-' + option.value) && checkboxGroupValue.length >= 10) ||
                            (checkboxGroupValue.includes(apiName + '-' + option.value) && checkboxGroupValue.length === 1)">
                 {{ option.label }}
               </Checkbox>
