@@ -304,8 +304,7 @@ onBeforeUnmount(() => {
                   <Colon class="mr-1.5" />
                 </span>
                 <div class="whitespace-nowrap flex-1">
-                  {{ item?.sampleSummaryInfo?.threadPoolActiveSize || '0' }}/
-                  <template v-if="!item?.editThread">
+                  {{ item?.sampleSummaryInfo?.threadPoolActiveSize || '0' }}/<template v-if="!item?.editThread">
                     {{ item?.thread }}
                     <template
                       v-if="![ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status?.value)
