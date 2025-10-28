@@ -567,13 +567,13 @@ onMounted(() => {
           <span class="font-semibold">{{ t('protocol.response') }}</span>
           <ResponseStatus v-if="responseContent?.status > 0" :status="responseContent?.status" />
           <div v-if="responseContent" class="ml-auto space-x-2">
-            <Button size="small" @click="handleCopyAllHeaders">{{ t('actions.copy') }}</Button>
+            <!-- <Button size="small" @click="handleCopyAllHeaders">{{ t('actions.copy') }}</Button>
             <Button
               size="small"
               type="default"
               @click="handleCopyBody">
               {{ t('actions.copy') }}
-            </Button>
+            </Button> -->
           </div>
         </div>
         <div class="min-h-50 bg-gray-light rounded space-y-2 p-2">
