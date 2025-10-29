@@ -94,7 +94,8 @@ export function useDataSource (props: {projectId: string}) {
     
     if (newValue) {
       data.params.value.pageNo = 1;
-      data.getDataSourceList(newValue);
+      data.updateProjectId(newValue)
+      data.getDataSourceList();
     }
   }, {
     immediate: true

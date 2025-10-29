@@ -20,6 +20,11 @@ export function useData () {
   const dataList = ref<DataSourceDetail[]>([]);
   const dataMap = ref<Record<string, EnhancedDataSourceItem>>({});
   const total = ref(0);
+  const projectId = ref();
+
+  const updateProjectId = (_projectId: string) => {
+    projectId.value = _projectId;
+  }
 
   // Search parameters
   const params = ref<SearchParams>({
@@ -32,7 +37,7 @@ export function useData () {
    * <p>Fetch data source list from API</p>
    * <p>Retrieves paginated data source list with search filters</p>
    */
-  const getDataSourceList = async (projectId): Promise<void> => {
+  const getDataSourceList = async (): Promise<void> => {
     // Clear existing data map
     dataMap.value = {};
 
@@ -46,7 +51,7 @@ export function useData () {
     try {
       const [error, { data = { list: [], total: 0 } }] = await datasource.getDataSourceList({
         ...params.value,
-        projectId
+        projectId: projectId.value
       });
       if (error) {
         return;
@@ -169,6 +174,7 @@ export function useData () {
     updateSearchParams,
     updatePaginationParams,
     testDataSourceConnection,
-    deleteDataSource
+    deleteDataSource,
+    updateProjectId
   };
 }
