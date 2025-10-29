@@ -994,7 +994,9 @@
           "title": "Basic Information",
           "fields": {
             "casePrefix": "Case Prefix",
-            "reviewCase": "Review Cases"
+            "reviewCase": "Review Cases",
+            "planName": "Plan Name",
+            "project": "Project Name"
           }
         },
         "testerAndDuty": {

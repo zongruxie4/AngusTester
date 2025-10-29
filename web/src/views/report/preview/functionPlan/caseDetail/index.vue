@@ -68,14 +68,14 @@ const testers = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.totalCases') }}
+                {{ t('reportPreview.functionPlan.caseSummary.testSummary.fields.totalCases') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.totalCaseNum || 0 }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.validCases') }}
+                {{ t('reportPreview.functionPlan.caseSummary.fields.testSummary.validCases') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.validCaseNum || 0 }}
@@ -116,21 +116,21 @@ const testers = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.cancelled') }}
+                {{ t('reportPreview.functionPlan.caseSummary.testSummary.fields.cancelled') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.canceledTestNum }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.overdue') }}
+                {{ t('reportPreview.functionPlan.caseSummary.testSummary.fields.overdue') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.overdueNum }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.overdueRate') }}
+                {{ t('reportPreview.functionPlan.caseSummary.testSummary.fields.overdueRate') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ casesMap[item.id].statusOverview?.overdueRate }}
@@ -140,21 +140,21 @@ const testers = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.oneTimeTestPass') }}
+                {{ t('reportPreview.functionPlan.caseSummary.testSummary.fields.oneTimeTestPass') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.oneTimePassedNum }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.oneTimeTestPassRate') }}
+                {{ t('reportPreview.functionPlan.caseSummary.testSummary.fields.oneTimeTestPassRate') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.oneTimePassedRate }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.oneTimeReviewPassRate') }}
+                {{ t('reportPreview.functionPlan.caseSummary.testSummary.fields.oneTimeReviewPassRate') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ casesMap[item.id].statusOverview?.oneTimePassedReviewRate }}
@@ -195,7 +195,7 @@ const testers = computed(() => {
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.workloadSaveRate') }}
+                {{ t('reportPreview.functionPlan.caseSummary.testSummary.fields.workloadSaveRate') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.savingWorkloadRate }}
