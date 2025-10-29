@@ -421,7 +421,7 @@ watch(() => props.visible, (newValue) => {
       </div>
 
       <!-- Project type preview area -->
-      <div class="project-preview-section">
+      <div class="project-preview-section w-100">
         <h3 class="section-title">{{ projectTypeName.get(projectType) }}</h3>
         <div class="preview-content">
           <div class="preview-image">
@@ -572,7 +572,6 @@ watch(() => props.visible, (newValue) => {
 
 .avatar-upload-container {
   display: flex;
-  justify-content: center;
 }
 
 .avatar-preview {
