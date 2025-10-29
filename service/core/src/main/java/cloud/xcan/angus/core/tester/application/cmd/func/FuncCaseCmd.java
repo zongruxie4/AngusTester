@@ -3,7 +3,7 @@ package cloud.xcan.angus.core.tester.application.cmd.func;
 import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.pojo.Attachment;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCase;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCase;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

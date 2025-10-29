@@ -19,7 +19,7 @@ import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.activity.MainTargetActivityResource;
 import cloud.xcan.angus.core.tester.domain.activity.summary.ActivitySummary;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.tag.Tag;
 import cloud.xcan.angus.core.tester.domain.task.Task;
 import cloud.xcan.angus.core.tester.domain.task.TaskInfo;

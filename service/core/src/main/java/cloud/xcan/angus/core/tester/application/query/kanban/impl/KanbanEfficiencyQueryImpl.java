@@ -26,10 +26,10 @@ import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.application.query.task.TaskFuncCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.task.TaskQuery;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfoRepo;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseRepo;
-import cloud.xcan.angus.core.tester.domain.func.summary.FuncCaseEfficiencySummary;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfoRepo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseRepo;
+import cloud.xcan.angus.core.tester.domain.test.summary.FuncCaseEfficiencySummary;
 import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
 import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyCaseCountOverview;
 import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyCaseOverview;
@@ -140,13 +140,13 @@ public class KanbanEfficiencyQueryImpl implements KanbanEfficiencyQuery {
         // Retrieve project member IDs for filtering
         Set<Long> memberIds = projectMemberQuery.getMemberIds(creatorObjectType,
             creatorObjectId, projectId);
-            
+
         // Build comprehensive filter criteria for task queries
         // Note: All project data will be queried when creator is null
         Set<SearchCriteria> allFilters = getTaskAssigneeResourcesFilter(projectId, planId,
             createdDateStart, createdDateEnd, isNull(creatorObjectId) || isNull(creatorObjectType)
                 ? null : memberIds);
-                
+
         // Retrieve task efficiency summaries with optimized projection
         List<TaskEfficiencySummary> tasks = taskRepo.findProjectionByFilters(TaskInfo.class,
             TaskEfficiencySummary.class, allFilters);
@@ -155,7 +155,7 @@ public class KanbanEfficiencyQueryImpl implements KanbanEfficiencyQuery {
         // This ensures complete member coverage for historical data
         memberIds.addAll(tasks.stream().map(TaskEfficiencySummary::getAssigneeId)
             .filter(Objects::nonNull).collect(Collectors.toSet()));
-            
+
         // Set assignee information for the overview
         overview.setAssignees(commonQuery.getUserInfoMap(memberIds));
 
@@ -238,7 +238,7 @@ public class KanbanEfficiencyQueryImpl implements KanbanEfficiencyQuery {
         Set<SearchCriteria> allFilters = getCaseTesterResourcesFilter(projectId, planId,
             createdDateStart, createdDateEnd, isNull(creatorObjectId) || isNull(creatorObjectType)
                 ? null : memberIds);
-                
+
         // Retrieve case efficiency summaries with optimized projection
         List<FuncCaseEfficiencySummary> cases = funcCaseRepo.findProjectionByFilters(
             FuncCaseInfo.class, FuncCaseEfficiencySummary.class, allFilters);
@@ -247,10 +247,10 @@ public class KanbanEfficiencyQueryImpl implements KanbanEfficiencyQuery {
         // This ensures complete member coverage for historical data
         memberIds.addAll(cases.stream().map(FuncCaseEfficiencySummary::getTesterId)
             .filter(Objects::nonNull).collect(Collectors.toSet()));
-            
+
         // Set tester information for the overview
         overview.setTesters(commonQuery.getUserInfoMap(memberIds));
-        
+
         // Handle empty case scenario with default overview
         if (isEmpty(cases)) {
           overview.setTotalOverview(new EfficiencyCaseCountOverview());

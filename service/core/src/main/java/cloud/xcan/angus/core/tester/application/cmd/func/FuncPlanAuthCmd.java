@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.application.cmd.func;
 
-import cloud.xcan.angus.core.tester.domain.func.plan.auth.FuncPlanAuth;
+import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanAuth;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import java.util.Collection;
 import java.util.Set;

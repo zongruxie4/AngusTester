@@ -3,11 +3,11 @@ package cloud.xcan.angus.core.tester.application.converter;
 import static cloud.xcan.angus.core.spring.SpringContextHolder.getCachedUidGenerator;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
-import cloud.xcan.angus.core.tester.domain.func.FuncTargetType;
-import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlan;
-import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlanStatus;
-import cloud.xcan.angus.core.tester.domain.func.summary.FuncPlanSummary;
-import cloud.xcan.angus.core.tester.domain.func.trash.FuncTrash;
+import cloud.xcan.angus.core.tester.domain.test.FuncTargetType;
+import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlan;
+import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlanStatus;
+import cloud.xcan.angus.core.tester.domain.test.summary.FuncPlanSummary;
+import cloud.xcan.angus.core.tester.domain.test.trash.FuncTrash;
 import java.time.LocalDateTime;
 
 public class FuncPlanConverter {

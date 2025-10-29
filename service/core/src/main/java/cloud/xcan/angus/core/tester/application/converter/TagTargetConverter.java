@@ -3,7 +3,7 @@ package cloud.xcan.angus.core.tester.application.converter;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.task.Task;
 import cloud.xcan.angus.core.tester.domain.task.TaskInfo;

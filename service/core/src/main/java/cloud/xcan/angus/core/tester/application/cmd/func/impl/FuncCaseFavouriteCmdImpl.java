@@ -15,9 +15,9 @@ import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.angus.core.tester.application.cmd.func.FuncCaseFavouriteCmd;
 import cloud.xcan.angus.core.tester.application.query.func.FuncCaseQuery;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
-import cloud.xcan.angus.core.tester.domain.func.favourite.FuncCaseFavourite;
-import cloud.xcan.angus.core.tester.domain.func.favourite.FuncCaseFavouriteRepo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
+import cloud.xcan.angus.core.tester.domain.test.favourite.FuncCaseFavourite;
+import cloud.xcan.angus.core.tester.domain.test.favourite.FuncCaseFavouriteRepo;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,7 +67,7 @@ public class FuncCaseFavouriteCmdImpl extends CommCmd<FuncCaseFavourite, Long> i
       protected void checkParams() {
         // Validate case exists and retrieve details
         caseDb = funcCaseQuery.checkAndFindInfo(favourite.getCaseId());
-        
+
         // Check if favorite already exists to prevent duplicates
         FuncCaseFavourite existed = funcCaseFavouriteRepo.findByCaseIdAndCreatedBy(
             favourite.getCaseId(), getUserId());

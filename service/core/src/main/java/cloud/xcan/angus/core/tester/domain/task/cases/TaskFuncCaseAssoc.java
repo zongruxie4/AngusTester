@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.domain.task.cases;
 
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
 import cloud.xcan.angus.spec.experimental.Entity;

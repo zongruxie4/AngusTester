@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.application.cmd.func;
 
-import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineCase;
+import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaselineCase;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

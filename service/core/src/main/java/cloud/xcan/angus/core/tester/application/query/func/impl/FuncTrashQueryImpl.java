@@ -14,9 +14,9 @@ import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.func.FuncTrashQuery;
-import cloud.xcan.angus.core.tester.domain.func.trash.FuncTrash;
-import cloud.xcan.angus.core.tester.domain.func.trash.FuncTrashRepo;
-import cloud.xcan.angus.core.tester.domain.func.trash.FuncTrashSearchRepo;
+import cloud.xcan.angus.core.tester.domain.test.trash.FuncTrash;
+import cloud.xcan.angus.core.tester.domain.test.trash.FuncTrashRepo;
+import cloud.xcan.angus.core.tester.domain.test.trash.FuncTrashSearchRepo;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
@@ -103,7 +103,7 @@ public class FuncTrashQueryImpl implements FuncTrashQuery {
         Page<FuncTrash> page = fullTextSearch
             ? funcTrashSearchRepo.find(spec.getCriteria(), pageable, FuncTrash.class, match)
             : funcTrashRepo.findAll(spec, pageable);
-            
+
         // Enrich trash items with user information if results exist
         if (!page.isEmpty()) {
           // Enrich user information for both creation and deletion operations
@@ -136,7 +136,7 @@ public class FuncTrashQueryImpl implements FuncTrashQuery {
     // Retrieve trash item and validate existence
     FuncTrash trashDb = funcTrashRepo.findById(id)
         .orElseThrow(() -> ResourceNotFound.of(id, "FuncTrash"));
-        
+
     // Validate permissions for non-admin users
     if (!isAdmin() && ObjectUtils.notEqual(trashDb.getDeletedBy(), getUserId())) {
       // Check specific business operation permissions

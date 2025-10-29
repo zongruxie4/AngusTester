@@ -22,11 +22,11 @@ import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.func.FuncReviewQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
-import cloud.xcan.angus.core.tester.domain.func.review.FuncReview;
-import cloud.xcan.angus.core.tester.domain.func.review.FuncReviewRepo;
-import cloud.xcan.angus.core.tester.domain.func.review.FuncReviewSearchRepo;
-import cloud.xcan.angus.core.tester.domain.func.review.ReviewCaseNum;
-import cloud.xcan.angus.core.tester.domain.func.review.cases.FuncReviewCaseRepo;
+import cloud.xcan.angus.core.tester.domain.test.review.FuncReview;
+import cloud.xcan.angus.core.tester.domain.test.review.FuncReviewRepo;
+import cloud.xcan.angus.core.tester.domain.test.review.FuncReviewSearchRepo;
+import cloud.xcan.angus.core.tester.domain.test.review.ReviewCaseNum;
+import cloud.xcan.angus.core.tester.domain.test.review.cases.FuncReviewCaseRepo;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -111,12 +111,12 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
         // Prepare single review for enrichment operations
         List<FuncReview> reviews = List.of(reviewDb);
         Set<Long> ids = Set.of(id);
-        
+
         // Enrich review with comprehensive information
         setCaseNum(reviews, ids);
         setProgress(reviews, ids);
         setParticipants(reviews, ids);
-        
+
         // Enrich user information for the review owner
         userManager.setUserNameAndAvatar(List.of(reviewDb), "ownerId", "ownerName", "ownerAvatar");
         return reviewDb;
@@ -154,17 +154,17 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
         Page<FuncReview> page = fullTextSearch
             ? funcReviewSearchRepo.find(spec.getCriteria(), pageable, FuncReview.class, match)
             : funcReviewRepo.findAll(spec, pageable);
-            
+
         // Enrich reviews with comprehensive information if results exist
         if (page.hasContent()) {
           Set<Long> reviewIds = page.getContent().stream().map(FuncReview::getId)
               .collect(Collectors.toSet());
-              
+
           // Enrich reviews with case counts, progress, and participant information
           setCaseNum(page.getContent(), reviewIds);
           setProgress(page.getContent(), reviewIds);
           setParticipants(page.getContent(), reviewIds);
-          
+
           // Enrich user information for review owners
           userManager.setUserNameAndAvatar(page.getContent(), "ownerId", "ownerName",
               "ownerAvatar");
@@ -216,7 +216,7 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
   public List<FuncReview> checkAndFind(Collection<Long> ids) {
     List<FuncReview> reviews = funcReviewRepo.findAllById(ids);
     assertResourceNotFound(isNotEmpty(reviews), ids.iterator().next(), "FuncReview");
-    
+
     // Validate that all requested reviews were found
     if (ids.size() != reviews.size()) {
       for (FuncReview review : reviews) {
@@ -287,7 +287,7 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
       // Retrieve case counts for all reviews in a single query
       Map<Long, Long> caseNumsMap = funcReviewCaseRepo.findReviewCaseNumsGroupByReviewId(reviewIds)
           .stream().collect(toMap(ReviewCaseNum::getReviewId, ReviewCaseNum::getCaseNum));
-          
+
       // Set case counts for each review
       for (FuncReview review : reviews) {
         review.setCaseNum(caseNumsMap.containsKey(review.getId())
@@ -313,7 +313,7 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
       Map<Long, Long> reviewPassedNumsMap =
           funcReviewCaseRepo.findReviewPassedCaseNumsGroupByReviewId(reviewIds)
               .stream().collect(toMap(ReviewCaseNum::getReviewId, ReviewCaseNum::getCaseNum));
-              
+
       for (FuncReview review : reviews) {
         if (reviewPassedNumsMap.containsKey(review.getId())) {
           // Calculate progress with completion rate
@@ -355,17 +355,17 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
           participantIds.addAll(review.getParticipantIds());
         }
       }
-      
+
       // Return early if no participants found
       if (isEmpty(participantIds)) {
         return;
       }
-      
+
       // Retrieve user information for all participants in a single query
       Map<Long, UserInfo> userMap = userManager.getUserBaseMap(participantIds).entrySet().stream()
           .collect(toMap(Entry::getKey, x -> new UserInfo().setId(x.getValue().getId())
               .setFullName(x.getValue().getFullName()).setAvatar(x.getValue().getAvatar())));
-              
+
       // Associate participant information with each review
       for (FuncReview review : reviews) {
         if (isNotEmpty(review.getParticipantIds())) {
@@ -394,7 +394,7 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
     String clonedName = funcReviewRepo.existsByProjectIdAndName(
         review.getProjectId(), review.getName() + "-Copy")
         ? review.getName() + "-Copy." + saltName : review.getName() + "-Copy";
-        
+
     // Ensure name length compliance with business rules
     clonedName = clonedName.length() > MAX_NAME_LENGTH ? clonedName.substring(0,
         MAX_NAME_LENGTH_X2 - 3) + saltName : clonedName;
@@ -424,11 +424,11 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
     // Determine creator IDs based on organization type and ID
     Set<Long> creatorIds = Objects.isNull(creatorOrgType) ? null
         : userManager.getUserIdByOrgType0(creatorOrgType, creatorOrgId);
-        
+
     // Build comprehensive filter criteria
     Set<SearchCriteria> allFilters = getCommonCreatorResourcesFilter(projectId, planId,
         createdDateStart, createdDateEnd, creatorIds);
-        
+
     return funcReviewRepo.findAllByFilters(allFilters);
   }
 

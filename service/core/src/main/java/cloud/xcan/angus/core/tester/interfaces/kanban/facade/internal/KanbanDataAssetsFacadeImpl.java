@@ -12,7 +12,7 @@ import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
 import cloud.xcan.angus.core.tester.application.query.task.TaskQuery;
 import cloud.xcan.angus.core.tester.domain.apis.count.ApisResourcesCreationCount;
 import cloud.xcan.angus.core.tester.domain.data.DataResourcesCount;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.FuncLastResourceCreationCount;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.FuncLastResourceCreationCount;
 import cloud.xcan.angus.core.tester.domain.kanban.DataAssetsLabel;
 import cloud.xcan.angus.core.tester.domain.kanban.DataAssetsRanking;
 import cloud.xcan.angus.core.tester.domain.kanban.DataAssetsTimeSeries;

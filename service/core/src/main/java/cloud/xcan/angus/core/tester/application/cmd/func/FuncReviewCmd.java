@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.application.cmd.func;
 
-import cloud.xcan.angus.core.tester.domain.func.review.FuncReview;
+import cloud.xcan.angus.core.tester.domain.test.review.FuncReview;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import java.util.Collection;
 import java.util.Set;

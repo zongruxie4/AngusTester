@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.application.converter;
 
-import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlanStatus;
-import cloud.xcan.angus.core.tester.domain.func.review.FuncReview;
+import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlanStatus;
+import cloud.xcan.angus.core.tester.domain.test.review.FuncReview;
 
 public class FuncReviewConverter {
 

@@ -6,9 +6,9 @@ import static cloud.xcan.angus.core.tester.application.converter.ActivityConvert
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.angus.core.tester.domain.TesterFuncPluginMessage.PLAN_STATUS_MISMATCH_T;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.STATUS_UPDATE;
-import static cloud.xcan.angus.core.tester.domain.func.plan.FuncPlanStatus.BLOCKED;
-import static cloud.xcan.angus.core.tester.domain.func.plan.FuncPlanStatus.COMPLETED;
-import static cloud.xcan.angus.core.tester.domain.func.plan.FuncPlanStatus.IN_PROGRESS;
+import static cloud.xcan.angus.core.tester.domain.test.plan.FuncPlanStatus.BLOCKED;
+import static cloud.xcan.angus.core.tester.domain.test.plan.FuncPlanStatus.COMPLETED;
+import static cloud.xcan.angus.core.tester.domain.test.plan.FuncPlanStatus.IN_PROGRESS;
 import static cloud.xcan.angus.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
@@ -32,13 +32,13 @@ import cloud.xcan.angus.core.tester.application.query.func.FuncPlanQuery;
 import cloud.xcan.angus.core.tester.application.query.func.FuncReviewQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseRepo;
-import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlan;
-import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlanRepo;
-import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlanStatus;
-import cloud.xcan.angus.core.tester.domain.func.plan.auth.FuncPlanPermission;
-import cloud.xcan.angus.core.tester.domain.func.review.FuncReview;
-import cloud.xcan.angus.core.tester.domain.func.trash.FuncTrashRepo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseRepo;
+import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlan;
+import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlanRepo;
+import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlanStatus;
+import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanPermission;
+import cloud.xcan.angus.core.tester.domain.test.review.FuncReview;
+import cloud.xcan.angus.core.tester.domain.test.trash.FuncTrashRepo;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
@@ -112,19 +112,19 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
       protected void checkParams() {
         // Validate user is a member of the project
         projectMemberQuery.checkMember(getUserId(), plan.getProjectId());
-        
+
         // Check if plan name already exists in the project
         funcPlanQuery.checkNameExists(plan.getProjectId(), plan.getName());
-        
+
         // Check plan date range validation
         // NOOP:: funcPlanQuery.checkPlanDateRange(plan.getStartDate(), plan.getDeadlineDate());
-        
+
         // Validate quota limits
         funcPlanQuery.checkQuota();
-        
+
         // Verify owner exists
         userManager.checkAndFind(plan.getOwnerId());
-        
+
         // Verify all testers exist
         testerIds = plan.getTesterResponsibilities().keySet();
         userManager.checkAndFind(testerIds);
@@ -138,7 +138,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
         // Initialize plan creator authorization
         Long currentUserId = getUserId();
         funcPlanAuthCmd.addCreatorAuth(idKey.getId(), Set.of(currentUserId));
-        
+
         // Initialize plan owner and tester authorizations
         funcPlanAuthCmd.addOwnerAndTesterAuth(idKey.getId(),
             Objects.equals(plan.getOwnerId(), currentUserId) ? null : plan.getOwnerId(), testerIds);
@@ -537,7 +537,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
         if (planDb.isEmpty()) {
           return;
         }
-        
+
         // Check user permission to delete the plan
         funcPlanAuthQuery.checkDeletePlanAuth(getUserId(), id);
       }
@@ -610,7 +610,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
   /**
    * Replaces plan authorizations for updated testers.
    * <p>
-   * Removes existing authorizations and creates new ones for plan creator, 
+   * Removes existing authorizations and creates new ones for plan creator,
    * owner, and testers.
    */
   private void replacePlanAuths(FuncPlan planDb, Set<Long> testerIds) {
@@ -618,13 +618,13 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
     Set<Long> allTesterIds = new HashSet<>(testerIds);
     allTesterIds.add(planDb.getCreatedBy());
     allTesterIds.add(planDb.getOwnerId());
-    
+
     // Remove existing authorizations for all users
     funcPlanAuthCmd.deleteAuthByPlanId(planDb.getId(), allTesterIds);
-    
+
     // Initialize authorization for plan creator
     funcPlanAuthCmd.addCreatorAuth(planDb.getId(), Set.of(planDb.getCreatedBy()));
-    
+
     // Initialize authorization for plan owner and testers (excluding creator)
     Set<Long> safeTesterIds = new HashSet<>(testerIds);
     safeTesterIds.remove(planDb.getCreatedBy());
@@ -640,7 +640,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
     // Find all plans that are currently completed
     List<FuncPlan> completedPlansDb = plansDb.stream()
         .filter(x -> x.getStatus().isCompleted()).toList();
-    
+
     if (isNotEmpty(completedPlansDb)) {
       // Set all completed plans back to PENDING status
       for (FuncPlan plan : completedPlansDb) {

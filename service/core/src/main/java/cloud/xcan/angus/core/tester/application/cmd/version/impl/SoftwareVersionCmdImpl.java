@@ -23,7 +23,7 @@ import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.application.query.version.SoftwareVersionQuery;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseRepo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseRepo;
 import cloud.xcan.angus.core.tester.domain.task.TaskRepo;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersion;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersionRepo;
@@ -38,13 +38,13 @@ import java.util.Set;
 
 /**
  * Implementation of software version command operations for version management.
- * 
+ *
  * <p>This class provides comprehensive functionality for managing software versions,
  * including creation, updates, status management, merging, and lifecycle control.</p>
- * 
+ *
  * <p>It handles the complete version lifecycle from creation to release,
  * including version merging, status transitions, and activity logging.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>Version CRUD operations with comprehensive validation</li>
@@ -54,7 +54,7 @@ import java.util.Set;
  *   <li>Activity logging for audit trails</li>
  *   <li>Task and case version association updates</li>
  * </ul></p>
- * 
+ *
  * @author XiaoLong Liu
  */
 @Biz
@@ -84,12 +84,12 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
 
   /**
    * Adds a new software version with comprehensive validation and setup.
-   * 
+   *
    * <p>This method creates a new software version with extensive validation including
    * project existence, member permissions, and name uniqueness within the project.</p>
-   * 
+   *
    * <p>The method automatically logs version creation activity for audit purposes.</p>
-   * 
+   *
    * @param version the software version to add
    * @return the ID key of the created version
    * @throws IllegalArgumentException if validation fails
@@ -122,12 +122,12 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
 
   /**
    * Updates a software version with comprehensive validation.
-   * 
+   *
    * <p>This method updates a software version with extensive validation including
    * version existence and name uniqueness within the project.</p>
-   * 
+   *
    * <p>The method handles property updates and logs version update activities.</p>
-   * 
+   *
    * @param version the software version to update
    * @throws IllegalArgumentException if validation fails
    */
@@ -160,13 +160,13 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
 
   /**
    * Replaces a software version with comprehensive validation and activity logging.
-   * 
+   *
    * <p>This method performs a complete replacement of a software version with extensive
    * validation including version existence and name uniqueness within the project.</p>
-   * 
+   *
    * <p>The method handles property updates while preserving tenant auditing fields
    * and logs version replacement activities.</p>
-   * 
+   *
    * @param version the software version to replace
    * @return the ID key of the replaced version
    * @throws IllegalArgumentException if validation fails
@@ -208,12 +208,12 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
 
   /**
    * Updates the status of a software version with comprehensive validation.
-   * 
+   *
    * <p>This method changes a software version status with validation including
    * version existence and automatic release date setting for released versions.</p>
-   * 
+   *
    * <p>The method logs version status update activities for audit purposes.</p>
-   * 
+   *
    * @param id the version ID to update status for
    * @param status the new status to set
    * @throws IllegalArgumentException if validation fails
@@ -254,13 +254,13 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
 
   /**
    * Merges two software versions with comprehensive data migration.
-   * 
+   *
    * <p>This method merges a source version into a target version, updating all
    * associated tasks and cases to reference the target version.</p>
-   * 
+   *
    * <p>The method validates project consistency and logs version merge
    * activities for audit purposes.</p>
-   * 
+   *
    * @param formId the source version ID to merge from
    * @param toId the target version ID to merge into
    * @throws IllegalArgumentException if validation fails
@@ -305,12 +305,12 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
 
   /**
    * Deletes multiple software versions with comprehensive cleanup.
-   * 
+   *
    * <p>This method permanently deletes multiple software versions after verifying
    * their existence. It performs batch deletion for efficiency.</p>
-   * 
+   *
    * <p>The method logs version deletion activities for audit purposes.</p>
-   * 
+   *
    * @param ids the collection of version IDs to delete
    * @throws IllegalArgumentException if validation fails
    */
@@ -340,7 +340,7 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
 
   /**
    * Returns the repository instance for this command.
-   * 
+   *
    * @return the software version repository
    */
   @Override

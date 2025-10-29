@@ -14,8 +14,8 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.enums.ReviewStatus;
-import cloud.xcan.angus.core.tester.domain.func.cases.CaseTestResult;
-import cloud.xcan.angus.core.tester.domain.func.summary.FuncCaseEfficiencySummary;
+import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
+import cloud.xcan.angus.core.tester.domain.test.summary.FuncCaseEfficiencySummary;
 import cloud.xcan.angus.core.tester.domain.kanban.CtoCaseOverview;
 import cloud.xcan.angus.core.tester.domain.kanban.CtoCaseTesterOverview;
 import cloud.xcan.angus.core.tester.domain.kanban.OverdueRiskLevel;

@@ -16,7 +16,7 @@ import cloud.xcan.angus.core.jpa.multitenancy.TenantAuditingEntity;
 import cloud.xcan.angus.core.tester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.angus.core.tester.domain.ResourceTagAssoc;
 import cloud.xcan.angus.core.tester.domain.activity.MainTargetActivityResource;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.task.cases.TaskFuncCaseAssoc;
 import cloud.xcan.angus.model.script.TestType;

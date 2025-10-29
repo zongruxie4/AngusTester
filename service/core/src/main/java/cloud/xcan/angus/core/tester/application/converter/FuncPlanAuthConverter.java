@@ -3,8 +3,8 @@ package cloud.xcan.angus.core.tester.application.converter;
 import static cloud.xcan.angus.core.spring.SpringContextHolder.getBean;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.core.tester.domain.func.plan.auth.FuncPlanAuth;
-import cloud.xcan.angus.core.tester.domain.func.plan.auth.FuncPlanPermission;
+import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanAuth;
+import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanPermission;
 import cloud.xcan.angus.idgen.uid.impl.CachedUidGenerator;
 import java.util.List;
 import java.util.Set;

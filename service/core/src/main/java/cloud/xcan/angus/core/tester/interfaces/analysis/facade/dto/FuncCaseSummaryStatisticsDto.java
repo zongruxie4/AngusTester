@@ -7,7 +7,7 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_URL_LENGTH_X4;
 
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.ReviewStatus;
-import cloud.xcan.angus.core.tester.domain.func.cases.CaseTestResult;
+import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
 import cloud.xcan.angus.remote.PageQuery;
 import cloud.xcan.angus.spec.http.HttpMethod;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.application.cmd.func;
 
-import cloud.xcan.angus.core.tester.domain.func.review.record.FuncReviewCaseRecord;
+import cloud.xcan.angus.core.tester.domain.test.review.record.FuncReviewCaseRecord;
 import java.util.Collection;
 import java.util.List;
 

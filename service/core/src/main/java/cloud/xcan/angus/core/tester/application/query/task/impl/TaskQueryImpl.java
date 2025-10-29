@@ -134,8 +134,8 @@ import cloud.xcan.angus.core.tester.domain.activity.Activity;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfoRepo;
 import cloud.xcan.angus.core.tester.domain.comment.CommentTargetType;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
-import cloud.xcan.angus.core.tester.domain.func.summary.FuncCaseEfficiencySummary;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
+import cloud.xcan.angus.core.tester.domain.test.summary.FuncCaseEfficiencySummary;
 import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
 import cloud.xcan.angus.core.tester.domain.kanban.DataAssetsTimeSeries;
 import cloud.xcan.angus.core.tester.domain.project.Project;
@@ -345,7 +345,7 @@ public class TaskQueryImpl implements TaskQuery {
       @Override
       protected Task process() {
         List<Task> tasks = List.of(taskDb);
-        
+
         // Set user-specific flags only for user actions to avoid unnecessary processing
         if (isUserAction()) {
           // Set follow flag for current user
@@ -353,7 +353,7 @@ public class TaskQueryImpl implements TaskQuery {
           // Set favourite flag for current user
           setFavourite(tasks);
         }
-        
+
         // Assemble comprehensive task data for display
         // Set task tag information (id and name)
         tagQuery.setTags(tasks);
@@ -365,11 +365,11 @@ public class TaskQueryImpl implements TaskQuery {
         setScenarioTargetName(tasks);
         // Set current user's role for each task (assignee, creator, admin, etc.)
         setCurrentRoles(tasks);
-        
+
         // Set hierarchical task structure
         // Retrieve and set direct subtasks
         taskDb.setSubTasks(findSub(id));
-        
+
         // Set related counts for task overview
         // Get comment count for this task
         int commentNum = commentQuery.getCommentNum(id, CommentTargetType.TASK.getValue());
@@ -380,13 +380,13 @@ public class TaskQueryImpl implements TaskQuery {
         // Get activity count for this task
         int activityNum = activityQuery.getActivityNumByMainTarget(id);
         taskDb.setActivityNum(activityNum);
-        
+
         // Calculate and set progress information
         // Set progress for main task
         setTaskProgress(tasks);
         // Set progress for all subtasks
         setTaskInfoProgress(taskDb.getSubTasks());
-        
+
         return taskDb;
       }
     }.execute();
@@ -453,7 +453,7 @@ public class TaskQueryImpl implements TaskQuery {
 
         // Apply authorization criteria based on current user context
         commonQuery.checkAndSetAuthObjectIdCriteria(spec.getCriteria());
-        
+
         // Execute search using appropriate repository based on search type
         Page<Task> page = fullTextSearch
             ? taskSearchRepo.find(spec.getCriteria(), pageable, Task.class, match)
@@ -468,7 +468,7 @@ public class TaskQueryImpl implements TaskQuery {
             // Set favourite status for current user
             setFavourite(page.getContent());
           }
-          
+
           // Assemble comprehensive task data for display
           // Set task tag information
           tagQuery.setTags(page.getContent());
@@ -539,7 +539,7 @@ public class TaskQueryImpl implements TaskQuery {
           // Filter out already associated tasks
           filters.add(SearchCriteria.notIn("id", associatedSubTaskIds));
         }
-        
+
         // Return available subtasks sorted by creation date (newest first)
         return taskInfoRepo.findAllByFilters(filters, Sort.by(Direction.DESC, "createdDate"));
       }
@@ -1030,7 +1030,7 @@ public class TaskQueryImpl implements TaskQuery {
         // Calculate total progress overview across all tasks
         ProgressCount total = assembleTaskProgressCount0(tasks);
         overview.setTotalOverview(total);
-        
+
         // Include detailed data for export if requested
         if (joinDataDetail) {
           overview.setDataDetailTitles(message(EXPORT_ANALYSIS_TASK_PROGRESS).split(","));
@@ -1048,13 +1048,13 @@ public class TaskQueryImpl implements TaskQuery {
           // Group tasks by assignee for individual analysis
           Map<Long, List<TaskEfficiencySummary>> taskMap = tasks.stream()
               .collect(groupingBy(TaskEfficiencySummary::getAssigneeId));
-          
+
           // Calculate progress for each assignee
           for (Long assigneeId : assignees.keySet()) {
             ProgressCount assignee = assembleTaskProgressCount0(
                 taskMap.getOrDefault(assigneeId, emptyList()));
             overview.getAssigneesOverview().put(assigneeId, assignee);
-            
+
             // Include assignee details for export if requested
             if (joinDataDetail) {
               ProgressDetail assigneeDetail = new ProgressDetail();
@@ -2680,15 +2680,15 @@ public class TaskQueryImpl implements TaskQuery {
     // Extract task IDs for batch querying to avoid N+1 problem
     Set<Long> taskIds = tasks.stream().map(ResourceFavouriteAndFollow::getId)
         .collect(Collectors.toSet());
-    
+
     // Batch retrieve favourite records for current user and specified tasks
     List<TaskFavourite> favourites = taskFavouriteRepo
         .findAllByTaskIdInAndCreatedBy(taskIds, getUserId());
-    
+
     // Create a set of favourited task IDs for efficient lookup
     Set<Long> favouritesTaskIds = favourites.stream().map(TaskFavourite::getTaskId)
         .collect(Collectors.toSet());
-    
+
     // Set favourite flag for tasks that are favourited by current user
     tasks.forEach(task -> {
       if (favouritesTaskIds.contains(task.getId())) {
@@ -2712,15 +2712,15 @@ public class TaskQueryImpl implements TaskQuery {
     // Extract task IDs for batch querying to avoid N+1 problem
     Set<Long> taskIds = tasks.stream().map(ResourceFavouriteAndFollow::getId)
         .collect(Collectors.toSet());
-    
+
     // Batch retrieve follow records for current user and specified tasks
     List<TaskFollow> follows = taskFollowRepo
         .findByTaskIdInAndCreatedBy(taskIds, getUserId());
-    
+
     // Create a set of followed task IDs for efficient lookup
     Set<Long> followTaskIds = follows.stream().map(TaskFollow::getTaskId)
         .collect(Collectors.toSet());
-    
+
     // Set follow flag for tasks that are followed by current user
     tasks.forEach(task -> {
       if (followTaskIds.contains(task.getId())) {
@@ -2750,33 +2750,33 @@ public class TaskQueryImpl implements TaskQuery {
       // Determine current user's role for each task
       tasks.forEach(task -> {
         List<AssociateUserType> currentRoles = new ArrayList<>();
-        
+
         // Check if current user is the task creator
         if (nonNull(task.getCreatedBy())
             && task.getCreatedBy().equals(principal.getUserId())) {
           currentRoles.add(AssociateUserType.CREATOR);
         }
-        
+
         // Check if current user is the task assignee
         if (nonNull(task.getAssigneeId()) && task.getAssigneeId().equals(principal.getUserId())) {
           currentRoles.add(AssociateUserType.ASSIGNEE);
         }
-        
+
         // Check if current user is the task confirmer
         if (nonNull(task.getConfirmerId()) && task.getConfirmerId().equals(principal.getUserId())) {
           currentRoles.add(AssociateUserType.CONFIRMER);
         }
-        
+
         // Add system admin role if applicable
         if (isSysAdmin) {
           currentRoles.add(AssociateUserType.SYS_ADMIN);
         }
-        
+
         // Add application admin role if applicable
         if (isAppAdmin) {
           currentRoles.add(AssociateUserType.APP_ADMIN);
         }
-        
+
         // Set roles only if any are found
         if (isNotEmpty(currentRoles)) {
           task.setCurrentAssociateType(currentRoles);
@@ -2805,7 +2805,7 @@ public class TaskQueryImpl implements TaskQuery {
       if (isEmpty(targetIds)) {
         return;
       }
-      
+
       // Extract API service (parent) IDs for API test tasks
       Set<Long> targetParentIds = tasks.stream()
           .filter(x -> (nonNull(x.getTargetParentId()) && x.getTaskType().isApiTest()))
@@ -2813,13 +2813,13 @@ public class TaskQueryImpl implements TaskQuery {
       if (isEmpty(targetParentIds)) {
         return;
       }
-      
+
       // Batch retrieve API and service information to avoid N+1 queries
       Map<Long, ApisBaseInfo> apisDbMap = apisBaseInfoRepo.findAll0ByIdIn(targetIds).stream()
           .collect(Collectors.toMap(ApisBaseInfo::getId, x -> x));
       Map<Long, Services> projectsDbMap = servicesRepo.findAll0ByIdIn(targetParentIds).stream()
           .collect(Collectors.toMap(Services::getId, x -> x));
-      
+
       // Set target names for API test tasks
       for (Task task : tasks) {
         if (task.getTaskType().isApiTest()) {
@@ -2884,11 +2884,11 @@ public class TaskQueryImpl implements TaskQuery {
     if (isEmpty(tasks)) {
       return;
     }
-    
+
     // Retrieve all subtasks for the project to calculate hierarchical progress
     List<Task> allSubTasks = findAllSub(tasks.get(0).getProjectId(),
         tasks.stream().map(Task::getId).collect(Collectors.toSet()));
-    
+
     // If no subtasks exist, calculate simple progress for each task
     if (isEmpty(allSubTasks)) {
       for (Task task : tasks) {
@@ -2905,7 +2905,7 @@ public class TaskQueryImpl implements TaskQuery {
       // Find all subtasks for this specific task
       List<Task> subs = findAllSubTasks(allSubTasks, task.getId());
       subs.add(task); // Include the task itself in progress calculation
-      
+
       // Calculate progress based on completed vs total tasks
       task.setProgress(new Progress()
           .setCompleted(subs.stream().filter(x -> x.getStatus().isCompleted())
@@ -2981,7 +2981,7 @@ public class TaskQueryImpl implements TaskQuery {
     if (isEmpty(noticeTypes)) {
       return;
     }
-    
+
     // Build list of users to notify
     List<Long> receiveObjectIds = new ArrayList<>();
     // Add task assignee
@@ -2991,14 +2991,14 @@ public class TaskQueryImpl implements TaskQuery {
     receiveObjectIds.addAll(followUserIds);
     // Remove current user to avoid self-notification
     receiveObjectIds.remove(getUserId());
-    
+
     // Send notification if there are recipients
     if (isNotEmpty(receiveObjectIds)) {
       // Create notification message with task details
       String message = message(TaskModification, new Object[]{getUserFullName(),
               taskDb.getName(), activity.getDescription()},
           PrincipalContext.getDefaultLanguage().toLocale());
-      
+
       // Assemble and send notification event
       EventContent event = assembleAngusTesterUserNoticeEvent(TaskModificationCode, message,
           TASK.getValue(), taskDb.getId().toString(), taskDb.getName(), noticeTypes,

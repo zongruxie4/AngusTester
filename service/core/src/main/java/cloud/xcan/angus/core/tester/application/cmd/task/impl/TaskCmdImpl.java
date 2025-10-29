@@ -118,7 +118,7 @@ import cloud.xcan.angus.core.tester.application.query.version.SoftwareVersionQue
 import cloud.xcan.angus.core.tester.domain.activity.Activity;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.module.Module;
 import cloud.xcan.angus.core.tester.domain.project.Project;
 import cloud.xcan.angus.core.tester.domain.scenario.Scenario;

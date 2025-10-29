@@ -22,14 +22,14 @@ import cloud.xcan.angus.core.tester.application.query.func.FuncBaselineQuery;
 import cloud.xcan.angus.core.tester.application.query.func.FuncPlanAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.func.FuncPlanQuery;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
-import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaseline;
-import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineCase;
-import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineCaseRepo;
-import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineRepo;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCase;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseRepo;
-import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlan;
-import cloud.xcan.angus.core.tester.domain.func.plan.auth.FuncPlanPermission;
+import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaseline;
+import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaselineCase;
+import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaselineCaseRepo;
+import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaselineRepo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCase;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseRepo;
+import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlan;
+import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanPermission;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
@@ -92,10 +92,10 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
       protected void checkParams() {
         // Validate plan exists and retrieve details
         planDb = funcPlanQuery.checkAndFind(baseline.getPlanId());
-        
+
         // Verify user has permission to establish baseline for this plan
         funcPlanAuthQuery.checkEstablishBaselineAuth(getUserId(), baseline.getPlanId());
-        
+
         // Ensure baseline case IDs are consistent with the plan
         funcPlanQuery.checkConsistent(baseline.getPlanId(), baseline.getCaseIds());
       }
@@ -133,7 +133,7 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
       protected void checkParams() {
         // Validate baseline exists and retrieve details
         baselineDb = funcBaselineQuery.checkAndFind(baseline.getId());
-        
+
         // Verify user has permission to establish baseline for this plan
         funcPlanAuthQuery.checkEstablishBaselineAuth(getUserId(), baselineDb.getPlanId());
       }
@@ -182,7 +182,7 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
         if (nonNull(baseline.getId())) {
           // Validate existing baseline exists and retrieve details
           baselineDb = funcBaselineQuery.checkAndFind(baseline.getId());
-          
+
           // Verify user has permission to establish baseline for this plan
           funcPlanAuthQuery.checkEstablishBaselineAuth(getUserId(), baselineDb.getPlanId());
         }
@@ -226,15 +226,15 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
       protected void checkParams() {
         // Validate baseline exists and retrieve details
         baselineDb = funcBaselineQuery.checkAndFind(id);
-        
+
         // Ensure baseline has not been established yet
         ProtocolAssert.assertTrue(isNull(baselineDb.getEstablished())
             || !baselineDb.getEstablished(), "Baseline has been established");
-        
+
         // Verify baseline has at least one case
         ProtocolAssert.assertTrue(isNotEmpty(baselineDb.getCaseIds()),
             "The baseline case cannot be empty");
-        
+
         // Validate user has permission to establish baseline for this plan
         funcPlanAuthQuery.checkEstablishBaselineAuth(getUserId(), baselineDb.getPlanId());
       }
@@ -280,7 +280,7 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
       protected void checkParams() {
         // Validate all baselines exist and retrieve details
         baselinesDb = funcBaselineQuery.checkAndFind(ids);
-        
+
         // Verify user has permission to establish baseline for all plans
         funcPlanAuthQuery.batchCheckPermission(baselinesDb.stream().map(FuncBaseline::getPlanId)
             .collect(Collectors.toSet()), FuncPlanPermission.ESTABLISH_BASELINE);

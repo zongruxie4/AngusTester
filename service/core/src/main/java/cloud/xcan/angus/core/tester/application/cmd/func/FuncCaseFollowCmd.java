@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.application.cmd.func;
 
-import cloud.xcan.angus.core.tester.domain.func.follow.FuncCaseFollow;
+import cloud.xcan.angus.core.tester.domain.test.follow.FuncCaseFollow;
 import cloud.xcan.angus.spec.experimental.IdKey;
 
 public interface FuncCaseFollowCmd {

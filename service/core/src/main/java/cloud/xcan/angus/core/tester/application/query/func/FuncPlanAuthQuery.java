@@ -1,9 +1,9 @@
 package cloud.xcan.angus.core.tester.application.query.func;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.core.tester.domain.func.plan.auth.FuncPlanAuth;
-import cloud.xcan.angus.core.tester.domain.func.plan.auth.FuncPlanAuthCurrent;
-import cloud.xcan.angus.core.tester.domain.func.plan.auth.FuncPlanPermission;
+import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanAuth;
+import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanAuthCurrent;
+import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanPermission;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;

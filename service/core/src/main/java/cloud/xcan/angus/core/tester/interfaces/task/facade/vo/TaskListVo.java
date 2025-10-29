@@ -10,7 +10,7 @@ import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.tester.domain.task.BugLevel;
 import cloud.xcan.angus.core.tester.domain.task.TaskStatus;
 import cloud.xcan.angus.core.tester.domain.task.TaskType;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseInfoVo;
+import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseInfoVo;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.NameJoinField;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;

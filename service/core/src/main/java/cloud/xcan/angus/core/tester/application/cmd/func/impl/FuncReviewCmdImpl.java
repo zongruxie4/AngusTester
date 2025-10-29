@@ -26,13 +26,13 @@ import cloud.xcan.angus.core.tester.application.query.func.FuncPlanAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.func.FuncPlanQuery;
 import cloud.xcan.angus.core.tester.application.query.func.FuncReviewQuery;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseRepo;
-import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlan;
-import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlanStatus;
-import cloud.xcan.angus.core.tester.domain.func.plan.auth.FuncPlanPermission;
-import cloud.xcan.angus.core.tester.domain.func.review.FuncReview;
-import cloud.xcan.angus.core.tester.domain.func.review.FuncReviewRepo;
-import cloud.xcan.angus.core.tester.domain.func.review.cases.FuncReviewCaseRepo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseRepo;
+import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlan;
+import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlanStatus;
+import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanPermission;
+import cloud.xcan.angus.core.tester.domain.test.review.FuncReview;
+import cloud.xcan.angus.core.tester.domain.test.review.FuncReviewRepo;
+import cloud.xcan.angus.core.tester.domain.test.review.cases.FuncReviewCaseRepo;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import java.util.Collection;
@@ -45,10 +45,10 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command implementation for functional review session management operations.
  * <p>
- * Provides comprehensive CRUD operations for functional review sessions including creation, 
+ * Provides comprehensive CRUD operations for functional review sessions including creation,
  * modification, deletion, lifecycle management, and case association.
  * <p>
- * Implements business logic validation, permission checks, activity logging, 
+ * Implements business logic validation, permission checks, activity logging,
  * and transaction management for all review operations.
  * <p>
  * Supports review lifecycle management (start, end, block), case association management,
@@ -79,10 +79,10 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
   /**
    * Adds a new functional review session to the system.
    * <p>
-   * Performs comprehensive validation including plan existence, review enablement, 
+   * Performs comprehensive validation including plan existence, review enablement,
    * user permissions, name uniqueness, and user existence checks.
    * <p>
-   * Creates review case associations and logs creation activity 
+   * Creates review case associations and logs creation activity
    * for audit trail purposes.
    * <p>
    * Ensures proper setup for review workflow and case tracking.
@@ -98,16 +98,16 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
         // Ensure the plan exists and review is enabled
         planDb = funcPlanQuery.checkAndFind(review.getPlanId());
         assertTrue(planDb.getReview(), "Plan review is not enabled");
-        
+
         // Check user permission to create reviews for the plan
         funcPlanAuthQuery.checkReviewAuth(getUserId(), review.getPlanId());
-        
+
         // Validate review name is unique within the project
         funcReviewQuery.checkNameExists(review.getProjectId(), review.getName());
-        
+
         // Ensure review owner exists and is valid
         userManager.checkAndFind(review.getOwnerId());
-        
+
         // Ensure all participants exist and are valid
         userManager.checkAndFind(review.getParticipantIds());
       }
@@ -230,7 +230,7 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
   /**
    * Starts a functional review session to begin review activities.
    * <p>
-   * Validates review existence, user permissions, and review status before transitioning 
+   * Validates review existence, user permissions, and review status before transitioning
    * the review to IN_PROGRESS state.
    * <p>
    * Only reviews in appropriate status (typically PENDING) can be started.
@@ -275,7 +275,7 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
   /**
    * Ends a functional review session to complete review activities.
    * <p>
-   * Validates review existence, user permissions, pending cases, and review status 
+   * Validates review existence, user permissions, pending cases, and review status
    * before transitioning the review to COMPLETED state.
    * <p>
    * Only reviews with all cases reviewed can be ended.
@@ -452,7 +452,7 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
   /**
    * Deletes a functional review session from the system.
    * <p>
-   * Validates review existence and user permissions before permanently removing 
+   * Validates review existence and user permissions before permanently removing
    * the review from the database.
    * <p>
    * Logs deletion activity for audit trail purposes.
@@ -472,7 +472,7 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
         if (isNull(reviewDb)) {
           return;
         }
-        
+
         // Check user permission to delete the review (creator has full access)
         if (Objects.equals(getUserId(), reviewDb.getCreatedBy())) {
           funcPlanAuthQuery.checkReviewAuth(getUserId(), reviewDb.getPlanId());
@@ -500,7 +500,7 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
   /**
    * Deletes all review sessions associated with the specified plan IDs.
    * <p>
-   * Removes all reviews and their associated review case records 
+   * Removes all reviews and their associated review case records
    * for the given plan IDs.
    * <p>
    * Used for cleanup when plans are deleted.
@@ -509,7 +509,7 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
   public void deleteByPlanId(Collection<Long> planIds) {
     // Delete all reviews for the specified plans
     funcReviewRepo.deleteByPlanIdIn(planIds);
-    
+
     // Delete all review case associations for the specified plans
     funcReviewCaseRepo.deleteByPlanIdIn(planIds);
   }

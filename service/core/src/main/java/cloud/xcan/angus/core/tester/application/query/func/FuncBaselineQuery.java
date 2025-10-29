@@ -2,8 +2,8 @@ package cloud.xcan.angus.core.tester.application.query.func;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
-import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaseline;
-import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineInfo;
+import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaseline;
+import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaselineInfo;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;

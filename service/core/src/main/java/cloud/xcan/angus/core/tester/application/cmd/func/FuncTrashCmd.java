@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.application.cmd.func;
 
-import cloud.xcan.angus.core.tester.domain.func.trash.FuncTrash;
+import cloud.xcan.angus.core.tester.domain.test.trash.FuncTrash;
 import java.util.List;
 
 public interface FuncTrashCmd {

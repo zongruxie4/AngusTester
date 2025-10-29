@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.kanban.facade.internal.assembler;
 
 import cloud.xcan.angus.core.tester.domain.apis.count.ApisResourcesCreationCount;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.FuncLastResourceCreationCount;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.FuncLastResourceCreationCount;
 import cloud.xcan.angus.core.tester.domain.kanban.ResourcesApisCount;
 import cloud.xcan.angus.core.tester.domain.kanban.ResourcesFuncCount;
 import cloud.xcan.angus.core.tester.domain.kanban.ResourcesScenarioCount;

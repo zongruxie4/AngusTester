@@ -3,10 +3,10 @@ package cloud.xcan.angus.core.tester.application.converter;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
 import cloud.xcan.angus.api.enums.ReviewStatus;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCase;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
-import cloud.xcan.angus.core.tester.domain.func.review.FuncReview;
-import cloud.xcan.angus.core.tester.domain.func.review.cases.FuncReviewCase;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCase;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
+import cloud.xcan.angus.core.tester.domain.test.review.FuncReview;
+import cloud.xcan.angus.core.tester.domain.test.review.cases.FuncReviewCase;
 import java.time.LocalDateTime;
 
 public class FuncReviewCaseConverter {
