@@ -25,6 +25,9 @@ public class ScenarioUpdateDto {
   //@Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
   //private Long projectId;
 
+  @Schema(description = "Scenario module identifier for categorization")
+  private Long moduleId;
+
   @Length(max = MAX_NAME_LENGTH_X2)
   @Schema(description = "Scenario name for identification and management", example = "Create an order")
   private String name;

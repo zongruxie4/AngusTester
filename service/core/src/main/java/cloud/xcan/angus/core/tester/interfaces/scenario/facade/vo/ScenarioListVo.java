@@ -23,6 +23,8 @@ public class ScenarioListVo {
   //@NameJoinField(id = "projectId", repository = "projectRepo")
   //private String projectName;
 
+  private Long moduleId;
+
   private String plugin;
 
   private ScriptType scriptType;

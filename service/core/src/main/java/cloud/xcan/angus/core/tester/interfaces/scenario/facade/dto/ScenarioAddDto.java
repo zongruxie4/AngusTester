@@ -7,6 +7,7 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH_X2;
 import cloud.xcan.angus.model.script.AngusScript;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -22,6 +23,9 @@ public class ScenarioAddDto {
   @NotNull
   @Schema(description = "Project identifier for scenario association", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
+
+  @Schema(description = "Scenario module identifier for categorization")
+  private Long moduleId;
 
   @NotBlank
   @Length(max = MAX_NAME_LENGTH_X2)

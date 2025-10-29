@@ -47,6 +47,9 @@ public class Scenario extends TenantAuditingEntity<Scenario, Long> implements Ac
   @Column(name = "project_id")
   private Long projectId;
 
+  @Column(name = "module_id")
+  private Long moduleId;
+
   @Column(name = "auth")
   private Boolean auth;
 
