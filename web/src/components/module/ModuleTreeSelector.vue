@@ -13,7 +13,7 @@ type Props = {
   userInfo: { id: string; };
   appInfo: { id: string; };
   notify: string;
-  moduleId: string;
+  moduleId?: string;
   projectName: string;
   title: string;
 }
@@ -28,11 +28,11 @@ const props = withDefaults(defineProps<Props>(), {
   title: ''
 });
 
-const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value: number): void }>();
+const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value: string|undefined): void }>();
 
 const nameInputRef = ref();
 
-const handleSelectKeysChange = (selectKeys) => {
+const handleSelectKeysChange = (selectKeys: [string|undefined]) => {
   if (!selectKeys.length) {
     return;
   }
@@ -70,7 +70,7 @@ defineExpose({
     <div
       :class="{'active': props.moduleId === -1}"
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
-      @click="handleSelectKeysChange([''])">
+      @click="handleSelectKeysChange([undefined])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
       <span class="flex-1">{{ t('common.all') }}</span>
     </div>

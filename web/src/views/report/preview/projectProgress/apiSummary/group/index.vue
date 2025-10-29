@@ -73,7 +73,7 @@ const taskStatusOption = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: [t('reportPreview.projectProgress.apiSummary.groupStats.status.released'),
+    data: [t('reportPreview.projectProgress.apiSummary.groupStats.status.published'),
       t('reportPreview.projectProgress.apiSummary.groupStats.status.devCompleted'),
       t('reportPreview.projectProgress.apiSummary.groupStats.status.devInProgress'),
       t('reportPreview.projectProgress.apiSummary.groupStats.status.designing'),

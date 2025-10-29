@@ -62,7 +62,7 @@ const tableColumns = [
   {
     title: t('common.creator'),
     dataIndex: 'createdByName',
-    width: 120
+    width: 100
   },
   {
     title: t('common.createdDate'),
@@ -119,6 +119,7 @@ const loadBaselineCaseList = async () => {
   }
   baselineCaseList.value = data?.list || [];
   paginationConfig.value.total = +data.total || 0;
+  selectedRowKey.value = undefined;
 };
 
 /**
@@ -262,6 +263,7 @@ onMounted(() => {
   loadBaselineInfo();
   loadBaselineCaseList();
   watch(() => selectedModuleId.value, () => {
+    
     loadBaselineCaseList();
   });
 });

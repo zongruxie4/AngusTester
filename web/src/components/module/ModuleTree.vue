@@ -72,7 +72,7 @@ const activeModuleData = ref();
  * Handles module selection change
  * @param selectedKeys - Array of selected module keys
  */
-const handleModuleSelectionChange = (selectedKeys: string[]) => {
+const handleModuleSelectionChange = (selectedKeys: [string|undefined]) => {
   if (!selectedKeys.length) {
     return;
   }
@@ -347,7 +347,7 @@ defineExpose({
     <div
       :class="{'active': props.moduleId === undefined}"
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
-      @click="handleModuleSelectionChange([])">
+      @click="handleModuleSelectionChange([undefined])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
       <span class="flex-1">{{ t('common.all') }}</span>
     </div>
