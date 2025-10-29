@@ -93,6 +93,7 @@ const saveFormConfigData = ref<{
   description: string;
   scriptId?: string;
   scriptName?: string;
+  moduleId?: string;
 }>();
 
 const scriptConfig = ref<{
@@ -859,13 +860,14 @@ const setSaveFormData = (data: ScenarioInfo) => {
     return;
   }
 
-  const { name, description, scriptId, scriptName, id } = data;
+  const { name, description, scriptId, scriptName, id, moduleId } = data;
   saveFormConfigData.value = {
     id,
     name,
     description,
     scriptId,
-    scriptName
+    scriptName,
+    moduleId
   };
 };
 
@@ -1124,7 +1126,8 @@ onMounted(() => {
       name,
       description: '',
       scriptId: undefined,
-      scriptName: undefined
+      scriptName: undefined,
+      moduleId: undefined
     };
 
     if (!id) {

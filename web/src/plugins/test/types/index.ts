@@ -110,6 +110,7 @@ export type ScenarioInfo = {
     id: string;
     name: string;
     plugin: ScenarioType;
+    moduleId?: string;
     script: {
         plugin: ScenarioType;
         task: {
@@ -259,6 +260,7 @@ export type SaveFormData = {
     id: string;
     name: string;
     plugin: PluginType;
+    moduleId?: string;
     script: {
         plugin: PluginType;
         task: {

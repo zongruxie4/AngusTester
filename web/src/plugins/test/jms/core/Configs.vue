@@ -91,11 +91,10 @@ const scenarioConfigData = ref<ScenarioConfig>();// 场景详情信息
 const saveFormConfigData = ref<{
   id: string;
   name: string;
-  dirId: string;
-  dirName: string;
   description: string;
   scriptId?: string;
   scriptName?: string;
+  moduleId?: string;
 }>();
 
 const scriptConfig = ref<{
@@ -792,10 +791,9 @@ const save = async (data?: {
 
     saveFormConfigData.value = {
       ...saveFormConfigData.value,
-      dirId: params.dirId,
-      dirName: params.dirName,
       name: params.name,
-      description: params.description
+      description: params.description,
+      moduleId: params.moduleId
     };
 
     if (typeof props.updateTabPane === 'function') {
@@ -838,7 +836,7 @@ const setSaveFormData = (data: ScenarioInfo) => {
     return;
   }
 
-  const { name, dirId, dirName, description, scriptId, scriptName, id } = data;
+  const { name, dirId, dirName, description, scriptId, scriptName, id, moduleId } = data;
   saveFormConfigData.value = {
     id,
     dirId,
@@ -846,7 +844,8 @@ const setSaveFormData = (data: ScenarioInfo) => {
     name,
     description,
     scriptId,
-    scriptName
+    scriptName,
+    moduleId
   };
 };
 
@@ -1096,12 +1095,11 @@ onMounted(() => {
 
     saveFormConfigData.value = {
       id,
-      dirId,
-      dirName,
       name,
       description: '',
       scriptId: undefined,
-      scriptName: undefined
+      scriptName: undefined,
+      moduleId: undefined
     };
 
     if (!id) {

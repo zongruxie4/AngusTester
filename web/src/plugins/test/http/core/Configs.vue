@@ -90,13 +90,14 @@ const loaded = ref(false);
 const rendered = ref(false);
 // 默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮
 const hideButtonSet = ref<Set<ButtonGroupMenuKey>>(new Set<ButtonGroupMenuKey>(['test', 'pageView', 'export', 'follow', 'cancelFollow', 'favourite', 'cancelFavourite', 'permission', 'refresh']));
-const scenarioConfigData = ref<ScenarioConfig>();// 场景详情信息
+const scenarioConfigData = ref<ScenarioConfig>({} as ScenarioConfig);// 场景详情信息
 const saveFormConfigData = ref<{
   id: string;
   name: string;
   description: string;
   scriptId?: string;
   scriptName?: string;
+  moduleId?: string;
 }>();
 
 const scriptConfig = ref<{
@@ -277,19 +278,20 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
       return;
     }
 
-    let saveFormData = null;
-    if (typeof saveFormRef.value?.getData === 'function') {
-      saveFormData = saveFormRef.value.getData();
-    }
-    const error = await save(saveFormData, false);
-    if (error instanceof Error) {
-      return;
-    }
 
-    notification.success({
-      duration: 1.3,
-      description: t('httpPlugin.messages.autoSaveAndDebug')
-    });
+    if (typeof saveFormRef.value?.getData === 'function') {
+      const saveFormData = saveFormRef.value.getData();
+      const error = await save(saveFormData, false);
+      if (error instanceof Error) {
+        return;
+      }
+
+      notification.success({
+        duration: 1.3,
+        description: t('httpPlugin.messages.autoSaveAndDebug')
+      });
+    }
+    
     toDebug();
     return;
   }
@@ -720,6 +722,7 @@ const save = async (data?: {
   description: string;
   projectId: string;
   name: string;
+  moduleId?: string;
 }, notificationFlag = true) => {
   const validFlag = await isValid();
   if (!validFlag) {
@@ -746,12 +749,14 @@ const save = async (data?: {
     plugin,
     scriptId,
     script,
-    projectId: props.projectId
+    projectId: props.projectId,
+    moduleId: data?.moduleId
   };
 
   if (data) {
     params.description = data.description;
     params.name = data.name;
+    params.moduleId = data.moduleId;
   }
 
   const formData = getData();
@@ -815,7 +820,8 @@ const save = async (data?: {
     saveFormConfigData.value = {
       ...saveFormConfigData.value,
       name: params.name,
-      description: params.description
+      description: params.description,
+      moduleId: params.moduleId
     };
 
     if (typeof props.updateTabPane === 'function') {
@@ -857,13 +863,14 @@ const setSaveFormData = (data: ScenarioInfo) => {
     return;
   }
 
-  const { name, description, scriptId, scriptName, id } = data;
+  const { name, description, scriptId, scriptName, id, moduleId } = data;
   saveFormConfigData.value = {
     id,
     name,
     description,
     scriptId,
-    scriptName
+    scriptName,
+    moduleId
   };
 };
 
@@ -1371,7 +1378,8 @@ onMounted(() => {
       name,
       description: '',
       scriptId: undefined,
-      scriptName: undefined
+      scriptName: undefined,
+      moduleId: undefined
     };
 
     if (!id) {
