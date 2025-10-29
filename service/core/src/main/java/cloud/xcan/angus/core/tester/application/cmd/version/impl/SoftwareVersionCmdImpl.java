@@ -24,7 +24,7 @@ import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.application.query.version.SoftwareVersionQuery;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseRepo;
-import cloud.xcan.angus.core.tester.domain.task.TaskRepo;
+import cloud.xcan.angus.core.tester.domain.issue.TaskRepo;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersion;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersionRepo;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersionStatus;

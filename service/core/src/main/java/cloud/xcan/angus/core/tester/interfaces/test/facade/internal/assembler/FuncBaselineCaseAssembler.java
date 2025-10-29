@@ -11,7 +11,7 @@ import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaselineCaseInfo;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.FuncCaseFindDto;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.baseline.FuncBaselineCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.baseline.FuncBaselineCaseListVo;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler;
+import cloud.xcan.angus.core.tester.interfaces.issue.facade.internal.assembler.TaskAssembler;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;
 import java.util.Collections;

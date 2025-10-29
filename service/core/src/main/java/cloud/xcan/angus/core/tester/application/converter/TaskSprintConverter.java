@@ -11,10 +11,10 @@ import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.TaskTargetType;
-import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprint;
-import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprintStatus;
-import cloud.xcan.angus.core.tester.domain.task.summary.TaskSprintSummary;
-import cloud.xcan.angus.core.tester.domain.task.trash.TaskTrash;
+import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprint;
+import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprintStatus;
+import cloud.xcan.angus.core.tester.domain.issue.summary.TaskSprintSummary;
+import cloud.xcan.angus.core.tester.domain.issue.trash.TaskTrash;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.time.LocalDateTime;
 import java.util.HashSet;

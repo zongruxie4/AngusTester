@@ -3,7 +3,7 @@ package cloud.xcan.angus.core.tester.domain.test.cases.count;
 import static java.lang.String.valueOf;
 
 import cloud.xcan.angus.core.tester.domain.kanban.DataAssetsTimeSeries;
-import cloud.xcan.angus.core.tester.domain.task.count.DataDetailBase;
+import cloud.xcan.angus.core.tester.domain.issue.count.DataDetailBase;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;

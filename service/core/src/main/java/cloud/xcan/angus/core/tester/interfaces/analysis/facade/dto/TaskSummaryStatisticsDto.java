@@ -7,10 +7,10 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH_X2;
 
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.Result;
-import cloud.xcan.angus.core.tester.domain.task.BugLevel;
-import cloud.xcan.angus.core.tester.domain.task.TaskStatus;
-import cloud.xcan.angus.core.tester.domain.task.TaskType;
-import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprintPermission;
+import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
+import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
+import cloud.xcan.angus.core.tester.domain.issue.TaskType;
+import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprintPermission;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;

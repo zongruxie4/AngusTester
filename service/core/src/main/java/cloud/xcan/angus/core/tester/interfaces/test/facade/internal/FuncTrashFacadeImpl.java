@@ -4,8 +4,8 @@ import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchS
 import static cloud.xcan.angus.core.tester.interfaces.test.facade.internal.assembler.FuncTrashAssembler.getSpecification;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
-import cloud.xcan.angus.core.tester.application.cmd.func.FuncTrashCmd;
-import cloud.xcan.angus.core.tester.application.query.func.FuncTrashQuery;
+import cloud.xcan.angus.core.tester.application.cmd.test.FuncTrashCmd;
+import cloud.xcan.angus.core.tester.application.query.test.FuncTrashQuery;
 import cloud.xcan.angus.core.tester.domain.test.trash.FuncTrash;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.FuncTrashFacade;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.trash.FuncTrashFindDto;

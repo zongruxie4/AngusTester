@@ -1,0 +1,56 @@
+package cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.meeting;
+
+import cloud.xcan.angus.api.commonlink.user.UserInfo;
+import cloud.xcan.angus.core.tester.domain.issue.meeting.TaskMeetingType;
+import cloud.xcan.angus.remote.NameJoinField;
+import java.time.LocalDateTime;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+@Setter
+@Getter
+@Accessors(chain = true)
+public class TaskMeetingDetailVo {
+
+  private Long id;
+
+  private Long projectId;
+
+  private Long sprintId;
+
+  @NameJoinField(id = "sprintId", repository = "taskSprintRepo")
+  private String sprintName;
+
+  private String subject;
+
+  private TaskMeetingType type;
+
+  private String date;
+
+  private String time;
+
+  private String location;
+
+  private UserInfo moderator;
+
+  private List<UserInfo> participants;
+
+  private String content;
+
+  private Long createdBy;
+
+  @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")
+  private String createdByName;
+
+  private LocalDateTime createdDate;
+
+  private Long lastModifiedBy;
+
+  @NameJoinField(id = "lastModifiedBy", repository = "commonUserBaseRepo")
+  private String lastModifiedByName;
+
+  private LocalDateTime lastModifiedDate;
+
+}

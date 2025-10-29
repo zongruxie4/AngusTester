@@ -9,7 +9,7 @@ import cloud.xcan.angus.core.tester.domain.kanban.ResourcesScriptCount;
 import cloud.xcan.angus.core.tester.domain.kanban.ResourcesTaskCount;
 import cloud.xcan.angus.core.tester.domain.scenario.count.ScenarioResourcesCreationCount;
 import cloud.xcan.angus.core.tester.domain.script.count.ScriptResourcesCreationCount;
-import cloud.xcan.angus.core.tester.domain.task.count.TaskLastResourceCreationCount;
+import cloud.xcan.angus.core.tester.domain.issue.count.TaskLastResourceCreationCount;
 
 public class KanbanDataAssetsAssembler {
 

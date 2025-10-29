@@ -10,7 +10,7 @@ import cloud.xcan.angus.api.pojo.Attachment;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestStep;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
-import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
+import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.remote.NameJoinField;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;
 import com.fasterxml.jackson.annotation.JsonFormat;

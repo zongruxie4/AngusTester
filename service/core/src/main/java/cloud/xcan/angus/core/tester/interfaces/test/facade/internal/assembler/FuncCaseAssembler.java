@@ -30,8 +30,8 @@ import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseExportList
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseInfoVo;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseReviewVo;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.TaskInfoVo;
+import cloud.xcan.angus.core.tester.interfaces.issue.facade.internal.assembler.TaskAssembler;
+import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskInfoVo;
 import cloud.xcan.angus.core.utils.SpringAppDirUtils;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;

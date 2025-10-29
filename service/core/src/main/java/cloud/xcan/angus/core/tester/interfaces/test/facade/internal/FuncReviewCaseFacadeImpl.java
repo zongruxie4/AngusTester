@@ -6,8 +6,8 @@ import static cloud.xcan.angus.core.tester.interfaces.test.facade.internal.assem
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
-import cloud.xcan.angus.core.tester.application.cmd.func.FuncReviewCaseCmd;
-import cloud.xcan.angus.core.tester.application.query.func.FuncReviewCaseQuery;
+import cloud.xcan.angus.core.tester.application.cmd.test.FuncReviewCaseCmd;
+import cloud.xcan.angus.core.tester.application.query.test.FuncReviewCaseQuery;
 import cloud.xcan.angus.core.tester.domain.test.review.cases.FuncReviewCase;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.FuncCaseFacade;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.FuncReviewCaseFacade;

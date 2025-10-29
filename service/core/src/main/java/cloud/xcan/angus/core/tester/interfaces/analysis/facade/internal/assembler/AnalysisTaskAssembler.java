@@ -6,7 +6,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.arrayToLists;
 
 import cloud.xcan.angus.api.commonlink.TesterConstant;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
-import cloud.xcan.angus.core.tester.domain.task.count.TaskCount;
+import cloud.xcan.angus.core.tester.domain.issue.count.TaskCount;
 import cloud.xcan.angus.core.tester.interfaces.analysis.facade.dto.TaskSummaryStatisticsDto;
 import cloud.xcan.angus.core.utils.SpringAppDirUtils;
 import cloud.xcan.angus.remote.search.SearchCriteria;

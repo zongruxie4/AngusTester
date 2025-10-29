@@ -30,7 +30,7 @@ import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.angus.core.tester.application.cmd.data.DatasetCmd;
 import cloud.xcan.angus.core.tester.application.cmd.data.VariableCmd;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecTestCmd;
-import cloud.xcan.angus.core.tester.application.cmd.func.FuncCaseCmd;
+import cloud.xcan.angus.core.tester.application.cmd.test.FuncCaseCmd;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceCmd;
 import cloud.xcan.angus.core.tester.application.cmd.module.ModuleCmd;
 import cloud.xcan.angus.core.tester.application.cmd.project.ProjectCmd;
@@ -40,7 +40,7 @@ import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioCmd;
 import cloud.xcan.angus.core.tester.application.cmd.script.ScriptCmd;
 import cloud.xcan.angus.core.tester.application.cmd.services.ServicesCmd;
 import cloud.xcan.angus.core.tester.application.cmd.tag.TagCmd;
-import cloud.xcan.angus.core.tester.application.cmd.task.TaskCmd;
+import cloud.xcan.angus.core.tester.application.cmd.issue.TaskCmd;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.domain.ExampleDataType;
@@ -68,13 +68,13 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command implementation for project management operations.
  * <p>
- * Provides comprehensive CRUD operations for projects including creation, modification, 
+ * Provides comprehensive CRUD operations for projects including creation, modification,
  * deletion, import/export, and member management.
  * <p>
- * Implements business logic validation, permission checks, activity logging, 
+ * Implements business logic validation, permission checks, activity logging,
  * and transaction management for all project operations.
  * <p>
- * Supports example data import, member management, trash functionality, 
+ * Supports example data import, member management, trash functionality,
  * and comprehensive activity tracking.
  */
 @Slf4j
@@ -123,10 +123,10 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   /**
    * Adds a new project to the system.
    * <p>
-   * Performs comprehensive validation including quota limits, project name uniqueness, 
+   * Performs comprehensive validation including quota limits, project name uniqueness,
    * and member existence checks.
    * <p>
-   * Optionally imports example data based on project configuration and logs creation activity 
+   * Optionally imports example data based on project configuration and logs creation activity
    * for audit trail purposes.
    * <p>
    * Ensures proper project setup with owner and member associations.
@@ -186,7 +186,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
 
     // Ensure project owner is included in member list
     addOwnerToMembers0(project, project.getOwnerId());
-    
+
     // Create project member associations
     projectMemberCmd.add0(idKey.getId(), project.getMemberTypeIds());
     return idKey;
@@ -195,10 +195,10 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   /**
    * Updates an existing project in the system.
    * <p>
-   * Validates project existence, user permissions, name uniqueness, and member existence 
+   * Validates project existence, user permissions, name uniqueness, and member existence
    * before updating project details.
    * <p>
-   * Updates project information, manages member changes, and logs modification activity 
+   * Updates project information, manages member changes, and logs modification activity
    * for audit trail purposes.
    * <p>
    * Only project owners and administrators can modify projects.
@@ -247,7 +247,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   /**
    * Replaces (adds or updates) a project in the system.
    * <p>
-   * Validates project existence, user permissions, name uniqueness, and member existence 
+   * Validates project existence, user permissions, name uniqueness, and member existence
    * before replacing project details.
    * <p>
    * Creates a new project if ID is null, otherwise updates existing project.
@@ -303,10 +303,10 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   /**
    * Imports an example project with sample data from template files.
    * <p>
-   * Parses example project template from resources and creates a new project 
+   * Parses example project template from resources and creates a new project
    * with the specified name and type.
    * <p>
-   * Imports comprehensive example data including tags, modules, tasks, cases, 
+   * Imports comprehensive example data including tags, modules, tasks, cases,
    * services, scenarios, scripts, variables, datasets, mocks, and executions.
    * <p>
    * Logs creation activity for audit trail purposes.
@@ -342,7 +342,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   /**
    * Imports a project example with internal setup and member management.
    * <p>
-   * Creates a new project with example data, sets up project timeline, 
+   * Creates a new project with example data, sets up project timeline,
    * and establishes member associations.
    * <p>
    * Automatically adds all tenant users as project members.
@@ -364,13 +364,13 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     // Get all valid users from the tenant for member setup
     List<User> users = userManager.findValidByTenantId(getOptTenantId());
     Assert.assertNotEmpty(users, "Tenant users are empty");
-    
+
     // Create member type mapping with all tenant users
     LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> memberTypeIds = new LinkedHashMap<>();
     memberTypeIds.put(OrgTargetType.USER,
         new LinkedHashSet<>(users.stream().map(User::getId).collect(Collectors.toSet())));
     project.setMemberTypeIds(memberTypeIds);
-    
+
     // Create project member associations
     projectMemberCmd.add0(idKey.getId(), project.getMemberTypeIds());
     return idKey;
@@ -381,7 +381,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
    * <p>
    * Validates project existence and user permissions before marking the project as deleted.
    * <p>
-   * Moves project to trash for potential recovery and logs deletion activity 
+   * Moves project to trash for potential recovery and logs deletion activity
    * for audit trail purposes.
    * <p>
    * Only project owners and administrators can delete projects.
@@ -429,7 +429,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   /**
    * Imports example data for a project based on specified data types.
    * <p>
-   * Imports various types of example data including tags, modules, tasks, cases, 
+   * Imports various types of example data including tags, modules, tasks, cases,
    * services, scenarios, scripts, variables, datasets, mocks, and executions.
    * <p>
    * Each data type is imported conditionally based on the finalDataTypes set.
@@ -441,52 +441,52 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     if (finalDataTypes.contains(ExampleDataType.TAG)) {
       tagCmd.importExample(project.getId());
     }
-    
+
     // Import modules if requested
     if (finalDataTypes.contains(ExampleDataType.MODULE)) {
       moduleCmd.importExample(project.getId());
     }
-    
+
     // Import tasks if requested
     if (finalDataTypes.contains(ExampleDataType.TASK)) {
       taskCmd.importExample(project.getId());
     }
-    
+
     // Import functional test cases if requested
     if (finalDataTypes.contains(ExampleDataType.FUNC)) {
       funcCaseCmd.importExample(project.getId());
     }
-    
+
     // Import services if requested
     if (finalDataTypes.contains(ExampleDataType.SERVICES)) {
       servicesCmd.importExample(project.getId());
     }
-    
+
     // Import scenarios if requested
     if (finalDataTypes.contains(ExampleDataType.SCENARIO)) {
       scenarioCmd.importExample(project.getId());
     }
-    
+
     // Import scripts if requested
     if (finalDataTypes.contains(ExampleDataType.SCRIPT)) {
       scriptCmd.importExample(project.getId());
     }
-    
+
     // Import variables if requested
     if (finalDataTypes.contains(ExampleDataType.VARIABLE)) {
       variableCmd.importExample(project.getId());
     }
-    
+
     // Import datasets if requested
     if (finalDataTypes.contains(ExampleDataType.DATASET)) {
       datasetCmd.importExample(project.getId());
     }
-    
+
     // Import mock services if requested
     if (finalDataTypes.contains(ExampleDataType.MOCK)) {
       mockServiceCmd.importExample(project.getId());
     }
-    
+
     // Import test executions if requested
     if (finalDataTypes.contains(ExampleDataType.EXECUTION)) {
       execTestCmd.importExample(project.getId());

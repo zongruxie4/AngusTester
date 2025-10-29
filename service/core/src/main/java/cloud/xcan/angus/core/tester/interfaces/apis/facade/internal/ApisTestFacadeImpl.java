@@ -7,13 +7,13 @@ import static java.util.Collections.singletonList;
 
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisTestCmd;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisTestQuery;
-import cloud.xcan.angus.core.tester.domain.task.TaskType;
+import cloud.xcan.angus.core.tester.domain.issue.TaskType;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisTestFacade;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestScriptGenerateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestTaskGenerateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.test.TestResultDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecResultFacade;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskTestFacade;
+import cloud.xcan.angus.core.tester.interfaces.issue.facade.TaskTestFacade;
 import cloud.xcan.angus.model.script.TestType;
 import io.swagger.v3.oas.models.servers.Server;
 import jakarta.annotation.Resource;

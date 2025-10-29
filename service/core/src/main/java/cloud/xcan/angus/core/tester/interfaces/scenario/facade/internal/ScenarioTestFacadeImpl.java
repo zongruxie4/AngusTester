@@ -4,12 +4,12 @@ import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.a
 
 import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioTestCmd;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioTestQuery;
-import cloud.xcan.angus.core.tester.domain.task.TaskType;
+import cloud.xcan.angus.core.tester.domain.issue.TaskType;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.test.TestResultDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecResultFacade;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.ScenarioTestFacade;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.test.ScenarioTestTaskGenerateDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskTestFacade;
+import cloud.xcan.angus.core.tester.interfaces.issue.facade.TaskTestFacade;
 import cloud.xcan.angus.model.scenario.ScenarioTestCount;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.dto.OrgAndDateFilterDto;

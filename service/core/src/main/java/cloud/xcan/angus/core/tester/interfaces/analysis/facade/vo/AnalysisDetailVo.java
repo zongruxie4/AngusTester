@@ -12,7 +12,7 @@ import cloud.xcan.angus.core.tester.domain.analysis.AnalysisResource;
 import cloud.xcan.angus.core.tester.domain.analysis.AnalysisTaskObject;
 import cloud.xcan.angus.core.tester.domain.analysis.AnalysisTaskTemplate;
 import cloud.xcan.angus.core.tester.domain.analysis.AnalysisTimeRange;
-import cloud.xcan.angus.core.tester.domain.task.count.AbstractOverview;
+import cloud.xcan.angus.core.tester.domain.issue.count.AbstractOverview;
 import cloud.xcan.angus.remote.NameJoinField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;

@@ -3,7 +3,7 @@ package cloud.xcan.angus.core.tester.infra.persistence.mysql.master.test;
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstValue;
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstValueAndRemove;
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.getFilterInFirstValue;
-import static cloud.xcan.angus.core.tester.infra.persistence.mysql.master.task.TaskListRepoMysql.assembleCommentByInCondition;
+import static cloud.xcan.angus.core.tester.infra.persistence.mysql.master.issue.TaskListRepoMysql.assembleCommentByInCondition;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;

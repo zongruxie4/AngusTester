@@ -4,12 +4,12 @@ import static cloud.xcan.angus.core.tester.interfaces.kanban.facade.internal.ass
 
 import cloud.xcan.angus.core.tester.application.query.apis.ApisQuery;
 import cloud.xcan.angus.core.tester.application.query.data.DataQuery;
-import cloud.xcan.angus.core.tester.application.query.func.FuncCaseQuery;
+import cloud.xcan.angus.core.tester.application.query.test.FuncCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.kanban.KanbanDataAssetsQuery;
 import cloud.xcan.angus.core.tester.application.query.mock.MockServiceQuery;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioQuery;
 import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
-import cloud.xcan.angus.core.tester.application.query.task.TaskQuery;
+import cloud.xcan.angus.core.tester.application.query.issue.TaskQuery;
 import cloud.xcan.angus.core.tester.domain.apis.count.ApisResourcesCreationCount;
 import cloud.xcan.angus.core.tester.domain.data.DataResourcesCount;
 import cloud.xcan.angus.core.tester.domain.test.cases.count.FuncLastResourceCreationCount;
@@ -24,7 +24,7 @@ import cloud.xcan.angus.core.tester.domain.kanban.ResourcesTaskCount;
 import cloud.xcan.angus.core.tester.domain.mock.MockResourcesCreationCount;
 import cloud.xcan.angus.core.tester.domain.scenario.count.ScenarioResourcesCreationCount;
 import cloud.xcan.angus.core.tester.domain.script.count.ScriptResourcesCreationCount;
-import cloud.xcan.angus.core.tester.domain.task.count.TaskLastResourceCreationCount;
+import cloud.xcan.angus.core.tester.domain.issue.count.TaskLastResourceCreationCount;
 import cloud.xcan.angus.core.tester.interfaces.kanban.facade.KanbanDataAssetsFacade;
 import cloud.xcan.angus.core.tester.interfaces.kanban.facade.dto.KanbanDataAssetsCountDto;
 import cloud.xcan.angus.core.tester.interfaces.kanban.facade.dto.KanbanDataAssetsDataCountDto;

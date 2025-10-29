@@ -7,8 +7,8 @@ import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.core.biz.NameJoin;
-import cloud.xcan.angus.core.tester.application.cmd.func.FuncPlanAuthCmd;
-import cloud.xcan.angus.core.tester.application.query.func.FuncPlanAuthQuery;
+import cloud.xcan.angus.core.tester.application.cmd.test.FuncPlanAuthCmd;
+import cloud.xcan.angus.core.tester.application.query.test.FuncPlanAuthQuery;
 import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanAuth;
 import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanAuthCurrent;
 import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanPermission;

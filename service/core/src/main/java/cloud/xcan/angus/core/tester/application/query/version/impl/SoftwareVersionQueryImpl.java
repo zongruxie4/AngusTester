@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.application.query.version.impl;
 
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.tester.application.converter.TaskConverter.assembleTaskProgressCount0;
-import static cloud.xcan.angus.core.tester.application.query.task.impl.TaskQueryImpl.getTaskSummary;
+import static cloud.xcan.angus.core.tester.application.query.issue.impl.TaskQueryImpl.getTaskSummary;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.core.biz.Biz;
@@ -10,10 +10,10 @@ import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.JoinSupplier;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.version.SoftwareVersionQuery;
-import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
-import cloud.xcan.angus.core.tester.domain.task.TaskInfoRepo;
-import cloud.xcan.angus.core.tester.domain.task.count.ProgressCount;
-import cloud.xcan.angus.core.tester.domain.task.summary.TaskSummary;
+import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
+import cloud.xcan.angus.core.tester.domain.issue.TaskInfoRepo;
+import cloud.xcan.angus.core.tester.domain.issue.count.ProgressCount;
+import cloud.xcan.angus.core.tester.domain.issue.summary.TaskSummary;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersion;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersionRepo;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;

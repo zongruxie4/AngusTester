@@ -28,7 +28,7 @@ import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseRepo;
 import cloud.xcan.angus.core.tester.domain.module.Module;
 import cloud.xcan.angus.core.tester.domain.module.ModuleRepo;
 import cloud.xcan.angus.core.tester.domain.project.Project;
-import cloud.xcan.angus.core.tester.domain.task.TaskRepo;
+import cloud.xcan.angus.core.tester.domain.issue.TaskRepo;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import com.fasterxml.jackson.core.type.TypeReference;
 import jakarta.annotation.Resource;

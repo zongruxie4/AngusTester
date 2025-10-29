@@ -1,9 +1,9 @@
 package cloud.xcan.angus.core.tester.domain.test.cases.count;
 
 import cloud.xcan.angus.api.commonlink.user.UserInfo;
-import cloud.xcan.angus.core.tester.domain.task.count.AbstractOverview;
-import cloud.xcan.angus.core.tester.domain.task.count.RecentDeliveryCount;
-import cloud.xcan.angus.core.tester.domain.task.count.RecentDeliveryDetail;
+import cloud.xcan.angus.core.tester.domain.issue.count.AbstractOverview;
+import cloud.xcan.angus.core.tester.domain.issue.count.RecentDeliveryCount;
+import cloud.xcan.angus.core.tester.domain.issue.count.RecentDeliveryDetail;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;

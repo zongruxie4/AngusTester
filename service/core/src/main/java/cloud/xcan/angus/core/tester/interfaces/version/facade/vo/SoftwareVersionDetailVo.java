@@ -1,8 +1,8 @@
 package cloud.xcan.angus.core.tester.interfaces.version.facade.vo;
 
-import cloud.xcan.angus.core.tester.domain.task.TaskStatus;
-import cloud.xcan.angus.core.tester.domain.task.count.ProgressCount;
-import cloud.xcan.angus.core.tester.domain.task.summary.TaskSummary;
+import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
+import cloud.xcan.angus.core.tester.domain.issue.count.ProgressCount;
+import cloud.xcan.angus.core.tester.domain.issue.summary.TaskSummary;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersionStatus;
 import cloud.xcan.angus.remote.NameJoinField;
 import java.time.LocalDateTime;

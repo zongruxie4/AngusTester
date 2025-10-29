@@ -3,7 +3,7 @@ package cloud.xcan.angus.core.tester.application.cmd.apis;
 
 import cloud.xcan.angus.core.tester.domain.apis.Apis;
 import cloud.xcan.angus.core.tester.domain.script.Script;
-import cloud.xcan.angus.core.tester.domain.task.Task;
+import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.model.script.TestType;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.HashSet;

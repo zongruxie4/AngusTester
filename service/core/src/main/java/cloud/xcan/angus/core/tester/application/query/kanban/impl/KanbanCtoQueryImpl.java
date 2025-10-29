@@ -6,8 +6,8 @@ import static cloud.xcan.angus.core.tester.application.converter.KanbanCtoCaseCo
 import static cloud.xcan.angus.core.tester.application.converter.KanbanCtoTaskConverter.assembleAssigneeOverview;
 import static cloud.xcan.angus.core.tester.application.converter.KanbanCtoTaskConverter.assembleTaskOverview;
 import static cloud.xcan.angus.core.tester.application.converter.TaskConverter.getTaskAssigneeResourcesFilter;
-import static cloud.xcan.angus.core.tester.application.query.func.impl.FuncCaseQueryImpl.getCaseSummary;
-import static cloud.xcan.angus.core.tester.application.query.task.impl.TaskQueryImpl.getTaskSummary;
+import static cloud.xcan.angus.core.tester.application.query.test.impl.FuncCaseQueryImpl.getCaseSummary;
+import static cloud.xcan.angus.core.tester.application.query.issue.impl.TaskQueryImpl.getTaskSummary;
 import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
@@ -27,10 +27,10 @@ import cloud.xcan.angus.core.tester.domain.kanban.CtoCaseOverview;
 import cloud.xcan.angus.core.tester.domain.kanban.CtoTaskOverview;
 import cloud.xcan.angus.core.tester.domain.kanban.TestApisCount;
 import cloud.xcan.angus.core.tester.domain.kanban.TestScenarioCount;
-import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
-import cloud.xcan.angus.core.tester.domain.task.TaskInfoRepo;
-import cloud.xcan.angus.core.tester.domain.task.TaskRepo;
-import cloud.xcan.angus.core.tester.domain.task.summary.TaskEfficiencySummary;
+import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
+import cloud.xcan.angus.core.tester.domain.issue.TaskInfoRepo;
+import cloud.xcan.angus.core.tester.domain.issue.TaskRepo;
+import cloud.xcan.angus.core.tester.domain.issue.summary.TaskEfficiencySummary;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import jakarta.annotation.Resource;
 import java.time.LocalDateTime;

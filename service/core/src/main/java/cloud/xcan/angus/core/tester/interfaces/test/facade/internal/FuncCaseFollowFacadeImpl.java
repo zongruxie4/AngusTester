@@ -3,8 +3,8 @@ package cloud.xcan.angus.core.tester.interfaces.test.facade.internal;
 import static cloud.xcan.angus.core.tester.interfaces.test.facade.internal.assembler.FuncCaseFollowAssembler.addDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
-import cloud.xcan.angus.core.tester.application.cmd.func.FuncCaseFollowCmd;
-import cloud.xcan.angus.core.tester.application.query.func.FuncCaseFollowQuery;
+import cloud.xcan.angus.core.tester.application.cmd.test.FuncCaseFollowCmd;
+import cloud.xcan.angus.core.tester.application.query.test.FuncCaseFollowQuery;
 import cloud.xcan.angus.core.tester.domain.test.follow.FuncCaseFollowP;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.FuncCaseFollowFacade;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.follow.FuncCaseFollowFindDto;

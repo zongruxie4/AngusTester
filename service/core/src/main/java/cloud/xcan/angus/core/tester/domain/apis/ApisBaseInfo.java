@@ -8,7 +8,7 @@ import cloud.xcan.angus.api.commonlink.apis.ApiSource;
 import cloud.xcan.angus.core.jpa.multitenancy.TenantAuditingEntity;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.core.tester.domain.apis.converter.ServerConverter;
-import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
+import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.model.apis.ApiStatus;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.spec.annotations.NonNullable;

@@ -9,7 +9,7 @@ import cloud.xcan.angus.api.enums.ReviewStatus;
 import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestStep;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.TaskInfoVo;
+import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskInfoVo;
 import cloud.xcan.angus.remote.NameJoinField;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;
 import com.alibaba.excel.annotation.format.DateTimeFormat;

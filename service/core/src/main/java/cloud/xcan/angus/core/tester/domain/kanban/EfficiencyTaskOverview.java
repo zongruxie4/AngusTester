@@ -2,10 +2,10 @@ package cloud.xcan.angus.core.tester.domain.kanban;
 
 import cloud.xcan.angus.api.commonlink.user.UserInfo;
 import cloud.xcan.angus.api.enums.Priority;
-import cloud.xcan.angus.core.tester.domain.task.TaskStatus;
-import cloud.xcan.angus.core.tester.domain.task.TaskType;
-import cloud.xcan.angus.core.tester.domain.task.count.BurnDownChartCount;
-import cloud.xcan.angus.core.tester.domain.task.summary.TaskSummary;
+import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
+import cloud.xcan.angus.core.tester.domain.issue.TaskType;
+import cloud.xcan.angus.core.tester.domain.issue.count.BurnDownChartCount;
+import cloud.xcan.angus.core.tester.domain.issue.summary.TaskSummary;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
