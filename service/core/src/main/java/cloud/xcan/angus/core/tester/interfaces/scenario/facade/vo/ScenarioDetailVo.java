@@ -4,6 +4,7 @@ package cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo;
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.remote.NameJoinField;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,8 @@ public class ScenarioDetailVo {
 
   //@NameJoinField(id = "projectId", repository = "projectRepo")
   //private String projectName;
+
+  private Long moduleId;
 
   private String plugin;
 

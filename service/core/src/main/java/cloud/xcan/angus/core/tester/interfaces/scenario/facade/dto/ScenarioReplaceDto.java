@@ -24,6 +24,9 @@ public class ScenarioReplaceDto {
   @Schema(description = "Project identifier for scenario association; required when creating new scenario")
   private Long projectId;
 
+  @Schema(description = "Scenario module identifier for categorization")
+  private Long moduleId;
+
   @NotBlank
   @Length(max = MAX_NAME_LENGTH_X2)
   @Schema(description = "Scenario name for identification and management", example = "Create an order", requiredMode = RequiredMode.REQUIRED)

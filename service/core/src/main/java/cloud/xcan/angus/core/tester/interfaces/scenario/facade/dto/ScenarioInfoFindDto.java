@@ -32,6 +32,9 @@ public class ScenarioInfoFindDto extends PageQuery {
   @Schema(description = "Project identifier for scenario filtering", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
+  @Schema(description = "Scenario module identifier for categorization")
+  private Long moduleId;
+
   @Length(max = MAX_NAME_LENGTH)
   @Schema(description = "Scenario execution plugin name for filtering")
   private String plugin;
