@@ -12,7 +12,10 @@ const { t } = useI18n();
 const AddModal = defineAsyncComponent(() => import('./Add.vue'));
 
 // Inject project information
-const projectId = inject<Ref<string>>('projectId', ref(''));
+
+const props = withDefaults(defineProps<{projectId: string}>(), {
+  projectId: undefined
+});
 
 /**
  * <p>Main composable for component logic</p>
@@ -42,9 +45,8 @@ const {
   handleEdit,
   handleDelete,
   handleTestConnection,
-  handleModalClose,
   handleModalRefresh
-} = useDataSource(projectId.value);
+} = useDataSource(props);
 </script>
 
 <template>
@@ -240,7 +242,7 @@ const {
     <AddModal
       v-model:visible="isModalVisible"
       :editData="editData"
-      :projectId="projectId"
+      :projectId="props.projectId"
       @refresh="handleModalRefresh" />
   </AsyncComponent>
 </template>

@@ -39,10 +39,12 @@ onMounted(() => {
 });
 </script>
 <template>
-  <LeftMenu v-model:activeKey="activeKey" :menuItems="menuItems">
+  <LeftMenu
+    v-model:activeKey="activeKey"
+    :menuItems="menuItems">
     <template #home>
       <Homepage
-        v-if="projectId"
+        v-if="activeKey === DataMenuKey.HOME && projectId"
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo"
@@ -64,14 +66,14 @@ onMounted(() => {
     </template>
     <template #file>
       <FileData
-        v-if="projectId"
+        v-if="activeKey === DataMenuKey.FILE && projectId"
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo" />
     </template>
     <template #datasource>
       <SourceData
-        v-if="projectId"
+        v-if="activeKey === DataMenuKey.DATASOURCE && projectId"
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo" />

@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, computed, Ref } from 'vue';
 import { datasource } from '@/api/tester';
 import {
   SearchParams,
@@ -11,7 +11,7 @@ import {
  * <p>Composable for managing datasource data state and operations</p>
  * <p>Handles all data fetching, state management, and data transformations</p>
  */
-export function useData (projectId: string) {
+export function useData () {
   // Loading states
   const loading = ref(false);
   const isFirstLoad = ref(true);
@@ -32,7 +32,7 @@ export function useData (projectId: string) {
    * <p>Fetch data source list from API</p>
    * <p>Retrieves paginated data source list with search filters</p>
    */
-  const getDataSourceList = async (): Promise<void> => {
+  const getDataSourceList = async (projectId): Promise<void> => {
     // Clear existing data map
     dataMap.value = {};
 

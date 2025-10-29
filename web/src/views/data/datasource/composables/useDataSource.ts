@@ -7,9 +7,9 @@ import { useUIActions } from './useUIActions';
  * <p>Main composable for DataSource component business logic</p>
  * <p>Integrates all other composables and provides the main component functionality</p>
  */
-export function useDataSource (projectId: string) {
+export function useDataSource (props: {projectId: string}) {
   // Initialize all composables
-  const data = useData(projectId);
+  const data = useData();
   const searchConfig = useSearchConfig();
   const uiActions = useUIActions();
 
@@ -90,10 +90,11 @@ export function useDataSource (projectId: string) {
   };
 
   // Watch for project ID changes and fetch data
-  watch(() => projectId, (newValue) => {
+  watch(() => props.projectId, (newValue) => {
+    
     if (newValue) {
       data.params.value.pageNo = 1;
-      data.getDataSourceList();
+      data.getDataSourceList(newValue);
     }
   }, {
     immediate: true
