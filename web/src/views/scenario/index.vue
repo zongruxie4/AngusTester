@@ -60,9 +60,12 @@ onMounted(() => {
 });
 </script>
 <template>
-  <LeftMenu v-model:activeKey="activeKey" :menuItems="menuItems">
+  <LeftMenu
+    v-model:activeKey="activeKey"
+    :menuItems="menuItems">
     <template #home>
       <Homepage
+        v-if="activeKey === 'home'"
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo"
@@ -70,17 +73,18 @@ onMounted(() => {
     </template>
     <template #scenario>
       <Scenario
+        v-model:refreshNotify="scenarioRefreshNotify"
         :projectId="projectId"
         :userInfo="userInfo"
-        :appInfo="appInfo"
-        :refreshNotify="scenarioRefreshNotify" />
+        :appInfo="appInfo" />
     </template>
     <template #trash>
       <Trash
+        v-model:refreshNotify="trashRefreshNotify"
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo"
-        :refreshNotify="trashRefreshNotify" />
+         />
     </template>
     <template #monitor>
       <Monitor

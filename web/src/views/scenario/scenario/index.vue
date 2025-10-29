@@ -13,13 +13,17 @@ type Props = {
   projectId: string;
   userInfo: { id: string; };
   appInfo: { id: string; };
+  refreshNotify: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
-  appInfo: undefined
+  appInfo: undefined,
+  refreshNotify: ''
 });
+
+const emit = defineEmits<{(e: 'update:refreshNotify', value: string)}>()
 
 interface ScenarioIPane extends IPane{
   /** Scenario information required for opening scenario plugins */
@@ -52,7 +56,7 @@ const router = useRouter();
 const browserTabRef = ref();
 
 // Refresh notification state for triggering child component updates
-const refreshNotificationId = ref<string>();
+// const refreshNotificationId = ref<string>();
 
 /**
  * Generate storage key for browser tab persistence based on project ID
@@ -68,7 +72,8 @@ const storageKey = computed(() => {
  * Trigger refresh notification to update child components
  */
 const triggerRefreshNotification = () => {
-  refreshNotificationId.value = utils.uuid();
+  // refreshNotificationId.value = utils.uuid();
+  emit('update:refreshNotify', utils.uuid())
 };
 
 /**
@@ -234,13 +239,14 @@ provide('replaceTabPane', replaceTabPane);
     ref="browserTabRef"
     hideAdd
     class="h-full"
+    :key="props.projectId"
     :userId="props.userInfo?.id"
     :storageKey="storageKey"
     @storageKeyChange="handleStorageKeyChange">
     <template #default="record">
       <template v-if="record.value === 'scenarioList'">
         <List
-          :notify="refreshNotificationId"
+          :notify="props.refreshNotify"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />

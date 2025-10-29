@@ -120,27 +120,27 @@ export function useData (
   /**
    * Refresh data when project changes
    */
-  const refreshOnProjectChange = (): void => {
-    watch(() => projectIdRef.value, () => {
-      loadData();
-    }, { immediate: true });
-  };
+  // const refreshOnProjectChange = (): void => {
+  //   watch(() => projectIdRef.value, () => {
+  //     loadData();
+  //   }, { immediate: true });
+  // };
 
-  /**
-   * Refresh data when notify prop changes
-   */
-  const refreshOnNotifyChange = (): void => {
-    watch(() => notify, (newValue) => {
-      if (newValue === undefined || newValue === null || newValue === '') {
-        return;
-      }
-      loadData();
-    }, { immediate: true });
-  };
+  // /**
+  //  * Refresh data when notify prop changes
+  //  */
+  // const refreshOnNotifyChange = (): void => {
+  //   watch(() => notify, (newValue) => {
+  //     if (newValue === undefined || newValue === null || newValue === '') {
+  //       return;
+  //     }
+  //     loadData();
+  //   }, { immediate: true });
+  // };
 
-  /**
-   * Refresh data when deleted notify prop changes
-   */
+  // /**
+  //  * Refresh data when deleted notify prop changes
+  //  */
   const refreshOnDeletedNotifyChange = (): void => {
     watch(() => deletedNotify, (newValue) => {
       if (newValue === undefined || newValue === null || newValue === '') {
@@ -153,15 +153,15 @@ export function useData (
         pagination.value.total
       );
       loadData();
-    }, { immediate: true });
+    });
   };
 
   /**
    * Initialize watchers for reactive updates
    */
   const initializeWatchers = (): void => {
-    refreshOnProjectChange();
-    refreshOnNotifyChange();
+    // refreshOnProjectChange();
+    // refreshOnNotifyChange();
     refreshOnDeletedNotifyChange();
   };
 

@@ -18,7 +18,8 @@ import type { TrashItem } from './types';
  */
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: '',
-  userInfo: undefined
+  userInfo: undefined,
+  refreshNotify: ''
 });
 
 // Internationalization
@@ -157,9 +158,10 @@ const canUserPerformActions = (item: TrashItem): boolean => {
 
 // Lifecycle and watchers
 onMounted(() => {
-  watch(
+  watch([
     () => props.projectId,
-    (newValue) => {
+    () => props.refreshNotify],
+    ([newValue]) => {
       if (newValue) {
         resetPagination();
         loadDataAndRefresh();

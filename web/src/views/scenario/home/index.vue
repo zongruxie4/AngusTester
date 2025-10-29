@@ -37,7 +37,7 @@ onMounted(() => {
 
     // Update notification state to trigger child component refreshes
     refreshNotification.value = newNotificationValue;
-  }, { immediate: true });
+  });
 });
 
 // Provide refresh notification method to child components

@@ -3,7 +3,6 @@ import { inject, onMounted, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, Table } from '@xcan-angus/vue-ui';
-import { getCurrentPage } from '@/utils/utils';
 import { ScenarioMenuKey } from '@/views/scenario/menu';
 import type { TableChangeParams } from './types';
 import { BasicProps } from '@/types/types';
@@ -19,7 +18,8 @@ const props = withDefaults(defineProps<BasicProps>(), {
   params: undefined,
   total: 0,
   notify: undefined,
-  refreshNotify: undefined
+  refreshNotify: undefined,
+  deletedNotify: undefined
 });
 
 // Event emissions
@@ -44,7 +44,7 @@ const {
   pagination,
   loadData,
   handleTableChange
-} = useData(projectId, props.params, props.notify, props.refreshNotify, updateTotal);
+} = useData(projectId, props.params, props.notify, props.deletedNotify, updateTotal);
 
 const { columns, emptyTextStyle } = useTableColumns(props.params);
 
@@ -57,28 +57,31 @@ const {
 
 // Initialize watchers on component mount
 onMounted(() => {
-  watch(() => projectId, () => {
-    loadData();
-  }, { immediate: true });
-
-  watch(() => props.notify, (newValue) => {
-    if (newValue === undefined || newValue === null || newValue === '') {
+  watch([() => projectId.value, () => props.notify], ([newValue]) => {
+    if (!newValue) {
       return;
     }
-
     loadData();
   }, { immediate: true });
 
-  watch(() => props.refreshNotify, (newValue) => {
-    if (newValue === undefined || newValue === null || newValue === '') {
-      return;
-    }
+  // watch(() => props.notify, (newValue) => {
+  //   if (newValue === undefined || newValue === null || newValue === '') {
+  //     return;
+  //   }
 
-    pagination.value.current = getCurrentPage(pagination.value.current,
-      pagination.value.pageSize, pagination.value.total);
+  //   loadData();
+  // }, { immediate: true });
 
-    loadData();
-  }, { immediate: true });
+  // watch(() => props.refreshNotify, (newValue) => {
+  //   if (newValue === undefined || newValue === null || newValue === '') {
+  //     return;
+  //   }
+
+  //   pagination.value.current = getCurrentPage(pagination.value.current,
+  //   pagination.value.pageSize, pagination.value.total);
+
+  //   loadData();
+  // }, { immediate: true });
 });
 
 /**
