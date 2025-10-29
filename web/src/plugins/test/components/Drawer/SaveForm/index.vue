@@ -166,9 +166,10 @@ const init = () => {
     return;
   }
 
-  const { name: _name, description: _description } = data;
+  const { name: _name, description: _description, moduleId: _moduleId } = data;
   name.value = _name;
   description.value = _description;
+  moduleId.value = _moduleId;
 };
 
 /**
