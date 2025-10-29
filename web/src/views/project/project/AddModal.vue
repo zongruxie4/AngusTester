@@ -275,20 +275,21 @@ watch(() => props.visible, (newValue) => {
             :rules="[{ required: true, message: t('project.edit.rules.timeRequired')}]">
             <template #label>
               <span>{{ t('common.planTime') }}</span>
+              <Popover placement="right" overlayClassName="form-tooltip">
+                <template #content>
+                  <div class="tooltip-content">
+                    {{ t('project.edit.form.planTimeDescription') }}
+                  </div>
+                </template>
+                <Icon icon="icon-tishi1" class="tooltip-icon" />
+              </Popover>
             </template>
             <DatePicker
               v-model:value="formData.dateRange"
               :allowClear="false"
               class="enhanced-date-picker"
               type="date-range" />
-            <Popover placement="right" overlayClassName="form-tooltip">
-              <template #content>
-                <div class="tooltip-content">
-                  {{ t('project.edit.form.planTimeDescription') }}
-                </div>
-              </template>
-              <Icon icon="icon-tishi1" class="tooltip-icon" />
-            </Popover>
+            
           </FormItem>
 
           <div class="form-row">
@@ -299,6 +300,14 @@ watch(() => props.visible, (newValue) => {
               :rules="[{ required: true, message: t('project.edit.rules.ownerRequired')}]">
               <template #label>
                 <span>{{ t('common.owner') }}</span>
+                <Popover placement="right" overlayClassName="form-tooltip">
+                  <template #content>
+                    <div class="tooltip-content">
+                      {{ t('project.edit.form.ownerDescription') }}
+                    </div>
+                  </template>
+                  <Icon icon="icon-tishi1" class="tooltip-icon" />
+                </Popover>
               </template>
               <SelectUser
                 v-model:value="formData.ownerId"
@@ -306,41 +315,45 @@ watch(() => props.visible, (newValue) => {
                 :placeholder="t('common.placeholders.selectOwner')"
                 :allowClear="false"
                 class="enhanced-select" />
-              <Popover placement="right" overlayClassName="form-tooltip">
-                <template #content>
-                  <div class="tooltip-content">
-                    {{ t('project.edit.form.ownerDescription') }}
-                  </div>
-                </template>
-                <Icon icon="icon-tishi1" class="tooltip-icon" />
-              </Popover>
+              
             </FormItem>
 
             <!-- Import example -->
             <FormItem class="form-field with-tooltip flex-1 ml-5">
               <template #label>
                 <span>{{ t('common.example') }}</span>
+                <Popover placement="right" overlayClassName="form-tooltip">
+                  <template #content>
+                    <div class="tooltip-content">
+                      {{ t('project.edit.form.importExampleDescription') }}
+                    </div>
+                  </template>
+                  <Icon icon="icon-tishi1" class="tooltip-icon" />
+                </Popover>
               </template>
               <RadioGroup
                 v-model:value="formData.importExample"
                 :options="[{ value: true, label: t('status.yes')}, { value: false, label: t('status.no') }]"
                 class="enhanced-radio-group" />
-              <Popover placement="right" overlayClassName="form-tooltip">
-                <template #content>
-                  <div class="tooltip-content">
-                    {{ t('project.edit.form.importExampleDescription') }}
-                  </div>
-                </template>
-                <Icon icon="icon-tishi1" class="tooltip-icon" />
-              </Popover>
+              
             </FormItem>
           </div>
 
           <!-- Project members -->
           <FormItem
-            :label="t('common.members')"
             class="form-field members-field"
             required>
+            <template #label>
+              <span>{{ t('common.members') }}</span>
+              <Popover placement="right" overlayClassName="form-tooltip">
+                <template #content>
+                  <div class="tooltip-content">
+                    {{ t('project.edit.form.membersDescription') }}
+                  </div>
+                </template>
+                <Icon icon="icon-tishi1" class="tooltip-icon" />
+              </Popover>
+            </template>
             <div class="members-selector">
               <div class="member-type-tabs">
                 <RadioGroup
@@ -358,14 +371,6 @@ watch(() => props.visible, (newValue) => {
                     {{ t('organization.group') }}
                   </RadioButton>
                 </RadioGroup>
-                <Popover placement="right" overlayClassName="form-tooltip">
-                  <template #content>
-                    <div class="tooltip-content">
-                      {{ t('project.edit.form.membersDescription') }}
-                    </div>
-                  </template>
-                  <Icon icon="icon-tishi1" class="tooltip-icon" />
-                </Popover>
               </div>
               <div class="member-select-container">
                 <Select
@@ -725,9 +730,8 @@ watch(() => props.visible, (newValue) => {
 
 /* Tooltip styles */
 .tooltip-icon {
-  position: absolute;
-  right: -20px;
-  top: 8px;
+  @apply ml-1;
+
   font-size: 14px;
   color: #9ca3af;
   cursor: help;
