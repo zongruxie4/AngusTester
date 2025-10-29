@@ -6,8 +6,8 @@ import static cloud.xcan.angus.core.tester.application.converter.KanbanCtoCaseCo
 import static cloud.xcan.angus.core.tester.application.converter.KanbanCtoTaskConverter.assembleAssigneeOverview;
 import static cloud.xcan.angus.core.tester.application.converter.KanbanCtoTaskConverter.assembleTaskOverview;
 import static cloud.xcan.angus.core.tester.application.converter.TaskConverter.getTaskAssigneeResourcesFilter;
-import static cloud.xcan.angus.core.tester.application.query.func.impl.FuncCaseQueryImpl.getCaseSummary;
-import static cloud.xcan.angus.core.tester.application.query.task.impl.TaskQueryImpl.getTaskSummary;
+import static cloud.xcan.angus.core.tester.application.query.test.impl.FuncCaseQueryImpl.getCaseSummary;
+import static cloud.xcan.angus.core.tester.application.query.issue.impl.TaskQueryImpl.getTaskSummary;
 import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
@@ -19,18 +19,18 @@ import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.kanban.KanbanCtoQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioTestQuery;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfoRepo;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseRepo;
-import cloud.xcan.angus.core.tester.domain.func.summary.FuncCaseEfficiencySummary;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfoRepo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseRepo;
+import cloud.xcan.angus.core.tester.domain.test.summary.FuncCaseEfficiencySummary;
 import cloud.xcan.angus.core.tester.domain.kanban.CtoCaseOverview;
 import cloud.xcan.angus.core.tester.domain.kanban.CtoTaskOverview;
 import cloud.xcan.angus.core.tester.domain.kanban.TestApisCount;
 import cloud.xcan.angus.core.tester.domain.kanban.TestScenarioCount;
-import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
-import cloud.xcan.angus.core.tester.domain.task.TaskInfoRepo;
-import cloud.xcan.angus.core.tester.domain.task.TaskRepo;
-import cloud.xcan.angus.core.tester.domain.task.summary.TaskEfficiencySummary;
+import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
+import cloud.xcan.angus.core.tester.domain.issue.TaskInfoRepo;
+import cloud.xcan.angus.core.tester.domain.issue.TaskRepo;
+import cloud.xcan.angus.core.tester.domain.issue.summary.TaskEfficiencySummary;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
@@ -116,13 +116,13 @@ public class KanbanCtoQueryImpl implements KanbanCtoQuery {
         // Retrieve project member IDs for filtering
         Set<Long> memberIds = projectMemberQuery.getMemberIds(creatorObjectType,
             creatorObjectId, projectId);
-            
+
         // Build comprehensive filter criteria for task queries
         // Note: All project data will be queried when creator is null
         Set<SearchCriteria> allFilters = getTaskAssigneeResourcesFilter(projectId, planId,
             createdDateStart, createdDateEnd, isNull(creatorObjectId) || isNull(creatorObjectType)
                 ? null : memberIds);
-                
+
         // Retrieve task efficiency summaries with optimized projection
         List<TaskEfficiencySummary> tasks = taskRepo.findProjectionByFilters(TaskInfo.class,
             TaskEfficiencySummary.class, allFilters);
@@ -131,7 +131,7 @@ public class KanbanCtoQueryImpl implements KanbanCtoQuery {
         // This ensures complete member coverage for historical data
         memberIds.addAll(tasks.stream().map(TaskEfficiencySummary::getAssigneeId)
             .filter(Objects::nonNull).collect(Collectors.toSet()));
-            
+
         // Set member statistics and user information
         overview.setMemberNum(memberIds.size());
         overview.setAssignees(commonQuery.getUserInfoMap(memberIds));
@@ -204,7 +204,7 @@ public class KanbanCtoQueryImpl implements KanbanCtoQuery {
         Set<SearchCriteria> allFilters = getCaseTesterResourcesFilter(projectId, planId,
             createdDateStart, createdDateEnd, isNull(creatorObjectId) || isNull(creatorObjectType)
                 ? null : memberIds);
-                
+
         // Retrieve case efficiency summaries with optimized projection
         List<FuncCaseEfficiencySummary> cases = funcCaseRepo.findProjectionByFilters(
             FuncCaseInfo.class, FuncCaseEfficiencySummary.class, allFilters);
@@ -213,7 +213,7 @@ public class KanbanCtoQueryImpl implements KanbanCtoQuery {
         // This ensures complete member coverage for historical data
         memberIds.addAll(cases.stream().map(FuncCaseEfficiencySummary::getTesterId)
             .filter(Objects::nonNull).collect(Collectors.toSet()));
-            
+
         // Set member statistics and user information
         overview.setMemberNum(memberIds.size());
         overview.setTesters(commonQuery.getUserInfoMap(memberIds));

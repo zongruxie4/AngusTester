@@ -1,10 +1,10 @@
 package cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler;
 
 
-import static cloud.xcan.angus.core.tester.application.cmd.task.impl.TaskCmdImpl.getTaskCode;
+import static cloud.xcan.angus.core.tester.application.cmd.issue.impl.TaskCmdImpl.getTaskCode;
 
-import cloud.xcan.angus.core.tester.domain.task.Task;
-import cloud.xcan.angus.core.tester.domain.task.TaskType;
+import cloud.xcan.angus.core.tester.domain.issue.Task;
+import cloud.xcan.angus.core.tester.domain.issue.TaskType;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.test.ScenarioTestTaskGenerateDto;
 import java.util.List;
 import java.util.Set;

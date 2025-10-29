@@ -2,8 +2,8 @@ package cloud.xcan.angus.core.tester.application.converter;
 
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
-import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineCase;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCase;
+import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaselineCase;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCase;
 import java.time.LocalDateTime;
 import java.util.List;
 

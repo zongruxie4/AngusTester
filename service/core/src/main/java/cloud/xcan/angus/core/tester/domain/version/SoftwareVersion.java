@@ -3,9 +3,9 @@ package cloud.xcan.angus.core.tester.domain.version;
 
 import cloud.xcan.angus.core.jpa.multitenancy.TenantAuditingEntity;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
-import cloud.xcan.angus.core.tester.domain.task.TaskStatus;
-import cloud.xcan.angus.core.tester.domain.task.count.ProgressCount;
-import cloud.xcan.angus.core.tester.domain.task.summary.TaskSummary;
+import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
+import cloud.xcan.angus.core.tester.domain.issue.count.ProgressCount;
+import cloud.xcan.angus.core.tester.domain.issue.summary.TaskSummary;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

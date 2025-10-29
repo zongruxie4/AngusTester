@@ -2,13 +2,13 @@ package cloud.xcan.angus.core.tester.domain.kanban;
 
 import static cloud.xcan.angus.spec.utils.ObjectUtils.calcRate;
 
-import cloud.xcan.angus.core.tester.domain.task.BugLevel;
-import cloud.xcan.angus.core.tester.domain.task.count.BugCountBase;
-import cloud.xcan.angus.core.tester.domain.task.count.FailureAssessmentCountBase;
-import cloud.xcan.angus.core.tester.domain.task.count.LeadTimeCountBase;
-import cloud.xcan.angus.core.tester.domain.task.count.ProcessingEfficiencyCountBase;
-import cloud.xcan.angus.core.tester.domain.task.count.UnplannedWorkCountBase;
-import cloud.xcan.angus.core.tester.domain.task.count.WorkloadCountBase;
+import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
+import cloud.xcan.angus.core.tester.domain.issue.count.BugCountBase;
+import cloud.xcan.angus.core.tester.domain.issue.count.FailureAssessmentCountBase;
+import cloud.xcan.angus.core.tester.domain.issue.count.LeadTimeCountBase;
+import cloud.xcan.angus.core.tester.domain.issue.count.ProcessingEfficiencyCountBase;
+import cloud.xcan.angus.core.tester.domain.issue.count.UnplannedWorkCountBase;
+import cloud.xcan.angus.core.tester.domain.issue.count.WorkloadCountBase;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.LinkedHashMap;
 import lombok.Getter;

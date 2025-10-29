@@ -16,7 +16,7 @@ import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_T
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_TASK_GEN;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_TASK_REOPEN;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_TASK_RESTART;
-import static cloud.xcan.angus.core.tester.domain.task.TaskType.API_TEST;
+import static cloud.xcan.angus.core.tester.domain.issue.TaskType.API_TEST;
 import static cloud.xcan.angus.core.utils.AngusUtils.overrideExecServerParameter;
 import static cloud.xcan.angus.model.script.TestType.PERFORMANCE;
 import static cloud.xcan.angus.model.script.TestType.STABILITY;
@@ -34,7 +34,7 @@ import cloud.xcan.angus.core.tester.application.cmd.apis.ApisCaseCmd;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisTestCmd;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecCmd;
 import cloud.xcan.angus.core.tester.application.cmd.script.ScriptCmd;
-import cloud.xcan.angus.core.tester.application.cmd.task.TaskCmd;
+import cloud.xcan.angus.core.tester.application.cmd.issue.TaskCmd;
 import cloud.xcan.angus.core.tester.application.converter.ApisTestConverter;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisCaseQuery;
@@ -57,9 +57,9 @@ import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerf;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStability;
 import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
-import cloud.xcan.angus.core.tester.domain.task.Task;
-import cloud.xcan.angus.core.tester.domain.task.TaskRepo;
-import cloud.xcan.angus.core.tester.domain.task.TaskStatus;
+import cloud.xcan.angus.core.tester.domain.issue.Task;
+import cloud.xcan.angus.core.tester.domain.issue.TaskRepo;
+import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
 import cloud.xcan.angus.model.element.http.ApisCaseType;
 import cloud.xcan.angus.model.element.http.Http;
 import cloud.xcan.angus.model.script.AngusScript;
@@ -148,7 +148,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
       protected void checkParams() {
         // Validate API exists
         apisDb = apisQuery.checkAndFind(apisId);
-        
+
         // Verify current user has test permission for the API
         apisAuthQuery.checkTestAuth(getUserId(), apisId);
       }
@@ -161,21 +161,21 @@ public class ApisTestCmdImpl implements ApisTestCmd {
           activityCmd.add(toActivity(API, apisDb,
               enabled ? SUB_ENABLED : SUB_DISABLED, TestType.FUNCTIONAL));
         }
-        
+
         // Update performance testing flag and log activity
         if (testTypes.contains(PERFORMANCE)) {
           apisDb.setTestPerf(enabled);
           activityCmd.add(toActivity(API, apisDb,
               enabled ? SUB_ENABLED : SUB_DISABLED, TestType.PERFORMANCE));
         }
-        
+
         // Update stability testing flag and log activity
         if (testTypes.contains(STABILITY)) {
           apisDb.setTestStability(enabled);
           activityCmd.add(toActivity(API, apisDb,
               enabled ? SUB_ENABLED : SUB_DISABLED, TestType.STABILITY));
         }
-        
+
         // Save updated API configuration
         apisRepo.save(apisDb);
         return null;
@@ -213,7 +213,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
         // Check existing scripts for the API to avoid duplicate generation
         Map<ScriptType, ScriptInfo> scriptsDbMap = scriptQuery.findInfoBySource(ScriptSource.API,
             apisId).stream().collect(Collectors.toMap(ScriptInfo::getType, x -> x));
-        
+
         // Generate scripts only if not all requested script types already exist
         if (!scripts.stream().allMatch(x -> scriptsDbMap.containsKey(x.getType()))) {
           // Retrieve API with dereferenced content for script generation
@@ -266,7 +266,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
       if (scriptsDbMap.containsKey(script.getType())) {
         continue;
       }
-      
+
       // Initialize script and associated test cases
       initScriptAndCases(apisDb, serverMap, script, variables, datasets);
     }
@@ -388,7 +388,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
       protected void checkParams() {
         // Validate API exists and retrieve basic information
         apisDb = apisQuery.checkAndFindBaseInfo(apisId);
-        
+
         // WebSocket APIs are not supported for task generation
         assertTrue(!apisDb.isWebSocket(), TASK_WEBSOCKET_NOT_SUPPORT_GEN_TASK);
 
@@ -409,7 +409,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
           tasksDb = tasksDb.stream().filter(t -> TaskStatus.isFinished(t.getStatus()))
               .toList();
         }
-        
+
         // Retest or reopen tasks if any exist
         if (isNotEmpty(tasksDb)) {
           taskCmd.retest0ByTarget(restart, tasksDb);
@@ -455,7 +455,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
             ? taskRepo.findIdsByTargetIdIn(apisIds)  // All tasks for the APIs
             : taskRepo.findIdsByTargetIdInAndTestTypeIn(apisIds,  // Tasks for specific test types
                 testTypes.stream().map(TestType::getValue).toList());
-        
+
         // Skip deletion if no tasks found
         if (isEmpty(taskIds)) {
           return null;
@@ -594,7 +594,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     // Find existing scripts for the API
     Map<ScriptType, Script> scriptsDbMap = scriptQuery.findBySource(ScriptSource.API,
         apisDb.getId()).stream().collect(Collectors.toMap(Script::getType, x -> x));
-    
+
     // Create server configuration map for parameter overrides
     Map<String, Server> serverMap = isEmpty(servers) ? Collections.emptyMap()
         : servers.stream().collect(Collectors.toMap(Server::getUrl, x -> x));
@@ -608,7 +608,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
           // Parse existing script for modification
           AngusScript angusScript = scriptQuery.checkAndParse(
               scriptsDbMap.get(scriptType).getContent(), false);
-          
+
           // Override server parameters in HTTP pipelines
           if (nonNull(angusScript.getTask()) && isNotEmpty(angusScript.getTask().getPipelines())) {
             List<Http> https = (List<Http>) angusScript.getTask().getPipelines();
@@ -616,7 +616,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
               overrideExecServerParameter(serverMap, http);
             }
           }
-          
+
           // Override server parameters in configuration variables
           if (nonNull(angusScript.getConfiguration())
               && isNotEmpty(angusScript.getConfiguration().getVariables())) {
@@ -624,7 +624,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
                 = angusScript.getConfiguration().getVariables();
             overrideExecServerParameter(serverMap, variables);
           }
-          
+
           // Update the modified script
           scriptCmd.update0(scriptsDbMap.get(scriptType), angusScript);
         }
@@ -633,11 +633,11 @@ public class ApisTestCmdImpl implements ApisTestCmd {
         // Retrieve performance indicators for performance testing
         IndicatorPerf indicatorPerf = testType.equals(PERFORMANCE)
             ? indicatorPerfQuery.detailOrDefault(API, apisDb.getId()) : null;
-        
+
         // Retrieve stability indicators for stability testing
         IndicatorStability indicatorStability = testType.equals(STABILITY)
             ? indicatorStabilityQuery.detailOrDefault(API, apisDb.getId()) : null;
-        
+
         // Generate scripts with appropriate indicators
         List<Script> scripts = ApisTestConverter.startToScript(apisDb, Set.of(testType),
             indicatorPerf, indicatorStability);
@@ -649,7 +649,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     List<Long> scriptIds = scriptQuery.findInfoBySource(ScriptSource.API, apisDb.getId())
         .stream().filter(x -> testTypes.contains(TestType.of(x.getType())))
         .map(ScriptInfo::getId).toList();
-    
+
     if (isNotEmpty(scriptIds)) {
       for (Long scriptId : scriptIds) {
         // Note: Execution must be completed after the scriptGenerated0() transaction is committed.
@@ -678,44 +678,44 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     // Set basic script properties
     script.setProjectId(apisDb.getProjectId());
     script.setSourceId(apisDb.getId());
-    
+
     if (script.getType().isFunctionalTesting() /*&& apisDb.getTestFunc()*/) {
       // Functional testing script initialization
       // Retrieve functional testing indicators
       IndicatorFunc indicatorFunc = indicatorFuncQuery.detailOrDefault(API, apisDb.getId());
-      
+
       // Note: Deleting a script does not delete testing cases, and each time a script is generated, all testing cases need to be loaded
       // Group test cases by type for functional testing
       Map<ApisCaseType, List<ApisCase>> typeCasesMap = apisCaseQuery.findByApisId(apisDb.getId())
           .stream().collect(Collectors.groupingBy(ApisCase::getType));
-      
+
       // Assemble API script with functional testing components
       assembleAddApisScript(apisDb, serverMap, indicatorFunc, typeCasesMap, script,
           variables, datasets);
-      
+
       // Add new test cases from script pipelines (non-persistent cases)
       if (isNotEmpty(script.getAngusScript().getTask().getPipelines())) {
         apisCaseCmd.add(apisDb.getId(), script.getAngusScript().getTask().getPipelines()
             .stream().filter(x -> !((Http) x).isPersistent()) // Add new cases
             .map(x -> httpToFuncCase(apisDb, (Http) x)).toList());
       }
-      
+
       // Save the functional testing script
       scriptCmd.add(script, script.getAngusScript(), false);
-      
+
     } else if (script.getType().isPerformanceTesting() /*&& apisDb.getTestPerf()*/) {
       // Performance testing script initialization
       // Assemble API script without functional testing components
       assembleAddApisScript(apisDb, serverMap, null, null, script, variables, datasets);
-      
+
       // Save the performance testing script
       scriptCmd.add(script, script.getAngusScript(), false);
-      
+
     } else if (script.getType().isStabilityTesting() /*&& apisDb.getTestStability()*/) {
       // Stability testing script initialization
       // Assemble API script without functional testing components
       assembleAddApisScript(apisDb, serverMap, null, null, script, variables, datasets);
-      
+
       // Save the stability testing script
       scriptCmd.add(script, script.getAngusScript(), false);
     }

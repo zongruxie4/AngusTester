@@ -2,8 +2,8 @@ package cloud.xcan.angus.core.tester.domain.kanban;
 
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.ReviewStatus;
-import cloud.xcan.angus.core.tester.domain.func.cases.CaseTestResult;
-import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlanStatus;
+import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
+import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlanStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.LinkedHashMap;
 import lombok.Getter;

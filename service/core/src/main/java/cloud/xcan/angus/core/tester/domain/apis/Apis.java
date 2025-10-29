@@ -19,7 +19,7 @@ import cloud.xcan.angus.core.tester.domain.apis.converter.SecurityRequirementCon
 import cloud.xcan.angus.core.tester.domain.apis.converter.SecuritySchemeConverter;
 import cloud.xcan.angus.core.tester.domain.apis.converter.ServerConverter;
 import cloud.xcan.angus.core.tester.domain.apis.converter.ServersConverter;
-import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
+import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
 import cloud.xcan.angus.model.AngusConstant;
 import cloud.xcan.angus.model.apis.ApiStatus;

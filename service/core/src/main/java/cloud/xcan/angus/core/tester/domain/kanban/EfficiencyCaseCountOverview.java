@@ -2,12 +2,12 @@ package cloud.xcan.angus.core.tester.domain.kanban;
 
 import static cloud.xcan.angus.spec.utils.ObjectUtils.calcRate;
 
-import cloud.xcan.angus.core.tester.domain.func.cases.count.ReviewEfficiencyCountBase;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.TestingEfficiencyCountBase;
-import cloud.xcan.angus.core.tester.domain.task.count.LeadTimeCountBase;
-import cloud.xcan.angus.core.tester.domain.task.count.TestCaseHitCount;
-import cloud.xcan.angus.core.tester.domain.task.count.UnplannedWorkCountBase;
-import cloud.xcan.angus.core.tester.domain.task.count.WorkloadCountBase;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.ReviewEfficiencyCountBase;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.TestingEfficiencyCountBase;
+import cloud.xcan.angus.core.tester.domain.issue.count.LeadTimeCountBase;
+import cloud.xcan.angus.core.tester.domain.issue.count.TestCaseHitCount;
+import cloud.xcan.angus.core.tester.domain.issue.count.UnplannedWorkCountBase;
+import cloud.xcan.angus.core.tester.domain.issue.count.WorkloadCountBase;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;

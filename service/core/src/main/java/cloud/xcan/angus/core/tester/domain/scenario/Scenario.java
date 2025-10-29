@@ -7,7 +7,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
 import cloud.xcan.angus.core.jpa.multitenancy.TenantAuditingEntity;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
-import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
+import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.model.script.configuration.ScriptType;

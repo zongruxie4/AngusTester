@@ -22,9 +22,9 @@ import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
 import cloud.xcan.angus.core.tester.domain.scenario.ScenarioRepo;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfoRepo;
-import cloud.xcan.angus.core.tester.domain.task.Task;
-import cloud.xcan.angus.core.tester.domain.task.TaskRepo;
-import cloud.xcan.angus.core.tester.domain.task.TaskStatus;
+import cloud.xcan.angus.core.tester.domain.issue.Task;
+import cloud.xcan.angus.core.tester.domain.issue.TaskRepo;
+import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.script.pipeline.Arguments;
@@ -128,11 +128,11 @@ public class ExecTestCmdImpl implements ExecTestCmd {
         // Find top performance test script for the project
         ScriptInfo script = scriptInfoRepo.findTop1ByProjectIdAndPluginAndTypeIn(projectId,
             PLUGIN_HTTP_NAME, ScriptType.TEST_PERFORMANCE.getValue());
-        
+
         if (isNull(script)) {
           return null;
         }
-        
+
         // Create example execution using the found script
         return execCmd.addByRemoteScript(
             script.getName() + "-" + script.getType().getMessage(), script.getId(),
@@ -258,7 +258,7 @@ public class ExecTestCmdImpl implements ExecTestCmd {
     Map<Long, TestCaseResultInfo> caseResultInfoMap = caseResults.stream()
         .filter(x -> nonNull(x.getPassed())) // A null value means not executed, disabled.
         .collect(Collectors.toMap(TestCaseResultInfo::getCaseId, x -> x));
-    
+
     // Find and update API cases
     List<ApisCase> caseDbs = apisCaseRepo.findAllById(caseResultInfoMap.keySet());
     if (isNotEmpty(caseDbs)) {
@@ -299,7 +299,7 @@ public class ExecTestCmdImpl implements ExecTestCmd {
       taskDb.setStartDate(resultInfo.getLastExecStartDate());
       taskDb.setCompletedDate(resultInfo.getLastExecEndDate());
     }
-    
+
     // Update failure count and total count
     if (!resultInfo.isPassed()) {
       taskDb.setFailNum(nullSafe(taskDb.getFailNum(), 0) + 1);

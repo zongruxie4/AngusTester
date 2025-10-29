@@ -1,8 +1,8 @@
 package cloud.xcan.angus.core.tester.application.converter;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprintPermission;
-import cloud.xcan.angus.core.tester.domain.task.sprint.auth.TaskSprintAuth;
+import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprintPermission;
+import cloud.xcan.angus.core.tester.domain.issue.sprint.auth.TaskSprintAuth;
 import cloud.xcan.angus.idgen.UidGenerator;
 import java.util.List;
 import java.util.Set;

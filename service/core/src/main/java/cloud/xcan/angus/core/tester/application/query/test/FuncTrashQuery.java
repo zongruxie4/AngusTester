@@ -1,0 +1,18 @@
+package cloud.xcan.angus.core.tester.application.query.test;
+
+
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.tester.domain.test.trash.FuncTrash;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+public interface FuncTrashQuery {
+
+  Long count(Long projectId);
+
+  Page<FuncTrash> list(GenericSpecification<FuncTrash> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
+
+  FuncTrash findMyTrashForBiz(Long id, String biz);
+
+}

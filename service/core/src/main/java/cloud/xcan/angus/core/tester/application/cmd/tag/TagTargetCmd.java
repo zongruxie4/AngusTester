@@ -1,8 +1,8 @@
 package cloud.xcan.angus.core.tester.application.cmd.tag;
 
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCase;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCase;
 import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
-import cloud.xcan.angus.core.tester.domain.task.Task;
+import cloud.xcan.angus.core.tester.domain.issue.Task;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;

@@ -1,29 +1,29 @@
 package cloud.xcan.angus.core.tester.interfaces.analysis;
 
 
-import cloud.xcan.angus.core.tester.domain.func.cases.count.BackloggedOverview;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.BurnDownChartOverview;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.CoreKpiOverview;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.FuncCaseCount;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.FuncLastResourceCreationCount;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.FuncTesterCount;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.FuncTesterProgressCount;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.GrowthTrendOverview;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.LeadTimeOverview;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.OverdueAssessmentOverview;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.ProgressOverview;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.RecentDeliveryOverview;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.ResourceCreationOverview;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.ReviewEfficiencyOverview;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.TestingEfficiencyOverview;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.UnplannedWorkOverview;
-import cloud.xcan.angus.core.tester.domain.func.cases.count.WorkloadOverview;
-import cloud.xcan.angus.core.tester.domain.func.summary.FuncPlanWorkSummary;
-import cloud.xcan.angus.core.tester.domain.func.summary.FuncProjectWorkSummary;
-import cloud.xcan.angus.core.tester.domain.func.summary.FuncTesterWorkSummary;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.BackloggedOverview;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.BurnDownChartOverview;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.CoreKpiOverview;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.FuncCaseCount;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.FuncLastResourceCreationCount;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.FuncTesterCount;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.FuncTesterProgressCount;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.GrowthTrendOverview;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.LeadTimeOverview;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.OverdueAssessmentOverview;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.ProgressOverview;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.RecentDeliveryOverview;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.ResourceCreationOverview;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.ReviewEfficiencyOverview;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.TestingEfficiencyOverview;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.UnplannedWorkOverview;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.WorkloadOverview;
+import cloud.xcan.angus.core.tester.domain.test.summary.FuncPlanWorkSummary;
+import cloud.xcan.angus.core.tester.domain.test.summary.FuncProjectWorkSummary;
+import cloud.xcan.angus.core.tester.domain.test.summary.FuncTesterWorkSummary;
 import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
-import cloud.xcan.angus.core.tester.domain.task.count.BurnDownChartCount;
-import cloud.xcan.angus.core.tester.domain.task.count.TesterSubmittedBugOverview;
+import cloud.xcan.angus.core.tester.domain.issue.count.BurnDownChartCount;
+import cloud.xcan.angus.core.tester.domain.issue.count.TesterSubmittedBugOverview;
 import cloud.xcan.angus.core.tester.interfaces.analysis.facade.AnalysisFuncFacade;
 import cloud.xcan.angus.core.tester.interfaces.analysis.facade.dto.CaseTesterWorkStatisticsDto;
 import cloud.xcan.angus.core.tester.interfaces.analysis.facade.dto.FuncAnalysisDto;
@@ -59,7 +59,7 @@ public class AnalysisFuncRest {
   @Resource
   private AnalysisFuncFacade analysisAngusFuncFacade;
 
-  @Operation(summary = "Functional case creation statistics", 
+  @Operation(summary = "Functional case creation statistics",
       description = "Retrieve statistics on functional case creation patterns including associated plans, tags, and modules",
       operationId = "analysis:func:resources:count")
   @ApiResponses(value = {
@@ -70,7 +70,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.creationResourcesStatistics(dto));
   }
 
-  @Operation(summary = "Functional case count statistics", 
+  @Operation(summary = "Functional case count statistics",
       description = "Query and analyze functional case counts with filtering and categorization metrics",
       operationId = "analysis:func:case:count")
   @ApiResponses(value = {
@@ -81,7 +81,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.countStatistics(dto));
   }
 
-  @Operation(summary = "Export functional case count statistics", 
+  @Operation(summary = "Export functional case count statistics",
       description = "Export functional case count statistics in downloadable format with filtering options",
       operationId = "analysis:func:case:count:export")
   @ApiResponses(value = {
@@ -92,7 +92,7 @@ public class AnalysisFuncRest {
     return analysisAngusFuncFacade.countStatisticsExport(dto, response);
   }
 
-  @Operation(summary = "Tester case count statistics", 
+  @Operation(summary = "Tester case count statistics",
       description = "Retrieve case count statistics for individual testers with performance metrics",
       operationId = "analysis:func:tester:count")
   @ApiResponses(value = {
@@ -103,7 +103,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testerSummaryStatistics(dto));
   }
 
-  @Operation(summary = "Tester case progress analysis", 
+  @Operation(summary = "Tester case progress analysis",
       description = "Analyze case progress patterns for individual testers with progress metrics",
       operationId = "analysis:func:tester:progress")
   @ApiResponses(value = {
@@ -114,7 +114,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testerProgressStatistics(dto));
   }
 
-  @Operation(summary = "Project case work summary", 
+  @Operation(summary = "Project case work summary",
       description = "Retrieve work summary for functional cases within a specific project",
       operationId = "analysis:func:project:work:summary")
   @ApiResponses(value = {
@@ -125,7 +125,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.projectWorkStatistics(projectId));
   }
 
-  @Operation(summary = "Test plan case work summary", 
+  @Operation(summary = "Test plan case work summary",
       description = "Retrieve work summary for functional cases within a specific test plan",
       operationId = "analysis:func:plan:work:summary")
   @ApiResponses(value = {
@@ -136,7 +136,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.planWorkStatistics(planId));
   }
 
-  @Operation(summary = "Tester case work summary", 
+  @Operation(summary = "Tester case work summary",
       description = "Retrieve work summary for functional cases assigned to a specific tester",
       operationId = "analysis:func:tester:work:summary")
   @ApiResponses(value = {
@@ -147,7 +147,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testerWorkStatistics(dto));
   }
 
-  @Operation(summary = "Project case burndown summary", 
+  @Operation(summary = "Project case burndown summary",
       description = "Retrieve burndown chart data for functional cases within a specific project",
       operationId = "analysis:func:project:burndown:summary")
   @ApiResponses(value = {
@@ -158,7 +158,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.projectBurndownChart(projectId));
   }
 
-  @Operation(summary = "Test plan case burndown summary", 
+  @Operation(summary = "Test plan case burndown summary",
       description = "Retrieve burndown chart data for functional cases within a specific test plan",
       operationId = "analysis:func:plan:burndown:summary")
   @ApiResponses(value = {
@@ -169,7 +169,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.planBurndownChart(planId));
   }
 
-  @Operation(summary = "Tester case burndown summary", 
+  @Operation(summary = "Tester case burndown summary",
       description = "Retrieve burndown chart data for functional cases assigned to a specific tester",
       operationId = "analysis:func:tester:burndown:summary")
   @ApiResponses(value = {
@@ -180,7 +180,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testerBurndownChart(dto));
   }
 
-  @Operation(summary = "Functional case progress overview", 
+  @Operation(summary = "Functional case progress overview",
       description = "Retrieve progress overview for functional cases with progress metrics",
       operationId = "analysis:func:progress:overview")
   @ApiResponses(value = {
@@ -190,7 +190,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.progress(dto));
   }
 
-  @Operation(summary = "Functional case burndown overview", 
+  @Operation(summary = "Functional case burndown overview",
       description = "Retrieve burndown overview for functional cases with chart metrics",
       operationId = "analysis:func:burndown:overview")
   @ApiResponses(value = {
@@ -201,7 +201,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.burndownChart(dto));
   }
 
-  @Operation(summary = "Functional case workload overview", 
+  @Operation(summary = "Functional case workload overview",
       description = "Retrieve workload overview for functional cases with workload metrics",
       operationId = "analysis:func:workload:overview")
   @ApiResponses(value = {
@@ -211,7 +211,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.workload(dto));
   }
 
-  @Operation(summary = "Functional case overdue assessment overview", 
+  @Operation(summary = "Functional case overdue assessment overview",
       description = "Retrieve overdue assessment overview for functional cases with overdue metrics",
       operationId = "analysis:func:overdue:assessment:overview")
   @ApiResponses(value = {
@@ -222,7 +222,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.overdueAssessment(dto));
   }
 
-  @Operation(summary = "Tester submitted bug overview", 
+  @Operation(summary = "Tester submitted bug overview",
       description = "Retrieve overview of bugs submitted by testers with bug metrics",
       operationId = "analysis:func:submitted:bug:overview")
   @ApiResponses(value = {
@@ -233,7 +233,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.submittedBug(dto));
   }
 
-  @Operation(summary = "Functional case testing efficiency overview", 
+  @Operation(summary = "Functional case testing efficiency overview",
       description = "Retrieve testing efficiency overview for functional cases with efficiency metrics",
       operationId = "analysis:func:testing:efficiency:overview")
   @ApiResponses(value = {
@@ -244,7 +244,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testingEfficiency(dto));
   }
 
-  @Operation(summary = "Functional case core KPI overview", 
+  @Operation(summary = "Functional case core KPI overview",
       description = "Retrieve core KPI overview for functional cases with performance metrics",
       operationId = "analysis:func:core:kpi:overview")
   @ApiResponses(value = {
@@ -254,7 +254,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.coreKpi(dto));
   }
 
-  @Operation(summary = "Functional case review efficiency overview", 
+  @Operation(summary = "Functional case review efficiency overview",
       description = "Retrieve review efficiency overview for functional cases with review metrics",
       operationId = "analysis:func:review:efficiency:overview")
   @ApiResponses(value = {
@@ -265,7 +265,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.reviewEfficiency(dto));
   }
 
-  @Operation(summary = "Functional case backlog overview", 
+  @Operation(summary = "Functional case backlog overview",
       description = "Retrieve backlog overview for functional cases with backlog metrics",
       operationId = "analysis:func:backlogged:overview")
   @ApiResponses(value = {
@@ -276,7 +276,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.backloggedWork(dto));
   }
 
-  @Operation(summary = "Functional case recent delivery overview", 
+  @Operation(summary = "Functional case recent delivery overview",
       description = "Retrieve recent delivery overview for functional cases with delivery metrics",
       operationId = "analysis:func:recent:delivery:overview")
   @ApiResponses(value = {
@@ -287,7 +287,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.recentDelivery(dto));
   }
 
-  @Operation(summary = "Functional case lead time overview", 
+  @Operation(summary = "Functional case lead time overview",
       description = "Retrieve lead time overview for functional cases with time metrics",
       operationId = "analysis:func:leadtime:overview")
   @ApiResponses(value = {
@@ -298,7 +298,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.leadTime(dto));
   }
 
-  @Operation(summary = "Functional case unplanned work overview", 
+  @Operation(summary = "Functional case unplanned work overview",
       description = "Retrieve unplanned work overview for functional cases with unplanned work metrics",
       operationId = "analysis:func:unplanned:work:overview")
   @ApiResponses(value = {
@@ -309,7 +309,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.unplannedWork(dto));
   }
 
-  @Operation(summary = "Functional case growth trend overview", 
+  @Operation(summary = "Functional case growth trend overview",
       description = "Retrieve growth trend overview for functional cases with trend metrics",
       operationId = "analysis:func:growth:trend:overview")
   @ApiResponses(value = {
@@ -320,7 +320,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.growthTrend(dto));
   }
 
-  @Operation(summary = "Functional case resource creation overview", 
+  @Operation(summary = "Functional case resource creation overview",
       description = "Retrieve resource creation overview for functional cases with creation metrics",
       operationId = "analysis:func:resource:creation:overview")
   @ApiResponses(value = {

@@ -82,7 +82,7 @@ import cloud.xcan.angus.core.tester.domain.apis.summary.ApisDetailSummary;
 import cloud.xcan.angus.core.tester.domain.apis.summary.ApisInfoSummary;
 import cloud.xcan.angus.core.tester.domain.apis.unarchived.ApisUnarchived;
 import cloud.xcan.angus.core.tester.domain.apis.unarchived.ApisUnarchivedRepo;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfoRepo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfoRepo;
 import cloud.xcan.angus.core.tester.domain.mock.apis.MockApis;
 import cloud.xcan.angus.core.tester.domain.mock.apis.MockApisAssocP;
 import cloud.xcan.angus.core.tester.domain.mock.apis.MockApisRepo;

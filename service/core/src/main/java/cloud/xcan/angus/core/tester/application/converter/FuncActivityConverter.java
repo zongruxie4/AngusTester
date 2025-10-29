@@ -12,7 +12,7 @@ import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.api.commonlink.user.UserBase;
 import cloud.xcan.angus.core.tester.domain.activity.Activity;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
-import cloud.xcan.angus.core.tester.domain.func.cases.FuncCase;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCase;
 import cloud.xcan.angus.core.tester.domain.tag.Tag;
 import cloud.xcan.angus.spec.locale.MessageHolder;
 import java.util.List;

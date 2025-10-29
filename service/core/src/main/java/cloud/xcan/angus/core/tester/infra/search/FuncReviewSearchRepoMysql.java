@@ -1,8 +1,8 @@
 package cloud.xcan.angus.core.tester.infra.search;
 
 import cloud.xcan.angus.core.jpa.repository.SimpleSearchRepository;
-import cloud.xcan.angus.core.tester.domain.func.review.FuncReview;
-import cloud.xcan.angus.core.tester.domain.func.review.FuncReviewSearchRepo;
+import cloud.xcan.angus.core.tester.domain.test.review.FuncReview;
+import cloud.xcan.angus.core.tester.domain.test.review.FuncReviewSearchRepo;
 import org.springframework.stereotype.Repository;
 
 @Repository
