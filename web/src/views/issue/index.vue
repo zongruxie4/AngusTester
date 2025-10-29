@@ -161,10 +161,10 @@ onMounted(async () => {
     </template>
     <template #trash>
       <Trash
+        v-model:refreshNotify="trashRefreshToken" 
         :projectId="projectId"
         :userInfo="userInfo"
-        :appInfo="appInfo"
-        :refreshNotify="trashRefreshToken" />
+        :appInfo="appInfo"/>
     </template>
   </LeftMenu>
 </template>

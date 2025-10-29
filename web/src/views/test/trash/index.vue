@@ -17,8 +17,13 @@ import { BasicProps } from '@/types/types';
  */
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: '',
-  userInfo: undefined
+  userInfo: undefined,
+  refreshNotify: undefined
 });
+
+const emit = defineEmits<{
+  (e: 'update:refreshNotify', value: string): void
+}>();
 
 // Async component for better performance
 const Table = defineAsyncComponent(() => import('./table.vue'));
@@ -31,13 +36,13 @@ const isAdmin = computed(() => appContext.isAdmin());
 
 // State management
 const activeKey = ref<FuncTargetType>(FuncTargetType.PLAN);
-const refreshNotify = ref<string>();
+// const refreshNotify = ref<string>();
 const tableDataMap = ref<Record<string, TrashItem[]>>({});
 const totalItemsMap = ref<Record<string, number>>({});
 
 // Use composables
 const { inputValue, createInputChangeHandler } = useSearch();
-const { loading, recoverAll, deleteAll } = useTrashActions(props.projectId);
+const { loading, recoverAll, deleteAll } = useTrashActions(props);
 
 /**
  * Handle input change with debouncing
@@ -58,6 +63,7 @@ const handleRecoverAll = async () => {
  * Handle delete all action
  */
 const handleDeleteAll = async () => {
+  debugger;
   const success = await deleteAll();
   if (success) {
     refreshData();
@@ -68,7 +74,7 @@ const handleDeleteAll = async () => {
  * Trigger data refresh
  */
 const refreshData = () => {
-  refreshNotify.value = utils.uuid();
+  emit('update:refreshNotify', utils.uuid());
 };
 
 /**
@@ -286,7 +292,7 @@ watch(
               <Table
                 key="plan"
                 v-model:spinning="loading"
-                :notify="refreshNotify"
+                :notify="props.refreshNotify"
                 :projectId="props.projectId"
                 :userInfo="props.userInfo"
                 :params="planParams"
@@ -299,7 +305,7 @@ watch(
               <Table
                 key="case"
                 v-model:spinning="loading"
-                :notify="refreshNotify"
+                :notify="props.refreshNotify"
                 :projectId="props.projectId"
                 :userInfo="props.userInfo"
                 :params="caseParams"

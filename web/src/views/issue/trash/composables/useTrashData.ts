@@ -9,10 +9,7 @@ import type { TaskTrashItem, TaskTrashPagination, TaskTrashParams } from '../typ
  * @param userInfo - Current user information
  * @returns Object containing data, pagination, loading states and methods
  */
-export function useTrashData (
-  projectId: string,
-  userInfo: { id: string }
-) {
+export function useTrashData (props: { projectId: string, userInfo: { id: string }}) {
   // Reactive state
   const tableData = ref<TaskTrashItem[]>([]);
   const loading = ref(false);
@@ -36,7 +33,7 @@ export function useTrashData (
     loading.value = true;
 
     const requestParams: ProjectPageQuery = {
-      projectId,
+      projectId: props.projectId,
       pageNo: pagination.value.current,
       pageSize: pagination.value.pageSize,
       ...params,
@@ -53,7 +50,7 @@ export function useTrashData (
       }
 
       const data = res?.data || { list: [], total: 0 };
-      const userId = userInfo?.id;
+      const userId = props.userInfo?.id;
 
       // Process data to add permission flags
       tableData.value = data.list.map(item => ({

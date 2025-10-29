@@ -271,10 +271,10 @@ provide('setCaseListPlanParam', setCaseListPlanParam);
 
     <template #trash>
       <Trash
+        v-model:refreshNotify="trashRefreshToken"
         :projectId="currentProjectId"
         :userInfo="currentUserInfo"
-        :appInfo="applicationInfo"
-        :refreshNotify="trashRefreshToken" />
+        :appInfo="applicationInfo" />
     </template>
   </LeftMenu>
 </template>

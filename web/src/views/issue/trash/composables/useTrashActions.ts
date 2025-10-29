@@ -7,10 +7,10 @@ import type { TaskTrashItem } from '../types';
 
 /**
  * Composable for managing task trash actions (recover, delete, batch operations)
- * @param projectId - Current project ID
+ * @param props - Current project ID
  * @returns Object containing action methods and loading state
  */
-export function useTrashActions (projectId: string) {
+export function useTrashActions (props: { projectId: string }) {
   const { t } = useI18n();
   const loading = ref(false);
   const refreshNotify = ref<string>();
@@ -69,7 +69,7 @@ export function useTrashActions (projectId: string) {
   const recoverAll = async (): Promise<boolean> => {
     loading.value = true;
     try {
-      const params = { projectId };
+      const params = { projectId: props.projectId };
       const [error] = await issue.backAllTrashTask(params);
       if (error) {
         throw error;
@@ -92,7 +92,7 @@ export function useTrashActions (projectId: string) {
   const deleteAll = async (): Promise<boolean> => {
     loading.value = true;
     try {
-      const params = { projectId };
+      const params = { projectId: props.projectId };
       const [error] = await issue.deleteAllTrashTask(params);
       if (error) {
         throw error;

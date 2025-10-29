@@ -44,11 +44,11 @@ const {
   handleTableChange: handleTableDataChange,
   resetPagination,
   updateCurrentPage
-} = useTrashData(props.projectId, props.userInfo);
+} = useTrashData(props);
 
 const { columns, emptyTextStyle } = useTableColumns();
 
-const { recoverItem, deleteItem } = useTrashActions(props.projectId);
+const { recoverItem, deleteItem } = useTrashActions(props);
 
 /**
  * Handle recover action for a single item

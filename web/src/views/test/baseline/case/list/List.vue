@@ -52,12 +52,12 @@ const tableColumns = [
     title: t('common.version'),
     dataIndex: 'version',
     customRender: ({ text }) => 'v' + text || '--',
-    width: 80
+    width: 60
   },
   {
     title: t('common.priority'),
     dataIndex: 'priority',
-    width: 80
+    width: 60
   },
   {
     title: t('common.creator'),

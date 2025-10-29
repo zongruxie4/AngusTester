@@ -29,13 +29,14 @@ const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>(
   ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTaskStatistics: true })
 );
 
+const emit = defineEmits<{(e: 'update:refreshNotify', value: string)}>();
+
 // Async component import
 const Table = defineAsyncComponent(() => import('./table.vue'));
 
 // Reactive state
 const activeKey = ref<TaskTrashTargetType>(CombinedTargetType.TASK_SPRINT);
 const inputValue = ref<string>();
-const notify = ref<string>();
 const tableDataMap = ref<Record<TaskTrashTargetType, TaskTrashItem[]>>({} as Record<TaskTrashTargetType, TaskTrashItem[]>);
 const totalItemsMap = ref<Record<TaskTrashTargetType, number>>({} as Record<TaskTrashTargetType, number>);
 
@@ -44,7 +45,7 @@ const {
   loading,
   recoverAll,
   deleteAll
-} = useTrashActions(props.projectId);
+} = useTrashActions(props);
 
 // Get current active tab data
 const currentTableData = computed(() => tableDataMap.value[activeKey.value] || []);
@@ -57,7 +58,7 @@ const itemCount = computed(() => currentTotalItems.value);
  * Debounced input change handler
  */
 const inputChange = debounce(duration.search, () => {
-  notify.value = utils.uuid();
+  handleRefresh();
 });
 
 /**
@@ -111,7 +112,7 @@ const hasSearchValue = computed(() => {
  */
 const clearSearchAndRefresh = () => {
   inputValue.value = '';
-  notify.value = utils.uuid();
+  handleRefresh();
 };
 
 /**
@@ -145,7 +146,7 @@ const handleRecoverAll = async () => {
 const handleDeleteAll = async () => {
   const success = await deleteAll();
   if (success) {
-    notify.value = utils.uuid();
+    handleRefresh();
   }
 };
 
@@ -153,7 +154,7 @@ const handleDeleteAll = async () => {
  * Handle refresh action
  */
 const handleRefresh = () => {
-  notify.value = utils.uuid();
+  emit('update:refreshNotify', utils.uuid());
 };
 
 // Lifecycle hooks
@@ -163,6 +164,10 @@ onMounted(() => {
       activeKey.value = CombinedTargetType.TASK;
     }
   }, { immediate: true });
+
+  watch(() => props.projectId, () => {
+    handleRefresh();
+  })
 });
 </script>
 <template>
@@ -300,7 +305,7 @@ onMounted(() => {
               :tab="t('common.sprint')">
               <Table
                 v-model:spinning="loading"
-                :notify="notify"
+                :notify="props.refreshNotify "
                 :projectId="props.projectId"
                 :userInfo="props.userInfo"
                 :params="sprintParams"
@@ -312,7 +317,7 @@ onMounted(() => {
             <TabPane :key="CombinedTargetType.TASK" :tab="t('common.issue')">
               <Table
                 v-model:spinning="loading"
-                :notify="notify"
+                :notify="props.refreshNotify"
                 :projectId="props.projectId"
                 :userInfo="props.userInfo"
                 :params="taskParams"

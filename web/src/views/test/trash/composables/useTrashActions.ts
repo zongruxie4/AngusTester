@@ -5,10 +5,10 @@ import { test } from '@/api/tester';
 
 /**
  * Composable for managing trash action operations
- * @param projectId - Project identifier
+ * @param props - Project identifier
  * @returns Object containing action methods and loading state
  */
-export function useTrashActions (projectId: string) {
+export function useTrashActions (props: { projectId: string }) {
   const { t } = useI18n();
   const loading = ref(false);
 
@@ -52,11 +52,11 @@ export function useTrashActions (projectId: string) {
    * Recover all trash items in the project
    */
   const recoverAll = async (): Promise<boolean> => {
-    if (!projectId) return false;
+    if (!props.projectId) return false;
 
     loading.value = true;
 
-    const [error] = await test.backAllTrash({ projectId });
+    const [error] = await test.backAllTrash({ projectId: props.projectId });
     loading.value = false;
 
     if (error) {
@@ -71,11 +71,11 @@ export function useTrashActions (projectId: string) {
    * Permanently delete all trash items in the project
    */
   const deleteAll = async (): Promise<boolean> => {
-    if (!projectId) return false;
+    if (!props.projectId) return false;
 
     loading.value = true;
 
-    const [error] = await test.deleteAllTrash({ projectId });
+    const [error] = await test.deleteAllTrash({ projectId: props.projectId });
     loading.value = false;
 
     if (error) {
