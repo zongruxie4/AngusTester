@@ -992,7 +992,9 @@
           "title": "基本信息",
           "fields": {
             "casePrefix": "用例前缀",
-            "reviewCase": "是否评审用例"
+            "reviewCase": "是否评审用例",
+            "planName": "计划名称",
+            "project": "项目"
           }
         },
         "testerAndDuty": {

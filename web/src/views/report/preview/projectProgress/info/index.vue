@@ -40,7 +40,7 @@ const projectInfo = computed(() => {
   <div>
     <h1 class="text-theme-title font-medium mb-5">
       <span id="a1" class="text-4 text-theme-title font-medium">
-        {{ sequence.big }}、
+        {{ sequence.big }}
         <em class="inline-block w-0.25"></em>
         {{ t('reportPreview.projectProgress.info.title') }}
       </span>

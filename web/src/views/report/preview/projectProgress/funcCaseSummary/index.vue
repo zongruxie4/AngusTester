@@ -66,7 +66,7 @@ const burnDownCharts = computed(() => {
 
 <template>
   <h1 class="text-theme-title font-medium mb-5">
-    <span id="a6" class="text-4 text-theme-title font-medium">{{ props.sequence.big }}、<em class="inline-block w-0.25"></em>{{ t('reportPreview.projectProgress.funcCaseSummary.title') }}</span>
+    <span id="a6" class="text-4 text-theme-title font-medium">{{ props.sequence.big }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.projectProgress.funcCaseSummary.title') }}</span>
   </h1>
 
   <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">

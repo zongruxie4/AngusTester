@@ -40,7 +40,7 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'projectName',
-      name: t('reportPreview.services.info.fields.project')
+      name: t('common.projectName')
     },
     {
       dataIndex: 'apisNum',

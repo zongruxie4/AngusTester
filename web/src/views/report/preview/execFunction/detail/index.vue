@@ -181,7 +181,7 @@ const caseSummary = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a3">1.2<em class="inline-block w-3.5"></em>{{ t('common.title') }}</span>
+        <span id="a3">1.2<em class="inline-block w-3.5"></em>{{ t('common.execResult') }}</span>
       </h2>
       <div class="flex items-start">
         <div class="flex items-center flex-shrink-0 mr-10">
