@@ -113,11 +113,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/**
- * <p>
- * Component-specific styles for the GroupSet component
- * </p>
- */
 
 /* Active item styling */
 .active-item {

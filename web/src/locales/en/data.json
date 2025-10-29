@@ -465,7 +465,7 @@
       }
     },
     "permissionModal": {
-      "title": "Space Settings",
+      "title": "Space Permission",
       "onTips": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
       "offTips": "No permission restrictions, all users in the account can view and operate, default is not enabled."
     }

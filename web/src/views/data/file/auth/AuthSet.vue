@@ -80,10 +80,10 @@ onBeforeUnmount(() => {
         {{ t('common.name') }}
       </div>
       <div style="width:70px;" class="flex-shrink-0 px-2">
-        {{ t('file.globalAuth.authSet.headers.permissionControl') }}
+        {{ t('common.permissionControl') }}
       </div>
       <div style="width:52%">
-        {{ t('file.globalAuth.authSet.headers.permissions') }}
+        {{ t('common.permission') }}
       </div>
     </div>
 
@@ -133,7 +133,7 @@ onBeforeUnmount(() => {
                 :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < props.permissions.length)"
                 class="whitespace-nowrap"
                 @change="(event) => checkAllChange(event, item)">
-                {{ t('file.globalAuth.authSet.allPermissions') }}
+                {{ t('common.all') }}
               </Checkbox>
 
               <!-- Individual Permissions -->
@@ -151,11 +151,6 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/**
- * <p>
- * Component-specific styles for the AuthSet component
- * </p>
- */
 
 /* Ensure proper spacing and layout */
 

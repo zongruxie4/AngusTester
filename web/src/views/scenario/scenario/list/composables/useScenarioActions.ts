@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n';
 import { scenario } from '@/api/tester';
 import { modal, notification } from '@xcan-angus/vue-ui';
 import { ScenarioInfo, MenuItem } from '../types';
-import { emit } from 'process';
 
 /**
  * Composable for managing scenario actions
@@ -72,7 +71,7 @@ export function useScenarioActions (
    * Add scenario authorization
    */
   const addScenarioAuthorize = () => {
-    addTabPane({ name: t('actions.permission'), _id: utils.uuid(), value: 'authorization' });
+    addTabPane({ name: t('actions.permission'), _id: `${projectId}_scenario_permission`, value: 'authorization' });
   };
 
   /**
