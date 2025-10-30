@@ -90,6 +90,9 @@
       "notPassword": "No"
     },
     "detail": {
+      "useList": {
+        "title": "View the resource information of the dataset in use."
+      },
       "staticVariable": {
         "passwordHint": "If the variable is a password type, the variable value is invisible to the user on the interface.",
         "hints": "If a variable contains mock functions, it auto-refreshes before each iteration (the value persists for all requests within that iteration)."

@@ -412,7 +412,7 @@ const httpConfigsRef = ref();
                   </div>
                   <Input
                     v-model:value="expression"
-                    :placeholder="t('variable.detail.httpVariable.expressionPlaceholder ')"
+                    :placeholder="t('dataCommon.common.expressionPlaceholder')"
                     class="w-full-16"
                     trim
                     :maxlength="1024" />
