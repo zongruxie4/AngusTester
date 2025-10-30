@@ -65,7 +65,7 @@ const {
   handleRestart,
   handleStop,
   dropdownClick
-} = useExecutionAction();
+} = useExecutionAction({loadDataList});
 
 const getNumFixed = (str: string): string => {
   return str ? Number(str).toFixed(2) : '0';

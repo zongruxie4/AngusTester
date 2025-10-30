@@ -11,7 +11,7 @@ import type { ExecutionInfo } from '../types';
  * Composable for managing execution actions
  * Handles CRUD operations, inline editing, and status changes
  */
-export function useExecutionAction () {
+export function useExecutionAction (config: {loadDataList: () => void}) {
   const { t } = useI18n();
   const router = useRouter();
 
@@ -82,9 +82,9 @@ export function useExecutionAction () {
     if (error) {
       return;
     }
-
     item.thread = value;
     item.editThread = false;
+
     notification.success(t('actions.tips.modifySuccess'));
   };
 
@@ -114,6 +114,9 @@ export function useExecutionAction () {
     if (error) {
       return;
     }
+
+
+    config.loadDataList();
 
     item.duration = value;
     item.editDuration = false;
