@@ -40,7 +40,7 @@ const {
 
   // Refresh method
   refreshStatistics
-} = useStatistics(props.projectId, props.userInfo?.id);
+} = useStatistics(props);
 
 /**
  * Watch for prop changes and trigger data reload
@@ -48,6 +48,9 @@ const {
 onMounted(() => {
   // Watch project ID changes
   watch(() => props.projectId, () => {
+    if (!props.projectId) {
+      return;
+    }
     projectId.value = props.projectId;
     // Refresh statistics when projectId changes
     refreshStatistics();

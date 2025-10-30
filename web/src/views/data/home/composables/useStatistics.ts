@@ -7,9 +7,9 @@ import { useECharts } from './useECharts';
  * <p>Main composable for Statistics component business logic</p>
  * <p>Integrates all other composables and provides the main component functionality</p>
  */
-export function useStatistics (projectId: string, userId: string) {
+export function useStatistics (props: {projectId: string, userInfo: {id: string}}) {
   // Initialize all composables
-  const data = useStatisticsData(projectId, userId);
+  const data = useStatisticsData(props.projectId, props?.userInfo?.id);
   const chartConfig = useChartConfig();
   const charts = useECharts();
 
@@ -56,6 +56,10 @@ export function useStatistics (projectId: string, userId: string) {
   // Initialize on component mount
   onMounted(() => {
     initializeStatistics();
+
+    watch(() =>props.projectId, () => {
+      data.updateProjectId(props.projectId);
+    });
   });
 
   return {

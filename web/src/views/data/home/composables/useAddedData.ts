@@ -1,4 +1,4 @@
-import { computed, inject, ref } from 'vue';
+import { computed, inject, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { modal, notification } from '@xcan-angus/vue-ui';
 import { utils, PageQuery } from '@xcan-angus/infra';
@@ -14,7 +14,7 @@ import { AddedItem, DataType } from '@/views/data/home/types';
  * Provides functionality for loading, deleting, and paginating data with proper error handling
  * </p>
  */
-export function useAddedData (_projectId: string, userId: string, type: DataType) {
+export function useAddedData (props: {projectId: string, userId: string; type: DataType}) {
   const { t } = useI18n();
   const router = useRouter();
 
@@ -34,7 +34,6 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
   };
 
   // Reactive state
-  const projectId = ref<string>(_projectId);
   const tableData = ref<AddedItem[]>();
   const loading = ref(false);
   const loaded = ref(false);
@@ -68,10 +67,10 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
     const { current, pageSize } = pagination.value;
 
     const params: { [key: string]: any; pageNo: number; pageSize: number } = {
-      projectId: projectId.value,
+      projectId: props.projectId,
       pageNo: current,
       pageSize,
-      createdBy: userId,
+      createdBy: props.userId,
       appCode: appInfo.value.code
     };
 
@@ -80,7 +79,7 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
       params.orderSort = orderSort.value;
     }
 
-    const [error, { data = {} }] = await loadDataApiConfig[type](params);
+    const [error, { data = {} }] = await loadDataApiConfig[props.type](params);
     loading.value = false;
     if (error) {
       return;
@@ -113,10 +112,10 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
       content: t('actions.tips.confirmDelete', { name: data.name }),
       async onOk () {
         let error: Error | null = null;
-        if (type === 'datasource' || type === 'space') {
-          [error] = await delDataApiConfig[type](data.id);
+        if (props.type === 'datasource' || props.type === 'space') {
+          [error] = await delDataApiConfig[props.type](data.id);
         } else {
-          [error] = await delDataApiConfig[type]([data.id]);
+          [error] = await delDataApiConfig[props.type]([data.id]);
         }
 
         if (error) {
@@ -146,7 +145,6 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
 
   return {
     // State
-    projectId,
     tableData,
     loading,
     loaded,

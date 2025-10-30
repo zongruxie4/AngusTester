@@ -84,7 +84,7 @@ onMounted(() => {
 
     <template #module>
       <Module
-        :projectId="projectId"
+        :projectId="activeKey === ProjectMenuKey.MODULE ? projectId : undefined"
         :userInfo="userInfo"
         :appInfo="appInfo"
         class="p-5" />
@@ -92,14 +92,14 @@ onMounted(() => {
 
     <template #version>
       <Version
-        :projectId="projectId"
+        :projectId="activeKey === ProjectMenuKey.VERSION ? projectId : undefined"
         :userInfo="userInfo"
         :appInfo="appInfo" />
     </template>
 
     <template #tags>
       <Tags
-        :projectId="projectId"
+        :projectId="activeKey === ProjectMenuKey.TAGS ? projectId : undefined"
         :userInfo="userInfo"
         :appInfo="appInfo"
         class="p-5" />

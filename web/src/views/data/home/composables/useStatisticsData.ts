@@ -150,9 +150,15 @@ export function useStatisticsData (_projectId: string, userId: string) {
     ]);
   };
 
+  const updateProjectId = (_projectId) => {
+    projectId.value = _projectId;
+  }
+
   // Watch for projectId changes and reload data
-  watch(projectId, () => {
-    loadAllStatistics();
+  watch(() => projectId.value, (newValue) => {
+    if (newValue) {
+      loadAllStatistics();
+    }
   });
 
   return {
@@ -165,6 +171,7 @@ export function useStatisticsData (_projectId: string, userId: string) {
     // Methods
     loadUserStatistics,
     loadProjectStatistics,
-    loadAllStatistics
+    loadAllStatistics,
+    updateProjectId
   };
 }

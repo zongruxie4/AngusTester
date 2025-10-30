@@ -35,7 +35,6 @@ const emit = defineEmits<{
  * Initialize composables for data management, table columns, and empty state
  */
 const {
-  projectId,
   tableData,
   loading,
   loaded,
@@ -46,7 +45,7 @@ const {
   handleTableChange,
   deleteItem,
   navigateToCreate
-} = useAddedData(String(props.projectId), String(props.userId), props.type);
+} = useAddedData(props);
 
 const { columns } = useAddedTableColumns(props.type);
 const tableColumns = computed(() => columns.value as unknown as any[]);
@@ -91,8 +90,9 @@ const handleDelete = (record: AddedItem) => {
 onMounted(() => {
   // Watch project ID changes
   watch(() => props.projectId, () => {
-    projectId.value = String(props.projectId ?? '');
-    loadData();
+    if (props.projectId) {
+      loadData();
+    }
   }, { immediate: true });
 
   // Watch notify changes for refresh

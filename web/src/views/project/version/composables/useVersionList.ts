@@ -226,8 +226,10 @@ export function useVersionList (props: VersionListProps) {
   // Watch for project changes and notifications
   onMounted(() => {
     watch(() => props.projectId, () => {
-      pageNo.value = 1;
-      loadData();
+      if (props.projectId) {
+        pageNo.value = 1;
+        loadData();
+      }
     }, { immediate: true });
 
     watch(() => props.notify, (newValue) => {

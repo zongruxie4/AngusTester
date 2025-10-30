@@ -11,6 +11,7 @@ import { useTableColumns } from './composables/useTableColumns';
 import { useSpaceManagement } from './composables/useSpaceManagement';
 import { useDrawerMenu } from './composables/useDrawerMenu';
 import { SpacePermission } from '@/enums/enums';
+import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
@@ -22,11 +23,16 @@ const GlobalAuth = defineAsyncComponent(() => import('@/views/data/file/auth/ind
 const Introduce = defineAsyncComponent(() => import('@/views/data/file/Introduce.vue'));
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 
+
+const props = withDefaults(defineProps<BasicProps>(), {
+  projectId: undefined
+})
+
 // Dependency injection for app context
 const appInfo = appContext.getAccessApp();
 const isAdmin = computed(() => appContext.isAdmin());
 // Inject project information
-const projectId = inject<Ref<string>>('projectId', ref(''));
+// const projectId = inject<Ref<string>>('projectId', ref(''));
 
 // Application state
 const isPrivate = ref(false);
@@ -81,7 +87,7 @@ const drawerMenu = computed(() => {
  * <p>Watch for project ID changes and reload data when project changes.</p>
  * <p>This ensures the space list is updated when switching between projects.</p>
  */
-watch(() => projectId.value, (newValue) => {
+watch(() => props.projectId, (newValue) => {
   if (newValue) {
     pagination.current = 1;
     loadData(newValue, isAdmin.value);
@@ -164,7 +170,7 @@ onMounted(async () => {
             class="flex items-center"
             size="small"
             type="default"
-            @click="loadData(projectId, isAdmin)">
+            @click="loadData(props.projectId, isAdmin)">
             <IconRefresh />
           </Button>
         </div>
@@ -236,7 +242,7 @@ onMounted(async () => {
 
               <!-- Delete action -->
               <template v-if="getSafeAuth(record).includes('DELETE')">
-                <a class="whitespace-nowrap inline-flex items-center" @click.stop="delConfirm(record, projectId, isAdmin)">
+                <a class="whitespace-nowrap inline-flex items-center" @click.stop="delConfirm(record, props.projectId, isAdmin)">
                   <Icon icon="icon-qingchu" class="mr-0.5" />
                   {{ t('actions.delete') }}
                 </a>
@@ -288,7 +294,7 @@ onMounted(async () => {
       <EditSpaceModal
         :id="selectId"
         v-model:visible="editVisible"
-        @ok="(form) => saveSpace(form, projectId, () => loadData(projectId, isAdmin))" />
+        @ok="(form) => saveSpace(form, props.projectId, () => loadData(props.projectId, isAdmin))" />
     </AsyncComponent>
 
     <AsyncComponent :visible="authModalVisible">

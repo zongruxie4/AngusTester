@@ -44,37 +44,37 @@ onMounted(() => {
     :menuItems="menuItems">
     <template #home>
       <Homepage
-        v-if="activeKey === DataMenuKey.HOME && projectId"
-        :projectId="projectId"
+        v-if="projectId"
+        :projectId="activeKey === DataMenuKey.HOME ? projectId : undefined"
         :userInfo="userInfo"
         :appInfo="appInfo"
         :refreshNotify="homepageRefreshNotify" />
     </template>
     <template #variables>
       <Variables
-        v-if="activeKey === DataMenuKey.VARIABLES && projectId"
-        :projectId="projectId"
+        v-if="projectId"
+        :projectId="activeKey === DataMenuKey.VARIABLES ? projectId : undefined"
         :userInfo="userInfo"
         :appInfo="appInfo" />
     </template>
     <template #dataset>
       <DataSet
-        v-if="activeKey === DataMenuKey.DATASET && projectId"
-        :projectId="projectId"
+        v-if="projectId"
+        :projectId="activeKey === DataMenuKey.DATASET ? projectId : undefined"
         :userInfo="userInfo"
         :appInfo="appInfo" />
     </template>
     <template #file>
       <FileData
-        v-if="activeKey === DataMenuKey.FILE && projectId"
-        :projectId="projectId"
+        v-if="projectId"
+        :projectId="activeKey === DataMenuKey.FILE ? projectId : undefined"
         :userInfo="userInfo"
         :appInfo="appInfo" />
     </template>
     <template #datasource>
       <SourceData
-        v-if="activeKey === DataMenuKey.DATASOURCE && projectId"
-        :projectId="projectId"
+        v-if="projectId"
+        :projectId="activeKey === DataMenuKey.DATASOURCE ? projectId : undefined"
         :userInfo="userInfo"
         :appInfo="appInfo" />
     </template>
