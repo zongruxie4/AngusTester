@@ -154,8 +154,10 @@ const echartRef = ref<HTMLDivElement>();
  * Creates the chart with base configuration
  */
 const initEcahrts = (): void => {
-  myEcahrt = echarts.init(echartRef.value!);
-  myEcahrt.setOption(echartsOpt);
+  if (echartRef.value) {
+    myEcahrt = echarts.init(echartRef.value!);
+    myEcahrt.setOption(echartsOpt);
+  }
 };
 
 /**

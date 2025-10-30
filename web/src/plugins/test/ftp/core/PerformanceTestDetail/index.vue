@@ -441,7 +441,7 @@ defineExpose({
             :endTime="props.execInfo?.endDate"
             :appNodes="props.execInfo?.appNodes"
             :execNodes="props.execInfo?.execNodes"
-            :status="props.execInfo?.status.value" />
+            :status="props.execInfo?.status?.value" />
         </TabPane>
         <TabPane key="analyze" :tab="t('ftpPlugin.performanceTestDetail.tabs.analyze')">
           <template v-if="isLoaded">

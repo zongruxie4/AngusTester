@@ -126,7 +126,7 @@ const loadingChange = (value:boolean) => {
           :endTime="props.execInfo?.endDate"
           :appNodes="props.execInfo?.appNodes"
           :execNodes="props.execInfo?.execNodes"
-          :status="props.execInfo?.status.value"
+          :status="props.execInfo?.status?.value"
           @loadingChange="loadingChange" />
       </div>
 
@@ -165,7 +165,7 @@ const loadingChange = (value:boolean) => {
           :endTime="props.execInfo?.endDate"
           :appNodes="props.execInfo?.appNodes"
           :execNodes="props.execInfo?.execNodes"
-          :status="props.execInfo?.status.value"
+          :status="props.execInfo?.status?.value"
           @loadingChange="loadingChange" />
       </div>
 

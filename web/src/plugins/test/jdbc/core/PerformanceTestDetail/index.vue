@@ -394,7 +394,7 @@ defineExpose({
             :endTime="props.execInfo?.endDate"
             :appNodes="props.execInfo?.appNodes"
             :execNodes="props.execInfo?.execNodes"
-            :status="props.execInfo?.status.value" />
+            :status="props.execInfo?.status?.value" />
         </TabPane>
         <TabPane key="analyze" tab="叠加分析">
           <template v-if="isLoaded">
