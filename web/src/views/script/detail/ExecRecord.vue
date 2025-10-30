@@ -43,7 +43,7 @@ const params = {
         class="item-container relative text-3 leading-5 space-y-3.5">
         <div class="relative flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('scriptDetail.record.executionId') }}</span>
+            <span>{{ t('common.id') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -52,7 +52,7 @@ const params = {
 
         <div class="relative flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('scriptDetail.record.executionName') }}</span>
+            <span>{{ t('common.name') }}</span>
             <Colon class="w-1" />
           </div>
 
