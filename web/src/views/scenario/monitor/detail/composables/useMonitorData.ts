@@ -24,7 +24,6 @@ export function useMonitorData () {
     loading.value = true;
     try {
       const [error, res] = await scenario.getMonitorDetail(id);
-      debugger;
 
       if (error) {
         console.error('Failed to load monitor data:', error);

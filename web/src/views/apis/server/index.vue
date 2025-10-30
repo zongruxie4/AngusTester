@@ -139,6 +139,7 @@ provide('replaceTabPane', replaceTabPane);
     ref="browserTabRef"
     hideAdd
     class="h-full"
+    :key="props.projectId"
     :storageKey="storageKey"
     @storageKeyChange="storageKeyChange">
     <template #default="record">
