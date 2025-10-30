@@ -5,7 +5,7 @@ info:
 type: TEST_PERFORMANCE
 plugin: Ftp
 configuration:
-  duration: 50min
+  duration: 5min
   thread:
     threads: 200
     rampUpInterval: 1min

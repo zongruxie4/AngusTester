@@ -5,7 +5,7 @@ info:
 type: TEST_PERFORMANCE
 plugin: Http
 configuration:
-  duration: 10min
+  duration: 2min
   thread:
     threads: 200
     rampUpInterval: 1min
