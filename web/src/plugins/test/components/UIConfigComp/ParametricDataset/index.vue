@@ -224,7 +224,7 @@ const hintTextMap = {
       
       <!-- Description label -->
       <div class="flex-shrink-0 break-all whitespace-pre-wrap">
-        {{ t('common.description') }}
+        {{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.description') }}
       </div>
     </div>
 

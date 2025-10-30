@@ -2,7 +2,7 @@
 import { ref, onMounted, watch, computed, defineAsyncComponent, watchEffect, onBeforeUnmount } from 'vue';
 import { Collapse, CollapsePanel, Tabs, TabPane, Badge, Radio } from 'ant-design-vue';
 import { Composite, Input, Icon, Tooltip, Popover, FunctionsButton } from '@xcan-angus/vue-ui';
-import { utils, i18n } from '@xcan-angus/infra';
+import { utils, i18n, ParameterIn } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 
@@ -14,23 +14,47 @@ const t = I18nInstance?.global?.t || ((value: string): string => value);
 const docInfo = computed(() => [
   {
     title: t('httpPlugin.uiConfig.httpConfigs.docInfo.pathParams.title'),
-    rules: t('httpPlugin.uiConfig.httpConfigs.docInfo.pathParams.rules')
+    rules: [
+      "Primitive id = 5 -> /users/5",
+      "Array id = 「3, 4, 5」 -> /users/3,4,5",
+      "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> /users/role=admin,firstName=Alex",
+      t('httpPlugin.uiConfig.httpConfigs.docInfo.pathParams.rules[3]'),
+    ]
   },
   {
     title: t('httpPlugin.uiConfig.httpConfigs.docInfo.queryFormParams.title'),
-    rules: t('httpPlugin.uiConfig.httpConfigs.docInfo.queryFormParams.rules')
+    rules: [
+      "Primitive id = 5 -> id=5",
+      "Array id = 「3, 4, 5」 -> id「0」=3&id「1」=4&id「2」=5",
+      "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> id.role=admin&id.firstName=Alex",
+      t('httpPlugin.uiConfig.httpConfigs.docInfo.queryFormParams.rules[3]')
+    ]
   },
   {
     title: t('httpPlugin.uiConfig.httpConfigs.docInfo.headerParams.title'),
-    rules: t('httpPlugin.uiConfig.httpConfigs.docInfo.headerParams.rules')
+    rules: [
+      "Primitive X-MyHeader = 5 ->  X-MyHeader: 5",
+      "Array X-MyHeader = 「3, 4, 5」 -> X-MyHeader: 3,4,5",
+      "Object X-MyHeader = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> X-MyHeader: role=admin,firstName=Alex",
+      t('httpPlugin.uiConfig.httpConfigs.docInfo.headerParams.rules[3]')
+    ]
   },
   {
     title: t('httpPlugin.uiConfig.httpConfigs.docInfo.cookieParams.title'),
-    rules: t('httpPlugin.uiConfig.httpConfigs.docInfo.cookieParams.rules')
+    rules: [
+      "Primitive id = 5 ->  Cookie: id=5",
+      "Array id = 「3, 4, 5」 -> Cookie: id=3,4,5",
+      "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> Cookie: id=role,admin,firstName,Alex",
+      t('httpPlugin.uiConfig.httpConfigs.docInfo.cookieParams.rules[3]'),
+    ]
   }
 ]);
 
-const debugTip = computed(() => t('httpPlugin.uiConfig.httpConfigs.debugTip'));
+const debugTip = computed(() => [
+t('httpPlugin.uiConfig.httpConfigs.debugTip[0]'),
+t('httpPlugin.uiConfig.httpConfigs.debugTip[1]'),
+t('httpPlugin.uiConfig.httpConfigs.debugTip[2]')
+]);
 
 export type ParameterConfig = {
   name: string;

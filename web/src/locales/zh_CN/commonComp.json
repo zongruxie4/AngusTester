@@ -715,6 +715,7 @@
     }
   },
   "xcan_execAuthencation": {
+    "name": "名称",
     "noAuth": "不认证",
     "basicAuth": "Basic Auth",
     "bearerToken": "Bearer Token",

@@ -355,7 +355,7 @@ const okButtonProps = computed(() => {
  */
 const columns = [
   {
-    title: t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true         // Truncate long text with ellipsis
   },
