@@ -13,7 +13,7 @@ export const reportMenus = [
       {
         key: 'PROJECT_PROGRESS',
         label: t('reportAdd.menus.project.progress.label'),
-        description: t('common.description')
+        description: t('reportAdd.menus.project.progress.description')
       }
     ]
   },
@@ -25,13 +25,13 @@ export const reportMenus = [
     children: [
       {
         key: 'TASK_SPRINT',
-        description: t('common.description'),
+        description: t('reportAdd.menus.task.sprint.description'),
         label: t('reportAdd.menus.task.sprint.label')
       },
       {
         key: 'TASK',
         label: t('reportAdd.menus.task.task.label'),
-        description: t('common.description')
+        description: t('reportAdd.menus.task.task.description')
       }
     ]
   },
@@ -43,12 +43,12 @@ export const reportMenus = [
     children: [
       {
         key: 'FUNC_TESTING_PLAN',
-        description: t('common.description'),
+        description: t('reportAdd.menus.functional.plan.description'),
         label: t('reportAdd.menus.functional.plan.label')
       },
       {
         key: 'FUNC_TESTING_CASE',
-        description: t('common.description'),
+        description: t('reportAdd.menus.functional.case.description'),
         label: t('reportAdd.menus.functional.case.label')
       }
     ]
@@ -61,12 +61,12 @@ export const reportMenus = [
     children: [
       {
         key: 'SERVICES_TESTING_RESULT',
-        description: t('common.description'),
+        description: t('reportAdd.menus.apis.services.description'),
         label: t('reportAdd.menus.apis.services.label')
       },
       {
         key: 'APIS_TESTING_RESULT',
-        description: t('common.description'),
+        description: t('reportAdd.menus.apis.apis.description'),
         label: t('reportAdd.menus.apis.apis.label')
       }
     ]
@@ -79,7 +79,7 @@ export const reportMenus = [
     children: [
       {
         key: 'SCENARIO_TESTING_RESULT',
-        description: t('common.description'),
+        description: t('reportAdd.menus.scenario.result.description'),
         label: t('reportAdd.menus.scenario.result.label')
       }
     ]
@@ -92,22 +92,22 @@ export const reportMenus = [
     children: [
       {
         key: 'EXEC_FUNCTIONAL_RESULT',
-        description: t('common.description'),
+        description: t('reportAdd.menus.execution.functional.description'),
         label: t('reportAdd.menus.execution.functional.label')
       },
       {
         key: 'EXEC_PERFORMANCE_RESULT',
-        description: t('common.description'),
+        description: t('reportAdd.menus.execution.performance.description'),
         label: t('reportAdd.menus.execution.performance.label')
       },
       {
         key: 'EXEC_STABILITY_RESULT',
-        description: t('common.description'),
+        description: t('reportAdd.menus.execution.stability.description'),
         label: t('reportAdd.menus.execution.stability.label')
       },
       {
         key: 'EXEC_CUSTOMIZATION_RESULT',
-        description: t('common.description'),
+        description: t('reportAdd.menus.execution.customization.description'),
         label: t('reportAdd.menus.execution.customization.label')
       }
     ]

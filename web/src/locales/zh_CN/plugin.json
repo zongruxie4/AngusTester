@@ -78,9 +78,11 @@
         "average": "平均值",
         "high": "最高",
         "low": "最低",
-        "latest": "最新值"
+        "latest": "最新值",
+        "unit": "单位"
       }
     },
+
     "parametricDataset": {
       "sourceTypes": {
         "static": "静态值",

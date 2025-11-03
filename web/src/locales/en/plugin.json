@@ -78,7 +78,8 @@
         "average": "Average",
         "high": "High",
         "low": "Low",
-        "latest": "Latest"
+        "latest": "Latest",
+        "unit": "Unit"
       }
     },
     "parametricDataset": {

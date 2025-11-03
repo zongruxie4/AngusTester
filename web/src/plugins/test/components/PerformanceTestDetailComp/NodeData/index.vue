@@ -73,12 +73,12 @@ const tableData = ref<TableDataRow[]>([]);
  * Table column definitions
  */
 const columns = [
-  { title: t('ftpPlugin.performanceTestDetail.nodeData.table.metric'), dataIndex: 'name', key: 'name' },
-  { title: t('ftpPlugin.performanceTestDetail.nodeData.table.unit'), dataIndex: 'unit', key: 'unit' },
-  { title: t('ftpPlugin.performanceTestDetail.nodeData.table.average'), dataIndex: 'average', key: 'average' },
-  { title: t('ftpPlugin.performanceTestDetail.nodeData.table.max'), dataIndex: 'high', key: 'high' },
-  { title: t('ftpPlugin.performanceTestDetail.nodeData.table.min'), dataIndex: 'low', key: 'low' },
-  { title: t('ftpPlugin.performanceTestDetail.nodeData.table.latest'), dataIndex: 'latest', key: 'latest' }
+  { title: t('commonPlugin.node.columns.name'), dataIndex: 'name', key: 'name' },
+  { title: t('commonPlugin.node.columns.unit'), dataIndex: 'unit', key: 'unit' },
+  { title: t('commonPlugin.node.columns.average'), dataIndex: 'average', key: 'average' },
+  { title: t('commonPlugin.node.columns.high'), dataIndex: 'high', key: 'high' },
+  { title: t('commonPlugin.node.columns.low'), dataIndex: 'low', key: 'low' },
+  { title: t('commonPlugin.node.columns.latest'), dataIndex: 'latest', key: 'latest' }
 ];
 
 /**

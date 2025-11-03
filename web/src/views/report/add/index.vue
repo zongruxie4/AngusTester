@@ -198,7 +198,7 @@ const resetData = () => {
   };
   basicInfoSetting.value = {
     reportContacts: tenantInfo?.value?.fullName + (tenantInfo?.value?.email ? `  ${tenantInfo?.value?.email}` : ''),
-    reportCopyright: t('reportAdd.reportCopyright', {
+    reportCopyright: t('reportAdd.basic.reportCopyright', {
       tenantName: tenantInfo?.value?.tenantName,
       year: dayjs().year()
     }),
