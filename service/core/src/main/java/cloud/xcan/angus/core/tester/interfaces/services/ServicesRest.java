@@ -183,7 +183,7 @@ public class ServicesRest {
       description = "Export API specifications from service with format customization and selective data export",
       operationId = "services:export")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "APIs exported successfully")})
+      @ApiResponse(responseCode = "200", description = "APIs exported successfully")})
   @PostMapping(value = "/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(
       /* Fix export service 414 error */
