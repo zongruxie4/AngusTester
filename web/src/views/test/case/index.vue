@@ -28,6 +28,12 @@ const userInfo = ref(appContext.getUser());
 const projectId = inject<Ref<string>>('projectId', ref(''));
 const appInfo = ref(appContext.getAccessApp());
 
+enum TabKey {
+  caseList = "caseList",
+  plan = 'plan',
+  caseInfo = 'caseInfo'
+}
+
 const route = useRoute();
 const router = useRouter();
 const browserTabRef = ref();
@@ -43,16 +49,6 @@ const addTabPane = (tabData) => {
 
 const deleteTabPane = (tabKeys: string[]) => {
   tabKeys.forEach(key => browserTabRef.value.remove(key));
-};
-
-// Guide system state management
-const { useMutations, useState } = VuexHelper;
-const { stepVisible, stepKey, stepContent } = useState(['stepVisible', 'stepKey', 'stepContent'], 'guideStore');
-const { updateGuideStep } = useMutations(['updateGuideType', 'updateGuideStep'], 'guideStore');
-
-const tabGuideStep = () => {
-  updateGuideStep({ visible: true, key: 'createPlanOne' });
-  addTabPane({ _id: 'case_home' });
 };
 
 /**
@@ -471,7 +467,7 @@ const handleMoveSuccess = (oldPlanId: string, newPlanId: string) => {
     const tabData = browserTabRef.value.getData();
     for (let i = 0; i < tabData.length; i++) {
       const tabInfo = tabData[i];
-      if (tabInfo.type === 'caseList' || tabInfo.key.includes(oldPlanId) || tabInfo.key.includes(newPlanId)) {
+      if (tabInfo.type === TabKey.caseList || tabInfo.key.includes(oldPlanId) || tabInfo.key.includes(newPlanId)) {
         browserTabRef.value.update({ ...tabInfo, notify: tabInfo.notify++ });
       }
     }
@@ -510,12 +506,15 @@ onMounted(() => {
   // Watch for browser tab changes and ensure case list tab exists
   watch(() => browserTabRef.value, () => {
     if (typeof browserTabRef.value?.update === 'function') {
-      const tabData = browserTabRef.value.getData().map(item => item.type);
-      if (!tabData.includes('caseList')) {
+      const tabData = browserTabRef.value.getData()
+      const tabDataTypes = tabData.map(item => item.type);
+      const delTab = tabData.filter(item => !TabKey[item.type]).map(i => i._id);
+      deleteTabPane(delTab);
+      if (!tabDataTypes.includes(TabKey.caseList)) {
         addTabPane({
           _id: 'case_home',
           name: t('testCase.title'),
-          type: 'caseList',
+          type: TabKey.caseList,
           closable: false,
           icon: 'icon-zhuye',
           notify: 0
@@ -524,7 +523,7 @@ onMounted(() => {
         updateTabPane({
           _id: 'case_home',
           name: t('testCase.title'),
-          type: 'caseList',
+          type: TabKey.caseList,
           closable: false,
           icon: 'icon-zhuye',
           notify: 0
@@ -551,7 +550,7 @@ onMounted(() => {
         addTabPane({
           _id: 'case' + result.id,
           name: result.name,
-          type: 'caseInfo',
+          type: TabKey.caseInfo,
           projectId: result.projectId,
           closable: true,
           caseId: result.id,
@@ -589,14 +588,10 @@ defineExpose({
       :key="`func-browser-tab_${projectId}`"
       :storageKey="`func-browser-tab_${projectId}`"
       hideAdd
-      :stepVisible="stepVisible"
-      :stepKey="stepKey"
-      :stepContent="stepContent"
       :userId="userInfo?.id?.toString()"
-      class="flex-1 h-full"
-      @updateGuideStep="tabGuideStep">
+      class="flex-1 h-full">
       <template #default="record">
-        <template v-if="record.type==='caseList'">
+        <template v-if="record.type===TabKey.caseList">
           <CaseList
             ref="caseListRef"
             :userInfo="userInfo"
@@ -608,7 +603,7 @@ defineExpose({
             @openInfo="handleViewCaseInfo" />
         </template>
 
-        <template v-if="record.type==='plan'">
+        <template v-if="record.type===TabKey.plan">
           <CaseList
             :userInfo="userInfo"
             :notify="record.notify"
@@ -621,7 +616,7 @@ defineExpose({
             @openInfo="handleViewCaseInfo" />
         </template>
 
-        <template v-if="record.type === 'caseInfo'">
+        <template v-if="record.type === TabKey.caseInfo">
           <div class="relative h-full overflow-auto">
             <Spin
               ref="caseInfoRef"
