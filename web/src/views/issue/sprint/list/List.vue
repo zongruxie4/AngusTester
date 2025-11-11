@@ -238,7 +238,7 @@ const getSprintStatusDotStyle = (statusValue: string) => {
             <RichTextEditor
               v-model:textValue="item.otherInformationText"
               :value="item.otherInformation"
-              :emptyText="t('tcommon.noDescription')" />
+              :emptyText="t('common.noDescription')" />
           </div>
           <div class="flex items-center justify-between h-4 leading-5">
             <RouterLink class="flex items-center space-x-1" :to="`/issue#${IssueMenuKey.SPRINT}?id=${item.id}&type=edit`">
