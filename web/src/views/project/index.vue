@@ -12,6 +12,7 @@ const Activity = defineAsyncComponent(() => import('@/views/project/activity/ind
 const Module = defineAsyncComponent(() => import('@/views/project/module/index.vue'));
 const Tags = defineAsyncComponent(() => import('@/views/project/tag/index.vue'));
 const Version = defineAsyncComponent(() => import('@/views/project/version/index.vue'));
+const Evaluation = defineAsyncComponent(() => import('@/views/project/evaluation/index.vue'));
 
 const { t } = useI18n();
 
@@ -100,6 +101,14 @@ onMounted(() => {
     <template #tags>
       <Tags
         :projectId="activeKey === ProjectMenuKey.TAGS ? projectId : undefined"
+        :userInfo="userInfo"
+        :appInfo="appInfo"
+        class="p-5" />
+    </template>
+
+    <template #evaluation>
+      <Evaluation
+        :projectId="activeKey === ProjectMenuKey.EVALUATION ? projectId : undefined"
         :userInfo="userInfo"
         :appInfo="appInfo"
         class="p-5" />
