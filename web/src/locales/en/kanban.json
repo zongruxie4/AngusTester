@@ -9,6 +9,7 @@
     "pleaseSelectPlan": "Please select plan",
     "selectOrganizationPersonnel": "Select organization",
     "viewType": {
+      "evaluation": "Evaluation",
       "cto": "CTO",
       "effectiveness": "Effectiveness",
       "dataAssets": "Data Assets"
