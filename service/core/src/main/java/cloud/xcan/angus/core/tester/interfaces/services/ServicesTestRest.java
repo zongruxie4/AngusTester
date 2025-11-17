@@ -122,60 +122,6 @@ public class ServicesTestRest {
     servicesTestFacade.scriptDelete(serviceId, testTypes);
   }
 
-  @Operation(summary = "Configure and generate service testing tasks",
-      description = "Create and configure testing tasks for service with sprint integration support",
-      operationId = "services:test:task:generate")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Service testing tasks generated successfully"),
-      @ApiResponse(responseCode = "404", description = "Service not found")})
-  @PutMapping("/services/{id}/test/task/generate")
-  public ApiLocaleResult<?> generate(
-      @Parameter(name = "id", description = "Service identifier for task generation", required = true) @PathVariable("id") Long serviceId,
-      @Parameter(name = "taskSprintId", description = "Task sprint identifier for agile project management") @RequestParam(value = "taskSprintId", required = false) Long taskSprintId,
-      @Valid @NotEmpty @RequestBody Set<ServicesTestTaskGenerateDto> dto) {
-    servicesTestFacade.testTaskGenerate(serviceId, taskSprintId, dto);
-    return ApiLocaleResult.success();
-  }
-
-  @Operation(summary = "Restart existing service testing tasks",
-      description = "Restart existing testing tasks for service execution management",
-      operationId = "services:test:task:restart")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Service testing tasks restarted successfully"),
-      @ApiResponse(responseCode = "404", description = "Service not found")})
-  @PatchMapping("/services/{id}/test/task/restart")
-  public ApiLocaleResult<?> testTaskRestart(
-      @Parameter(name = "id", description = "Service identifier for task restart", required = true) @PathVariable("id") Long serviceId) {
-    servicesTestFacade.testTaskRestart(serviceId);
-    return ApiLocaleResult.success();
-  }
-
-  @Operation(summary = "Reopen existing service testing tasks",
-      description = "Reopen existing testing tasks for service execution management",
-      operationId = "services:test:task:reopen")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Service testing tasks reopened successfully"),
-      @ApiResponse(responseCode = "404", description = "Service not found")})
-  @PatchMapping("/services/{id}/test/task/reopen")
-  public ApiLocaleResult<?> testTaskReopen(
-      @Parameter(name = "id", description = "Service identifier for task reopen", required = true) @PathVariable("id") Long serviceId) {
-    servicesTestFacade.testTaskReopen(serviceId);
-    return ApiLocaleResult.success();
-  }
-
-  @Operation(summary = "Delete service testing tasks",
-      description = "Remove testing tasks by test types for service management",
-      operationId = "services:test:task:delete")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Service testing tasks deleted successfully")})
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @DeleteMapping("/services/{id}/test/task")
-  public void testTaskDelete(
-      @Parameter(name = "id", description = "Service identifier for task management", required = true) @PathVariable("id") Long serviceId,
-      @Parameter(name = "testTypes", description = "Test types for task deletion", required = true) @RequestParam("testTypes") HashSet<TestType> testTypes) {
-    servicesTestFacade.testTaskDelete(serviceId, testTypes);
-  }
-
   @Operation(summary = "Query all service server configurations",
       description = "Retrieve all server configurations for service testing environment",
       operationId = "services:test:schema:server:all")

@@ -37,7 +37,6 @@ import cloud.xcan.angus.api.enums.EvalWorkloadMethod;
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.Result;
 import cloud.xcan.angus.api.pojo.Progress;
-import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
 import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
 import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
@@ -64,8 +63,6 @@ import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
 import cloud.xcan.angus.core.tester.domain.kanban.DataTimeSeries;
 import cloud.xcan.angus.core.tester.domain.module.Module;
 import cloud.xcan.angus.core.tester.domain.project.Project;
-import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
-import cloud.xcan.angus.core.tester.domain.services.testing.TestTaskSetting;
 import cloud.xcan.angus.core.tester.domain.tag.Tag;
 import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
@@ -240,22 +237,6 @@ public class TaskConverter {
           .setReleaseDate(projectDb.getDeadlineDate());
     }
     return version;
-  }
-
-  public static List<Task> generateToServicesTask(Long apisId, List<TestTaskSetting> testings) {
-    return testings.stream().map(testing -> new Task()
-        .setModuleId(-1L)
-        .setTargetId(apisId)
-        .setTaskType(TaskType.TEST)
-        .setTestType(testing.getTestType())
-        .setPriority(testing.getPriority())
-        .setAssigneeId(testing.getAssigneeId())
-        .setStartDate(testing.getStartDate())
-        .setDeadlineDate(testing.getDeadlineDate())
-        .setBacklog(false) // Assign sprint is required or is general project management
-        .setOverdue(false)
-        .setCode(getTaskCode())
-    ).toList();
   }
 
   public static void assembleMoveTask(TaskSprint targetSprintDb, Task taskDb) {
@@ -468,11 +449,9 @@ public class TaskConverter {
         .setStoryNum(nullSafe(taskTypeMap.get(TaskType.STORY.name()), 0))
         .setTaskNum(nullSafe(taskTypeMap.get(TaskType.TASK.name()), 0))
         .setBugNum(nullSafe(taskTypeMap.get(TaskType.BUG.name()), 0))
-        .setApiTestNum(nullSafe(taskTypeMap.get(TaskType.TEST.name()), 0))
-        .setScenarioTestNum(nullSafe(taskTypeMap.get(TaskType.TEST.name()), 0))
+        .setDesignNum(nullSafe(taskTypeMap.get(TaskType.DESIGN.name()), 0))
         .setTotalTaskTypeNum(statistics.getStoryNum() + statistics.getRequirementNum()
-            + statistics.getTaskNum() + statistics.getBugNum() + statistics.getApiTestNum()
-            + statistics.getScenarioTestNum());
+            + statistics.getTaskNum() + statistics.getBugNum() + statistics.getDesignNum());
 
     // Statistics by result
     Map<String, Integer> resultMap = groupByResult.stream().collect(Collectors.toMap(

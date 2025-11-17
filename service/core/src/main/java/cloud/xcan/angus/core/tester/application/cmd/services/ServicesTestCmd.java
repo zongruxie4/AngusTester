@@ -15,12 +15,6 @@ public interface ServicesTestCmd {
 
   void scriptDelete(Long serviceId, Set<TestType> testTypes);
 
-  void testTaskGenerate(Long serviceId, Long taskSprintId, List<TestTaskSetting> testings);
-
-  void retestTaskRestart(Long serviceId, Boolean restart);
-
-  void testTaskDelete(Long serviceId, Set<TestType> testTypes);
-
   void testExecAdd(Long servicesId, Set<TestType> testTypes, List<Server> servers);
 
   void testSmokeExecAdd(Long servicesId, List<Server> servers);

@@ -53,8 +53,8 @@ public class TaskCount {
   private long taskNum;
   @Schema(description = "The number of bug type tasks")
   private long bugNum;
-  @Schema(description = "The number of api test type tasks")
-  private long apiTestNum;
+  @Schema(description = "The number of design type tasks")
+  private long designNum;
   @Schema(description = "The number of scenario test type tasks")
   private long scenarioTestNum;
   @Schema(description = "Total number of task type tasks")

@@ -106,18 +106,4 @@ public class ApisTestAssembler {
     return scripts;
   }
 
-  public static List<Task> generateToTask(Long apisId, Set<ApisTestTaskGenerateDto> dto) {
-    return dto.stream().map(testing -> new Task()
-        .setTargetId(apisId)
-        .setTaskType(TaskType.TEST)
-        .setTestType(testing.getTestType())
-        .setPriority(testing.getPriority())
-        .setAssigneeId(testing.getAssigneeId())
-        .setDeadlineDate(testing.getDeadlineDate())
-        .setOverdue(false)
-        .setCode(getTaskCode())
-        .setBacklog(false) // Assign sprint is required or is general project management
-    ).toList();
-  }
-
 }

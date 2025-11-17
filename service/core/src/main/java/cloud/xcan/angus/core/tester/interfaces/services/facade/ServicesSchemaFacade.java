@@ -59,8 +59,7 @@ public interface ServicesSchemaFacade {
 
   ServiceSchemaDetailVo detail(Long serviceId);
 
-  void openapiReplace(Long serviceId, Boolean forced, Boolean gzipCompression,
-      String content);
+  void openapiReplace(Long serviceId, Boolean forced, Boolean gzipCompression, String content);
 
   String openapiDetail(Long serviceId, ApisSchemaOpenApiDto dto);
 

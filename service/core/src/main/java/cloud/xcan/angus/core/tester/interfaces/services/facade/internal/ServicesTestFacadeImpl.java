@@ -60,27 +60,6 @@ public class ServicesTestFacadeImpl implements ServicesTestFacade {
   }
 
   @Override
-  public void testTaskGenerate(Long serviceId, @Nullable Long taskSprintId,
-      Set<ServicesTestTaskGenerateDto> dto) {
-    servicesTestCmd.testTaskGenerate(serviceId, taskSprintId, toTestTaskTestings(dto));
-  }
-
-  @Override
-  public void testTaskRestart(Long serviceId) {
-    servicesTestCmd.retestTaskRestart(serviceId, true);
-  }
-
-  @Override
-  public void testTaskReopen(Long serviceId) {
-    servicesTestCmd.retestTaskRestart(serviceId, false);
-  }
-
-  @Override
-  public void testTaskDelete(Long serviceId, Set<TestType> testTypes) {
-    servicesTestCmd.testTaskDelete(serviceId, testTypes);
-  }
-
-  @Override
   public void testExecAdd(Long servicesId, Set<TestType> testTypes, List<Server> servers) {
     servicesTestCmd.testExecAdd(servicesId, testTypes, servers);
   }

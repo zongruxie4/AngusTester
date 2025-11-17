@@ -20,10 +20,8 @@ public class GrowthTrendCount {
   protected long taskNum;
   @Schema(description = "The number of bug type tasks")
   protected long bugNum;
-  @Schema(description = "The number of api test type tasks")
-  protected long apiTestNum;
-  @Schema(description = "The number of scenario test type tasks")
-  protected long scenarioTestNum;
+  @Schema(description = "The number of design type tasks")
+  protected long designNum;
   @Schema(description = "Total number of all tasks")
   protected long totalNum;
 

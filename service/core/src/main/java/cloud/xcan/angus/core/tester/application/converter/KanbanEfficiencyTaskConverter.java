@@ -534,9 +534,7 @@ public class KanbanEfficiencyTaskConverter {
     count.setStoryNum(typeTasks.getOrDefault(TaskType.STORY, emptyList()).size());
     count.setTaskNum(typeTasks.getOrDefault(TaskType.TASK, emptyList()).size());
     count.setBugNum(typeTasks.getOrDefault(TaskType.BUG, emptyList()).size());
-    count.setApiTestNum(typeTasks.getOrDefault(TaskType.TEST, emptyList()).size());
-    count.setScenarioTestNum(
-        typeTasks.getOrDefault(TaskType.TEST, emptyList()).size());
+    count.setDesignNum(typeTasks.getOrDefault(TaskType.DESIGN, emptyList()).size());
     count.setTotalNum(tasks.size());
     for (TaskType value : TaskType.values()) {
       count.getTimeSeries().put(value.getValue(),
@@ -569,12 +567,8 @@ public class KanbanEfficiencyTaskConverter {
         .getOrDefault(TaskType.BUG.getValue(), emptyList()).stream().collect(
             Collectors.toMap(DataAssetsTimeSeries::getTimeSeries,
                 DataAssetsTimeSeries::getValue));
-    Map<String, Integer> apiTestMap = count.getTimeSeries()
-        .getOrDefault(TaskType.TEST.getValue(), emptyList()).stream().collect(
-            Collectors.toMap(DataAssetsTimeSeries::getTimeSeries,
-                DataAssetsTimeSeries::getValue));
-    Map<String, Integer> sceTestMap = count.getTimeSeries()
-        .getOrDefault(TaskType.TEST.getValue(), emptyList()).stream().collect(
+    Map<String, Integer> designMap = count.getTimeSeries()
+        .getOrDefault(TaskType.DESIGN.getValue(), emptyList()).stream().collect(
             Collectors.toMap(DataAssetsTimeSeries::getTimeSeries,
                 DataAssetsTimeSeries::getValue));
     Map<String, Integer> totalMap = count.getTimeSeries()
@@ -588,8 +582,7 @@ public class KanbanEfficiencyTaskConverter {
           .append(storyMap.getOrDefault(time.getTimeSeries(), 0)).append(",")
           .append(taskMap.getOrDefault(time.getTimeSeries(), 0)).append(",")
           .append(bugMap.getOrDefault(time.getTimeSeries(), 0)).append(",")
-          .append(apiTestMap.getOrDefault(time.getTimeSeries(), 0)).append(",")
-          .append(sceTestMap.getOrDefault(time.getTimeSeries(), 0)).append(",")
+          .append(designMap.getOrDefault(time.getTimeSeries(), 0)).append(",")
           .append(totalMap.getOrDefault(time.getTimeSeries(), 0));
       timeSeriesDetails.add(ts.toString());
     }

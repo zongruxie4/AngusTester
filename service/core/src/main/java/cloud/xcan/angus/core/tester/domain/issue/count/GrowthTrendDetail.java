@@ -32,8 +32,7 @@ public class GrowthTrendDetail extends GrowthTrendCount implements DataDetailBas
     values.add(valueOf(storyNum));
     values.add(valueOf(taskNum));
     values.add(valueOf(bugNum));
-    values.add(valueOf(apiTestNum));
-    values.add(valueOf(scenarioTestNum));
+    values.add(valueOf(designNum));
     values.add(valueOf(totalNum));
     values.addAll(timeSeriesDetail);
     return values.toArray(new String[0]);

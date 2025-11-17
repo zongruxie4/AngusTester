@@ -23,14 +23,6 @@ public interface ServicesTestFacade {
 
   void scriptDelete(Long serviceId, Set<TestType> testTypes);
 
-  void testTaskGenerate(Long serviceId, @Nullable Long taskSprintId, Set<ServicesTestTaskGenerateDto> dto);
-
-  void testTaskRestart(Long serviceId);
-
-  void testTaskReopen(Long serviceId);
-
-  void testTaskDelete(Long serviceId, Set<TestType> testTypes);
-
   void testExecAdd(Long servicesId, Set<TestType> testTypes, List<Server> servers);
 
   void testSmokeExecAdd(Long servicesId, List<Server> servers);
