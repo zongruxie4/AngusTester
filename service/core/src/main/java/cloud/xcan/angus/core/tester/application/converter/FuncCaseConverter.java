@@ -57,6 +57,8 @@ import cloud.xcan.angus.core.tester.domain.tag.Tag;
 import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.issue.count.BurnDownChartCount;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.idgen.uid.impl.CachedUidGenerator;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -87,6 +89,9 @@ public class FuncCaseConverter {
   public static void assembleAddInfo(List<FuncCase> cases, FuncPlan planDb) {
     // Set case code and name prefix
     for (FuncCase case0 : cases) {
+      if(isNull(case0.getId())){
+        case0.setId(BIDUtils.getId(BIDKey.caseId));
+      }
       if (isEmpty(case0.getCode())) {
         case0.setCode(getCaseCode());
       }

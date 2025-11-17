@@ -33,6 +33,8 @@ import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanPermission;
 import cloud.xcan.angus.core.tester.domain.test.review.FuncReview;
 import cloud.xcan.angus.core.tester.domain.test.review.FuncReviewRepo;
 import cloud.xcan.angus.core.tester.domain.test.review.cases.FuncReviewCaseRepo;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import java.util.Collection;
@@ -115,6 +117,7 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
       @Override
       protected IdKey<Long, Object> process() {
         // Set project ID from plan and save review
+        review.setId(BIDUtils.getId(BIDKey.caseReviewId));
         review.setProjectId(planDb.getProjectId());
         IdKey<Long, Object> idKey = insert(review);
 

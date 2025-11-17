@@ -3,6 +3,8 @@ package cloud.xcan.angus.core.tester.application.converter;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.core.tester.domain.data.variables.Variable;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.model.element.extraction.DefaultExtraction;
 
 public class VariableConverter {
@@ -35,7 +37,8 @@ public class VariableConverter {
 
   public static Variable toVariable(Long projectId,
       cloud.xcan.angus.model.element.variable.Variable x) {
-    return new Variable().setProjectId(projectId)
+    return new Variable().setId(BIDUtils.getId(BIDKey.variableId))
+        .setProjectId(projectId)
         .setName(x.getName()).setDescription(x.getDescription()).setValue(x.getValue())
         .setExtracted(nonNull(x.getExtraction())).setExtraction(x.getExtraction());
   }

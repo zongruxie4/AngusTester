@@ -84,6 +84,8 @@ import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContentRepo;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleErrorCauseRepo;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleRepo;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecStartDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecStopDto;
 import cloud.xcan.angus.core.utils.PrincipalContextUtils;
@@ -137,14 +139,14 @@ import org.springframework.transaction.annotation.Transactional;
  * Command implementation for managing execution of test scripts and distributed tasks.
  * </p>
  * <p>
- * Provides comprehensive execution management services including adding, starting, stopping, 
- * updating, and deleting executions. Handles permission checks, quota validation, distributed 
- * locking, node selection, activity logging, and error handling. Supports both local and remote 
+ * Provides comprehensive execution management services including adding, starting, stopping,
+ * updating, and deleting executions. Handles permission checks, quota validation, distributed
+ * locking, node selection, activity logging, and error handling. Supports both local and remote
  * script execution with trial mode capabilities.
  * </p>
  * <p>
- * Key features include distributed execution across multiple nodes, script sharding for 
- * performance optimization, remote controller communication, and comprehensive error handling 
+ * Key features include distributed execution across multiple nodes, script sharding for
+ * performance optimization, remote controller communication, and comprehensive error handling
  * with detailed status reporting.
  * </p>
  */
@@ -208,14 +210,14 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       protected IdKey<Long, Object> process() {
         // Generate safe name if not provided
         String safeName = emptySafe(name, "Script" + formatByDateTimePattern(new Date()));
-        
+
         // Parse YAML content to AngusScript object
         AngusScript angusScript = YAML_MAPPER.readValue(content, AngusScript.class);
-        
+
         // Create script entity and get script ID
         IdKey<Long, Object> idKey = scriptCmd.add(toAngusAddScript(projectId, angusScript, content),
             true);
-        
+
         // Add execution using the created script
         return addByLocalScript(projectId, safeName, idKey.getId(), content, angusScript, trial);
       }
@@ -251,17 +253,17 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
         // Build AngusScript from individual components
         AngusScript angusScript = AngusScript.newBuilder()
             .type(scriptType).plugin(plugin).configuration(configuration).task(task).build();
-        
+
         // Convert AngusScript to YAML content
         String content = YAML_MAPPER.writeValueAsString(angusScript);
-        
+
         // Generate safe name if not provided
         String safeName = emptySafe(name, "Script" + formatByDateTimePattern(new Date()));
-        
+
         // Create script entity and get script ID
         IdKey<Long, Object> idKey = scriptCmd.add(toAngusAddScript(projectId, angusScript, content),
             true);
-        
+
         // Add execution using the created script
         return addByLocalScript(projectId, safeName, idKey.getId(), content, angusScript, trial);
       }
@@ -305,7 +307,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
         if (nonNull(trial) && trial) {
           safeTrialConfiguration(angusScript.getConfiguration());
         }
-        
+
         // Create and insert execution entity
         return add0(localScriptVoToExec(projectId, name, scriptId, script, angusScript, trial));
       }
@@ -414,7 +416,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
           if (!execDb.getStatus().isRunning()) {
             execDb.setStatus(ExecStatus.PENDING);
           }
-          
+
           // Update script content with new configuration
           execDb.setScript(YAML_MAPPER.writeValueAsString(angusScript));
           execRepo.save(execDb);
@@ -514,13 +516,13 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       protected void checkParams() {
         // Validate execution exists and retrieve details
         execDb = execQuery.checkAndFind(id);
-        
+
         // Verify current user has permission to modify the execution
         execQuery.checkPermission(execDb);
-        
+
         // Parse current script content from YAML
         angusScript = YAML_MAPPER.readValue(execDb.getScript(), AngusScript.class);
-        
+
         // Validate node availability for the new configuration
         execQuery.checkNodeValid(configuration, execDb.isTrial());
       }
@@ -563,6 +565,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
   @Override
   public IdKey<Long, Object> add0(Exec exec) {
     // Direct insertion without additional validation
+    exec.setId(BIDUtils.getId(BIDKey.execId));
     return insert(exec);
   }
 
@@ -596,13 +599,13 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
         if (dto.isBroadcast()) {
           // Broadcast mode: validate concurrent task quotas
           execQuery.checkConcurrentTaskQuota(1, execDb.isTrial());
-          
+
           // Ensure execution is not already running (main controller only)
           execQuery.checkNotRunning(execDb);
-          
+
           // Verify current user has permission to start the execution
           execQuery.checkPermission(execDb);
-          
+
           // Additional concurrent task validation
         } else {
           // Targeted mode: require specific node selection
@@ -880,7 +883,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
         if (dto.isBroadcast()) {
           // Broadcast mode: ensure execution is not already stopped (main controller only)
           execQuery.checkNotStopped(execDb);
-          
+
           // Verify current user has permission to stop the execution
           execQuery.checkPermissionInfo(execDb);
         } else {
@@ -1055,7 +1058,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       protected void checkParams() {
         // Validate executions exist and retrieve basic information
         execsDb = execQuery.checkAndFindInfo(ids);
-        
+
         // Verify current user has permission to delete each execution
         for (ExecInfo execInfo : execsDb) {
           execQuery.checkPermissionInfo(execInfo);
@@ -1078,7 +1081,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
             if (exec.getStatus().isRunning()) {
               stop(new ExecStopDto().setBroadcast(true).setId(exec.getId()));
             }
-            
+
             // Delete execution record
             execRepo.deleteById(exec.getId());
             // Note: execTargetRepo deletion is skipped to preserve test result relationships
@@ -1123,7 +1126,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
     // Determine tenant ID for node communication
     Long realTenantId = execDb.getTrial() ? OWNER_TENANT_ID : execDb.getTenantId();
-    
+
     // Get local channel router for the node
     ChannelRouter router = nodeInfoQuery.getLocalChannelRouter(nodeId, realTenantId);
     if (nonNull(router)) {
@@ -1135,7 +1138,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
             .build();
         RunnerRunVo result0 = pushRunCmd2Agent(runCmd, nodeId, realTenantId, router);
         results.add(result0);
-        
+
         // Handle successful execution
         if (result0.isSuccess()) {
           successNodeIds.add(result0.getDeviceId());
@@ -1153,12 +1156,12 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
         results.add(RunnerRunVo.fail(execId, nodeId, message));
       }
     }
-    
+
     // Add to remote nodes if not local
     if (!isLocalRouter) {
       remoteNodeIds.add(nodeId);
     }
-    
+
     // Signal completion for multi-node execution
     if (nonNull(latch)) {
       latch.countDown();
@@ -1336,26 +1339,26 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
   private List<Long> selectNodeByStrategy(Exec execDb) {
     // Get node selector configuration from execution
     NodeSelector nodeSelector = execDb.getConfiguration().getNodeSelectors();
-    
+
     // Select nodes based on strategy and configuration
     List<NodeInfo> selectNodes = nodeInfoQuery.selectByStrategy(
         isNull(nodeSelector) || isNull(nodeSelector.getNum())
             ? 1 : nodeSelector.getNum(), // Default to 1 node if not specified
-        execDb.getAvailableNodeIds(), 
+        execDb.getAvailableNodeIds(),
         execDb.getExecNodeIds(),
-        isNull(nodeSelector) ? null : nodeSelector.getStrategy(), 
+        isNull(nodeSelector) ? null : nodeSelector.getStrategy(),
         false);
-    
+
     // Validate that nodes were selected
     assertTrue(isNotEmpty(selectNodes), message(NO_AVAILABLE_NODES));
 
     // Extract node IDs from selected nodes
     List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)
         .toList();
-    
+
     // Get live node IDs to validate availability
     Set<Long> liveNodeIds = nodeInfoQuery.getLiveNodeIds(selectNodeIds);
-    
+
     // Validate that all selected nodes are live and accessible
     for (NodeInfo selectNode : selectNodes) {
       BizAssert.assertTrue(liveNodeIds.contains(selectNode.getId()),
@@ -1381,7 +1384,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     // Distribute thread count across nodes (first node gets remainder)
     Integer shardingThread = !isFirst ? execDb.getThread() / nodeSize
         : (execDb.getThread() / nodeSize) + (execDb.getThread() % nodeSize);
-    
+
     // Distribute iterations across nodes (first node gets remainder)
     Long shardingIterations = isNull(execDb.getIterations()) ? null : !isFirst
         ? execDb.getIterations() / nodeSize
@@ -1395,14 +1398,14 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       shardingRampUpThread = execDb.getOrgThread().needRampUp() ?
           !isFirst ? rampUpThread / nodeSize
               : (rampUpThread / nodeSize) + (rampUpThread % nodeSize) : null;
-      
+
       // Distribute ramp-down threads
       Integer rampDownThread = execDb.getOrgThread().getRampDownThreads();
       shardingRampDownThread = execDb.getOrgThread().needRampDown() ?
           !isFirst ? rampDownThread / nodeSize
               : (rampDownThread / nodeSize) + (rampDownThread % nodeSize) : null;
     }
-    
+
     // Generate script with sharded configuration
     return overwriteConfigScript(execDb, shardingThread, shardingRampUpThread,
         shardingRampDownThread, shardingIterations);

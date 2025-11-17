@@ -227,6 +227,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
         // Add domain name resolution to cloud service edition
         addDnsWhenCloudEditionAndAdd(service, nodeDb);
 
+        service.setId(BIDUtils.getId(BIDKey.mockServiceId));
         service.setNodeIp(nodeDb.getIp());
         IdKey<Long, Object> idKey = insert(service);
 

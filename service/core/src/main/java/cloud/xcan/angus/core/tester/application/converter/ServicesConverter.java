@@ -26,7 +26,6 @@ public class ServicesConverter {
   public static Services toNewImportService(Long projectId, String name,
       ApiImportSource importSource) {
     return new Services()
-        .setId(getCachedUidGenerator().getUID())
         .setProjectId(projectId)
         .setName(name)
         .setAuth(false)

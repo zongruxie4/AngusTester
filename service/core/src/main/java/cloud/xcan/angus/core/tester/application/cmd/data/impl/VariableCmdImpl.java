@@ -108,6 +108,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
 
       @Override
       protected IdKey<Long, Object> process() {
+        variable.setId(BIDUtils.getId(BIDKey.variableId));
         IdKey<Long, Object> idKeys = insert(variable, "name");
 
         activityCmd.add(toActivity(VARIABLE, variable, ActivityType.CREATED));
@@ -201,6 +202,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
         List<Variable> clonedVariables = new ArrayList<>();
         for (Variable variableDb : variablesDb) {
           Variable clonedVariable = VariableConverter.toCloneVariable(variableDb);
+          clonedVariable.setId(BIDUtils.getId(BIDKey.variableId));
           variableQuery.setSafeCloneName(clonedVariable);
           clonedVariables.add(clonedVariable);
         }

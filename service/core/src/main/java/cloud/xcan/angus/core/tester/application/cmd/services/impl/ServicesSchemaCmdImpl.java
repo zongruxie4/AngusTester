@@ -39,6 +39,8 @@ import cloud.xcan.angus.core.tester.domain.apis.ApisRepo;
 import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.domain.services.schema.ServicesSchema;
 import cloud.xcan.angus.core.tester.domain.services.schema.ServicesSchemaRepo;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.core.tester.infra.util.OpenAPITranslator;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
 import cloud.xcan.angus.extension.angustester.deepseek.api.TranslationService;
@@ -741,13 +743,13 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
       }
       if (!update) {
         if (isNull(serverId)) {
-          server.addExtension(ID_KEY, getCachedUidGenerator().getUID());
+          server.addExtension(ID_KEY, BIDUtils.getId(BIDKey.serverId));
         }
         schemaDb.getServers().add(server);
       }
     } else {
       if (isNull(serverId)) {
-        server.addExtension(ID_KEY, getCachedUidGenerator().getUID());
+        server.addExtension(ID_KEY, BIDUtils.getId(BIDKey.serverId));
       }
       schemaDb.setServers(List.of(server));
     }

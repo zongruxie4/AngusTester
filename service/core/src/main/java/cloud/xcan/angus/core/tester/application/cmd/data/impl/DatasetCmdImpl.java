@@ -107,6 +107,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
 
       @Override
       protected IdKey<Long, Object> process() {
+        dataset.setId(BIDUtils.getId(BIDKey.datasetId));
         IdKey<Long, Object> idKeys = insert(dataset, "name");
 
         activityCmd.add(toActivity(DATASET, dataset, ActivityType.CREATED));
@@ -193,6 +194,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
         List<Dataset> clonedDatasets = new ArrayList<>();
         for (Dataset datasetDb : datasetsDb) {
           Dataset clonedDataset = DatasetConverter.toCloneDataset(datasetDb);
+          clonedDataset.setId(BIDUtils.getId(BIDKey.datasetId));
           datasetQuery.setSafeCloneName(clonedDataset);
           clonedDatasets.add(clonedDataset);
         }

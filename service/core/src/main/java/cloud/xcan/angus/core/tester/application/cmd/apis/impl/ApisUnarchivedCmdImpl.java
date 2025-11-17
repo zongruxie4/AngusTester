@@ -10,6 +10,8 @@ import cloud.xcan.angus.core.tester.application.cmd.apis.ApisUnarchivedCmd;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisUnarchivedQuery;
 import cloud.xcan.angus.core.tester.domain.apis.unarchived.ApisUnarchived;
 import cloud.xcan.angus.core.tester.domain.apis.unarchived.ApisUnarchivedRepo;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import java.util.Collections;
@@ -54,6 +56,9 @@ public class ApisUnarchivedCmdImpl extends CommCmd<ApisUnarchived, Long> impleme
 
       @Override
       protected List<IdKey<Long, Object>> process() {
+        for (ApisUnarchived api : apis) {
+          api.setId(BIDUtils.getId(BIDKey.apisId));
+        }
         // Batch insert unarchived APIs with summary validation
         return batchInsert(apis, "summary");
       }
