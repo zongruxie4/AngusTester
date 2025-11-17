@@ -387,8 +387,8 @@ export function useChartManagement () {
     }
 
     if (data.taskByType) {
-      const { STORY = 0, TASK = 0, BUG = 0, API_TEST = 0, SCENARIO_TEST = 0, REQUIREMENT = 0 } = data.taskByType;
-      const typeData = [STORY, REQUIREMENT, TASK, BUG, API_TEST, SCENARIO_TEST];
+      const { STORY = 0, TASK = 0, BUG = 0, DESIGN = 0, REQUIREMENT = 0 } = data.taskByType;
+      const typeData = [STORY, REQUIREMENT, TASK, BUG, DESIGN];
 
       if (taskPieConfig.value.series[0]) {
         taskPieConfig.value.series[0].data.forEach((item, idx) => {

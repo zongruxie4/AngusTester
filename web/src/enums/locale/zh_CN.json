@@ -71,8 +71,7 @@
         "STORY": "故事",
         "TASK": "任务",
         "BUG": "缺陷",
-        "API_TEST": "接口测试",
-        "SCENARIO_TEST": "场景测试"
+        "DESIGN": "设计"
       },
       "TaskStatus": {
         "PENDING": "待处理",

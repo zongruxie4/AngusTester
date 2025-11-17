@@ -42,20 +42,16 @@ const task = computed(() => {
   return props.dataSource?.content?.task;
 });
 
-const taskType = computed(() => {
-  return task.value?.taskType?.value;
-});
-
 const testType = computed(() => {
   return task.value?.testType?.value;
 });
 
 const idText = computed(() => {
-  return taskType.value === 'API_TEST' ? t('reportPreview.task.info.testingInfo.testResource.fields.apiId') : t('reportPreview.task.info.testingInfo.testResource.fields.scenarioId');
+  return t('reportPreview.task.info.testingInfo.testResource.fields.scenarioId');
 });
 
 const nameText = computed(() => {
-  return taskType.value === 'API_TEST' ? t('reportPreview.task.info.testingInfo.testResource.fields.apiName') : t('reportPreview.task.info.testingInfo.testResource.fields.scenarioName');
+  return t('reportPreview.task.info.testingInfo.testResource.fields.scenarioName');
 });
 </script>
 

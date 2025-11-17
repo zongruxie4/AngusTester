@@ -987,7 +987,7 @@ onMounted(async () => {
         if (taskType) {
           selectedQuickSearchItems.value.set(taskType, { key: taskType });
         } else {
-          [TaskType.REQUIREMENT, TaskType.STORY, TaskType.TASK, TaskType.BUG, TaskType.API_TEST, TaskType.SCENARIO_TEST].forEach(item => {
+          [TaskType.REQUIREMENT, TaskType.STORY, TaskType.TASK, TaskType.BUG, TaskType.DESIGN].forEach(item => {
             selectedQuickSearchItems.value.delete(item);
           });
         }
@@ -1167,35 +1167,6 @@ const showAddTagBtn = computed(() => {
   return selectedTagOptions.value.length < 3;
 });
 
-/**
- * API parameters for target parent ID filter
- */
-const apiParams = computed(() => {
-  return {
-    serviceId: targetParentIdFilter.value.value
-  };
-});
-
-/**
- * Current task type from search filters
- */
-const taskType = computed(() => {
-  return searchFilters.value.find(item => item.key === 'taskType')?.value;
-});
-
-/**
- * Checks if current task type is API test
- */
-const isAPITest = computed(() => {
-  return taskType.value === TaskType.API_TEST;
-});
-
-/**
- * Checks if current task type is scenario test
- */
-const isScenarioTest = computed(() => {
-  return taskType.value === TaskType.SCENARIO_TEST;
-});
 
 const modeOptions = [
   {
@@ -1708,71 +1679,6 @@ const sortMenuItems = [
 
         <template #execResult_option="record">
           <span :style="'color:' + EXEC_RESULT_COLOR[record.value]">{{ record.message }}</span>
-        </template>
-
-        <template #targetParentId>
-          <Select
-            v-if="isAPITest"
-            :value="targetParentIdFilter.value"
-            :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
-            :fieldNames="{ label: 'name', value: 'id' }"
-            :allowClear="true"
-            :placeholder="t('common.placeholders.selectService')"
-            class="w-72 ml-2"
-            showSearch
-            @change="handleTargetParentIdChange">
-            <template #option="record">
-              <div class="text-3 leading-3 flex items-center h-6.5">
-                <IconText
-                  class="flex-shrink-0"
-                  style="width:16px;height: 16px;background-color: rgba(162,222,236,100%);"
-                  text="S" />
-                <div :title="record.name" class="truncate ml-1.5">{{ record.name }}</div>
-              </div>
-            </template>
-          </Select>
-        </template>
-
-        <template #targetId>
-          <Select
-            v-if="isAPITest"
-            :value="targetIdFilter.value"
-            :action="`${TESTER}/apis?projectId=${props.projectId}&fullTextSearch=true`"
-            :params="apiParams"
-            :fieldNames="{ label: 'summary', value: 'id' }"
-            :allowClear="true"
-            :placeholder="t('common.placeholders.selectApi')"
-            class="w-72 ml-2"
-            showSearch
-            @change="handleTargetIdChange">
-            <template #option="record">
-              <div class="flex items-center">
-                <Icon
-                  icon="icon-jiekou"
-                  class="text-4 flex-shrink-0"
-                  style="color:rgba(82,196,26,100%);" />
-                <div :title="record.summary" class="truncate ml-1.5">{{ record.summary }}</div>
-              </div>
-            </template>
-          </Select>
-
-          <Select
-            v-if="isScenarioTest"
-            :value="targetIdFilter.value"
-            :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
-            :fieldNames="{ label: 'name', value: 'id' }"
-            :allowClear="true"
-            :placeholder="t('common.placeholders.selectScenario')"
-            class="w-72 ml-2"
-            showSearch
-            @change="handleTargetIdChange">
-            <template #option="record">
-              <div class="flex items-center">
-                <Icon icon="icon-changjing" class="text-4 flex-shrink-0" />
-                <div :title="record.name" class="truncate ml-1.5">{{ record.name }}</div>
-              </div>
-            </template>
-          </Select>
         </template>
 
         <template #evalWorkload>

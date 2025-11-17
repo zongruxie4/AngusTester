@@ -23,8 +23,7 @@ const targetResourceTypes = {
   STORY: enumUtils.getEnumDescription(TaskType, TaskType.STORY),
   TASK: enumUtils.getEnumDescription(TaskType, TaskType.TASK),
   BUG: enumUtils.getEnumDescription(TaskType, TaskType.BUG),
-  API_TEST: enumUtils.getEnumDescription(TaskType, TaskType.API_TEST),
-  SCENARIO_TEST: enumUtils.getEnumDescription(TaskType, TaskType.SCENARIO_TEST)
+  DESIGN: enumUtils.getEnumDescription(TaskType, TaskType.DESIGN),
 };
 
 const getChartData = (data) => {

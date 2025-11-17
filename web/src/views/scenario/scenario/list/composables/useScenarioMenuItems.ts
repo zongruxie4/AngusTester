@@ -62,34 +62,6 @@ export function useScenarioMenuItems () {
       name: t('actions.delete'),
       permission: ScenarioPermission.DELETE,
       icon: 'icon-qingchu'
-    },
-    {
-      key: 'createTestTask',
-      name: t('scenario.list.actions.createTestTask'),
-      permission: ScenarioPermission.TEST,
-      icon: 'icon-shengchengceshirenwu1',
-      tip: t('scenario.list.tooltips.createTestTask')
-    },
-    {
-      key: 'restartTestTask',
-      name: t('scenario.list.actions.restartTestTask'),
-      permission: ScenarioPermission.TEST,
-      icon: 'icon-zhongxinkaishiceshi',
-      tip: t('scenario.list.tooltips.restartTestTask')
-    },
-    {
-      key: 'reopenTestTask',
-      name: t('scenario.list.actions.reopenTestTask'),
-      permission: ScenarioPermission.TEST,
-      icon: 'icon-zhongxindakaiceshirenwu',
-      tip: t('scenario.list.tooltips.reopenTestTask')
-    },
-    {
-      key: 'deleteTestTask',
-      name: t('scenario.list.actions.deleteTestTask'),
-      permission: ScenarioPermission.TEST,
-      icon: 'icon-shanchuceshirenwu1',
-      tip: t('scenario.list.tooltips.deleteTestTask')
     }
   ]);
 

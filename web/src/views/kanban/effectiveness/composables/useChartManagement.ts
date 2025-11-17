@@ -187,8 +187,8 @@ export function useChartManagement () {
   const updateTaskTypeChart = (totalTypeCount: TotalTypeCount) => {
     if (!taskTypeChart) return;
 
-    const { STORY = 0, REQUIREMENT = 0, TASK = 0, BUG = 0, API_TEST = 0, SCENARIO_TEST = 0 } = totalTypeCount;
-    const typeData = [STORY, REQUIREMENT, TASK, BUG, API_TEST, SCENARIO_TEST];
+    const { STORY = 0, REQUIREMENT = 0, TASK = 0, BUG = 0, DESIGN = 0 } = totalTypeCount;
+    const typeData = [STORY, REQUIREMENT, TASK, BUG, DESIGN];
 
     taskTypeConfig.value.series[0].data.forEach((item, idx) => {
       item.value = typeData[idx];

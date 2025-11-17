@@ -225,6 +225,7 @@
         "assocScenarioTestTitle": "Scenario Test",
         "assocScenarioTestTip": "Link to scenario testing tasks to validate functionality in real-world usage.",
         "testInfoTitle": "Test Information",
+        "assocDesignTip": "Link to design tasks to clarify functional development basis or trace design change impact, ensuring development delivery aligns with design expectations.", 
         "subIssue": {
           "actions": {
             "addSubIssue": "Add Sub Issue",

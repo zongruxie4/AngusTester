@@ -41,9 +41,7 @@ const len = computed(() => {
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
       <span id="a5" class="text-4 text-theme-title font-medium">
-        {{ t('reportPreview.serial.5') }}
-        <em class="inline-block w-0.25"></em>
-        {{ t('reportPreview.task.subTask.title') }}
+        {{ t('reportPreview.serial.5') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.subTask.title') }}
       </span>
     </h1>
 

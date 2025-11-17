@@ -38,10 +38,8 @@ const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInf
  */
 const getTaskTypeIcon = (taskType: string) => {
   switch (taskType) {
-    case TaskType.API_TEST:
+    case TaskType.DESIGN:
       return 'icon-jiekouceshi';
-    case TaskType.SCENARIO_TEST:
-      return 'icon-changjingceshi';
     case TaskType.BUG:
       return 'icon-quexian';
     case TaskType.STORY:

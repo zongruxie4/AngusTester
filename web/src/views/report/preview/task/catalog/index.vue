@@ -21,17 +21,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const DashedLine = defineAsyncComponent(() => import('./dashedLine.vue'));
 
-const taskType = computed(() => {
-  return props.dataSource?.content?.task?.taskType?.value;
-});
-
-const showTestInfo = computed(() => {
-  if (!taskType.value) {
-    return;
-  }
-
-  return ['API_TEST', 'SCENARIO_TEST'].includes(taskType.value);
-});
 </script>
 
 <template>
@@ -43,7 +32,7 @@ const showTestInfo = computed(() => {
 
     <div class="space-y-3.5">
       <a href="#a1" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('common.basicInfo') }}</span>
+        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('common.basicInfo') }}</span>
         <DashedLine />
       </a>
       <a href="#a2" class="flex items-center space-x-2.5">
@@ -55,7 +44,7 @@ const showTestInfo = computed(() => {
         <DashedLine />
       </a>
       <a href="#a4" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('common.description') }}</span>
+        <span class="h1">{{ t('reportPreview.serial.4') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('common.description') }}</span>
         <DashedLine />
       </a>
       <a href="#a5" class="flex items-center space-x-2.5">
@@ -71,40 +60,8 @@ const showTestInfo = computed(() => {
         <DashedLine />
       </a>
 
-      <template v-if="showTestInfo">
-        <a href="#a8" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('reportPreview.serial.8') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.testingInfo') }}</span>
-          <DashedLine />
-        </a>
-        <a href="#a8" class="flex items-center space-x-2.5">
-          <span>8.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.testResource') }}</span>
-          <DashedLine />
-        </a>
-        <a href="#a8.1" class="flex items-center space-x-2.5">
-          <span>8.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.execInfo') }}</span>
-          <DashedLine />
-        </a>
-        <a href="#a8.2" class="flex items-center space-x-2.5">
-          <span>8.2<em class="inline-block w-4.25 font-medium"></em>{{ t('common.testResult') }}</span>
-          <DashedLine />
-        </a>
-        <a href="#a9" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('common.remark') }}</span>
-          <DashedLine />
-        </a>
-        <a href="#a10" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('reportPreview.serial.10') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.activity') }}</span>
-          <DashedLine />
-        </a>
-        <a href="#a11" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('common.comment') }}</span>
-          <DashedLine />
-        </a>
-      </template>
-
-      <template v-else>
-        <a href="#a8" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('common.remark') }}</span>
+      <a href="#a8" class="flex items-center space-x-2.5">
+          <span class="h1">{{ t('reportPreview.serial.8') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('common.remark') }}</span>
           <DashedLine />
         </a>
         <a href="#a9" class="flex items-center space-x-2.5">
@@ -115,7 +72,6 @@ const showTestInfo = computed(() => {
           <span class="h1">{{ t('common.comment') }}</span>
           <DashedLine />
         </a>
-      </template>
     </div>
     <div class="pdf-page-break"></div>
   </div>

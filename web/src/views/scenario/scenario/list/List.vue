@@ -308,37 +308,6 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
         @change="authFlagChange" />
     </AsyncComponent>
 
-    <AsyncComponent :visible="createTestTaskVisible">
-      <CreateTestTaskModal
-        v-model:id="selectedId"
-        v-model:visible="createTestTaskVisible"
-        :infoText="t('scenario.list.tips.testTaskInfo')"
-        :type="CombinedTargetType.SCENARIO" />
-    </AsyncComponent>
-
-    <AsyncComponent :visible="restartTestTaskVisible">
-      <RestartTestTaskModal
-        v-model:visible="restartTestTaskVisible"
-        v-model:id="selectedId"
-        :content="restartContent"
-        :type="CombinedTargetType.SCENARIO" />
-    </AsyncComponent>
-
-    <AsyncComponent :visible="reopenTestTaskVisible">
-      <ReopenTestTaskModal
-        v-model:visible="reopenTestTaskVisible"
-        v-model:id="selectedId"
-        :content="reopenContent"
-        :type="CombinedTargetType.SCENARIO" />
-    </AsyncComponent>
-
-    <AsyncComponent :visible="deleteTaskVisible">
-      <DeleteTestTask
-        :id="selectedId"
-        v-model:visible="deleteTaskVisible"
-        :type="CombinedTargetType.SCENARIO" />
-    </AsyncComponent>
-
     <AsyncComponent :visible="exportVisible">
       <ExportScriptModal v-model:visible="exportVisible" :ids="selectedId ? [selectedId] : []" />
     </AsyncComponent>

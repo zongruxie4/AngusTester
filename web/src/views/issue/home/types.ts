@@ -29,8 +29,7 @@ export type SummaryInfo = {
     REQUIREMENT: string;
     TASK: string;
     BUG: string;
-    API_TEST: string;
-    SCENARIO_TEST: string;
+    DESIGN: string;
   };
   // Backlog breakdown by type (mirrors taskByType keys)
   backlogByType?: {
@@ -38,8 +37,7 @@ export type SummaryInfo = {
     REQUIREMENT: string;
     TASK: string;
     BUG: string;
-    API_TEST: string;
-    SCENARIO_TEST: string;
+    DESIGN: string;
   };
   taskByStatus: {
     PENDING: string;

@@ -1832,28 +1832,7 @@ onMounted(() => {
 
           <div style="height: calc(100% - 36px);" class="pt-3.5 overflow-hidden">
             <AsyncComponent :visible="!!checkedTaskId">
-              <APIInfo
-                v-if="checkedTaskType === TaskType.API_TEST"
-                v-show="drawerActiveKey === 'basic'"
-                :projectId="props.projectId"
-                :appInfo="props.appInfo"
-                :userInfo="props.userInfo"
-                :dataSource="checkedTaskInfo"
-                @change="taskInfoChange"
-                @loadingChange="loadingChange" />
-
-              <ScenarioInfo
-                v-else-if="checkedTaskType === TaskType.SCENARIO_TEST"
-                v-show="drawerActiveKey === 'basic'"
-                :projectId="props.projectId"
-                :appInfo="props.appInfo"
-                :userInfo="props.userInfo"
-                :dataSource="checkedTaskInfo"
-                @change="taskInfoChange"
-                @loadingChange="loadingChange" />
-
               <BasicInfo
-                v-else
                 v-show="drawerActiveKey === 'basic'"
                 :projectId="props.projectId"
                 :appInfo="props.appInfo"

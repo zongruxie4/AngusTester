@@ -432,28 +432,8 @@ onMounted(() => {
 
         <div style="height: calc(100% - 36px);" class="pt-3.5 overflow-hidden">
           <AsyncComponent :visible="!!selectedTaskId">
-            <APIInfo
-              v-if="selectedTaskType === TaskType.API_TEST"
-              v-show="activeDrawerTab === 'basic'"
-              :projectId="props.projectId"
-              :appInfo="props.appInfo"
-              :userInfo="props.userInfo"
-              :dataSource="selectedTaskInfo"
-              @change="handleTaskInfoChange as any"
-              @loadingChange="handleLoadingStateChange" />
-
-            <ScenarioInfo
-              v-else-if="selectedTaskType === TaskType.SCENARIO_TEST"
-              v-show="activeDrawerTab === 'basic'"
-              :projectId="props.projectId"
-              :appInfo="props.appInfo"
-              :userInfo="props.userInfo"
-              :dataSource="selectedTaskInfo"
-              @change="handleTaskInfoChange as any"
-              @loadingChange="handleLoadingStateChange" />
-
             <BasicInfo
-              v-else
+
               v-show="activeDrawerTab === 'basic'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
