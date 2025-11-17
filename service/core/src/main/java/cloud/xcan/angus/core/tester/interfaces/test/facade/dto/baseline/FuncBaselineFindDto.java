@@ -44,4 +44,9 @@ public class FuncBaselineFindDto extends PageQuery {
   @Schema(description = "Baseline last modifier identifier for modification tracking")
   private Long lastModifiedBy;
 
+  @Override
+  public String getDefaultOrderBy() {
+    return "createdDate";
+  }
+
 }

@@ -58,6 +58,10 @@ public class FuncPlanFindDto extends PageQuery {
   @Schema(description = "Test plan last modifier identifier for modification tracking")
   private Long lastModifiedBy;
 
+  @Override
+  public String getDefaultOrderBy() {
+    return "createdDate";
+  }
 }
 
 

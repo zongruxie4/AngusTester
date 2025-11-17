@@ -18,7 +18,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
-
 public class ScenarioInfoFindDto extends PageQuery {
 
   @Schema(description = "Scenario identifier for precise query filtering")
