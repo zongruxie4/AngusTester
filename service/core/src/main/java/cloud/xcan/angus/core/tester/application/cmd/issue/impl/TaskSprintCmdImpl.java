@@ -419,6 +419,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
       @Override
       protected IdKey<Long, Object> process() {
         TaskSprint newSprint = TaskSprintConverter.clone(sprintDb);
+        newSprint.setId(BIDUtils.getId(BIDKey.sprintId));
         taskSprintQuery.setSafeCloneName(newSprint);
         IdKey<Long, Object> idKey = insert(newSprint, "name");
 

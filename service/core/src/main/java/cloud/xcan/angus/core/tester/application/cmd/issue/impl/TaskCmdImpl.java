@@ -2333,7 +2333,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           sprint = parseSample(Objects.requireNonNull(resourceUrl),
               new TypeReference<TaskSprint>() {
               }, SAMPLE_SPRINT_FILE);
-          assembleExampleTaskSprint(projectDb, uidGenerator.getUID(), users, sprint);
+          assembleExampleTaskSprint(projectDb, users, sprint);
           taskSprintCmd.add(sprint);
         }
 
