@@ -51,6 +51,7 @@ public class ScriptConverter {
 
   public static void setReplaceInfo(Script scriptDb, Script script, AngusScript angusScript) {
     scriptDb.setName(script.getName())
+        .setType(nullSafe(script.getType(), scriptDb.getType()))
         .setDescription(script.getDescription())
         .setPlugin(angusScript.getPlugin())
         .setContent(script.getContent());
