@@ -240,7 +240,7 @@ onMounted(() => {
             allowClear
             :error="!!nameErrorMsg"
             :maxlength="100"
-            :placeholder="t('common.placeholders.searchKeyword')"
+            :placeholder="t('common.placeholders.inputName')"
             @change="handleServiceNameChange" />
         </Validate>
       </div>
