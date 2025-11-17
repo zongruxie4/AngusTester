@@ -2103,7 +2103,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                     <FormItem
                       class="flex-1"
                       :name="['thread', 'rampDownInterval']"
-                      :rules="{ required: stressReliever, message: t('xcan_execSettingForm.pleaseEnterRampDownInterval'), trigger: ['change', 'blur'] }">
+                      :rules="{ required: true, message: t('xcan_execSettingForm.pleaseEnterRampDownInterval'), trigger: ['change', 'blur'] }">
                       <Input
                         v-model:value="executionParams.thread.rampDownInterval"
                         class="w-24"
@@ -2120,7 +2120,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                     <FormItem
                       class="flex-1"
                       :name="['thread', 'rampDownThreads']"
-                      :rules="{ required: stressReliever, message: t('xcan_execSettingForm.pleaseEnterRampDownThreads'), trigger: ['change', 'blur'] }">
+                      :rules="{ required: true, message: t('xcan_execSettingForm.pleaseEnterRampDownThreads'), trigger: ['change', 'blur'] }">
                       <Input
                         v-model:value="executionParams.thread.rampDownThreads"
                         dataType="number"
@@ -2389,7 +2389,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             <FormItem class="pr-5 relative" :name="['nodeSelectors', 'availableNodeIds']">
               <Select
                 v-model:value="globalSettingsParams.nodeSelectors.availableNodeIds"
-                :action="`${TESTER}/node?role=EXECUTION&fullTextSearch=true`"
+                :action="`${TESTER}/node?enabled=true&installAgent=true&role=EXECUTION&fullTextSearch=true`"
                 :fieldNames="{ label: 'name', value: 'id' }"
                 mode="multiple"
                 :placeholder="t('xcan_execSettingForm.availableExecutionNodes')" />

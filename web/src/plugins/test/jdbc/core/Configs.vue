@@ -80,6 +80,7 @@ const exportModalVisible = ref(false);// 导出脚本弹窗
 const authVisible = ref(false);// 显示权限弹窗
 let controller: AbortController;// 用于终止请求的实例
 const loading = ref(false);
+const debugLoading = ref(false);
 const loaded = ref(false);
 const rendered = ref(false);
 // 默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮
@@ -315,7 +316,9 @@ const toDebug = async () => {
     scriptType: type
   };
 
+  debugLoading.value = true;
   const [error, { data }] = await exec.startScenarioDebug(params);
+  debugLoading.value = false;
   loading.value = false;
   if (error) {
     debugHttpError.value = {
@@ -1446,7 +1449,7 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
       class="pure-tab-wrap h-full leading-5"
       size="small">
       <template #rightExtra>
-        <ButtonGroup :hideKeys="hideButtonSet" @click="buttonGroupClick" />
+        <ButtonGroup :hideKeys="hideButtonSet" :debugLoading="debugLoading"  @click="buttonGroupClick" />
       </template>
       <TabPane key="taskConfig" :tab="tabText.task" />
       <TabPane key="executeConfig" :tab="tabText.execute" />

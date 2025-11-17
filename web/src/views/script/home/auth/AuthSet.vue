@@ -45,7 +45,7 @@ const {
   handleScroll,
   resizeHandler,
   initialize
-} = useAuthData(props.projectId, props.authObjectId, props.type);
+} = useAuthData(props);
 
 /**
  * <p>

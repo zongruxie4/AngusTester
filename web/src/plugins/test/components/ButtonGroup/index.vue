@@ -12,11 +12,13 @@ import { ButtonGroupMenuItem } from './PropsType';
  */
 export interface Props {
   hideKeys: Set<string>; // Set of button keys to hide from the button group
+  debugLoading?: boolean;
 }
 
 // Define props with default values
 const props = withDefaults(defineProps<Props>(), {
-  hideKeys: () => new Set<string>()
+  hideKeys: () => new Set<string>(),
+  debugLoading: false
 });
 
 // Initialize i18n for internationalization
@@ -66,6 +68,14 @@ const buttonItems = computed(() => {
   return menuItems.value.filter(item => !hideKeys.has(item.key));
 });
 
+
+const getLoading = (key: string) => {
+  if (key === 'debug') {
+    return props.debugLoading;
+  }
+  return false;
+};
+
 /**
  * Save button configuration
  * Computed property to support dynamic i18n updates
@@ -89,6 +99,7 @@ const saveItem = computed<ButtonGroupMenuItem>(() => ({
       <Button
         type="link"
         size="small"
+        :loading="getLoading(item.key)"
         @click="click(item)">
         <div class="flex items-center space-x-1">
           <Icon :icon="item.icon" class="text-3.5" />
