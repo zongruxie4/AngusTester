@@ -11,8 +11,8 @@ import lodash from 'lodash-es';
 const { t } = useI18n();
 
 // Async components for case comparison
-const AssocTasks = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocIssues.vue'));
-const AssocCases = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocCases.vue'));
+// const AssocTasks = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocIssues.vue'));
+// const AssocCases = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocCases.vue'));
 const Attachment = defineAsyncComponent(() => import('@/views/test/review/detail/case/Attachment.vue'));
 
 // Props and Emits
@@ -184,49 +184,61 @@ const testStepsHighlightClass = computed(() => {
   }
 });
 
-/**
- * Get CSS class for associated tasks comparison highlighting
- */
-const associatedTasksHighlightClass = computed(() => {
-  if (!baseCaseData.value?.refTaskInfos?.length &&
-   compareCaseData.value?.refTaskInfos?.length) {
+const getTestStepHighlightClass = (step, idx) => {
+  if (!baseCaseData.value?.steps?.[idx]) {
     return 'bg-status-add';
-  } else if (baseCaseData.value?.refTaskInfos?.length &&
-  !compareCaseData.value?.refTaskInfos?.length) {
+  } else if (!compareCaseData.value?.steps?.[idx]?.step && !compareCaseData.value?.steps?.[idx]?.expectedResult) {
     return 'bg-status-del';
-  } else if (!!baseCaseData.value?.refTaskInfos?.length &&
-  (baseCaseData.value?.refTaskInfos?.length !== compareCaseData.value?.refTaskInfos?.length)) {
+  } else if (JSON.stringify(baseCaseData.value?.steps?.[idx]) !== JSON.stringify(step)) {
     return 'bg-blue-active';
-  } else if (!!baseCaseData.value?.refTaskInfos?.length &&
-  (baseCaseData.value?.refTaskInfos?.length === compareCaseData.value?.refTaskInfos?.length)) {
-    const differentTasks = lodash.differenceBy(baseCaseData.value.refTaskInfos?.length, compareCaseData.value.refTaskInfos, 'id');
-    if (differentTasks?.length) {
-      return 'bg-blue-active';
-    }
   } else {
     return '';
   }
-});
+};
+
+/**
+ * Get CSS class for associated tasks comparison highlighting
+ */
+// const associatedTasksHighlightClass = computed(() => {
+//   if (!baseCaseData.value?.refTaskInfos?.length &&
+//    compareCaseData.value?.refTaskInfos?.length) {
+//     return 'bg-status-add';
+//   } else if (baseCaseData.value?.refTaskInfos?.length &&
+//   !compareCaseData.value?.refTaskInfos?.length) {
+//     return 'bg-status-del';
+//   } else if (!!baseCaseData.value?.refTaskInfos?.length &&
+//   (baseCaseData.value?.refTaskInfos?.length !== compareCaseData.value?.refTaskInfos?.length)) {
+//     return 'bg-blue-active';
+//   } else if (!!baseCaseData.value?.refTaskInfos?.length &&
+//   (baseCaseData.value?.refTaskInfos?.length === compareCaseData.value?.refTaskInfos?.length)) {
+//     const differentTasks = lodash.differenceBy(baseCaseData.value.refTaskInfos?.length, compareCaseData.value.refTaskInfos, 'id');
+//     if (differentTasks?.length) {
+//       return 'bg-blue-active';
+//     }
+//   } else {
+//     return '';
+//   }
+// });
 
 /**
  * Get CSS class for associated cases comparison highlighting
  */
-const associatedCasesHighlightClass = computed(() => {
-  if (!baseCaseData.value?.refCaseInfos?.length && compareCaseData.value?.refCaseInfos?.length) {
-    return 'bg-status-add';
-  } else if (baseCaseData.value?.refCaseInfos?.length && !compareCaseData.value?.refCaseInfos?.length) {
-    return 'bg-status-del';
-  } else if (!!baseCaseData.value?.refCaseInfos?.length && (baseCaseData.value?.refCaseInfos?.length !== compareCaseData.value.refCaseInfos?.length)) {
-    return 'bg-blue-active';
-  } else if (!!baseCaseData.value?.refCaseInfos?.length && (baseCaseData.value?.refCaseInfos?.length === compareCaseData.value.refCaseInfos?.length)) {
-    const differentCases = lodash.differenceBy(baseCaseData.value.refCaseInfos?.length, compareCaseData.value.refCaseInfos, 'id');
-    if (differentCases?.length) {
-      return 'bg-blue-active';
-    }
-  } else {
-    return '';
-  }
-});
+// const associatedCasesHighlightClass = computed(() => {
+//   if (!baseCaseData.value?.refCaseInfos?.length && compareCaseData.value?.refCaseInfos?.length) {
+//     return 'bg-status-add';
+//   } else if (baseCaseData.value?.refCaseInfos?.length && !compareCaseData.value?.refCaseInfos?.length) {
+//     return 'bg-status-del';
+//   } else if (!!baseCaseData.value?.refCaseInfos?.length && (baseCaseData.value?.refCaseInfos?.length !== compareCaseData.value.refCaseInfos?.length)) {
+//     return 'bg-blue-active';
+//   } else if (!!baseCaseData.value?.refCaseInfos?.length && (baseCaseData.value?.refCaseInfos?.length === compareCaseData.value.refCaseInfos?.length)) {
+//     const differentCases = lodash.differenceBy(baseCaseData.value.refCaseInfos?.length, compareCaseData.value.refCaseInfos, 'id');
+//     if (differentCases?.length) {
+//       return 'bg-blue-active';
+//     }
+//   } else {
+//     return '';
+//   }
+// });
 
 /**
  * Get CSS class for attachments comparison highlighting
@@ -270,6 +282,9 @@ onMounted(() => {
       Promise.all([loadBaseCaseDetails(), loadCompareCaseDetails()]).then(() => {
         selectedBaseVersion.value = baseCaseData.value.version;
         selectedCompareVersion.value = compareCaseData.value.version;
+        if (compareCaseData.value?.steps?.length < baseCaseData.value?.steps?.length) {
+          compareCaseData.value.steps = compareCaseData.value.steps.concat(Array(baseCaseData.value.steps.length - compareCaseData.value.steps.length).fill({}));
+        }
       });
     }
   }, {
@@ -427,14 +442,14 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div class="flex-1 border-r" :class="testStepsHighlightClass">
+        <div class="flex-1 border-r">
           <div v-if="compareCaseData?.steps?.length" class="-mb-0.25">
             <div class="flex border-b">
               <span class="w-8 border-r"></span>
               <span class="flex-1 px-2 border-r">{{ t('testCaseBaseline.case.stepDescription') }}</span>
               <span class="flex-1 px-2">{{ t('testCaseBaseline.case.expectedResult') }}</span>
             </div>
-            <div v-for="(step, idx) in compareCaseData.steps" class="flex border-b leading-5">
+            <div v-for="(step, idx) in compareCaseData.steps" class="flex border-b leading-5" :class="getTestStepHighlightClass(step, idx)">
               <div class="w-8 text-center border-r py-2">{{ idx + 1 }}</div>
               <div class="flex-1 px-2 border-r py-2">
                 <RichEditor
@@ -459,7 +474,7 @@ onMounted(() => {
         </div>
       </div>
 
-      <div v-show="!shouldHideSameItems || !!associatedTasksHighlightClass" class="flex leading-10 border-b">
+      <!-- <div v-show="!shouldHideSameItems || !!associatedTasksHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l  bg-gray-bg">
           {{ t('common.assocIssues') }}
         </div>
@@ -481,9 +496,9 @@ onMounted(() => {
               :caseInfo="compareCaseData" />
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div v-show="!shouldHideSameItems || !!associatedCasesHighlightClass" class="flex leading-10 border-b">
+      <!-- <div v-show="!shouldHideSameItems || !!associatedCasesHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l  bg-gray-bg">
           {{ t('common.assocCases') }}
         </div>
@@ -505,7 +520,7 @@ onMounted(() => {
               :caseInfo="compareCaseData" />
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div v-show="!shouldHideSameItems || !!attachmentsHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l  bg-gray-bg">

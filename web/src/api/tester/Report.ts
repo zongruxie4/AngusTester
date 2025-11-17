@@ -47,7 +47,7 @@ export default class API {
   }
 
   deleteReportRecord (recordsIds: string[]): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/record`, recordsIds);
+    return http.del(`${baseUrl}/record`, {ids: recordsIds}, );
   }
 
   addReportAuth (reportId: string, params: {permissions: string[], authObjectType: string}) : Promise<[Error | null, any]> {

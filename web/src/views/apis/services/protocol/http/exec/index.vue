@@ -5,7 +5,7 @@ import { Tabs, TabPane } from 'ant-design-vue';
 import { exec } from '@/api/ctrl';
 import { ScriptType } from '@xcan-angus/infra';
 
-const TestSummary = defineAsyncComponent(() => import('./TestSummary.vue'));
+const TestSummary = defineAsyncComponent(() => import('@/views/scenario/scenario/detail/TestSummary.vue'));
 const Task = defineAsyncComponent(() => import('./Task.vue'));
 const ExecDetail = defineAsyncComponent(() => import('@/views/execution/detail/index.vue'));
 
