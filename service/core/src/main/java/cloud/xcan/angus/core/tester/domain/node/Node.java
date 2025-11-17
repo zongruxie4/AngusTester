@@ -112,10 +112,9 @@ public class Node extends TenantAuditingEntity<Node, Long> {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Node)) {
+    if (!(o instanceof Node node)) {
       return false;
     }
-    Node node = (Node) o;
     return Objects.equals(id, node.id) &&
         Objects.equals(name, node.name) &&
         Objects.equals(ip, node.ip) &&

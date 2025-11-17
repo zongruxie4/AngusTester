@@ -41,6 +41,9 @@ public class NodeFindDto extends PageQuery {
   @Schema(description = "Node status filter for active/inactive node listing")
   private Boolean enabled;
 
+  @Schema(description = "Has the node agent been installed")
+  private Boolean installAgent;
+
   @Schema(description = "Tenant identifier for multi-tenant node filtering")
   private Long tenantId;
 
