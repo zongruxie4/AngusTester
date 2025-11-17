@@ -2,8 +2,6 @@ package cloud.xcan.angus.core.tester.domain.kanban;
 
 import cloud.xcan.angus.api.commonlink.user.UserInfo;
 import cloud.xcan.angus.api.enums.ReviewStatus;
-import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
-import cloud.xcan.angus.core.tester.domain.test.summary.FuncCaseSummary;
 import cloud.xcan.angus.core.tester.domain.issue.count.BackloggedCount;
 import cloud.xcan.angus.core.tester.domain.issue.count.LeadTimeCount;
 import cloud.xcan.angus.core.tester.domain.issue.count.LeadTimeCountBase;
@@ -11,6 +9,8 @@ import cloud.xcan.angus.core.tester.domain.issue.count.OverdueAssessmentCount;
 import cloud.xcan.angus.core.tester.domain.issue.count.RecentDeliveryCount;
 import cloud.xcan.angus.core.tester.domain.issue.count.UnplannedWorkCount;
 import cloud.xcan.angus.core.tester.domain.issue.count.UnplannedWorkCountBase;
+import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
+import cloud.xcan.angus.core.tester.domain.test.summary.FuncCaseSummary;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;

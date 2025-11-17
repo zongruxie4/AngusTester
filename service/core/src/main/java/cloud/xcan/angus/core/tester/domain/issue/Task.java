@@ -16,9 +16,9 @@ import cloud.xcan.angus.core.jpa.multitenancy.TenantAuditingEntity;
 import cloud.xcan.angus.core.tester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.angus.core.tester.domain.ResourceTagAssoc;
 import cloud.xcan.angus.core.tester.domain.activity.MainTargetActivityResource;
-import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
-import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.issue.cases.TaskFuncCaseAssoc;
+import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.model.script.TestType;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
@@ -271,18 +271,6 @@ public class Task extends TenantAuditingEntity<Task, Long> implements MainTarget
 
   public boolean hasTag() {
     return isNotEmpty(tagTargets);
-  }
-
-  public boolean isApiTest() {
-    return TaskType.API_TEST.equals(taskType);
-  }
-
-  public boolean isScenarioTest() {
-    return TaskType.SCENARIO_TEST.equals(taskType);
-  }
-
-  public boolean isTestTask() {
-    return TaskType.SCENARIO_TEST.equals(taskType) || TaskType.API_TEST.equals(taskType);
   }
 
   @Override

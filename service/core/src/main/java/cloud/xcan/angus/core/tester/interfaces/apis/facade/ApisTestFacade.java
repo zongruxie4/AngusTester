@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade;
 
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestScriptGenerateDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestTaskGenerateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.test.TestResultDetailVo;
 import cloud.xcan.angus.model.script.TestType;
 import io.swagger.v3.oas.models.servers.Server;
@@ -23,14 +22,6 @@ public interface ApisTestFacade {
   void scriptGenerate(Long apisId, Set<ApisTestScriptGenerateDto> dto);
 
   void scriptDelete(Long apisId, Set<TestType> testTypes);
-
-  void testTaskGenerate(Long apisId, @Nullable Long taskSprintId, Set<ApisTestTaskGenerateDto> dto);
-
-  void testTaskRetest(Long apisId);
-
-  void testTaskReopen(Long apisId);
-
-  void testTaskDelete(Long apisId, Set<TestType> testTypes);
 
   void testExecAdd(Long apisId, Set<TestType> testTypes, @Nullable List<Server> servers);
 

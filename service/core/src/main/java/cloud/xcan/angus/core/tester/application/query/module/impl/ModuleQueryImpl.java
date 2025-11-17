@@ -6,7 +6,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.distinctByKey;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Objects.nonNull;
 

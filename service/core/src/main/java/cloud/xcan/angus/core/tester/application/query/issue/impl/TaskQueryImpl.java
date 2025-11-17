@@ -59,13 +59,11 @@ import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.EXPORT_ANALY
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.EXPORT_ANALYSIS_TASK_UNPLANNED_TASKS;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.EXPORT_ANALYSIS_TASK_WORKLOAD;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MESSAGE_TOTAL;
-import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_APIS_EXISTED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_NAME_EXISTED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_PARENT_CIRCULAR_REF;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_PARENT_CIRCULAR_REF_BY_SELF;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_REOPEN_REPEATED_CODE;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_REOPEN_REPEATED_T;
-import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_SCE_EXISTED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_SUB_IS_NOT_COMPLETED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterEventMessage.TaskAssignment;
 import static cloud.xcan.angus.core.tester.domain.TesterEventMessage.TaskAssignmentCode;
@@ -120,29 +118,19 @@ import cloud.xcan.angus.core.tester.application.converter.TaskConverter;
 import cloud.xcan.angus.core.tester.application.query.activity.ActivityQuery;
 import cloud.xcan.angus.core.tester.application.query.comment.CommentQuery;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
-import cloud.xcan.angus.core.tester.application.query.test.FuncCaseQuery;
-import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
-import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
-import cloud.xcan.angus.core.tester.application.query.tag.TagQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskFuncCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskMeetingQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskRemarkQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskSprintQuery;
+import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
+import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
+import cloud.xcan.angus.core.tester.application.query.tag.TagQuery;
+import cloud.xcan.angus.core.tester.application.query.test.FuncCaseQuery;
 import cloud.xcan.angus.core.tester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.angus.core.tester.domain.activity.Activity;
-import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfoRepo;
 import cloud.xcan.angus.core.tester.domain.comment.CommentTargetType;
-import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
-import cloud.xcan.angus.core.tester.domain.test.summary.FuncCaseEfficiencySummary;
-import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
-import cloud.xcan.angus.core.tester.domain.kanban.DataAssetsTimeSeries;
-import cloud.xcan.angus.core.tester.domain.project.Project;
-import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
-import cloud.xcan.angus.core.tester.domain.scenario.ScenarioRepo;
-import cloud.xcan.angus.core.tester.domain.services.Services;
-import cloud.xcan.angus.core.tester.domain.services.ServicesRepo;
 import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.core.tester.domain.issue.TaskAssociateUser;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
@@ -218,8 +206,14 @@ import cloud.xcan.angus.core.tester.domain.issue.summary.TaskProjectWorkSummary;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskSprintSummary;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskSprintWorkSummary;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskSummary;
+import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
+import cloud.xcan.angus.core.tester.domain.kanban.DataAssetsTimeSeries;
+import cloud.xcan.angus.core.tester.domain.project.Project;
+import cloud.xcan.angus.core.tester.domain.scenario.ScenarioRepo;
+import cloud.xcan.angus.core.tester.domain.services.ServicesRepo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
+import cloud.xcan.angus.core.tester.domain.test.summary.FuncCaseEfficiencySummary;
 import cloud.xcan.angus.core.utils.CoreUtils;
-import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.annotations.NonNullable;
@@ -359,10 +353,6 @@ public class TaskQueryImpl implements TaskQuery {
         tagQuery.setTags(tasks);
         // Set associated tasks and functional cases
         taskFuncCaseQuery.setAssocForTask(tasks);
-        // Set API target names for API test tasks
-        setApiTargetName(tasks);
-        // Set scenario target names for scenario test tasks
-        setScenarioTargetName(tasks);
         // Set current user's role for each task (assignee, creator, admin, etc.)
         setCurrentRoles(tasks);
 
@@ -474,10 +464,6 @@ public class TaskQueryImpl implements TaskQuery {
           tagQuery.setTags(page.getContent());
           // Set current user's role for each task
           setCurrentRoles(page.getContent());
-          // Set API target names for API test tasks
-          setApiTargetName(page.getContent());
-          // Set scenario target names for scenario test tasks
-          setScenarioTargetName(page.getContent());
           // Calculate and set progress information
           setTaskProgress(page.getContent());
           // Set assignee display information (name and avatar)
@@ -2636,13 +2622,6 @@ public class TaskQueryImpl implements TaskQuery {
         TASK_NAME_EXISTED_T, new Object[]{name});
   }
 
-  @Override
-  public void checkTargetTaskExists(Long targetId, TestType testType, TaskType taskType) {
-    assertResourceExisted(taskRepo.countByTargetIdAndTestType(targetId, testType) < 1,
-        TaskType.API_TEST.equals(taskType) ? TASK_APIS_EXISTED_T : TASK_SCE_EXISTED_T,
-        new Object[]{targetId});
-  }
-
   /**
    * <p>
    * Check if adding tasks exceeds the sprint quota.
@@ -2782,90 +2761,6 @@ public class TaskQueryImpl implements TaskQuery {
           task.setCurrentAssociateType(currentRoles);
         }
       });
-    }
-  }
-
-  /**
-   * <p>
-   * Set API target names for a list of tasks.
-   * </p>
-   * <p>
-   * Efficiently loads and sets API target names for tasks that are associated with APIs.
-   * Uses batch retrieval to avoid N+1 query problems and sets target names for display.
-   * </p>
-   * @param tasks List of tasks to set API target names for
-   */
-  @Override
-  public void setApiTargetName(List<Task> tasks) {
-    if (isNotEmpty(tasks)) {
-      // Extract API target IDs for API test tasks
-      Set<Long> targetIds = tasks.stream()
-          .filter(x -> (nonNull(x.getTargetId()) && x.getTaskType().isApiTest()))
-          .map(Task::getTargetId).collect(Collectors.toSet());
-      if (isEmpty(targetIds)) {
-        return;
-      }
-
-      // Extract API service (parent) IDs for API test tasks
-      Set<Long> targetParentIds = tasks.stream()
-          .filter(x -> (nonNull(x.getTargetParentId()) && x.getTaskType().isApiTest()))
-          .map(Task::getTargetParentId).collect(Collectors.toSet());
-      if (isEmpty(targetParentIds)) {
-        return;
-      }
-
-      // Batch retrieve API and service information to avoid N+1 queries
-      Map<Long, ApisBaseInfo> apisDbMap = apisBaseInfoRepo.findAll0ByIdIn(targetIds).stream()
-          .collect(Collectors.toMap(ApisBaseInfo::getId, x -> x));
-      Map<Long, Services> projectsDbMap = servicesRepo.findAll0ByIdIn(targetParentIds).stream()
-          .collect(Collectors.toMap(Services::getId, x -> x));
-
-      // Set target names for API test tasks
-      for (Task task : tasks) {
-        if (task.getTaskType().isApiTest()) {
-          // Set API name if available
-          if (nonNull(task.getTargetId()) && nonNull(apisDbMap.get(task.getTargetId()))) {
-            task.setTargetName(apisDbMap.get(task.getTargetId()).getName());
-          }
-          // Set service name if available
-          if (nonNull(task.getTargetParentId())
-              && nonNull(projectsDbMap.get(task.getTargetParentId()))) {
-            task.setTargetParentName(projectsDbMap.get(task.getTargetParentId()).getName());
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * <p>
-   * Set scenario target names for a list of tasks.
-   * </p>
-   * <p>
-   * Efficiently loads and sets scenario target names for tasks that are associated with scenarios.
-   * Uses batch retrieval to avoid N+1 query problems and sets target names for display.
-   * </p>
-   * @param tasks List of tasks to set scenario target names for
-   */
-  @Override
-  public void setScenarioTargetName(List<Task> tasks) {
-    if (isNotEmpty(tasks)) {
-      Set<Long> targetIds = tasks.stream()
-          .filter(x -> (nonNull(x.getTargetId()) && x.getTaskType().isScenarioTest()))
-          .map(Task::getTargetId).collect(Collectors.toSet());
-      if (isEmpty(targetIds)) {
-        return;
-      }
-
-      Map<Long, Scenario> scenariosDbMap = scenarioRepo.findAll0ByIdIn(targetIds)
-          .stream().collect(Collectors.toMap(Scenario::getId, x -> x));
-      for (Task task : tasks) {
-        if (task.getTaskType().isScenarioTest()) {
-          if (nonNull(task.getTargetId()) && nonNull(scenariosDbMap.get(task.getTargetId()))) {
-            task.setTargetName(scenariosDbMap.get(task.getTargetId()).getName());
-          }
-        }
-      }
     }
   }
 

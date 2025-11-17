@@ -15,7 +15,7 @@ public class ScenarioTestAssembler {
       Set<ScenarioTestTaskGenerateDto> testings) {
     return testings.stream().map(testing -> new Task()
         .setTargetId(scenarioId)
-        .setTaskType(TaskType.SCENARIO_TEST)
+        .setTaskType(TaskType.TEST)
         .setTestType(testing.getTestType())
         .setPriority(testing.getPriority())
         .setAssigneeId(testing.getAssigneeId())

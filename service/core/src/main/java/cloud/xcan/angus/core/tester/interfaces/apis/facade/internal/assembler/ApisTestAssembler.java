@@ -4,9 +4,9 @@ import static cloud.xcan.angus.core.tester.application.cmd.issue.impl.TaskCmdImp
 import static cloud.xcan.angus.core.tester.application.converter.ApisToAngusModelConverter.getScriptTaskArguments;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 
-import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.core.tester.domain.issue.TaskType;
+import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestScriptGenerateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestTaskGenerateDto;
 import cloud.xcan.angus.model.script.AngusScript;
@@ -109,7 +109,7 @@ public class ApisTestAssembler {
   public static List<Task> generateToTask(Long apisId, Set<ApisTestTaskGenerateDto> dto) {
     return dto.stream().map(testing -> new Task()
         .setTargetId(apisId)
-        .setTaskType(TaskType.API_TEST)
+        .setTaskType(TaskType.TEST)
         .setTestType(testing.getTestType())
         .setPriority(testing.getPriority())
         .setAssigneeId(testing.getAssigneeId())

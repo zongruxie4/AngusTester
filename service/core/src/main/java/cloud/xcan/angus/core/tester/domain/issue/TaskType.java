@@ -12,10 +12,9 @@ import java.util.Locale;
 public enum TaskType implements ValueObject<TaskType>, EnumMessage<String> {
   REQUIREMENT,
   STORY,
+  DESIGN,
   TASK,
-  BUG,
-  API_TEST,
-  SCENARIO_TEST;
+  BUG;
 
   @Override
   public String getValue() {
@@ -24,18 +23,6 @@ public enum TaskType implements ValueObject<TaskType>, EnumMessage<String> {
 
   public boolean isBug(){
     return this.equals(BUG);
-  }
-
-  public boolean isTestTask() {
-    return this.equals(API_TEST) || this.equals(SCENARIO_TEST);
-  }
-
-  public boolean isApiTest() {
-    return this.equals(API_TEST);
-  }
-
-  public boolean isScenarioTest() {
-    return this.equals(SCENARIO_TEST);
   }
 
   public static TaskType ofMessage(String massage, Locale locale) {

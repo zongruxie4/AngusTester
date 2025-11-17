@@ -2,18 +2,13 @@ package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal;
 
 
 import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisTestAssembler.generateToScript;
-import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisTestAssembler.generateToTask;
-import static java.util.Collections.singletonList;
 
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisTestCmd;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisTestQuery;
-import cloud.xcan.angus.core.tester.domain.issue.TaskType;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisTestFacade;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestScriptGenerateDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestTaskGenerateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.test.TestResultDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecResultFacade;
-import cloud.xcan.angus.core.tester.interfaces.issue.facade.TaskTestFacade;
 import cloud.xcan.angus.model.script.TestType;
 import io.swagger.v3.oas.models.servers.Server;
 import jakarta.annotation.Resource;
@@ -35,9 +30,6 @@ public class ApisTestFacadeImpl implements ApisTestFacade {
 
   @Resource
   private ApisTestQuery apisTestQuery;
-
-  @Resource
-  private TaskTestFacade taskTestFacade;
 
   @Resource
   private ExecResultFacade execResultFacade;
@@ -63,26 +55,6 @@ public class ApisTestFacadeImpl implements ApisTestFacade {
   }
 
   @Override
-  public void testTaskGenerate(Long apisId, @Nullable Long taskSprintId, Set<ApisTestTaskGenerateDto> dto) {
-    apisTestCmd.testTaskGenerate(apisId, taskSprintId, generateToTask(apisId, dto), false);
-  }
-
-  @Override
-  public void testTaskRetest(Long apisId) {
-    apisTestCmd.testTaskRetest(apisId, true);
-  }
-
-  @Override
-  public void testTaskReopen(Long apisId) {
-    apisTestCmd.testTaskRetest(apisId, false);
-  }
-
-  @Override
-  public void testTaskDelete(Long apisId, Set<TestType> testTypes) {
-    apisTestCmd.testTaskDelete(singletonList(apisId), testTypes);
-  }
-
-  @Override
   public void testExecAdd(Long apisId, Set<TestType> testTypes, @Nullable List<Server> servers) {
     apisTestCmd.testExecAdd(apisId, testTypes, servers);
   }
@@ -102,7 +74,6 @@ public class ApisTestFacadeImpl implements ApisTestFacade {
   public TestResultDetailVo testResultDetail(Long apisId) {
     TestResultDetailVo result = new TestResultDetailVo();
     result.setTestResult(execResultFacade.apisResult(apisId));
-    result.setAssocTasks(taskTestFacade.assocList(TaskType.API_TEST, apisId));
     return result;
   }
 

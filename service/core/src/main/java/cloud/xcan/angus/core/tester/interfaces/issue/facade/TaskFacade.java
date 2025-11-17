@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.issue.facade;
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.Result;
 import cloud.xcan.angus.core.tester.domain.issue.TaskType;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskAddDto;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskAssigneeReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskAttachmentReplaceDto;
@@ -19,6 +18,7 @@ import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskWorkloadRepl
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskInfoVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskListVo;
+import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionRefReplaceDto;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;

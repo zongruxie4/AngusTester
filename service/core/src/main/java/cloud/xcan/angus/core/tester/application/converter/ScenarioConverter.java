@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.application.converter;
 
 
-import static cloud.xcan.angus.core.spring.SpringContextHolder.getCachedUidGenerator;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.convert;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;

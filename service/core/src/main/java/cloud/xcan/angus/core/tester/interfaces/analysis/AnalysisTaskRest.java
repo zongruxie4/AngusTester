@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.analysis;
 
 
-import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
 import cloud.xcan.angus.core.tester.domain.issue.count.BackloggedOverview;
 import cloud.xcan.angus.core.tester.domain.issue.count.BugOverview;
 import cloud.xcan.angus.core.tester.domain.issue.count.BurnDownChartCount;
@@ -24,6 +23,7 @@ import cloud.xcan.angus.core.tester.domain.issue.count.WorkloadOverview;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskAssigneeWorkSummary;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskProjectWorkSummary;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskSprintWorkSummary;
+import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
 import cloud.xcan.angus.core.tester.interfaces.analysis.facade.AnalysisTaskFacade;
 import cloud.xcan.angus.core.tester.interfaces.analysis.facade.dto.TaskAnalysisDto;
 import cloud.xcan.angus.core.tester.interfaces.analysis.facade.dto.TaskAssigneeSummaryStatisticsDto;

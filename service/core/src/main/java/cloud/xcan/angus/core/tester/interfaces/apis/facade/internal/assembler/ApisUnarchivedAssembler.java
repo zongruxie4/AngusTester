@@ -8,8 +8,6 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.apis.unarchived.ApisUnarchived;
-import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
-import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedAddDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedFindDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedUpdateDto;

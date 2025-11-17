@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.application.converter;
 
 import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_AFTER_HOURS;
-import static cloud.xcan.angus.core.spring.SpringContextHolder.getBean;
 import static cloud.xcan.angus.core.tester.application.cmd.issue.impl.TaskCmdImpl.getTaskCode;
 import static cloud.xcan.angus.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
@@ -126,11 +125,7 @@ public class TaskConverter {
   }
 
   public static void assembleUpdateTask(Task task, Task taskDb) {
-    if (taskDb.getTaskType().isTestTask()) {
-      copyPropertiesIgnoreNull(task, taskDb, "taskType");
-    } else {
-      copyPropertiesIgnoreNull(task, taskDb);
-    }
+    copyPropertiesIgnoreNull(task, taskDb);
 
     if (nonNull(task.getTaskType()) && !task.getTaskType().equals(taskDb.getTaskType())) {
       if (taskDb.getTaskType().isBug()) {
@@ -165,7 +160,7 @@ public class TaskConverter {
         .setParentTaskId(task.getParentTaskId())
         .setRefTaskIds(task.getRefTaskIds())
         .setRefCaseIds(task.getRefCaseIds());
-    if (!taskDb.getTaskType().isTestTask() && nonNull(task.getTaskType())) {
+    if (nonNull(task.getTaskType())) {
       taskDb.setTaskType(task.getTaskType());
     }
     taskDb.setBugLevel(task.getBugLevel());
@@ -247,42 +242,11 @@ public class TaskConverter {
     return version;
   }
 
-  public static Task toAddApisOrScenarioTask(Long projectId, @Nullable TaskSprint sprintDb,
-      ApisBaseInfo apis, Scenario scenario, Task task) {
-    task.setId(BIDUtils.getId(BIDKey.taskId))
-        .setProjectId(projectId)
-        .setSprintId(nonNull(sprintDb) ? sprintDb.getId() : null)
-        .setSprintAuth(nonNull(sprintDb) ? sprintDb.getAuth() : false)
-        .setModuleId(nullSafe(task.getModuleId(), -1L))
-        .setBacklog(false)
-        .setTargetId(nonNull(apis) ? apis.getId() : scenario.getId())
-        .setTaskType(nonNull(apis) ? TaskType.API_TEST : TaskType.SCENARIO_TEST)
-        .setName((nonNull(apis) ? apis.getName()
-            : scenario.getName()) + "-" + task.getTestType().getMessage())
-        .setSoftwareVersion(null)
-        .setTargetParentId(nonNull(apis) ? apis.getServiceId() : scenario.getProjectId())
-        .setStatus(TaskStatus.PENDING)
-        .setUnplanned(nonNull(sprintDb) && sprintDb.getStatus().isStarted())
-        .setFailNum(0)
-        .setTotalNum(0)
-        .setEvalWorkloadMethod(nonNull(sprintDb) ? sprintDb.getEvalWorkloadMethod()
-            : EvalWorkloadMethod.WORKING_HOURS) // General Project Management
-        .setSprintDeleted(false)
-        .setDeleted(false)
-        .setCreatedBy(getUserId())
-        .setCreatedDate(LocalDateTime.now());
-    if (nonNull(sprintDb) && isNotEmpty(sprintDb.getTaskPrefix())
-        && !task.getName().startsWith(sprintDb.getTaskPrefix())) {
-      task.setName(sprintDb.getTaskPrefix() + task.getName());
-    }
-    return task;
-  }
-
   public static List<Task> generateToServicesTask(Long apisId, List<TestTaskSetting> testings) {
     return testings.stream().map(testing -> new Task()
         .setModuleId(-1L)
         .setTargetId(apisId)
-        .setTaskType(TaskType.API_TEST)
+        .setTaskType(TaskType.TEST)
         .setTestType(testing.getTestType())
         .setPriority(testing.getPriority())
         .setAssigneeId(testing.getAssigneeId())
@@ -504,8 +468,8 @@ public class TaskConverter {
         .setStoryNum(nullSafe(taskTypeMap.get(TaskType.STORY.name()), 0))
         .setTaskNum(nullSafe(taskTypeMap.get(TaskType.TASK.name()), 0))
         .setBugNum(nullSafe(taskTypeMap.get(TaskType.BUG.name()), 0))
-        .setApiTestNum(nullSafe(taskTypeMap.get(TaskType.API_TEST.name()), 0))
-        .setScenarioTestNum(nullSafe(taskTypeMap.get(TaskType.SCENARIO_TEST.name()), 0))
+        .setApiTestNum(nullSafe(taskTypeMap.get(TaskType.TEST.name()), 0))
+        .setScenarioTestNum(nullSafe(taskTypeMap.get(TaskType.TEST.name()), 0))
         .setTotalTaskTypeNum(statistics.getStoryNum() + statistics.getRequirementNum()
             + statistics.getTaskNum() + statistics.getBugNum() + statistics.getApiTestNum()
             + statistics.getScenarioTestNum());

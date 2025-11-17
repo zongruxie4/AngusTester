@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.application.cmd.apis;
 
 import cloud.xcan.angus.core.tester.domain.apis.Apis;
 import cloud.xcan.angus.core.tester.domain.script.Script;
-import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.model.script.TestType;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.HashSet;
@@ -24,13 +23,6 @@ public interface ApisTestCmd {
   void scriptDelete(Long apisId, Set<TestType> testTypes);
 
   void scriptDelete0(Long apisId, Set<TestType> testTypes);
-
-  void testTaskGenerate(Long apisId, Long taskSprintId, List<Task> tasks,
-      boolean ignoreApisPermission);
-
-  void testTaskRetest(Long apisId, Boolean restart);
-
-  void testTaskDelete(List<Long> apisIds, Set<TestType> testTypes);
 
   void testExecAdd(Long apisId, Set<TestType> testTypes, @Nullable List<Server> servers);
 

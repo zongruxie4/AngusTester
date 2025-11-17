@@ -1,22 +1,12 @@
 package cloud.xcan.angus.core.tester.application.cmd.apis.impl;
 
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.API;
-import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
-import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
-import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.angus.core.tester.application.converter.ApisCaseConverter.httpToFuncCase;
 import static cloud.xcan.angus.core.tester.application.converter.ApisToAngusModelConverter.assembleAddApisScript;
-import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_APIS_NOT_EXISTED_T;
-import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_WEBSOCKET_NOT_SUPPORT_GEN_TASK;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.SUB_DISABLED;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.SUB_ENABLED;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_SCRIPT_DELETED;
-import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_TASK_DELETED;
-import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_TASK_GEN;
-import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_TASK_REOPEN;
-import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_TASK_RESTART;
-import static cloud.xcan.angus.core.tester.domain.issue.TaskType.API_TEST;
 import static cloud.xcan.angus.core.utils.AngusUtils.overrideExecServerParameter;
 import static cloud.xcan.angus.model.script.TestType.PERFORMANCE;
 import static cloud.xcan.angus.model.script.TestType.STABILITY;
@@ -26,7 +16,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.api.commonlink.apis.ApiPermission;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
@@ -34,7 +23,6 @@ import cloud.xcan.angus.core.tester.application.cmd.apis.ApisCaseCmd;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisTestCmd;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecCmd;
 import cloud.xcan.angus.core.tester.application.cmd.script.ScriptCmd;
-import cloud.xcan.angus.core.tester.application.cmd.issue.TaskCmd;
 import cloud.xcan.angus.core.tester.application.converter.ApisTestConverter;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisCaseQuery;
@@ -45,7 +33,6 @@ import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorFuncQue
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorPerfQuery;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorStabilityQuery;
 import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
-import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.core.tester.domain.apis.Apis;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
 import cloud.xcan.angus.core.tester.domain.apis.ApisRepo;
@@ -57,9 +44,6 @@ import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerf;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStability;
 import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
-import cloud.xcan.angus.core.tester.domain.issue.Task;
-import cloud.xcan.angus.core.tester.domain.issue.TaskRepo;
-import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
 import cloud.xcan.angus.model.element.http.ApisCaseType;
 import cloud.xcan.angus.model.element.http.Http;
 import cloud.xcan.angus.model.script.AngusScript;
@@ -93,8 +77,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ApisTestCmdImpl implements ApisTestCmd {
 
   @Resource
-  private TaskCmd taskCmd;
-  @Resource
   private ApisQuery apisQuery;
   @Resource
   private ApisAuthQuery apisAuthQuery;
@@ -104,8 +86,6 @@ public class ApisTestCmdImpl implements ApisTestCmd {
   private ApisCaseQuery apisCaseQuery;
   @Resource
   private ApisRepo apisRepo;
-  @Resource
-  private TaskRepo taskRepo;
   @Resource
   private IndicatorFuncQuery indicatorFuncQuery;
   @Resource
@@ -326,149 +306,6 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     // Delete scripts for the specified API and test types (no permission check)
     scriptCmd.deleteBySource(ScriptSource.API, List.of(apisId),
         testTypes.stream().map(TestType::toScriptType).toList());
-  }
-
-  /**
-   * <p>
-   * Generate or reopen test tasks for an API.
-   * </p>
-   * <p>
-   * Validates permission, generates or reopens tasks, and logs activities.
-   * Permission checks are delegated to taskCmd.generate() method.
-   * </p>
-   * @param apisId API ID
-   * @param sprintId Sprint ID (optional)
-   * @param tasks List of tasks to generate
-   * @param ignoreApisPermission Whether to ignore API permission checks
-   */
-  @Transactional(rollbackFor = Exception.class)
-  @Override
-  public void testTaskGenerate(Long apisId, @Nullable Long sprintId, List<Task> tasks, boolean ignoreApisPermission) {
-    new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // API test permission check is performed in taskCmd.generate()
-        // apisAuthQuery.checkTestAuth(getUserId(), apisId);
-
-        // Task permission check is performed in taskCmd.generate()
-        // Project sprintDb = taskSprintQuery.checkAndFind(sprintId);
-        // taskProjectAuthQuery.checkAddTaskAuth(getUserId(), sprintDb.getProjectId());
-      }
-
-      @Override
-      protected Void process() {
-        // Generate test tasks using the task command service
-        Object target = taskCmd.generate(sprintId, API_TEST, apisId, tasks, ignoreApisPermission);
-
-        // Log task generation activity
-        activityCmd.add(toActivity(API, (ActivityResource) target, TARGET_TASK_GEN));
-        return null;
-      }
-    }.execute();
-  }
-
-  /**
-   * <p>
-   * Retest or reopen test tasks for an API.
-   * </p>
-   * <p>
-   * Validates permission, filters tasks, and logs activities. WebSocket APIs
-   * are not supported for task generation.
-   * </p>
-   * @param apisId API ID
-   * @param restart Whether to restart all tasks or only reopen finished ones
-   */
-  @Transactional(rollbackFor = Exception.class)
-  @Override
-  public void testTaskRetest(Long apisId, Boolean restart) {
-    new BizTemplate<Void>() {
-      ApisBaseInfo apisDb = null;
-
-      @Override
-      protected void checkParams() {
-        // Validate API exists and retrieve basic information
-        apisDb = apisQuery.checkAndFindBaseInfo(apisId);
-
-        // WebSocket APIs are not supported for task generation
-        assertTrue(!apisDb.isWebSocket(), TASK_WEBSOCKET_NOT_SUPPORT_GEN_TASK);
-
-        // Verify current user has test permission for the API
-        Long userId = getUserId();
-        apisAuthQuery.checkTestAuth(userId, apisId);
-      }
-
-      @Override
-      protected Void process() {
-        // Find all tasks associated with the API
-        List<Task> tasksDb = taskRepo.findByTargetIdIn(List.of(apisId));
-        assertResourceNotFound(tasksDb, TASK_APIS_NOT_EXISTED_T, new Object[]{apisDb.getName()});
-
-        // Filter tasks based on restart parameter
-        if (!restart) {
-          // Only reopen tasks with finished status
-          tasksDb = tasksDb.stream().filter(t -> TaskStatus.isFinished(t.getStatus()))
-              .toList();
-        }
-
-        // Retest or reopen tasks if any exist
-        if (isNotEmpty(tasksDb)) {
-          taskCmd.retest0ByTarget(restart, tasksDb);
-
-          // Log appropriate activity based on restart parameter
-          activityCmd.add(toActivity(API, apisDb, restart ? TARGET_TASK_RESTART
-              : TARGET_TASK_REOPEN));
-        }
-        return null;
-      }
-    }.execute();
-  }
-
-  /**
-   * <p>
-   * Delete test tasks for APIs and test types.
-   * </p>
-   * <p>
-   * Validates permission, deletes tasks, and logs activities.
-   * </p>
-   * @param apisIds List of API IDs
-   * @param testTypes Set of test types whose tasks should be deleted (optional)
-   */
-  @Transactional(rollbackFor = Exception.class)
-  @Override
-  public void testTaskDelete(List<Long> apisIds, Set<TestType> testTypes) {
-    new BizTemplate<Void>() {
-      List<ApisBaseInfo> apisDb;
-
-      @Override
-      protected void checkParams() {
-        // Validate APIs exist and retrieve basic information
-        apisDb = apisQuery.checkAndFindBaseInfos(apisIds);
-
-        // Verify current user has test permission for all APIs
-        apisAuthQuery.batchCheckPermission(apisIds, ApiPermission.TEST);
-      }
-
-      @Override
-      protected Void process() {
-        // Find task IDs based on test types filter
-        List<Long> taskIds = isEmpty(testTypes)
-            ? taskRepo.findIdsByTargetIdIn(apisIds)  // All tasks for the APIs
-            : taskRepo.findIdsByTargetIdInAndTestTypeIn(apisIds,  // Tasks for specific test types
-                testTypes.stream().map(TestType::getValue).toList());
-
-        // Skip deletion if no tasks found
-        if (isEmpty(taskIds)) {
-          return null;
-        }
-
-        // Delete the identified test tasks
-        taskCmd.delete0ByTarget(taskIds);
-
-        // Log task deletion activities
-        activityCmd.addAll(toActivities(API, apisDb, TARGET_TASK_DELETED));
-        return null;
-      }
-    }.execute();
   }
 
   /**

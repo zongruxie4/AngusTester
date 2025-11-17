@@ -14,10 +14,6 @@ import static cloud.xcan.angus.spec.utils.WorkingTimeCalculator.calcWorkingHours
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.tester.domain.kanban.CtoTaskAssigneeOverview;
-import cloud.xcan.angus.core.tester.domain.kanban.CtoTaskOverview;
-import cloud.xcan.angus.core.tester.domain.kanban.OverdueRiskLevel;
-import cloud.xcan.angus.core.tester.domain.kanban.TotalProgressCount;
 import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
 import cloud.xcan.angus.core.tester.domain.issue.TaskType;
 import cloud.xcan.angus.core.tester.domain.issue.count.BackloggedCount;
@@ -28,6 +24,10 @@ import cloud.xcan.angus.core.tester.domain.issue.count.ProgressCount;
 import cloud.xcan.angus.core.tester.domain.issue.count.RecentDeliveryCount;
 import cloud.xcan.angus.core.tester.domain.issue.count.UnplannedWorkCount;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskEfficiencySummary;
+import cloud.xcan.angus.core.tester.domain.kanban.CtoTaskAssigneeOverview;
+import cloud.xcan.angus.core.tester.domain.kanban.CtoTaskOverview;
+import cloud.xcan.angus.core.tester.domain.kanban.OverdueRiskLevel;
+import cloud.xcan.angus.core.tester.domain.kanban.TotalProgressCount;
 import cloud.xcan.angus.spec.utils.WorkingTimeCalculator;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

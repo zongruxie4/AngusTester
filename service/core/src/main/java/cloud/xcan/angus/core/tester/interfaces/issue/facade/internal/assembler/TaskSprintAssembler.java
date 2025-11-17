@@ -8,8 +8,6 @@ import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprint;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprintStatus;
-import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
-import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.sprint.TaskSprintAddDto;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.sprint.TaskSprintFindDto;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.sprint.TaskSprintReplaceDto;

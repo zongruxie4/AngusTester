@@ -8,7 +8,6 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_WORKLOAD_NUM;
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.Result;
 import cloud.xcan.angus.core.tester.domain.issue.TaskType;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.TaskFacade;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskAddDto;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskAssigneeReplaceDto;
@@ -25,6 +24,7 @@ import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskWorkloadRepl
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskInfoVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskListVo;
+import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionRefReplaceDto;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;

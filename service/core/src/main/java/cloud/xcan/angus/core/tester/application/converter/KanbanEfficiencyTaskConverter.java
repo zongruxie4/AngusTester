@@ -5,12 +5,12 @@ import static cloud.xcan.angus.api.commonlink.TesterConstant.WEEKLY_WORKING_HOUR
 import static cloud.xcan.angus.core.tester.application.converter.KanbanCtoTaskConverter.calcDailyProcessedWorkload;
 import static cloud.xcan.angus.core.tester.application.converter.KanbanCtoTaskConverter.calcProcessedDays;
 import static cloud.xcan.angus.core.tester.application.query.kanban.impl.KanbanDataAssetsQueryImpl.getTimeSeriesByFormat;
-import static cloud.xcan.angus.core.tester.domain.kanban.AssigneeRanking.rank;
 import static cloud.xcan.angus.core.tester.domain.issue.TaskStatus.CANCELED;
 import static cloud.xcan.angus.core.tester.domain.issue.TaskStatus.COMPLETED;
 import static cloud.xcan.angus.core.tester.domain.issue.TaskStatus.CONFIRMING;
 import static cloud.xcan.angus.core.tester.domain.issue.TaskStatus.IN_PROGRESS;
 import static cloud.xcan.angus.core.tester.domain.issue.TaskStatus.PENDING;
+import static cloud.xcan.angus.core.tester.domain.kanban.AssigneeRanking.rank;
 import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DEFAULT_DAY_FORMAT;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.calcRate;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.formatDouble;
@@ -22,11 +22,6 @@ import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.groupingBy;
 
 import cloud.xcan.angus.api.enums.Priority;
-import cloud.xcan.angus.core.tester.domain.kanban.DataAssetsTimeSeries;
-import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyTaskAssigneeOverview;
-import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyTaskCountOverview;
-import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyTaskOverview;
-import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyTaskRanking;
 import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
 import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
 import cloud.xcan.angus.core.tester.domain.issue.TaskType;
@@ -51,6 +46,11 @@ import cloud.xcan.angus.core.tester.domain.issue.count.WorkloadCountBase;
 import cloud.xcan.angus.core.tester.domain.issue.meeting.TaskMeeting;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprint;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskEfficiencySummary;
+import cloud.xcan.angus.core.tester.domain.kanban.DataAssetsTimeSeries;
+import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyTaskAssigneeOverview;
+import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyTaskCountOverview;
+import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyTaskOverview;
+import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyTaskRanking;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.metrics.statistics.ListStatistics;
 import java.math.BigDecimal;
@@ -534,9 +534,9 @@ public class KanbanEfficiencyTaskConverter {
     count.setStoryNum(typeTasks.getOrDefault(TaskType.STORY, emptyList()).size());
     count.setTaskNum(typeTasks.getOrDefault(TaskType.TASK, emptyList()).size());
     count.setBugNum(typeTasks.getOrDefault(TaskType.BUG, emptyList()).size());
-    count.setApiTestNum(typeTasks.getOrDefault(TaskType.API_TEST, emptyList()).size());
+    count.setApiTestNum(typeTasks.getOrDefault(TaskType.TEST, emptyList()).size());
     count.setScenarioTestNum(
-        typeTasks.getOrDefault(TaskType.SCENARIO_TEST, emptyList()).size());
+        typeTasks.getOrDefault(TaskType.TEST, emptyList()).size());
     count.setTotalNum(tasks.size());
     for (TaskType value : TaskType.values()) {
       count.getTimeSeries().put(value.getValue(),
@@ -570,11 +570,11 @@ public class KanbanEfficiencyTaskConverter {
             Collectors.toMap(DataAssetsTimeSeries::getTimeSeries,
                 DataAssetsTimeSeries::getValue));
     Map<String, Integer> apiTestMap = count.getTimeSeries()
-        .getOrDefault(TaskType.API_TEST.getValue(), emptyList()).stream().collect(
+        .getOrDefault(TaskType.TEST.getValue(), emptyList()).stream().collect(
             Collectors.toMap(DataAssetsTimeSeries::getTimeSeries,
                 DataAssetsTimeSeries::getValue));
     Map<String, Integer> sceTestMap = count.getTimeSeries()
-        .getOrDefault(TaskType.SCENARIO_TEST.getValue(), emptyList()).stream().collect(
+        .getOrDefault(TaskType.TEST.getValue(), emptyList()).stream().collect(
             Collectors.toMap(DataAssetsTimeSeries::getTimeSeries,
                 DataAssetsTimeSeries::getValue));
     Map<String, Integer> totalMap = count.getTimeSeries()

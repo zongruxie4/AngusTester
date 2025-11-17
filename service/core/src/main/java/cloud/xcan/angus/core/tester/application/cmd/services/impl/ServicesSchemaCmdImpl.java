@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.application.cmd.services.impl;
 
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.SERVICE;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
-import static cloud.xcan.angus.core.spring.SpringContextHolder.getCachedUidGenerator;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.angus.core.tester.application.converter.ServicesSchemaConverter.toClonedSchema;
 import static cloud.xcan.angus.core.tester.application.converter.ServicesSchemaConverter.toInitProjectSchema;

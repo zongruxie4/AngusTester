@@ -20,7 +20,6 @@ import static cloud.xcan.angus.core.tester.application.converter.TaskConverter.a
 import static cloud.xcan.angus.core.tester.application.converter.TaskConverter.assembleExampleTaskSprint;
 import static cloud.xcan.angus.core.tester.application.converter.TaskConverter.assembleMoveTask;
 import static cloud.xcan.angus.core.tester.application.converter.TaskConverter.importToDomain;
-import static cloud.xcan.angus.core.tester.application.converter.TaskConverter.toAddApisOrScenarioTask;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_EVAL_WORKLOAD_NOT_SET;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_IMPORT_COLUMNS;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_IMPORT_REQUIRED_COLUMNS;
@@ -30,7 +29,6 @@ import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_NO_PROC
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_NO_PROCESSING_CODE;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_START_NO_PENDING;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_START_NO_PENDING_CODE;
-import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_WEBSOCKET_NOT_SUPPORT_GEN_TASK;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.ACTUAL_WORKLOAD;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.ACTUAL_WORKLOAD_CLEAR;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.ASSOC_CASE;
@@ -65,7 +63,6 @@ import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TASK_SUB
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TASK_SUB_SET;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TYPE_UPDATED;
 import static cloud.xcan.angus.core.tester.infra.util.AngusTesterUtils.parseSample;
-import static cloud.xcan.angus.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getDefaultLanguage;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getTenantId;
@@ -89,41 +86,30 @@ import cloud.xcan.angus.api.enums.Result;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.api.pojo.Attachment;
 import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
-import cloud.xcan.angus.core.tester.application.cmd.tag.TagTargetCmd;
 import cloud.xcan.angus.core.tester.application.cmd.issue.TaskCmd;
 import cloud.xcan.angus.core.tester.application.cmd.issue.TaskFuncCaseCmd;
 import cloud.xcan.angus.core.tester.application.cmd.issue.TaskSprintCmd;
 import cloud.xcan.angus.core.tester.application.cmd.issue.TaskTrashCmd;
+import cloud.xcan.angus.core.tester.application.cmd.tag.TagTargetCmd;
 import cloud.xcan.angus.core.tester.application.cmd.version.SoftwareVersionCmd;
 import cloud.xcan.angus.core.tester.application.converter.TaskConverter;
-import cloud.xcan.angus.core.tester.application.query.apis.ApisAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisQuery;
-import cloud.xcan.angus.core.tester.application.query.test.FuncCaseQuery;
-import cloud.xcan.angus.core.tester.application.query.module.ModuleQuery;
-import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
-import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
-import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioAuthQuery;
-import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioQuery;
-import cloud.xcan.angus.core.tester.application.query.tag.TagQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskSprintAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskSprintQuery;
+import cloud.xcan.angus.core.tester.application.query.module.ModuleQuery;
+import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
+import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
+import cloud.xcan.angus.core.tester.application.query.tag.TagQuery;
+import cloud.xcan.angus.core.tester.application.query.test.FuncCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.version.SoftwareVersionQuery;
 import cloud.xcan.angus.core.tester.domain.activity.Activity;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
-import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
-import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
-import cloud.xcan.angus.core.tester.domain.module.Module;
-import cloud.xcan.angus.core.tester.domain.project.Project;
-import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
-import cloud.xcan.angus.core.tester.domain.tag.Tag;
-import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
 import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
@@ -133,10 +119,14 @@ import cloud.xcan.angus.core.tester.domain.issue.TaskType;
 import cloud.xcan.angus.core.tester.domain.issue.remark.TaskRemarkRepo;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprint;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprintPermission;
+import cloud.xcan.angus.core.tester.domain.module.Module;
+import cloud.xcan.angus.core.tester.domain.project.Project;
+import cloud.xcan.angus.core.tester.domain.tag.Tag;
+import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersion;
 import cloud.xcan.angus.extraction.utils.PoiUtils;
 import cloud.xcan.angus.idgen.BidGenerator;
-import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.message.ProtocolException;
 import cloud.xcan.angus.spec.experimental.Assert;
 import cloud.xcan.angus.spec.experimental.IdKey;
@@ -148,7 +138,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -218,13 +207,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   @Resource
   private TaskSprintAuthQuery taskSprintAuthQuery;
   @Resource
-  private ScenarioAuthQuery scenarioAuthQuery;
-  @Resource
-  private ScenarioQuery scenarioQuery;
-  @Resource
   private ApisQuery apisQuery;
-  @Resource
-  private ApisAuthQuery apisAuthQuery;
   @Resource
   private TagTargetCmd tagTargetCmd;
   @Resource
@@ -291,12 +274,6 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         //  assertNotNull(task.getTargetId(), TASK_ASSOC_TARGET_ID_REQUIRED);
         // }
 
-        if (task.isApiTest() && nonNull(task.getTargetId())) {
-          // Verify associated API exists and set parent service ID
-          Long serviceId = apisQuery.checkAndFindBaseInfo(task.getTargetId()).getServiceId();
-          task.setTargetParentId(serviceId);
-        }
-
         // Verify assignee exists if specified
         if (nonNull(task.getAssigneeId())) {
           userManager.checkExists(task.getAssigneeId());
@@ -322,12 +299,6 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         // ProtocolAssert.assertTrue(isNull(task.getEvalWorkload())
         //    || nonNull(task.getActualWorkload()), "Evaluation workload not set");
 
-        // Verify target task exists if specified
-        if (nonNull(task.getTargetId())) {
-          taskQuery.checkTargetTaskExists(task.getTargetId(), task.getTestType(),
-              task.getTaskType());
-        }
-
         // Verify quota limits are not exceeded
         taskQuery.checkQuota(task.getSprintId(), 1);
       }
@@ -350,119 +321,6 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         // Log task creation activity
         activityCmd.add(toActivity(TASK, task, ActivityType.CREATED));
         return idKey;
-      }
-    }.execute();
-  }
-
-  /**
-   * Generates tasks based on APIs or scenarios with comprehensive validation.
-   *
-   * <p>This method creates multiple tasks from APIs or scenarios with proper
-   * permission validation, target verification, and task type handling.</p>
-   *
-   * <p>The method supports different task types and handles permission
-   * validation for both APIs and scenarios.</p>
-   *
-   * @param sprintId the sprint ID to assign tasks to (can be null)
-   * @param taskType the type of task to generate
-   * @param targetId the target API or scenario ID
-   * @param tasks the list of tasks to generate
-   * @param ignoreApisOrScenarioPermission whether to ignore permission checks
-   * @return the generation result
-   * @throws IllegalArgumentException if validation fails
-   */
-  @Transactional(rollbackFor = Exception.class)
-  @Override
-  public Object generate(@Nullable Long sprintId, TaskType taskType, Long targetId,
-      List<Task> tasks, boolean ignoreApisOrScenarioPermission) {
-    return new BizTemplate<>() {
-      Scenario scenarioDb = null;
-      ApisBaseInfo apisDb = null;
-      TaskSprint sprintDb = null;
-      Long projectId = null;
-
-      @Override
-      protected void checkParams() {
-        if (taskType.isApiTest()) {
-          // Verify associated API exists and get project ID
-          apisDb = apisQuery.checkAndFindBaseInfo(targetId);
-          projectId = apisDb.getProjectId();
-          BizAssert.assertTrue(!apisDb.isWebSocket(), TASK_WEBSOCKET_NOT_SUPPORT_GEN_TASK);
-          // Verify API test permissions if not ignoring permissions
-          if (!ignoreApisOrScenarioPermission) { // Generate by API services
-            apisAuthQuery.checkTestAuth(getUserId(), targetId);
-          }
-        }
-
-        if (taskType.isScenarioTest()) {
-          // Verify associated scenario exists and get project ID
-          scenarioDb = scenarioQuery.checkAndFind0(targetId);
-          projectId = scenarioDb.getProjectId();
-          // Verify scenario test permissions if not ignoring permissions
-          if (!ignoreApisOrScenarioPermission) { // Generate by scenario directory
-            scenarioAuthQuery.checkTestAuth(getUserId(), targetId);
-          }
-        }
-
-        if (nonNull(sprintId)) { // Agile Project Management
-          // Verify task sprint exists and get project ID
-          sprintDb = taskSprintQuery.checkAndFind(sprintId);
-          projectId = sprintDb.getProjectId();
-          // Verify add task permissions
-          taskSprintAuthQuery.checkAddTaskAuth(getUserId(), sprintId);
-        } else { // General Project Management
-          // Verify project member permissions
-          projectMemberQuery.checkMember(getUserId(), projectId);
-        }
-      }
-
-      @Override
-      protected Object process() {
-        // Get existing tasks by test type for the target
-        Map<TestType, Task> existedTaskMap = taskRepo.findAllBySprintIdAndTargetId(
-            sprintId, targetId).stream().collect(Collectors.toMap(Task::getTestType, x -> x));
-        List<Task> newTasks = new ArrayList<>();
-
-        // Handle case when no existing test tasks exist
-        if (existedTaskMap.isEmpty()) {
-          newTasks = tasks.stream()
-              .map(o -> toAddApisOrScenarioTask(projectId, sprintDb, apisDb, scenarioDb, o))
-              .toList();
-          activityCmd.addAll(toActivities(TASK, newTasks, ActivityType.TASK_GEN));
-          batchInsert0(newTasks);
-          return nonNull(apisDb) ? apisDb : scenarioDb;
-        }
-
-        // Handle existing target test tasks
-        List<Task> existedTasks = new ArrayList<>();
-        for (Task task : tasks) {
-          Task existedTask = existedTaskMap.get(task.getTestType());
-          if (nonNull(existedTask)) {
-            // Existing tasks can only be modified in the pending state
-            if (existedTask.getStatus().isPending()) {
-              // Override configuration when the task exists
-              // Update test information: priority, startDate, endDate
-              existedTasks.add(copyPropertiesIgnoreNull(task, existedTask));
-            }
-            // Important: Used by assignee to associate task ID
-            task.setId(existedTask.getId()).setName(existedTask.getName());
-          } else {
-            newTasks.add(toAddApisOrScenarioTask(projectId, sprintDb, apisDb, scenarioDb, task));
-          }
-        }
-
-        // Save new tasks
-        if (isNotEmpty(newTasks)) {
-          activityCmd.addAll(toActivities(TASK, newTasks, ActivityType.TASK_GEN));
-          batchInsert0(newTasks);
-        }
-
-        // Update existing tasks
-        if (isNotEmpty(existedTasks)) {
-          activityCmd.addAll(toActivities(TASK, existedTasks, ActivityType.UPDATED));
-          taskRepo.saveAll(existedTasks);
-        }
-        return nonNull(apisDb) ? apisDb : scenarioDb;
       }
     }.execute();
   }
@@ -1709,11 +1567,6 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         LocalDateTime now = LocalDateTime.now();
         if (result.isSuccess()) {
           taskDb.setStatus(TaskStatus.COMPLETED).setCompletedDate(now);
-          // Decrement 1 when the test type task execution result fails and if the confirmation succeeds.
-          if (taskDb.getTaskType().isTestTask() && nonNull(taskDb.getExecResult())
-              && taskDb.getExecResult().equals(Result.FAIL)) {
-            taskDb.setFailNum(taskDb.getFailNum() - 1);
-          }
         } else {
           // Increment 1 when the task confirmation fails;
           taskDb.setStatus(TaskStatus.PENDING).setFailNum(taskDb.getFailNum() + 1);

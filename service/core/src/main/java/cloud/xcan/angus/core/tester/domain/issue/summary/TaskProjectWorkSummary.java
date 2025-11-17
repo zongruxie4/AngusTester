@@ -1,11 +1,11 @@
 package cloud.xcan.angus.core.tester.domain.issue.summary;
 
 import cloud.xcan.angus.api.enums.Priority;
-import cloud.xcan.angus.core.tester.domain.project.summary.ProjectSummary;
 import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
 import cloud.xcan.angus.core.tester.domain.issue.TaskType;
 import cloud.xcan.angus.core.tester.domain.issue.count.TaskCount;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprintStatus;
+import cloud.xcan.angus.core.tester.domain.project.summary.ProjectSummary;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;

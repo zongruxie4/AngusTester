@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.kanban.facade.internal.assembler;
 
 import cloud.xcan.angus.core.tester.domain.apis.count.ApisResourcesCreationCount;
-import cloud.xcan.angus.core.tester.domain.test.cases.count.FuncLastResourceCreationCount;
+import cloud.xcan.angus.core.tester.domain.issue.count.TaskLastResourceCreationCount;
 import cloud.xcan.angus.core.tester.domain.kanban.ResourcesApisCount;
 import cloud.xcan.angus.core.tester.domain.kanban.ResourcesFuncCount;
 import cloud.xcan.angus.core.tester.domain.kanban.ResourcesScenarioCount;
@@ -9,7 +9,7 @@ import cloud.xcan.angus.core.tester.domain.kanban.ResourcesScriptCount;
 import cloud.xcan.angus.core.tester.domain.kanban.ResourcesTaskCount;
 import cloud.xcan.angus.core.tester.domain.scenario.count.ScenarioResourcesCreationCount;
 import cloud.xcan.angus.core.tester.domain.script.count.ScriptResourcesCreationCount;
-import cloud.xcan.angus.core.tester.domain.issue.count.TaskLastResourceCreationCount;
+import cloud.xcan.angus.core.tester.domain.test.cases.count.FuncLastResourceCreationCount;
 
 public class KanbanDataAssetsAssembler {
 
