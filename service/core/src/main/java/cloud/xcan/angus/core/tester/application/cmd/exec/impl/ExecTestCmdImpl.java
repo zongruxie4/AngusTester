@@ -86,11 +86,6 @@ public class ExecTestCmdImpl implements ExecTestCmd {
 
       @Override
       protected Void process() {
-        // Update task test results if test result is provided
-        if (nonNull(testResult)) {
-          updateTaskTestResult(testResult);
-        }
-
         // Update API or scenario test results based on script source
         if (testResult.getScriptSource().isApis()) {
           updateApisTestResult(testResult);
@@ -139,29 +134,6 @@ public class ExecTestCmdImpl implements ExecTestCmd {
             script.getType(), null, new Arguments(), applicationInfo.isCloudServiceEdition());
       }
     }.execute();
-  }
-
-  /**
-   * <p>
-   * Update test results for tasks, APIs, scenarios, and cases.
-   * </p>
-   * <p>
-   * Aggregates and updates results for related entities based on execution outcome.
-   * Finds tasks by target ID and test type, then updates their test results.
-   * </p>
-   * @param testResult Test result information
-   */
-  private void updateTaskTestResult(TestResultInfo testResult) {
-    // Find tasks by target ID and test type
-    List<Task> taskDbs = taskRepo.find0ByTargetIdAndTestType(testResult.getScriptSourceId(),
-        TestType.of(testResult.getScriptType()).getValue());
-    if (isNotEmpty(taskDbs)) {
-      // Update test results for each task
-      for (Task taskDb : taskDbs) {
-        setTaskTestResult(taskDb, testResult);
-      }
-      taskRepo.saveAll(taskDbs);
-    }
   }
 
   /**
@@ -267,44 +239,6 @@ public class ExecTestCmdImpl implements ExecTestCmd {
       }
       apisCaseRepo.saveAll(caseDbs);
     }
-  }
-
-  /**
-   * <p>
-   * Set test result for a task.
-   * </p>
-   * <p>
-   * Updates the status, script ID, execution result, failure message, test numbers, and
-   * execution details of a task based on the test result. Handles completion dates
-   * and failure count tracking.
-   * </p>
-   * @param taskDb Task entity to update
-   * @param resultInfo Test result information
-   */
-  private void setTaskTestResult(Task taskDb, TestResultInfo resultInfo) {
-    // Update task status, execution details, and test numbers
-    taskDb.setStatus(resultInfo.isPassed() ? TaskStatus.COMPLETED : taskDb.getStatus())
-        .setScriptId(resultInfo.getScriptId())
-        .setExecResult(resultInfo.isPassed() ? Result.SUCCESS : Result.FAIL)
-        .setExecFailureMessage(resultInfo.getFailureMessage())
-        .setExecTestNum(resultInfo.getTestNum())
-        .setExecTestFailureNum(resultInfo.getTestFailureNum())
-        .setExecId(resultInfo.getExecId())
-        .setExecName(resultInfo.getExecName())
-        .setExecBy(resultInfo.getExecBy())
-        .setExecDate(resultInfo.getLastExecStartDate());
-
-    // Set completion dates if task is completed
-    if (taskDb.getStatus().isCompleted()) {
-      taskDb.setStartDate(resultInfo.getLastExecStartDate());
-      taskDb.setCompletedDate(resultInfo.getLastExecEndDate());
-    }
-
-    // Update failure count and total count
-    if (!resultInfo.isPassed()) {
-      taskDb.setFailNum(nullSafe(taskDb.getFailNum(), 0) + 1);
-    }
-    taskDb.setTotalNum(nullSafe(taskDb.getFailNum(), 0) + 1);
   }
 
   /**

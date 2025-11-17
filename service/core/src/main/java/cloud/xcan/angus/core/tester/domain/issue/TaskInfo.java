@@ -82,10 +82,6 @@ public class TaskInfo extends TenantAuditingEntity<TaskInfo, Long> implements
   @Enumerated(EnumType.STRING)
   private BugLevel bugLevel;
 
-  @Column(name = "test_type")
-  @Enumerated(EnumType.STRING)
-  private TestType testType;
-
   @Column(name = "status")
   @Enumerated(EnumType.STRING)
   private TaskStatus status;
@@ -160,41 +156,6 @@ public class TaskInfo extends TenantAuditingEntity<TaskInfo, Long> implements
   //
   //  @Column(name = "description")
   //  private String description;
-
-  @Column(name = "target_id")
-  private Long targetId;
-
-  @Column(name = "target_parent_id")
-  private Long targetParentId;
-
-  @Column(name = "script_id")
-  private Long scriptId;
-
-  @Column(name = "exec_result")
-  @Enumerated(EnumType.STRING)
-  private Result execResult;
-
-  @Column(name = "exec_failure_message")
-  private String execFailureMessage;
-
-  @Column(name = "exec_test_num")
-  private Integer execTestNum;
-
-  @Column(name = "exec_test_failure_num")
-  private Integer execTestFailureNum;
-
-  @Column(name = "exec_id")
-  private Long execId;
-
-  @Column(name = "exec_name")
-  private String execName;
-
-  @Column(name = "exec_by")
-  private Long execBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Column(name = "exec_date", columnDefinition = "TIMESTAMP")
-  private LocalDateTime execDate;
 
   @Column(name = "sprint_deleted")
   private Boolean sprintDeleted;

@@ -63,8 +63,6 @@ public class TaskDetailSummary {
 
   private BugLevel bugLevel;
 
-  private TestType testType;
-
   @JsonFormat(pattern = DEFAULT_DATE_TIME_FORMAT)
   private LocalDateTime startDate;
 
@@ -133,39 +131,6 @@ public class TaskDetailSummary {
   private Boolean confirmTask;
 
   private Boolean overdue;
-
-  private Long targetId;
-
-  private String targetName;
-
-  private Long targetParentId;
-
-  private String targetParentName;
-
-  private Long scriptId;
-
-  @NameJoinField(id = "scriptId", repository = "scriptInfoRepo")
-  private String scriptName;
-
-  private Result execResult;
-
-  private String execFailureMessage;
-
-  private Integer execTestNum;
-
-  private Integer execTestFailureNum;
-
-  private Long execId;
-
-  private String execName;
-
-  private Long execBy;
-
-  @NameJoinField(id = "execBy", repository = "commonUserBaseRepo")
-  private String execByName;
-
-  @JsonFormat(pattern = DEFAULT_DATE_TIME_FORMAT)
-  private LocalDateTime execDate;
 
   private Boolean favourite;
 

@@ -1996,31 +1996,30 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         int nameIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(0));
         int taskTypeIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(1));
         int bugLevelIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(2));
-        int testTypeIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(3));
-        int assigneeIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(4));
-        int confirmerIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(5));
-        int testerIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(6));
-        int missingBugIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(7));
-        int unplannedIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(8));
-        int priorityIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(9));
-        int deadlineIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(10));
-        int moduleIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(11));
-        int descriptionIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(12));
-        int evalWorkloadIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(13));
-        int actualWorkloadIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(14));
-        int statusIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(15));
-        int softwareVersionIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(16));
-        int startDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(17));
-        int processedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(18));
-        int canceledDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(19));
-        int conformedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(20));
-        int completedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(21));
-        int tagsIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(22));
-        int tasksIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(23));
-        int casesIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(24));
-        int creatorIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(25));
-        int createdDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(26));
-        //int targetIdIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(27));
+        int assigneeIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(3));
+        int confirmerIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(4));
+        int testerIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(5));
+        int missingBugIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(6));
+        int unplannedIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(7));
+        int priorityIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(8));
+        int deadlineIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(9));
+        int moduleIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(10));
+        int descriptionIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(11));
+        int evalWorkloadIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(12));
+        int actualWorkloadIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(13));
+        int statusIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(14));
+        int softwareVersionIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(15));
+        int startDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(16));
+        int processedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(17));
+        int canceledDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(18));
+        int conformedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(19));
+        int completedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(20));
+        int tagsIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(21));
+        int tasksIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(22));
+        int casesIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(23));
+        int creatorIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(24));
+        int createdDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(25));
+        //int targetIdIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(26));
 
         // Check the required import column values exist
 
@@ -2101,7 +2100,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
         // Format import fields and convert them into task objects
         List<Task> tasks = importToDomain(uidGenerator, projectDb, sprintDb,
-            data, nameIdx, taskTypeIdx, bugLevelIdx, testTypeIdx,
+            data, nameIdx, taskTypeIdx, bugLevelIdx,
             assigneeMap, assigneeIdx, confirmerIdx, confirmerMap, testerIdx, testersMap,
             missingBugIdx, unplannedIdx, priorityIdx, deadlineIdx, descriptionIdx,
             evalWorkloadIdx, actualWorkloadIdx, statusIdx, softwareVersionIdx,

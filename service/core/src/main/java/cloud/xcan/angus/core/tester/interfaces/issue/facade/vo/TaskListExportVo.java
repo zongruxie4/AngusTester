@@ -62,9 +62,6 @@ public class TaskListExportVo {
   @ExcelProperty(converter = EnumMessageWriteConverter.class)
   private BugLevel bugLevel;
 
-  @ExcelProperty(converter = EnumMessageWriteConverter.class)
-  private TestType testType;
-
   //@ExcelIgnore
   //private Long assigneeId;
   //@NameJoinField(id = "assigneeId", repository = "commonUserBaseRepo")
@@ -134,11 +131,6 @@ public class TaskListExportVo {
   @ExcelProperty(converter = ListStringWriteConverter.class)
   private List<String> refCases;
 
-  @ExcelProperty(converter = LongStringConverter.class)
-  private Long targetId;
-
-  private String targetName;
-
   //  @ExcelProperty(converter = LongStringConverter.class)
   //  private Long targetParentId;
   //  private String targetParentName;
@@ -147,22 +139,6 @@ public class TaskListExportVo {
   private Integer totalNum;
   @Schema(description="The number of task processing failures")
   private Integer failNum;
-
-  @ExcelProperty(converter = EnumMessageWriteConverter.class)
-  private Result execResult;
-  private String execFailureMessage;
-  private Integer execTestNum;
-  private Integer execTestFailureNum;
-
-  //@ExcelIgnore
-  //private Long execId;
-  private String execName;
-  //@ExcelIgnore
-  //private Long execBy;
-  //@NameJoinField(id = "execBy", repository = "commonUserBaseRepo")
-  private String execByName;
-  @DateTimeFormat(DEFAULT_DATE_TIME_FORMAT)
-  private LocalDateTime execDate;
 
   //@ExcelIgnore
   //private Long createdBy;

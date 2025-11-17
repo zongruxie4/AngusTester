@@ -40,8 +40,6 @@ public class TaskInfoVo {
 
   private BugLevel bugLevel;
 
-  private TestType testType;
-
   private BigDecimal evalWorkload;
 
   private LocalDateTime startDate;

@@ -69,8 +69,6 @@ public class TaskListVo {
 
   private BugLevel bugLevel;
 
-  private TestType testType;
-
   @Schema(description = "Version of software for the task")
   private String softwareVersion;
 
@@ -138,38 +136,6 @@ public class TaskListVo {
   private Boolean confirmTask;
 
   private Boolean overdue;
-
-  private Long targetId;
-
-  private String targetName;
-
-  private Long targetParentId;
-
-  private String targetParentName;
-
-  private Long scriptId;
-
-  @NameJoinField(id = "scriptId", repository = "scriptInfoRepo")
-  private String scriptName;
-
-  private Result execResult;
-
-  private String execFailureMessage;
-
-  private Integer execTestNum;
-
-  private Integer execTestFailureNum;
-
-  private Long execId;
-
-  private String execName;
-
-  private Long execBy;
-
-  @NameJoinField(id = "execBy", repository = "commonUserBaseRepo")
-  private String execByName;
-
-  private LocalDateTime execDate;
 
   private Boolean favourite;
 

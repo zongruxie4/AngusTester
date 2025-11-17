@@ -258,14 +258,12 @@ public class TaskConverter {
   public static Task toRestartTask(Task task) {
     return task.setTotalNum(0).setFailNum(0)
         .setCompletedDate(null).setCanceledDate(null).setProcessedDate(null)
-        .setExecBy(null).setExecId(null).setCanceledDate(null)
-        .setStartDate(null).setStatus(TaskStatus.PENDING);
+        .setCanceledDate(null).setStartDate(null).setStatus(TaskStatus.PENDING);
   }
 
   public static Task toReopenTask(Task task) {
     return task.setCompletedDate(null).setCanceledDate(null).setProcessedDate(null)
-        .setExecBy(null).setExecId(null).setCanceledDate(null)
-        .setStartDate(null).setStatus(TaskStatus.PENDING);
+        .setCanceledDate(null).setStartDate(null).setStatus(TaskStatus.PENDING);
   }
 
   public static TaskTrash toTaskTrash(Task taskDb) {
@@ -287,7 +285,6 @@ public class TaskConverter {
     summary.setName(task.getName());
     summary.setCode(task.getCode());
     summary.setTaskType(task.getTaskType());
-    summary.setTestType(task.getTestType());
     summary.setProjectId(task.getProjectId());
     summary.setSprintId(task.getSprintId());
     summary.setModuleId(task.getModuleId());
@@ -310,19 +307,6 @@ public class TaskConverter {
     summary.setConfirmTask(nonNull(task.getConfirmerId()));
     summary.setOverdue(task.getOverdue());
     //.setDescription(task.getDescription());
-    summary.setTargetId(task.getTargetId());
-    //.setTargetName(task.getTargetName());
-    summary.setTargetParentId(task.getTargetParentId());
-    //.setTargetParentName(task.getTargetParentName())
-    //.setScriptId(task.getScriptId())
-    summary.setExecResult(task.getExecResult());
-    summary.setExecFailureMessage(task.getExecFailureMessage());
-    summary.setExecTestNum(task.getExecTestNum());
-    summary.setExecTestFailureNum(task.getExecTestFailureNum());
-    summary.setExecId(task.getExecId());
-    summary.setExecName(task.getExecName());
-    summary.setExecBy(task.getExecBy());
-    summary.setExecDate(task.getExecDate());
     //.setFavourite(task.getFavourite())
     //.setFollow(task.getFollow())
     //.setCommentNum(task.getCommentNum())
@@ -339,7 +323,6 @@ public class TaskConverter {
         .setCode(task.getCode())
         .setTaskType(task.getTaskType())
         .setBugLevel(task.getBugLevel())
-        .setTestType(task.getTestType())
         .setProjectId(task.getProjectId())
         .setSprintId(task.getSprintId())
         .setModuleId(task.getModuleId())
@@ -380,19 +363,6 @@ public class TaskConverter {
         .setConfirmTask(task.isConfirmTask())
         .setOverdue(task.getOverdue())
         .setDescription(task.getDescription())
-        .setTargetId(task.getTargetId())
-        .setTargetName(task.getTargetName())
-        .setTargetParentId(task.getTargetParentId())
-        .setTargetParentName(task.getTargetParentName())
-        .setScriptId(task.getScriptId())
-        .setExecResult(task.getExecResult())
-        .setExecFailureMessage(task.getExecFailureMessage())
-        .setExecTestNum(task.getExecTestNum())
-        .setExecTestFailureNum(task.getExecTestFailureNum())
-        .setExecId(task.getExecId())
-        .setExecName(task.getExecName())
-        .setExecBy(task.getExecBy())
-        .setExecDate(task.getExecDate())
         //.setFavourite(task.getFavourite())
         //.setFollow(task.getFollow())
         //.setCommentNum(task.getCommentNum())
@@ -501,7 +471,7 @@ public class TaskConverter {
   public static @NotNull List<Task> importToDomain(
       CachedUidGenerator uidGenerator, Project projectDb, @Nullable TaskSprint sprintDb,
       List<String[]> data, int nameIdx, int taskTypeIdx, int bugLevelIdx,
-      int testTypeIdx, Map<String, List<UserBase>> assigneeMap, int assigneeIdx,
+      Map<String, List<UserBase>> assigneeMap, int assigneeIdx,
       int confirmerIdx, Map<String, List<UserBase>> confirmerMap, int testerIdx,
       Map<String, List<UserBase>> testerMap, int missingBugIdx, int unplannedIdx, int priorityIdx,
       int deadlineIdx, int descIdx, int evalWorkloadIdx, int actualWorkloadIdx, int statusIdx,
@@ -528,8 +498,6 @@ public class TaskConverter {
             .setTaskType(taskType) // Required
             .setBugLevel(taskType.isBug() ? (bugLevelIdx != -1 && isNotEmpty(row[bugLevelIdx])
                 ? BugLevel.ofMessage(row[bugLevelIdx], zhLocale) : BugLevel.DEFAULT) : null)
-            .setTestType(testTypeIdx != -1 && isNotEmpty(row[testTypeIdx])
-                ? TestType.ofMessage(row[testTypeIdx], zhLocale) : null)
             /*.setTargetId(targetIdIdx != -1 && isDigits(row[targetIdIdx])
                 ? Long.parseLong(row[targetIdIdx]) : null)*/
             .setAssigneeId(assigneeIdx != -1 && nonNull(assigneeMap.get(row[assigneeIdx]))

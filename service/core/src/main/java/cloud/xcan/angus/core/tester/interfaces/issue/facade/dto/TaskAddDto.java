@@ -64,12 +64,6 @@ public class TaskAddDto {
   @Schema(description = "Bug severity level for defect classification", example = "MINOR")
   private BugLevel bugLevel;
 
-  @Schema(description = "Associated API or scenario identifier for test task linkage")
-  private Long targetId;
-
-  @Schema(example = "FUNCTIONAL", description = "Test type classification for task execution")
-  private TestType testType;
-
   //@NotNull Fix:: Backlog assignee is nullable
   @Schema(description = "Primary assignee identifier for task responsibility"/*, requiredMode = RequiredMode.REQUIRED*/)
   private Long assigneeId;

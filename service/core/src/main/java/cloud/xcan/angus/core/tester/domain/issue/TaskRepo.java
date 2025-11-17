@@ -65,14 +65,16 @@ public interface TaskRepo extends BaseRepository<Task, Long> {
 
   @Modifying
   @Query(
-      "UPDATE Task s SET s.totalNum=0, s.failNum=0, s.completedDate=null, s.canceledDate=null, s.processedDate=null, s.canceledDate=null, s.startDate=null, "
-          + " s.status='PENDING', s.execResult=null, s.execFailureMessage = null, s.execTestNum = 0, s.execTestFailureNum = 0, s.execId=null, s.execName=null, s.execBy=null, s.execDate=null WHERE s.sprintId IN ?1")
+      "UPDATE Task s SET s.totalNum=0, s.failNum=0, s.completedDate=null,"
+          + " s.canceledDate=null, s.processedDate=null, s.canceledDate=null, s.startDate=null, "
+          + " s.status='PENDING' WHERE s.sprintId IN ?1")
   void updateResultToRestartBySprintIds(Collection<Long> sprintIds);
 
   @Modifying
   @Query(
-      "UPDATE Task s SET s.completedDate=null, s.canceledDate=null, s.processedDate=null, s.canceledDate=null, s.startDate=null,"
-          + " s.status='PENDING', s.execResult=null, s.execFailureMessage = null, s.execTestNum = 0, s.execTestFailureNum = 0, s.execId=null, s.execName=null, s.execBy=null, s.execDate=null WHERE s.sprintId IN ?1")
+      "UPDATE Task s SET s.completedDate=null, s.canceledDate=null, "
+          + "s.processedDate=null, s.canceledDate=null, s.startDate=null,"
+          + " s.status='PENDING' WHERE s.sprintId IN ?1")
   void updateResultToReopenBySprintIds(Collection<Long> sprintIds);
 
   @Modifying
