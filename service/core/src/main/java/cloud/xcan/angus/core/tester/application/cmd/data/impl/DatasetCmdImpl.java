@@ -35,6 +35,8 @@ import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.data.dataset.Dataset;
 import cloud.xcan.angus.core.tester.domain.data.dataset.DatasetRepo;
 import cloud.xcan.angus.core.tester.domain.data.dataset.DatasetTargetRepo;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
 import cloud.xcan.angus.parser.AngusParser;
 import cloud.xcan.angus.remote.ExceptionLevel;
@@ -272,6 +274,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
         List<Dataset> datasets = parseVariablesFromScript(projectId,
             StrategyWhenDuplicated.IGNORE, content);
         for (Dataset dataset : datasets) {
+          dataset.setId(BIDUtils.getId(BIDKey.datasetId));
           dataset.setProjectId(projectId);
         }
         return batchInsert(datasets, "name");

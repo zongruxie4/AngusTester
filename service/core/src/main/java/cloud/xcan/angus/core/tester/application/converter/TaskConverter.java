@@ -199,7 +199,7 @@ public class TaskConverter {
         .setLastModifiedDate(LocalDateTime.now());
   }
 
-  public static void assembleExampleTask(Project projectDb, Long id, Task task,
+  public static void assembleExampleTask(Project projectDb, Task task,
       TaskSprint sprint, List<User> users) {
     Random random = new Random();
     LocalDateTime now = LocalDateTime.now();
@@ -207,7 +207,7 @@ public class TaskConverter {
     LocalDateTime finishedDate = now.plusHours(random.nextInt(24));
     finishedDate = finishedDate.isBefore(now) ? now.plusMinutes(1) : finishedDate;
     TaskStatus status = nullSafe(task.getStatus(), TaskStatus.PENDING);
-    task.setId(id).setCode(getTaskCode())
+    task.setCode(getTaskCode())
         .setProjectId(projectDb.getId()).setModuleId(-1L)
         .setSprintId(nonNull(sprint) ? sprint.getId() : null).setSprintAuth(false)
         // Set 1/3 of the pending tasks in the agile project as backlog

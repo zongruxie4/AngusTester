@@ -2349,7 +2349,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
             new TypeReference<List<Task>>() {
             }, SAMPLE_TASK_FILE);
         for (Task task : tasks) {
-          assembleExampleTask(projectDb, uidGenerator.getUID(), task, sprint, users);
+          assembleExampleTask(projectDb, task, sprint, users);
         }
         return tasks.stream().map(x -> add(x)).toList();
       }

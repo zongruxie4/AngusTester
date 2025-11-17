@@ -79,6 +79,8 @@ import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.tester.domain.node.domain.NodeDomain;
 import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.domain.services.schema.SchemaFormat;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceApisSyncDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceStartDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceStopDto;
@@ -735,6 +737,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
             }, SAMPLE_MOCK_SERVICE_FILE);
 
         List<Node> mockNodes = nodeQuery.findByRole(NodeRole.MOCK_SERVICE);
+        service.setId(BIDUtils.getId(BIDKey.mockServiceId));
         service.setProjectId(projectId);
         service.setNodeId(isNotEmpty(mockNodes) ? mockNodes.get(0).getId() : -1L);
         service.setNodeIp(isNotEmpty(mockNodes) ? mockNodes.get(0).getIp() : "[MockNodeNotFound]");

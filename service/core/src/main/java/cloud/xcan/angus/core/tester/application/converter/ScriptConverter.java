@@ -99,10 +99,9 @@ public class ScriptConverter {
     return script;
   }
 
-  public static Script importDtoToDomain(Long id, Long projectId, String name,
+  public static Script importDtoToDomain(Long projectId, String name,
       String description, String content) {
     return new Script()
-        .setId(id)
         .setProjectId(projectId)
         .setName(stringSafe(name, "Script" + System.currentTimeMillis()))
         //.setType(dto.getType())

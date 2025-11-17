@@ -1530,7 +1530,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             new TypeReference<List<FuncCase>>() {
             }, SAMPLE_FUNC_CASE_FILE);
         for (FuncCase case0 : cases) {
-          assembleExampleFuncCase(projectId, uidGenerator.getUID(), case0, plan, users);
+          assembleExampleFuncCase(projectId, case0, plan, users);
         }
         List<IdKey<Long, Object>> idKeys = funcCaseCmd.add(cases);
 
@@ -1540,7 +1540,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         FuncReview review = parseSample(requireNonNull(resourceUrl),
             new TypeReference<FuncReview>() {
             }, SAMPLE_FUNC_REVIEW_FILE);
-        assembleExampleFuncReview(projectId, uidGenerator.getUID(), review, plan, users);
+        assembleExampleFuncReview(projectId, review, plan, users);
         funcReviewCmd.add(review);
 
         // Associate pending cases with the review
@@ -1554,7 +1554,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         FuncBaseline baseline = parseSample(requireNonNull(resourceUrl),
             new TypeReference<FuncBaseline>() {
             }, SAMPLE_FUNC_BASELINE_FILE);
-        assembleExampleFuncBaseline(projectId, uidGenerator.getUID(), baseline, plan, cases, users);
+        assembleExampleFuncBaseline(projectId, baseline, plan, cases, users);
         funcBaselineCmd.add(baseline);
 
         return idKeys;
