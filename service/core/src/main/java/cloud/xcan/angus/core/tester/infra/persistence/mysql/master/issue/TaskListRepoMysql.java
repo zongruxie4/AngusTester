@@ -97,7 +97,7 @@ public class TaskListRepoMysql extends AbstractSearchRepository<Task> implements
     groupBySql.append(joinAssignee).append(joinConformor).append(joinTag)
         .append(" WHERE 1=1 ").append(mainCondition)
         .append(getMatchCondition(matchValue))
-        .append(" GROUP BY a.`status`,a.test_type,a.task_type,a.exec_result "); // Use Covering Index
+        .append(" GROUP BY a.`status`,a.task_type "); // Use Covering Index
     overdueSql.append(joinAssignee).append(joinConformor).append(joinTag)
         .append(" WHERE 1=1 AND a.overdue = 1 ").append(mainCondition)
         .append(getMatchCondition(matchValue));

@@ -390,7 +390,7 @@ public class TaskConverter {
     TaskCount statistics = new TaskCount();
     // Statistics by status
     Map<String, Integer> statusMap = groupByResult.stream().collect(Collectors.toMap(
-        x -> convert(x[0], String.class), x -> convert(x[4], Integer.class), Integer::sum));
+        x -> convert(x[0], String.class), x -> convert(x[2], Integer.class), Integer::sum));
     statistics.setPendingNum(nullSafe(statusMap.get(TaskStatus.PENDING.name()), 0))
         .setInProgressNum(nullSafe(statusMap.get(TaskStatus.IN_PROGRESS.name()), 0))
         .setConfirmingNum(nullSafe(statusMap.get(TaskStatus.CONFIRMING.name()), 0))
@@ -403,18 +403,9 @@ public class TaskConverter {
     statistics.setTotalTaskNum(statistics.getTotalStatusNum());
     statistics.setValidTaskNum(statistics.getTotalStatusNum() - statistics.getCanceledNum());
 
-    // Statistics by testType
-    Map<String, Integer> testTypeMap = groupByResult.stream().collect(Collectors.toMap(
-        x -> convert(x[1], String.class), x -> convert(x[4], Integer.class), Integer::sum));
-    statistics.setPerfNum(nullSafe(testTypeMap.get(TestType.PERFORMANCE.name()), 0))
-        .setFunctionalNum(nullSafe(testTypeMap.get(TestType.FUNCTIONAL.name()), 0))
-        .setStabilityNum(nullSafe(testTypeMap.get(TestType.STABILITY.name()), 0))
-        .setTotalTestTypeNum(statistics.getPerfNum() + statistics.getFunctionalNum()
-            + statistics.getStabilityNum());
-
     // Statistics by taskType
     Map<String, Integer> taskTypeMap = groupByResult.stream().collect(Collectors.toMap(
-        x -> convert(x[2], String.class), x -> convert(x[4], Integer.class), Integer::sum));
+        x -> convert(x[1], String.class), x -> convert(x[2], Integer.class), Integer::sum));
     statistics.setRequirementNum(nullSafe(taskTypeMap.get(TaskType.REQUIREMENT.name()), 0))
         .setStoryNum(nullSafe(taskTypeMap.get(TaskType.STORY.name()), 0))
         .setTaskNum(nullSafe(taskTypeMap.get(TaskType.TASK.name()), 0))
@@ -422,12 +413,6 @@ public class TaskConverter {
         .setDesignNum(nullSafe(taskTypeMap.get(TaskType.DESIGN.name()), 0))
         .setTotalTaskTypeNum(statistics.getStoryNum() + statistics.getRequirementNum()
             + statistics.getTaskNum() + statistics.getBugNum() + statistics.getDesignNum());
-
-    // Statistics by result
-    Map<String, Integer> resultMap = groupByResult.stream().collect(Collectors.toMap(
-        x -> convert(x[3], String.class), x -> convert(x[4], Integer.class), Integer::sum));
-    statistics.setTestSuccessNum(nullSafe(resultMap.get(Result.SUCCESS.name()), 0))
-        .setTestFailNum(nullSafe(resultMap.get(Result.FAIL.name()), 0));
 
     // Statistics are overdue
     if (!overdueResult.isEmpty()) {
