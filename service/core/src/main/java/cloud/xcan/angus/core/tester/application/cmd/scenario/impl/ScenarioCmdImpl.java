@@ -366,6 +366,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
       protected IdKey<Long, Object> process() {
         // Create a deep copy of the scenario with a new name
         Scenario scenario = ScenarioConverter.toCloneScenario(this.scenarioDb);
+        scenario.setId(BIDUtils.getId(BIDKey.scriptId));
         scenarioQuery.setSafeCloneName(scenario);
 
         // Clone and save the associated script

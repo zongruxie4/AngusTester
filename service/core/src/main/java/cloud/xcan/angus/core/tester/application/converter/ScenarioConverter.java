@@ -71,7 +71,6 @@ public class ScenarioConverter {
 
   public static Scenario toCloneScenario(Scenario scenarioDb) {
     return new Scenario()
-        .setId(getCachedUidGenerator().getUID())
         .setProjectId(scenarioDb.getProjectId())
         .setName(scenarioDb.getName())
         .setAuth(scenarioDb.getAuth())

@@ -48,6 +48,11 @@ public class FuncReviewFindDto extends PageQuery {
   @Schema(description = "Review last modifier identifier for modification tracking")
   private Long lastModifiedBy;
 
+  @Override
+  public String getDefaultOrderBy() {
+    return "createdDate";
+  }
+
 }
 
 

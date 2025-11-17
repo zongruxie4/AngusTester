@@ -643,6 +643,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
       @Override
       protected IdKey<Long, Object> process() {
         Script script = ScriptConverter.toClonedScript(scriptDb);
+        script.setId(BIDUtils.getId(BIDKey.scriptId));
         IdKey<Long, Object> idKey = insert(script, "name");
 
         // Init creator auth
