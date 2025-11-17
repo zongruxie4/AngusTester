@@ -27,7 +27,6 @@ import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskAddDto;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskFindDto;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskUpdateDto;
-import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskAssocVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskInfoVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskListExportVo;

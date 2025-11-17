@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.application.cmd.services;
 
 import cloud.xcan.angus.core.tester.domain.script.Script;
-import cloud.xcan.angus.core.tester.domain.services.testing.TestTaskSetting;
 import cloud.xcan.angus.model.script.TestType;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;

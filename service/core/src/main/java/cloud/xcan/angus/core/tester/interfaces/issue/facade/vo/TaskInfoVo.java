@@ -5,7 +5,6 @@ import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
 import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
 import cloud.xcan.angus.core.tester.domain.issue.TaskType;
-import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.NameJoinField;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

@@ -12,7 +12,6 @@ import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.pojo.Attachment;
 import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
 import cloud.xcan.angus.core.tester.domain.issue.TaskType;
-import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.validator.EditorContentLength;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;

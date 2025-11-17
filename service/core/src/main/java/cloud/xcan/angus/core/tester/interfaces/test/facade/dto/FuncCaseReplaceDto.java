@@ -10,11 +10,10 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_WORKLOAD_NUM;
 
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.pojo.Attachment;
-import cloud.xcan.angus.core.tester.domain.TestLayer;
-import cloud.xcan.angus.core.tester.domain.TestPurpose;
+import cloud.xcan.angus.core.tester.domain.test.TestLayer;
+import cloud.xcan.angus.core.tester.domain.test.TestPurpose;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseStepView;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestStep;
-import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.validator.EditorContentLength;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;

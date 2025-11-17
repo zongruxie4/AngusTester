@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.domain;
+package cloud.xcan.angus.core.tester.domain.test;
 
 /**
  * Test Purpose / Type (Required)

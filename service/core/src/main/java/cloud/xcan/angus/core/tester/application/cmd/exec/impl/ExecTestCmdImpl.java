@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.application.cmd.exec.impl;
 
 import static cloud.xcan.angus.model.element.type.TestTargetType.PLUGIN_HTTP_NAME;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
-import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -18,14 +17,11 @@ import cloud.xcan.angus.core.tester.domain.apis.Apis;
 import cloud.xcan.angus.core.tester.domain.apis.ApisRepo;
 import cloud.xcan.angus.core.tester.domain.apis.cases.ApisCase;
 import cloud.xcan.angus.core.tester.domain.apis.cases.ApisCaseRepo;
-import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.core.tester.domain.issue.TaskRepo;
-import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
 import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
 import cloud.xcan.angus.core.tester.domain.scenario.ScenarioRepo;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfoRepo;
-import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.script.pipeline.Arguments;
 import cloud.xcan.angus.spec.experimental.IdKey;

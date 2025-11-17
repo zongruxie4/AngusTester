@@ -4,18 +4,15 @@ import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DEFAULT_DATE_TIME_FO
 
 import cloud.xcan.angus.api.enums.EvalWorkloadMethod;
 import cloud.xcan.angus.api.enums.Priority;
-import cloud.xcan.angus.api.enums.Result;
 import cloud.xcan.angus.core.export.BooeanWriteConverter;
 import cloud.xcan.angus.core.export.EnumMessageWriteConverter;
 import cloud.xcan.angus.core.export.ListStringWriteConverter;
 import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
 import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
 import cloud.xcan.angus.core.tester.domain.issue.TaskType;
-import cloud.xcan.angus.model.script.TestType;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
-import com.alibaba.excel.converters.longconverter.LongStringConverter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

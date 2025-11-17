@@ -6,7 +6,6 @@ import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DEFAULT_DATE_TIME_FO
 import cloud.xcan.angus.api.commonlink.associate.AssociateUserType;
 import cloud.xcan.angus.api.enums.EvalWorkloadMethod;
 import cloud.xcan.angus.api.enums.Priority;
-import cloud.xcan.angus.api.enums.Result;
 import cloud.xcan.angus.api.pojo.Attachment;
 import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
@@ -14,7 +13,6 @@ import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
 import cloud.xcan.angus.core.tester.domain.issue.TaskType;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskInfoVo;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseInfoVo;
-import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.NameJoinField;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;
 import com.fasterxml.jackson.annotation.JsonFormat;

@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.domain.issue;
 
 import cloud.xcan.angus.api.enums.EvalWorkloadMethod;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
-import cloud.xcan.angus.model.script.TestType;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
