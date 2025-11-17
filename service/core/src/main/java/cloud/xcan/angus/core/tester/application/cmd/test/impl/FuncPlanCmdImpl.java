@@ -39,6 +39,8 @@ import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlanStatus;
 import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanPermission;
 import cloud.xcan.angus.core.tester.domain.test.review.FuncReview;
 import cloud.xcan.angus.core.tester.domain.test.trash.FuncTrashRepo;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
@@ -133,6 +135,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
       @Override
       protected IdKey<Long, Object> process() {
         // Insert the plan and get ID
+        plan.setId(BIDUtils.getId(BIDKey.planId));
         IdKey<Long, Object> idKey = insert(plan);
 
         // Initialize plan creator authorization

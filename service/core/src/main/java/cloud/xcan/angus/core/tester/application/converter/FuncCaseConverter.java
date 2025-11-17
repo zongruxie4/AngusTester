@@ -167,10 +167,10 @@ public class FuncCaseConverter {
     return caseDb;
   }
 
-  public static void assembleExampleFuncPlan(Long projectId, Long id,
+  public static void assembleExampleFuncPlan(Long projectId,
       FuncPlan plan, List<User> users) {
     Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
-    plan.setId(id).setProjectId(projectId)
+    plan.setProjectId(projectId)
         .setOwnerId(currentUserId)
         .setTesterResponsibilities(getTesterResponsibilities(plan, users))
         .setDeleted(false)

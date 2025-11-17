@@ -1520,7 +1520,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         FuncPlan plan = parseSample(requireNonNull(resourceUrl),
             new TypeReference<FuncPlan>() {
             }, SAMPLE_FUNC_PLAN_FILE);
-        assembleExampleFuncPlan(projectId, uidGenerator.getUID(), plan, users);
+        assembleExampleFuncPlan(projectId, plan, users);
         funcPlanCmd.add(plan);
 
         // Create sample test cases from template file
