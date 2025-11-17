@@ -71,7 +71,7 @@ public class TaskListRepoMysql extends AbstractSearchRepository<Task> implements
      * PENDING	PERF		                          6
      * PENDING	STABILITY                         1
      ******************************************************/
-    StringBuilder groupBySql = new StringBuilder("SELECT a.`status`,a.`test_type`,a.task_type,a.exec_result,COUNT(*) num FROM task a ");
+    StringBuilder groupBySql = new StringBuilder("SELECT a.`status`,a.task_type,COUNT(*) num FROM task a ");
     StringBuilder overdueSql = new StringBuilder("SELECT COUNT(a.id) FROM task a ");
     StringBuilder oneTimePassSql = new StringBuilder("SELECT COUNT(a.id) FROM task a ");
     StringBuilder sumNumSql = new StringBuilder("SELECT SUM(a.total_num), SUM(a.fail_num), SUM(a.eval_workload), SUM(a.actual_workload) FROM task a ");
