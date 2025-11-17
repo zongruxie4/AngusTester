@@ -130,6 +130,10 @@ public class FuncCaseFindDto extends PageQuery {
   @Schema(description = "Commenting user identifier for commented case filtering")
   private Long commentBy;
 
+  @Override
+  public String getDefaultOrderBy() {
+    return "createdDate";
+  }
 }
 
 
