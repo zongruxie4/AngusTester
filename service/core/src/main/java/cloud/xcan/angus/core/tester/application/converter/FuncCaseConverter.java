@@ -161,6 +161,9 @@ public class FuncCaseConverter {
     if (nonNull(caseDb.getActualWorkload()) && isNull(caseDb.getEvalWorkload())) {
       caseDb.setEvalWorkload(caseDb.getActualWorkload());
     }
+    // Set temp fields
+    caseDb.setRefCaseIds(case0.getRefCaseIds());
+    caseDb.setRefTaskIds(case0.getRefTaskIds());
     return caseDb;
   }
 
