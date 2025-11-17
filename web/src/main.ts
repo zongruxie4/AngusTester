@@ -19,6 +19,37 @@ const bootstrap = async () => {
   await app.initEnvironment();
   await http.create();
 
+  const path = window.location.pathname;
+  const sharePaths = ['/share/file', '/apis/share'];
+  if (sharePaths.includes(path)) {
+    const locale = I18n.getI18nLanguage();
+    // Create messages object
+    const messages = {
+      en: {
+        ...localeBundles.en
+      },
+      zh_CN: {
+        ...localeBundles.zh_CN
+      }
+    };
+    const i18n = I18n.setupI18n({
+      locale: SUPPORTED_LOCALES.includes(locale as any) ? locale : DEFAULT_LOCALE,
+      legacy: false,
+      messages,
+      fallbackLocale: DEFAULT_LOCALE,
+      missingWarn: false, // Disable missing key warnings in production
+      fallbackWarn: false
+    });
+
+    const App = defineAsyncComponent(() => import('./AppShare.vue'));
+    createApp(App)
+        .use(router)
+        .use(store)
+        .use(i18n)
+        .mount('#app');
+    return;
+  }
+
   app.initAfterAuthentication({ code: AppOrServiceRoute.tester }).then(async () => {
     await app.initializeDefaultThemeStyle();
     startupGuard();
