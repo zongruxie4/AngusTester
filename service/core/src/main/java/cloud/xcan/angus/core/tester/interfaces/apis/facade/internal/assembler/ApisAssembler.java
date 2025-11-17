@@ -14,6 +14,8 @@ import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.apis.Apis;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBasicInfo;
 import cloud.xcan.angus.core.tester.domain.mock.apis.MockApis;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisArchiveDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisInfoFindDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisReplaceDto;
@@ -31,6 +33,7 @@ public class ApisAssembler {
 
   public static Apis archiveDtoToDomain(ApisArchiveDto dto) {
     Apis apis = new Apis()
+        .setId(BIDUtils.getId(BIDKey.apisId))
         .setUnarchivedId(dto.getUnarchivedId())
         .setSource(ApiSource.CREATED)
         .setImportSource(null)

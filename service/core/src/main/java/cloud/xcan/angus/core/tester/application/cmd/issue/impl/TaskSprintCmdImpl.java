@@ -37,6 +37,8 @@ import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprintPermission;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprintRepo;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprintStatus;
 import cloud.xcan.angus.core.tester.domain.issue.trash.TaskTrashRepo;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
@@ -131,6 +133,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
       @Override
       protected IdKey<Long, Object> process() {
+        sprint.setId(BIDUtils.getId(BIDKey.sprintId));
         IdKey<Long, Object> idKey = insert(sprint);
 
         // Init sprint auth
