@@ -337,11 +337,16 @@ public class NodeQueryImpl implements NodeQuery {
       filters.add(SearchCriteria.equal("enabled", enabled));
     }
     List<Node> nodes = findByFilters(filters);
-    if (nonNull(role) && isNotEmpty(nodes)) {
+    if (isNotEmpty(nodes)) {
       Map<Long, Set<NodeRole>> nodeRoles = getNodeRoles(nodes.stream().map(Node::getId).toList());
-      nodes = nodes.stream()
-          .filter(x -> nodeRoles.containsKey(x.getId()) && nodeRoles.get(x.getId()).contains(role))
-          .toList();
+      for (Node node : nodes) {
+        node.setRoles(nodeRoles.get(node.getId()));
+      }
+      if (nonNull(role)){
+        nodes = nodes.stream()
+            .filter(x -> nodeRoles.containsKey(x.getId()) && nodeRoles.get(x.getId()).contains(role))
+            .toList();
+      }
     }
     return size > 0 ? nodes.subList(0, Math.min(size, nodes.size())) : nodes;
   }

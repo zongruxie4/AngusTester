@@ -27,6 +27,8 @@ public interface TagQuery {
 
   Map<String, List<Tag>> checkAndFindByName(Long projectId, Set<String> tags);
 
+  Set<Long> getTargetIdsById(Set<Long> tagIds);
+
   void checkAddNameExist(Long projectId, Set<String> names);
 
   void checkUpdateNameExists(Long projectId, Collection<Tag> tags);

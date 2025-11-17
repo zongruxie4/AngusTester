@@ -39,15 +39,6 @@ import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.Result;
 import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
-import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
-import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
-import cloud.xcan.angus.core.tester.domain.kanban.DataTimeSeries;
-import cloud.xcan.angus.core.tester.domain.module.Module;
-import cloud.xcan.angus.core.tester.domain.project.Project;
-import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
-import cloud.xcan.angus.core.tester.domain.services.testing.TestTaskSetting;
-import cloud.xcan.angus.core.tester.domain.tag.Tag;
-import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
 import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
@@ -70,10 +61,19 @@ import cloud.xcan.angus.core.tester.domain.issue.summary.TaskEfficiencySummary;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskRemarkSummary;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskSummary;
 import cloud.xcan.angus.core.tester.domain.issue.trash.TaskTrash;
+import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
+import cloud.xcan.angus.core.tester.domain.kanban.DataTimeSeries;
+import cloud.xcan.angus.core.tester.domain.module.Module;
+import cloud.xcan.angus.core.tester.domain.project.Project;
+import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
+import cloud.xcan.angus.core.tester.domain.services.testing.TestTaskSetting;
+import cloud.xcan.angus.core.tester.domain.tag.Tag;
+import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersion;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersionStatus;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.internal.assembler.FuncCaseAssembler;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.internal.assembler.TaskAssembler;
+import cloud.xcan.angus.core.tester.interfaces.test.facade.internal.assembler.FuncCaseAssembler;
 import cloud.xcan.angus.idgen.uid.impl.CachedUidGenerator;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.message.ProtocolException;
@@ -184,10 +184,10 @@ public class TaskConverter {
         && taskDb.getDeadlineDate().isBefore(LocalDateTime.now()));
   }
 
-  public static void assembleExampleTaskSprint(Project projectDb, Long id,
-      List<User> users, TaskSprint sprint) {
+  public static void assembleExampleTaskSprint(Project projectDb, List<User> users,
+      TaskSprint sprint) {
     Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
-    sprint.setId(id).setProjectId(projectDb.getId())
+    sprint.setProjectId(projectDb.getId())
         .setAuth(false)
         .setOwnerId(currentUserId)
         .setTenantId(projectDb.getTenantId())
@@ -199,7 +199,7 @@ public class TaskConverter {
         .setLastModifiedDate(LocalDateTime.now());
   }
 
-  public static void assembleExampleTask(Project projectDb, Long id, Task task,
+  public static void assembleExampleTask(Project projectDb, Task task,
       TaskSprint sprint, List<User> users) {
     Random random = new Random();
     LocalDateTime now = LocalDateTime.now();
@@ -207,9 +207,9 @@ public class TaskConverter {
     LocalDateTime finishedDate = now.plusHours(random.nextInt(24));
     finishedDate = finishedDate.isBefore(now) ? now.plusMinutes(1) : finishedDate;
     TaskStatus status = nullSafe(task.getStatus(), TaskStatus.PENDING);
-    task.setId(id).setCode(getTaskCode())
+    task.setCode(getTaskCode())
         .setProjectId(projectDb.getId()).setModuleId(-1L)
-        .setSprintId(nonNull(sprint) ? sprint.getId(): null).setSprintAuth(false)
+        .setSprintId(nonNull(sprint) ? sprint.getId() : null).setSprintAuth(false)
         // Set 1/3 of the pending tasks in the agile project as backlog
         .setBacklog(projectDb.isAgile() && task.getStatus().isPending()
             && randomWithProbability(3))

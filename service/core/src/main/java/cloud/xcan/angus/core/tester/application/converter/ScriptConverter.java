@@ -51,6 +51,7 @@ public class ScriptConverter {
 
   public static void setReplaceInfo(Script scriptDb, Script script, AngusScript angusScript) {
     scriptDb.setName(script.getName())
+        .setType(nullSafe(script.getType(), scriptDb.getType()))
         .setDescription(script.getDescription())
         .setPlugin(angusScript.getPlugin())
         .setContent(script.getContent());
@@ -98,10 +99,9 @@ public class ScriptConverter {
     return script;
   }
 
-  public static Script importDtoToDomain(Long id, Long projectId, String name,
+  public static Script importDtoToDomain(Long projectId, String name,
       String description, String content) {
     return new Script()
-        .setId(id)
         .setProjectId(projectId)
         .setName(stringSafe(name, "Script" + System.currentTimeMillis()))
         //.setType(dto.getType())

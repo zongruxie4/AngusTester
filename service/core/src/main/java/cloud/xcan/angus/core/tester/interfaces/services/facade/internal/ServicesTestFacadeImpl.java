@@ -97,12 +97,12 @@ public class ServicesTestFacadeImpl implements ServicesTestFacade {
 
   @Override
   public ExecApisResultInfo testServiceResult(Long serviceId) {
-    return execResultFacade.serviceApisResult(serviceId, null);
+    return execResultFacade.serviceApisResult(serviceId, new OrgAndDateFilterDto());
   }
 
   @Override
   public ExecApisResultInfo testProjectResult(Long projectId) {
-    return execResultFacade.projectApisResult(projectId, null);
+    return execResultFacade.projectApisResult(projectId, new OrgAndDateFilterDto());
   }
 
 }

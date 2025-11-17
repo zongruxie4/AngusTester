@@ -36,6 +36,8 @@ import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.data.variables.Variable;
 import cloud.xcan.angus.core.tester.domain.data.variables.VariableRepo;
 import cloud.xcan.angus.core.tester.domain.data.variables.VariableTargetRepo;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
 import cloud.xcan.angus.parser.AngusParser;
 import cloud.xcan.angus.remote.ExceptionLevel;
@@ -279,6 +281,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
         List<Variable> variables = parseVariablesFromScript(projectId,
             StrategyWhenDuplicated.IGNORE, content);
         for (Variable variable : variables) {
+          variable.setId(BIDUtils.getId(BIDKey.variableId));
           variable.setProjectId(projectId);
         }
         return batchInsert(variables, "name");

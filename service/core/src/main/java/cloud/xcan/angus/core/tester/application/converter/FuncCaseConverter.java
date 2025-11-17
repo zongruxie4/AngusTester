@@ -161,13 +161,16 @@ public class FuncCaseConverter {
     if (nonNull(caseDb.getActualWorkload()) && isNull(caseDb.getEvalWorkload())) {
       caseDb.setEvalWorkload(caseDb.getActualWorkload());
     }
+    // Set temp fields
+    caseDb.setRefCaseIds(case0.getRefCaseIds());
+    caseDb.setRefTaskIds(case0.getRefTaskIds());
     return caseDb;
   }
 
-  public static void assembleExampleFuncPlan(Long projectId, Long id,
+  public static void assembleExampleFuncPlan(Long projectId,
       FuncPlan plan, List<User> users) {
     Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
-    plan.setId(id).setProjectId(projectId)
+    plan.setProjectId(projectId)
         .setOwnerId(currentUserId)
         .setTesterResponsibilities(getTesterResponsibilities(plan, users))
         .setDeleted(false)
@@ -190,7 +193,7 @@ public class FuncCaseConverter {
     return testerResponsibilities;
   }
 
-  public static void assembleExampleFuncCase(Long projectId, Long id,
+  public static void assembleExampleFuncCase(Long projectId,
       FuncCase case0, FuncPlan plan, List<User> users) {
     Random random = new Random();
     LocalDateTime now = LocalDateTime.now();
@@ -198,7 +201,7 @@ public class FuncCaseConverter {
     LocalDateTime finishedDate = now.plusHours(random.nextInt(24));
     finishedDate = finishedDate.isBefore(now) ? now.plusMinutes(1) : finishedDate;
     CaseTestResult result = nullSafe(case0.getTestResult(), CaseTestResult.PENDING);
-    case0.setId(id).setProjectId(projectId)
+    case0.setProjectId(projectId)
         .setCode(getCaseCode()).setVersion(1) // In order to establish a baseline starting from 1
         .setPlanId(plan.getId())
         .setReviewerId(case0.getReview()
@@ -216,20 +219,20 @@ public class FuncCaseConverter {
         .setLastModifiedDate(result.isFinished() ? finishedDate : now);
   }
 
-  public static void assembleExampleFuncReview(Long projectId, Long id,
+  public static void assembleExampleFuncReview(Long projectId,
       FuncReview review, FuncPlan plan, List<User> users) {
     Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
-    review.setId(id).setProjectId(projectId)
+    review.setProjectId(projectId)
         .setPlanId(plan.getId()).setOwnerId(currentUserId)
         .setParticipantIds(new LinkedHashSet<>(users.stream().map(User::getId)
             .collect(Collectors.toSet())))
         .setCreatedBy(currentUserId).setLastModifiedBy(currentUserId);
   }
 
-  public static void assembleExampleFuncBaseline(Long projectId, Long id,
+  public static void assembleExampleFuncBaseline(Long projectId,
       FuncBaseline baseline, FuncPlan plan, List<FuncCase> cases, List<User> users) {
     Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
-    baseline.setId(id).setProjectId(projectId)
+    baseline.setProjectId(projectId)
         .setPlanId(plan.getId()).setEstablished(false).setTenantId(getOptTenantId())
         .setCreatedBy(currentUserId).setLastModifiedBy(currentUserId);
     LinkedHashSet<Long> baselineCaseIds = new LinkedHashSet<>();

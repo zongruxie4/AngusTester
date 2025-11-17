@@ -7,6 +7,8 @@ import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.project.Project;
 import cloud.xcan.angus.core.tester.domain.project.ProjectType;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectAddDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectFindDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectReplaceDto;

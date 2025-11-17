@@ -90,16 +90,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of script command operations for comprehensive script management.
- * 
+ *
  * <p>This class provides extensive functionality for managing test scripts, including
  * creation, modification, cloning, import/export, and synchronization with API cases.</p>
- * 
+ *
  * <p>It handles the complete lifecycle of scripts from creation to deletion, including
  * authorization management, tag management, and activity logging for audit purposes.</p>
- * 
+ *
  * <p>The implementation supports various script sources (API, Scenario, Service) and
  * integrates with the Angus testing framework for script validation and execution.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>Script CRUD operations with comprehensive validation</li>
@@ -140,16 +140,16 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   /**
    * Adds a new script with comprehensive validation and setup.
-   * 
+   *
    * <p>This method performs extensive validation including project membership,
    * script quota checks, source resource validation, and script content parsing.</p>
-   * 
+   *
    * <p>It automatically sets up creator authorization and script tags,
    * and logs the creation activity for audit purposes.</p>
-   * 
+   *
    * <p>Note: Scenarios and scripts have a one-to-one relationship, while APIs
    * (different test types) and scripts have a one-to-many relationship.</p>
-   * 
+   *
    * @param script the script to add
    * @param saveActivity whether to save the creation activity
    * @return the ID key of the created script
@@ -212,13 +212,13 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   /**
    * Adds a new script with pre-validated AngusScript object.
-   * 
+   *
    * <p>This method is used when the AngusScript object is already available and validated.
    * It provides better performance by avoiding redundant parsing operations.</p>
-   * 
+   *
    * <p>The method handles script serialization if content is empty and ensures
    * proper type determination and plugin assignment.</p>
-   * 
+   *
    * @param script the script to add
    * @param angusScript the pre-validated AngusScript object
    * @param validateScript whether to perform additional script validation
@@ -279,11 +279,11 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   /**
    * Adds a script by scenario with minimal validation.
-   * 
+   *
    * <p>This method is specifically designed for scenario-based script creation
    * with reduced validation requirements. It's typically used during scenario
    * setup and initialization.</p>
-   * 
+   *
    * @param script the script to add
    * @param angusScript the pre-validated AngusScript object
    * @return the ID key of the created script
@@ -333,10 +333,10 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   /**
    * Adds a script from AngusScript object with project context.
-   * 
+   *
    * <p>This method creates a script from an AngusScript object, providing
    * a convenient way to add scripts with minimal setup requirements.</p>
-   * 
+   *
    * @param projectId the project ID to associate the script with
    * @param angusScript the AngusScript object to convert
    * @param validateScript whether to perform script validation
@@ -367,13 +367,13 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   /**
    * Updates an existing script with comprehensive validation.
-   * 
+   *
    * <p>This method performs extensive validation including script existence,
    * modification permissions, source resource validation, and content parsing.</p>
-   * 
+   *
    * <p>It preserves existing script properties while allowing updates to
    * type, name, and description fields for flexibility.</p>
-   * 
+   *
    * @param script the script with updated properties
    * @throws IllegalArgumentException if validation fails or script not found
    */
@@ -479,13 +479,13 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   /**
    * Updates a script with pre-validated AngusScript object and optional tag replacement.
-   * 
+   *
    * <p>This method is used for internal script updates where the AngusScript object
    * is already validated. It provides better performance by avoiding redundant parsing.</p>
-   * 
+   *
    * <p>The method allows selective tag replacement and activity logging based on
    * the provided parameters.</p>
-   * 
+   *
    * @param scriptDb the script to update
    * @param angusScript the pre-validated AngusScript object
    * @param replaceTag whether to replace existing tags
@@ -731,7 +731,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
         for (String scriptFile : SAMPLE_SCRIPT_FILES) {
           String content = readExampleScriptContent(this.getClass(), scriptFile);
           AngusScript angusScript = scriptQuery.checkAndParse(content, true);
-          Script script = importDtoToDomain(uidGenerator.getUID(), projectId,
+          Script script = importDtoToDomain(projectId,
               angusScript.getInfo().getName(), angusScript.getInfo().getDescription(), content);
           idKeys.add(imports(script));
         }
@@ -794,13 +794,13 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   /**
    * Determines and sets the script type based on priority rules.
-   * 
+   *
    * <p>This method implements a priority-based type determination system where
    * the script's explicit type takes precedence over the parsed AngusScript type.</p>
-   * 
+   *
    * <p>If the script has no explicit type, it uses the type from the parsed
    * AngusScript. Otherwise, it updates the AngusScript with the script's type.</p>
-   * 
+   *
    * @param script the script entity to determine type for
    * @param angusScript the parsed AngusScript object
    */
@@ -1054,13 +1054,13 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   /**
    * Converts domain variables to Angus configuration variables.
-   * 
+   *
    * <p>This method flattens and converts a map of case variables to the format
    * required by the Angus testing framework configuration.</p>
-   * 
+   *
    * <p>It processes all variables from all cases and converts them to the
    * appropriate Angus model format for script configuration.</p>
-   * 
+   *
    * @param caseVariableMap map of case IDs to their associated variables
    * @return list of Angus configuration variables, or null if no variables exist
    */
@@ -1074,13 +1074,13 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   /**
    * Converts domain datasets to Angus datasets for a specific case.
-   * 
+   *
    * <p>This method retrieves and converts datasets associated with a specific
    * API case to the format required by the Angus testing framework.</p>
-   * 
+   *
    * <p>It returns null if no datasets are found for the case, allowing
    * the calling code to handle the absence of datasets gracefully.</p>
-   * 
+   *
    * @param caseDatasetMap map of case IDs to their associated datasets
    * @param case0 the API case to get datasets for
    * @return list of Angus datasets for the case, or null if no datasets exist
@@ -1096,7 +1096,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   /**
    * Returns the repository instance for this command.
-   * 
+   *
    * @return the script repository
    */
   @Override
