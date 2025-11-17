@@ -101,6 +101,25 @@ export enum TestType {
   CUSTOMIZATION = 'CUSTOMIZATION'
 }
 
+export enum TestLayer {
+  UI = 'UI',
+  API = 'API',
+  UNIT = 'UNIT',
+  INTEGRATION = 'INTEGRATION',
+  E2E = 'E2E'
+}
+
+export enum TestPurpose {
+  FUNCTIONAL = 'FUNCTIONAL',
+  PERFORMANCE = 'PERFORMANCE',
+  STABILITY = 'STABILITY',
+  SECURITY = 'SECURITY',
+  COMPATIBILITY = 'COMPATIBILITY',
+  USABILITY = 'USABILITY',
+  MAINTAINABILITY = 'MAINTAINABILITY',
+  SCALABILITY = 'SCALABILITY'
+}
+
 export enum CountTestType {
   PERF = 'PERF',
   FUNCTIONAL = 'FUNCTIONAL',
@@ -694,6 +713,8 @@ export const enumNamespaceMap = new Map<any, string>([
   [ApiStatus, 'xcm.enum.ApiStatus'],
   [ActionWhenDuplicate, 'xcm.enum.ActionWhenDuplicate'],
   [TestType, 'xcm.enum.TestType'],
+  [TestLayer, 'xcm.enum.TestLayer'],
+  [TestPurpose, 'xcm.enum.TestPurpose'],
   [CountTestType, 'xcm.enum.CountTestType'],
   [TaskType, 'xcm.enum.TaskType'],
   [TaskStatus, 'xcm.enum.TaskStatus'],

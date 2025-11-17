@@ -60,6 +60,23 @@
         "STABILITY": "Stability Test",
         "CUSTOMIZATION": "Custom Test"
       },
+      "TestLayer": {
+        "UI": "UI Testing",
+        "API": "API Testing",
+        "UNIT": "Unit Testing",
+        "INTEGRATION": "Integration Testing",
+        "E2E": "End-to-End Testing"
+      },
+      "TestPurpose": {
+        "FUNCTIONAL": "Functional Testing",
+        "PERFORMANCE": "Performance Testing",
+        "STABILITY": "Stability Testing",
+        "SECURITY": "Security Testing",
+        "COMPATIBILITY": "Compatibility Testing",
+        "USABILITY": "Usability Testing",
+        "MAINTAINABILITY": "Maintainability Testing",
+        "SCALABILITY": "Scalability Testing"
+      },
       "CountTestType": {
         "PERF": "Performance",
         "FUNCTIONAL": "Functional",
