@@ -60,8 +60,6 @@ public interface TaskQuery {
   List<TaskInfo> notAssociatedTaskInTask(Long taskId, @Nullable Long moduleId,
       @Nullable TaskType taskType);
 
-  List<TaskInfo> assocList(TaskType taskType, Long targetId);
-
   TaskLastResourceCreationCount creationResourcesStatistics(Long projectId, Long sprintId,
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd, boolean joinSprint, boolean joinMeeting);

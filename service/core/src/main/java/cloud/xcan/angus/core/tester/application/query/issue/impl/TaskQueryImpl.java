@@ -256,8 +256,7 @@ import org.springframework.data.domain.Sort.Direction;
 @Biz
 @SummaryQueryRegister(name = "Task", table = "task",
     aggregateColumns = {"id", "fail_num", "total_num", "eval_workload", "actual_workload"},
-    groupByColumns = {"created_date", "task_type", "test_type", "test_type", "status",
-        "priority", "exec_status", "exec_result", "exec_completed_date", "start_date",
+    groupByColumns = {"created_date", "task_type", "status", "priority", "start_date",
         "deadline_date", "canceled_date", "completed_date", "processed_date"}
 )
 public class TaskQueryImpl implements TaskQuery {
@@ -289,13 +288,7 @@ public class TaskQueryImpl implements TaskQuery {
   @Resource
   private TaskFuncCaseQuery taskFuncCaseQuery;
   @Resource
-  private ApisBaseInfoRepo apisBaseInfoRepo;
-  @Resource
   private ProjectQuery projectQuery;
-  @Resource
-  private ServicesRepo servicesRepo;
-  @Resource
-  private ScenarioRepo scenarioRepo;
   @Resource
   private CommentQuery commentQuery;
   @Resource
@@ -628,29 +621,6 @@ public class TaskQueryImpl implements TaskQuery {
           filters.add(SearchCriteria.notIn("id", associatedTaskIds));
         }
         return taskInfoRepo.findAllByFilters(filters, Sort.by(Direction.DESC, "createdDate"));
-      }
-    }.execute();
-  }
-
-  /**
-   * <p>
-   * Get associated tasks by task type and target ID.
-   * </p>
-   * <p>
-   * Retrieves tasks associated with a specific target based on task type.
-   * Supports different association types like API, scenario, or case associations.
-   * </p>
-   * @param taskType Type of task association
-   * @param targetId Target ID (API, scenario, or case ID)
-   * @return List of associated tasks
-   */
-  @Override
-  public List<TaskInfo> assocList(TaskType taskType, Long targetId) {
-    return new BizTemplate<List<TaskInfo>>() {
-
-      @Override
-      protected List<TaskInfo> process() {
-        return taskInfoRepo.findAllByTargetIdAndTaskType(targetId, taskType);
       }
     }.execute();
   }

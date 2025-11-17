@@ -13,27 +13,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface TaskRepo extends BaseRepository<Task, Long> {
 
-  List<Task> findAllBySprintIdAndTargetId(Long sprintId, Long targetId);
-
-  int countByTargetIdAndTestType(Long targetId, TestType testType);
-
-  @Query(value = "SELECT id FROM task WHERE target_id in ?1", nativeQuery = true)
-  List<Long> findIdsByTargetIdIn(Collection<Long> targetIds);
-
-  @Query(value = "SELECT * FROM task WHERE target_id in ?1", nativeQuery = true)
-  List<Task> findByTargetIdIn(Collection<Long> targetIds);
-
-  @Query(value = "SELECT id FROM task WHERE target_id in ?1 AND test_type in ?2", nativeQuery = true)
-  List<Long> findIdsByTargetIdInAndTestTypeIn(Collection<Long> targetIds,
-      Collection<String> testTypes);
-
-  @Query(value = "SELECT id FROM task WHERE target_parent_id = ?1", nativeQuery = true)
-  List<Long> findTaskIdByTargetParentId(Long targetParentId);
-
-  @Query(value = "SELECT id FROM task WHERE target_parent_id = ?1 and test_type in ?2", nativeQuery = true)
-  List<Long> findTaskIdByTargetParentIdAndTestTypeIn(Long targetParentId,
-      Collection<String> testTypes);
-
   @Query(value = "SELECT DISTINCT id FROM task WHERE sprint_id IN ?1", nativeQuery = true)
   List<Long> findAll0IdBySprintIdIn(Collection<Long> ids);
 
@@ -41,9 +20,6 @@ public interface TaskRepo extends BaseRepository<Task, Long> {
   List<String> findNameBySprintIdAndNameIn(Long sprintId, Collection<String> taskNames);
 
   List<Task> findByProjectIdAndParentTaskIdIn(Long projectId, Collection<Long> taskIds);
-
-  @Query(value = "SELECT * FROM task WHERE target_id = ?1 AND test_type = ?2", nativeQuery = true)
-  List<Task> find0ByTargetIdAndTestType(Long targetId, String testType);
 
   long countBySprintId(Long springId);
 
@@ -108,10 +84,6 @@ public interface TaskRepo extends BaseRepository<Task, Long> {
   @Modifying
   @Query(value = "DELETE FROM task WHERE id IN ?1", nativeQuery = true)
   void deleteByIdIn(Collection<Long> ids);
-
-  @Modifying
-  @Query(value = "DELETE FROM task WHERE target_id IN ?1", nativeQuery = true)
-  void deleteByTargetIdIn(Collection<Long> targetIds);
 
   @Modifying
   @Query(value = "DELETE FROM task WHERE sprint_id = ?1 AND name IN ?2", nativeQuery = true)

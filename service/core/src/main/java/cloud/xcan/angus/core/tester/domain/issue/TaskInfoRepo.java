@@ -26,8 +26,6 @@ public interface TaskInfoRepo extends BaseRepository<TaskInfo, Long>,
   @Query(value = "SELECT DISTINCT id FROM task WHERE project_id IN ?1", nativeQuery = true)
   List<Long> findAll0IdByProjectIdIn(Collection<Long> projectIds);
 
-  List<TaskInfo> findAllByTargetIdAndTaskType(Long targetId, TaskType taskType);
-
   @Query(value = "SELECT COUNT(id) FROM task WHERE project_id = ?1", nativeQuery = true)
   Long countAll0ByProjectId(Long projectId);
 
