@@ -13,6 +13,8 @@ import cloud.xcan.angus.api.commonlink.TesterConstant;
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
+import cloud.xcan.angus.core.tester.domain.TestLayer;
+import cloud.xcan.angus.core.tester.domain.TestPurpose;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseStepView;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestStep;
@@ -65,6 +67,8 @@ public class FuncCaseAssembler {
         //.setEvalWorkloadMethod(dto.getEvalWorkloadMethod())
         .setEvalWorkload(dto.getEvalWorkload())
         .setActualWorkload(dto.getEvalWorkload())
+        .setTestLayer(nullSafe(dto.getTestLayer(), TestLayer.UI))
+        .setTestPurpose(nullSafe(dto.getTestPurpose(), TestPurpose.FUNCTIONAL))
         .setPrecondition(dto.getPrecondition())
         .setStepView(nullSafe(dto.getStepView(), CaseStepView.DEFAULT))
         .setSteps(dto.getSteps())
@@ -101,6 +105,8 @@ public class FuncCaseAssembler {
         //.setEvalWorkloadMethod(dto.getEvalWorkloadMethod())
         .setEvalWorkload(dto.getEvalWorkload())
         .setActualWorkload(dto.getActualWorkload())
+        .setTestLayer(dto.getTestLayer())
+        .setTestPurpose(dto.getTestPurpose())
         .setPrecondition(dto.getPrecondition())
         .setStepView(dto.getStepView())
         .setSteps(dto.getSteps())
@@ -132,6 +138,8 @@ public class FuncCaseAssembler {
         //.setEvalWorkloadMethod(dto.getEvalWorkloadMethod())
         .setEvalWorkload(dto.getEvalWorkload())
         .setActualWorkload(dto.getActualWorkload())
+        .setTestLayer(nullSafe(dto.getTestLayer(), TestLayer.UI))
+        .setTestPurpose(nullSafe(dto.getTestPurpose(), TestPurpose.FUNCTIONAL))
         .setPrecondition(dto.getPrecondition())
         .setStepView(nullSafe(dto.getStepView(), CaseStepView.DEFAULT))
         .setSteps(dto.getSteps())
@@ -206,6 +214,8 @@ public class FuncCaseAssembler {
         .setTestResult(case0.getTestResult())
         .setTestRemark(case0.getTestRemark())
         .setTestResultHandleDate(case0.getTestResultHandleDate())
+        .setTestLayer(case0.getTestLayer())
+        .setTestPurpose(case0.getTestPurpose())
         .setAttachments(case0.getAttachments())
         .setTags(isNotEmpty(case0.getTagTargets()) ? case0.getTagTargets().stream()
             .map(o -> new IdAndNameVo().setId(o.getTagId()).setName(o.getTagName()))
@@ -266,6 +276,8 @@ public class FuncCaseAssembler {
         .setTestResult(case0.getTestResult())
         .setTestRemark(case0.getTestRemark())
         .setTestResultHandleDate(case0.getTestResultHandleDate())
+        .setTestLayer(case0.getTestLayer())
+        .setTestPurpose(case0.getTestPurpose())
         .setTags(isNotEmpty(case0.getTagTargets()) ? case0.getTagTargets().stream()
             .map(o -> new IdAndNameVo().setId(o.getTagId()).setName(o.getTagName()))
             .toList() : Collections.emptyList())
@@ -323,7 +335,9 @@ public class FuncCaseAssembler {
         .setReviewStatus(case0.getReviewStatus())
         .setReviewRemark(case0.getReviewRemark())
         .setTestResult(case0.getTestResult())
-        .setTestRemark(case0.getTestRemark());
+        .setTestRemark(case0.getTestRemark())
+        .setTestLayer(case0.getTestLayer())
+        .setTestPurpose(case0.getTestPurpose());
   }
 
   public static FuncCaseExportListVo toListVo(FuncCaseListVo listVo) {
@@ -354,6 +368,8 @@ public class FuncCaseAssembler {
         .setTestResult(listVo.getTestResult())
         .setTestRemark(listVo.getTestRemark())
         .setTestResultHandleDate(listVo.getTestResultHandleDate())
+        .setTestLayer(listVo.getTestLayer())
+        .setTestPurpose(listVo.getTestPurpose())
         .setRefTags(isNotEmpty(listVo.getTags()) ? listVo.getTags().stream()
             .map(IdAndNameVo::getName).toList() : Collections.emptyList())
         .setCreatedByName(listVo.getCreatedByName())
@@ -408,10 +424,10 @@ public class FuncCaseAssembler {
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("deadlineDate", "createdDate", "lastModifiedDate", "reviewDate",
             "testResultHandleDate", "reviewNum", "testNum", "testFailNum")
-        .inAndNotFields("id", "tagId", "testResult", "testerId", "developerId")
+        .inAndNotFields("id", "tagId", "testResult", "testerId", "developerId", "testLayer", "TestPurpose")
         .orderByFields("id", "createdDate", "lastModifiedDate", "priority",
             "deadlineDate", "reviewStatus", "reviewNum", "testerId", "developerId", "reviewerId",
-            "testNum", "testFailNum", "testResult", "reviewDate", "testResultHandleDate")
+            "testNum", "testFailNum", "testResult", "reviewDate", "testResultHandleDate", "testLayer", "TestPurpose")
         .matchSearchFields("name", "description", "code")
         .build();
     return new GenericSpecification<>(filters);

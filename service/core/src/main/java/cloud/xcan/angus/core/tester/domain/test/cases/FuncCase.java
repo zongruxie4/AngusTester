@@ -12,6 +12,8 @@ import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.jpa.multitenancy.TenantAuditingEntity;
 import cloud.xcan.angus.core.tester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.angus.core.tester.domain.ResourceTagAssoc;
+import cloud.xcan.angus.core.tester.domain.TestLayer;
+import cloud.xcan.angus.core.tester.domain.TestPurpose;
 import cloud.xcan.angus.core.tester.domain.activity.MainTargetActivityResource;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.issue.cases.TaskFuncCaseAssoc;
@@ -89,6 +91,14 @@ public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements
 
   @Column(name = "actual_workload")
   private BigDecimal actualWorkload;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "test_layer")
+  private TestLayer testLayer = TestLayer.UI;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "test_purpose")
+  private TestPurpose testPurpose = TestPurpose.FUNCTIONAL;
 
   @Column(name = "precondition")
   private String precondition;

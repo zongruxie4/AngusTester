@@ -5,7 +5,10 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_URL_LENGTH_X4;
 
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.ReviewStatus;
+import cloud.xcan.angus.core.tester.domain.TestLayer;
+import cloud.xcan.angus.core.tester.domain.TestPurpose;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
+import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.PageQuery;
 import cloud.xcan.angus.spec.http.HttpMethod;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -70,6 +73,12 @@ public class FuncCaseFindDto extends PageQuery {
   @DateTimeFormat(pattern = DATE_FMT)
   @Schema(description = "Test case completion deadline for timeline filtering")
   private LocalDateTime deadlineDate;
+
+  @Schema(description = "Test layer for test case classification, defaults to UI", defaultValue = "UI")
+  private TestLayer testLayer;
+
+  @Schema(description = "Test type for test case purpose classification, defaults to FUNCTIONAL", defaultValue = "FUNCTIONAL")
+  private TestPurpose testPurpose;
 
   @Schema(description = "Reviewer identifier for case review filtering")
   private Long reviewerId;
