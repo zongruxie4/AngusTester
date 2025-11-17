@@ -61,6 +61,8 @@ import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.core.tester.domain.script.ScriptRepo;
 import cloud.xcan.angus.core.tester.domain.services.Services;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.model.element.http.Http;
 import cloud.xcan.angus.model.element.type.TestTargetType;
 import cloud.xcan.angus.model.script.AngusScript;
@@ -193,6 +195,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
         judgeScriptType(script, angusScript);
         script.setPlugin(angusScript.getPlugin());
 
+        script.setId(BIDUtils.getId(BIDKey.scriptId));
         IdKey<Long, Object> idKey = insert(script, "name");
 
         // Initialize creator authorization
@@ -261,7 +264,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
         script.setPlugin(angusScript.getPlugin());
 
         // Generate new ID to avoid reflection conflicts
-        script.setId(uidGenerator.getUID());
+        script.setId(BIDUtils.getId(BIDKey.scriptId));
         IdKey<Long, Object> idKey = insert(script, "name");
 
         // Initialize creator authorization
@@ -315,7 +318,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
         script.setPlugin(angusScript.getPlugin());
 
         // Generate new ID to avoid reflection conflicts
-        script.setId(uidGenerator.getUID());
+        script.setId(BIDUtils.getId(BIDKey.scriptId));
         IdKey<Long, Object> idKey = insert(script, "name");
 
         // Initialize creator authorization

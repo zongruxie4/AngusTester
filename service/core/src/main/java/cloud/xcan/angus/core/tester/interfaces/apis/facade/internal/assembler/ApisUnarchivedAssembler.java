@@ -27,7 +27,6 @@ public class ApisUnarchivedAssembler {
 
   public static ApisUnarchived addDtoToDomain(ApisUnarchivedAddDto dto) {
     return new ApisUnarchived()
-        .setId(BIDUtils.getId(BIDKey.apisId))
         .setProjectId(dto.getProjectId())
         .setProtocol(dto.getProtocol())
         .setMethod(dto.getMethod())

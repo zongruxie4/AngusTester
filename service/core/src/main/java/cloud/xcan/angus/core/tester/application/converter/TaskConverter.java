@@ -72,6 +72,8 @@ import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersion;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersionStatus;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.internal.assembler.TaskAssembler;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.internal.assembler.FuncCaseAssembler;
 import cloud.xcan.angus.idgen.uid.impl.CachedUidGenerator;
@@ -103,6 +105,9 @@ public class TaskConverter {
 
   public static void assembleAddTaskInfo(Task task, @Nullable TaskSprint sprintDb,
       boolean isAgile) {
+    if (nonNull(task.getId())){
+      task.setId(BIDUtils.getId(BIDKey.taskId));
+    }
     if (nonNull(sprintDb)) {
       task.setProjectId(sprintDb.getProjectId());
       if (isNotEmpty(sprintDb.getTaskPrefix())
@@ -244,7 +249,7 @@ public class TaskConverter {
 
   public static Task toAddApisOrScenarioTask(Long projectId, @Nullable TaskSprint sprintDb,
       ApisBaseInfo apis, Scenario scenario, Task task) {
-    task.setId(getBean(CachedUidGenerator.class).getUID())
+    task.setId(BIDUtils.getId(BIDKey.taskId))
         .setProjectId(projectId)
         .setSprintId(nonNull(sprintDb) ? sprintDb.getId() : null)
         .setSprintAuth(nonNull(sprintDb) ? sprintDb.getAuth() : false)

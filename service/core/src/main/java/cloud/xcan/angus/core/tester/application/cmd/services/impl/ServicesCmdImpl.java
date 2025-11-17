@@ -57,6 +57,8 @@ import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.domain.services.ServicesExportScope;
 import cloud.xcan.angus.core.tester.domain.services.ServicesRepo;
 import cloud.xcan.angus.core.tester.domain.services.schema.SchemaFormat;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
 import cloud.xcan.angus.model.apis.ApiStatus;
 import cloud.xcan.angus.remote.ExceptionLevel;
@@ -82,17 +84,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Implementation of service command operations for comprehensive service management.
- * 
+ *
  * <p>This class provides extensive functionality for managing services, including
  * creation, modification, cloning, import/export, and lifecycle management.</p>
- * 
+ *
  * <p>It handles the complete lifecycle of services from creation to deletion, including
  * authorization management, schema management, component management, and activity logging
  * for audit purposes.</p>
- * 
+ *
  * <p>The implementation supports various import sources (OpenAPI, Swagger) and provides
  * comprehensive export functionality with multiple format options.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>Service CRUD operations with comprehensive validation</li>
@@ -148,13 +150,13 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   /**
    * Adds a new service with comprehensive validation and setup.
-   * 
+   *
    * <p>This method performs extensive validation including project membership,
    * service quota checks, and name uniqueness validation.</p>
-   * 
+   *
    * <p>It automatically sets up creator authorization and optionally initializes
    * the service schema, and logs the creation activity for audit purposes.</p>
-   * 
+   *
    * @param services the service to add
    * @param initSchema whether to initialize the service schema
    * @return the ID key of the created service
@@ -180,6 +182,7 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
       @Override
       protected IdKey<Long, Object> process() {
+        services.setId(BIDUtils.getId(BIDKey.serviceId));
         IdKey<Long, Object> idKey = insert(services);
 
         // Initialize creator authorization
@@ -197,10 +200,10 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
       /**
        * Gets the set of creator IDs for authorization setup.
-       * 
+       *
        * <p>This method collects the current user ID and the original service creator ID
        * to establish proper authorization for the newly created service.</p>
-       * 
+       *
        * @return set of user IDs to be granted creator permissions
        */
       @NotNull
@@ -217,13 +220,13 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   /**
    * Renames a service with validation and permission checks.
-   * 
+   *
    * <p>This method allows renaming a service while ensuring proper validation
    * including service existence, publication status, and modification permissions.</p>
-   * 
+   *
    * <p>Published services have additional restrictions on modifications,
    * and the method logs the rename activity for audit purposes.</p>
-   * 
+   *
    * @param id the ID of the service to rename
    * @param name the new name for the service
    * @throws IllegalArgumentException if validation fails or service not found
@@ -262,14 +265,14 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   /**
    * Updates the status of a service and all its associated APIs.
-   * 
+   *
    * <p>This method controls the publication status of a service. When a service
    * is published, all APIs under that service are also published. Services
    * allow duplicate publications for flexibility.</p>
-   * 
+   *
    * <p>The method performs appropriate permission validation based on the
    * target status and logs the status change activity.</p>
-   * 
+   *
    * @param serviceId the ID of the service to update
    * @param status the new API status to set
    * @throws IllegalArgumentException if validation fails or service not found
@@ -307,14 +310,14 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   /**
    * Clones a service with all its associated data.
-   * 
+   *
    * <p>This method creates a complete copy of a service including all APIs,
    * schemas, components, and authorizations. It performs comprehensive
    * data replication while maintaining proper relationships.</p>
-   * 
+   *
    * <p>The cloned service gets a new unique name and maintains all
    * the original service's functionality and structure.</p>
-   * 
+   *
    * @param id the ID of the service to clone
    * @throws IllegalArgumentException if validation fails or service not found
    */
@@ -342,10 +345,10 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
       /**
        * Performs the actual service and API cloning operation.
-       * 
+       *
        * <p>This method handles the complete cloning process including service creation,
        * API replication, authorization setup, and schema/component copying.</p>
-       * 
+       *
        * @param serviceDb the original service to clone from
        */
       private void cloneServiceAndApis(Services serviceDb) {
@@ -391,14 +394,14 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   /**
    * Imports services from files or content with comprehensive validation.
-   * 
+   *
    * <p>This method supports importing services from various sources including
    * file uploads and direct content input. It handles both new service creation
    * and existing service updates based on the provided parameters.</p>
-   * 
+   *
    * <p>The method supports different import strategies for handling duplicates
    * and optional cleanup of unreferenced components.</p>
-   * 
+   *
    * @param projectId the ID of the project to import into
    * @param serviceId the ID of existing service to update, null for new service
    * @param serviceName the name for the new service (required when serviceId is null)
@@ -423,7 +426,7 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
         // Verify either file or content is provided
         assertTrue(nonNull(file) || isNotEmpty(content),
             "Parameter file or content cannot both be empty");
-        
+
         // Verify project ID is provided when service ID is empty
         assertTrue(nonNull(serviceId) || nonNull(projectId),
             "Parameter projectId is required when serviceId is empty");
@@ -501,13 +504,13 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   /**
    * Imports example services into a project.
-   * 
+   *
    * <p>This method imports predefined example services from sample files
    * to help users get started with the system.</p>
-   * 
+   *
    * <p>Note: When API calls are not user-initiated, tenant and user information
    * must be injected into the PrincipalContext for proper authorization.</p>
-   * 
+   *
    * @param projectId the ID of the project to import examples into
    * @return list of ID keys for the imported services
    */
@@ -532,14 +535,14 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   /**
    * Exports services in various formats with comprehensive options.
-   * 
+   *
    * <p>This method supports exporting services in different scopes (service-level
    * or API-level) and multiple formats. It can export all components or only
    * API-specific components based on the configuration.</p>
-   * 
+   *
    * <p>The method handles single file exports and multi-file compression
    * for bulk exports, with proper permission validation.</p>
-   * 
+   *
    * @param exportScope the scope of the export (service or API level)
    * @param serviceIds set of service IDs to export
    * @param apisId set of specific API IDs to export (for API-level scope)
@@ -623,14 +626,14 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   /**
    * Logically deletes a service with comprehensive cleanup.
-   * 
+   *
    * <p>This method performs a logical deletion of a service, marking it as deleted
    * while preserving the data for potential recovery. It updates the deletion
    * status of associated APIs and moves the service to trash.</p>
-   * 
+   *
    * <p>The method logs the deletion activity for audit purposes and ensures
    * proper cleanup of related data.</p>
-   * 
+   *
    * @param id the ID of the service to delete
    * @throws IllegalArgumentException if validation fails or service not found
    */
@@ -681,15 +684,15 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   /**
    * Physically deletes services and all associated data.
-   * 
+   *
    * <p>This method performs a complete physical deletion of services and all
    * related data including APIs, schemas, components, authorizations, and
    * performance indicators.</p>
-   * 
+   *
    * <p>Warning: This is a destructive operation that cannot be undone.
    * External calling business logic must ensure proper authorization and
    * data security before invoking this method.</p>
-   * 
+   *
    * @param ids list of service IDs to physically delete
    */
   //@Transactional(rollbackFor = Exception.class)
@@ -731,7 +734,7 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   /**
    * Returns the repository instance for this command.
-   * 
+   *
    * @return the services repository
    */
   @Override

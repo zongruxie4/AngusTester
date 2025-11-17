@@ -355,9 +355,6 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   }
 
   /**
-   * Start and generate test tasks and update test info when it exists
-   */
-  /**
    * Generates tasks based on APIs or scenarios with comprehensive validation.
    *
    * <p>This method creates multiple tasks from APIs or scenarios with proper
@@ -470,11 +467,6 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
-  /**
-   * Test task information that supports modification: name、priority、result、startDate、endDate.
-   * <p>
-   * Only assignees , creator, confirmer and admins are allowed to modify.
-   */
   /**
    * Updates a task with comprehensive validation and change tracking.
    *
@@ -593,11 +585,6 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
-  /**
-   * Test task information that supports modification: name、priority、result、startDate、endDate.
-   * <p>
-   * Only assignees, creator, confirmer and admins are allowed to modify.
-   */
   /**
    * Replaces a task with comprehensive validation and change tracking.
    *
