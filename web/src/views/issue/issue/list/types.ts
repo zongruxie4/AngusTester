@@ -46,12 +46,6 @@ export type TaskEditState = {
   refTaskIds?: string[] | undefined;
   /** Referenced test case identifiers for test coverage linkage */
   refCaseIds?: string[] | undefined;
-  /** Test type for API and scenario testing */
-  testType?: TestType | undefined;
-  /** Target identifier for API and scenario testing */
-  targetId?: string | undefined;
-  /** Target parent identifier for API testing */
-  targetParentId?: string | undefined;
 
   // Temp for edit
   userInfo?: { id: string; fullName?: string};

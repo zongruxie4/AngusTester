@@ -31,25 +31,25 @@ export const contentTreeData = [
     title: t('common.useCase'),
     key: 'cases'
   },
-  {
-    title: t('reportAdd.taskContent.contentTree.test'),
-    key: 'test',
-    tips: t('reportAdd.taskContent.contentTree.testTips'),
-    children: [
-      {
-        title: t('reportAdd.taskContent.contentTree.testSource'),
-        key: 'testSource'
-      },
-      {
-        title: t('common.execution'),
-        key: 'exec'
-      },
-      {
-        title: t('reportAdd.taskContent.contentTree.result'),
-        key: 'result'
-      }
-    ]
-  },
+  // {
+  //   title: t('reportAdd.taskContent.contentTree.test'),
+  //   key: 'test',
+  //   tips: t('reportAdd.taskContent.contentTree.testTips'),
+  //   children: [
+  //     {
+  //       title: t('reportAdd.taskContent.contentTree.testSource'),
+  //       key: 'testSource'
+  //     },
+  //     {
+  //       title: t('common.execution'),
+  //       key: 'exec'
+  //     },
+  //     {
+  //       title: t('reportAdd.taskContent.contentTree.result'),
+  //       key: 'result'
+  //     }
+  //   ]
+  // },
   {
     title: t('common.remark'),
     key: 'remark'

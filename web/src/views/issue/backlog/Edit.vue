@@ -102,7 +102,6 @@ const formState = reactive<TaskEditState>({
   targetId: undefined,
   targetParentId: undefined,
   taskType: TaskType.TASK,
-  testType: TestType.FUNCTIONAL,
   bugLevel: BugLevel.MINOR,
   testerId: undefined,
   escapedBug: false,
@@ -522,10 +521,7 @@ const resetFormToDefaults = () => {
   formState.tagIds = [];
   formState.refTaskIds = [];
   formState.refCaseIds = props.refCaseIds || [];
-  formState.targetId = undefined;
-  formState.targetParentId = undefined;
   formState.taskType = props.taskType || TaskType.TASK;
-  formState.testType = TestType.FUNCTIONAL;
   formState.escapedBug = false;
   formState.softwareVersion = undefined;
   formState.assigneeId = props.assigneeId || props.userInfo?.id || undefined;
@@ -694,9 +690,7 @@ onMounted(() => {
       formState.tagIds = taskData.tags?.map(item => item.id);
       formState.refTaskIds = taskData.refTaskInfos?.map(item => item.id);
       formState.refCaseIds = taskData.refCaseInfos?.map(item => item.id);
-      formState.targetId = taskData.targetId;
       formState.taskType = taskData.taskType?.value || TaskType.TASK;
-      formState.testType = taskData.testType?.value;
       formState.targetParentId = taskData.targetParentId;
       formState.testerId = taskData.testerId;
       formState.escapedBug = taskData.escapedBug || false;
@@ -854,7 +848,9 @@ onMounted(() => {
               </FormItem>
             </div>
           </template>
-          </div>
+
+
+
 
           <div class="flex space-x-4">
             <FormItem

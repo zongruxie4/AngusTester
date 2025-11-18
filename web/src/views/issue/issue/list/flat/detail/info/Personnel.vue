@@ -256,7 +256,7 @@ const handleTesterBlur = async () => {
 // Computed properties for task personnel data
 const currentTaskId = computed(() => props.dataSource?.id);
 const currentCreatedByName = computed(() => props.dataSource?.createdByName);
-const currentExecByName = computed(() => props.dataSource?.execByName);
+
 const currentLastModifiedByName = computed(() => props.dataSource?.lastModifiedByName);
 
 /**

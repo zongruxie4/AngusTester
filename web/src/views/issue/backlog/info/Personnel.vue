@@ -233,7 +233,6 @@ const assignCurrentUserToRole = (roleKey: 'assigneeId' | 'confirmerId' | 'tester
 // Computed Properties
 const currentTaskId = computed(() => props.dataSource?.id);
 const createdByName = computed(() => props.dataSource?.createdByName);
-const execByName = computed(() => props.dataSource?.execByName);
 const lastModifiedByName = computed(() => props.dataSource?.lastModifiedByName);
 
 // Current user information
@@ -352,15 +351,6 @@ const testerDefaultOptions = computed(() => {
           </div>
         </div>
 
-        <!-- Executor -->
-        <div class="info-row">
-          <div class="info-label">
-            <span>{{ t('common.executor') }}</span>
-          </div>
-          <div class="info-value">
-            <span class="info-text" :class="{ 'dash-text': !execByName }">{{ execByName || '--' }}</span>
-          </div>
-        </div>
 
         <!-- Confirmer -->
         <div class="info-row">

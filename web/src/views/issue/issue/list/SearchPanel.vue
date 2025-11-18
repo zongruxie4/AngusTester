@@ -1301,12 +1301,12 @@ const searchOptions = [
     placeholder: t('common.placeholders.selectConfirmer'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
-  {
-    type: 'select-user' as const,
-    valueKey: 'execBy',
-    placeholder: t('common.placeholders.selectExecutor'),
-    fieldNames: { label: 'fullName', value: 'id' }
-  },
+  // {
+  //   type: 'select-user' as const,
+  //   valueKey: 'execBy',
+  //   placeholder: t('common.placeholders.selectExecutor'),
+  //   fieldNames: { label: 'fullName', value: 'id' }
+  // },
   {
     type: 'select-user' as const,
     valueKey: 'createdBy',
@@ -1319,12 +1319,12 @@ const searchOptions = [
     placeholder: t('common.placeholders.selectModifier'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
-  {
-    type: 'select-enum' as const,
-    valueKey: 'testType',
-    placeholder: t('common.placeholders.selectTestType'),
-    enumKey: TestType
-  },
+  // {
+  //   type: 'select-enum' as const,
+  //   valueKey: 'testType',
+  //   placeholder: t('common.placeholders.selectTestType'),
+  //   enumKey: TestType
+  // },
   {
     type: 'select' as const,
     action: `${TESTER}/module?fullTextSearch=true`,
@@ -1334,12 +1334,12 @@ const searchOptions = [
     placeholder: t('common.placeholders.selectModule'),
     fieldNames: { label: 'name', value: 'id' }
   },
-  {
-    type: 'select-enum' as const,
-    valueKey: 'execResult',
-    placeholder: t('common.placeholders.selectExecutionResult'),
-    enumKey: Result
-  },
+  // {
+  //   type: 'select-enum' as const,
+  //   valueKey: 'execResult',
+  //   placeholder: t('common.placeholders.selectExecutionResult'),
+  //   enumKey: Result
+  // },
   {
     type: 'select' as const,
     valueKey: 'targetParentId',
@@ -1413,15 +1413,15 @@ const searchOptions = [
     ],
     showTime: true
   },
-  {
-    type: 'date-range' as const,
-    valueKey: 'execDate',
-    placeholder: [
-      t('common.placeholders.selectExecutedDateRange.0'),
-      t('common.placeholders.selectExecutedDateRange.1')
-    ],
-    showTime: true
-  },
+  // {
+  //   type: 'date-range' as const,
+  //   valueKey: 'execDate',
+  //   placeholder: [
+  //     t('common.placeholders.selectExecutedDateRange.0'),
+  //     t('common.placeholders.selectExecutedDateRange.1')
+  //   ],
+  //   showTime: true
+  // },
   {
     type: 'date-range' as const,
     valueKey: 'lastModifiedDate',

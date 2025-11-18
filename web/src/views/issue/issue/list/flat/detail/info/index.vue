@@ -21,8 +21,6 @@ const emit = defineEmits<{
 }>();
 
 // Async component imports
-const APIBasicInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/info/Apis.vue'));
-const ScenarioBasicInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/info/Scenario.vue'));
 const BasicInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/info/Basic.vue'));
 const WorkloadInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/info/Workload.vue'));
 const ProcessTimesInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/info/ProcessTimes.vue'));

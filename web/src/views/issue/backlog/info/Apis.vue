@@ -640,15 +640,6 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Test Type -->
-        <div class="info-row">
-          <div class="info-label">
-            <span>{{ t('common.testType') }}</span>
-          </div>
-          <div class="info-value">
-            <ScriptTypeTag :value="props.dataSource?.testType" />
-          </div>
-        </div>
 
         <!-- Task Status -->
         <div class="info-row">
