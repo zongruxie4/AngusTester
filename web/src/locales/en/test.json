@@ -128,7 +128,8 @@
       "viewStatistics": "View Statistics",
       "assocCases": "Associate Cases",
       "assocIssues": "Associate {name}",
-      "submitBug": "Submit Bug"
+      "submitBug": "Submit Bug",
+      "review": "Go to Review"
     },
     "messages": {
       "caseSetBlocked": "Case set to blocked",

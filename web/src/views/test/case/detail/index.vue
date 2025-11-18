@@ -460,7 +460,7 @@ defineExpose({
 
         <Button
           v-if="(!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === ReviewStatus.PASSED))
-            && ![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED].includes(caseDetail.testResult?.value)"
+            && ![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED, CaseTestResult.BLOCKED].includes(caseDetail.testResult?.value)"
           :disabled="!currentCaseActionPermissions.includes('updateTestResult')"
           class="mt-2 mr-2"
           size="small"
@@ -477,7 +477,7 @@ defineExpose({
           size="small"
           @click="handleActionClick('review')">
           <Icon class="mr-1" icon="icon-pingshen" />
-          {{ t('common.review') }}
+          {{ t('testCase.actions.review') }}
         </Button>
 
         <Button

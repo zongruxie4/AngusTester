@@ -36,12 +36,12 @@ const Comment = defineAsyncComponent(() => import('@/views/test/case/list/kanban
 const Activity = defineAsyncComponent(() => import('@/views/test/case/list/kanban/detail/Activity.vue'));
 
 type Props = {
-  projectId: number;
-  userInfo: { id: number; };
-  appInfo: { id: number; };
+  projectId: string;
+  userInfo: { id: string; };
+  appInfo: { id: string; };
   filters: SearchCriteria[];
   notify: string;
-  moduleId: number;
+  moduleId: string;
   groupKey: 'none' | 'testerName' | 'lastModifiedByName';
   orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName';
   orderSort: PageQuery.OrderSort;
@@ -69,7 +69,7 @@ const isAdmin = computed(() => appContext.isAdmin());
 
 const drawerActiveKey = ref<'basic' | 'testStep' | 'person' | 'date' | 'comment' | 'activity' | 'assocIssues' | 'assocCases' | 'attachments' | 'remarks' | 'reviewInfo' | 'testInfo' | 'reviewRecord'>('basic');
 
-const planPermissionsMap = ref<Map<number, FuncPlanPermission[]>>(new Map());
+const planPermissionsMap = ref<Map<string, FuncPlanPermission[]>>(new Map());
 const planAuthMap = ref({});
 
 const testResultList = ref<{ message: string; value: CaseTestResult }[]>([]);
@@ -89,21 +89,21 @@ const numMap = ref<{ [key in CaseTestResult]: number }>({
   CANCELED: 0
 });
 
-const testerNameList = ref<{ name: string; value: number }[]>([]);
-const lastModifiedByNameList = ref<{ name: string; value: number }[]>([]);
-const groupDataMap = ref<{ [key: number]: { [key in CaseTestResult]: CaseDetail[] } }>({});
+const testerNameList = ref<{ name: string; value: string }[]>([]);
+const lastModifiedByNameList = ref<{ name: string; value: string }[]>([]);
+const groupDataMap = ref<{ [key: string]: { [key in CaseTestResult]: CaseDetail[] } }>({});
 
-const isDraggingToColumn = ref<number|null>(null);
+const isDraggingToColumn = ref<string|null>(null);
 const isDraggingToColumnTestResult = ref<CaseTestResult[]>([]);
 
 const openFlag = ref(false);
-const arrowOpenSet = ref(new Set<number>());
+const arrowOpenSet = ref(new Set<string>());
 
 const checkedCaseInfo = ref<CaseDetail>();
 const checkedPlanInfo = ref<{ id: string; name: string; }>();
 const checkedGroupKey = ref<string>();
 
-const selectedIndex = ref<number>();
+const selectedIndex = ref<string>();
 const selectedTestResult = ref<CaseTestResult>();
 const selectedCaseInfo = ref<CaseDetail>();
 
@@ -258,7 +258,7 @@ const getParams = () => {
  */
 const setGroupData = (data:CaseDetail) => {
   const { testResult: { value: testResultValue }, testerId = -1, lastModifiedBy } = data;
-  let key = -1;
+  let key:any = -1;
   if (props.groupKey === 'testerName') {
     key = testerId;
   } else if (props.groupKey === 'lastModifiedByName') {
@@ -1240,8 +1240,8 @@ onMounted(() => {
   });
 });
 
-const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
-  const map = new Map<number, ActionMenuItem[]>();
+const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
+  const map = new Map<string, ActionMenuItem[]>();
   for (const key in caseDataMap.value) {
     const list = (caseDataMap.value[key] || []) as CaseDetail[];
     for (let i = 0, len = list.length; i < len; i++) {
@@ -1249,10 +1249,11 @@ const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
       const planId = item.planId;
 
       const permissions = planPermissionsMap.value.get(planId) || [];
+      debugger;
       if (props.userInfo?.id === item.testerId && !permissions.includes(FuncPlanPermission.TEST)) {
         permissions.push(FuncPlanPermission.TEST);
       }
-      const { favourite, follow, testNum, review, reviewStatus: { value: reviewStatus }, testResult: { value: testResult } } = item;
+      const { favourite, follow, testNum, review, reviewStatus, testResult } = item;
 
       const menuItems: ActionMenuItem[] = [
         {
@@ -1271,8 +1272,8 @@ const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
         }
       ];
 
-      if (!review || (review && reviewStatus === ReviewStatus.PASSED)) {
-        if (testResult === CaseTestResult.PENDING || testResult === CaseTestResult.BLOCKED) {
+      if (!review || (review && reviewStatus.value === ReviewStatus.PASSED)) {  
+        if (testResult.value === CaseTestResult.PENDING || testResult.value === CaseTestResult.BLOCKED) {
           menuItems.push({
             name: t('testCase.actions.testPassed'),
             key: 'testPassed',
@@ -1289,7 +1290,7 @@ const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
             hide: false
           });
 
-          if (testResult === CaseTestResult.PENDING) {
+          if (testResult.value === CaseTestResult.PENDING) {
             menuItems.push({
               name: t('testCase.actions.setBlocked'),
               key: 'block',
@@ -1298,7 +1299,7 @@ const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
               hide: false
             });
           }
-        } else if (testResult === CaseTestResult.PASSED || testResult === CaseTestResult.NOT_PASSED || testResult === CaseTestResult.CANCELED) {
+        } else if (testResult.value === CaseTestResult.PASSED || testResult.value === CaseTestResult.NOT_PASSED || testResult.value === CaseTestResult.CANCELED) {
           menuItems.push({
             name: t('testCase.actions.retest'),
             key: 'retest',
@@ -1307,7 +1308,7 @@ const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
             hide: false
           });
 
-          if (testResult === CaseTestResult.NOT_PASSED) {
+          if (testResult.value === CaseTestResult.NOT_PASSED) {
             menuItems.push({
               name: t('testCase.actions.submitBug'),
               key: 'addBug',
@@ -1330,7 +1331,7 @@ const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
           });
         }
 
-        if (testResult === CaseTestResult.PENDING || testResult === CaseTestResult.BLOCKED) {
+          if (testResult.value === CaseTestResult.PENDING || testResult.value === CaseTestResult.BLOCKED) {
           menuItems.push({
             name: t('actions.cancel'),
             key: 'cancel',
@@ -1396,7 +1397,6 @@ const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
       map.set(item.id, menuItems);
     }
   }
-
   return map;
 });
 
@@ -1445,12 +1445,12 @@ const checkedCaseId = computed(() => {
           @add="handleDragAdd($event, item.value)">
           <template #item="{ element, index }: { element: CaseDetail; index: number; }">
             <div
-              :id="`${item.value}-${index}-${element.id}`"
+              :id="`${item?.value}-${index}-${element.id}`"
               :class="{ 'active-item': checkedCaseId === element.id }"
               class="case-board-item border border-solid rounded border-theme-text-box p-2 space-y-1.5"
               @click="handleSelectCard(element,index)">
               <div class="flex items-center overflow-hidden">
-                <IconTask :value="element.testResult.value" class="mr-1.5" />
+                <IconTask :value="element?.testResult?.value" class="mr-1.5" />
                 <span :title="element.name" class="flex-1 truncate font-semibold">{{ element.name }}</span>
                 <span
                   v-if="element.overdue"
