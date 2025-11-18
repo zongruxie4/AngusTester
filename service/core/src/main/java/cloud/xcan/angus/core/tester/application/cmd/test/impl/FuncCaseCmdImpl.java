@@ -1494,10 +1494,6 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   }
 
   /**
-   * Note: When API calls that are not user-action, tenant and user information must be injected
-   * into the PrincipalContext.
-   */
-  /**
    * Import example functional test cases, plans, reviews, and baselines for a project.
    * <p>
    * Used for initializing sample data for demonstration or onboarding.
