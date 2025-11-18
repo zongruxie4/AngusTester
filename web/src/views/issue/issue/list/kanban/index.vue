@@ -68,8 +68,6 @@ const AssocIssues = defineAsyncComponent(() => import('@/views/issue/issue/list/
 const AssocCases = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/AssocCases.vue'));
 const AttachmentInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Attachment.vue'));
 const Remarks = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Remark.vue'));
-const APIInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Apis.vue'));
-const ScenarioInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Scenario.vue'));
 
 // Computed properties
 const isAdmin = computed(() => appContext.isAdmin());
