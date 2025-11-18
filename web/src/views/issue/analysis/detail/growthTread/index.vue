@@ -30,11 +30,11 @@ const getChartData = (data) => {
   const res = {} as any;
 
   const {
-    apiTestNum = 0, requirementNum = 0, scenarioTestNum = 0, storyNum = 0, bugNum = 0, taskNum = 0, totalNum = 0
+    designNum = 0, requirementNum = 0, storyNum = 0, bugNum = 0, taskNum = 0, totalNum = 0
   } = data;
   res.overdueAssessmentData = data;
   res.chart0Value = {
-    yData: [requirementNum, storyNum, taskNum, bugNum, apiTestNum, scenarioTestNum, totalNum]
+    yData: [requirementNum, storyNum, taskNum, bugNum, designNum, totalNum]
   };
 
   const keys: string[] = Object.keys(data.timeSeries || {});

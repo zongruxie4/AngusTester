@@ -17,19 +17,9 @@ const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
   const res = {} as any;
-
-  const {
-    apiTestNum = 0, requirementNum = 0, scenarioTestNum = 0,
-    storyNum = 0, bugNum = 0, taskNum = 0, totalNum = 0
-  } = data;
-  res.overdueAssessmentData = data;
-  res.chart0Value = {
-    yData: [requirementNum, storyNum, taskNum, bugNum, apiTestNum, scenarioTestNum, totalNum]
-  };
-
   // const keys = Object.keys(data.timeSeries);
-  let xData = [];
-  let series = [];
+  let xData: string[] = [];
+  let series: { name: string, data: number[], type: string, smooth: boolean, connectNulls: boolean, itemStyle: { color: string } }[] = [];
   if (data.timeSeries.length) {
     data.timeSeries.forEach(i => {
       if (!xData.includes(i.timeSeries)) {
@@ -72,7 +62,7 @@ const getChartData = (data) => {
 };
 
 const totalValue = ref({});
-const personValues = ref([]);
+const personValues = ref<{ userName: string, chartData: any, id: string }[]>([]);
 
 onMounted(() => {
   watch(() => props.analysisInfo, (newValue) => {

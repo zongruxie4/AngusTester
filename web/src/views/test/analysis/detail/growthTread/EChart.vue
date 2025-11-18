@@ -6,22 +6,12 @@ import * as eCharts from 'echarts';
 const { t } = useI18n();
 
 interface Props {
-
-  overdueAssessmentData: Record<string, any>;
-  chart0Value: {
-    yData: number[],
-
-  },
   chart1Value: {
     value: {name: string, value: number[]}[],
     xData: string[]
   },
 }
 const props = withDefaults(defineProps<Props>(), {
-  overdueAssessmentData: () => ({}),
-  chart0Value: () => ({
-    yData: [0, 0, 0, 0, 0, 0, 0]
-  }),
   chart1Value: () => ({
     value: []
   })
@@ -83,7 +73,7 @@ const taskGrowthTreadEChartConfig = {
 onMounted(() => {
   taskGrowthTreadRefEChart = eCharts.init(taskGrowthTreadRef.value);
 
-  watch([() => props.chart0Value, () => props.chart1Value], () => {
+  watch([() => props.chart1Value], () => {
     taskGrowthTreadEChartConfig.series = props.chart1Value.value.map(i => {
       return {
         ...i,
