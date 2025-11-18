@@ -250,6 +250,7 @@
       "storyCount": "Stories",
       "taskCount": "Tasks",
       "bugCount": "Bugs",
+      "designCount": "Designs", 
       "completedBugRate": "Completed bug rate",
       "uncompletedBugCount": "Uncompleted bugs",
       "completedBugCount": "Completed bugs",

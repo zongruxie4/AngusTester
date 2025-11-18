@@ -20,7 +20,7 @@ const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   overdueAssessmentData: () => ({}),
   chart0Value: () => ({
-    yData: [0, 0, 0, 0, 0, 0, 0]
+    yData: [0, 0, 0, 0, 0, 0]
   }),
   chart1Value: () => ({
     value: [],
@@ -57,8 +57,7 @@ const growthTreadTaskEChartConfig = {
       t('common.counts.storyCount'),
       t('common.counts.taskCount'),
       t('common.counts.bugCount'),
-      t('common.counts.apiTestCount'),
-      t('common.counts.scenarioTestCount'),
+      t('common.counts.designCount'),
       t('chart.total')
     ],
     axisLabel: {
