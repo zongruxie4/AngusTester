@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.interfaces.test.facade.vo;
+package cloud.xcan.angus.core.tester.interfaces.test.facade.vo.template;
 
 import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DEFAULT_DATE_TIME_FORMAT;
 

@@ -1,6 +1,6 @@
-package cloud.xcan.angus.core.tester.interfaces.test.facade.dto;
+package cloud.xcan.angus.core.tester.interfaces.test.facade.dto.template;
 
-import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH_X4;
+import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH;
 
 import cloud.xcan.angus.core.tester.domain.test.template.TestTemplateType;
 import cloud.xcan.angus.core.tester.domain.test.template.content.TestTemplateContent;
@@ -19,7 +19,7 @@ import org.hibernate.validator.constraints.Length;
 public class TestTemplateAddDto {
 
   @NotBlank
-  @Length(max = MAX_NAME_LENGTH_X4)
+  @Length(max = MAX_NAME_LENGTH)
   @Schema(description = "Test template name for identification and management", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
