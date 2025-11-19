@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 @Getter
 @Setter
@@ -44,5 +45,9 @@ public class FuncCaseResultModifyDto {
   @Length(max = MAX_DESC_LENGTH_X2)
   @Schema(description = "Test case execution remarks and observations")
   private String testRemark;
+
+  @Range(min = 0, max = 10)
+  @Schema(description = "Test case score")
+  private Integer testScore;
 
 }

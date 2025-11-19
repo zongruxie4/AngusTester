@@ -307,6 +307,7 @@ public class FuncCaseConverter {
         .setActualWorkload(replace ? case0.getActualWorkload()
             : nullSafe(caseDb.getActualWorkload(), caseDb.getEvalWorkload()))
         .setTestRemark(replace ? case0.getTestRemark() : caseDb.getTestRemark())
+        .setTestScore(replace ? case0.getTestScore() : caseDb.getTestScore())
         .setTestNum(caseDb.getTestNum() + (case0.getTestResult().isTestAction() ? 1 : 0))
         .setTestFailNum(caseDb.getTestFailNum() + (case0.getTestResult().isNotPassed() ? 1 : 0));
     if (nonNull(caseDb.getActualWorkload()) && isNull(caseDb.getEvalWorkload())) {

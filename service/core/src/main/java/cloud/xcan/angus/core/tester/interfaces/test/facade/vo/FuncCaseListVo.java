@@ -16,6 +16,7 @@ import cloud.xcan.angus.remote.NameJoinField;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -65,6 +66,10 @@ public class FuncCaseListVo {
   private BigDecimal evalWorkload;
 
   private BigDecimal actualWorkload;
+
+  private TestLayer testLayer;
+
+  private TestPurpose testPurpose;
 
   @JsonIgnore // Only used by export
   private String precondition;
@@ -119,11 +124,10 @@ public class FuncCaseListVo {
 
   private String testRemark;
 
+  @Schema(description = "Test case score")
+  private Integer testScore;
+
   private LocalDateTime testResultHandleDate;
-
-  private TestLayer testLayer;
-
-  private TestPurpose testPurpose;
 
   private List<IdAndNameVo> tags;
 

@@ -94,11 +94,11 @@ public interface FuncCaseRepo extends BaseRepository<FuncCase, Long> {
   void updateEvalWorkloadMethodByPlanId(Long planId, EvalWorkloadMethod evalWorkloadMethod);
 
   @Modifying
-  @Query("UPDATE FuncCase s SET s.testNum=0, s.testFailNum=0, s.testResult='PENDING', s.testResultHandleDate=null WHERE s.id IN ?1")
+  @Query("UPDATE FuncCase s SET s.testNum=0, s.testFailNum=0, s.testResult='PENDING', s.testScore = null, s.testResultHandleDate=null WHERE s.id IN ?1")
   void updateTestResultToInitByIds(Collection<Long> ids);
 
   @Modifying
-  @Query("UPDATE FuncCase s SET s.testNum=0, s.testFailNum=0, s.testResult='PENDING', s.testResultHandleDate=null WHERE s.planId IN ?1")
+  @Query("UPDATE FuncCase s SET s.testNum=0, s.testFailNum=0, s.testResult='PENDING', s.testScore = null, s.testResultHandleDate=null WHERE s.planId IN ?1")
   void updateTestResultToInitByPlanIds(Collection<Long> planIds);
 
   @Modifying

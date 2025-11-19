@@ -170,7 +170,8 @@ public class FuncCaseAssembler {
         .setTestResult(dto.getTestResult())
         .setEvalWorkload(dto.getEvalWorkload())
         .setActualWorkload(dto.getActualWorkload())
-        .setTestRemark(dto.getTestRemark());
+        .setTestRemark(dto.getTestRemark())
+        .setTestScore(dto.getTestScore());
   }
 
   public static FuncCase reviewDtoToDomain(FuncCaseReviewDto dto) {
@@ -195,6 +196,8 @@ public class FuncCaseAssembler {
         .setEvalWorkloadMethod(case0.getEvalWorkloadMethod())
         .setEvalWorkload(case0.getEvalWorkload())
         .setActualWorkload(case0.getActualWorkload())
+        .setTestLayer(case0.getTestLayer())
+        .setTestPurpose(case0.getTestPurpose())
         .setPrecondition(case0.getPrecondition())
         .setStepView(nullSafe(case0.getStepView(), CaseStepView.DEFAULT))
         .setSteps(case0.getSteps())
@@ -213,9 +216,8 @@ public class FuncCaseAssembler {
         .setTestFailNum(case0.getTestFailNum())
         .setTestResult(case0.getTestResult())
         .setTestRemark(case0.getTestRemark())
+        .setTestScore(case0.getTestScore())
         .setTestResultHandleDate(case0.getTestResultHandleDate())
-        .setTestLayer(case0.getTestLayer())
-        .setTestPurpose(case0.getTestPurpose())
         .setAttachments(case0.getAttachments())
         .setTags(isNotEmpty(case0.getTagTargets()) ? case0.getTagTargets().stream()
             .map(o -> new IdAndNameVo().setId(o.getTagId()).setName(o.getTagName()))
@@ -252,6 +254,8 @@ public class FuncCaseAssembler {
         .setEvalWorkloadMethod(case0.getEvalWorkloadMethod())
         .setEvalWorkload(case0.getEvalWorkload())
         .setActualWorkload(case0.getActualWorkload())
+        .setTestLayer(case0.getTestLayer())
+        .setTestPurpose(case0.getTestPurpose())
         .setPrecondition(case0.getPrecondition())
         .setSteps(case0.getSteps())
         .setRefTaskInfos(isNotEmpty(case0.getAssocTasks()) ? case0.getAssocTasks().stream()
@@ -276,8 +280,7 @@ public class FuncCaseAssembler {
         .setTestResult(case0.getTestResult())
         .setTestRemark(case0.getTestRemark())
         .setTestResultHandleDate(case0.getTestResultHandleDate())
-        .setTestLayer(case0.getTestLayer())
-        .setTestPurpose(case0.getTestPurpose())
+        .setTestScore(case0.getTestScore())
         .setTags(isNotEmpty(case0.getTagTargets()) ? case0.getTagTargets().stream()
             .map(o -> new IdAndNameVo().setId(o.getTagId()).setName(o.getTagName()))
             .toList() : Collections.emptyList())
@@ -326,6 +329,8 @@ public class FuncCaseAssembler {
         .setReview(case0.getReview())
         .setPriority(case0.getPriority())
         .setEvalWorkload(case0.getEvalWorkload())
+        .setTestLayer(case0.getTestLayer())
+        .setTestPurpose(case0.getTestPurpose())
         .setDeadlineDate(case0.getDeadlineDate())
         .setDescription(case0.getDescription())
         .setTesterId(case0.getTesterId())
@@ -336,8 +341,7 @@ public class FuncCaseAssembler {
         .setReviewRemark(case0.getReviewRemark())
         .setTestResult(case0.getTestResult())
         .setTestRemark(case0.getTestRemark())
-        .setTestLayer(case0.getTestLayer())
-        .setTestPurpose(case0.getTestPurpose());
+        .setTestScore(case0.getTestScore());
   }
 
   public static FuncCaseExportListVo toListVo(FuncCaseListVo listVo) {
@@ -352,6 +356,8 @@ public class FuncCaseAssembler {
         .setEvalWorkloadMethod(listVo.getEvalWorkloadMethod())
         .setEvalWorkload(listVo.getEvalWorkload())
         .setActualWorkload(listVo.getActualWorkload())
+        .setTestLayer(listVo.getTestLayer())
+        .setTestPurpose(listVo.getTestPurpose())
         .setPrecondition(listVo.getPrecondition())
         .setDescription(listVo.getDescription())
         .setReviewerName(listVo.getReviewerName())
@@ -368,8 +374,6 @@ public class FuncCaseAssembler {
         .setTestResult(listVo.getTestResult())
         .setTestRemark(listVo.getTestRemark())
         .setTestResultHandleDate(listVo.getTestResultHandleDate())
-        .setTestLayer(listVo.getTestLayer())
-        .setTestPurpose(listVo.getTestPurpose())
         .setRefTags(isNotEmpty(listVo.getTags()) ? listVo.getTags().stream()
             .map(IdAndNameVo::getName).toList() : Collections.emptyList())
         .setCreatedByName(listVo.getCreatedByName())
