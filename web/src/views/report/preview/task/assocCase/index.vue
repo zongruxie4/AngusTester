@@ -36,9 +36,7 @@ const len = computed(() => {
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
       <span id="a7" class="text-4 text-theme-title font-medium">
-        {{ t('reportPreview.serial.7') }}、
-        <em class="inline-block w-0.25"></em>
-        {{ t('reportPreview.task.assocCase.title') }}
+        {{ t('reportPreview.serial.7') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.assocCase.title') }}
       </span>
     </h1>
 

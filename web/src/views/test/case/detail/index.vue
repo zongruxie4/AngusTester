@@ -460,7 +460,7 @@ defineExpose({
 
         <Button
           v-if="(!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === ReviewStatus.PASSED))
-            && ![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED].includes(caseDetail.testResult?.value)"
+            && ![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED, CaseTestResult.BLOCKED].includes(caseDetail.testResult?.value)"
           :disabled="!currentCaseActionPermissions.includes('updateTestResult')"
           class="mt-2 mr-2"
           size="small"
@@ -477,7 +477,7 @@ defineExpose({
           size="small"
           @click="handleActionClick('review')">
           <Icon class="mr-1" icon="icon-pingshen" />
-          {{ t('common.review') }}
+          {{ t('testCase.actions.review') }}
         </Button>
 
         <Button
@@ -706,11 +706,12 @@ defineExpose({
           @editSuccess="onEditSuccess" />
       </TabPane>
 
-      <TabPane key="assocApiTest">
+
+      <TabPane key="assocDesign">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('common.apiTest') }}</span>
-            <span>({{ countReferencedTasksByType(TaskType.API_TEST) }})</span>
+            <span>{{ t('common.design') }}</span>
+            <span>({{ countReferencedTasksByType(TaskType.DESIGN) }})</span>
           </div>
         </template>
         <AssocIssuesTab
@@ -718,29 +719,12 @@ defineExpose({
           :userInfo="props.userInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
-          :title="t('common.apiTest')"
-          :taskType="TaskType.API_TEST"
-          :tips="t('testCase.messages.assocApiTestTip')"
+          :title="t('common.design')"
+          :taskType="TaskType.DESIGN"
+          :tips="t('testCase.messages.assocDesignTip')"
           @editSuccess="onEditSuccess" />
       </TabPane>
 
-      <TabPane key="assocScenarioTest">
-        <template #tab>
-          <div class="inline-flex">
-            <span>{{ t('common.scenarioTest') }}</span>
-            <span>({{ countReferencedTasksByType(TaskType.SCENARIO_TEST) }})</span>
-          </div>
-        </template>
-        <AssocIssuesTab
-          :projectId="projectId"
-          :userInfo="props.userInfo"
-          :dataSource="caseDetail?.refTaskInfos || []"
-          :caseId="caseDetail?.id"
-          :title="t('common.scenarioTest')"
-          :taskType="TaskType.SCENARIO_TEST"
-          :tips="t('testCase.messages.assocScenarioTestTip')"
-          @editSuccess="onEditSuccess" />
-      </TabPane>
 
       <TabPane
         key="comments"

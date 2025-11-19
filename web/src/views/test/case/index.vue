@@ -296,7 +296,8 @@ const resultPassed = ref(false);
 const handleAction = (action: 'review' | 'move' | 'updateTestResult_passed'| 'updateTestResult_notPassed') => {
   switch (action) {
     case 'review':
-      caseReviewVisible.value = true;
+      // caseReviewVisible.value = true;
+      router.push(`/test#reviews`);
       break;
     case 'move':
       caseMoveVisible.value = true;

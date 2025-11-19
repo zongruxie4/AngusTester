@@ -62,7 +62,6 @@ const emit = defineEmits<{
 
 // ASYNC COMPONENTS
 const BasicInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Basic.vue'));
-const ScenarioInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Scenario.vue'));
 const PersonnelInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Personnel.vue'));
 const DateInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Date.vue'));
 const Comment = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Comment.vue'));
@@ -71,7 +70,6 @@ const AssocIssues = defineAsyncComponent(() => import('@/views/issue/issue/list/
 const AssocCases = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/AssocCases.vue'));
 const AttachmentInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Attachment.vue'));
 const Remarks = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Remark.vue'));
-const APIInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Apis.vue'));
 
 // Task data and Gantt chart references
 const taskList = ref<TaskDetail[]>([]);
@@ -432,28 +430,8 @@ onMounted(() => {
 
         <div style="height: calc(100% - 36px);" class="pt-3.5 overflow-hidden">
           <AsyncComponent :visible="!!selectedTaskId">
-            <APIInfo
-              v-if="selectedTaskType === TaskType.API_TEST"
-              v-show="activeDrawerTab === 'basic'"
-              :projectId="props.projectId"
-              :appInfo="props.appInfo"
-              :userInfo="props.userInfo"
-              :dataSource="selectedTaskInfo"
-              @change="handleTaskInfoChange as any"
-              @loadingChange="handleLoadingStateChange" />
-
-            <ScenarioInfo
-              v-else-if="selectedTaskType === TaskType.SCENARIO_TEST"
-              v-show="activeDrawerTab === 'basic'"
-              :projectId="props.projectId"
-              :appInfo="props.appInfo"
-              :userInfo="props.userInfo"
-              :dataSource="selectedTaskInfo"
-              @change="handleTaskInfoChange as any"
-              @loadingChange="handleLoadingStateChange" />
-
             <BasicInfo
-              v-else
+
               v-show="activeDrawerTab === 'basic'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"

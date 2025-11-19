@@ -40,9 +40,8 @@ const taskTypeColorSet = {
   BUG: '#F5222D',
   TASK: '#FF8100',
   STORY: '#FFB925',
-  API_TEST: '#52C41A',
-  REQUIREMENT: '#67D7FF',
-  SCENARIO_TEST: '#67D7FF'
+  DESIGN: '#52C41A',
+  REQUIREMENT: '#67D7FF'
 };
 
 const taskStatusRef = ref();
@@ -307,17 +306,10 @@ const taskTypeOptions = {
           }
         },
         {
-          name: t('reportPreview.projectProgress.taskSummary.groupStats.taskTypes.apiTest'),
+          name: t('reportPreview.projectProgress.taskSummary.groupStats.taskTypes.design'),
           value: 0,
           itemStyle: {
-            color: taskTypeColorSet.API_TEST
-          }
-        },
-        {
-          name: t('reportPreview.projectProgress.taskSummary.groupStats.taskTypes.scenarioTest'),
-          value: 0,
-          itemStyle: {
-            color: taskTypeColorSet.SCENARIO_TEST
+            color: taskTypeColorSet.DESIGN
           }
         }
       ]
@@ -375,17 +367,16 @@ onMounted(() => {
         BUG = 0,
         TASK = 0,
         STORY = 0,
-        API_TEST = 0,
+        DESIGN = 0,
         REQUIREMENT = 0,
-        SCENARIO_TEST = 0
+
       } = totalTypeOverview;
       const taskTypeData = [
         BUG,
         TASK,
         STORY,
         REQUIREMENT,
-        API_TEST,
-        SCENARIO_TEST
+        DESIGN
       ];
       taskTypeOptions.series[0].data.forEach((item, idx) => {
         item.value = taskTypeData[idx];

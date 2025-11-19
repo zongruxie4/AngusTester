@@ -224,6 +224,7 @@
         "assocApiTestTip": "建立与对应接口测试任务关联关系，方便追溯接口测试进展，确保接口正常工作。",
         "assocScenarioTestTitle": "场景测试",
         "assocScenarioTestTip": "建立与对应场景测试任务关联关系，方便了解真实场景中功能的有效性，确保解决方案的完整性。",
+        "assocDesignTip": "通过关联设计，明确功能开发依据或追溯设计变更影响，确保开发交付与设计预期一致。", 
         "testInfoTitle": "测试信息",
         "subIssue": {
           "actions": {

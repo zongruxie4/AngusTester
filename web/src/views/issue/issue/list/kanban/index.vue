@@ -68,8 +68,6 @@ const AssocIssues = defineAsyncComponent(() => import('@/views/issue/issue/list/
 const AssocCases = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/AssocCases.vue'));
 const AttachmentInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Attachment.vue'));
 const Remarks = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Remark.vue'));
-const APIInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Apis.vue'));
-const ScenarioInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Scenario.vue'));
 
 // Computed properties
 const isAdmin = computed(() => appContext.isAdmin());
@@ -1832,28 +1830,7 @@ onMounted(() => {
 
           <div style="height: calc(100% - 36px);" class="pt-3.5 overflow-hidden">
             <AsyncComponent :visible="!!checkedTaskId">
-              <APIInfo
-                v-if="checkedTaskType === TaskType.API_TEST"
-                v-show="drawerActiveKey === 'basic'"
-                :projectId="props.projectId"
-                :appInfo="props.appInfo"
-                :userInfo="props.userInfo"
-                :dataSource="checkedTaskInfo"
-                @change="taskInfoChange"
-                @loadingChange="loadingChange" />
-
-              <ScenarioInfo
-                v-else-if="checkedTaskType === TaskType.SCENARIO_TEST"
-                v-show="drawerActiveKey === 'basic'"
-                :projectId="props.projectId"
-                :appInfo="props.appInfo"
-                :userInfo="props.userInfo"
-                :dataSource="checkedTaskInfo"
-                @change="taskInfoChange"
-                @loadingChange="loadingChange" />
-
               <BasicInfo
-                v-else
                 v-show="drawerActiveKey === 'basic'"
                 :projectId="props.projectId"
                 :appInfo="props.appInfo"

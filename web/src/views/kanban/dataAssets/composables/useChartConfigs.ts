@@ -582,14 +582,9 @@ export function useChartConfigs () {
             itemStyle: { color: 'rgba(245, 34, 45, 1)' }
           },
           {
-            name: enumUtils.getEnumDescription(TaskType, TaskType.API_TEST),
+            name: enumUtils.getEnumDescription(TaskType, TaskType.DESIGN),
             value: 0,
             itemStyle: { color: 'rgba(82, 196, 26, 1)' }
-          },
-          {
-            name: enumUtils.getEnumDescription(TaskType, TaskType.SCENARIO_TEST),
-            value: 0,
-            itemStyle: { color: 'rgb(77,106,204)' }
           }
         ]
       }

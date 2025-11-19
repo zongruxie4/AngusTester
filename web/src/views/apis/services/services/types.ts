@@ -476,45 +476,45 @@ export const menuActions = [
       }
     ]
   },
-  {
-    name: t('service.service.actions.apiTestTask'),
-    key: 'testTask',
-    disabled: false,
-    permission: 'TEST',
-    icon: 'icon-ceshirenwu',
-    children: [
-      {
-        name: t('service.service.actions.generateTestTask'),
-        key: 'setTest',
-        icon: 'icon-shengchengceshirenwu1',
-        permission: 'TEST',
-        disabled: false,
-        tip: t('service.service.actions.generateTestTaskTip')
-      },
-      {
-        name: t('service.service.actions.restartTestTask'),
-        key: 'reTest',
-        icon: 'icon-zhongxinkaishiceshi',
-        permission: 'TEST',
-        disabled: false,
-        tip: t('service.service.actions.restartTestTaskTip')
-      },
-      {
-        name: t('service.service.actions.reopenTestTask'),
-        key: 'reopen',
-        icon: 'icon-zhongxindakaiceshirenwu',
-        permission: 'TEST',
-        disabled: false,
-        tip: t('service.service.actions.reopenTestTaskTip')
-      },
-      {
-        name: t('service.service.actions.deleteTestTask'),
-        key: 'deleteTask',
-        icon: 'icon-shanchuceshirenwu1',
-        permission: 'TEST',
-        disabled: false,
-        tip: t('service.service.actions.deleteTestTaskTip')
-      }
-    ]
-  }
+  // {
+  //   name: t('service.service.actions.apiTestTask'),
+  //   key: 'testTask',
+  //   disabled: false,
+  //   permission: 'TEST',
+  //   icon: 'icon-ceshirenwu',
+  //   children: [
+  //     {
+  //       name: t('service.service.actions.generateTestTask'),
+  //       key: 'setTest',
+  //       icon: 'icon-shengchengceshirenwu1',
+  //       permission: 'TEST',
+  //       disabled: false,
+  //       tip: t('service.service.actions.generateTestTaskTip')
+  //     },
+  //     {
+  //       name: t('service.service.actions.restartTestTask'),
+  //       key: 'reTest',
+  //       icon: 'icon-zhongxinkaishiceshi',
+  //       permission: 'TEST',
+  //       disabled: false,
+  //       tip: t('service.service.actions.restartTestTaskTip')
+  //     },
+  //     {
+  //       name: t('service.service.actions.reopenTestTask'),
+  //       key: 'reopen',
+  //       icon: 'icon-zhongxindakaiceshirenwu',
+  //       permission: 'TEST',
+  //       disabled: false,
+  //       tip: t('service.service.actions.reopenTestTaskTip')
+  //     },
+  //     {
+  //       name: t('service.service.actions.deleteTestTask'),
+  //       key: 'deleteTask',
+  //       icon: 'icon-shanchuceshirenwu1',
+  //       permission: 'TEST',
+  //       disabled: false,
+  //       tip: t('service.service.actions.deleteTestTaskTip')
+  //     }
+  //   ]
+  // }
 ];

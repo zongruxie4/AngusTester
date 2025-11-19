@@ -21,15 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
-const taskType = computed(() => {
-  return props.dataSource?.content?.task?.taskType?.value;
-});
-
 const index = computed(() => {
-  if (taskType.value === 'API_TEST' || taskType.value === 'SCENARIO_TEST') {
-    return 11;
-  }
-
   return 8;
 });
 
@@ -37,7 +29,6 @@ const indexText = computed(() => {
   if (index.value === 8) {
     return t('reportPreview.serial.8');
   }
-
   return t('reportPreview.serial.9');
 });
 
@@ -57,7 +48,7 @@ const len = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span :id="`a${index}`" class="text-4 text-theme-title font-medium">{{ indexText }}、<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.info.remark.title') }}</span>
+      <span :id="`a${index}`" class="text-4 text-theme-title font-medium">{{ indexText }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.info.remark.title') }}</span>
     </h1>
 
     <template v-if="len>0">

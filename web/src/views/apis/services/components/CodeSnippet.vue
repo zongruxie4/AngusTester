@@ -329,7 +329,7 @@ const generateCodeSnippet = async () => {
   const body = processRequestBodyContent(parameter, contentType);
 
   // Create API definition
-  const apiDefinition = new Oas(parameter as any);
+  const apiDefinition = new Oas({...parameter as any, servers: [parameter.currentServer]});
 
   // Prepare form data for code generation
   const formData = {

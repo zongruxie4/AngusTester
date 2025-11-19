@@ -88,8 +88,7 @@
         "STORY": "Story",
         "TASK": "Task",
         "BUG": "Bug",
-        "API_TEST": "API Test",
-        "SCENARIO_TEST": "Scenario Test"
+        "DESIGN": "Design"
       },
       "TaskStatus": {
         "PENDING": "Pending",

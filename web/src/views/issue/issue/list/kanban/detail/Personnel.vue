@@ -53,10 +53,6 @@ const currentTaskId = computed(() => props.dataSource?.id);
  */
 const taskCreatedByName = computed(() => props.dataSource?.createdByName);
 
-/**
- * Name of the user who executed the task
- */
-const taskExecByName = computed(() => props.dataSource?.execByName);
 
 /**
  * Name of the user who last modified the task
@@ -391,15 +387,6 @@ const handleTesterSelectionBlur = async () => {
           </div>
         </div>
 
-        <!-- Executor -->
-        <div class="info-row">
-          <div class="info-label">
-            <span>{{ t('common.executor') }}</span>
-          </div>
-          <div class="info-value">
-            <span class="info-text" :class="{ 'dash-text': !taskExecByName }">{{ taskExecByName || '--' }}</span>
-          </div>
-        </div>
 
         <!-- Confirmer -->
         <div class="info-row">

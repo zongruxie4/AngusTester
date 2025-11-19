@@ -10,25 +10,23 @@ const props = withDefaults(defineProps<DataSourceProps<TaskCount>>(), {
 });
 
 const TaskTypeChart = defineAsyncComponent(() => import('./TaskTypeChart.vue'));
-const TestTypeChart = defineAsyncComponent(() => import('./TestTypeChart.vue'));
 </script>
 
 <template>
   <!-- Chart container with two side-by-side chart components -->
   <div class="chart-container">
     <TaskTypeChart :dataSource="props.dataSource" class="chart-item" />
-    <TestTypeChart :dataSource="props.dataSource" class="chart-item" />
   </div>
 </template>
 <style scoped>
 .chart-container {
-  @apply w-125;
+  @apply w-80;
   flex-shrink: 0;
   display: flex;
   align-items: center;
 }
 
 .chart-item {
-  width: calc(100% / 2);
+  width: 100%;
 }
 </style>

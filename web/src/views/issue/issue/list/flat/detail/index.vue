@@ -52,7 +52,6 @@ const emit = defineEmits<{
 
 // Async Components
 const BasicInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/info/index.vue'));
-const TestInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/testing/index.vue'));
 const Remarks = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/Remark.vue'));
 const Activities = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/Activity.vue'));
 const Comments = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/Comment.vue'));
@@ -744,19 +743,6 @@ const isNextButtonDisabled = computed(() => {
 });
 
 /**
- * Determines if test info tab should be shown
- * <p>
- * Returns true for API test and scenario test task types
- */
-const shouldShowTestInfo = computed(() => {
-  const taskType = currentTaskInfo.value?.taskType?.value;
-  if (!taskType) {
-    return false;
-  }
-  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskType);
-});
-
-/**
  * Generates menu items map based on task status and user permissions
  * <p>
  * Creates a map of available action menu items with proper permissions and visibility
@@ -1334,6 +1320,28 @@ const getReferencedTaskCount = (type = 'TASK') => {
           @editSuccess="loadTaskData" />
       </TabPane>
 
+
+      <!-- Associated Bug Tab -->
+      <TabPane key="assocDesign">
+        <template #tab>
+          <div class="inline-flex">
+            <span>{{ t('common.design') }}</span>
+            <span>({{ getReferencedTaskCount(TaskType.DESIGN) }})</span>
+          </div>
+        </template>
+        <AssocIssues
+          :key="TaskType.DESIGN"
+          :projectId="props.projectId"
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo }"
+          :dataSource="currentTaskInfo?.refTaskInfos || []"
+          :taskId="props.id"
+          :title="t('common.design')"
+          :tips="t('issue.detail.tabs.assocDesignTip')"
+          :taskType="TaskType.DESIGN"
+          @editSuccess="loadTaskData" />
+      </TabPane>
+
       <!-- Associated Case Tab -->
       <TabPane key="assocCase">
         <template #tab>
@@ -1350,61 +1358,6 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :taskId="props.id"
           :tips="t('issue.detail.tabs.assocCaseTip')"
           @editSuccess="loadTaskData" />
-      </TabPane>
-
-      <!-- Associated API Test Tab -->
-      <TabPane key="assocApiTest">
-        <template #tab>
-          <div class="inline-flex">
-            <span>{{ t('issue.detail.tabs.assocApiTestTitle') }}</span>
-            <span>({{ getReferencedTaskCount(TaskType.API_TEST) }})</span>
-          </div>
-        </template>
-        <AssocIssues
-          :key="TaskType.API_TEST"
-          :projectId="props.projectId"
-          :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo }"
-          :dataSource="currentTaskInfo?.refTaskInfos || []"
-          :taskId="props.id"
-          :title="t('issue.detail.tabs.assocApiTestTitle')"
-          :tips="t('issue.detail.tabs.assocApiTestTip')"
-          :taskType="TaskType.API_TEST"
-          @editSuccess="loadTaskData" />
-      </TabPane>
-
-      <!-- Associated Scenario Test Tab -->
-      <TabPane key="assocScenarioTest">
-        <template #tab>
-          <div class="inline-flex">
-            <span>{{ t('issue.detail.tabs.assocScenarioTestTitle') }}</span>
-            <span>({{ getReferencedTaskCount(TaskType.SCENARIO_TEST) }})</span>
-          </div>
-        </template>
-        <AssocIssues
-          :key="TaskType.SCENARIO_TEST"
-          :projectId="props.projectId"
-          :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo }"
-          :dataSource="currentTaskInfo?.refTaskInfos || []"
-          :taskId="props.id"
-          :title="t('issue.detail.tabs.assocScenarioTestTitle')"
-          :tips="t('issue.detail.tabs.assocScenarioTestTip')"
-          :taskType="TaskType.SCENARIO_TEST"
-          @editSuccess="loadTaskData" />
-      </TabPane>
-
-      <!-- Test Info Tab (conditional) -->
-      <TabPane
-        v-if="shouldShowTestInfo"
-        key="testInfo"
-        :tab="t('issue.detail.tabs.testInfoTitle')">
-        <TestInfo
-          :projectId="props.projectId"
-          :userInfo="{ ...props.userInfo }"
-          :appInfo="{ ...props.appInfo }"
-          :dataSource="currentTaskInfo"
-          :largePageLayout="isLargePageLayout" />
       </TabPane>
 
       <!-- Remark Tab -->

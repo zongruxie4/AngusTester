@@ -142,8 +142,7 @@ export interface TaskData {
     STORY?: number;
     TASK?: number;
     BUG?: number;
-    API_TEST?: number;
-    SCENARIO_TEST?: number;
+    DESIGN?: number;
     REQUIREMENT?: number;
   };
   /** Tasks by status */

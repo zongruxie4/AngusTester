@@ -89,17 +89,10 @@ export const createTaskTypeConfig = (): ChartConfig => {
             }
           },
           {
-            name: enumUtils.getEnumDescription(TaskType, TaskType.API_TEST),
+            name: enumUtils.getEnumDescription(TaskType, TaskType.DESIGN),
             value: 0,
             itemStyle: {
               color: 'rgba(82, 196, 26, 1)'
-            }
-          },
-          {
-            name: enumUtils.getEnumDescription(TaskType, TaskType.SCENARIO_TEST),
-            value: 0,
-            itemStyle: {
-              color: 'rgba(0,119,255,1)'
             }
           }
         ]

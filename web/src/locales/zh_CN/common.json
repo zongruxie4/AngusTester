@@ -250,6 +250,7 @@
       "storyCount": "故事数",
       "taskCount": "任务数",
       "bugCount": "缺陷数",
+      "designCount": "设计数",
       "completedBugRate": "缺陷完成率",
       "uncompletedBugCount": "未完成缺陷数",
       "completedBugCount": "完成缺陷数",

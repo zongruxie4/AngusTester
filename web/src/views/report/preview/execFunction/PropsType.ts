@@ -120,9 +120,8 @@ export type ReportContent = {
                 BUG: string;
                 TASK: string;
                 STORY: string;
-                API_TEST: string;
                 REQUIREMENT: string;
-                SCENARIO_TEST: string
+                DESIGN: string;
             };
             totalPriorityOverview: {
                 LOW: string;
@@ -161,9 +160,8 @@ export type ReportContent = {
                     BUG: string;
                     TASK: string;
                     STORY: string;
-                    API_TEST: string;
                     REQUIREMENT: string;
-                    SCENARIO_TEST: string
+                    DESIGN: string;
                 };
                 priorityOverview: {
                     LOW: string;

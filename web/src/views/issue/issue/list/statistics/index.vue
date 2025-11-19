@@ -60,7 +60,7 @@ const componentId = utils.uuid();
  */
 const defaultStatisticsData: TaskCount = {
   actualWorkload: 0,
-  apiTestNum: 0,
+  designNum: 0,
   bugNum: 0,
   canceledNum: 0,
   completedNum: 0,
@@ -80,7 +80,6 @@ const defaultStatisticsData: TaskCount = {
   processFailCount: 0,
   processCount: 0,
   requirementNum: 0,
-  scenarioTestNum: 0,
   stabilityNum: 0,
   storyNum: 0,
   taskNum: 0,

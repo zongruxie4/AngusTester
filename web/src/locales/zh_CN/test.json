@@ -128,7 +128,8 @@
       "viewStatistics": "查看统计",
       "assocCases": "关联用例",
       "assocIssues": "关联{name}",
-      "submitBug": "提交Bug"
+      "submitBug": "提交Bug",
+      "review": "去评审"
     },
     "messages": {
       "caseSetBlocked": "用例设为阻塞中",

@@ -69,14 +69,6 @@ const fieldNames = {
             class="flex items-center w-full text-3 leading-3 px-2 pt-1.75 pb-2.5 rounded outline-none border-none cursor-pointer hover:hover:bg-gray-light-a text-theme-content"
             @click="onClick(item)">
             <Icon
-              v-if="item.taskType.value==='API_TEST'"
-              class="text-5 flex-shrink-0"
-              icon="icon-jiekouceshi" />
-            <Icon
-              v-if="item.taskType.value==='SCENARIO_TEST'"
-              class="text-5 flex-shrink-0"
-              icon="icon-changjingceshi" />
-            <Icon
               v-if="item.taskType.value==='BUG'"
               class="text-5 flex-shrink-0"
               icon="icon-quexian" />

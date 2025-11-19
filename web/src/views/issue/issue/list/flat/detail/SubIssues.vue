@@ -377,9 +377,7 @@ const subTaskDataList = computed(() => {
  * based on the parent task's properties
  */
 onMounted(() => {
-  newSubTaskType.value = [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(props.taskInfo?.taskType?.value)
-    ? TaskType.TASK
-    : props.taskInfo?.taskType?.value;
+  newSubTaskType.value = props.taskInfo?.taskType?.value
   newSubTaskPriority.value = props.taskInfo?.priority?.value;
 });
 
@@ -653,7 +651,6 @@ const subTaskTableColumns = [
     <div class="flex items-center pt-2">
       <SelectEnum
         v-model:value="newSubTaskType"
-        :excludes="({value}: any) => [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value as any)"
         enumKey="TaskType"
         :placeholder="t('common.taskType')"
         class="w-28 mr-2">

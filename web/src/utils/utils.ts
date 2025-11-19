@@ -313,7 +313,7 @@ export const generateCopyName = (strings:string[], str:string) => {
  * @param size - Number of days to include (default 7)
  * @returns Array of date strings from today backwards
  */
-export const getDateArr = (size = 7) => {
+export const getDateArr = (size = 7): string[] => {
   const dates: string[] = [];
   for (let i = 0; i < size; i++) {
     // Get current date minus i days

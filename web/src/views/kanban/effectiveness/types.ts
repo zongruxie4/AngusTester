@@ -236,10 +236,8 @@ export interface TotalTypeCount {
   TASK: number;
   /** Bug count */
   BUG: number;
-  /** API test count */
-  API_TEST: number;
-  /** Scenario test count */
-  SCENARIO_TEST: number;
+  /** Design count */
+  DESIGN: number;
 }
 
 /**

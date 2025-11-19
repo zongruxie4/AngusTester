@@ -24,8 +24,7 @@ export enum TaskType {
   STORY = 'STORY',
   TASK = 'TASK',
   BUG = 'BUG',
-  API_TEST = 'API_TEST',
-  SCENARIO_TEST = 'SCENARIO_TEST'
+  DESIGN = 'DESIGN'
 }
 
 export enum TaskStatus {

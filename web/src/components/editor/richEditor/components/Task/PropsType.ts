@@ -1,4 +1,4 @@
-export type TaskType = 'API_TEST'|'SCENARIO_TEST'|'BUG'|'STORY'|'TASK'
+export type TaskType = 'BUG'|'DESIGN'|'STORY'|'TASK'
 export interface TaskInfo {
     id: string,
     // targetId: string,

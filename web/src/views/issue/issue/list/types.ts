@@ -1,5 +1,5 @@
 import { Priority } from '@xcan-angus/infra';
-import { TaskType, BugLevel, TestType } from '@/enums/enums';
+import { TaskType, BugLevel } from '@/enums/enums';
 import { TaskDetail, TaskInfo } from '@/views/issue/types';
 import { AttachmentInfo } from '@/types/types';
 
@@ -46,12 +46,6 @@ export type TaskEditState = {
   refTaskIds?: string[] | undefined;
   /** Referenced test case identifiers for test coverage linkage */
   refCaseIds?: string[] | undefined;
-  /** Test type for API and scenario testing */
-  testType?: TestType | undefined;
-  /** Target identifier for API and scenario testing */
-  targetId?: string | undefined;
-  /** Target parent identifier for API testing */
-  targetParentId?: string | undefined;
 
   // Temp for edit
   userInfo?: { id: string; fullName?: string};

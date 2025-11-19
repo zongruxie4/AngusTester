@@ -118,8 +118,7 @@ const generateSubTasksWithAI = async () => {
       priority: parentTaskInfo.priority?.value,
       projectId: parentTaskInfo.projectId,
       sprintId: parentTaskInfo.sprintId,
-      taskType: TaskType.TASK,
-      testType: parentTaskInfo.testType?.value
+      taskType: TaskType.TASK
     };
   }
 
@@ -210,7 +209,6 @@ const addNewSubTask = () => {
     projectId: parentTaskData.projectId,
     sprintId: parentTaskData.sprintId,
     taskType: TaskType.TASK,
-    testType: parentTaskData.testType?.value,
     name: ''
   };
 };

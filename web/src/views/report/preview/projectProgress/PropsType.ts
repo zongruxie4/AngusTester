@@ -576,7 +576,7 @@ export type ReportContent = {
                 targetParentId: string;
                 targetParentName: string;
                 taskType: {
-                    value: 'API_TEST' | 'BUG' | 'REQUIREMENT' | 'SCENARIO_TEST' | 'STORY' | 'TASK';
+                    value: 'BUG' | 'REQUIREMENT' | 'DESIGN' | 'STORY' | 'TASK';
                     message: string;
                 };
                 testType: {
@@ -620,9 +620,8 @@ export type ReportContent = {
                 BUG: string;
                 TASK: string;
                 STORY: string;
-                API_TEST: string;
+                DESIGN: string;
                 REQUIREMENT: string;
-                SCENARIO_TEST: string;
             };
             totalStatusOverview: {
                 CANCELED: string;

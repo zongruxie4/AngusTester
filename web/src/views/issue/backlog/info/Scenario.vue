@@ -625,15 +625,6 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('common.testType') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <ScriptTypeTag :value="props.dataSource?.testType" />
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('common.taskStatus') }}</span>
             <Colon class="w-1" />
           </div>
