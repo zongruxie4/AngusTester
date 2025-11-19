@@ -155,6 +155,9 @@ public class FuncCaseInfo extends TenantAuditingEntity<FuncCaseInfo, Long> imple
   @Column(name = "test_remark")
   private String testRemark;
 
+  @Column(name = "test_score")
+  private Integer testScore;
+
   @Column(name = "test_result_handle_date")
   private LocalDateTime testResultHandleDate;
 

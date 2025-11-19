@@ -19,6 +19,7 @@ import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.test.TestLayer;
 import cloud.xcan.angus.core.tester.domain.test.TestPurpose;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -157,6 +158,9 @@ public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements
 
   @Column(name = "test_remark")
   private String testRemark;
+
+  @Column(name = "test_score")
+  private Integer testScore;
 
   @Column(name = "test_result_handle_date")
   private LocalDateTime testResultHandleDate;

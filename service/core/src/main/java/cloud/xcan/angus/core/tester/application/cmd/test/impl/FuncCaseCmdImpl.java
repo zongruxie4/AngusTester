@@ -495,8 +495,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
         // Log clone activities for audit
         activityCmd.addAll(toActivities(FUNC_CASE, newCases,
-            ActivityType.CLONE, casesDb.stream().map(s -> new Object[]{s.getName()})
-                .toList()));
+            ActivityType.CLONE, casesDb.stream().map(s -> new Object[]{s.getName()}).toList()));
         return idKeys;
       }
     }.execute();
@@ -902,8 +901,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       @Override
       protected void checkParams() {
         // Ensure all cases to modify exist in DB
-        casesDb = funcCaseQuery.checkAndFind(cases.stream().map(FuncCase::getId)
-            .toList());
+        casesDb = funcCaseQuery.checkAndFind(cases.stream().map(FuncCase::getId).toList());
 
         // Validate all cases belong to the same plan
         Set<Long> planIds = casesDb.stream().map(FuncCase::getPlanId).collect(Collectors.toSet());

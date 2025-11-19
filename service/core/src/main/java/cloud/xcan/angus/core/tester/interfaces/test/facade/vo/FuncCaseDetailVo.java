@@ -14,6 +14,7 @@ import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestStep;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskInfoVo;
 import cloud.xcan.angus.remote.NameJoinField;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -66,6 +67,10 @@ public class FuncCaseDetailVo {
 
   private BigDecimal actualWorkload;
 
+  private TestLayer testLayer;
+
+  private TestPurpose testPurpose;
+
   private String precondition;
 
   private CaseStepView stepView;
@@ -111,11 +116,10 @@ public class FuncCaseDetailVo {
 
   private String testRemark;
 
+  @Schema(description = "Test case score")
+  private Integer testScore;
+
   private LocalDateTime testResultHandleDate;
-
-  private TestLayer testLayer;
-
-  private TestPurpose testPurpose;
 
   private List<Attachment> attachments;
 

@@ -6,6 +6,7 @@ import cloud.xcan.angus.api.enums.ReviewStatus;
 import cloud.xcan.angus.core.tester.domain.test.TestLayer;
 import cloud.xcan.angus.core.tester.domain.test.TestPurpose;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -35,6 +36,10 @@ public class FuncCaseInfoVo {
 
   private BigDecimal evalWorkload;
 
+  private TestLayer testLayer;
+
+  private TestPurpose testPurpose;
+
   public LocalDateTime deadlineDate;
 
   private Boolean overdue;
@@ -59,8 +64,7 @@ public class FuncCaseInfoVo {
 
   private String testRemark;
 
-  private TestLayer testLayer;
-
-  private TestPurpose testPurpose;
+  @Schema(description = "Test case score")
+  private Integer testScore;
 
 }
