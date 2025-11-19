@@ -900,15 +900,6 @@ const tableColumns: ({
     customRender: ({ text }) => text || '--'
   },
   {
-    title: t('common.service'),
-    hide: true,
-    dataIndex: 'targetParentName',
-    groupName: 'target',
-    width: '25%',
-    ellipsis: true,
-    customRender: ({ text }) => text || '--'
-  },
-  {
     title: t('common.priority'),
     dataIndex: 'priority',
     width: 100,

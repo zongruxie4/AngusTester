@@ -524,19 +524,6 @@ const confirmerDefaultOptions = computed(() => {
           </div>
         </div>
 
-        <!-- Executor -->
-        <div class="info-row">
-          <div class="info-item">
-            <div class="info-label">
-              <span>{{ t('common.executor') }}</span>
-            </div>
-            <div class="info-value">
-              <span :class="{ 'placeholder-text': !currentExecByName }" class="info-text">
-                {{ currentExecByName || '--' }}
-              </span>
-            </div>
-          </div>
-        </div>
 
         <!-- Last Modifier -->
         <div class="info-row">

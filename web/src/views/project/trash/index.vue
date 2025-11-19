@@ -57,7 +57,7 @@ onMounted(() => {
 <template>
   <!-- Enhanced main container with modern design -->
   <div class="h-full bg-white">
-    <Spin :spinning="loading" class="h-full">
+    <Spin :spinning="loading" class="h-full flex flex-col">
       <!-- Header section with enhanced visual hierarchy -->
       <div class="bg-white border-b border-gray-200 shadow-sm">
         <div class="px-4 py-3">
@@ -173,7 +173,7 @@ onMounted(() => {
       </div>
 
       <!-- Main content area -->
-      <div class="flex-1 px-4 py-4 overflow-auto">
+      <div class="flex-1 px-4 py-4 overflow-auto min-h-0">
         <!-- Enhanced data table -->
         <div v-if="loaded" class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <Table

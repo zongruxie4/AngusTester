@@ -1,5 +1,5 @@
 import { EnumMessage, EvalWorkloadMethod, Priority, enumUtils } from '@xcan-angus/infra';
-import { BugLevel, ExecResult, TaskStatus, TaskType, TestType, AssociateUserType } from '@/enums/enums';
+import { BugLevel, TaskStatus, TaskType, AssociateUserType } from '@/enums/enums';
 import { AttachmentInfo, ProgressInfo, TagInfo } from '@/types/types';
 
 import { CaseInfo } from '@/views/test/types';

@@ -85,7 +85,6 @@ const formState = reactive<TaskEditState>({
   tagIds: [],
   refTaskIds: [],
   refCaseIds: [],
-  targetId: undefined,
   targetParentId: undefined,
   taskType: TaskType.TASK,
   bugLevel: BugLevel.MINOR,
@@ -223,8 +222,6 @@ const handleSprintChange = (_id: any, option: any) => {
  * Handle task type change and reset related fields
  */
 const handleTaskTypeChange = () => {
-  formState.targetParentId = undefined;
-  formState.targetId = undefined;
   // Auto-assign current user as tester for bug tasks
   if (!formState.testerId && formState.taskType === TaskType.BUG) {
     formState.testerId = currentUserId.value;

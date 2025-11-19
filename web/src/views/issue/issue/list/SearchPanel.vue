@@ -18,8 +18,8 @@ import {
   Select,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { duration, enumUtils, PageQuery, Priority, Result, SearchCriteria, TESTER, XCanDexie } from '@xcan-angus/infra';
-import { TaskStatus as TaskStatusEnum, TaskType, TestType } from '@/enums/enums';
+import { duration, enumUtils, PageQuery, Priority, SearchCriteria, TESTER, XCanDexie } from '@xcan-angus/infra';
+import { TaskStatus as TaskStatusEnum, TaskType } from '@/enums/enums';
 import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
@@ -549,21 +549,6 @@ const handleSearchPanelChange = (
   }
 };
 
-/**
- * Handles target ID filter changes
- * @param value - The selected target ID
- */
-const handleTargetIdChange = (value: any) => {
-  targetIdFilter.value = { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value };
-};
-
-/**
- * Handles target parent ID filter changes
- * @param value - The selected target parent ID
- */
-const handleTargetParentIdChange = (value: any) => {
-  targetParentIdFilter.value = { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value };
-};
 
 /**
  * Handles workload filter changes with debouncing
@@ -674,7 +659,7 @@ const initializeComponent = async () => {
     const taskTypeMap: { [key: string]: string } = {};
     if (Object.prototype.hasOwnProperty.call(savedSearchData, 'searchFilters')) {
       searchFilters.value = savedSearchData.searchFilters || [];
-      const dateTimeKeys = ['createdDate', 'startDate', 'deadlineDate', 'processedDate', 'confirmedDate', 'completedDate', 'canceledDate', 'execDate', 'lastModifiedDate'];
+      const dateTimeKeys = ['createdDate', 'startDate', 'deadlineDate', 'processedDate', 'confirmedDate', 'completedDate', 'canceledDate', 'lastModifiedDate'];
       const taskTypeKeys = ['taskType'];
       const dateTimeMap: { [key: string]: string[] } = {};
       searchFilters.value.every(({ key, value }) => {
@@ -1319,12 +1304,6 @@ const searchOptions = [
     placeholder: t('common.placeholders.selectModifier'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
-  // {
-  //   type: 'select-enum' as const,
-  //   valueKey: 'testType',
-  //   placeholder: t('common.placeholders.selectTestType'),
-  //   enumKey: TestType
-  // },
   {
     type: 'select' as const,
     action: `${TESTER}/module?fullTextSearch=true`,
@@ -1340,16 +1319,16 @@ const searchOptions = [
   //   placeholder: t('common.placeholders.selectExecutionResult'),
   //   enumKey: Result
   // },
-  {
-    type: 'select' as const,
-    valueKey: 'targetParentId',
-    noDefaultSlot: true
-  },
-  {
-    type: 'select' as const,
-    valueKey: 'targetId',
-    noDefaultSlot: true
-  },
+  // {
+  //   type: 'select' as const,
+  //   valueKey: 'targetParentId',
+  //   noDefaultSlot: true
+  // },
+  // {
+  //   type: 'select' as const,
+  //   valueKey: 'targetId',
+  //   noDefaultSlot: true
+  // },
   {
     type: 'date-range' as const,
     valueKey: 'createdDate',
@@ -1413,15 +1392,6 @@ const searchOptions = [
     ],
     showTime: true
   },
-  // {
-  //   type: 'date-range' as const,
-  //   valueKey: 'execDate',
-  //   placeholder: [
-  //     t('common.placeholders.selectExecutedDateRange.0'),
-  //     t('common.placeholders.selectExecutedDateRange.1')
-  //   ],
-  //   showTime: true
-  // },
   {
     type: 'date-range' as const,
     valueKey: 'lastModifiedDate',

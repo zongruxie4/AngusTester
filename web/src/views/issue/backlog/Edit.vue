@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem, Popover, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
 import {
-  AsyncComponent, DatePicker, Icon, IconTask, IconText, Input,
+  AsyncComponent, DatePicker, Icon, IconTask, Input,
   Modal, notification, Select, SelectUser, Tooltip
 } from '@xcan-angus/vue-ui';
 import { EvalWorkloadMethod, localStore, Priority, TESTER, upload } from '@xcan-angus/infra';
@@ -12,7 +12,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { modules, issue } from '@/api/tester';
 import { DATE_TIME_FORMAT, TIME_FORMAT, MAX_FILE_SIZE_MB, UPLOAD_ISSUE_FILE_KEY } from '@/utils/constant';
-import { BugLevel, SoftwareVersionStatus, TaskType, TestType } from '@/enums/enums';
+import { BugLevel, SoftwareVersionStatus, TaskType } from '@/enums/enums';
 import { TaskEditState } from '@/views/issue/issue/list/types';
 
 import TaskPriority from '@/components/task/TaskPriority.vue';
@@ -99,7 +99,6 @@ const formState = reactive<TaskEditState>({
   tagIds: undefined,
   refTaskIds: undefined,
   refCaseIds: undefined,
-  targetId: undefined,
   targetParentId: undefined,
   taskType: TaskType.TASK,
   bugLevel: BugLevel.MINOR,
@@ -144,8 +143,7 @@ const handleSprintSelectionChange = (_sprintId: string, sprintInfo: TaskDetail) 
  * <p>Resets target fields and sets tester for bug tasks</p>
  */
 const handleTaskTypeChange = () => {
-  formState.targetParentId = undefined;
-  formState.targetId = undefined;
+
   if (!formState.testerId && formState.taskType === TaskType.BUG) {
     formState.testerId = currentUserId.value;
   }

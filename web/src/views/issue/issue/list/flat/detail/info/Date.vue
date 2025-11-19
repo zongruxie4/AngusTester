@@ -44,7 +44,6 @@ const taskProcessedDate = computed(() => props.dataSource?.processedDate);
 const taskConfirmedDate = computed(() => props.dataSource?.confirmedDate);
 const taskCompletedDate = computed(() => props.dataSource?.completedDate);
 const taskCanceledDate = computed(() => props.dataSource?.canceledDate);
-const taskExecDate = computed(() => props.dataSource?.execDate);
 const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
 /**
@@ -266,18 +265,6 @@ const isDateDisabled = (current: Dayjs) => {
           </div>
         </div>
 
-        <div class="info-row">
-          <div class="info-item">
-            <div class="info-label">
-              <span>{{ t('common.execDate') }}</span>
-            </div>
-            <div class="info-value">
-              <span :class="{ 'placeholder-text': !taskExecDate }" class="info-text">
-                {{ taskExecDate || '--' }}
-              </span>
-            </div>
-          </div>
-        </div>
 
         <div class="info-row">
           <div class="info-item">
