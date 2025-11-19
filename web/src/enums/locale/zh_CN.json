@@ -181,6 +181,10 @@
         "FULLY_PASSED": "全部通过",
         "FULLY_FAILED": "全部失败"
       },
+      "TestTemplateType": {
+        "TEST_PLAN": "测试计划",
+        "TEST_CASE": "测试用例"
+      },
       "ProjectType": {
         "AGILE": "敏捷项目管理",
         "GENERAL": "一般项目管理",

@@ -14,6 +14,7 @@ const Case = defineAsyncComponent(() => import('@/views/test/case/index.vue'));
 const Review = defineAsyncComponent(() => import('@/views/test/review/index.vue'));
 const Baseline = defineAsyncComponent(() => import('@/views/test/baseline/index.vue'));
 const Analysis = defineAsyncComponent(() => import('@/views/test/analysis/index.vue'));
+const Template = defineAsyncComponent(() => import('@/views/test/template/index.vue'));
 const Trash = defineAsyncComponent(() => import('@/views/test/trash/index.vue'));
 
 // Composables and Context
@@ -40,6 +41,7 @@ const plansRefreshToken = ref<string>('');
 const casesRefreshToken = ref<string>('');
 const modulesRefreshToken = ref<string>('');
 const tagsRefreshToken = ref<string>('');
+const templatesRefreshToken = ref<string>('');
 const trashRefreshToken = ref<string>('');
 
 // Track whether refresh notifications have been triggered for each section
@@ -48,6 +50,7 @@ let hasPlansRefreshTriggered = false;
 let hasCasesRefreshTriggered = false;
 let hasModulesRefreshTriggered = false;
 let hasTagsRefreshTriggered = false;
+let hasTemplatesRefreshTriggered = false;
 let hasTrashRefreshTriggered = false;
 
 // Database Instance
@@ -170,6 +173,14 @@ const handleMenuSectionChange = (newMenuKey: TestMenuKey | undefined) => {
     return;
   }
 
+  if (newMenuKey === TestMenuKey.TEMPLATES) {
+    if (hasTemplatesRefreshTriggered) {
+      templatesRefreshToken.value = utils.uuid();
+    }
+    hasTemplatesRefreshTriggered = true;
+    return;
+  }
+
   if (newMenuKey === TestMenuKey.TRASH) {
     if (hasTrashRefreshTriggered) {
       trashRefreshToken.value = utils.uuid();
@@ -267,6 +278,14 @@ provide('setCaseListPlanParam', setCaseListPlanParam);
         :projectId="currentProjectId"
         :userInfo="currentUserInfo"
         :appInfo="applicationInfo" />
+    </template>
+
+    <template #templates>
+      <Template
+        :projectId="currentProjectId"
+        :userInfo="currentUserInfo"
+        :appInfo="applicationInfo"
+        :refreshNotify="templatesRefreshToken" />
     </template>
 
     <template #trash>

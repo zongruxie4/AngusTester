@@ -72,12 +72,12 @@
       "enterPlanName": "Please enter plan name",
       "selectReview": "Select review",
       "casePrefixPlaceholder": "Case prefix, up to 40 characters",
-      "testingObjectivesPlaceholder": "Define the specific content and scope of the test activity, including which functions and modules need to be tested, which platforms and versions need to be tested, etc.",
+      "testingObjectivesPlaceholder": "Define the specific content and scope of the test activity, including which functions and modules need to be tested, which platforms and versions need to be tested, etc",
       "enterTestingObjectives": "Please enter testing objectives",
-      "testingScopePlaceholder": "Define the specific content and scope of the test activity, including which functions and modules need to be tested, which platforms and versions need to be tested, etc.",
+      "testingScopePlaceholder": "Define the specific content and scope of the test activity, including which functions and modules need to be tested, which platforms and versions need to be tested, etc",
       "enterTestingScope": "Please enter testing scope",
-      "acceptanceCriteriaPlaceholder": "Clearly define the specific conditions and standards for the delivery of the software product.",
-      "otherInformationPlaceholder": "Other information, such as test strategy, risk assessment, and management, etc.",
+      "acceptanceCriteriaPlaceholder": "Clearly define the specific conditions and standards for the delivery of the software product",
+      "otherInformationPlaceholder": "Other information, such as test strategy, risk assessment, and management, etc",
       "selectPersonnelPlaceholder": "Select Personnel",
       "enterWorkResponsibilities": "Enter work responsibilities"
     },
@@ -567,5 +567,38 @@
         }
       }
     }
+  },
+  "testTemplate": {
+    "title": "Template",
+    "addedTemplates": "Added Templates",
+    "noTemplates": "You haven't added any templates yet, ",
+    "introduce": {
+      "title": "About Test Template",
+      "description": "Test templates provide standardized formats and structures for creating test plans and test cases, helping teams maintain consistency and improve efficiency. Through predefined fields, formats, and content guidelines, test templates ensure the quality and completeness of test documentation while enhancing team collaboration efficiency and standardizing workflows."
+    },
+    "actions": {
+      "addTemplate": "Add Template",
+      "editTemplate": "Edit Template"
+    },
+    "columns": {
+      "templateName": "Template Name",
+      "templateType": "Template Type",
+      "testingScope": "Testing Scope",
+      "testingObjectives": "Testing Objectives",
+      "acceptanceCriteria": "Acceptance Criteria",
+      "otherInformation": "Other Information"
+    },
+    "placeholders": {
+      "namePlaceholder": "Enter template name, maximum 100 characters"
+    },
+    "messages": {
+      "systemTemplateCannotDelete": "System templates cannot be deleted",
+      "systemTemplateCannotUpdate": "System templates cannot be updated",
+      "maxTemplatesReached": "Maximum number of custom templates (200) has been reached",
+      "nameRequired": "Please enter template name",
+      "templateTypeRequired": "Please select template type",
+      "systemTemplate": "System Template"
+    },
+    "templateContent": "Template Content"
   }
 }

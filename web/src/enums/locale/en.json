@@ -181,6 +181,10 @@
         "FULLY_PASSED": "Fully Passed",
         "FULLY_FAILED": "Fully Failed"
       },
+      "TestTemplateType": {
+        "TEST_PLAN": "Test Plan",
+        "TEST_CASE": "Test Case"
+      },
       "ProjectType": {
         "AGILE": "Agile Project Management",
         "GENERAL": "General Project Management",
