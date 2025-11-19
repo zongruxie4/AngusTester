@@ -520,8 +520,11 @@ public class ScenarioQueryImpl implements ScenarioQuery {
           execFailureMessage = nullSafe(execFailureMessage,
               nullSafe(execInfo.getMeterMessage(), "Unknown Error"));
         }
-        s.setLastExecId(execInfo.getId()).setLastExecStatus(execInfo.getStatus())
-            .setLastExecFailureMessage(execFailureMessage);
+        s.setLastExecId(execInfo.getId())
+            .setLastExecName(execInfo.getName())
+            .setLastExecStatus(execInfo.getStatus())
+            .setLastExecFailureMessage(execFailureMessage)
+            .setLastExecDate(execInfo.getActualStartDate());
       }
     });
   }
