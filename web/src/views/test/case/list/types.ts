@@ -1,7 +1,7 @@
 import { CaseDetail, CaseTestStep } from '@/views/test/types';
 import { AttachmentInfo } from '@/types/types';
 import { Priority } from '@xcan-angus/infra';
-import { CaseStepView } from '@/enums/enums';
+import { CaseStepView, TestLayer, TestPurpose } from '@/enums/enums';
 
 export type CaseActionAuth =
   'edit' | 'debug' | 'review'
@@ -25,6 +25,8 @@ export type EnabledModuleGroup = boolean;
 
 export type CaseEditState = {
   id?: string;
+  testLayer: TestLayer;
+  testPurpose: TestPurpose;
   name: string;
   planId?: string | undefined;
   moduleId?: number | undefined;

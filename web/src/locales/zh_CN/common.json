@@ -228,6 +228,8 @@
     "permissionControl": "权限控制",
     "storyPoint": "故事点",
     "workloadEvalMethod": "工作量评估方法",
+    "testLayer": "测试对象",
+    "testPurpose": "测试目的",
     "counts": {
       "progress": "进度",
       "totalCount": "总数",
@@ -356,6 +358,8 @@
       "searchTag": "搜索标签",
       "enterParameterValue": "请输入参数值",
       "enterParameterName": "请输入参数名称",
+      "selectTestLayer": "选择测试对象",
+      "selectTestPurpose": "选择测试目的",
       "selectDate": [
         "时间从",
         "时间到"

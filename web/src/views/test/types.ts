@@ -1,5 +1,5 @@
 import { EnumMessage, EvalWorkloadMethod, Priority, ReviewStatus } from '@xcan-angus/infra';
-import { CaseStepView, CaseTestResult } from '@/enums/enums';
+import { CaseStepView, CaseTestResult, TestPurpose, TestLayer } from '@/enums/enums';
 import { AttachmentInfo, ProgressInfo, TagInfo } from '@/types/types';
 import { TaskInfo } from '@/views/issue/types';
 
@@ -118,6 +118,8 @@ export type CaseDetail = {
   lastModifiedBy: string;
   lastModifiedByName: string;
   lastModifiedDate: string;
+  testLayer: TestLayer;
+  testPurpose: TestPurpose;
   /** Optional reference map used when updating associations */
   refMap?: { TASK: string[]; CASE: string[] };
   checked?: boolean;

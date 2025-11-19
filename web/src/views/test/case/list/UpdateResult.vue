@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, computed } from 'vue';
 import { Input, Modal, notification, Icon } from '@xcan-angus/vue-ui';
-import { Button, Form, FormItem, Radio, RadioGroup, Tooltip } from 'ant-design-vue';
+import { Button, Form, FormItem, Radio, RadioGroup, Tooltip, Slider } from 'ant-design-vue';
 import { EnumMessage, enumUtils, EvalWorkloadMethod } from '@xcan-angus/infra';
-import { CaseTestResult } from '@/enums/enums';
+import { CaseTestResult, TestPurpose } from '@/enums/enums';
 import type { Rule } from 'ant-design-vue/es/form';
 import { testCase } from '@/api/tester';
 
@@ -49,9 +49,18 @@ const emits = defineEmits<{
 
 // Form state management
 const formRef = ref();
-const formState = ref<{ testRemark: string; testResult: string, evalWorkload?: string, actualWorkload?: string }>
+const formState = ref<{ testRemark: string; testResult: string, evalWorkload?: string, actualWorkload?: string, testScore?: number }>
 ({ testRemark: '', testResult: CaseTestResult.PASSED });
 const loading = ref(false);
+
+
+const showTestScore = computed(() => {
+  return [TestPurpose.SECURITY,
+  TestPurpose.COMPATIBILITY,
+  TestPurpose.USABILITY,
+  TestPurpose.MAINTAINABILITY,
+  TestPurpose.SCALABILITY].includes(props.selectedCase?.testPurpose as TestPurpose || '');
+});
 
 /**
  * Close the modal
@@ -70,6 +79,7 @@ const onFinish = async (addBug = false) => {
       id: item.toString(),
       testRemark: formState.value.testRemark || null,
       testResult: formState.value.testResult,
+      testScore: formState.value.testScore,
       evalWorkload: formState.value.evalWorkload || null,
       actualWorkload: formState.value.actualWorkload || null
     }))
@@ -78,6 +88,7 @@ const onFinish = async (addBug = false) => {
           id: props.selectedCase?.id?.toString()!,
           testRemark: formState.value.testRemark || null,
           testResult: formState.value.testResult,
+          testScore: formState.value.testScore,
           evalWorkload: formState.value.evalWorkload || null,
           actualWorkload: formState.value.actualWorkload || null
         }
@@ -169,6 +180,20 @@ watch(() => props.visible, (newValue) => {
 
   formState.value.evalWorkload = props.selectedCase.evalWorkload?.toString();
   formState.value.actualWorkload = (props.selectedCase.actualWorkload || props.selectedCase.evalWorkload)?.toString();
+  if (showTestScore.value) {
+    formState.value.testScore = formState.value.testResult === CaseTestResult.PASSED ? 7 : 0;
+  } else {
+    formState.value.testScore = undefined;
+  }
+}, {
+  immediate: true
+});
+
+watch(() => formState.value.testResult, () => {
+  if (!showTestScore.value) {
+    return;
+  }
+  formState.value.testScore = formState.value.testResult === CaseTestResult.PASSED ? 7 : 0;
 }, {
   immediate: true
 });
@@ -226,6 +251,15 @@ watch(() => props.visible, (newValue) => {
             :placeholder="formState.testResult === CaseTestResult.PASSED ? t('testCase.messages.testResultTip') : t('testCase.messages.notPassedReasonTip')"
             showCount />
         </FormItem>
+
+        <FormItem v-if="showTestScore" name="testScore" label="得分">
+          <div class="text-right text-3 -mt-6">
+            {{ formState.testScore }}/10
+          </div>
+          <Slider v-model:value="formState.testScore" :min="0" :max="10" class="mt-0" />
+        </FormItem>
+
+
 
         <!-- Workload Section Title -->
         <div class="workload-section-title">{{ t('common.evalWorkloadMethod') }}</div>

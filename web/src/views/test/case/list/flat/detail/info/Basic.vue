@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue';
 import { Icon, Input, Select, Toggle } from '@xcan-angus/vue-ui';
-import { Button } from 'ant-design-vue';
-import { Priority, TESTER, utils, SearchCriteria } from '@xcan-angus/infra';
+import { Button, Tag } from 'ant-design-vue';
+import { Priority, TESTER, utils, SearchCriteria, enumUtils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
-import { SoftwareVersionStatus } from '@/enums/enums';
+import { SoftwareVersionStatus, TestLayer, TestPurpose } from '@/enums/enums';
 import { CaseActionAuth } from '@/views/test/case/types';
 
 import ReviewStatus from '@/components/test/ReviewStatus.vue';
@@ -273,6 +273,31 @@ const handleVersionBlur = async () => {
               <template v-else>
                 <span class="info-text">--</span>
               </template>
+            </div>
+          </div>
+        </div>
+
+
+         <!--  and  Row -->
+         <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('common.testLayer') }}</span>
+            </div>
+            <div class="info-value">
+              <div v-show="!isEditName" class="info-value-content">
+                <span class="info-text">{{ dataSource?.testLayer ? enumUtils.getEnumDescription(TestLayer, dataSource?.testLayer) : '--' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('common.testPurpose') }}</span>
+            </div>
+            <div class="info-value">
+              <span class="info-text">{{ dataSource?.testPurpose ? enumUtils.getEnumDescription(TestPurpose, dataSource?.testPurpose) : '--' }}</span>
+              <Tag v-if="dataSource?.testScore > -1" class="h-3.5 ml-1 py-0.5"  color="green">{{ dataSource?.testScore }}</Tag>
             </div>
           </div>
         </div>

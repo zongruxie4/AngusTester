@@ -9,7 +9,7 @@ import {
   EvalWorkloadMethod, Priority, SearchCriteria, enumUtils, TESTER,
   upload, localStore, utils, appContext
 } from '@xcan-angus/infra';
-import { CaseStepView, SoftwareVersionStatus } from '@/enums/enums';
+import { CaseStepView, SoftwareVersionStatus, TestLayer, TestPurpose } from '@/enums/enums';
 import dayjs from 'dayjs';
 import { testCase, modules, project } from '@/api/tester';
 import { DATE_TIME_FORMAT, TIME_FORMAT, MAX_FILE_SIZE_MB, UPLOAD_TEST_FILE_KEY } from '@/utils/constant';
@@ -50,6 +50,8 @@ const formRef = ref();
 
 // Extended form state interface to include all form fields
 const caseFormData = ref<CaseEditState>({
+  testLayer: TestLayer.UI,
+  testPurpose: TestPurpose.FUNCTIONAL,
   attachments: [],
   deadlineDate: '',
   description: '',
@@ -157,7 +159,7 @@ const stepsRef = ref();
  * @param type - Reset type ('save' for save and continue)
  */
 const resetForm = (type?: 'save') => {
-  formRef.value.resetFields(Object.keys(caseFormData.value as any).filter(item => item !== 'planId' && item !== 'deadlineDate'));
+  formRef.value.resetFields(Object.keys(caseFormData.value as any).filter(item => item !== 'planId' && item !== 'deadlineDate' && item !== 'testLayer' && item !== 'testPurpose'));
   caseFormData.value.refCaseIds = [];
   caseFormData.value.refTaskIds = [];
   if (type !== 'save') {
@@ -190,7 +192,9 @@ const save = (type: 'save' | 'add') => {
     'name',
     'planId',
     'testerId',
-    'deadlineDate'
+    'deadlineDate',
+    'testLayer',
+    'testPurpose'
   ];
 
   if (caseFormData.value.actualWorkload) {
@@ -656,6 +660,36 @@ onMounted(() => {
                 :placeholder="t('testCase.messages.enterCaseName')" />
             </FormItem>
 
+            <div class="flex space-x-2">
+              <FormItem
+                name="testLayer"
+                :label="t('common.testLayer')"
+                class="flex-1"
+                :rules="[{ required: true, message: t('common.placeholders.selectTestLayer') }]">
+                <SelectEnum
+                  v-model:value="caseFormData.testLayer"
+                  enumKey="TestLayer"
+                  size="small" />
+              </FormItem>
+
+              <FormItem
+                name="testPurpose"
+                :label="t('common.testPurpose')"
+                class="flex-1"
+                :rules="[{ required: true, message: t('common.placeholders.selectTestPurpose') }]">
+                  <SelectEnum
+                    v-model:value="caseFormData.testPurpose"
+                    enumKey="TestPurpose"
+                    size="small" />
+                </FormItem>
+
+                <FormItem label="&nbsp;" name="selectTemplate">
+                  <Button size="small" type="primary">
+                    选择模版
+                  </Button>
+                </FormItem>
+            </div>
+
             <FormItem
               name="precondition"
               :rules="[{validator: validatePrecondition}]">
@@ -698,7 +732,7 @@ onMounted(() => {
 
             <FormItem
               name="description"
-              :rules="[{validator: validateDescription}]">
+              :rules="[{validator: validateDescriptionription}]">
               <template #label>
                 <div class="text-3 flex space-x-2 items-center">
                   <span>{{ t('common.description') }}</span>

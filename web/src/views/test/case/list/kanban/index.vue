@@ -1249,7 +1249,6 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       const planId = item.planId;
 
       const permissions = planPermissionsMap.value.get(planId) || [];
-      debugger;
       if (props.userInfo?.id === item.testerId && !permissions.includes(FuncPlanPermission.TEST)) {
         permissions.push(FuncPlanPermission.TEST);
       }

@@ -20,7 +20,7 @@ const TaskTypeChart = defineAsyncComponent(() => import('./TaskTypeChart.vue'));
 </template>
 <style scoped>
 .chart-container {
-  @apply w-80;
+  @apply w-55;
   flex-shrink: 0;
   display: flex;
   align-items: center;

@@ -2,12 +2,15 @@
 import { defineAsyncComponent, inject, nextTick, ref, Ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, Input, Popover, Select } from '@xcan-angus/vue-ui';
-import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
+import { TESTER, EvalWorkloadMethod, enumUtils } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
+import { TestLayer, TestPurpose } from '@/enums/enums';
+
+
 
 import ReviewStatus from '@/components/test/ReviewStatus.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';
@@ -315,6 +318,28 @@ const change = async () => {
           <div class="info-value">
             <ReviewStatus v-if="props.dataSource?.reviewStatus" :value="props.dataSource?.reviewStatus" />
             <span v-else class="info-text dash-text">--</span>
+          </div>
+        </div>
+
+
+        <!-- testLayer -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.testLayer') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text">{{ props.dataSource?.testLayer ? enumUtils.getEnumDescription(TestLayer, props.dataSource?.testLayer) : '--' }}</span>
+          </div>
+        </div>
+
+        <!-- testLayer -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.testPurpose') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text">{{ props.dataSource?.testPurpose ? enumUtils.getEnumDescription(TestPurpose, props.dataSource?.testPurpose) : '--' }}</span>
+            <Tag v-if="props.dataSource?.testScore > -1" class="h-3.5 ml-1 py-0.5"  color="green">{{ props.dataSource?.testScore}}</Tag>
           </div>
         </div>
 
