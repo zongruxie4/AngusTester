@@ -360,28 +360,28 @@ onMounted(() => {
               <RichEditor
                 ref="scopeRichRef"
                 v-model="formState.templateContent.testingScope"
-                :placeholder="t('testTemplate.placeholders.testingScopePlaceholder')" />
+                :options="{placeholder: t('testPlan.placeholders.testingScopePlaceholder')}" />
             </FormItem>
 
             <FormItem :label="t('testTemplate.columns.testingObjectives')">
               <RichEditor
                 ref="objectiveRichRef"
                 v-model="formState.templateContent.testingObjectives"
-                :placeholder="t('testTemplate.placeholders.testingObjectivesPlaceholder')" />
+                :options="{placeholder: t('testPlan.placeholders.testingObjectivesPlaceholder')}" />
             </FormItem>
 
             <FormItem :label="t('testTemplate.columns.acceptanceCriteria')">
               <RichEditor
                 ref="criteriaRichRef"
                 v-model="formState.templateContent.acceptanceCriteria"
-                :placeholder="t('testTemplate.placeholders.acceptanceCriteriaPlaceholder')" />
+                :options="{placeholder: t('testPlan.placeholders.acceptanceCriteriaPlaceholder')}" />
             </FormItem>
 
             <FormItem :label="t('testTemplate.columns.otherInformation')">
               <RichEditor
                 ref="infoRichRef"
                 v-model="formState.templateContent.otherInformation"
-                :placeholder="t('testTemplate.placeholders.otherInformationPlaceholder')" />
+                :options="{placeholder: t('testPlan.placeholders.otherInformationPlaceholder')}" />
             </FormItem>
           </template>
 
@@ -390,7 +390,7 @@ onMounted(() => {
             <FormItem :label="t('common.precondition')">
               <RichEditor
                 v-model="formState.templateContent.precondition"
-                :placeholder="t('testTemplate.placeholders.preconditionPlaceholder')" />
+                :options="{placeholder: t('testCase.messages.enterPrecondition')}" />
             </FormItem>
 
             <FormItem>
@@ -420,7 +420,7 @@ onMounted(() => {
             <FormItem :label="t('common.description')">
               <RichEditor
                 v-model="formState.templateContent.description"
-                :placeholder="t('testTemplate.placeholders.descriptionPlaceholder')" />
+                :options="{placeholder: t('common.placeholders.inputDescription30')}" />
             </FormItem>
           </template>
         </div>

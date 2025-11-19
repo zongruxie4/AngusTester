@@ -72,12 +72,12 @@
       "enterPlanName": "请输入计划名称",
       "selectReview": "选择评审",
       "casePrefixPlaceholder": "用例前缀，最多可输入40个字符",
-      "testingObjectivesPlaceholder": "输入界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等。",
+      "testingObjectivesPlaceholder": "输入界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等",
       "enterTestingObjectives": "请输入测试目标",
-      "testingScopePlaceholder": "输入界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等。",
+      "testingScopePlaceholder": "输入界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等",
       "enterTestingScope": "请输入测试范围",
-      "acceptanceCriteriaPlaceholder": "明确计软件产品交付的具体条件和标准。",
-      "otherInformationPlaceholder": "其他说明，如测试策略、风险评估和管理等。",
+      "acceptanceCriteriaPlaceholder": "明确计软件产品交付的具体条件和标准",
+      "otherInformationPlaceholder": "其他说明，如测试策略、风险评估和管理等",
       "selectPersonnelPlaceholder": "选择人员",
       "enterWorkResponsibilities": "输入工作职责"
     },
@@ -581,30 +581,15 @@
     "columns": {
       "templateName": "模版名称",
       "templateType": "模版类型",
-      "createdBy": "创建人",
-      "createdDate": "创建时间",
       "testingScope": "测试范围",
       "testingObjectives": "测试目标",
       "acceptanceCriteria": "验收标准",
       "otherInformation": "其他说明"
     },
     "placeholders": {
-      "namePlaceholder": "输入模版名称，最多可输入100个字符",
-      "testingScopePlaceholder": "输入界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等。",
-      "testingObjectivesPlaceholder": "输入界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等。",
-      "acceptanceCriteriaPlaceholder": "明确计软件产品交付的具体条件和标准。",
-      "otherInformationPlaceholder": "其他说明，如测试策略、风险评估和管理等。",
-      "preconditionPlaceholder": "测试执行前需要满足的所有条件或环境配置。",
-      "stepsPlaceholder": "指执行测试用例时需要采取的具体操作步骤与预期结果，作为通过与否的判断标准。",
-      "descriptionPlaceholder": "对测试用例进行总体的补充说明和背景介绍，帮助理解测试的目的、范围和预期结果。"
+      "namePlaceholder": "输入模版名称，最多可输入100个字符"
     },
     "messages": {
-      "loadFailed": "加载模版失败",
-      "createFailed": "创建模版失败",
-      "updateFailed": "更新模版失败",
-      "deleteFailed": "删除模版失败",
-      "deleteSuccess": "模版删除成功",
-      "deleteConfirm": "确定要删除模版「{name}」吗？",
       "systemTemplateCannotDelete": "系统模版不允许删除",
       "systemTemplateCannotUpdate": "系统模版不允许修改",
       "maxTemplatesReached": "已达到自定义模版最大数量限制（200个）",
