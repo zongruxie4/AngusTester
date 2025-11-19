@@ -140,6 +140,11 @@ export enum FuncTargetType {
   CASE = 'CASE'
 }
 
+export enum TestTemplateType {
+  TEST_PLAN = 'TEST_PLAN',
+  TEST_CASE = 'TEST_CASE'
+}
+
 export enum CaseTestResult {
   PENDING = 'PENDING',
   PASSED = 'PASSED',
