@@ -6,10 +6,10 @@ import static cloud.xcan.angus.core.tester.interfaces.test.facade.internal.assem
 import cloud.xcan.angus.core.tester.application.cmd.test.TestTemplateCmd;
 import cloud.xcan.angus.core.tester.application.query.test.TestTemplateQuery;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.TestTemplateFacade;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.TestTemplateAddDto;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.TestTemplateUpdateDto;
+import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.template.TestTemplateAddDto;
+import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.template.TestTemplateUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.internal.assembler.TestTemplateAssembler;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.TestTemplateListVo;
+import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.template.TestTemplateListVo;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import java.util.List;

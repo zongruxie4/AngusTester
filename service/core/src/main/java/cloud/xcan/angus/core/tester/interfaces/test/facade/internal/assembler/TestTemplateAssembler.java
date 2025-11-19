@@ -1,9 +1,9 @@
 package cloud.xcan.angus.core.tester.interfaces.test.facade.internal.assembler;
 
 import cloud.xcan.angus.core.tester.domain.test.template.TestTemplate;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.TestTemplateAddDto;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.TestTemplateUpdateDto;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.TestTemplateListVo;
+import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.template.TestTemplateAddDto;
+import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.template.TestTemplateUpdateDto;
+import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.template.TestTemplateListVo;
 
 public class TestTemplateAssembler {
 
