@@ -18,6 +18,7 @@ const CaseDetailTab = defineAsyncComponent(() => import('@/views/test/case/list/
 const ReviewRecordTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/ReviewRecord.vue'));
 const AssocIssuesTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/AssocIssues.vue'));
 const AssocCasesTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/AssocCases.vue'));
+const AssocScenariosTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/AssocScenarios.vue'));
 const AddIssueModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));
 
 interface IData {
@@ -633,6 +634,19 @@ defineExpose({
           :projectId="projectId"
           :caseId="caseDetail?.id"
           @editSuccess="onEditSuccess" />
+      </TabPane>
+
+      <TabPane key="assocScenarios">
+        <template #tab>
+          <div class="inline-flex">
+            <span>{{ t('common.assocScenarios') }}</span>
+            <span>({{ caseDetail?.refScenarioInfos?.length || 0 }})</span>
+          </div>
+        </template>
+
+        <AssocScenariosTab
+          :projectId="projectId"
+          :caseId="caseDetail?.id" />
       </TabPane>
 
       <TabPane key="assocRequirements">

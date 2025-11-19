@@ -3,6 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } fr
 import { useI18n } from 'vue-i18n';
 import { appContext, utils } from '@xcan-angus/infra';
 import { ProjectInfo } from '@/layout/types';
+import { useRoute } from 'vue-router';
 import { ScenarioMenuKey, createMenuItems } from '@/views/scenario/menu';
 
 const LeftMenu = defineAsyncComponent(() => import('@/components/layout/leftMenu/index.vue'));
@@ -12,12 +13,13 @@ const Scenario = defineAsyncComponent(() => import('@/views/scenario/scenario/in
 const Monitor = defineAsyncComponent(() => import('@/views/scenario/monitor/index.vue'));
 
 const { t } = useI18n();
+const route = useRoute();
 
 const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const appInfo = ref(appContext.getAccessApp());
 
-const activeKey = ref<ScenarioMenuKey>();
+const activeKey = ref<ScenarioMenuKey>(route.hash.split('?')[0].split('#')[1] as ScenarioMenuKey);
 const menuItems = createMenuItems(t);
 
 const homeRefreshNotify = ref<string>('');
@@ -62,6 +64,7 @@ onMounted(() => {
 <template>
   <LeftMenu
     v-model:activeKey="activeKey"
+    key="scenario"
     :menuItems="menuItems">
     <template #home>
       <Homepage

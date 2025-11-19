@@ -78,7 +78,7 @@ provide('replaceTabPane', (params) => servicesRef.value && servicesRef.value.rep
 provide('updateApiGroup', (params) => servicesRef.value && servicesRef.value.updateApiGroup(params));
 </script>
 <template>
-  <LeftMenu v-model:activeKey="activeKey" :menuItems="menuItems">
+  <LeftMenu v-model:activeKey="activeKey" key="apis" :menuItems="menuItems">
     <template #home>
       <Homepage
         :projectId="projectId"

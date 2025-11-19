@@ -1,0 +1,293 @@
+<script lang="ts" setup>
+import { defineAsyncComponent, ref, onMounted, watch } from 'vue';
+import { AsyncComponent, Hints, Icon, modal, Table, notification } from '@xcan-angus/vue-ui';
+import { Button } from 'ant-design-vue';
+import { testCase } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
+import { TESTER, http } from '@xcan-angus/infra';
+import { AssocScenarioProps } from '@/views/test/case/types';
+import { useRouter } from 'vue-router';
+
+
+const SelectScenarioByModuleModal = defineAsyncComponent(() => import('@/components/function/SelectScenarioByModuleModal.vue'));
+const ExecTestModal = defineAsyncComponent(() => import('@/views/scenario/scenario/list/ExecTest.vue'));
+
+const props = withDefaults(defineProps<AssocScenarioProps>(), {
+  projectId: undefined,
+  userInfo: undefined,
+  appInfo: undefined,
+  caseId: undefined,
+});
+
+const { t } = useI18n();
+const router = useRouter();
+const emit = defineEmits<{
+  (event: 'loadingChange', value: boolean): void;
+  (event: 'editSuccess'): void;
+}>();
+
+const isSubmitting = ref(false);
+const isEditMode = ref(false);
+
+const isSelectCaseModalVisible = ref(false);
+const isExecScenarioModalVisible = ref(false);
+const selectedId = ref<string>();
+const selectedScenarioIds = ref<string[]>([]);
+
+const dataSource = ref([]);
+const isLoading = ref(false);
+
+/**
+ * Cancel current edit flow and close edit mode
+ */
+const cancelCaseSelectionModal = () => {
+  isEditMode.value = false;
+};
+
+/**
+ * Start edit flow by opening select-case modal
+ */
+const openCaseSelectionModal = () => {
+  isSelectCaseModalVisible.value = true;
+};
+
+/**
+ * Submit association of selected case IDs to the current case
+ * @param selectedCaseIds - Selected associated case IDs
+ */
+const handleAssociateCases = async (selectedCaseIds) => {
+  isSelectCaseModalVisible.value = false;
+  if (!selectedCaseIds.length) {
+    cancelCaseSelectionModal();
+    return;
+  }
+  isSubmitting.value = true;
+  const [error] = await testCase.putAssociationScenario(props.caseId, selectedCaseIds);
+  isSubmitting.value = false;
+  if (error) {
+    return;
+  }
+  loadScenarioList();
+};
+
+/**
+ * Remove association for a single linked case record
+ * @param caseRecord - The associated case record to remove
+ */
+const handleRemoveCaseAssociation = (scenarioRecord) => {
+  modal.confirm({
+    content: t('actions.tips.confirmCancelAssoc', { name: scenarioRecord.name }),
+    onOk () {
+      return testCase.deleteAssociationScenario(props.caseId, [scenarioRecord.id]).then(([error]) => {
+        if (error) {
+          return;
+        }
+        loadScenarioList();
+      });
+    }
+  });
+};
+
+const handleExecScenario = async (scenarioRecord) => {
+  selectedId.value = scenarioRecord.id;
+  isExecScenarioModalVisible.value = true;
+};
+
+const handleBatchExecScenarios = () => {
+  selectedScenarioIds.value = dataSource.value.map((item: any) => item.id);
+  isExecScenarioModalVisible.value = true;
+};
+
+const handleExecScenarioOk = async(params: any) => {
+  Promise.all(selectedScenarioIds.value.map((id: string) => {
+    return http.put(`${TESTER}/scenario/${id || ''}/exec`, params, { dataType: true });
+  })).then(()=> {
+    notification.success(t('actions.tips.execSuccess'));
+    loadScenarioList();
+  }).finally(() => {
+    selectedScenarioIds.value = [];
+  });
+};
+
+const tableRowSelection = ref({
+  onChange: (selectedRowKeys: string[]) => {
+    selectedScenarioIds.value = selectedRowKeys;
+  },
+  getCheckboxProps: (record: any) => ({
+    disabled: !!record.lastExecId
+  })
+});
+
+const columns = [
+  {
+    key: 'name',
+    dataIndex: 'name',
+    title: '场景名称',
+    width: 130
+  },
+  {
+    key: 'plugin',
+    dataIndex: 'plugin',
+    title: '类型'
+  },
+  {
+    key: 'lastExecName',
+    dataIndex: 'lastExecName',
+    title: '执行名称',
+    width: 120
+  },
+  {
+    key: 'scriptType',
+    dataIndex: 'scriptType',
+    title: '脚本类型',
+    customRender: ({text}) => {
+      return text?.message;
+    }
+  },
+  {
+    key: 'lastExecStatus',
+    dataIndex: 'lastExecStatus',
+    title: '执行状态',
+    width: 120,
+    customRender: ({text}) => {
+      return text?.message || t('scenario.list.table.noExecute')
+    }
+  },
+  {
+    key: 'lastExecFailureMessage',
+    dataIndex: 'lastExecFailureMessage',
+    title: '失败原因',
+    width: 140
+  },
+  {
+    key: 'lastExecDate',
+    dataIndex: 'lastExecDate',
+    title: '执行时间',
+  },
+  {
+    key: 'action',
+    dataIndex: 'action',
+    title: '操作',
+    width: 110
+  }
+];
+
+const loadScenarioList = async () => {
+  if (isLoading.value) {
+    return;
+  }
+  isLoading.value = true;
+  const [error, response] = await testCase.getAssociationScenario(props.caseId);
+  if (error) {
+    return;
+  }
+  isLoading.value = false;
+  dataSource.value = response?.data || [];
+};
+
+const handleOpenScenarioDetail = (record: any) => {
+  router.push(`/scenario#scenario?id=${record.id}&name=${record.name}&plugin=${record.plugin}&type=detail`);
+};
+
+onMounted(() => {
+  watch(() => props.caseId, (newCaseId) => {
+    if (newCaseId) {
+      loadScenarioList();
+    }
+  }, { immediate: true });
+});
+
+</script>
+<template>
+  <div>
+    <div class="flex mb-2 items-center pr-2">
+      <div class="flex-1 ml-1 min-w-0 truncate">
+        <Hints :text="t('testCase.messages.assocScenarioTip')" />
+      </div>
+      <Button
+        size="small"
+        type="text"
+        :disabled="!selectedScenarioIds.length"
+        @click="handleBatchExecScenarios">
+        <Icon icon="icon-zhihang" class="mr-1" />
+        批量执行
+      </Button>
+      <Button
+        :disabled="dataSource?.length > 19"
+        :loading="isSubmitting"
+        size="small"
+        @click="openCaseSelectionModal">
+        <Icon icon="icon-jia" class="mr-1" />
+        {{ t('testCase.actions.assocCases') }}
+      </Button>
+    </div>
+
+    <Table
+      :columns="columns"
+      :dataSource="dataSource || []"
+      :pagination="false"
+      :rowSelection="tableRowSelection"
+      :loading="isLoading"
+      size="small"
+      noDataSize="small"
+      :noDataText="t('common.noData')">
+      <template #bodyCell="{column, record}">
+        <template v-if="column.dataIndex === 'name'">
+          <Button
+            type="link"
+            size="small"
+            @click="handleOpenScenarioDetail(record)">
+            {{ record.name }}
+            <!-- <RouterLink :to="`/scenario#scenario?id=${record.id}&name=${record.name}&plugin=${record.plugin}&type=detail`">
+             
+            </RouterLink> -->
+          </Button>
+        </template>
+
+        <template v-if="column.dataIndex === 'execName'">
+          <Button
+            type="link"
+            size="small">
+            {{ record.execName }}
+          </Button>
+        </template>
+
+        <template v-if="column.dataIndex === 'action'">
+          <div class="flex items-center space-x-1">
+            <Button
+              :disabled="!!record.lastExecId"
+              size="small"
+              type="text"
+              @click="handleExecScenario(record)">
+              <Icon icon="icon-zhihang" class="mr-1" />
+              执行
+            </Button>
+            <Button
+              size="small"
+              type="text"
+              @click="handleRemoveCaseAssociation(record)">
+              <Icon icon="icon-qingchu" class="mr-1" />
+              {{ t('actions.cancel') }}
+            </Button>
+          </div>
+          
+        </template>
+      </template>
+    </Table>
+
+    <AsyncComponent :visible="isSelectCaseModalVisible">
+      <SelectScenarioByModuleModal
+        v-model:visible="isSelectCaseModalVisible"
+        :projectId="props.projectId"
+        :hadSelectedIds="dataSource.map((item: any) => item.id)"
+        @ok="handleAssociateCases" />
+    </AsyncComponent>
+    <AsyncComponent :visible="isExecScenarioModalVisible">
+      <ExecTestModal
+        v-model:scenarioId="selectedId"
+        v-model:scenarioIds="selectedScenarioIds"
+        v-model:visible="isExecScenarioModalVisible"
+        @ok="handleExecScenarioOk" />
+    </AsyncComponent>
+  </div>
+</template>

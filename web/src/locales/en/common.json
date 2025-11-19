@@ -230,6 +230,7 @@
     "workloadEvalMethod": "Workload Estimation Method",
     "testLayer": "Test Layer",
     "testPurpose": "Test Purpose",
+    "assocScenarios": "Automation",
     "counts": {
       "progress": "Progress",
       "totalCount": "Total",

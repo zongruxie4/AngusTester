@@ -54,6 +54,7 @@ onMounted(() => {
   <LeftMenu
     v-if="projectId"
     v-model:activeKey="activeKey"
+    key="project"
     :menuItems="menuItems">
     <template #project>
       <Projects

@@ -204,7 +204,8 @@
       "assocBugTip": "Track functional defects to ensure timely fixes and surface systemic issues.",
       "assocApiTestTip": "Associate the corresponding API test task to track progress and verify API availability.",
       "assocScenarioTestTip": "Associate the corresponding scenario test task to assess effectiveness in real scenarios and ensure solution completeness.",
-      "assocTaskTip": "Associate development and testing tasks related to this case for unified team tracking."
+      "assocTaskTip": "Associate development and testing tasks related to this case for unified team tracking.",
+      "assocScenarioTip": "Associate automation test scenarios to map cases to automation scripts for improved testing efficiency."
     }
   },
   "testCaseReview": {
