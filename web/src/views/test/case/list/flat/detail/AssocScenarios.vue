@@ -61,7 +61,7 @@ const openCaseSelectionModal = () => {
  * Submit association of selected case IDs to the current case
  * @param selectedCaseIds - Selected associated case IDs
  */
-const handleAssociateCases = async (selectedCaseIds) => {
+const handleAssociateDesign = async (selectedCaseIds) => {
   isSelectCaseModalVisible.value = false;
   if (!selectedCaseIds.length) {
     cancelCaseSelectionModal();
@@ -127,28 +127,39 @@ const tableRowSelection = ref({
   hideSelectAll: true
 });
 
+const resBgColorMap = {
+  CREATED: 'rgba(45, 142, 255, 1)',
+  PENDING: 'rgba(45, 142, 255, 1)',
+  RUNNING: 'rgba(103, 215, 255, 1)',
+  STOPPED: 'rgba(245, 34, 45, 1)',
+  FAILED: 'rgba(245, 34, 45, 1)',
+  TIMEOUT: 'rgba(245, 34, 45, 1)',
+  COMPLETED: 'rgba(82, 196, 26, 1)',
+  '': 'gray'
+};
+
 const columns = [
   {
     key: 'name',
     dataIndex: 'name',
     title: '场景名称',
-    width: 130
   },
   {
     key: 'plugin',
     dataIndex: 'plugin',
-    title: '类型'
+    title: '类型',
+    width: 80
   },
   {
     key: 'lastExecName',
     dataIndex: 'lastExecName',
     title: '执行名称',
-    width: 120
   },
   {
     key: 'scriptType',
     dataIndex: 'scriptType',
     title: '脚本类型',
+    width: 120,
     customRender: ({text}) => {
       return text?.message;
     }
@@ -172,6 +183,7 @@ const columns = [
     key: 'lastExecDate',
     dataIndex: 'lastExecDate',
     title: '执行时间',
+    width: 120
   },
   {
     key: 'action',
@@ -228,7 +240,7 @@ onMounted(() => {
         size="small"
         @click="openCaseSelectionModal">
         <Icon icon="icon-jia" class="mr-1" />
-        {{ t('testCase.actions.assocCases') }}
+        {{ t('testCase.actions.assocScenarios') }}
       </Button>
     </div>
 
@@ -252,12 +264,28 @@ onMounted(() => {
           </Button>
         </template>
 
+        <template v-if="column.dataIndex === 'lastExecName'">
+          <RouterLink :to="`/execution/info/${record.lastExecId}`">
+            {{ record.lastExecName }}
+          </RouterLink>
+        </template>
+
         <template v-if="column.dataIndex === 'execName'">
           <Button
             type="link"
             size="small">
             {{ record.execName }}
           </Button>
+        </template>
+
+        <template v-if="column.dataIndex === 'lastExecName'">
+          {{ record.plugin?.message }}
+        </template>
+
+        <template v-if="column.dataIndex === 'lastExecStatus'">
+          <span :style="{ color: resBgColorMap[record.lastExecStatus?.value || ''] }">
+            {{ record.lastExecStatus?.message || t('scenario.list.table.noExecute') }}
+          </span>
         </template>
 
         <template v-if="column.dataIndex === 'action'">
@@ -288,7 +316,7 @@ onMounted(() => {
         v-model:visible="isSelectCaseModalVisible"
         :projectId="props.projectId"
         :hadSelectedIds="dataSource.map((item: any) => item.id)"
-        @ok="handleAssociateCases" />
+        @ok="handleAssociateDesign" />
     </AsyncComponent>
     <AsyncComponent :visible="isExecScenarioModalVisible">
       <ExecTestModal

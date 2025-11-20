@@ -64,11 +64,7 @@ onMounted(() => {
     if (!hash || (!menuList.value.find(i => i.key === hash) && newpath === oldPath)) {
       // 优先从本地获取
       const localHash = localStore.get(localKey.value);
-      if (menuList.value.find(i => i.key === localHash)) {
-        routerPush(localHash || defaultKey);
-      } else {
-        routerPush(localHash);
-      }
+      routerPush(localHash || defaultKey);
       return;
     }
 

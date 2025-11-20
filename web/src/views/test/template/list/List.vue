@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue';
 import { Button, Card, Dropdown, Menu, Tag } from 'ant-design-vue';
-import { Icon, NoData } from '@xcan-angus/vue-ui';
+import { Icon, NoData, Input } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { TestTemplateDetail } from '../types';
 import { TestTemplateType } from '@/enums/enums';
-
+import { debounce } from 'throttle-debounce';
+import { duration } from '@xcan-angus/infra';
 // Props definition
 interface Props {
   dataList: TestTemplateDetail[];
@@ -21,6 +23,19 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+
+const searchKeyword = ref<string>('');
+
+const handleSearchKeywordChange = debounce(duration.search, (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const value = target.value;
+  searchKeyword.value = value;
+});
+
+
+const showData = computed(() => {
+  return props.dataList.filter(item => item.name.includes(searchKeyword.value));
+});
 
 /**
  * Get template type display text
@@ -94,28 +109,33 @@ const handleDropdownClick = (template: TestTemplateDetail, key: string) => {
 </script>
 
 <template>
-  <div class="flex flex-col space-y-4">
-    <div class="flex justify-end mb-2">
+  <div class="flex flex-col">
+    <div class="flex justify-between items-center mb-2">
+      <Input
+      :value="searchKeyword"
+      :placeholder="t('common.placeholders.searchKeyword')"
+      class="w-70"
+      @change="handleSearchKeywordChange" />
       <Button type="primary" @click="handleAdd">
-        <Icon name="icon-plus" />
+        <Icon icon="icon-jia" />
         {{ t('testTemplate.actions.addTemplate') }}
       </Button>
     </div>
 
-    <div v-if="!loading && props.dataList.length === 0" class="flex-1 flex items-center justify-center py-20">
+    <div v-if="!loading && showData.length === 0" class="flex-1 flex items-center justify-center py-20">
       <NoData />
     </div>
 
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-3">
       <Card
-        v-for="template in props.dataList"
+        v-for="template in showData"
         :key="template.id"
         class="template-card"
         :class="{ 'system-template': template.isSystem }">
         <template #title>
           <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2 flex-1 min-w-0">
-              <span class="font-semibold truncate">{{ template.name }}</span>
+              <span class="font-semibold text-3.5 truncate text-theme-special">{{ template.name }}</span>
               <Tag v-if="template.isSystem" color="orange">
                 {{ t('testTemplate.messages.systemTemplate') }}
               </Tag>
@@ -145,7 +165,7 @@ const handleDropdownClick = (template: TestTemplateDetail, key: string) => {
             </Tag>
           </div>
 
-          <div class="text-sm text-theme-sub-content">
+          <div class="text-3 text-theme-sub-content">
             <div v-if="template.createdByName">
               {{ t('common.createdBy') }}: {{ template.createdByName }}
             </div>

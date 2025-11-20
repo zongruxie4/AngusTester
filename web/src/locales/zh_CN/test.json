@@ -128,6 +128,7 @@
       "viewStatistics": "查看统计",
       "assocCases": "关联用例",
       "assocIssues": "关联{name}",
+      "assocScenarios": "关联场景",
       "submitBug": "提交Bug",
       "review": "去评审"
     },
