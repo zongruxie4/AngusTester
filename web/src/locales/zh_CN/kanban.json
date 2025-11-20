@@ -9,6 +9,7 @@
     "pleaseSelectPlan": "请选择计划",
     "selectOrganizationPersonnel": "选择组织人员",
     "viewType": {
+      "evaluation": "评测看板",
       "cto": "CTO",
       "effectiveness": "效能统计",
       "dataAssets": "数据资产"

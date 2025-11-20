@@ -212,6 +212,13 @@
   },
   "AI": {
     "name": "AI助手"
+  },
+  "evaluation": {
+    "title": "测评",
+    "introduce": {
+      "aboutAssessment": "关于测评",
+      "description": "测评用于评估软件系统的质量和可靠性，通过评估可以发现软件系统的潜在问题和风险，从而提高软件系统的质量和可靠性。"
+    }
   }
 }
 
