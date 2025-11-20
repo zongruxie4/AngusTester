@@ -124,20 +124,20 @@ public class ActivityConverter {
       ActivityType activityType, Object[] params) {
     if (isEmpty(params)) {
       return message(activityType.getDetailMessageKey(),
-          new Object[]{targetType.getMessage(), "[" + resource.getName() + "]"
+          new Object[]{targetType.getMessage(), "「" + resource.getName() + "」"
               , getDefaultLanguage().toLocale()});
     }
     assertTrue(params.length <= 2, "Support max two parameters");
     if (params.length == 1) {
       // Move the resource name to the front
       return message(activityType.getDetailMessageKey(),
-          new Object[]{targetType.getMessage(), "[" + resource.getName() + "]",
+          new Object[]{targetType.getMessage(), "「" + resource.getName() + "」",
               safeEnumString(params[0])},
           getDefaultLanguage().toLocale());
     }
     // Move the resource name to the front
     return message(activityType.getDetailMessageKey(),
-        new Object[]{targetType.getMessage(), "[" + resource.getName() + "]",
+        new Object[]{targetType.getMessage(), "「" + resource.getName() + "」",
             safeEnumString(params[0]), safeEnumString(params[1])}, getDefaultLanguage().toLocale());
   }
 
@@ -151,7 +151,7 @@ public class ActivityConverter {
   public static List<String[]> activityParams(Collection<? extends ActivityResource> resources) {
     List<String[]> params = new ArrayList<>(resources.size());
     for (ActivityResource resource : resources) {
-      params.add(new String[]{"[" + resource.getName() + "]"});
+      params.add(new String[]{"「" + resource.getName() + "」"});
     }
     return params;
   }
