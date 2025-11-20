@@ -262,6 +262,7 @@ const handleSelectTemplate = (templateData: {templateContent: {description: stri
   caseFormData.value.precondition = precondition;
   caseFormData.value.stepView = stepView?.value || CaseStepView.TABLE;
   caseFormData.value.steps = steps;
+  stepDefaultValue.value = steps;
 };
 
 const isLoading = ref(false);

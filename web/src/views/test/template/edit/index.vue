@@ -120,6 +120,7 @@ const loadTemplateDetail = async () => {
       steps = templateContent.steps || [];
       testLayer = templateContent.testLayer || TestLayer.UI;
       testPurpose = templateContent.testPurpose || TestPurpose.FUNCTIONAL;
+      stepDefaultValue.value = steps;
     }
 
     formState.value = {
@@ -407,7 +408,7 @@ onMounted(() => {
 
             <div class="flex space-x-2">
               <FormItem
-                name="testLayer"
+                :name="['templateContent', 'testLayer']"
                 :label="t('common.testLayer')"
                 class="flex-1"
                 :rules="[{ required: true, message: t('common.placeholders.selectTestLayer') }]">
@@ -418,7 +419,7 @@ onMounted(() => {
               </FormItem>
 
               <FormItem
-                name="testPurpose"
+                :name="['templateContent', 'testPurpose']"
                 :label="t('common.testPurpose')"
                 class="flex-1"
                 :rules="[{ required: true, message: t('common.placeholders.selectTestPurpose') }]">
@@ -452,8 +453,8 @@ onMounted(() => {
 
               <CaseSteps
                 v-model:value="formState.templateContent.steps"
-                :stepView="formState.templateContent.stepView"
                 :defaultValue="stepDefaultValue"
+                :stepView="formState.templateContent.stepView"
                 :readonly="false"
                 :showOutBorder="true" />
             </FormItem>

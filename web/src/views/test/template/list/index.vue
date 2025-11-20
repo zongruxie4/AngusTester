@@ -49,7 +49,6 @@ const loadData = async () => {
     return;
   }
 
-  debugger;
   const data = res?.data;
   if (data) {
     dataList.value = (data || []) as TestTemplateDetail[];
