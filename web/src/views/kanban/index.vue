@@ -23,10 +23,11 @@ const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', r
 const SelectCreatorModal = defineAsyncComponent(() => import('./SelectCreatorModal.vue'));
 const DataView = defineAsyncComponent(() => import('@/views/kanban/dataAssets/index.vue'));
 const EffectivenessView = defineAsyncComponent(() => import('@/views/kanban/effectiveness/index.vue'));
+const EvaluationView = defineAsyncComponent(() => import('@/views/kanban/evaluation/index.vue'));
 const CtoView = defineAsyncComponent(() => import('@/views/kanban/cto/index.vue'));
 
 // view management
-const { isMaximized, viewMode, dataViewRef, effectivenessRef, ctoRef, refreshActive, toggleMaximize } = useKanbanView();
+const { isMaximized, viewMode, dataViewRef, effectivenessRef, evaluationRef, ctoRef, refreshActive, toggleMaximize } = useKanbanView();
 
 // filters and derived safe values
 const {
@@ -183,6 +184,13 @@ watch(
           :createdDateEnd="createdDateEndSafe"
           :creatorObjectType="creatorObjectTypeSafe as CreatorObjectType"
           :creatorObjectId="creatorObjectIdSafe" />
+      </TabPane>
+
+      <TabPane key="evaluation">
+        <EvaluationView
+          ref="evaluationRef"
+          :onShow="viewMode === 'evaluation'"
+          :projectId="projectIdSafe" />
       </TabPane>
 
       <TabPane key="cto">

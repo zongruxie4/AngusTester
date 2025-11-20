@@ -8,11 +8,12 @@ import { ref } from 'vue';
  */
 export function useKanbanView () {
   const isMaximized = ref(false);
-  const viewMode = ref<'data' | 'effectiveness' | 'cto'>('effectiveness');
+  const viewMode = ref<'data' | 'effectiveness' | 'evaluation' | 'cto'>('effectiveness');
 
   // child component refs
   const dataViewRef = ref<any>();
   const effectivenessRef = ref<any>();
+  const evaluationRef = ref<any>();
   const ctoRef = ref<any>();
 
   function refreshActive () {
@@ -21,6 +22,9 @@ export function useKanbanView () {
     }
     if (typeof effectivenessRef.value?.refresh === 'function' && viewMode.value === 'effectiveness') {
       effectivenessRef.value.refresh();
+    }
+    if (typeof evaluationRef.value?.refresh === 'function' && viewMode.value === 'evaluation') {
+      evaluationRef.value.refresh();
     }
     if (typeof ctoRef.value?.refresh === 'function' && viewMode.value === 'cto') {
       ctoRef.value.refresh();
@@ -35,6 +39,9 @@ export function useKanbanView () {
     if (typeof effectivenessRef.value?.handleWindowResize === 'function' && viewMode.value === 'effectiveness') {
       effectivenessRef.value.handleWindowResize();
     }
+    if (typeof evaluationRef.value?.handleWindowResize === 'function' && viewMode.value === 'evaluation') {
+      evaluationRef.value.handleWindowResize();
+    }
     if (typeof ctoRef.value?.handleWindowResize === 'function' && viewMode.value === 'cto') {
       ctoRef.value.handleWindowResize();
     }
@@ -45,6 +52,7 @@ export function useKanbanView () {
     viewMode,
     dataViewRef,
     effectivenessRef,
+    evaluationRef,
     ctoRef,
     refreshActive,
     toggleMaximize

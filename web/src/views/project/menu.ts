@@ -6,6 +6,7 @@ export enum ProjectMenuKey {
   MODULE = 'module',
   VERSION = 'version',
   TAGS = 'tags',
+  EVALUATION = 'evaluation',
   ACTIVITY = 'activity',
   TRASH = 'trash'
 }
@@ -51,6 +52,13 @@ export const createMenuItems = (
           icon: 'icon-biaoqian3',
           name: t('tag.title'),
           key: ProjectMenuKey.TAGS
+        }
+      : null,
+    visibility.hasProjectId
+      ? {
+          icon: 'icon-pingshen',
+          name: t('evaluation.title'),
+          key: ProjectMenuKey.EVALUATION
         }
       : null,
     {
