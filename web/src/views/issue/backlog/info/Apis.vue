@@ -640,15 +640,6 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Test Type -->
-        <div class="info-row">
-          <div class="info-label">
-            <span>{{ t('common.testType') }}</span>
-          </div>
-          <div class="info-value">
-            <ScriptTypeTag :value="props.dataSource?.testType" />
-          </div>
-        </div>
 
         <!-- Task Status -->
         <div class="info-row">
@@ -758,25 +749,6 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Service -->
-        <div class="info-row">
-          <div class="info-label">
-            <span>{{ t('common.service') }}</span>
-          </div>
-          <div class="info-value">
-            <span class="info-text">{{ props.dataSource?.targetParentName }}</span>
-          </div>
-        </div>
-
-        <!-- API -->
-        <div class="info-row">
-          <div class="info-label">
-            <span>{{ t('common.api') }}</span>
-          </div>
-          <div class="info-value">
-            <span class="info-text">{{ props.dataSource?.targetName }}</span>
-          </div>
-        </div>
 
         <!-- Priority -->
         <div class="info-row">

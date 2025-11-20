@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.apis;
 
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisTestFacade;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestScriptGenerateDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestTaskGenerateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.test.TestResultDetailVo;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.ApiLocaleResult;
@@ -26,7 +25,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,7 +58,7 @@ public class ApisTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Get enabled API test types", 
+  @Operation(summary = "Get enabled API test types",
       description = "Retrieve enabled testing types for specific API with comprehensive test configuration information",
       operationId = "apis:test:enabled:find")
   @ApiResponses(value = {
@@ -73,7 +71,7 @@ public class ApisTestRest {
     return ApiLocaleResult.success(apisTestFacade.testEnabledFind(apisId));
   }
 
-  @Operation(summary = "Generate API test scripts", 
+  @Operation(summary = "Generate API test scripts",
       description = "Configure and generate testing scripts for API with comprehensive test automation setup",
       operationId = "apis:test:script:generate")
   @ApiResponses(value = {
@@ -88,7 +86,7 @@ public class ApisTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete API test scripts", 
+  @Operation(summary = "Delete API test scripts",
       description = "Remove testing scripts for API with comprehensive cleanup and validation",
       operationId = "apis:test:script:delete")
   @ApiResponses(value = {
@@ -101,62 +99,7 @@ public class ApisTestRest {
     apisTestFacade.scriptDelete(apisId, testTypes);
   }
 
-  @Operation(summary = "Generate API test tasks", 
-      description = "Configure and generate testing tasks for API with comprehensive task management and sprint integration",
-      operationId = "apis:test:task:generate")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "API test tasks generated successfully"),
-      @ApiResponse(responseCode = "404", description = "API not found")})
-  @ResponseStatus(HttpStatus.OK)
-  @PutMapping("/{id}/test/task/generate")
-  public ApiLocaleResult<?> taskGenerate(
-      @Parameter(name = "id", description = "API identifier for task generation", required = true) @PathVariable("id") Long apisId,
-      @Parameter(name = "taskSprintId", description = "Task sprint identifier for agile project management integration") @RequestParam(value = "taskSprintId", required = false) Long taskSprintId,
-      @Valid @RequestBody Set<ApisTestTaskGenerateDto> dto) {
-    apisTestFacade.testTaskGenerate(apisId, taskSprintId, dto);
-    return ApiLocaleResult.success();
-  }
-
-  @Operation(summary = "Restart API test tasks", 
-      description = "Restart existing testing tasks for API with comprehensive execution control",
-      operationId = "apis:test:task:restart")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "API test tasks restarted successfully"),
-      @ApiResponse(responseCode = "404", description = "API not found")})
-  @PatchMapping("/{id}/test/task/restart")
-  public ApiLocaleResult<?> taskRetest(
-      @Parameter(name = "id", description = "API identifier for task restart", required = true) @PathVariable("id") Long apisId) {
-    apisTestFacade.testTaskRetest(apisId);
-    return ApiLocaleResult.success();
-  }
-
-  @Operation(summary = "Reopen API test tasks", 
-      description = "Reopen existing testing tasks for API with comprehensive task lifecycle management",
-      operationId = "apis:test:task:reopen")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "API test tasks reopened successfully"),
-      @ApiResponse(responseCode = "404", description = "API not found")})
-  @PatchMapping("/{id}/test/task/reopen")
-  public ApiLocaleResult<?> testTaskReopen(
-      @Parameter(name = "id", description = "API identifier for task reopen", required = true) @PathVariable("id") Long apisId) {
-    apisTestFacade.testTaskReopen(apisId);
-    return ApiLocaleResult.success();
-  }
-
-  @Operation(summary = "Delete API test tasks", 
-      description = "Remove testing tasks for API with comprehensive cleanup and task lifecycle management",
-      operationId = "apis:test:task:delete")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "API test tasks deleted successfully")})
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @DeleteMapping("/{id}/test/task")
-  public void testTaskDelete(
-      @Parameter(name = "id", description = "API identifier for task deletion", required = true) @PathVariable("id") Long apisId,
-      @Parameter(name = "testTypes", description = "Test types for targeted task deletion", required = true) @RequestParam("testTypes") HashSet<TestType> testTypes) {
-    apisTestFacade.testTaskDelete(apisId, testTypes);
-  }
-
-  @Operation(summary = "Create API test execution", 
+  @Operation(summary = "Create API test execution",
       description = "Create testing execution for API with automatic script creation if not exists",
       operationId = "apis:test:exec:add")
   @ApiResponses(value = {
@@ -172,7 +115,7 @@ public class ApisTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Create batch API test execution", 
+  @Operation(summary = "Create batch API test execution",
       description = "Create testing execution for multiple APIs with automatic script creation if not exists",
       operationId = "apis:test:exec:add:batch")
   @ApiResponses(value = {
@@ -188,7 +131,7 @@ public class ApisTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Create API functional test execution", 
+  @Operation(summary = "Create API functional test execution",
       description = "Create functionality case testing execution for API with automatic script creation if not exists",
       operationId = "apis:case:test:exec:add")
   @ApiResponses(value = {
@@ -203,7 +146,7 @@ public class ApisTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Get API test results", 
+  @Operation(summary = "Get API test results",
       description = "Retrieve comprehensive test results for API with detailed analysis and performance metrics",
       operationId = "apis:test:result:detail")
   @ApiResponses(value = {

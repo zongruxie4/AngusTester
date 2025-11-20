@@ -576,7 +576,6 @@ onMounted(() => {
                         v-model:value="newTask.newTaskType"
                         enumKey="TaskType"
                         :placeholder="t('common.taskType')"
-                        :excludes="({value}) => [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value as any)"
                         class="w-28 mr-2">
                         <template #option="record">
                           <div class="flex items-center">
@@ -794,30 +793,8 @@ onMounted(() => {
 
             <div style="height: calc(100% - 36px);" class="pt-3.5 pb-3.5 overflow-hidden">
               <AsyncComponent :visible="!!taskId">
-                <ApiInfo
-                  v-if="taskType === TaskType.API_TEST"
-                  v-show="ui.drawerActiveKey === 'basic'"
-                  :projectId="props.projectId"
-                  :appInfo="props.appInfo"
-                  :userInfo="props.userInfo"
-                  :dataSource="currentInfo.currentTaskInfo"
-                  @refresh="refreshAllTaskData"
-                  @change="updateCurrentTaskInfo"
-                  @loadingChange="setLoadingState" />
-
-                <ScenarioInfo
-                  v-else-if="taskType === TaskType.SCENARIO_TEST"
-                  v-show="ui.drawerActiveKey === 'basic'"
-                  :projectId="props.projectId"
-                  :appInfo="props.appInfo"
-                  :userInfo="props.userInfo"
-                  :dataSource="currentInfo.currentTaskInfo"
-                  @refresh="refreshAllTaskData"
-                  @change="updateCurrentTaskInfo"
-                  @loadingChange="setLoadingState" />
 
                 <BasicInfo
-                  v-else
                   v-show="ui.drawerActiveKey === 'basic'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"

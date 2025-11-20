@@ -16,6 +16,9 @@ public interface TagTargetRepo extends BaseRepository<TagTarget, Long> {
   @Query(value = "SELECT tag_id FROM tag_target WHERE target_id = ?1", nativeQuery = true)
   Set<Long> findTagIdByTargetId(Long targetId);
 
+  @Query(value = "SELECT DISTINCT target_id FROM tag_target WHERE tag_id IN ?1", nativeQuery = true)
+  Set<Long> getTargetIdsByTagIdIn(Collection<Long> tagIds);
+
   List<TagTarget> findAllByTargetIdIn(Collection<Long> targetIds);
 
   @Modifying

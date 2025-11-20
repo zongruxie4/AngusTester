@@ -9,6 +9,8 @@ import cloud.xcan.angus.api.enums.ReviewStatus;
 import cloud.xcan.angus.core.export.BooeanWriteConverter;
 import cloud.xcan.angus.core.export.EnumMessageWriteConverter;
 import cloud.xcan.angus.core.export.ListStringWriteConverter;
+import cloud.xcan.angus.core.tester.domain.test.TestLayer;
+import cloud.xcan.angus.core.tester.domain.test.TestPurpose;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
@@ -90,6 +92,12 @@ public class FuncCaseExportListVo {
   private CaseTestResult testResult;
 
   private String testRemark;
+
+  @ExcelProperty(converter = EnumMessageWriteConverter.class)
+  private TestLayer testLayer;
+
+  @ExcelProperty(converter = EnumMessageWriteConverter.class)
+  private TestPurpose testPurpose;
 
   @DateTimeFormat(DEFAULT_DATE_TIME_FORMAT)
   private LocalDateTime testResultHandleDate;

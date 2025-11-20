@@ -21,8 +21,6 @@ const emit = defineEmits<{
 }>();
 
 // Async component imports
-const APIBasicInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/info/Apis.vue'));
-const ScenarioBasicInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/info/Scenario.vue'));
 const BasicInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/info/Basic.vue'));
 const WorkloadInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/info/Workload.vue'));
 const ProcessTimesInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/info/ProcessTimes.vue'));
@@ -89,30 +87,9 @@ const layoutClassName = computed(() => {
     <div class="flex-1 space-y-6">
       <!-- Main Task Info Section -->
       <div class="space-y-4">
-        <APIBasicInfo
-          v-if="currentTaskType === TaskType.API_TEST"
-          :id="currentTaskId"
-          :dataSource="props.dataSource"
-          :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo"
-          :taskId="currentTaskId"
-          @change="handleTaskDataChange"
-          @loadingChange="handleLoadingStateChange" />
-
-        <ScenarioBasicInfo
-          v-else-if="currentTaskType === TaskType.SCENARIO_TEST"
-          :id="currentTaskId"
-          :dataSource="props.dataSource"
-          :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo"
-          :taskId="currentTaskId"
-          @change="handleTaskDataChange"
-          @loadingChange="handleLoadingStateChange" />
 
         <BasicInfo
-          v-else
+
           :id="currentTaskId"
           :dataSource="props.dataSource"
           :projectId="props.projectId"

@@ -5,11 +5,9 @@ import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DEFAULT_DATE_TIME_FO
 
 import cloud.xcan.angus.api.enums.EvalWorkloadMethod;
 import cloud.xcan.angus.api.enums.Priority;
-import cloud.xcan.angus.api.enums.Result;
 import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
 import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
 import cloud.xcan.angus.core.tester.domain.issue.TaskType;
-import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.NameJoinField;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -47,19 +45,9 @@ public class TaskSummary  {
    */
   private Boolean backlog;
 
-  private Long targetId;
-
-  private String targetName;
-
-  private Long targetParentId;
-
-  private String targetParentName;
-
   private TaskType taskType;
 
   private BugLevel bugLevel;
-
-  private TestType testType;
 
   @JsonFormat(pattern = DEFAULT_DATE_TIME_FORMAT)
   private LocalDateTime startDate;
@@ -109,26 +97,6 @@ public class TaskSummary  {
   private BigDecimal actualWorkload;
 
   private TaskStatus status;
-
-  private Result execResult;
-
-  private String execFailureMessage;
-
-  private Integer execTestNum;
-
-  private Integer execTestFailureNum;
-
-  private Long execId;
-
-  private String execName;
-
-  private Long execBy;
-
-  @NameJoinField(id = "execBy", repository = "commonUserBaseRepo")
-  private String execByName;
-
-  @JsonFormat(pattern = DEFAULT_DATE_TIME_FORMAT)
-  private LocalDateTime execDate;
 
   @Schema(description="The number of task processing failures")
   private int failNum;

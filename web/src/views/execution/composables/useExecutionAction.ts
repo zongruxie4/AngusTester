@@ -16,6 +16,8 @@ export function useExecutionAction (config: {loadDataList: () => void}) {
   const router = useRouter();
 
   const loading = ref(false);
+  const startLoading = ref(false);
+  const stopLoading = ref(false);
 
   /**
    * Update execution name
@@ -284,8 +286,10 @@ export function useExecutionAction (config: {loadDataList: () => void}) {
     };
 
     loading.value = true;
+    startLoading.value = true;
     const [error, { data }] = await exec.startExec(params);
     loading.value = false;
+    startLoading.value = false;
 
     if (error) {
       let errMessage;
@@ -336,8 +340,10 @@ export function useExecutionAction (config: {loadDataList: () => void}) {
     };
 
     loading.value = true;
+    stopLoading.value = true;
     const [error, { data }] = await exec.stopExec(params);
     loading.value = false;
+    stopLoading.value = false;
 
     if (error) {
       let errMessage;
@@ -428,6 +434,8 @@ export function useExecutionAction (config: {loadDataList: () => void}) {
   return {
     // State
     loading,
+    startLoading,
+    stopLoading,
 
     // Methods
     updateName,

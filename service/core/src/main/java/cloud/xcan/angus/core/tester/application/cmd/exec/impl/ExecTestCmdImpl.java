@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.application.cmd.exec.impl;
 
 import static cloud.xcan.angus.model.element.type.TestTargetType.PLUGIN_HTTP_NAME;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
-import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -18,14 +17,11 @@ import cloud.xcan.angus.core.tester.domain.apis.Apis;
 import cloud.xcan.angus.core.tester.domain.apis.ApisRepo;
 import cloud.xcan.angus.core.tester.domain.apis.cases.ApisCase;
 import cloud.xcan.angus.core.tester.domain.apis.cases.ApisCaseRepo;
+import cloud.xcan.angus.core.tester.domain.issue.TaskRepo;
 import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
 import cloud.xcan.angus.core.tester.domain.scenario.ScenarioRepo;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfoRepo;
-import cloud.xcan.angus.core.tester.domain.issue.Task;
-import cloud.xcan.angus.core.tester.domain.issue.TaskRepo;
-import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
-import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.script.pipeline.Arguments;
 import cloud.xcan.angus.spec.experimental.IdKey;
@@ -86,11 +82,6 @@ public class ExecTestCmdImpl implements ExecTestCmd {
 
       @Override
       protected Void process() {
-        // Update task test results if test result is provided
-        if (nonNull(testResult)) {
-          updateTaskTestResult(testResult);
-        }
-
         // Update API or scenario test results based on script source
         if (testResult.getScriptSource().isApis()) {
           updateApisTestResult(testResult);
@@ -139,29 +130,6 @@ public class ExecTestCmdImpl implements ExecTestCmd {
             script.getType(), null, new Arguments(), applicationInfo.isCloudServiceEdition());
       }
     }.execute();
-  }
-
-  /**
-   * <p>
-   * Update test results for tasks, APIs, scenarios, and cases.
-   * </p>
-   * <p>
-   * Aggregates and updates results for related entities based on execution outcome.
-   * Finds tasks by target ID and test type, then updates their test results.
-   * </p>
-   * @param testResult Test result information
-   */
-  private void updateTaskTestResult(TestResultInfo testResult) {
-    // Find tasks by target ID and test type
-    List<Task> taskDbs = taskRepo.find0ByTargetIdAndTestType(testResult.getScriptSourceId(),
-        TestType.of(testResult.getScriptType()).getValue());
-    if (isNotEmpty(taskDbs)) {
-      // Update test results for each task
-      for (Task taskDb : taskDbs) {
-        setTaskTestResult(taskDb, testResult);
-      }
-      taskRepo.saveAll(taskDbs);
-    }
   }
 
   /**
@@ -267,44 +235,6 @@ public class ExecTestCmdImpl implements ExecTestCmd {
       }
       apisCaseRepo.saveAll(caseDbs);
     }
-  }
-
-  /**
-   * <p>
-   * Set test result for a task.
-   * </p>
-   * <p>
-   * Updates the status, script ID, execution result, failure message, test numbers, and
-   * execution details of a task based on the test result. Handles completion dates
-   * and failure count tracking.
-   * </p>
-   * @param taskDb Task entity to update
-   * @param resultInfo Test result information
-   */
-  private void setTaskTestResult(Task taskDb, TestResultInfo resultInfo) {
-    // Update task status, execution details, and test numbers
-    taskDb.setStatus(resultInfo.isPassed() ? TaskStatus.COMPLETED : taskDb.getStatus())
-        .setScriptId(resultInfo.getScriptId())
-        .setExecResult(resultInfo.isPassed() ? Result.SUCCESS : Result.FAIL)
-        .setExecFailureMessage(resultInfo.getFailureMessage())
-        .setExecTestNum(resultInfo.getTestNum())
-        .setExecTestFailureNum(resultInfo.getTestFailureNum())
-        .setExecId(resultInfo.getExecId())
-        .setExecName(resultInfo.getExecName())
-        .setExecBy(resultInfo.getExecBy())
-        .setExecDate(resultInfo.getLastExecStartDate());
-
-    // Set completion dates if task is completed
-    if (taskDb.getStatus().isCompleted()) {
-      taskDb.setStartDate(resultInfo.getLastExecStartDate());
-      taskDb.setCompletedDate(resultInfo.getLastExecEndDate());
-    }
-
-    // Update failure count and total count
-    if (!resultInfo.isPassed()) {
-      taskDb.setFailNum(nullSafe(taskDb.getFailNum(), 0) + 1);
-    }
-    taskDb.setTotalNum(nullSafe(taskDb.getFailNum(), 0) + 1);
   }
 
   /**

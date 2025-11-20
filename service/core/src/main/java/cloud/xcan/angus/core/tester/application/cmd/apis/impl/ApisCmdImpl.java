@@ -86,6 +86,8 @@ import cloud.xcan.angus.core.tester.domain.mock.apis.MockApisSource;
 import cloud.xcan.angus.core.tester.domain.services.ServiceApisScope;
 import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.domain.services.schema.SchemaFormat;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.model.apis.ApiStatus;
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.spec.experimental.IdKey;
@@ -221,6 +223,9 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         List<ApisAuth> apisAuths = getApisAndServiceCreatorAuth();
 
         // Insert all APIs and get their IDs
+        for (Apis api : apis) {
+          api.setId(BIDUtils.getId(BIDKey.apisId));
+        }
         List<IdKey<Long, Object>> idKeys = batchInsert(apis, "summary");
 
         // Initialize creator permissions for all APIs

@@ -36,8 +36,10 @@ public class ScenarioListVo {
   private Boolean auth;
 
   private Long lastExecId;
+  private String lastExecName;
   private ExecStatus lastExecStatus;
   private String lastExecFailureMessage;
+  private LocalDateTime lastExecDate;
 
   /**
    * Whether to enable functional testing, default enabled.

@@ -18,8 +18,8 @@ import {
   Select,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { duration, enumUtils, PageQuery, Priority, Result, SearchCriteria, TESTER, XCanDexie } from '@xcan-angus/infra';
-import { TaskStatus as TaskStatusEnum, TaskType, TestType } from '@/enums/enums';
+import { duration, enumUtils, PageQuery, Priority, SearchCriteria, TESTER, XCanDexie } from '@xcan-angus/infra';
+import { TaskStatus as TaskStatusEnum, TaskType } from '@/enums/enums';
 import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
@@ -549,21 +549,6 @@ const handleSearchPanelChange = (
   }
 };
 
-/**
- * Handles target ID filter changes
- * @param value - The selected target ID
- */
-const handleTargetIdChange = (value: any) => {
-  targetIdFilter.value = { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value };
-};
-
-/**
- * Handles target parent ID filter changes
- * @param value - The selected target parent ID
- */
-const handleTargetParentIdChange = (value: any) => {
-  targetParentIdFilter.value = { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value };
-};
 
 /**
  * Handles workload filter changes with debouncing
@@ -674,7 +659,7 @@ const initializeComponent = async () => {
     const taskTypeMap: { [key: string]: string } = {};
     if (Object.prototype.hasOwnProperty.call(savedSearchData, 'searchFilters')) {
       searchFilters.value = savedSearchData.searchFilters || [];
-      const dateTimeKeys = ['createdDate', 'startDate', 'deadlineDate', 'processedDate', 'confirmedDate', 'completedDate', 'canceledDate', 'execDate', 'lastModifiedDate'];
+      const dateTimeKeys = ['createdDate', 'startDate', 'deadlineDate', 'processedDate', 'confirmedDate', 'completedDate', 'canceledDate', 'lastModifiedDate'];
       const taskTypeKeys = ['taskType'];
       const dateTimeMap: { [key: string]: string[] } = {};
       searchFilters.value.every(({ key, value }) => {
@@ -987,7 +972,7 @@ onMounted(async () => {
         if (taskType) {
           selectedQuickSearchItems.value.set(taskType, { key: taskType });
         } else {
-          [TaskType.REQUIREMENT, TaskType.STORY, TaskType.TASK, TaskType.BUG, TaskType.API_TEST, TaskType.SCENARIO_TEST].forEach(item => {
+          [TaskType.REQUIREMENT, TaskType.STORY, TaskType.TASK, TaskType.BUG, TaskType.DESIGN].forEach(item => {
             selectedQuickSearchItems.value.delete(item);
           });
         }
@@ -1167,35 +1152,6 @@ const showAddTagBtn = computed(() => {
   return selectedTagOptions.value.length < 3;
 });
 
-/**
- * API parameters for target parent ID filter
- */
-const apiParams = computed(() => {
-  return {
-    serviceId: targetParentIdFilter.value.value
-  };
-});
-
-/**
- * Current task type from search filters
- */
-const taskType = computed(() => {
-  return searchFilters.value.find(item => item.key === 'taskType')?.value;
-});
-
-/**
- * Checks if current task type is API test
- */
-const isAPITest = computed(() => {
-  return taskType.value === TaskType.API_TEST;
-});
-
-/**
- * Checks if current task type is scenario test
- */
-const isScenarioTest = computed(() => {
-  return taskType.value === TaskType.SCENARIO_TEST;
-});
 
 const modeOptions = [
   {
@@ -1330,12 +1286,12 @@ const searchOptions = [
     placeholder: t('common.placeholders.selectConfirmer'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
-  {
-    type: 'select-user' as const,
-    valueKey: 'execBy',
-    placeholder: t('common.placeholders.selectExecutor'),
-    fieldNames: { label: 'fullName', value: 'id' }
-  },
+  // {
+  //   type: 'select-user' as const,
+  //   valueKey: 'execBy',
+  //   placeholder: t('common.placeholders.selectExecutor'),
+  //   fieldNames: { label: 'fullName', value: 'id' }
+  // },
   {
     type: 'select-user' as const,
     valueKey: 'createdBy',
@@ -1349,12 +1305,6 @@ const searchOptions = [
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
-    type: 'select-enum' as const,
-    valueKey: 'testType',
-    placeholder: t('common.placeholders.selectTestType'),
-    enumKey: TestType
-  },
-  {
     type: 'select' as const,
     action: `${TESTER}/module?fullTextSearch=true`,
     params: { projectId: props.projectId },
@@ -1363,22 +1313,22 @@ const searchOptions = [
     placeholder: t('common.placeholders.selectModule'),
     fieldNames: { label: 'name', value: 'id' }
   },
-  {
-    type: 'select-enum' as const,
-    valueKey: 'execResult',
-    placeholder: t('common.placeholders.selectExecutionResult'),
-    enumKey: Result
-  },
-  {
-    type: 'select' as const,
-    valueKey: 'targetParentId',
-    noDefaultSlot: true
-  },
-  {
-    type: 'select' as const,
-    valueKey: 'targetId',
-    noDefaultSlot: true
-  },
+  // {
+  //   type: 'select-enum' as const,
+  //   valueKey: 'execResult',
+  //   placeholder: t('common.placeholders.selectExecutionResult'),
+  //   enumKey: Result
+  // },
+  // {
+  //   type: 'select' as const,
+  //   valueKey: 'targetParentId',
+  //   noDefaultSlot: true
+  // },
+  // {
+  //   type: 'select' as const,
+  //   valueKey: 'targetId',
+  //   noDefaultSlot: true
+  // },
   {
     type: 'date-range' as const,
     valueKey: 'createdDate',
@@ -1439,15 +1389,6 @@ const searchOptions = [
     placeholder: [
       t('common.placeholders.selectCanceledDateRange.0'),
       t('common.placeholders.selectCanceledDateRange.1')
-    ],
-    showTime: true
-  },
-  {
-    type: 'date-range' as const,
-    valueKey: 'execDate',
-    placeholder: [
-      t('common.placeholders.selectExecutedDateRange.0'),
-      t('common.placeholders.selectExecutedDateRange.1')
     ],
     showTime: true
   },
@@ -1708,71 +1649,6 @@ const sortMenuItems = [
 
         <template #execResult_option="record">
           <span :style="'color:' + EXEC_RESULT_COLOR[record.value]">{{ record.message }}</span>
-        </template>
-
-        <template #targetParentId>
-          <Select
-            v-if="isAPITest"
-            :value="targetParentIdFilter.value"
-            :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
-            :fieldNames="{ label: 'name', value: 'id' }"
-            :allowClear="true"
-            :placeholder="t('common.placeholders.selectService')"
-            class="w-72 ml-2"
-            showSearch
-            @change="handleTargetParentIdChange">
-            <template #option="record">
-              <div class="text-3 leading-3 flex items-center h-6.5">
-                <IconText
-                  class="flex-shrink-0"
-                  style="width:16px;height: 16px;background-color: rgba(162,222,236,100%);"
-                  text="S" />
-                <div :title="record.name" class="truncate ml-1.5">{{ record.name }}</div>
-              </div>
-            </template>
-          </Select>
-        </template>
-
-        <template #targetId>
-          <Select
-            v-if="isAPITest"
-            :value="targetIdFilter.value"
-            :action="`${TESTER}/apis?projectId=${props.projectId}&fullTextSearch=true`"
-            :params="apiParams"
-            :fieldNames="{ label: 'summary', value: 'id' }"
-            :allowClear="true"
-            :placeholder="t('common.placeholders.selectApi')"
-            class="w-72 ml-2"
-            showSearch
-            @change="handleTargetIdChange">
-            <template #option="record">
-              <div class="flex items-center">
-                <Icon
-                  icon="icon-jiekou"
-                  class="text-4 flex-shrink-0"
-                  style="color:rgba(82,196,26,100%);" />
-                <div :title="record.summary" class="truncate ml-1.5">{{ record.summary }}</div>
-              </div>
-            </template>
-          </Select>
-
-          <Select
-            v-if="isScenarioTest"
-            :value="targetIdFilter.value"
-            :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
-            :fieldNames="{ label: 'name', value: 'id' }"
-            :allowClear="true"
-            :placeholder="t('common.placeholders.selectScenario')"
-            class="w-72 ml-2"
-            showSearch
-            @change="handleTargetIdChange">
-            <template #option="record">
-              <div class="flex items-center">
-                <Icon icon="icon-changjing" class="text-4 flex-shrink-0" />
-                <div :title="record.name" class="truncate ml-1.5">{{ record.name }}</div>
-              </div>
-            </template>
-          </Select>
         </template>
 
         <template #evalWorkload>

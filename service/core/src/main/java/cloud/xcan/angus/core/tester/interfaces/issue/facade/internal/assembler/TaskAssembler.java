@@ -18,22 +18,21 @@ import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
-import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
 import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.internal.assembler.FuncCaseAssembler;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseInfoVo;
+import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskAddDto;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskFindDto;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskUpdateDto;
-import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskAssocVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskInfoVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskListExportVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskListVo;
+import cloud.xcan.angus.core.tester.interfaces.test.facade.internal.assembler.FuncCaseAssembler;
+import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseInfoVo;
 import cloud.xcan.angus.core.utils.SpringAppDirUtils;
 import cloud.xcan.angus.idgen.uid.impl.CachedUidGenerator;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -67,12 +66,10 @@ public class TaskAssembler {
         .setCode(getTaskCode())
         .setName(dto.getName())
         .setSoftwareVersion(dto.getSoftwareVersion())
-        .setTargetId(dto.getTargetId())
         .setStatus(TaskStatus.PENDING)
         .setTaskType(dto.getTaskType())
         .setBugLevel(dto.getTaskType().isBug()
             ? nullSafe(dto.getBugLevel(), BugLevel.DEFAULT) : null)
-        .setTestType(dto.getTestType())
         .setAssigneeId(dto.getAssigneeId())
         .setConfirmerId(dto.getConfirmerId())
         .setTesterId(dto.getTesterId())
@@ -176,7 +173,6 @@ public class TaskAssembler {
         .setSoftwareVersion(task.getSoftwareVersion())
         .setTaskType(task.getTaskType())
         .setBugLevel(task.getBugLevel())
-        .setTestType(task.getTestType())
         .setProjectId(task.getProjectId())
         .setSprintId(task.getSprintId())
         .setSprintAuth(task.getSprintAuth())
@@ -221,19 +217,6 @@ public class TaskAssembler {
         .setOverdue(task.getOverdue())
         .setAttachments(task.getAttachments())
         .setDescription(task.getDescription())
-        .setTargetId(task.getTargetId())
-        .setTargetName(task.getTargetName())
-        .setTargetParentId(task.getTargetParentId())
-        .setTargetParentName(task.getTargetParentName())
-        .setScriptId(task.getScriptId())
-        .setExecResult(task.getExecResult())
-        .setExecFailureMessage(task.getExecFailureMessage())
-        .setExecTestNum(task.getExecTestNum())
-        .setExecTestFailureNum(task.getExecTestFailureNum())
-        .setExecId(task.getExecId())
-        .setExecName(task.getExecName())
-        .setExecBy(task.getExecBy())
-        .setExecDate(task.getExecDate())
         .setFavourite(task.getFavourite())
         .setFollow(task.getFollow())
         .setCommentNum(task.getCommentNum())
@@ -262,7 +245,6 @@ public class TaskAssembler {
         .setPriority(task.getPriority())
         .setTaskType(task.getTaskType())
         .setBugLevel(task.getBugLevel())
-        .setTestType(task.getTestType())
         .setEvalWorkload(task.getEvalWorkload())
         .setStartDate(task.getStartDate())
         .setDeadlineDate(task.getDeadlineDate())
@@ -286,7 +268,6 @@ public class TaskAssembler {
         .setSoftwareVersion(task.getSoftwareVersion())
         .setTaskType(task.getTaskType())
         .setBugLevel(task.getBugLevel())
-        .setTestType(task.getTestType())
         .setProjectId(task.getProjectId())
         .setSprintId(task.getSprintId())
         .setSprintAuth(task.getSprintAuth())
@@ -324,19 +305,6 @@ public class TaskAssembler {
         .setConfirmTask(task.isConfirmTask())
         .setOverdue(task.getOverdue())
         .setDescription(task.getDescription())
-        .setTargetId(task.getTargetId())
-        .setTargetName(task.getTargetName())
-        .setTargetParentId(task.getTargetParentId())
-        .setTargetParentName(task.getTargetParentName())
-        .setScriptId(task.getScriptId())
-        .setExecResult(task.getExecResult())
-        .setExecFailureMessage(task.getExecFailureMessage())
-        .setExecTestNum(task.getExecTestNum())
-        .setExecTestFailureNum(task.getExecTestFailureNum())
-        .setExecId(task.getExecId())
-        .setExecName(task.getExecName())
-        .setExecBy(task.getExecBy())
-        .setExecDate(task.getExecDate())
         .setFavourite(task.getFavourite())
         .setFollow(task.getFollow())
         .setTenantId(task.getTenantId())
@@ -353,12 +321,9 @@ public class TaskAssembler {
         //.setVersion(listVo.getVersion())
         .setTaskType(listVo.getTaskType())
         .setBugLevel(listVo.getBugLevel())
-        .setTestType(listVo.getTestType())
         .setProjectName(listVo.getProjectName())
         .setSprintName(listVo.getSprintName())
         .setModuleName(listVo.getModuleName())
-        .setTargetId(listVo.getTargetId())
-        .setTargetName(listVo.getTargetName())
         .setPriority(listVo.getPriority())
         .setAssigneeName(listVo.getAssigneeName())
         .setConfirmerName(listVo.getConfirmerName())
@@ -377,14 +342,6 @@ public class TaskAssembler {
         .setStatus(listVo.getStatus())
         .setSoftwareVersion(listVo.getSoftwareVersion())
         .setOverdue(listVo.getOverdue())
-        .setExecResult(listVo.getExecResult())
-        .setExecFailureMessage(listVo.getExecFailureMessage())
-        .setExecTestNum(listVo.getExecTestNum())
-        .setExecTestFailureNum(listVo.getExecTestFailureNum())
-        //.setExecId(listVo.getExecId())
-        .setExecName(listVo.getExecName())
-        //.setExecBy(listVo.getExecBy())
-        .setExecDate(listVo.getExecDate())
         .setFailNum(listVo.getFailNum())
         .setTotalNum(listVo.getTotalNum())
         .setRefTasks(isNotEmpty(listVo.getRefTaskInfos()) ? listVo.getRefTaskInfos().stream()
@@ -398,26 +355,6 @@ public class TaskAssembler {
         .setCreatedDate(listVo.getCreatedDate())
         .setLastModifiedByName(listVo.getLastModifiedByName())
         .setLastModifiedDate(listVo.getLastModifiedDate());
-  }
-
-  public static TaskAssocVo toTaskAssocVo(TaskInfo task) {
-    return new TaskAssocVo().setId(task.getId())
-        .setName(task.getName())
-        .setCode(task.getCode())
-        .setTaskType(task.getTaskType())
-        .setTestType(task.getTestType())
-        /*.setProjectId(task.getProjectId())*/
-        .setSprintId(task.getSprintId())
-        .setTargetId(task.getTargetId())
-        .setTargetName(task.getTargetName())
-        .setStatus(task.getStatus())
-        .setAssigneeId(task.getAssigneeId())
-        .setConfirmerId(task.getConfirmerId())
-        /*.setTags(isNotEmpty(task.getTagTargets()) ? task.getTagTargets().stream().map(
-                o -> new IdAndNameVo().setId(o.getTagId()).setName(o.getTagName()))
-            .toList() : Collections.emptyList())*/
-        .setCreatedBy(task.getCreatedBy())
-        .setCreatedDate(task.getCreatedDate());
   }
 
   @SneakyThrows

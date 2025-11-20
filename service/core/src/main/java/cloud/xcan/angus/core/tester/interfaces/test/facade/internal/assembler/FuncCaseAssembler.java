@@ -13,12 +13,16 @@ import cloud.xcan.angus.api.commonlink.TesterConstant;
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
+import cloud.xcan.angus.core.tester.domain.test.TestLayer;
+import cloud.xcan.angus.core.tester.domain.test.TestPurpose;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseStepView;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestStep;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCase;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.test.review.record.FuncReviewCaseRecord;
+import cloud.xcan.angus.core.tester.interfaces.issue.facade.internal.assembler.TaskAssembler;
+import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskInfoVo;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.FuncCaseAddDto;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.FuncCaseFindDto;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.FuncCaseReplaceDto;
@@ -30,8 +34,6 @@ import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseExportList
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseInfoVo;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseReviewVo;
-import cloud.xcan.angus.core.tester.interfaces.issue.facade.internal.assembler.TaskAssembler;
-import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskInfoVo;
 import cloud.xcan.angus.core.utils.SpringAppDirUtils;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;
@@ -65,6 +67,8 @@ public class FuncCaseAssembler {
         //.setEvalWorkloadMethod(dto.getEvalWorkloadMethod())
         .setEvalWorkload(dto.getEvalWorkload())
         .setActualWorkload(dto.getEvalWorkload())
+        .setTestLayer(nullSafe(dto.getTestLayer(), TestLayer.UI))
+        .setTestPurpose(nullSafe(dto.getTestPurpose(), TestPurpose.FUNCTIONAL))
         .setPrecondition(dto.getPrecondition())
         .setStepView(nullSafe(dto.getStepView(), CaseStepView.DEFAULT))
         .setSteps(dto.getSteps())
@@ -101,6 +105,8 @@ public class FuncCaseAssembler {
         //.setEvalWorkloadMethod(dto.getEvalWorkloadMethod())
         .setEvalWorkload(dto.getEvalWorkload())
         .setActualWorkload(dto.getActualWorkload())
+        .setTestLayer(dto.getTestLayer())
+        .setTestPurpose(dto.getTestPurpose())
         .setPrecondition(dto.getPrecondition())
         .setStepView(dto.getStepView())
         .setSteps(dto.getSteps())
@@ -132,6 +138,8 @@ public class FuncCaseAssembler {
         //.setEvalWorkloadMethod(dto.getEvalWorkloadMethod())
         .setEvalWorkload(dto.getEvalWorkload())
         .setActualWorkload(dto.getActualWorkload())
+        .setTestLayer(nullSafe(dto.getTestLayer(), TestLayer.UI))
+        .setTestPurpose(nullSafe(dto.getTestPurpose(), TestPurpose.FUNCTIONAL))
         .setPrecondition(dto.getPrecondition())
         .setStepView(nullSafe(dto.getStepView(), CaseStepView.DEFAULT))
         .setSteps(dto.getSteps())
@@ -162,7 +170,8 @@ public class FuncCaseAssembler {
         .setTestResult(dto.getTestResult())
         .setEvalWorkload(dto.getEvalWorkload())
         .setActualWorkload(dto.getActualWorkload())
-        .setTestRemark(dto.getTestRemark());
+        .setTestRemark(dto.getTestRemark())
+        .setTestScore(dto.getTestScore());
   }
 
   public static FuncCase reviewDtoToDomain(FuncCaseReviewDto dto) {
@@ -187,6 +196,8 @@ public class FuncCaseAssembler {
         .setEvalWorkloadMethod(case0.getEvalWorkloadMethod())
         .setEvalWorkload(case0.getEvalWorkload())
         .setActualWorkload(case0.getActualWorkload())
+        .setTestLayer(case0.getTestLayer())
+        .setTestPurpose(case0.getTestPurpose())
         .setPrecondition(case0.getPrecondition())
         .setStepView(nullSafe(case0.getStepView(), CaseStepView.DEFAULT))
         .setSteps(case0.getSteps())
@@ -205,6 +216,7 @@ public class FuncCaseAssembler {
         .setTestFailNum(case0.getTestFailNum())
         .setTestResult(case0.getTestResult())
         .setTestRemark(case0.getTestRemark())
+        .setTestScore(case0.getTestScore())
         .setTestResultHandleDate(case0.getTestResultHandleDate())
         .setAttachments(case0.getAttachments())
         .setTags(isNotEmpty(case0.getTagTargets()) ? case0.getTagTargets().stream()
@@ -242,6 +254,8 @@ public class FuncCaseAssembler {
         .setEvalWorkloadMethod(case0.getEvalWorkloadMethod())
         .setEvalWorkload(case0.getEvalWorkload())
         .setActualWorkload(case0.getActualWorkload())
+        .setTestLayer(case0.getTestLayer())
+        .setTestPurpose(case0.getTestPurpose())
         .setPrecondition(case0.getPrecondition())
         .setSteps(case0.getSteps())
         .setRefTaskInfos(isNotEmpty(case0.getAssocTasks()) ? case0.getAssocTasks().stream()
@@ -266,6 +280,7 @@ public class FuncCaseAssembler {
         .setTestResult(case0.getTestResult())
         .setTestRemark(case0.getTestRemark())
         .setTestResultHandleDate(case0.getTestResultHandleDate())
+        .setTestScore(case0.getTestScore())
         .setTags(isNotEmpty(case0.getTagTargets()) ? case0.getTagTargets().stream()
             .map(o -> new IdAndNameVo().setId(o.getTagId()).setName(o.getTagName()))
             .toList() : Collections.emptyList())
@@ -314,6 +329,8 @@ public class FuncCaseAssembler {
         .setReview(case0.getReview())
         .setPriority(case0.getPriority())
         .setEvalWorkload(case0.getEvalWorkload())
+        .setTestLayer(case0.getTestLayer())
+        .setTestPurpose(case0.getTestPurpose())
         .setDeadlineDate(case0.getDeadlineDate())
         .setDescription(case0.getDescription())
         .setTesterId(case0.getTesterId())
@@ -323,7 +340,8 @@ public class FuncCaseAssembler {
         .setReviewStatus(case0.getReviewStatus())
         .setReviewRemark(case0.getReviewRemark())
         .setTestResult(case0.getTestResult())
-        .setTestRemark(case0.getTestRemark());
+        .setTestRemark(case0.getTestRemark())
+        .setTestScore(case0.getTestScore());
   }
 
   public static FuncCaseExportListVo toListVo(FuncCaseListVo listVo) {
@@ -338,6 +356,8 @@ public class FuncCaseAssembler {
         .setEvalWorkloadMethod(listVo.getEvalWorkloadMethod())
         .setEvalWorkload(listVo.getEvalWorkload())
         .setActualWorkload(listVo.getActualWorkload())
+        .setTestLayer(listVo.getTestLayer())
+        .setTestPurpose(listVo.getTestPurpose())
         .setPrecondition(listVo.getPrecondition())
         .setDescription(listVo.getDescription())
         .setReviewerName(listVo.getReviewerName())
@@ -408,10 +428,10 @@ public class FuncCaseAssembler {
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("deadlineDate", "createdDate", "lastModifiedDate", "reviewDate",
             "testResultHandleDate", "reviewNum", "testNum", "testFailNum")
-        .inAndNotFields("id", "tagId", "testResult", "testerId", "developerId")
+        .inAndNotFields("id", "tagId", "testResult", "testerId", "developerId", "testLayer", "TestPurpose")
         .orderByFields("id", "createdDate", "lastModifiedDate", "priority",
             "deadlineDate", "reviewStatus", "reviewNum", "testerId", "developerId", "reviewerId",
-            "testNum", "testFailNum", "testResult", "reviewDate", "testResultHandleDate")
+            "testNum", "testFailNum", "testResult", "reviewDate", "testResultHandleDate", "testLayer", "TestPurpose")
         .matchSearchFields("name", "description", "code")
         .build();
     return new GenericSpecification<>(filters);

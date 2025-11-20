@@ -36,34 +36,18 @@ public class TaskCount {
   @Schema(description = "Total number of tasks")
   private long totalStatusNum;
 
-  @Schema(description = "The number of Performance Tasks")
-  private long perfNum;
-  @Schema(description = "The number of function tasks")
-  private long functionalNum;
-  @Schema(description = "The number of stabilization tasks")
-  private long stabilityNum;
-  @Schema(description = "Total number of test type tasks")
-  private long totalTestTypeNum;
-
   @Schema(description = "The number of requirement type tasks")
   private long requirementNum;
   @Schema(description = "The number of story type tasks")
   private long storyNum;
+  @Schema(description = "The number of design type tasks")
+  private long designNum;
   @Schema(description = "The number of task type tasks")
   private long taskNum;
   @Schema(description = "The number of bug type tasks")
   private long bugNum;
-  @Schema(description = "The number of api test type tasks")
-  private long apiTestNum;
-  @Schema(description = "The number of scenario test type tasks")
-  private long scenarioTestNum;
   @Schema(description = "Total number of task type tasks")
   private long totalTaskTypeNum;
-
-  @Schema(description = "The number of successful test tasks")
-  private long testSuccessNum;
-  @Schema(description = "The number of test failed tasks")
-  private long testFailNum;
 
   @Schema(description = "The number of overdue tasks")
   private long overdueNum;

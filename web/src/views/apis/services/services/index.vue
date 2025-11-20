@@ -302,19 +302,19 @@ const onContextMenuClick = (action: { key: string; }, item: ServicesInfo) => {
     case 'mock':
       addTabPane({ ...item, _id: item.id + 'mock', name: t('service.home.mockTabName'), value: 'mock' });
       break;
-    case 'setTest':
-      openCreateTestTask(item);
-      break;
-    case 'reTest':
-      openRestartTestTask(item);
-      break;
-    case 'reopen':
-      openReopenTestTask(item);
-      break;
-    case 'deleteTask':
-      delTestVisible.value = true;
-      modalsConfig.activeId = item.id;
-      break;
+    // case 'setTest':
+    //   openCreateTestTask(item);
+    //   break;
+    // case 'reTest':
+    //   openRestartTestTask(item);
+    //   break;
+    // case 'reopen':
+    //   openReopenTestTask(item);
+    //   break;
+    // case 'deleteTask':
+    //   delTestVisible.value = true;
+    //   modalsConfig.activeId = item.id;
+    //   break;
     case 'setTestScript':
       modalsConfig.testScriptVisible = true;
       modalsConfig.activeId = item.id;
@@ -412,20 +412,20 @@ const infoText = ref<string>();
 /**
  * Open create test task modal for a service.
  */
-const openCreateTestTask = (_project) => {
-  modalsConfig.activeId = _project.id;
-  testVisible.value = true;
-};
+// const openCreateTestTask = (_project) => {
+//   modalsConfig.activeId = _project.id;
+//   testVisible.value = true;
+// };
 
 const restartContent = ref('');
 /**
  * Open restart test task modal with contextual content.
  */
-const openRestartTestTask = (item) => {
-  modalsConfig.activeId = item.id;
-  restartTestVisible.value = true;
-  restartContent.value = t('service.service.restartServiceTip', { name: item.name });
-};
+// const openRestartTestTask = (item) => {
+//   modalsConfig.activeId = item.id;
+//   restartTestVisible.value = true;
+//   restartContent.value = t('service.service.restartServiceTip', { name: item.name });
+// };
 
 // Reopen test task
 const reopenTestVisible = ref(false);
@@ -433,11 +433,11 @@ const reopenContent = ref('');
 /**
  * Open reopen test task modal with contextual content.
  */
-const openReopenTestTask = (item) => {
-  modalsConfig.activeId = item.id;
-  reopenTestVisible.value = true;
-  reopenContent.value = t('service.service.reopenServiceTip', { name: item.name });
-};
+// const openReopenTestTask = (item) => {
+//   modalsConfig.activeId = item.id;
+//   reopenTestVisible.value = true;
+//   reopenContent.value = t('service.service.reopenServiceTip', { name: item.name });
+// };
 
 const translateVisible = ref(false);
 const execTestVisible = ref(false);
@@ -991,41 +991,6 @@ const collapseOptions = ref<{ name: string; key: string; icon: string; total: nu
       :offTips="tipMap[modalsConfig.type!].off"
       :title="modelTitleMap[modalsConfig.type!]"
       @change="onAuthFlagChange" />
-  </AsyncComponent>
-
-  <!-- Test -->
-  <AsyncComponent :visible="testVisible">
-    <CreateTestTask
-      v-model:id="modalsConfig.activeId"
-      v-model:visible="testVisible"
-      :infoText="infoText"
-      type="SERVICE" />
-  </AsyncComponent>
-
-  <!-- Restart test -->
-  <AsyncComponent :visible="restartTestVisible">
-    <RestartTestTask
-      v-model:id="modalsConfig.activeId"
-      v-model:visible="restartTestVisible"
-      :content="restartContent"
-      type="SERVICE" />
-  </AsyncComponent>
-
-  <!-- Reopen test task -->
-  <AsyncComponent :visible="reopenTestVisible">
-    <ReopenTestTask
-      v-model:visible="reopenTestVisible"
-      v-model:id="modalsConfig.activeId"
-      :content="reopenContent"
-      type="SERVICE" />
-  </AsyncComponent>
-
-  <!-- Delete test task -->
-  <AsyncComponent :visible="delTestVisible">
-    <DelTestTask
-      :id="modalsConfig.activeId"
-      v-model:visible="delTestVisible"
-      type="SERVICE" />
   </AsyncComponent>
 
   <!-- Set status -->

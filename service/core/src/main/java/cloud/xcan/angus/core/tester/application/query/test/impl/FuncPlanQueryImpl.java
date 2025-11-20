@@ -31,10 +31,10 @@ import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncBaselineQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncPlanAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncPlanQuery;
-import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
 import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaseline;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfoRepo;
@@ -123,7 +123,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
    * parameter validation and error handling.
    *
    * @param id the plan ID to retrieve details for
-   * @return FuncPlan object with complete details and enriched information
+   * @return TestTemplate object with complete details and enriched information
    * @throws ResourceNotFound if the plan is not found
    */
   @Override
@@ -167,7 +167,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
    * @param pageable pagination parameters (page, size, sort)
    * @param fullTextSearch whether to use full-text search capabilities
    * @param match full-text search match parameters
-   * @return Page of FuncPlan objects with enriched information
+   * @return Page of TestTemplate objects with enriched information
    * @throws BizException if permission validation fails
    */
   @Override
@@ -334,7 +334,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
    * Retrieves the plan with the earliest creation date within the specified project.
    *
    * @param projectId the project ID to search within
-   * @return FuncPlan object, or null if no plans exist
+   * @return TestTemplate object, or null if no plans exist
    */
   @Override
   public FuncPlan findLeastByProjectId(Long projectId) {
@@ -361,12 +361,12 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
    * Retrieves a plan and throws ResourceNotFound if not found.
    *
    * @param id the plan ID
-   * @return FuncPlan object
+   * @return TestTemplate object
    * @throws ResourceNotFound if plan is not found
    */
   @Override
   public FuncPlan checkAndFind(Long id) {
-    return funcPlanRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "FuncPlan"));
+    return funcPlanRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "TestTemplate"));
   }
 
   /**
@@ -377,18 +377,18 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
    * Optimized validation to reduce duplicate checks and improve performance.
    *
    * @param ids collection of plan IDs
-   * @return List of FuncPlan objects
+   * @return List of TestTemplate objects
    * @throws ResourceNotFound if any plan is not found
    */
   @Override
   public List<FuncPlan> checkAndFind(Collection<Long> ids) {
     List<FuncPlan> plans = funcPlanRepo.findAllById(ids);
-    assertResourceNotFound(isNotEmpty(plans), ids.iterator().next(), "FuncPlan");
+    assertResourceNotFound(isNotEmpty(plans), ids.iterator().next(), "TestTemplate");
 
     // Validate that all requested plans were found
     if (ids.size() != plans.size()) {
       for (FuncPlan plan : plans) {
-        assertResourceNotFound(ids.contains(plan.getId()), plan.getId(), "FuncPlan");
+        assertResourceNotFound(ids.contains(plan.getId()), plan.getId(), "TestTemplate");
       }
     }
     return plans;
@@ -668,7 +668,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
    * @param createdDateEnd end date for filtering
    * @param creatorOrgType the creator organization type
    * @param creatorOrgId the creator organization ID
-   * @return List of FuncPlan objects
+   * @return List of TestTemplate objects
    */
   @Override
   public List<FuncPlan> getPlanCreatedSummaries(Long projectId, Long planId,

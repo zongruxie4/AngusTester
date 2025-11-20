@@ -1,8 +1,8 @@
 package cloud.xcan.angus.core.tester.domain.kanban;
 
 import cloud.xcan.angus.api.enums.Priority;
-import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
 import cloud.xcan.angus.core.tester.domain.issue.count.BurnDownChartCount;
+import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import lombok.Getter;

@@ -184,21 +184,6 @@ const handleTaskTypeBlur = async () => {
   });
 };
 
-const taskTypeExcludes = (value: { message: string; value: string }) => {
-  const taskTypeValue = value.value as TaskDetail['taskType']['value'];
-  const type = currentTaskType.value;
-  if (currentTaskId.value) {
-    if (type === TaskType.API_TEST) {
-      return taskTypeValue !== TaskType.API_TEST;
-    }
-    if (type === TaskType.SCENARIO_TEST) {
-      return taskTypeValue !== TaskType.SCENARIO_TEST;
-    }
-    return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskTypeValue);
-  }
-  return false;
-};
-
 /**
  * <p>Initiates priority editing mode by setting the select value and enabling edit flag.</p>
  * <p>Focuses the select field after a short delay to ensure proper rendering.</p>
@@ -499,7 +484,6 @@ const handleVersionBlur = async () => {
                   ref="taskTypeSelectRef"
                   v-model:value="taskTypeSelectValue"
                   :allowClear="false"
-                  :excludes="taskTypeExcludes"
                   internal
                   enumKey="TaskType"
                   :placeholder="t('common.placeholders.selectIssueType')"

@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.application.cmd.services;
 
 import cloud.xcan.angus.core.tester.domain.script.Script;
-import cloud.xcan.angus.core.tester.domain.services.testing.TestTaskSetting;
 import cloud.xcan.angus.model.script.TestType;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;
@@ -14,12 +13,6 @@ public interface ServicesTestCmd {
   void scriptGenerate(Long serviceId, List<Script> scripts);
 
   void scriptDelete(Long serviceId, Set<TestType> testTypes);
-
-  void testTaskGenerate(Long serviceId, Long taskSprintId, List<TestTaskSetting> testings);
-
-  void retestTaskRestart(Long serviceId, Boolean restart);
-
-  void testTaskDelete(Long serviceId, Set<TestType> testTypes);
 
   void testExecAdd(Long servicesId, Set<TestType> testTypes, List<Server> servers);
 

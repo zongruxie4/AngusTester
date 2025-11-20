@@ -72,12 +72,12 @@
       "enterPlanName": "请输入计划名称",
       "selectReview": "选择评审",
       "casePrefixPlaceholder": "用例前缀，最多可输入40个字符",
-      "testingObjectivesPlaceholder": "输入界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等。",
+      "testingObjectivesPlaceholder": "输入界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等",
       "enterTestingObjectives": "请输入测试目标",
-      "testingScopePlaceholder": "输入界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等。",
+      "testingScopePlaceholder": "输入界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等",
       "enterTestingScope": "请输入测试范围",
-      "acceptanceCriteriaPlaceholder": "明确计软件产品交付的具体条件和标准。",
-      "otherInformationPlaceholder": "其他说明，如测试策略、风险评估和管理等。",
+      "acceptanceCriteriaPlaceholder": "明确计软件产品交付的具体条件和标准",
+      "otherInformationPlaceholder": "其他说明，如测试策略、风险评估和管理等",
       "selectPersonnelPlaceholder": "选择人员",
       "enterWorkResponsibilities": "输入工作职责"
     },
@@ -128,7 +128,8 @@
       "viewStatistics": "查看统计",
       "assocCases": "关联用例",
       "assocIssues": "关联{name}",
-      "submitBug": "提交Bug"
+      "submitBug": "提交Bug",
+      "review": "去评审"
     },
     "messages": {
       "caseSetBlocked": "用例设为阻塞中",
@@ -203,7 +204,8 @@
       "assocBugTip": "追踪功能缺陷，确保及时修复，并帮助识别与解决系统性问题。",
       "assocApiTestTip": "关联对应的接口测试任务，便于追踪测试进展并验证接口可用性。",
       "assocScenarioTestTip": "关联对应的场景测试任务，便于评估真实场景下的功能有效性，确保方案完整性。",
-      "assocTaskTip": "关联与当前用例相关的开发和测试任务，便于团队统一跟踪。"
+      "assocTaskTip": "关联与当前用例相关的开发和测试任务，便于团队统一跟踪。",
+      "assocScenarioTip": "关联自动化测试场景，实现用例与自动化脚本的精准映射，提升测试效率。"
     }
   },
   "testCaseReview": {
@@ -564,5 +566,38 @@
         }
       }
     }
+  },
+  "testTemplate": {
+    "title": "模版",
+    "addedTemplates": "已添加的模版",
+    "noTemplates": "您尚未添加任何模版，立即",
+    "introduce": {
+      "title": "关于测试模版",
+      "description": "测试模版为创建测试计划和测试用例提供标准化的格式和结构，帮助团队保持一致性并提高效率。通过预定义的字段、格式和内容指南，测试模版能够确保测试文档的质量和完整性，同时提升团队协作效率和工作流程的标准化程度。"
+    },
+    "actions": {
+      "addTemplate": "添加模版",
+      "editTemplate": "编辑模版"
+    },
+    "columns": {
+      "templateName": "模版名称",
+      "templateType": "模版类型",
+      "testingScope": "测试范围",
+      "testingObjectives": "测试目标",
+      "acceptanceCriteria": "验收标准",
+      "otherInformation": "其他说明"
+    },
+    "placeholders": {
+      "namePlaceholder": "输入模版名称，最多可输入100个字符"
+    },
+    "messages": {
+      "systemTemplateCannotDelete": "系统模版不允许删除",
+      "systemTemplateCannotUpdate": "系统模版不允许修改",
+      "maxTemplatesReached": "已达到自定义模版最大数量限制（200个）",
+      "nameRequired": "请输入模版名称",
+      "templateTypeRequired": "请选择模版类型",
+      "systemTemplate": "系统模版"
+    },
+    "templateContent": "模版内容"
   }
 }

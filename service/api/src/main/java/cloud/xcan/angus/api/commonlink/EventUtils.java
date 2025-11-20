@@ -9,7 +9,6 @@ import cloud.xcan.angus.api.enums.NoticeType;
 import cloud.xcan.angus.api.enums.ReceiveObjectType;
 import cloud.xcan.angus.core.event.source.EventContent;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class EventUtils {
 

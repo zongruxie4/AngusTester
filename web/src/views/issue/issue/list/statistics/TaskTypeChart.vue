@@ -154,12 +154,8 @@ const updateChartData = (): void => {
     value: +props.dataSource.requirementNum
   });
   chartOptions.series?.[0].data.push({
-    name: enumUtils.getEnumDescription(TaskType, TaskType.API_TEST),
-    value: +props.dataSource.apiTestNum
-  });
-  chartOptions.series?.[0].data.push({
-    name: enumUtils.getEnumDescription(TaskType, TaskType.SCENARIO_TEST),
-    value: +props.dataSource.scenarioTestNum
+    name: enumUtils.getEnumDescription(TaskType, TaskType.DESIGN),
+    value: +props.dataSource.designNum
   });
 
   renderChart();

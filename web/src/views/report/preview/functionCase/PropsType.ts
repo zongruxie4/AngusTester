@@ -26,7 +26,7 @@ export type ReportContent = {
                 message: string
             };
             caseType: {
-                value: 'API_TEST' | 'BUG' | 'REQUIREMENT' | 'SCENARIO_TEST' | 'STORY' | 'TASK';
+                value: 'BUG' | 'REQUIREMENT' | 'DESIGN' | 'STORY' | 'TASK';
                 message: string
             };
             testType: {
@@ -69,7 +69,7 @@ export type ReportContent = {
                     id: string;
                     name: string;
                     taskType: {
-                        value: 'API_TEST' | 'BUG' | 'REQUIREMENT' | 'SCENARIO_TEST' | 'STORY' | 'TASK';
+                        value: 'BUG' | 'REQUIREMENT' | 'DESIGN' | 'STORY' | 'TASK';
                         message: string;
                     };
                 }[]
@@ -78,7 +78,7 @@ export type ReportContent = {
                     id: string;
                     name: string;
                     taskType: {
-                        value: 'API_TEST' | 'BUG' | 'REQUIREMENT' | 'SCENARIO_TEST' | 'STORY' | 'TASK';
+                        value: 'BUG' | 'REQUIREMENT' | 'DESIGN' | 'STORY' | 'TASK';
                         message: string;
                     };
                 }[]

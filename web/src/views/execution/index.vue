@@ -47,6 +47,9 @@ const {
 
 // Use execution actions composable
 const {
+  startLoading,
+  stopLoading,
+
   updateName,
   editName,
   updateThread,
@@ -223,7 +226,7 @@ onBeforeUnmount(() => {
                   <template v-if="!item?.editName">
                     <RouterLink
                       :to="`/execution/info/${item.id}?pageNo=${pagination.current}`"
-                      class="text-3 font-medium truncate"
+                      class="text-3 font-medium truncate text-theme-special"
                       :title="item?.name">
                       {{ item?.name }}
                     </RouterLink>
@@ -615,9 +618,9 @@ onBeforeUnmount(() => {
               <template
                 v-if="[ExecStatus.CREATED, ExecStatus.STOPPED, ExecStatus.FAILED, ExecStatus.COMPLETED, ExecStatus.TIMEOUT].includes(item?.status.value)
                   && item?.hasOperationPermission">
-                <a class="flex items-center" @click="handleRestartWithContext(item)">
-                  <Icon icon="icon-huifu" class="mr-2" /><span>{{ t('actions.start') }}</span>
-                </a>
+                  <Button :loading="startLoading" size="small" type="text" @click="handleRestartWithContext(item)">
+                    <Icon icon="icon-huifu" class="mr-2" /><span>{{ t('actions.start') }}</span>
+                  </Button>
               </template>
               <template v-else>
                 <span class="flex items-center text-theme-disabled cursor-not-allowed">
@@ -626,9 +629,9 @@ onBeforeUnmount(() => {
               </template>
 
               <template v-if="[ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status.value) && item?.hasOperationPermission">
-                <a class="flex items-center" @click="handleStopWithContext(item)">
+                <Button :loading="stopLoading" size="small" type="text" @click="handleStopWithContext(item)">
                   <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('actions.stop') }}</span>
-                </a>
+                </Button>
               </template>
 
               <template v-else>

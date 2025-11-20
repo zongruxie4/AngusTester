@@ -134,43 +134,44 @@ export const ButtonGroup = [
       }
     ]
   },
-  {
-    name: t('service.apis.buttonGroup.testTask'),
-    key: 'testTask',
-    permission: ApiPermission.TEST,
-    icon: 'icon-ceshirenwu',
-    children: [
-      {
-        name: t('service.apis.buttonGroup.setTest'),
-        key: 'setTest',
-        permission: ApiPermission.TEST,
-        disabled: false,
-        icon: 'icon-shengchengceshirenwu1',
-        tip: t('service.apis.buttonGroup.setTestTip')
-      },
-      {
-        name: t('service.apis.buttonGroup.reTest'),
-        key: 'reTest',
-        permission: ApiPermission.TEST,
-        disabled: false,
-        icon: 'icon-zhongxinkaishiceshi',
-        tip: t('service.apis.buttonGroup.reTestTip')
-      },
-      {
-        name: t('actions.reopen'),
-        key: 'reopen',
-        permission: ApiPermission.TEST,
-        disabled: false,
-        icon: 'icon-zhongxindakaiceshirenwu',
-        tip: t('service.apis.buttonGroup.reopenTip')
-      },
-      {
-        name: t('service.apis.buttonGroup.deleteTask'),
-        key: 'deleteTask',
-        icon: 'icon-shanchuceshirenwu1',
-        permission: ApiPermission.TEST,
-        disabled: false,
-        tip: t('service.apis.buttonGroup.deleteTaskTip')
-      }
-    ]
-  }];
+  // {
+  //   name: t('service.apis.buttonGroup.testTask'),
+  //   key: 'testTask',
+  //   permission: ApiPermission.TEST,
+  //   icon: 'icon-ceshirenwu',
+  //   children: [
+  //     {
+  //       name: t('service.apis.buttonGroup.setTest'),
+  //       key: 'setTest',
+  //       permission: ApiPermission.TEST,
+  //       disabled: false,
+  //       icon: 'icon-shengchengceshirenwu1',
+  //       tip: t('service.apis.buttonGroup.setTestTip')
+  //     },
+  //     {
+  //       name: t('service.apis.buttonGroup.reTest'),
+  //       key: 'reTest',
+  //       permission: ApiPermission.TEST,
+  //       disabled: false,
+  //       icon: 'icon-zhongxinkaishiceshi',
+  //       tip: t('service.apis.buttonGroup.reTestTip')
+  //     },
+  //     {
+  //       name: t('actions.reopen'),
+  //       key: 'reopen',
+  //       permission: ApiPermission.TEST,
+  //       disabled: false,
+  //       icon: 'icon-zhongxindakaiceshirenwu',
+  //       tip: t('service.apis.buttonGroup.reopenTip')
+  //     },
+  //     {
+  //       name: t('service.apis.buttonGroup.deleteTask'),
+  //       key: 'deleteTask',
+  //       icon: 'icon-shanchuceshirenwu1',
+  //       permission: ApiPermission.TEST,
+  //       disabled: false,
+  //       tip: t('service.apis.buttonGroup.deleteTaskTip')
+  //     }
+  //   ]
+  // }
+  ];

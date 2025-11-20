@@ -1,14 +1,10 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler;
 
-import static cloud.xcan.angus.core.tester.application.cmd.issue.impl.TaskCmdImpl.getTaskCode;
 import static cloud.xcan.angus.core.tester.application.converter.ApisToAngusModelConverter.getScriptTaskArguments;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 
 import cloud.xcan.angus.core.tester.domain.script.Script;
-import cloud.xcan.angus.core.tester.domain.issue.Task;
-import cloud.xcan.angus.core.tester.domain.issue.TaskType;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestScriptGenerateDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestTaskGenerateDto;
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.TestType;
@@ -104,20 +100,6 @@ public class ApisTestAssembler {
       scripts.add(script);
     }
     return scripts;
-  }
-
-  public static List<Task> generateToTask(Long apisId, Set<ApisTestTaskGenerateDto> dto) {
-    return dto.stream().map(testing -> new Task()
-        .setTargetId(apisId)
-        .setTaskType(TaskType.API_TEST)
-        .setTestType(testing.getTestType())
-        .setPriority(testing.getPriority())
-        .setAssigneeId(testing.getAssigneeId())
-        .setDeadlineDate(testing.getDeadlineDate())
-        .setOverdue(false)
-        .setCode(getTaskCode())
-        .setBacklog(false) // Assign sprint is required or is general project management
-    ).toList();
   }
 
 }

@@ -26,6 +26,7 @@ import Tag from './Tag';
 import Test from './Test';
 import TestPlan from './TestPlan';
 import TestCase from './TestCase';
+import TestTemplate from './TestTemplate';
 
 const baseUrl = TESTER;
 const pubBaseUrl = PUB_TESTER;
@@ -56,3 +57,4 @@ export const tag = new Tag(baseUrl);
 export const test = new Test(baseUrl);
 export const testPlan = new TestPlan(baseUrl);
 export const testCase = new TestCase(baseUrl);
+export const testTemplate = new TestTemplate(baseUrl);

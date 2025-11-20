@@ -228,6 +228,9 @@
     "permissionControl": "Permission Control",
     "storyPoint": "Story Point",
     "workloadEvalMethod": "Workload Estimation Method",
+    "testLayer": "Test Layer",
+    "testPurpose": "Test Purpose",
+    "assocScenarios": "Automation",
     "counts": {
       "progress": "Progress",
       "totalCount": "Total",
@@ -250,6 +253,7 @@
       "storyCount": "Stories",
       "taskCount": "Tasks",
       "bugCount": "Bugs",
+      "designCount": "Designs", 
       "completedBugRate": "Completed bug rate",
       "uncompletedBugCount": "Uncompleted bugs",
       "completedBugCount": "Completed bugs",
@@ -355,6 +359,8 @@
       "searchTag": "Search tag",
       "enterParameterValue": "Enter parameter value",
       "enterParameterName": "Enter parameter name",
+      "selectTestLayer": "Select test layer",
+      "selectTestPurpose": "Select test purpose",
       "selectDate": [
         "Date from",
         "Date to"

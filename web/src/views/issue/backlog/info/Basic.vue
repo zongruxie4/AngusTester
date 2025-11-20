@@ -471,25 +471,6 @@ const confirmTaskTypeChange = async () => {
 };
 
 /**
- * <p>Determine which task types should be excluded from selection</p>
- * <p>Prevents changing between API_TEST and SCENARIO_TEST types</p>
- */
-const getTaskTypeExcludes = (value: { message: string; value: string }) => {
-  const taskTypeValue = value.value as any;
-  const currentType = taskType.value;
-  if (currentTaskId.value) {
-    if (currentType === TaskType.API_TEST) {
-      return taskTypeValue !== TaskType.API_TEST;
-    }
-    if (currentType === TaskType.SCENARIO_TEST) {
-      return taskTypeValue !== TaskType.SCENARIO_TEST;
-    }
-    return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskTypeValue);
-  }
-  return false;
-};
-
-/**
  * <p>Initialize priority editing mode</p>
  * <p>Sets the current priority value and enables editing state</p>
  */
@@ -861,7 +842,6 @@ onMounted(() => {
                 v-show="isTaskTypeEditing"
                 ref="taskTypeSelectRef"
                 v-model:value="taskTypeInputValue"
-                :excludes="getTaskTypeExcludes"
                 enumKey="TaskType"
                 :placeholder="t('common.placeholders.selectIssueType')"
                 class="edit-input"

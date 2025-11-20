@@ -140,9 +140,13 @@ public class Scenario extends TenantAuditingEntity<Scenario, Long> implements Ac
   @Transient
   private Long lastExecId;
   @Transient
+  private String lastExecName;
+  @Transient
   private ExecStatus lastExecStatus;
   @Transient
   private String lastExecFailureMessage;
+  @Transient
+  private LocalDateTime lastExecDate;
 
   public boolean isEnabledAuth() {
     return Objects.nonNull(auth) && auth;

@@ -28,7 +28,6 @@ const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/Auth
 const ExecDetail = defineAsyncComponent(() => import('@/views/execution/detail/index.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
 const TestSummary = defineAsyncComponent(() => import('./TestSummary.vue'));
-const Task = defineAsyncComponent(() => import('./Task.vue'));
 
 // Tab state
 const activeTab = ref('func');
@@ -170,9 +169,6 @@ onMounted(() => {
           :execId="customExecId"
           :scriptType="ScriptType.TEST_CUSTOMIZATION"
           @del="handleResultDeletion" />
-      </TabPane>
-      <TabPane key="task" :tab="t('common.issue')">
-        <Task :scenarioId="props.data?.scenarioId" :projectId="props.projectId" />
       </TabPane>
       <TabPane key="activity" :tab="t('scenario.detail.tabs.activity')">
         <ActivityTimeline

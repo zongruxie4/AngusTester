@@ -13,10 +13,13 @@ import cloud.xcan.angus.core.jpa.multitenancy.TenantAuditingEntity;
 import cloud.xcan.angus.core.tester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.angus.core.tester.domain.ResourceTagAssoc;
 import cloud.xcan.angus.core.tester.domain.activity.MainTargetActivityResource;
-import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.issue.cases.TaskFuncCaseAssoc;
+import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
+import cloud.xcan.angus.core.tester.domain.test.TestLayer;
+import cloud.xcan.angus.core.tester.domain.test.TestPurpose;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -90,6 +93,14 @@ public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements
   @Column(name = "actual_workload")
   private BigDecimal actualWorkload;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "test_layer")
+  private TestLayer testLayer = TestLayer.UI;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "test_purpose")
+  private TestPurpose testPurpose = TestPurpose.FUNCTIONAL;
+
   @Column(name = "precondition")
   private String precondition;
 
@@ -147,6 +158,9 @@ public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements
 
   @Column(name = "test_remark")
   private String testRemark;
+
+  @Column(name = "test_score")
+  private Integer testScore;
 
   @Column(name = "test_result_handle_date")
   private LocalDateTime testResultHandleDate;

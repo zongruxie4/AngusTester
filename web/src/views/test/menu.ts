@@ -8,6 +8,7 @@ export enum TestMenuKey {
   REVIEWS = 'reviews',
   BASELINE = 'baseline',
   ANALYSIS = 'analysis',
+  TEMPLATES = 'templates',
   TRASH = 'trash'
 }
 
@@ -48,6 +49,11 @@ export const createMenuItems = (
           icon: 'icon-fenxi'
         }
       : null,
+    {
+      name: t('testTemplate.title'),
+      key: TestMenuKey.TEMPLATES,
+      icon: 'icon-moban'
+    },
     {
       name: t('trash.title'),
       key: TestMenuKey.TRASH,

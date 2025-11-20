@@ -71,12 +71,13 @@ const loadData = async (id: string) => {
   if (!data) {
     return;
   }
+  debugger;
   const { name, remark, expiredDate, displayOptions, shareScope, servicesId, apisIds } = data;
   formState.value = {
     name, remark, expiredDate, displayOptions, shareScope: shareScope.value, servicesId, apisIds
   };
   if (apisIds?.length) {
-    const [error, { data }] = await apis.getShareList({
+    const [error, { data }] = await apis.getApiList({
       projectId: props.projectId,
       filters: [{ value: apisIds, op: 'IN', key: 'id' }],
       pageSize: 1000

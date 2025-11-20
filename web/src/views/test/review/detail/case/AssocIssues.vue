@@ -15,7 +15,7 @@ type Props = {
     id: string;
     name: string;
     taskType: {
-      value: 'TASK' | 'API_TEST' | 'BUG' | 'SCENARIO_TEST' | 'STORY' | 'REQUIREMENT' | undefined;
+      value: 'TASK' | 'BUG' | 'DESIGN' | 'STORY' | 'REQUIREMENT' | undefined;
       message: string;
     }
   }[];

@@ -7,6 +7,8 @@ import cloud.xcan.angus.api.enums.EvalWorkloadMethod;
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.ReviewStatus;
 import cloud.xcan.angus.api.pojo.Progress;
+import cloud.xcan.angus.core.tester.domain.test.TestLayer;
+import cloud.xcan.angus.core.tester.domain.test.TestPurpose;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestStep;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskInfoVo;
@@ -14,6 +16,7 @@ import cloud.xcan.angus.remote.NameJoinField;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -63,6 +66,10 @@ public class FuncCaseListVo {
   private BigDecimal evalWorkload;
 
   private BigDecimal actualWorkload;
+
+  private TestLayer testLayer;
+
+  private TestPurpose testPurpose;
 
   @JsonIgnore // Only used by export
   private String precondition;
@@ -116,6 +123,9 @@ public class FuncCaseListVo {
   private CaseTestResult testResult;
 
   private String testRemark;
+
+  @Schema(description = "Test case score")
+  private Integer testScore;
 
   private LocalDateTime testResultHandleDate;
 

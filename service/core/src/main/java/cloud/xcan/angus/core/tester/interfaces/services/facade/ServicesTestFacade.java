@@ -2,14 +2,12 @@ package cloud.xcan.angus.core.tester.interfaces.services.facade;
 
 import cloud.xcan.angus.api.commonlink.exec.result.ExecApisResultInfo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestScriptGenerateDto;
-import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.test.ServicesTestTaskGenerateDto;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.model.services.ApisTestCount;
 import cloud.xcan.angus.remote.dto.OrgAndDateFilterDto;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.Nullable;
 
 public interface ServicesTestFacade {
 
@@ -22,14 +20,6 @@ public interface ServicesTestFacade {
   void scriptGenerate(Long serviceId, Set<ApisTestScriptGenerateDto> dto);
 
   void scriptDelete(Long serviceId, Set<TestType> testTypes);
-
-  void testTaskGenerate(Long serviceId, @Nullable Long taskSprintId, Set<ServicesTestTaskGenerateDto> dto);
-
-  void testTaskRestart(Long serviceId);
-
-  void testTaskReopen(Long serviceId);
-
-  void testTaskDelete(Long serviceId, Set<TestType> testTypes);
 
   void testExecAdd(Long servicesId, Set<TestType> testTypes, List<Server> servers);
 

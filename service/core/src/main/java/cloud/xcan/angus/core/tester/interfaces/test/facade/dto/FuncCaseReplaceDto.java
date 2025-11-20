@@ -10,6 +10,8 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_WORKLOAD_NUM;
 
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.pojo.Attachment;
+import cloud.xcan.angus.core.tester.domain.test.TestLayer;
+import cloud.xcan.angus.core.tester.domain.test.TestPurpose;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseStepView;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestStep;
 import cloud.xcan.angus.validator.EditorContentLength;
@@ -71,6 +73,12 @@ public class FuncCaseReplaceDto {
   @Max(MAX_WORKLOAD_NUM)
   @Schema(description = "Actual workload for test case effort tracking")
   private BigDecimal actualWorkload;
+
+  @Schema(description = "Test layer for test case classification, defaults to UI", defaultValue = "UI")
+  private TestLayer testLayer;
+
+  @Schema(description = "Test type for test case purpose classification, defaults to FUNCTIONAL", defaultValue = "FUNCTIONAL")
+  private TestPurpose testPurpose;
 
   @EditorContentLength
   @Schema(description = "Test case preconditions for execution preparation")

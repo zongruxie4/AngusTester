@@ -1,12 +1,11 @@
 <script lang="ts" setup>
-import { onMounted, ref, defineAsyncComponent, computed, inject, Ref } from 'vue';
+import { onMounted, ref, defineAsyncComponent, computed} from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Tabs, TabPane } from 'ant-design-vue';
 import { exec } from '@/api/ctrl';
 import { ScriptType } from '@xcan-angus/infra';
 
-const TestSummary = defineAsyncComponent(() => import('./TestSummary.vue'));
-const Task = defineAsyncComponent(() => import('./Task.vue'));
+const TestSummary = defineAsyncComponent(() => import('@/views/scenario/scenario/detail/TestSummary.vue'));
 const ExecDetail = defineAsyncComponent(() => import('@/views/execution/detail/index.vue'));
 
 interface Props {
@@ -21,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
+
 
 const activeTab = ref('func');
 const dataSource = ref<any>();
@@ -134,12 +133,6 @@ onMounted(() => {
           :monicaEditorStyle="{height: '600px'}"
           :scriptType="ScriptType.TEST_CUSTOMIZATION"
           @del="handleTestDeletion" />
-      </TabPane>
-      <TabPane
-        v-if="proTypeShowMap.showTask"
-        key="task"
-        :tab="t('service.apiExecDetail.tabs.testTask')">
-        <Task :apisId="props.apisId" :projectId="props.projectId" />
       </TabPane>
     </Tabs>
   </div>

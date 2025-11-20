@@ -12,7 +12,7 @@ import { script } from '@/api/tester';
  * Handles data loading, searching, scrolling pagination, and permission updates.
  * </p>
  */
-export function useAuthData (projectId: string, authObjectId: string | undefined, type: 'user' | 'dept' | 'group') {
+export function useAuthData (props: {projectId: string, authObjectId: string | undefined, type: 'user' | 'dept' | 'group'}) {
   const LINE_HEIGHT = 44;
 
   // Data state
@@ -61,8 +61,8 @@ export function useAuthData (projectId: string, authObjectId: string | undefined
       authObjectType: 'USER' | 'DEPT' | 'GROUP';
       filters?: [{ key: 'scriptId'; op: 'IN'; value: string[]; }]
     } = {
-      scriptId: authObjectId!,
-      authObjectType: type.toUpperCase() as 'USER' | 'DEPT' | 'GROUP',
+      scriptId: props.authObjectId!,
+      authObjectType: props.type.toUpperCase() as 'USER' | 'DEPT' | 'GROUP',
       filters: [{ key: 'scriptId', op: 'IN', value: ids }]
     };
 
@@ -124,7 +124,7 @@ export function useAuthData (projectId: string, authObjectId: string | undefined
       admin: boolean;
       filters?: [{ key: 'name'; op: 'MATCH'; value: string; }];
     } = {
-      projectId,
+      projectId: props.projectId,
       hasPermission: 'GRANT',
       admin: true,
       pageNo: pageNo.value,
@@ -146,7 +146,7 @@ export function useAuthData (projectId: string, authObjectId: string | undefined
    * </p>
    */
   const loadData = async () => {
-    if (!authObjectId) {
+    if (!props.authObjectId) {
       loading.value = false;
       return;
     }
@@ -276,7 +276,7 @@ export function useAuthData (projectId: string, authObjectId: string | undefined
   };
 
   // Watch for authObjectId changes
-  watch(() => authObjectId, (newValue) => {
+  watch(() => props.authObjectId, (newValue) => {
     reset();
     if (!newValue) {
       loading.value = false;

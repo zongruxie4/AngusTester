@@ -5,7 +5,6 @@ import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.Result;
 import cloud.xcan.angus.api.pojo.Attachment;
 import cloud.xcan.angus.core.tester.domain.issue.Task;
-import cloud.xcan.angus.core.tester.domain.issue.TaskType;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -17,9 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface TaskCmd {
 
   IdKey<Long, Object> add(Task task);
-
-  Object generate(@Nullable Long sprintId, TaskType taskType, Long targetId, List<Task> tasks,
-      boolean ignoreApisOrScenarioPermission);
 
   void update(Task toTask);
 

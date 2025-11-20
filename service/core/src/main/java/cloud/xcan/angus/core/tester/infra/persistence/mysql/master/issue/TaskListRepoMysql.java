@@ -71,7 +71,7 @@ public class TaskListRepoMysql extends AbstractSearchRepository<Task> implements
      * PENDING	PERF		                          6
      * PENDING	STABILITY                         1
      ******************************************************/
-    StringBuilder groupBySql = new StringBuilder("SELECT a.`status`,a.`test_type`,a.task_type,a.exec_result,COUNT(*) num FROM task a ");
+    StringBuilder groupBySql = new StringBuilder("SELECT a.`status`,a.task_type,COUNT(*) num FROM task a ");
     StringBuilder overdueSql = new StringBuilder("SELECT COUNT(a.id) FROM task a ");
     StringBuilder oneTimePassSql = new StringBuilder("SELECT COUNT(a.id) FROM task a ");
     StringBuilder sumNumSql = new StringBuilder("SELECT SUM(a.total_num), SUM(a.fail_num), SUM(a.eval_workload), SUM(a.actual_workload) FROM task a ");
@@ -97,7 +97,7 @@ public class TaskListRepoMysql extends AbstractSearchRepository<Task> implements
     groupBySql.append(joinAssignee).append(joinConformor).append(joinTag)
         .append(" WHERE 1=1 ").append(mainCondition)
         .append(getMatchCondition(matchValue))
-        .append(" GROUP BY a.`status`,a.test_type,a.task_type,a.exec_result "); // Use Covering Index
+        .append(" GROUP BY a.`status`,a.task_type "); // Use Covering Index
     overdueSql.append(joinAssignee).append(joinConformor).append(joinTag)
         .append(" WHERE 1=1 AND a.overdue = 1 ").append(mainCondition)
         .append(getMatchCondition(matchValue));

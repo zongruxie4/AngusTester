@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem, Popover, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
 import {
-  AsyncComponent, DatePicker, Icon, IconTask, IconText, Input,
+  AsyncComponent, DatePicker, Icon, IconTask, Input,
   Modal, notification, Select, SelectUser, Tooltip
 } from '@xcan-angus/vue-ui';
 import { EvalWorkloadMethod, localStore, Priority, TESTER, upload } from '@xcan-angus/infra';
@@ -12,7 +12,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { modules, issue } from '@/api/tester';
 import { DATE_TIME_FORMAT, TIME_FORMAT, MAX_FILE_SIZE_MB, UPLOAD_ISSUE_FILE_KEY } from '@/utils/constant';
-import { BugLevel, SoftwareVersionStatus, TaskType, TestType } from '@/enums/enums';
+import { BugLevel, SoftwareVersionStatus, TaskType } from '@/enums/enums';
 import { TaskEditState } from '@/views/issue/issue/list/types';
 
 import TaskPriority from '@/components/task/TaskPriority.vue';
@@ -99,10 +99,8 @@ const formState = reactive<TaskEditState>({
   tagIds: undefined,
   refTaskIds: undefined,
   refCaseIds: undefined,
-  targetId: undefined,
   targetParentId: undefined,
   taskType: TaskType.TASK,
-  testType: TestType.FUNCTIONAL,
   bugLevel: BugLevel.MINOR,
   testerId: undefined,
   escapedBug: false,
@@ -145,8 +143,7 @@ const handleSprintSelectionChange = (_sprintId: string, sprintInfo: TaskDetail) 
  * <p>Resets target fields and sets tester for bug tasks</p>
  */
 const handleTaskTypeChange = () => {
-  formState.targetParentId = undefined;
-  formState.targetId = undefined;
+
   if (!formState.testerId && formState.taskType === TaskType.BUG) {
     formState.testerId = currentUserId.value;
   }
@@ -377,17 +374,6 @@ const buildFormParameters = () => {
     params.bugLevel = formState.bugLevel;
     params.escapedBug = formState.escapedBug;
   }
-
-  if (formState.taskType === TaskType.API_TEST) {
-    params.testType = formState.testType;
-    params.targetId = formState.targetId;
-    params.targetParentId = formState.targetParentId;
-  }
-
-  if (formState.taskType === TaskType.SCENARIO_TEST) {
-    params.testType = formState.testType;
-    params.targetId = formState.targetId;
-  }
   return params;
 };
 
@@ -533,10 +519,7 @@ const resetFormToDefaults = () => {
   formState.tagIds = [];
   formState.refTaskIds = [];
   formState.refCaseIds = props.refCaseIds || [];
-  formState.targetId = undefined;
-  formState.targetParentId = undefined;
   formState.taskType = props.taskType || TaskType.TASK;
-  formState.testType = TestType.FUNCTIONAL;
   formState.escapedBug = false;
   formState.softwareVersion = undefined;
   formState.assigneeId = props.assigneeId || props.userInfo?.id || undefined;
@@ -548,25 +531,6 @@ const resetFormToDefaults = () => {
     formState.moduleId = undefined;
   }
   formState.attachments = undefined;
-};
-
-/**
- * <p>Exclude task types from selection</p>
- * <p>Filters out certain task types based on current task state</p>
- */
-const getExcludedTaskTypes = (data: { value: TaskDetail['taskType']['value']; message: string }) => {
-  const value = data.value;
-  const currentTaskType = formState.taskType;
-  if (props.taskId) {
-    if (currentTaskType === TaskType.API_TEST) {
-      return value !== TaskType.API_TEST;
-    }
-    if (currentTaskType === TaskType.SCENARIO_TEST) {
-      return value !== TaskType.SCENARIO_TEST;
-    }
-    return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value);
-  }
-  return false;
 };
 
 /**
@@ -590,21 +554,11 @@ const modalTitle = computed(() => {
 });
 
 const isTaskTypeReadonly = computed(() => {
-  return (
-    props.taskId && (formState.taskType === TaskType.API_TEST || formState.taskType === TaskType.SCENARIO_TEST)
-  ) || !!props.taskType;
+  return !!props.taskType;
 });
 
 const shouldShowEditor = computed(() => {
   return props.visible && (isEditorVisible.value || !props.taskId);
-});
-
-const shouldShowTestType = computed(() => {
-  const taskType = formState.taskType;
-  if (!taskType) {
-    return false;
-  }
-  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskType);
 });
 
 /**
@@ -734,9 +688,7 @@ onMounted(() => {
       formState.tagIds = taskData.tags?.map(item => item.id);
       formState.refTaskIds = taskData.refTaskInfos?.map(item => item.id);
       formState.refCaseIds = taskData.refCaseInfos?.map(item => item.id);
-      formState.targetId = taskData.targetId;
       formState.taskType = taskData.taskType?.value || TaskType.TASK;
-      formState.testType = taskData.testType?.value;
       formState.targetParentId = taskData.targetParentId;
       formState.testerId = taskData.testerId;
       formState.escapedBug = taskData.escapedBug || false;
@@ -836,7 +788,6 @@ onMounted(() => {
               <SelectEnum
                 v-model:value="formState.taskType"
                 :allowClear="false"
-                :excludes="getExcludedTaskTypes"
                 :readonly="isTaskTypeReadonly"
                 internal
                 enumKey="TaskType"
@@ -896,98 +847,8 @@ onMounted(() => {
             </div>
           </template>
 
-          <div v-if="formState.taskType === TaskType.SCENARIO_TEST" class="flex space-x-4">
-            <FormItem
-              name="targetId"
-              :label="t('common.scenario')"
-              class="flex-1 min-w-0"
-              :rules="{ required: true, message: t('common.placeholders.selectScenario') }">
-              <Select
-                v-model:value="formState.targetId"
-                showSearch
-                internal
-                :placeholder="t('common.placeholders.selectScenario')"
-                :fieldNames="{ label: 'name', value: 'id' }"
-                :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
-                :readonly="!!props.taskId" />
-            </FormItem>
 
-            <FormItem
-              v-if="shouldShowTestType"
-              name="testType"
-              :label="t('common.testType')"
-              class="flex-1"
-              required>
-              <SelectEnum
-                v-model:value="formState.testType"
-                :allowClear="false"
-                internal
-                enumKey="TestType"
-                :placeholder="t('common.placeholders.selectTestType')"
-                style="width: 280px;" />
-            </FormItem>
-          </div>
 
-          <template v-if="formState.taskType === TaskType.API_TEST">
-            <FormItem
-              name="targetParentId"
-              :label="t('common.service')"
-              :rules="{ required: true, message: t('common.placeholders.selectService') }">
-              <Select
-                v-model:value="formState.targetParentId"
-                :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
-                :fieldNames="{ value: 'id', label: 'name' }"
-                :readonly="!!props.taskId"
-                :lazy="false"
-                internal
-                defaultActiveFirstOption
-                showSearch
-                :placeholder="t('common.placeholders.selectOrSearchService')">
-                <template #option="record">
-                  <div class="text-3 leading-3 flex items-center h-6.5">
-                    <IconText
-                      class="mr-1"
-                      style="width:16px;height: 16px;"
-                      :text="record.targetType?.value === 'PROJECT' ? 'P' : 'S'"
-                      :class="record.targetType?.value === 'PROJECT' ? 'bg-blue-badge-p' : 'bg-blue-badge-s'" />
-                    <div :title="record.name" class="truncate">{{ record.name }}</div>
-                  </div>
-                </template>
-              </Select>
-            </FormItem>
-
-            <div class="flex space-x-4">
-              <FormItem
-                :label="t('common.api')"
-                name="targetId"
-                class="flex-1 min-w-0"
-                :rules="{ required: true, message: t('common.placeholders.selectApi') }">
-                <Select
-                  v-model:value="formState.targetId"
-                  showSearch
-                  internal
-                  :placeholder="t('common.placeholders.selectApi')"
-                  :fieldNames="{ label: 'summary', value: 'id' }"
-                  :action="`${TESTER}/apis?projectId=${props.projectId}&serviceId=${formState.targetParentId}&fullTextSearch=true`"
-                  :readonly="!!props.taskId || !formState.targetParentId" />
-              </FormItem>
-
-              <FormItem
-                v-if="shouldShowTestType"
-                name="testType"
-                :label="t('common.testType')"
-                class="flex-1"
-                required>
-                <SelectEnum
-                  v-model:value="formState.testType"
-                  :allowClear="false"
-                  internal
-                  enumKey="TestType"
-                  :placeholder="t('common.placeholders.selectTestType')"
-                  style="width: 280px;" />
-              </FormItem>
-            </div>
-          </template>
 
           <div class="flex space-x-4">
             <FormItem

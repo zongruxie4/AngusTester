@@ -10,6 +10,7 @@ import { analysis, testCase, testPlan, modules } from '@/api/tester';
 import { travelTreeData } from '@/utils/utils';
 import { ProjectInfo } from '@/layout/types';
 import { TestMenuKey } from '@/views/test/menu';
+import { useRouter } from 'vue-router';
 
 import { CaseActionAuth, EnabledModuleGroup } from './types';
 import { CaseTestResult, FuncPlanPermission, TaskType } from '@/enums/enums';
@@ -36,7 +37,7 @@ const EditTaskModal = defineAsyncComponent(() => import('@/views/issue/issue/lis
 const SearchPanel = defineAsyncComponent(() => import('@/views/test/case/list/SearchPanel.vue'));
 
 const { t } = useI18n();
-
+const router = useRouter();
 // Component props interface
 interface Props {
   loading: boolean;
@@ -680,7 +681,8 @@ const handleAction = (
   selectedCase.value = rowData;
   switch (action) {
     case 'review':
-      reviewVisible.value = true;
+      // reviewVisible.value = true;
+      router.push(`/test#reviews`);
       break;
     case 'move':
       moveVisible.value = true;

@@ -60,6 +60,23 @@
         "STABILITY": "稳定性测试",
         "CUSTOMIZATION": "自定义测试"
       },
+      "TestLayer": {
+        "UI": "UI测试",
+        "API": "API测试",
+        "UNIT": "单元测试",
+        "INTEGRATION": "集成测试",
+        "E2E": "端到端测试"
+      },
+      "TestPurpose": {
+        "FUNCTIONAL": "功能测试",
+        "PERFORMANCE": "性能测试",
+        "STABILITY": "稳定性测试",
+        "SECURITY": "安全测试",
+        "COMPATIBILITY": "兼容性测试",
+        "USABILITY": "可用性测试",
+        "MAINTAINABILITY": "可维护性测试",
+        "SCALABILITY": "可扩展性测试"
+      },
       "CountTestType": {
         "PERF": "性能",
         "FUNCTIONAL": "功能",
@@ -71,8 +88,7 @@
         "STORY": "故事",
         "TASK": "任务",
         "BUG": "缺陷",
-        "API_TEST": "接口测试",
-        "SCENARIO_TEST": "场景测试"
+        "DESIGN": "设计"
       },
       "TaskStatus": {
         "PENDING": "待处理",
@@ -164,6 +180,10 @@
         "PARTIALLY_PASSED": "部分通过",
         "FULLY_PASSED": "全部通过",
         "FULLY_FAILED": "全部失败"
+      },
+      "TestTemplateType": {
+        "TEST_PLAN": "测试计划",
+        "TEST_CASE": "测试用例"
       },
       "ProjectType": {
         "AGILE": "敏捷项目管理",

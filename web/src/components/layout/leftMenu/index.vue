@@ -57,17 +57,17 @@ const routerPush = (hash: string) => {
 };
 
 onMounted(() => {
-  localKey.value = btoa(route.path);
   watch([() => route.hash, () => route.path], ([newValue, newpath], [oldRoute, oldPath]) => {
     const hash = newValue?.split('?')?.[0]?.slice(1);
     const defaultKey = menuList.value[0]?.key;
-    if (!hash || !menuList.value.find(i => i.key === hash)) {
+    localKey.value = btoa(route.path);
+    if (!hash || (!menuList.value.find(i => i.key === hash) && newpath === oldPath)) {
       // 优先从本地获取
       const localHash = localStore.get(localKey.value);
       if (menuList.value.find(i => i.key === localHash)) {
         routerPush(localHash || defaultKey);
       } else {
-        routerPush(defaultKey);
+        routerPush(localHash);
       }
       return;
     }
@@ -82,8 +82,6 @@ onMounted(() => {
       }
       routerPush(defaultKey);
     }
-
-    // routerPush(defaultKey);
   }, {
     immediate: true
   });
@@ -92,7 +90,6 @@ onMounted(() => {
     if (!newValue) {
       return;
     }
-
     const key = menuList.value.find(item => item.key === newValue)?.key || '';
     emit('update:activeKey', key);
   }, {

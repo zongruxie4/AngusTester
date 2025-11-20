@@ -159,6 +159,7 @@ const initializeBrowserTabs = () => {
     }
   }, { immediate: true });
 
+  debugger;
   handleHashChange(route.hash);
 };
 
@@ -171,6 +172,7 @@ const handleHashChange = (hash: string) => {
   if (!queryString) {
     return;
   }
+
 
   // Parse query parameters from hash
   const queryParameters = queryString.split('&').reduce((accumulator, current) => {
@@ -204,6 +206,7 @@ const handleHashChange = (hash: string) => {
   }
 
   // Clean up URL by removing hash parameters
+  console.log('handleHashChange', hash);
   router.replace(`/scenario#${ScenarioMenuKey.SCENARIO}`);
 };
 

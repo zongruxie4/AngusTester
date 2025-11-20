@@ -253,7 +253,7 @@ export function useFileManagement () {
       return;
     }
 
-    notification.success(t('file.fileManagement.messages.addDirectorySuccess'));
+    notification.success(t('actions.tips.addSuccess'));
     await getList();
   };
 
@@ -326,7 +326,7 @@ export function useFileManagement () {
 
       setTimeout(async () => {
         await toClipboard(data);
-        notification.success(t('file.fileManagement.messages.copyLinkSuccess'));
+        notification.success(t('actions.tips.copyLinkSuccess'));
       });
     }
   };

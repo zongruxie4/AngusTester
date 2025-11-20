@@ -23,7 +23,7 @@ export type ReportContent = {
                 message: string;
             };
             taskType: {
-                value: 'API_TEST' | 'BUG' | 'REQUIREMENT' | 'SCENARIO_TEST' | 'STORY' | 'TASK';
+                value:  'BUG' | 'REQUIREMENT' | 'DESIGN' | 'STORY' | 'TASK';
                 message: string;
             };
             testType: {
@@ -34,7 +34,7 @@ export type ReportContent = {
                 id: string;
                 code: string;
                 taskType: {
-                    value: 'API_TEST' | 'BUG' | 'REQUIREMENT' | 'SCENARIO_TEST' | 'STORY' | 'TASK';
+                    value: 'BUG' | 'REQUIREMENT' | 'DESIGN' | 'STORY' | 'TASK';
                     message: string;
                 };
                 name: string;

@@ -146,8 +146,7 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
       @Override
       protected void checkParams() {
         // Check the review cases exists
-        reviewCaseIds = reviewCases.stream().map(FuncReviewCase::getId)
-            .toList();
+        reviewCaseIds = reviewCases.stream().map(FuncReviewCase::getId).toList();
         reviewCasesDb = funcReviewCaseQuery.checkAndFind(reviewCaseIds);
         // Check the review and cases is consistent
         Set<Long> planIds = reviewCasesDb.stream().map(FuncReviewCase::getPlanId)

@@ -2,8 +2,8 @@ package cloud.xcan.angus.core.tester.application.converter;
 
 import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_AFTER_HOURS;
 import static cloud.xcan.angus.core.spring.SpringContextHolder.getBean;
-import static cloud.xcan.angus.core.tester.application.cmd.test.impl.FuncCaseCmdImpl.getCaseCode;
 import static cloud.xcan.angus.core.tester.application.cmd.issue.impl.TaskCmdImpl.getTaskCode;
+import static cloud.xcan.angus.core.tester.application.cmd.test.impl.FuncCaseCmdImpl.getCaseCode;
 import static cloud.xcan.angus.core.utils.CoreUtils.getCommonResourcesStatsFilter;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
@@ -33,6 +33,13 @@ import cloud.xcan.angus.api.commonlink.user.User;
 import cloud.xcan.angus.api.commonlink.user.UserBase;
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.ReviewStatus;
+import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
+import cloud.xcan.angus.core.tester.domain.issue.count.BurnDownChartCount;
+import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
+import cloud.xcan.angus.core.tester.domain.kanban.DataTimeSeries;
+import cloud.xcan.angus.core.tester.domain.module.Module;
+import cloud.xcan.angus.core.tester.domain.tag.Tag;
+import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.test.FuncTargetType;
 import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaseline;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
@@ -50,13 +57,8 @@ import cloud.xcan.angus.core.tester.domain.test.summary.FuncCaseDetailSummary;
 import cloud.xcan.angus.core.tester.domain.test.summary.FuncCaseEfficiencySummary;
 import cloud.xcan.angus.core.tester.domain.test.summary.FuncCaseSummary;
 import cloud.xcan.angus.core.tester.domain.test.trash.FuncTrash;
-import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
-import cloud.xcan.angus.core.tester.domain.kanban.DataTimeSeries;
-import cloud.xcan.angus.core.tester.domain.module.Module;
-import cloud.xcan.angus.core.tester.domain.tag.Tag;
-import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
-import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
-import cloud.xcan.angus.core.tester.domain.issue.count.BurnDownChartCount;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.idgen.uid.impl.CachedUidGenerator;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -87,6 +89,9 @@ public class FuncCaseConverter {
   public static void assembleAddInfo(List<FuncCase> cases, FuncPlan planDb) {
     // Set case code and name prefix
     for (FuncCase case0 : cases) {
+      if(isNull(case0.getId())){
+        case0.setId(BIDUtils.getId(BIDKey.caseId));
+      }
       if (isEmpty(case0.getCode())) {
         case0.setCode(getCaseCode());
       }
@@ -161,13 +166,16 @@ public class FuncCaseConverter {
     if (nonNull(caseDb.getActualWorkload()) && isNull(caseDb.getEvalWorkload())) {
       caseDb.setEvalWorkload(caseDb.getActualWorkload());
     }
+    // Set temp fields
+    caseDb.setRefCaseIds(case0.getRefCaseIds());
+    caseDb.setRefTaskIds(case0.getRefTaskIds());
     return caseDb;
   }
 
-  public static void assembleExampleFuncPlan(Long projectId, Long id,
+  public static void assembleExampleFuncPlan(Long projectId,
       FuncPlan plan, List<User> users) {
     Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
-    plan.setId(id).setProjectId(projectId)
+    plan.setProjectId(projectId)
         .setOwnerId(currentUserId)
         .setTesterResponsibilities(getTesterResponsibilities(plan, users))
         .setDeleted(false)
@@ -190,7 +198,7 @@ public class FuncCaseConverter {
     return testerResponsibilities;
   }
 
-  public static void assembleExampleFuncCase(Long projectId, Long id,
+  public static void assembleExampleFuncCase(Long projectId,
       FuncCase case0, FuncPlan plan, List<User> users) {
     Random random = new Random();
     LocalDateTime now = LocalDateTime.now();
@@ -198,7 +206,7 @@ public class FuncCaseConverter {
     LocalDateTime finishedDate = now.plusHours(random.nextInt(24));
     finishedDate = finishedDate.isBefore(now) ? now.plusMinutes(1) : finishedDate;
     CaseTestResult result = nullSafe(case0.getTestResult(), CaseTestResult.PENDING);
-    case0.setId(id).setProjectId(projectId)
+    case0.setProjectId(projectId)
         .setCode(getCaseCode()).setVersion(1) // In order to establish a baseline starting from 1
         .setPlanId(plan.getId())
         .setReviewerId(case0.getReview()
@@ -216,20 +224,20 @@ public class FuncCaseConverter {
         .setLastModifiedDate(result.isFinished() ? finishedDate : now);
   }
 
-  public static void assembleExampleFuncReview(Long projectId, Long id,
+  public static void assembleExampleFuncReview(Long projectId,
       FuncReview review, FuncPlan plan, List<User> users) {
     Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
-    review.setId(id).setProjectId(projectId)
+    review.setProjectId(projectId)
         .setPlanId(plan.getId()).setOwnerId(currentUserId)
         .setParticipantIds(new LinkedHashSet<>(users.stream().map(User::getId)
             .collect(Collectors.toSet())))
         .setCreatedBy(currentUserId).setLastModifiedBy(currentUserId);
   }
 
-  public static void assembleExampleFuncBaseline(Long projectId, Long id,
+  public static void assembleExampleFuncBaseline(Long projectId,
       FuncBaseline baseline, FuncPlan plan, List<FuncCase> cases, List<User> users) {
     Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
-    baseline.setId(id).setProjectId(projectId)
+    baseline.setProjectId(projectId)
         .setPlanId(plan.getId()).setEstablished(false).setTenantId(getOptTenantId())
         .setCreatedBy(currentUserId).setLastModifiedBy(currentUserId);
     LinkedHashSet<Long> baselineCaseIds = new LinkedHashSet<>();
@@ -299,6 +307,7 @@ public class FuncCaseConverter {
         .setActualWorkload(replace ? case0.getActualWorkload()
             : nullSafe(caseDb.getActualWorkload(), caseDb.getEvalWorkload()))
         .setTestRemark(replace ? case0.getTestRemark() : caseDb.getTestRemark())
+        .setTestScore(replace ? case0.getTestScore() : caseDb.getTestScore())
         .setTestNum(caseDb.getTestNum() + (case0.getTestResult().isTestAction() ? 1 : 0))
         .setTestFailNum(caseDb.getTestFailNum() + (case0.getTestResult().isNotPassed() ? 1 : 0));
     if (nonNull(caseDb.getActualWorkload()) && isNull(caseDb.getEvalWorkload())) {

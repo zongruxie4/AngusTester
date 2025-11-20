@@ -40,6 +40,8 @@ import cloud.xcan.angus.core.tester.domain.scenario.auth.ScenarioAuthRepo;
 import cloud.xcan.angus.core.tester.domain.scenario.favorite.ScenarioFavouriteRepo;
 import cloud.xcan.angus.core.tester.domain.scenario.follow.ScenarioFollowRepo;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.ScriptSource;
@@ -59,13 +61,13 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command implementation for scenario management operations.
  * <p>
- * Provides comprehensive CRUD operations for scenarios including creation, modification, 
+ * Provides comprehensive CRUD operations for scenarios including creation, modification,
  * deletion, cloning, moving, and import/export functionality.
  * <p>
- * Implements business logic validation, permission checks, activity logging, 
+ * Implements business logic validation, permission checks, activity logging,
  * and transaction management for all scenario operations.
  * <p>
- * Supports script management, authorization setup, indicator tracking, 
+ * Supports script management, authorization setup, indicator tracking,
  * and comprehensive activity tracking.
  */
 @Biz
@@ -107,7 +109,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   /**
    * Adds a new scenario to the system.
    * <p>
-   * Performs comprehensive validation including project membership, quota limits, 
+   * Performs comprehensive validation including project membership, quota limits,
    * name uniqueness, and script validation.
    * <p>
    * Creates associated script if provided and initializes creator authorization.
@@ -137,7 +139,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
       protected IdKey<Long, Object> process() {
         // Generate scenario ID if not provided
         if (isNull(scenario.getId())){
-          scenario.setId(uidGenerator.getUID());
+          scenario.setId(BIDUtils.getId(BIDKey.scenarioId));
         }
 
         // Create associated script if provided
@@ -173,7 +175,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   /**
    * Updates an existing scenario in the system.
    * <p>
-   * Validates scenario existence, user permissions, name uniqueness, and script changes 
+   * Validates scenario existence, user permissions, name uniqueness, and script changes
    * before updating scenario details.
    * <p>
    * Updates associated script if provided and logs modification activity.
@@ -229,7 +231,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   /**
    * Replaces (adds or updates) a scenario in the system.
    * <p>
-   * Validates scenario existence, user permissions, name uniqueness, and script changes 
+   * Validates scenario existence, user permissions, name uniqueness, and script changes
    * before replacing scenario details.
    * <p>
    * Creates a new scenario if ID is null, otherwise updates existing scenario.
@@ -355,7 +357,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
       protected void checkParams() {
         // Get scenario details and ensure it exists
         scenarioDb = scenarioQuery.detail(id);
-        
+
         // Check user permission to view the scenario
         scenarioAuthQuery.checkViewAuth(getUserId(), id);
       }
@@ -364,6 +366,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
       protected IdKey<Long, Object> process() {
         // Create a deep copy of the scenario with a new name
         Scenario scenario = ScenarioConverter.toCloneScenario(this.scenarioDb);
+        scenario.setId(BIDUtils.getId(BIDKey.scriptId));
         scenarioQuery.setSafeCloneName(scenario);
 
         // Clone and save the associated script
@@ -397,15 +400,15 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
       @Override
       protected List<IdKey<Long, Object>> process() {
         List<IdKey<Long, Object>> idKeys = new ArrayList<>();
-        
+
         // Process each example script file
         for (String scriptFile : SAMPLE_SCRIPT_FILES) {
           // Read script content from resource file
           String content = readExampleScriptContent(this.getClass(), scriptFile);
-          
+
           // Parse and validate the script content
           AngusScript angusScript = scriptQuery.checkAndParse(content, true);
-          
+
           // Convert to domain object and create scenario
           Scenario scenario = importExampleToDomain(projectId, angusScript);
           idKeys.add(add(scenario));
@@ -437,7 +440,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
         if (scenarioDb.isEmpty()) {
           return;
         }
-        
+
         // Check user permission to delete the scenario
         scenarioAuthQuery.checkDeleteAuth(getUserId(), id);
       }
@@ -468,7 +471,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   /**
    * Permanently deletes scenarios and all related data from the system.
    * <p>
-   * Removes scenarios, scripts, authorizations, favorites, follows, indicators, 
+   * Removes scenarios, scripts, authorizations, favorites, follows, indicators,
    * and variable/dataset associations.
    * <p>
    * This operation is irreversible and should be used with extreme caution.
@@ -479,31 +482,31 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   public void delete0(List<Long> ids) {
     // Permanently delete all scenarios
     scenarioRepo.deleteAllByIdIn(ids);
-    
+
     // Permanently delete all associated scripts
     scriptCmd.deleteBySource(ScriptSource.SCENARIO, ids);
-    
+
     // Permanently delete all scenario authorizations
     scenarioAuthRepo.deleteByScenarioIdIn(ids);
-    
+
     // Permanently delete all scenario favorites
     scenarioFavoriteRepo.deleteByScenarioIdIn(ids);
-    
+
     // Permanently delete all scenario follows
     scenarioFollowRepo.deleteByScenarioIdIn(ids);
-    
+
     // Permanently delete all performance indicators
     indicatorPerfCmd.deleteAllByTarget(ids, SCENARIO);
-    
+
     // Permanently delete all stability indicators
     indicatorStabilityCmd.deleteAllByTarget(ids, SCENARIO);
-    
+
     // Permanently delete all variable associations
     variableTargetRepo.deleteByTarget(ids, API.getValue());
-    
+
     // Permanently delete all dataset associations
     datasetTargetRepo.deleteByTarget(ids, API.getValue());
-    
+
     // Note: Associated test tasks are not deleted to preserve test history
   }
 

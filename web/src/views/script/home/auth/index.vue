@@ -104,6 +104,7 @@ const bodyStyle = {
       <!-- Tab navigation -->
       <Tabs
         v-model:activeKey="activeKey"
+        v-if="props.visible"
         size="small"
         style="height: calc(100% - 18px);">
         <!-- User tab -->

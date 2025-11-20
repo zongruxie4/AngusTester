@@ -9,17 +9,15 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.api.commonlink.associate.AssociateUserType;
 import cloud.xcan.angus.api.enums.EvalWorkloadMethod;
 import cloud.xcan.angus.api.enums.Priority;
-import cloud.xcan.angus.api.enums.Result;
 import cloud.xcan.angus.api.pojo.Attachment;
 import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.jpa.multitenancy.TenantAuditingEntity;
 import cloud.xcan.angus.core.tester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.angus.core.tester.domain.ResourceTagAssoc;
 import cloud.xcan.angus.core.tester.domain.activity.MainTargetActivityResource;
-import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
-import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.issue.cases.TaskFuncCaseAssoc;
-import cloud.xcan.angus.model.script.TestType;
+import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -86,10 +84,6 @@ public class Task extends TenantAuditingEntity<Task, Long> implements MainTarget
   @Column(name = "bug_level")
   @Enumerated(EnumType.STRING)
   private BugLevel bugLevel;
-
-  @Column(name = "test_type")
-  @Enumerated(EnumType.STRING)
-  private TestType testType;
 
   @Column(name = "priority")
   @Enumerated(EnumType.STRING)
@@ -175,40 +169,6 @@ public class Task extends TenantAuditingEntity<Task, Long> implements MainTarget
 
   public String description;
 
-  @Column(name = "target_id")
-  private Long targetId;
-
-  @Column(name = "target_parent_id")
-  private Long targetParentId;
-
-  @Column(name = "script_id")
-  private Long scriptId;
-
-  @Column(name = "exec_result")
-  @Enumerated(EnumType.STRING)
-  private Result execResult;
-
-  @Column(name = "exec_failure_message")
-  private String execFailureMessage;
-
-  @Column(name = "exec_test_num")
-  private Integer execTestNum;
-
-  @Column(name = "exec_test_failure_num")
-  private Integer execTestFailureNum;
-
-  @Column(name = "exec_id")
-  private Long execId;
-
-  @Column(name = "exec_name")
-  private String execName;
-
-  @Column(name = "exec_by")
-  private Long execBy;
-
-  @Column(name = "exec_date", columnDefinition = "TIMESTAMP")
-  private LocalDateTime execDate;
-
   @Column(name = "sprint_deleted")
   private Boolean sprintDeleted;
 
@@ -271,18 +231,6 @@ public class Task extends TenantAuditingEntity<Task, Long> implements MainTarget
 
   public boolean hasTag() {
     return isNotEmpty(tagTargets);
-  }
-
-  public boolean isApiTest() {
-    return TaskType.API_TEST.equals(taskType);
-  }
-
-  public boolean isScenarioTest() {
-    return TaskType.SCENARIO_TEST.equals(taskType);
-  }
-
-  public boolean isTestTask() {
-    return TaskType.SCENARIO_TEST.equals(taskType) || TaskType.API_TEST.equals(taskType);
   }
 
   @Override

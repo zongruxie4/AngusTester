@@ -3,21 +3,15 @@ package cloud.xcan.angus.core.tester.application.cmd.services.impl;
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.SERVICE;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
-import static cloud.xcan.angus.core.tester.application.converter.TaskConverter.generateToServicesTask;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_SECURITY_CASE_NOT_FOUND;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_SMOKE_CASE_NOT_FOUND;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_SCRIPT_DELETED;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_SCRIPT_GEN;
-import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_TASK_DELETED;
-import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_TASK_GEN;
-import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_TASK_REOPEN;
-import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TARGET_TASK_RESTART;
 import static cloud.xcan.angus.model.script.ScriptSource.API;
 import static cloud.xcan.angus.model.script.ScriptSource.SERVICE_SECURITY;
 import static cloud.xcan.angus.model.script.ScriptSource.SERVICE_SMOKE;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
-import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Collections.singletonList;
 
 import cloud.xcan.angus.core.biz.Biz;
@@ -25,9 +19,9 @@ import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisTestCmd;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecCmd;
+import cloud.xcan.angus.core.tester.application.cmd.issue.TaskCmd;
 import cloud.xcan.angus.core.tester.application.cmd.script.ScriptCmd;
 import cloud.xcan.angus.core.tester.application.cmd.services.ServicesTestCmd;
-import cloud.xcan.angus.core.tester.application.cmd.issue.TaskCmd;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisQuery;
 import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
@@ -37,13 +31,10 @@ import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.apis.Apis;
 import cloud.xcan.angus.core.tester.domain.apis.ApisRepo;
 import cloud.xcan.angus.core.tester.domain.apis.cases.ApisCase;
+import cloud.xcan.angus.core.tester.domain.issue.TaskRepo;
 import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.core.tester.domain.services.Services;
-import cloud.xcan.angus.core.tester.domain.services.testing.TestTaskSetting;
-import cloud.xcan.angus.core.tester.domain.issue.Task;
-import cloud.xcan.angus.core.tester.domain.issue.TaskRepo;
-import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
 import cloud.xcan.angus.model.element.http.ApisCaseType;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
@@ -238,152 +229,6 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
           apisTestCmd.scriptDelete0(apiId, testTypes);
         }
         activityCmd.add(toActivity(SERVICE, serviceDb, TARGET_SCRIPT_DELETED));
-        return null;
-      }
-    }.execute();
-  }
-
-  /**
-   * Generates test tasks for all APIs in a service.
-   *
-   * <p>This method creates test tasks for all APIs within a service
-   * based on the specified test settings and sprint configuration.</p>
-   *
-   * <p>The method logs task generation activity for audit purposes.</p>
-   *
-   * @param serviceId the ID of the service
-   * @param sprintId the ID of the sprint to associate tasks with
-   * @param testings the list of test task settings
-   * @throws IllegalArgumentException if validation fails
-   */
-  @Override
-  @Transactional(rollbackFor = Exception.class)
-  public void testTaskGenerate(Long serviceId, Long sprintId, List<TestTaskSetting> testings) {
-    new BizTemplate<Void>() {
-      Services serviceDb;
-
-      @Override
-      protected void checkParams() {
-        // Verify user has testing permissions
-        servicesAuthQuery.checkTestAuth(getUserId(), serviceId);
-        // Verify service exists
-        serviceDb = servicesQuery.checkAndFind(serviceId);
-      }
-
-      @Override
-      protected Void process() {
-        List<Long> apiIds = apisRepo.findAllIdByServiceIdIn(singletonList(serviceId));
-        if (isEmpty(apiIds)) {
-          return null;
-        }
-
-        for (Long apiId : apiIds) {
-          List<Task> tasks = generateToServicesTask(apiId, testings);
-          apisTestCmd.testTaskGenerate(apiId, sprintId, tasks, false);
-        }
-
-        activityCmd.add(toActivity(SERVICE, serviceDb, TARGET_TASK_GEN));
-        return null;
-      }
-    }.execute();
-  }
-
-  /**
-   * Restarts or reopens test tasks for all APIs in a service.
-   *
-   * <p>This method controls the restart/reopen behavior of test tasks
-   * for all APIs within a service. When restart is false, only finished
-   * tasks are reopened.</p>
-   *
-   * <p>The method logs the restart/reopen activity for audit purposes.</p>
-   *
-   * @param serviceId the ID of the service
-   * @param restart whether to restart all tasks or only reopen finished ones
-   * @throws IllegalArgumentException if validation fails
-   */
-  @Override
-  public void retestTaskRestart(Long serviceId, Boolean restart) {
-    new BizTemplate<Void>() {
-      Services serviceDb;
-
-      @Override
-      protected void checkParams() {
-        // Verify user has testing permissions
-        Long userId = getUserId();
-        servicesAuthQuery.checkTestAuth(userId, serviceId);
-        // Verify service exists
-        serviceDb = servicesQuery.checkAndFind(serviceId);
-      }
-
-      @Override
-      protected Void process() {
-        List<Long> apiIds = apisRepo.findAllIdByServiceIdIn(singletonList(serviceId));
-        if (isEmpty(apiIds)) {
-          return null;
-        }
-        for (Long apiId : apiIds) {
-          List<Task> tasksDb = taskRepo.findByTargetIdIn(singletonList(apiId));
-          if (isEmpty(tasksDb)) {
-            continue;
-          }
-          // Only open the finished status
-          if (!restart) {
-            tasksDb = tasksDb.stream().filter(t -> TaskStatus.isFinished(t.getStatus()))
-                .toList();
-          }
-          if (isNotEmpty(tasksDb)) {
-            taskCmd.retest0ByTarget(restart, tasksDb);
-          }
-        }
-        activityCmd.add(toActivity(SERVICE, serviceDb, restart
-            ? TARGET_TASK_RESTART : TARGET_TASK_REOPEN));
-        return null;
-      }
-    }.execute();
-  }
-
-  /**
-   * Deletes test tasks for a service based on test types.
-   *
-   * <p>This method removes test tasks for a service, optionally filtered
-   * by specific test types. If no test types are specified, all tasks
-   * are deleted.</p>
-   *
-   * <p>The method logs task deletion activity for audit purposes.</p>
-   *
-   * @param serviceId the ID of the service
-   * @param testTypes the set of test types to filter tasks by (optional)
-   * @throws IllegalArgumentException if validation fails
-   */
-  @Override
-  public void testTaskDelete(Long serviceId, Set<TestType> testTypes) {
-    new BizTemplate<Void>() {
-      Services serviceDb;
-
-      @Override
-      protected void checkParams() {
-        // Verify service exists
-        serviceDb = servicesQuery.checkAndFind(serviceId);
-
-        // Verify user has testing permissions
-        Long userId = getUserId();
-        servicesAuthQuery.checkTestAuth(userId, serviceId);
-      }
-
-      @Override
-      protected Void process() {
-        List<Long> taskIds = isEmpty(testTypes)
-            ? taskRepo.findTaskIdByTargetParentId(serviceId)
-            : taskRepo.findTaskIdByTargetParentIdAndTestTypeIn(serviceId,
-                testTypes.stream().map(TestType::getValue).toList());
-        if (isEmpty(taskIds)) {
-          return null;
-        }
-
-        // Delete apis test task
-        taskCmd.delete0ByTarget(taskIds);
-
-        activityCmd.add(toActivity(SERVICE, serviceDb, TARGET_TASK_DELETED));
         return null;
       }
     }.execute();

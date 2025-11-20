@@ -133,4 +133,16 @@ export default class API {
   getFollowList (params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/follow`, { ...params, fullTextSearch: true });
   }
+
+  getAssociationScenario (caseId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/scenario/${caseId}`);
+  }
+
+  putAssociationScenario (caseId: string, assocScenarioIds: string[]): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/scenario/${caseId}/association`, { scenarioIds: assocScenarioIds }, { paramsType: true });
+  }
+
+  deleteAssociationScenario (caseId: string, assocScenarioIds: string[]): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/scenario/${caseId}/association`, { scenarioIds: assocScenarioIds }, { paramsType: true });
+  }
 }

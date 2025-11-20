@@ -64,26 +64,30 @@ import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
+import cloud.xcan.angus.core.tester.application.cmd.issue.TaskFuncCaseCmd;
+import cloud.xcan.angus.core.tester.application.cmd.tag.TagTargetCmd;
 import cloud.xcan.angus.core.tester.application.cmd.test.FuncBaselineCmd;
 import cloud.xcan.angus.core.tester.application.cmd.test.FuncCaseCmd;
 import cloud.xcan.angus.core.tester.application.cmd.test.FuncPlanCmd;
 import cloud.xcan.angus.core.tester.application.cmd.test.FuncReviewCaseCmd;
 import cloud.xcan.angus.core.tester.application.cmd.test.FuncReviewCmd;
 import cloud.xcan.angus.core.tester.application.cmd.test.FuncTrashCmd;
-import cloud.xcan.angus.core.tester.application.cmd.tag.TagTargetCmd;
-import cloud.xcan.angus.core.tester.application.cmd.issue.TaskFuncCaseCmd;
 import cloud.xcan.angus.core.tester.application.converter.FuncCaseConverter;
+import cloud.xcan.angus.core.tester.application.query.issue.TaskQuery;
+import cloud.xcan.angus.core.tester.application.query.module.ModuleQuery;
+import cloud.xcan.angus.core.tester.application.query.tag.TagQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncPlanAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncPlanQuery;
-import cloud.xcan.angus.core.tester.application.query.module.ModuleQuery;
-import cloud.xcan.angus.core.tester.application.query.tag.TagQuery;
-import cloud.xcan.angus.core.tester.application.query.issue.TaskQuery;
 import cloud.xcan.angus.core.tester.application.query.version.SoftwareVersionQuery;
 import cloud.xcan.angus.core.tester.domain.activity.Activity;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.comment.CommentRepo;
 import cloud.xcan.angus.core.tester.domain.comment.CommentTargetType;
+import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
+import cloud.xcan.angus.core.tester.domain.module.Module;
+import cloud.xcan.angus.core.tester.domain.tag.Tag;
+import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaseline;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCase;
@@ -96,10 +100,6 @@ import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlan;
 import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanPermission;
 import cloud.xcan.angus.core.tester.domain.test.review.FuncReview;
 import cloud.xcan.angus.core.tester.domain.test.review.cases.FuncReviewCaseRepo;
-import cloud.xcan.angus.core.tester.domain.module.Module;
-import cloud.xcan.angus.core.tester.domain.tag.Tag;
-import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
-import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.extraction.utils.PoiUtils;
 import cloud.xcan.angus.idgen.BidGenerator;
 import cloud.xcan.angus.remote.message.ProtocolException;
@@ -495,8 +495,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
         // Log clone activities for audit
         activityCmd.addAll(toActivities(FUNC_CASE, newCases,
-            ActivityType.CLONE, casesDb.stream().map(s -> new Object[]{s.getName()})
-                .toList()));
+            ActivityType.CLONE, casesDb.stream().map(s -> new Object[]{s.getName()}).toList()));
         return idKeys;
       }
     }.execute();
@@ -902,8 +901,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       @Override
       protected void checkParams() {
         // Ensure all cases to modify exist in DB
-        casesDb = funcCaseQuery.checkAndFind(cases.stream().map(FuncCase::getId)
-            .toList());
+        casesDb = funcCaseQuery.checkAndFind(cases.stream().map(FuncCase::getId).toList());
 
         // Validate all cases belong to the same plan
         Set<Long> planIds = casesDb.stream().map(FuncCase::getPlanId).collect(Collectors.toSet());
@@ -1494,10 +1492,6 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   }
 
   /**
-   * Note: When API calls that are not user-action, tenant and user information must be injected
-   * into the PrincipalContext.
-   */
-  /**
    * Import example functional test cases, plans, reviews, and baselines for a project.
    * <p>
    * Used for initializing sample data for demonstration or onboarding.
@@ -1520,7 +1514,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         FuncPlan plan = parseSample(requireNonNull(resourceUrl),
             new TypeReference<FuncPlan>() {
             }, SAMPLE_FUNC_PLAN_FILE);
-        assembleExampleFuncPlan(projectId, uidGenerator.getUID(), plan, users);
+        assembleExampleFuncPlan(projectId, plan, users);
         funcPlanCmd.add(plan);
 
         // Create sample test cases from template file
@@ -1530,7 +1524,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             new TypeReference<List<FuncCase>>() {
             }, SAMPLE_FUNC_CASE_FILE);
         for (FuncCase case0 : cases) {
-          assembleExampleFuncCase(projectId, uidGenerator.getUID(), case0, plan, users);
+          assembleExampleFuncCase(projectId, case0, plan, users);
         }
         List<IdKey<Long, Object>> idKeys = funcCaseCmd.add(cases);
 
@@ -1540,7 +1534,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         FuncReview review = parseSample(requireNonNull(resourceUrl),
             new TypeReference<FuncReview>() {
             }, SAMPLE_FUNC_REVIEW_FILE);
-        assembleExampleFuncReview(projectId, uidGenerator.getUID(), review, plan, users);
+        assembleExampleFuncReview(projectId, review, plan, users);
         funcReviewCmd.add(review);
 
         // Associate pending cases with the review
@@ -1554,7 +1548,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         FuncBaseline baseline = parseSample(requireNonNull(resourceUrl),
             new TypeReference<FuncBaseline>() {
             }, SAMPLE_FUNC_BASELINE_FILE);
-        assembleExampleFuncBaseline(projectId, uidGenerator.getUID(), baseline, plan, cases, users);
+        assembleExampleFuncBaseline(projectId, baseline, plan, cases, users);
         funcBaselineCmd.add(baseline);
 
         return idKeys;

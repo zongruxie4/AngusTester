@@ -367,14 +367,6 @@ const okButtonProps = computed(() => {
   };
 });
 
-// Utility Functions
-/**
- * <p>Exclude specific task types from selection</p>
- * <p>Filters out API_TEST and SCENARIO_TEST from available task types</p>
- */
-const excludeTaskTypes = (option: {value: string; message: string}) => {
-  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(option.value as any);
-};
 
 // Lifecycle Hooks
 onMounted(() => {
@@ -461,7 +453,6 @@ onMounted(() => {
           <SelectEnum
             v-model:value="taskDataMap[taskId].taskType"
             :error="taskTypeErrorSet.has(taskId)"
-            :excludes="excludeTaskTypes"
             enumKey="TaskType"
             :placeholder="t('common.taskType')"
             class="w-27 mr-2.5"

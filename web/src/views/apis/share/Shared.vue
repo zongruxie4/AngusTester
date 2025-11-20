@@ -133,23 +133,23 @@ provide('readyState', readyState);
     </div>
     <template v-else-if="openapi">
       <rapi-doc
-        :specUrl="openapi"
-        specIsContent="true"
+        :spec-url="openapi"
+        spec-is-content="true"
         style="padding: 20px;"
         theme="light"
-        renderStyle="focused"
-        headerColor="#fff"
-        updateRoute="false"
-        navBgColor="#fff"
-        :showInfo="displayOptions.includeServiceInfo"
-        bgColor="#fff"
-        allowSpecUrlLoad="false"
-        allowSpecFileLoad="false"
-        allowSpecFileDownload="false"
+        render-style="focused"
+        header-color="#fff"
+        update-route="false"
+        nav-bg-color="#fff"
+        :show-info="displayOptions.includeServiceInfo"
+        bg-color="#fff"
+        allow-spec-url-load="false"
+        allow-spec-file-load="false"
+        allow-spec-file-download="false"
         :allowTry="displayOptions.allowDebug"
-        :schemaStyle="displayOptions.schemaStyle"
-        showHeader="false"
-        schemaExpandLevel="20">
+        :schema-style="displayOptions.schemaStyle"
+        :show-header="false"
+        :schema-expand-level="20">
       </rapi-doc>
       <div v-if="apiProxy && displayOptions.allowDebug" class="absolute top-10 right-0 flex text-3 z-9">
         <div

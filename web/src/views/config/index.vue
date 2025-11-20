@@ -16,7 +16,7 @@ const activeKey = ref<ConfigMenuKey>(ConfigMenuKey.APP_INFO);
 const menuItems = createMenuItems(t);
 </script>
 <template>
-  <LeftMenu v-model:activeKey="activeKey" :menuItems="menuItems">
+  <LeftMenu v-model:activeKey="activeKey" key="config" :menuItems="menuItems">
     <template #appInfo>
       <AppInfo class="overflow-auto h-full" />
     </template>

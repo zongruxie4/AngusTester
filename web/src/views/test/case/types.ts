@@ -1,6 +1,7 @@
 import { CaseInfo } from '@/views/test/types';
 import { TaskInfo } from '@/views/issue/types';
 import { FuncPlanPermission, TaskType } from '@/enums/enums';
+import { ScenarioInfo } from '@/views/scenario/scenario/list/types';
 
 /**
  * Case view mode
@@ -80,18 +81,26 @@ export type CaseCount = {
 }
 
 export interface AssocCaseProps {
-  projectId: number;
-  userInfo: { id: number; };
-  appInfo: { id: number; };
-  caseId: number;
+  projectId: string;
+  userInfo: { id: string; };
+  appInfo: { id: string; };
+  caseId: string;
   dataSource: CaseInfo[];
 }
 
+export interface AssocScenarioProps {
+  projectId: string;
+  userInfo: { id: string; };
+  appInfo: { id: string; };
+  caseId: string;
+  dataSource: ScenarioInfo[];
+}
+
 export interface AssocTaskProps {
-  projectId: number;
-  userInfo?: { id: number; };
-  appInfo?: { id: number; };
-  caseId?: number;
+  projectId: string;
+  userInfo?: { id: string; };
+  appInfo?: { id: string; };
+  caseId?: string;
   dataSource: TaskInfo[];
   title: string;
   taskType: TaskType;

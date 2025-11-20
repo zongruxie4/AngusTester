@@ -20,6 +20,7 @@ type Props = {
   tips: string;
   okAction: string;
   title?: string;
+  scenarioIds: string[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,8 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
-  (e: 'update:id', value: string | undefined): void;
-  (e: 'ok'): void;
+  (e: 'ok', value: any): void;
 }>();
 
 // Initialize composable
@@ -56,21 +56,23 @@ const {
 const cancel = () => {
   reset();
   emit('update:visible', false);
-  emit('update:id', undefined);
 };
 
 const ok = async () => {
   const params = getParams();
-  confirmLoading.value = true;
-  const [error] = await http.put(props.okAction, params, { dataType: true });
-  confirmLoading.value = false;
-  if (error) {
-    return;
-  }
+  if (props.okAction) {
+    confirmLoading.value = true;
+    const [error] = await http.put(props.okAction, params, { dataType: true });
+    confirmLoading.value = false;
+    if (error) {
+      return;
+    }
+  } else {
+    emit('ok', params);
+  };
 
   reset();
   emit('update:visible', false);
-  emit('update:id', undefined);
 };
 
 // Computed properties

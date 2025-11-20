@@ -121,8 +121,8 @@ const currentAPITest = computed(() => {
 
 // Search parameters for API filtering
 const searchParams = computed(() => {
-  const filters = mainState.name
-    ? [{ key: 'summary', op: SearchCriteria.OpEnum.Match, value: mainState.name.trim() }]
+  const filters = mainState.searchKeyword
+    ? [{ key: 'summary', op: SearchCriteria.OpEnum.Match, value: mainState.searchKeyword.trim() }]
     : [];
 
   return {
@@ -157,8 +157,8 @@ const loadApis = async () => {
   };
 
   // Add search filter if name is provided
-  if (mainState.name) {
-    const keyword = mainState.name.trim();
+  if (mainState.searchKeyword) {
+    const keyword = mainState.searchKeyword.trim();
     params.filters.push({ key: 'summary', op: SearchCriteria.OpEnum.Match, value: keyword });
   }
 
@@ -347,7 +347,7 @@ const openDrawer = (key: string) => {
 };
 
 // Watch for search name changes
-watch(() => mainState.name, () => {
+watch(() => mainState.searchKeyword, () => {
   mainState.id = ''; // Clear selected API when searching
   refresh();
 });

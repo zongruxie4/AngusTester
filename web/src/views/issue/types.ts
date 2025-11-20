@@ -1,5 +1,5 @@
 import { EnumMessage, EvalWorkloadMethod, Priority, enumUtils } from '@xcan-angus/infra';
-import { BugLevel, ExecResult, TaskStatus, TaskType, TestType, AssociateUserType } from '@/enums/enums';
+import { BugLevel, TaskStatus, TaskType, AssociateUserType } from '@/enums/enums';
 import { AttachmentInfo, ProgressInfo, TagInfo } from '@/types/types';
 
 import { CaseInfo } from '@/views/test/types';
@@ -29,7 +29,6 @@ export type TaskInfo = {
   progress: ProgressInfo;
   taskType: EnumMessage<TaskType>;
   bugLevel: EnumMessage<BugLevel>;
-  testType: EnumMessage<TestType>;
   softwareVersion: string;
   startDate: string;
   deadlineDate: string;
@@ -58,21 +57,6 @@ export type TaskInfo = {
   currentAssociateType: EnumMessage<AssociateUserType>[];
   confirmTask: boolean;
   overdue: boolean;
-  targetId: string;
-  targetName: string;
-  targetParentId: string;
-  targetParentName: string;
-  scriptId: string;
-  scriptName: string;
-  execResult: EnumMessage<ExecResult>;
-  execFailureMessage: string;
-  execTestNum: number;
-  execTestFailureNum: number;
-  execId: string;
-  execName: string;
-  execBy: string;
-  execByName: string;
-  execDate: string;
   favourite: boolean;
   follow: boolean;
   tags: TagInfo[];
@@ -104,7 +88,6 @@ export type TaskDetail = {
   subTaskProgress: ProgressInfo;
   taskType: EnumMessage<TaskType>;
   bugLevel: EnumMessage<BugLevel>;
-  testType: EnumMessage<TestType>;
   softwareVersion: string;
   startDate: string;
   deadlineDate: string;
@@ -133,21 +116,6 @@ export type TaskDetail = {
   currentAssociateType: EnumMessage<AssociateUserType>[];
   confirmTask: boolean;
   overdue: boolean;
-  targetId: string;
-  targetName: string;
-  targetParentId: string;
-  targetParentName: string;
-  scriptId: string;
-  scriptName: string;
-  execResult: EnumMessage<ExecResult>;
-  execFailureMessage: string;
-  execTestNum: number;
-  execTestFailureNum: number;
-  execId: string;
-  execName: string;
-  execBy: string;
-  execByName: string;
-  execDate: string;
   favourite: boolean;
   follow: boolean;
   tags: TagInfo[];

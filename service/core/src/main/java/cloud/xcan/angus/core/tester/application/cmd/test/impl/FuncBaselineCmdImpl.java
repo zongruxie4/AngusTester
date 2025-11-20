@@ -30,6 +30,8 @@ import cloud.xcan.angus.core.tester.domain.test.cases.FuncCase;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseRepo;
 import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlan;
 import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanPermission;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
@@ -103,6 +105,7 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
       @Override
       protected IdKey<Long, Object> process() {
         // Set project ID from plan and insert baseline
+        baseline.setId(BIDUtils.getId(BIDKey.caseBaselineId));
         baseline.setProjectId(planDb.getProjectId());
         IdKey<Long, Object> idKey = insert(baseline);
 

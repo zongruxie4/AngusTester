@@ -32,14 +32,9 @@ const Description = defineAsyncComponent(() => import('@/views/report/preview/ta
 const RefTasks = defineAsyncComponent(() => import('@/views/report/preview/task/assocTask/index.vue'));
 const RefCases = defineAsyncComponent(() => import('@/views/report/preview/task/assocCase/index.vue'));
 const SubTasks = defineAsyncComponent(() => import('@/views/report/preview/task/subTask/index.vue'));
-const TestInfo = defineAsyncComponent(() => import('@/views/report/preview/task/info/testing/index.vue'));
 const Remarks = defineAsyncComponent(() => import('@/views/report/preview/task/info/remark/index.vue'));
 const Activity = defineAsyncComponent(() => import('@/views/report/preview/task/activity/index.vue'));
 const Comments = defineAsyncComponent(() => import('@/views/report/preview/task/comment/index.vue'));
-
-const taskType = computed(() => {
-  return props.dataSource?.content?.task?.taskType?.value;
-});
 </script>
 
 <template>
@@ -102,13 +97,6 @@ const taskType = computed(() => {
     :dataSource="props.dataSource"
     class="mb-8" />
   <RefCases
-    :userInfo="props.userInfo"
-    :projectInfo="props.projectInfo"
-    :appInfo="props.appInfo"
-    :dataSource="props.dataSource"
-    class="mb-8" />
-  <TestInfo
-    v-if="taskType==='API_TEST'||taskType==='SCENARIO_TEST'"
     :userInfo="props.userInfo"
     :projectInfo="props.projectInfo"
     :appInfo="props.appInfo"

@@ -65,10 +65,8 @@ export type TaskCount = {
   taskNum: number;
   /** The number of bug type tasks */
   bugNum: number;
-  /** The number of api test type tasks */
-  apiTestNum: number;
-  /** The number of scenario test type tasks */
-  scenarioTestNum: number;
+  /** The number of design type tasks */
+  designNum: number;
   /** Total number of task type tasks */
   totalTaskTypeNum: number;
   /** The number of successful test tasks */

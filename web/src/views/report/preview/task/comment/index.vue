@@ -19,14 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
-const taskType = computed(() => {
-  return props.dataSource?.content?.task?.taskType?.value;
-});
-
 const index = computed(() => {
-  if (taskType.value === 'API_TEST' || taskType.value === 'SCENARIO_TEST') {
-    return 13;
-  }
 
   return 10;
 });
@@ -78,7 +71,7 @@ const len = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span :id="`a${index}`" class="text-4 text-theme-title font-medium">{{ indexText }}、<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.comment.title') }}</span>
+      <span :id="`a${index}`" class="text-4 text-theme-title font-medium">{{ indexText }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.comment.title') }}</span>
     </h1>
 
     <div v-if="len>0" class="border border-solid border-border-input">

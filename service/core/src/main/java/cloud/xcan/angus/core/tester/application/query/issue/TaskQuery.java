@@ -32,7 +32,6 @@ import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprint;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskAssigneeWorkSummary;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskProjectWorkSummary;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskSprintWorkSummary;
-import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.annotations.NonNullable;
 import java.time.LocalDateTime;
@@ -60,8 +59,6 @@ public interface TaskQuery {
 
   List<TaskInfo> notAssociatedTaskInTask(Long taskId, @Nullable Long moduleId,
       @Nullable TaskType taskType);
-
-  List<TaskInfo> assocList(TaskType taskType, Long targetId);
 
   TaskLastResourceCreationCount creationResourcesStatistics(Long projectId, Long sprintId,
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
@@ -199,8 +196,6 @@ public interface TaskQuery {
 
   void checkUpdateNameExists(Long projectId, Long sprintId, String name, Long taskId);
 
-  void checkTargetTaskExists(Long targetId, TestType testType, TaskType taskType);
-
   void checkQuota(Long springId, int incr);
 
   void setFavourite(List<? extends ResourceFavouriteAndFollow<?, ?>> tasks);
@@ -208,10 +203,6 @@ public interface TaskQuery {
   void setFollow(List<? extends ResourceFavouriteAndFollow<?, ?>> tasks);
 
   void setCurrentRoles(List<Task> tasks);
-
-  void setApiTargetName(List<Task> tasks);
-
-  void setScenarioTargetName(List<Task> tasks);
 
   void setTaskProgress(List<Task> tasks);
 

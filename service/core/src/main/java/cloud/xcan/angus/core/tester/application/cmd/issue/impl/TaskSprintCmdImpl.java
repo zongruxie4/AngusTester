@@ -25,18 +25,20 @@ import cloud.xcan.angus.core.tester.application.cmd.issue.TaskCmd;
 import cloud.xcan.angus.core.tester.application.cmd.issue.TaskSprintAuthCmd;
 import cloud.xcan.angus.core.tester.application.cmd.issue.TaskSprintCmd;
 import cloud.xcan.angus.core.tester.application.converter.TaskSprintConverter;
-import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
-import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskSprintAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskSprintQuery;
+import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
+import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
-import cloud.xcan.angus.core.tester.domain.project.Project;
 import cloud.xcan.angus.core.tester.domain.issue.TaskRepo;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprint;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprintPermission;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprintRepo;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprintStatus;
 import cloud.xcan.angus.core.tester.domain.issue.trash.TaskTrashRepo;
+import cloud.xcan.angus.core.tester.domain.project.Project;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
@@ -131,6 +133,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
       @Override
       protected IdKey<Long, Object> process() {
+        sprint.setId(BIDUtils.getId(BIDKey.sprintId));
         IdKey<Long, Object> idKey = insert(sprint);
 
         // Init sprint auth
@@ -416,6 +419,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
       @Override
       protected IdKey<Long, Object> process() {
         TaskSprint newSprint = TaskSprintConverter.clone(sprintDb);
+        newSprint.setId(BIDUtils.getId(BIDKey.sprintId));
         taskSprintQuery.setSafeCloneName(newSprint);
         IdKey<Long, Object> idKey = insert(newSprint, "name");
 

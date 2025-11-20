@@ -42,7 +42,7 @@ export const useLogData = (
     const [error, res] = await getDataByProxy(
       `http://${nodeIp.value}:${nodePort.value}/actuator/runner/log/${execId}`,
       {},
-      { timeout: 0 }
+      { timeout: 3000 }
     );
 
     // Hide loading state
@@ -52,8 +52,8 @@ export const useLogData = (
     if (error) {
       execLogErr.value = true;
       // Type assertion to access response property
-      if ((error as any).response?.data) {
-        errorText.value = (error as any).response.data;
+      if (error.message) {
+        errorText.value = error.message;
       } else {
         errorText.value = undefined;
       }

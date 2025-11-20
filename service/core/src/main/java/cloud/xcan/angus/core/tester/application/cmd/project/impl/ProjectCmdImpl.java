@@ -30,7 +30,7 @@ import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.angus.core.tester.application.cmd.data.DatasetCmd;
 import cloud.xcan.angus.core.tester.application.cmd.data.VariableCmd;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecTestCmd;
-import cloud.xcan.angus.core.tester.application.cmd.test.FuncCaseCmd;
+import cloud.xcan.angus.core.tester.application.cmd.issue.TaskCmd;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceCmd;
 import cloud.xcan.angus.core.tester.application.cmd.module.ModuleCmd;
 import cloud.xcan.angus.core.tester.application.cmd.project.ProjectCmd;
@@ -40,7 +40,7 @@ import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioCmd;
 import cloud.xcan.angus.core.tester.application.cmd.script.ScriptCmd;
 import cloud.xcan.angus.core.tester.application.cmd.services.ServicesCmd;
 import cloud.xcan.angus.core.tester.application.cmd.tag.TagCmd;
-import cloud.xcan.angus.core.tester.application.cmd.issue.TaskCmd;
+import cloud.xcan.angus.core.tester.application.cmd.test.FuncCaseCmd;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.domain.ExampleDataType;
@@ -48,6 +48,8 @@ import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.project.Project;
 import cloud.xcan.angus.core.tester.domain.project.ProjectRepo;
 import cloud.xcan.angus.core.tester.domain.project.ProjectType;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.spec.experimental.Assert;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -182,6 +184,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   @Override
   public IdKey<Long, Object> add0(Project project) {
     // Save project to database and get generated ID
+    project.setId(BIDUtils.getId(BIDKey.projectId));
     IdKey<Long, Object> idKey = insert(project);
 
     // Ensure project owner is included in member list
@@ -354,7 +357,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   public @NotNull IdKey<Long, Object> importProjectExample(@Nullable String name,
       ProjectType type, Project project) {
     // Create example project with generated ID and timeline
-    project.setId(uidGenerator.getUID()).setType(type)
+    project.setId(BIDUtils.getId(BIDKey.projectId));
+    project.setType(type)
         .setName(isNotEmpty(name) ? name : project.getName())
         .setOwnerId(getUserId())
         .setStartDate(LocalDateTime.now().minusHours(SAMPLE_BEFORE_HOURS))

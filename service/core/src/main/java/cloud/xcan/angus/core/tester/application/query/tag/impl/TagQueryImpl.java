@@ -206,6 +206,17 @@ public class TagQueryImpl implements TagQuery {
   }
 
   /**
+   * Get associated target ids.
+   *
+   * @param tagIds Tag ids
+   * @return Target ids
+   */
+  @Override
+  public Set<Long> getTargetIdsById(Set<Long> tagIds) {
+    return tagTargetRepo.getTargetIdsByTagIdIn(tagIds);
+  }
+
+  /**
    * <p>
    * Check if tag names already exist in a project when adding new tags.
    * </p>

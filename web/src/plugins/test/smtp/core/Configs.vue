@@ -83,6 +83,7 @@ const exportModalVisible = ref(false);// {{ t('smtpPlugin.comments.exportScriptM
 const authVisible = ref(false);// {{ t('smtpPlugin.comments.authorizeModal') }}
 let controller: AbortController;// {{ t('smtpPlugin.comments.abortController') }}
 const loading = ref(false);
+const debugLoading = ref(false);
 const loaded = ref(false);
 const rendered = ref(false);
 // {{ t('smtpPlugin.comments.defaultViewDescription') }}
@@ -318,8 +319,10 @@ const toDebug = async () => {
     scriptType: type
   };
 
+  debugLoading.value = true;
   const [error, { data }] = await exec.startScenarioDebug(params);
   loading.value = false;
+  debugLoading.value = false;
   if (error) {
     debugHttpError.value = {
       exitCode: error.code,
@@ -1543,7 +1546,7 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
       class="pure-tab-wrap h-full leading-5"
       size="small">
       <template #rightExtra>
-        <ButtonGroup :hideKeys="hideButtonSet" @click="buttonGroupClick" />
+        <ButtonGroup :hideKeys="hideButtonSet" :debugLoading="debugLoading" @click="buttonGroupClick" />
       </template>
       <TabPane key="taskConfig">
         <template #tab>

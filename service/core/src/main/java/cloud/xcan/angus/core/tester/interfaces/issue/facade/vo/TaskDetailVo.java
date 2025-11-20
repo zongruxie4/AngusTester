@@ -3,14 +3,12 @@ package cloud.xcan.angus.core.tester.interfaces.issue.facade.vo;
 import cloud.xcan.angus.api.commonlink.associate.AssociateUserType;
 import cloud.xcan.angus.api.enums.EvalWorkloadMethod;
 import cloud.xcan.angus.api.enums.Priority;
-import cloud.xcan.angus.api.enums.Result;
 import cloud.xcan.angus.api.pojo.Attachment;
 import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
 import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
 import cloud.xcan.angus.core.tester.domain.issue.TaskType;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseInfoVo;
-import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.NameJoinField;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -63,8 +61,6 @@ public class TaskDetailVo {
   private TaskType taskType;
 
   private BugLevel bugLevel;
-
-  private TestType testType;
 
   @Schema(description = "Version of software for the task")
   private String softwareVersion;
@@ -135,38 +131,6 @@ public class TaskDetailVo {
   private Boolean confirmTask;
 
   private Boolean overdue;
-
-  private Long targetId;
-
-  private String targetName;
-
-  private Long targetParentId;
-
-  private String targetParentName;
-
-  private Long scriptId;
-
-  @NameJoinField(id = "scriptId", repository = "scriptInfoRepo")
-  private String scriptName;
-
-  private Result execResult;
-
-  private String execFailureMessage;
-
-  private Integer execTestNum;
-
-  private Integer execTestFailureNum;
-
-  private Long execId;
-
-  private String execName;
-
-  private Long execBy;
-
-  @NameJoinField(id = "execBy", repository = "commonUserBaseRepo")
-  private String execByName;
-
-  private LocalDateTime execDate;
 
   private Boolean favourite;
 

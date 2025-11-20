@@ -36,6 +36,8 @@ import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.data.variables.Variable;
 import cloud.xcan.angus.core.tester.domain.data.variables.VariableRepo;
 import cloud.xcan.angus.core.tester.domain.data.variables.VariableTargetRepo;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
 import cloud.xcan.angus.parser.AngusParser;
 import cloud.xcan.angus.remote.ExceptionLevel;
@@ -106,6 +108,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
 
       @Override
       protected IdKey<Long, Object> process() {
+        variable.setId(BIDUtils.getId(BIDKey.variableId));
         IdKey<Long, Object> idKeys = insert(variable, "name");
 
         activityCmd.add(toActivity(VARIABLE, variable, ActivityType.CREATED));
@@ -199,6 +202,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
         List<Variable> clonedVariables = new ArrayList<>();
         for (Variable variableDb : variablesDb) {
           Variable clonedVariable = VariableConverter.toCloneVariable(variableDb);
+          clonedVariable.setId(BIDUtils.getId(BIDKey.variableId));
           variableQuery.setSafeCloneName(clonedVariable);
           clonedVariables.add(clonedVariable);
         }
@@ -279,6 +283,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
         List<Variable> variables = parseVariablesFromScript(projectId,
             StrategyWhenDuplicated.IGNORE, content);
         for (Variable variable : variables) {
+          variable.setId(BIDUtils.getId(BIDKey.variableId));
           variable.setProjectId(projectId);
         }
         return batchInsert(variables, "name");

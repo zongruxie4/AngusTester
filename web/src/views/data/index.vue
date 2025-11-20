@@ -41,6 +41,7 @@ onMounted(() => {
 <template>
   <LeftMenu
     v-model:activeKey="activeKey"
+    key="data"
     :menuItems="menuItems">
     <template #home>
       <Homepage

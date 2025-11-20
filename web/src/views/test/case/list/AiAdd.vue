@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 
 import { useI18n } from 'vue-i18n';
 import { CaseEditState } from '@/views/test/case/list/types';
-import { CaseStepView, SoftwareVersionStatus } from '@/enums/enums';
+import { CaseStepView, SoftwareVersionStatus, TestLayer, TestPurpose } from '@/enums/enums';
 import { VisibleProps } from '@/types/types';
 import { testCase, project, modules } from '@/api/tester';
 import { ai } from '@/api/gm';
@@ -43,6 +43,8 @@ const generateLoading = ref(false);
 const question = ref();
 
 let defaultCaseItem:CaseEditState = {
+  testLayer: TestLayer.UI,
+  testPurpose: TestPurpose.FUNCTIONAL,
   attachments: [],
   deadlineDate: '',
   description: '',
@@ -64,6 +66,8 @@ let defaultCaseItem:CaseEditState = {
 
 const formRef = ref();
 const formState = ref<CaseEditState>({
+  testLayer: TestLayer.UI,
+  testPurpose: TestPurpose.FUNCTIONAL,
   attachments: [],
   deadlineDate: '',
   description: '',
@@ -121,6 +125,8 @@ const resetForm = () => {
   formState.value.description = '';
   stepDefaultValue.value = [];
   formState.value.moduleId = undefined;
+  formState.value.testLayer = TestLayer.UI;
+  formState.value.testPurpose = TestPurpose.FUNCTIONAL;
   nextTick(() => {
     stepsRef.value.errorIndex = [];
   });
@@ -165,7 +171,9 @@ const validateList = () => {
         'name',
         'planId',
         'testerId',
-        'deadlineDate'
+        'deadlineDate',
+        'testLayer',
+        'testPurpose'
       ];
 
       if (formState.value.actualWorkload) {
@@ -511,7 +519,28 @@ onMounted(() => {
                   :maxlength="400"
                   :placeholder="t('testCase.messages.enterCaseName')" />
               </FormItem>
-
+              <div class="flex space-x-2"> 
+                <FormItem
+                  name="testLayer"
+                  :label="t('common.testLayer')"
+                  class="flex-1"
+                  :rules="[{ required: true, message: t('common.placeholders.selectTestLayer') }]">
+                  <SelectEnum
+                    v-model:value="formState.testLayer"
+                    enumKey="TestLayer"
+                    size="small" />
+                </FormItem>
+                <FormItem
+                  name="testPurpose"
+                  :label="t('common.testPurpose')"
+                  class="flex-1"
+                  :rules="[{ required: true, message: t('common.placeholders.selectTestPurpose') }]">
+                  <SelectEnum
+                    v-model:value="formState.testPurpose"
+                    enumKey="TestPurpose"
+                    size="small" />
+                </FormItem>
+              </div>
               <FormItem
                 name="precondition"
                 :rules="[{validator: validateCondition}]">

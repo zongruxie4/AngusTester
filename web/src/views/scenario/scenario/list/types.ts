@@ -1,5 +1,5 @@
 import { EnumMessage, ScriptType } from '@xcan-angus/infra';
-import { ExecStatus, ScenarioPermission } from '@/enums/enums';
+import { ExecStatus, ScenarioPermission, ScenarioType } from '@/enums/enums';
 
 /**
  * Grouping keys for scenarios
@@ -13,13 +13,10 @@ export interface ScenarioInfo {
   description: string;
   id: string;
   name: string;
-  dirId: string;
-  dirName: string;
-  plugin: 'WebSocket' | 'Jdbc' | 'Http';
+  plugin: ScenarioType;
   auth: boolean;
   createdBy: string;
   createdByName: string;
-  avatar: string;
   createdDate: string;
   lastModifiedBy: string;
   lastModifiedByName: string;

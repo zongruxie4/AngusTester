@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.application.converter;
 
 import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_AFTER_HOURS;
-import static cloud.xcan.angus.core.spring.SpringContextHolder.getBean;
 import static cloud.xcan.angus.core.tester.application.cmd.issue.impl.TaskCmdImpl.getTaskCode;
 import static cloud.xcan.angus.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
@@ -36,18 +35,7 @@ import cloud.xcan.angus.api.commonlink.user.User;
 import cloud.xcan.angus.api.commonlink.user.UserBase;
 import cloud.xcan.angus.api.enums.EvalWorkloadMethod;
 import cloud.xcan.angus.api.enums.Priority;
-import cloud.xcan.angus.api.enums.Result;
 import cloud.xcan.angus.api.pojo.Progress;
-import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
-import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
-import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
-import cloud.xcan.angus.core.tester.domain.kanban.DataTimeSeries;
-import cloud.xcan.angus.core.tester.domain.module.Module;
-import cloud.xcan.angus.core.tester.domain.project.Project;
-import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
-import cloud.xcan.angus.core.tester.domain.services.testing.TestTaskSetting;
-import cloud.xcan.angus.core.tester.domain.tag.Tag;
-import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
 import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
@@ -70,12 +58,20 @@ import cloud.xcan.angus.core.tester.domain.issue.summary.TaskEfficiencySummary;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskRemarkSummary;
 import cloud.xcan.angus.core.tester.domain.issue.summary.TaskSummary;
 import cloud.xcan.angus.core.tester.domain.issue.trash.TaskTrash;
+import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
+import cloud.xcan.angus.core.tester.domain.kanban.DataTimeSeries;
+import cloud.xcan.angus.core.tester.domain.module.Module;
+import cloud.xcan.angus.core.tester.domain.project.Project;
+import cloud.xcan.angus.core.tester.domain.tag.Tag;
+import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersion;
 import cloud.xcan.angus.core.tester.domain.version.SoftwareVersionStatus;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.internal.assembler.FuncCaseAssembler;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.internal.assembler.TaskAssembler;
+import cloud.xcan.angus.core.tester.interfaces.test.facade.internal.assembler.FuncCaseAssembler;
 import cloud.xcan.angus.idgen.uid.impl.CachedUidGenerator;
-import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.message.ProtocolException;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.locale.SupportedLanguage;
@@ -103,6 +99,9 @@ public class TaskConverter {
 
   public static void assembleAddTaskInfo(Task task, @Nullable TaskSprint sprintDb,
       boolean isAgile) {
+    if (nonNull(task.getId())){
+      task.setId(BIDUtils.getId(BIDKey.taskId));
+    }
     if (nonNull(sprintDb)) {
       task.setProjectId(sprintDb.getProjectId());
       if (isNotEmpty(sprintDb.getTaskPrefix())
@@ -121,11 +120,7 @@ public class TaskConverter {
   }
 
   public static void assembleUpdateTask(Task task, Task taskDb) {
-    if (taskDb.getTaskType().isTestTask()) {
-      copyPropertiesIgnoreNull(task, taskDb, "taskType");
-    } else {
-      copyPropertiesIgnoreNull(task, taskDb);
-    }
+    copyPropertiesIgnoreNull(task, taskDb);
 
     if (nonNull(task.getTaskType()) && !task.getTaskType().equals(taskDb.getTaskType())) {
       if (taskDb.getTaskType().isBug()) {
@@ -160,7 +155,7 @@ public class TaskConverter {
         .setParentTaskId(task.getParentTaskId())
         .setRefTaskIds(task.getRefTaskIds())
         .setRefCaseIds(task.getRefCaseIds());
-    if (!taskDb.getTaskType().isTestTask() && nonNull(task.getTaskType())) {
+    if (nonNull(task.getTaskType())) {
       taskDb.setTaskType(task.getTaskType());
     }
     taskDb.setBugLevel(task.getBugLevel());
@@ -184,10 +179,10 @@ public class TaskConverter {
         && taskDb.getDeadlineDate().isBefore(LocalDateTime.now()));
   }
 
-  public static void assembleExampleTaskSprint(Project projectDb, Long id,
-      List<User> users, TaskSprint sprint) {
+  public static void assembleExampleTaskSprint(Project projectDb, List<User> users,
+      TaskSprint sprint) {
     Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
-    sprint.setId(id).setProjectId(projectDb.getId())
+    sprint.setProjectId(projectDb.getId())
         .setAuth(false)
         .setOwnerId(currentUserId)
         .setTenantId(projectDb.getTenantId())
@@ -199,7 +194,7 @@ public class TaskConverter {
         .setLastModifiedDate(LocalDateTime.now());
   }
 
-  public static void assembleExampleTask(Project projectDb, Long id, Task task,
+  public static void assembleExampleTask(Project projectDb, Task task,
       TaskSprint sprint, List<User> users) {
     Random random = new Random();
     LocalDateTime now = LocalDateTime.now();
@@ -207,9 +202,9 @@ public class TaskConverter {
     LocalDateTime finishedDate = now.plusHours(random.nextInt(24));
     finishedDate = finishedDate.isBefore(now) ? now.plusMinutes(1) : finishedDate;
     TaskStatus status = nullSafe(task.getStatus(), TaskStatus.PENDING);
-    task.setId(id).setCode(getTaskCode())
+    task.setCode(getTaskCode())
         .setProjectId(projectDb.getId()).setModuleId(-1L)
-        .setSprintId(nonNull(sprint) ? sprint.getId(): null).setSprintAuth(false)
+        .setSprintId(nonNull(sprint) ? sprint.getId() : null).setSprintAuth(false)
         // Set 1/3 of the pending tasks in the agile project as backlog
         .setBacklog(projectDb.isAgile() && task.getStatus().isPending()
             && randomWithProbability(3))
@@ -242,53 +237,6 @@ public class TaskConverter {
     return version;
   }
 
-  public static Task toAddApisOrScenarioTask(Long projectId, @Nullable TaskSprint sprintDb,
-      ApisBaseInfo apis, Scenario scenario, Task task) {
-    task.setId(getBean(CachedUidGenerator.class).getUID())
-        .setProjectId(projectId)
-        .setSprintId(nonNull(sprintDb) ? sprintDb.getId() : null)
-        .setSprintAuth(nonNull(sprintDb) ? sprintDb.getAuth() : false)
-        .setModuleId(nullSafe(task.getModuleId(), -1L))
-        .setBacklog(false)
-        .setTargetId(nonNull(apis) ? apis.getId() : scenario.getId())
-        .setTaskType(nonNull(apis) ? TaskType.API_TEST : TaskType.SCENARIO_TEST)
-        .setName((nonNull(apis) ? apis.getName()
-            : scenario.getName()) + "-" + task.getTestType().getMessage())
-        .setSoftwareVersion(null)
-        .setTargetParentId(nonNull(apis) ? apis.getServiceId() : scenario.getProjectId())
-        .setStatus(TaskStatus.PENDING)
-        .setUnplanned(nonNull(sprintDb) && sprintDb.getStatus().isStarted())
-        .setFailNum(0)
-        .setTotalNum(0)
-        .setEvalWorkloadMethod(nonNull(sprintDb) ? sprintDb.getEvalWorkloadMethod()
-            : EvalWorkloadMethod.WORKING_HOURS) // General Project Management
-        .setSprintDeleted(false)
-        .setDeleted(false)
-        .setCreatedBy(getUserId())
-        .setCreatedDate(LocalDateTime.now());
-    if (nonNull(sprintDb) && isNotEmpty(sprintDb.getTaskPrefix())
-        && !task.getName().startsWith(sprintDb.getTaskPrefix())) {
-      task.setName(sprintDb.getTaskPrefix() + task.getName());
-    }
-    return task;
-  }
-
-  public static List<Task> generateToServicesTask(Long apisId, List<TestTaskSetting> testings) {
-    return testings.stream().map(testing -> new Task()
-        .setModuleId(-1L)
-        .setTargetId(apisId)
-        .setTaskType(TaskType.API_TEST)
-        .setTestType(testing.getTestType())
-        .setPriority(testing.getPriority())
-        .setAssigneeId(testing.getAssigneeId())
-        .setStartDate(testing.getStartDate())
-        .setDeadlineDate(testing.getDeadlineDate())
-        .setBacklog(false) // Assign sprint is required or is general project management
-        .setOverdue(false)
-        .setCode(getTaskCode())
-    ).toList();
-  }
-
   public static void assembleMoveTask(TaskSprint targetSprintDb, Task taskDb) {
     taskDb.setSprintId(isNull(targetSprintDb) ? null : targetSprintDb.getId());
     taskDb.setBacklog(isNull(targetSprintDb));
@@ -308,14 +256,12 @@ public class TaskConverter {
   public static Task toRestartTask(Task task) {
     return task.setTotalNum(0).setFailNum(0)
         .setCompletedDate(null).setCanceledDate(null).setProcessedDate(null)
-        .setExecBy(null).setExecId(null).setCanceledDate(null)
-        .setStartDate(null).setStatus(TaskStatus.PENDING);
+        .setCanceledDate(null).setStartDate(null).setStatus(TaskStatus.PENDING);
   }
 
   public static Task toReopenTask(Task task) {
     return task.setCompletedDate(null).setCanceledDate(null).setProcessedDate(null)
-        .setExecBy(null).setExecId(null).setCanceledDate(null)
-        .setStartDate(null).setStatus(TaskStatus.PENDING);
+        .setCanceledDate(null).setStartDate(null).setStatus(TaskStatus.PENDING);
   }
 
   public static TaskTrash toTaskTrash(Task taskDb) {
@@ -337,7 +283,6 @@ public class TaskConverter {
     summary.setName(task.getName());
     summary.setCode(task.getCode());
     summary.setTaskType(task.getTaskType());
-    summary.setTestType(task.getTestType());
     summary.setProjectId(task.getProjectId());
     summary.setSprintId(task.getSprintId());
     summary.setModuleId(task.getModuleId());
@@ -360,19 +305,6 @@ public class TaskConverter {
     summary.setConfirmTask(nonNull(task.getConfirmerId()));
     summary.setOverdue(task.getOverdue());
     //.setDescription(task.getDescription());
-    summary.setTargetId(task.getTargetId());
-    //.setTargetName(task.getTargetName());
-    summary.setTargetParentId(task.getTargetParentId());
-    //.setTargetParentName(task.getTargetParentName())
-    //.setScriptId(task.getScriptId())
-    summary.setExecResult(task.getExecResult());
-    summary.setExecFailureMessage(task.getExecFailureMessage());
-    summary.setExecTestNum(task.getExecTestNum());
-    summary.setExecTestFailureNum(task.getExecTestFailureNum());
-    summary.setExecId(task.getExecId());
-    summary.setExecName(task.getExecName());
-    summary.setExecBy(task.getExecBy());
-    summary.setExecDate(task.getExecDate());
     //.setFavourite(task.getFavourite())
     //.setFollow(task.getFollow())
     //.setCommentNum(task.getCommentNum())
@@ -389,7 +321,6 @@ public class TaskConverter {
         .setCode(task.getCode())
         .setTaskType(task.getTaskType())
         .setBugLevel(task.getBugLevel())
-        .setTestType(task.getTestType())
         .setProjectId(task.getProjectId())
         .setSprintId(task.getSprintId())
         .setModuleId(task.getModuleId())
@@ -430,19 +361,6 @@ public class TaskConverter {
         .setConfirmTask(task.isConfirmTask())
         .setOverdue(task.getOverdue())
         .setDescription(task.getDescription())
-        .setTargetId(task.getTargetId())
-        .setTargetName(task.getTargetName())
-        .setTargetParentId(task.getTargetParentId())
-        .setTargetParentName(task.getTargetParentName())
-        .setScriptId(task.getScriptId())
-        .setExecResult(task.getExecResult())
-        .setExecFailureMessage(task.getExecFailureMessage())
-        .setExecTestNum(task.getExecTestNum())
-        .setExecTestFailureNum(task.getExecTestFailureNum())
-        .setExecId(task.getExecId())
-        .setExecName(task.getExecName())
-        .setExecBy(task.getExecBy())
-        .setExecDate(task.getExecDate())
         //.setFavourite(task.getFavourite())
         //.setFollow(task.getFollow())
         //.setCommentNum(task.getCommentNum())
@@ -470,7 +388,7 @@ public class TaskConverter {
     TaskCount statistics = new TaskCount();
     // Statistics by status
     Map<String, Integer> statusMap = groupByResult.stream().collect(Collectors.toMap(
-        x -> convert(x[0], String.class), x -> convert(x[4], Integer.class), Integer::sum));
+        x -> convert(x[0], String.class), x -> convert(x[2], Integer.class), Integer::sum));
     statistics.setPendingNum(nullSafe(statusMap.get(TaskStatus.PENDING.name()), 0))
         .setInProgressNum(nullSafe(statusMap.get(TaskStatus.IN_PROGRESS.name()), 0))
         .setConfirmingNum(nullSafe(statusMap.get(TaskStatus.CONFIRMING.name()), 0))
@@ -483,33 +401,16 @@ public class TaskConverter {
     statistics.setTotalTaskNum(statistics.getTotalStatusNum());
     statistics.setValidTaskNum(statistics.getTotalStatusNum() - statistics.getCanceledNum());
 
-    // Statistics by testType
-    Map<String, Integer> testTypeMap = groupByResult.stream().collect(Collectors.toMap(
-        x -> convert(x[1], String.class), x -> convert(x[4], Integer.class), Integer::sum));
-    statistics.setPerfNum(nullSafe(testTypeMap.get(TestType.PERFORMANCE.name()), 0))
-        .setFunctionalNum(nullSafe(testTypeMap.get(TestType.FUNCTIONAL.name()), 0))
-        .setStabilityNum(nullSafe(testTypeMap.get(TestType.STABILITY.name()), 0))
-        .setTotalTestTypeNum(statistics.getPerfNum() + statistics.getFunctionalNum()
-            + statistics.getStabilityNum());
-
     // Statistics by taskType
     Map<String, Integer> taskTypeMap = groupByResult.stream().collect(Collectors.toMap(
-        x -> convert(x[2], String.class), x -> convert(x[4], Integer.class), Integer::sum));
+        x -> convert(x[1], String.class), x -> convert(x[2], Integer.class), Integer::sum));
     statistics.setRequirementNum(nullSafe(taskTypeMap.get(TaskType.REQUIREMENT.name()), 0))
         .setStoryNum(nullSafe(taskTypeMap.get(TaskType.STORY.name()), 0))
         .setTaskNum(nullSafe(taskTypeMap.get(TaskType.TASK.name()), 0))
         .setBugNum(nullSafe(taskTypeMap.get(TaskType.BUG.name()), 0))
-        .setApiTestNum(nullSafe(taskTypeMap.get(TaskType.API_TEST.name()), 0))
-        .setScenarioTestNum(nullSafe(taskTypeMap.get(TaskType.SCENARIO_TEST.name()), 0))
+        .setDesignNum(nullSafe(taskTypeMap.get(TaskType.DESIGN.name()), 0))
         .setTotalTaskTypeNum(statistics.getStoryNum() + statistics.getRequirementNum()
-            + statistics.getTaskNum() + statistics.getBugNum() + statistics.getApiTestNum()
-            + statistics.getScenarioTestNum());
-
-    // Statistics by result
-    Map<String, Integer> resultMap = groupByResult.stream().collect(Collectors.toMap(
-        x -> convert(x[3], String.class), x -> convert(x[4], Integer.class), Integer::sum));
-    statistics.setTestSuccessNum(nullSafe(resultMap.get(Result.SUCCESS.name()), 0))
-        .setTestFailNum(nullSafe(resultMap.get(Result.FAIL.name()), 0));
+            + statistics.getTaskNum() + statistics.getBugNum() + statistics.getDesignNum());
 
     // Statistics are overdue
     if (!overdueResult.isEmpty()) {
@@ -553,7 +454,7 @@ public class TaskConverter {
   public static @NotNull List<Task> importToDomain(
       CachedUidGenerator uidGenerator, Project projectDb, @Nullable TaskSprint sprintDb,
       List<String[]> data, int nameIdx, int taskTypeIdx, int bugLevelIdx,
-      int testTypeIdx, Map<String, List<UserBase>> assigneeMap, int assigneeIdx,
+      Map<String, List<UserBase>> assigneeMap, int assigneeIdx,
       int confirmerIdx, Map<String, List<UserBase>> confirmerMap, int testerIdx,
       Map<String, List<UserBase>> testerMap, int missingBugIdx, int unplannedIdx, int priorityIdx,
       int deadlineIdx, int descIdx, int evalWorkloadIdx, int actualWorkloadIdx, int statusIdx,
@@ -580,8 +481,6 @@ public class TaskConverter {
             .setTaskType(taskType) // Required
             .setBugLevel(taskType.isBug() ? (bugLevelIdx != -1 && isNotEmpty(row[bugLevelIdx])
                 ? BugLevel.ofMessage(row[bugLevelIdx], zhLocale) : BugLevel.DEFAULT) : null)
-            .setTestType(testTypeIdx != -1 && isNotEmpty(row[testTypeIdx])
-                ? TestType.ofMessage(row[testTypeIdx], zhLocale) : null)
             /*.setTargetId(targetIdIdx != -1 && isDigits(row[targetIdIdx])
                 ? Long.parseLong(row[targetIdIdx]) : null)*/
             .setAssigneeId(assigneeIdx != -1 && nonNull(assigneeMap.get(row[assigneeIdx]))
