@@ -598,7 +598,8 @@
       "maxTemplatesReached": "Maximum number of custom templates (200) has been reached",
       "nameRequired": "Please enter template name",
       "templateTypeRequired": "Please select template type",
-      "systemTemplate": "System Template"
+      "systemTemplate": "System Template",
+      "deleteConfirm": "Confirm to delete template 「{name}」?"
     },
     "templateContent": "Template Content"
   }

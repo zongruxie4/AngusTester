@@ -14,7 +14,7 @@ export default class API {
     return http.patch(`${baseUrl}`, params);
   }
 
-  deleteTemplate (templateId: number): Promise<[Error | null, any]> {
+  deleteTemplate (templateId: string): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${templateId}`);
   }
 
