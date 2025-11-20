@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.domain.test.template.content;
 
 import cloud.xcan.angus.core.tester.domain.test.template.TestTemplateType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -10,11 +11,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     property = "templateType"
 )
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = TestPlanTemplateContent.class, name = "templateType"),
-    @JsonSubTypes.Type(value = TestCaseTemplateContent.class, name = "templateType")
+    @JsonSubTypes.Type(value = TestPlanTemplateContent.class, name = "TEST_PLAN"),
+    @JsonSubTypes.Type(value = TestCaseTemplateContent.class, name = "TEST_CASE")
 })
 public interface TestTemplateContent {
 
+  // Inner parameter
+  @JsonIgnore
   TestTemplateType getTemplateType();
 
 }
