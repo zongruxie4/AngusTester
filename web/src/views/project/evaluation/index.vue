@@ -252,8 +252,8 @@ onMounted(() => {
             <Icon icon="icon-pingce" class="text-purple-600" />
           </div>
           <div>
-            <h2 class="text-base font-medium text-gray-900">测评管理</h2>
-            <p class="text-3.5 text-gray-500 mt-0.5">对项目、应用、计划进行综合质量测评</p>
+            <h2 class="text-base font-medium text-gray-900">{{ t('evaluation.introduce.aboutAssessment') }}</h2>
+            <p class="text-3.5 text-gray-500 mt-0.5">{{ t('evaluation.introduce.description') }}</p>
           </div>
         </div>
         <div class="flex items-center space-x-3">
