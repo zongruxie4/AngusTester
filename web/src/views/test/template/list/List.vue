@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button, Card, Dropdown, Menu, Tag } from 'ant-design-vue';
-import { Icon, IconMore, NoData } from '@xcan-angus/vue-ui';
+import { Icon, NoData } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { TestTemplateDetail } from '../types';
 import { TestTemplateType } from '@/enums/enums';
@@ -66,15 +66,15 @@ const handleAdd = () => {
  * Get dropdown menu items for template actions
  */
 const getDropdownItems = (template: TestTemplateDetail) => {
-  const items = [];
+  const items: {key: string, label: string, danger?: boolean}[] = [];
   if (!template.isSystem) {
     items.push({
       key: 'edit',
-      label: t('common.edit')
+      label: t('actions.edit')
     });
     items.push({
       key: 'delete',
-      label: t('common.delete'),
+      label: t('actions.delete'),
       danger: true
     });
   }
@@ -102,13 +102,13 @@ const handleDropdownClick = (template: TestTemplateDetail, key: string) => {
       </Button>
     </div>
 
-    <div v-if="!loading && dataList.length === 0" class="flex-1 flex items-center justify-center py-20">
+    <div v-if="!loading && props.dataList.length === 0" class="flex-1 flex items-center justify-center py-20">
       <NoData />
     </div>
 
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <Card
-        v-for="template in dataList"
+        v-for="template in props.dataList"
         :key="template.id"
         class="template-card"
         :class="{ 'system-template': template.isSystem }">
@@ -133,7 +133,7 @@ const handleDropdownClick = (template: TestTemplateDetail, key: string) => {
                   </Menu.Item>
                 </Menu>
               </template>
-              <IconMore class="cursor-pointer" />
+               <Icon icon="icon-gengduo" />
             </Dropdown>
           </div>
         </template>

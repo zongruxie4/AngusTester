@@ -20,7 +20,6 @@ type Props = {
   tips: string;
   okAction: string;
   title?: string;
-  scenarioIds: string[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -105,7 +104,7 @@ const modalTitle = computed(() => props.title || t('scenario.list.execTest.title
           name="radioGroup"
           @change="radioChange">
           <Radio value="none">{{ t('scenario.list.execTest.radioOptions.useDefault') }}</Radio>
-          <Radio value="checked">{{ t('scenario.list.execTest.radioOptions.modifyConfig') }}</Radio>
+          <Radio value="checked" :disabled="!props.scenarioId">{{ t('scenario.list.execTest.radioOptions.modifyConfig') }}</Radio>
         </RadioGroup>
       </div>
 

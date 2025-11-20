@@ -17,7 +17,7 @@ import { TestMenuKey } from '@/views/test/menu';
 
 import { PlanDetail, PlanEditFormState } from '../types';
 import { BasicProps } from '@/types/types';
-import { FuncPlanPermission, FuncPlanStatus } from '@/enums/enums';
+import { FuncPlanPermission, FuncPlanStatus, TestTemplateType } from '@/enums/enums';
 
 const { t } = useI18n();
 
@@ -33,6 +33,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/auth/AuthorizeModal.vue'));
 const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 const TesterSelect = defineAsyncComponent(() => import('./TesterSelect.vue'));
+const DropdownTemplateSelect = defineAsyncComponent(() => import('@/components/test/DropdownTemplateSelect.vue'));
 
 // Injected dependencies
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
@@ -521,6 +522,14 @@ const refreshPlanData = () => {
 
   loadPlanData(planId);
 };
+
+const handleSelectTemplate = (templateData: {templateContent: {testingScope: string, testingObjectives: string, acceptanceCriteria: string, otherInformation: string}}) => {
+  const {testingScope, testingObjectives, acceptanceCriteria, otherInformation} = templateData.templateContent;
+  formState.value.testingScope = testingScope;
+  formState.value.testingObjectives = testingObjectives;
+  formState.value.acceptanceCriteria = acceptanceCriteria;
+  formState.value.otherInformation = otherInformation;
+}
 
 /**
  * Loads plan detail data from the API.
@@ -1091,6 +1100,9 @@ onMounted(() => {
         v-model:activeKey="activeTabKey"
         size="small"
         class="pl-5 planEditTab">
+        <template #rightExtra>
+          <DropdownTemplateSelect :templateType="TestTemplateType.TEST_PLAN" @change="handleSelectTemplate" />
+        </template>
         <TabPane key="testingObjectives" forceRender>
           <template #tab>
             <div class="text-right pr-2">

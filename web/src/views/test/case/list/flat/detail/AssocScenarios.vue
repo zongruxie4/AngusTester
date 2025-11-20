@@ -12,11 +12,16 @@ import { useRouter } from 'vue-router';
 const SelectScenarioByModuleModal = defineAsyncComponent(() => import('@/components/function/SelectScenarioByModuleModal.vue'));
 const ExecTestModal = defineAsyncComponent(() => import('@/views/scenario/scenario/list/ExecTest.vue'));
 
-const props = withDefaults(defineProps<AssocScenarioProps>(), {
+
+interface Props extends AssocScenarioProps {
+  assocScenariosCount: number;
+}
+const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   caseId: undefined,
+  assocScenariosCount: 0
 });
 
 const { t } = useI18n();
@@ -24,6 +29,7 @@ const router = useRouter();
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'editSuccess'): void;
+  (event: 'update:assocScenariosCount', value: number): void;
 }>();
 
 const isSubmitting = ref(false);
@@ -95,7 +101,7 @@ const handleExecScenario = async (scenarioRecord) => {
 
 const handleBatchExecScenarios = () => {
   selectedScenarioIds.value = dataSource.value.map((item: any) => item.id);
-  isExecScenarioModalVisible.value = true;
+  handleExecScenarioOk([]);
 };
 
 const handleExecScenarioOk = async(params: any) => {
@@ -113,9 +119,12 @@ const tableRowSelection = ref({
   onChange: (selectedRowKeys: string[]) => {
     selectedScenarioIds.value = selectedRowKeys;
   },
-  getCheckboxProps: (record: any) => ({
-    disabled: !!record.lastExecId
-  })
+  getCheckboxProps: (record: any) => {
+    return {
+      disabled: !!record.lastExecId
+    }
+  },
+  hideSelectAll: true
 });
 
 const columns = [
@@ -183,6 +192,7 @@ const loadScenarioList = async () => {
   }
   isLoading.value = false;
   dataSource.value = response?.data || [];
+  emit('update:assocScenariosCount', dataSource.value.length);
 };
 
 const handleOpenScenarioDetail = (record: any) => {
@@ -228,6 +238,7 @@ onMounted(() => {
       :pagination="false"
       :rowSelection="tableRowSelection"
       :loading="isLoading"
+      rowKey="id"
       size="small"
       noDataSize="small"
       :noDataText="t('common.noData')">
@@ -238,9 +249,6 @@ onMounted(() => {
             size="small"
             @click="handleOpenScenarioDetail(record)">
             {{ record.name }}
-            <!-- <RouterLink :to="`/scenario#scenario?id=${record.id}&name=${record.name}&plugin=${record.plugin}&type=detail`">
-             
-            </RouterLink> -->
           </Button>
         </template>
 

@@ -52,7 +52,7 @@ export const createMenuItems = (
     {
       name: t('testTemplate.title'),
       key: TestMenuKey.TEMPLATES,
-      icon: 'icon-moban'
+      icon: 'icon-kanbanshitu'
     },
     {
       name: t('trash.title'),

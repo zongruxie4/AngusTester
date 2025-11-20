@@ -36,7 +36,7 @@ const dataList = ref<TestTemplateDetail[]>([]);
  */
 const loadData = async () => {
   isLoading.value = true;
-  const [error, res] = await testTemplate.getTemplateList();
+  const [error, res] = await testTemplate.getTemplateList({projectId: props.projectId});
   isDataLoaded.value = true;
   isLoading.value = false;
 
@@ -49,6 +49,7 @@ const loadData = async () => {
     return;
   }
 
+  debugger;
   const data = res?.data;
   if (data) {
     dataList.value = (data || []) as TestTemplateDetail[];
@@ -107,12 +108,13 @@ const handleDelete = async (templateData: TestTemplateDetail) => {
  * Handles template add action
  */
 const handleAdd = () => {
+  const newId = utils.uuid();
   addTabPane({
-    _id: utils.uuid(),
+    _id: newId,
     name: t('testTemplate.actions.addTemplate'),
     value: 'templateEdit',
     noCache: true,
-    data: { _id: utils.uuid() }
+    data: { _id: newId }
   });
 };
 

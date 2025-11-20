@@ -85,6 +85,8 @@ const hasNextData = ref(false);
 const hasPreviousData = ref(false);
 let isFirstNavigation = true;
 
+const assocScenariosCount = ref<number>(0);
+
 let parameterDatabase;
 /**
  * Navigate to adjacent case (previous/next) and refresh detail.
@@ -563,6 +565,11 @@ defineExpose({
             <span>{{ t('actions.copyLink') }}</span>
           </Button>
         </template>
+
+        <Button class="mt-2 mr-2" size="small" @click="handleActionClick('saveModule')">
+          <Icon class="mr-1" icon="icon-baocun" />
+          <span>{{ t('actions.saveModule') }}</span>
+        </Button>
       </div>
 
       <div v-if="props.tabKey" class="whitespace-nowrap">
@@ -636,16 +643,17 @@ defineExpose({
           @editSuccess="onEditSuccess" />
       </TabPane>
 
-      <TabPane key="assocScenarios">
+      <TabPane key="assocScenarios" forceRender>
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('common.assocScenarios') }}</span>
-            <span>({{ caseDetail?.refScenarioInfos?.length || 0 }})</span>
+            <span>({{ assocScenariosCount }})</span>
           </div>
         </template>
-
         <AssocScenariosTab
+          v-model:assocScenariosCount="assocScenariosCount"
           :projectId="projectId"
+          :userInfo="props.userInfo"
           :caseId="caseDetail?.id" />
       </TabPane>
 

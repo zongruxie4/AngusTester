@@ -8,7 +8,7 @@ import { testTemplate } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TestTemplateEditFormState, TestTemplateDetail } from '../types';
 import { BasicProps } from '@/types/types';
-import { TestTemplateType, CaseStepView } from '@/enums/enums';
+import { TestTemplateType, CaseStepView, TestLayer, TestPurpose } from '@/enums/enums';
 import { CaseTestStep } from '@/views/test/types';
 import CaseSteps from '@/views/test/case/list/CaseSteps.vue';
 
@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
 });
 
 // Async components
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
 // Injected dependencies
@@ -52,7 +53,11 @@ const formState = ref<TestTemplateEditFormState>({
     acceptanceCriteria: '',
     otherInformation: '',
     stepView: CaseStepView.TABLE,
-    steps: []
+    steps: [],
+    testLayer: TestLayer.UI,
+    testPurpose: TestPurpose.FUNCTIONAL,
+    description: '',
+    precondition: ''
   }
 });
 
@@ -91,10 +96,7 @@ const loadTemplateDetail = async () => {
   loading.value = false;
 
   if (error) {
-    notification.error({
-      message: t('common.error'),
-      description: error.message || t('testTemplate.messages.loadFailed')
-    });
+    notification.error(error.message || t('testTemplate.messages.loadFailed'));
     return;
   }
 
@@ -105,17 +107,21 @@ const loadTemplateDetail = async () => {
     templateDetailData.value = template;
     const templateType = template.templateType as TestTemplateType;
     const templateContent = template.templateContent || {};
+
+    updateTabPane({name: template.name, _id: template.id});
     
     // Initialize stepView and steps for test case template
     let stepView = CaseStepView.TABLE;
     let steps: CaseTestStep[] = [];
-    
+    let testLayer = TestLayer.UI;
+    let testPurpose = TestPurpose.FUNCTIONAL;
     if (templateType === TestTemplateType.TEST_CASE) {
-      stepView = (templateContent.stepView as CaseStepView) || CaseStepView.TABLE;
+      stepView = (templateContent.stepView?.value as CaseStepView) || CaseStepView.TABLE;
       steps = templateContent.steps || [];
-      stepDefaultValue.value = steps.length > 0 ? steps : [];
+      testLayer = templateContent.testLayer || TestLayer.UI;
+      testPurpose = templateContent.testPurpose || TestPurpose.FUNCTIONAL;
     }
-    
+
     formState.value = {
       id: template.id,
       name: template.name,
@@ -129,7 +135,9 @@ const loadTemplateDetail = async () => {
         precondition: templateContent.precondition || '',
         stepView: stepView,
         steps: steps,
-        description: templateContent.description || ''
+        description: templateContent.description || '',
+        testLayer: testLayer,
+        testPurpose: testPurpose
       }
     };
     originalFormState.value = JSON.parse(JSON.stringify(formState.value));
@@ -145,8 +153,20 @@ const prepareFormParams = () => {
   // Ensure templateContent has templateType
   if (params.templateContent) {
     params.templateContent.templateType = params.templateType as TestTemplateType;
+    if (params.templateType === TestTemplateType.TEST_CASE) {
+      delete params.templateContent.testingScope;
+      delete params.templateContent.testingObjectives;
+      delete params.templateContent.acceptanceCriteria;
+      delete params.templateContent.otherInformation;
+    } else {
+      delete params.templateContent.precondition;
+      delete params.templateContent.stepView;
+      delete params.templateContent.steps;
+      delete params.templateContent.description;
+      delete params.templateContent.testLayer;
+      delete params.templateContent.testPurpose;
+    }
   }
-
   return params;
 };
 
@@ -170,14 +190,11 @@ const handleTemplateUpdate = async () => {
 
   const params = prepareFormParams();
   loading.value = true;
-  const [error] = await testTemplate.updateTemplate(params);
+  const [error] = await testTemplate.updateTemplate({...params});
   loading.value = false;
   
   if (error) {
-    notification.error({
-      message: t('common.error'),
-      description: error.message || t('testTemplate.messages.updateFailed')
-    });
+    notification.error( error.message || t('testTemplate.messages.updateFailed'));
     return;
   }
 
@@ -199,7 +216,7 @@ const handleTemplateUpdate = async () => {
 const handleTemplateCreation = async () => {
   const params = prepareFormParams();
   loading.value = true;
-  const [error, res] = await testTemplate.addTemplate(params);
+  const [error] = await testTemplate.addTemplate({...params});
   loading.value = false;
   
   if (error) {
@@ -211,18 +228,18 @@ const handleTemplateCreation = async () => {
   }
 
   notification.success(t('actions.tips.addSuccess'));
-
-  const currentTabId = props.data?._id;
-  const newTemplateId = res?.data?.id;
-  const name = params.name;
-  if (newTemplateId && currentTabId) {
-    replaceTabPane(currentTabId, {
-      _id: newTemplateId,
-      uiKey: newTemplateId,
-      name,
-      data: { _id: newTemplateId, id: newTemplateId }
-    });
-  }
+  // const currentTabId = props.data?._id;
+  // const newTemplateId = res?.data?.id;
+  // const name = params.name;
+  // if (newTemplateId && currentTabId) {
+  //   replaceTabPane(currentTabId, {
+  //     _id: newTemplateId,
+  //     uiKey: newTemplateId,
+  //     name,
+  //     data: { _id: newTemplateId, id: newTemplateId }
+  //   });
+  // }
+  handleCancel();
 };
 
 /**
@@ -245,7 +262,7 @@ const handleFormSubmit = async () => {
  * Handles cancel action
  */
 const handleCancel = () => {
-  deleteTabPane([props.data?._id || '']);
+  props.data?._id && deleteTabPane([props.data?._id]);
 };
 
 /**
@@ -319,11 +336,11 @@ onMounted(() => {
             {{ isEditMode ? t('testTemplate.actions.editTemplate') : t('testTemplate.actions.addTemplate') }}
           </div>
           <div class="flex space-x-2">
-            <Button @click="handleCancel">
-              {{ t('common.cancel') }}
+            <Button @click="handleCancel" size="small">
+              {{ t('actions.cancel') }}
             </Button>
-            <Button type="primary" @click="handleFormSubmit">
-              {{ t('common.save') }}
+            <Button type="primary" @click="handleFormSubmit" size="small" >
+              {{ t('actions.save') }}
             </Button>
           </div>
         </div>
@@ -359,37 +376,61 @@ onMounted(() => {
             <FormItem :label="t('testTemplate.columns.testingScope')">
               <RichEditor
                 ref="scopeRichRef"
-                v-model="formState.templateContent.testingScope"
+                v-model:value="formState.templateContent.testingScope"
                 :options="{placeholder: t('testPlan.placeholders.testingScopePlaceholder')}" />
             </FormItem>
 
             <FormItem :label="t('testTemplate.columns.testingObjectives')">
               <RichEditor
                 ref="objectiveRichRef"
-                v-model="formState.templateContent.testingObjectives"
+                v-model:value="formState.templateContent.testingObjectives"
                 :options="{placeholder: t('testPlan.placeholders.testingObjectivesPlaceholder')}" />
             </FormItem>
 
             <FormItem :label="t('testTemplate.columns.acceptanceCriteria')">
               <RichEditor
                 ref="criteriaRichRef"
-                v-model="formState.templateContent.acceptanceCriteria"
+                v-model:value="formState.templateContent.acceptanceCriteria"
                 :options="{placeholder: t('testPlan.placeholders.acceptanceCriteriaPlaceholder')}" />
             </FormItem>
 
             <FormItem :label="t('testTemplate.columns.otherInformation')">
               <RichEditor
                 ref="infoRichRef"
-                v-model="formState.templateContent.otherInformation"
+                v-model:value="formState.templateContent.otherInformation"
                 :options="{placeholder: t('testPlan.placeholders.otherInformationPlaceholder')}" />
             </FormItem>
           </template>
 
           <!-- Test Case Template Content -->
           <template v-if="formState.templateType === TestTemplateType.TEST_CASE">
+
+            <div class="flex space-x-2">
+              <FormItem
+                name="testLayer"
+                :label="t('common.testLayer')"
+                class="flex-1"
+                :rules="[{ required: true, message: t('common.placeholders.selectTestLayer') }]">
+                <SelectEnum
+                  v-model:value="formState.templateContent.testLayer"
+                  enumKey="TestLayer"
+                  size="small" />
+              </FormItem>
+
+              <FormItem
+                name="testPurpose"
+                :label="t('common.testPurpose')"
+                class="flex-1"
+                :rules="[{ required: true, message: t('common.placeholders.selectTestPurpose') }]">
+                  <SelectEnum
+                    v-model:value="formState.templateContent.testPurpose"
+                    enumKey="TestPurpose"
+                    size="small" />
+                </FormItem>
+            </div>
             <FormItem :label="t('common.precondition')">
               <RichEditor
-                v-model="formState.templateContent.precondition"
+                v-model:value="formState.templateContent.precondition"
                 :options="{placeholder: t('testCase.messages.enterPrecondition')}" />
             </FormItem>
 
@@ -411,7 +452,7 @@ onMounted(() => {
 
               <CaseSteps
                 v-model:value="formState.templateContent.steps"
-                :stepView="formState.templateContent.stepView || CaseStepView.TABLE"
+                :stepView="formState.templateContent.stepView"
                 :defaultValue="stepDefaultValue"
                 :readonly="false"
                 :showOutBorder="true" />
@@ -419,7 +460,7 @@ onMounted(() => {
 
             <FormItem :label="t('common.description')">
               <RichEditor
-                v-model="formState.templateContent.description"
+                v-model:value="formState.templateContent.description"
                 :options="{placeholder: t('common.placeholders.inputDescription30')}" />
             </FormItem>
           </template>

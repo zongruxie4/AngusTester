@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, watch, Ref } from 'vue';
+import { computed, inject, onMounted, ref, watch, Ref, defineAsyncComponent } from 'vue';
 import {
   DatePicker, Hints, Icon, IconTask, Input, Modal, notification, Select, Spin, Dropdown
 } from '@xcan-angus/vue-ui';
@@ -9,7 +9,7 @@ import {
   EvalWorkloadMethod, Priority, SearchCriteria, enumUtils, TESTER,
   upload, localStore, utils, appContext
 } from '@xcan-angus/infra';
-import { CaseStepView, SoftwareVersionStatus, TestLayer, TestPurpose } from '@/enums/enums';
+import { CaseStepView, SoftwareVersionStatus, TestLayer, TestPurpose, TestTemplateType } from '@/enums/enums';
 import dayjs from 'dayjs';
 import { testCase, modules, project } from '@/api/tester';
 import { DATE_TIME_FORMAT, TIME_FORMAT, MAX_FILE_SIZE_MB, UPLOAD_TEST_FILE_KEY } from '@/utils/constant';
@@ -22,6 +22,8 @@ import TaskPriority from '@/components/task/TaskPriority.vue';
 import RichEditor from '@/components/editor/richEditor/index.vue';
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
 import CaseSteps from '@/views/test/case/list/CaseSteps.vue';
+
+const DropdownTemplateSelect = defineAsyncComponent(() => import('@/components/test/DropdownTemplateSelect.vue'));
 
 const { t } = useI18n();
 
@@ -249,6 +251,17 @@ const prepareFormParams = () => {
     delete params.actualWorkload;
   }
   return params;
+};
+
+
+const handleSelectTemplate = (templateData: {templateContent: {description: string, testLayer: TestLayer, testPurpose: TestPurpose, precondition: string, stepView: EnumMessage<CaseStepView>, steps: any[],}}) => {
+  const {description, testLayer, testPurpose, precondition, stepView, steps} = templateData.templateContent;
+  caseFormData.value.description = description;
+  caseFormData.value.testLayer = testLayer;
+  caseFormData.value.testPurpose = testPurpose;
+  caseFormData.value.precondition = precondition;
+  caseFormData.value.stepView = stepView?.value || CaseStepView.TABLE;
+  caseFormData.value.steps = steps;
 };
 
 const isLoading = ref(false);
@@ -649,16 +662,23 @@ onMounted(() => {
         class="h-full">
         <div class="flex overflow-y-auto -mr-4.5 pr-4.5 pb-5" :style="{height: isZoom?'100vh':'75vh'}">
           <div class="flex-1">
-            <FormItem
-              :label="t('common.name')"
-              name="name"
-              :rules="[{ required: true, message: t('testCase.messages.pleaseEnterCaseName') }]">
-              <Input
-                v-model:value="caseFormData.name"
-                size="small"
-                :maxlength="400"
-                :placeholder="t('testCase.messages.enterCaseName')" />
-            </FormItem>
+            <div class="flex items-center justify-between space-x-2">
+              <FormItem
+                :label="t('common.name')"
+                name="name"
+                class="flex-1"
+                :rules="[{ required: true, message: t('testCase.messages.pleaseEnterCaseName') }]">
+                <Input
+                  v-model:value="caseFormData.name"
+                  size="small"
+                  :maxlength="400"
+                  :placeholder="t('testCase.messages.enterCaseName')" />
+                 
+              </FormItem>
+              <FormItem label="&nbsp;" name="selectTemplate">
+                <DropdownTemplateSelect :templateType="TestTemplateType.TEST_CASE" @change="handleSelectTemplate" />
+              </FormItem>
+            </div>
 
             <div class="flex space-x-2">
               <FormItem
@@ -681,12 +701,6 @@ onMounted(() => {
                     v-model:value="caseFormData.testPurpose"
                     enumKey="TestPurpose"
                     size="small" />
-                </FormItem>
-
-                <FormItem label="&nbsp;" name="selectTemplate">
-                  <Button size="small" type="primary">
-                    选择模版
-                  </Button>
                 </FormItem>
             </div>
 
