@@ -2,12 +2,14 @@
 import { defineAsyncComponent } from 'vue';
 import { Avatar, Button, Pagination, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
-import { Colon, Dropdown, Icon, Image, NoData, Popover } from '@xcan-angus/vue-ui';
+import { Colon, Dropdown, Icon, Image, NoData, Popover, notification } from '@xcan-angus/vue-ui';
 import { download } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 import { PlanDetail } from '../types';
 import { TestMenuKey } from '@/views/test/menu';
+import { TestTemplateType } from '@/enums/enums';
+import { testTemplate } from '@/api/tester';
 
 const RichText = defineAsyncComponent(() => import('@/components/editor/richEditor/textContent/index.vue'));
 
@@ -124,6 +126,25 @@ const handleGrantPermission = (planData: PlanDetail) => {
   emit('grantPermission', planData);
 };
 
+
+const handleSaveModule = async (planData: PlanDetail) => {
+
+  const {testingScope, testingObjectives, acceptanceCriteria, otherInformation} = planData;
+  const templateContent = {
+    testingScope,
+    testingObjectives,
+    acceptanceCriteria,
+    otherInformation,
+    templateType: TestTemplateType.TEST_PLAN
+  };
+
+  const [error] = await testTemplate.addTemplate({templateContent, name: planData.name, templateType: TestTemplateType.TEST_PLAN});
+  if (error) {
+    return;
+  }
+  notification.success(t('actions.tips.saveSuccess'));
+};
+
 /**
  * Navigates to cases for the selected plan
  * @param planData - The plan data
@@ -141,7 +162,7 @@ const handleGoToCases = (planData: PlanDetail) => {
 const handleDropdownClick = (
   planData: PlanDetail,
   itemIndex: number,
-  actionKey: 'delete' | 'block' | 'grant'
+  actionKey: 'delete' | 'block' | 'grant' | 'saveModule'
 ) => {
   switch (actionKey) {
     case 'delete':
@@ -152,6 +173,9 @@ const handleDropdownClick = (
       break;
     case 'grant':
       handleGrantPermission(planData);
+      break;
+    case 'saveModule':
+      handleSaveModule(planData);
       break;
     default:
       emit('dropdownClick', planData, itemIndex, actionKey);
@@ -186,6 +210,11 @@ const dropdownMenuItems = [
     key: 'grant',
     icon: 'icon-quanxian1',
     name: t('actions.permission')
+  },
+  {
+    key: 'saveModule',
+    icon: 'icon-baocun',
+    name: t('actions.saveModule')
   }
 ];
 </script>

@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, provide, ref, watch, Ref } from 'vue';
 import { Tooltip } from 'ant-design-vue';
-import { AsyncComponent, BrowserTab, Icon, modal, notification, Spin, VuexHelper } from '@xcan-angus/vue-ui';
+import { AsyncComponent, BrowserTab, Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { appContext } from '@xcan-angus/infra';
 import { useRoute, useRouter } from 'vue-router';
 import { testCase } from '@/api/tester';
-import { CaseTestResult } from '@/enums/enums';
+import { CaseTestResult, TestTemplateType } from '@/enums/enums';
 import { TestMenuKey } from '@/views/test/menu';
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
+import { testTemplate } from '@/api/tester';
 
 const { t } = useI18n();
 
 // Type definitions
-export type CaseActionAuth = 'edit'| 'debug' | 'review' | 'clone' | 'move' | 'delete' | 'updateTestResult' | 'updateTestResult_passed' | 'updateTestResult_notPassed' | 'updateTestResult_blocked' | 'updateTestResult_canceled' | 'resetTestResult' | 'resetReviewResult' | 'retestResult' | 'copy' | 'addFavourite' | 'addFollow' | 'cancelFollow' | 'cancelFavourite' | 'copyUrl'
+export type CaseActionAuth = 'edit'| 'debug' | 'review' | 'clone' | 'move' | 'delete' | 'updateTestResult' | 'updateTestResult_passed' | 'updateTestResult_notPassed' | 'updateTestResult_blocked' | 'updateTestResult_canceled' | 'resetTestResult' | 'resetReviewResult' | 'retestResult' | 'copy' | 'addFavourite' | 'addFollow' | 'cancelFollow' | 'cancelFavourite' | 'copyUrl'| 'saveModule';
 
 // Component imports
 const CaseList = defineAsyncComponent(() => import('@/views/test/case/list/index.vue'));
@@ -188,6 +189,9 @@ const handleDetailAction = (actionType: CaseActionAuth, caseData: CaseDetail, ta
     case 'addFollow':
       handleFollow(caseData);
       break;
+    case 'saveModule':
+      handleSaveModule(caseData);
+      break;
   }
 };
 
@@ -245,6 +249,31 @@ const handleFollow = async (caseData: CaseDetail) => {
   updateFollowFavourite('addFollow');
 };
 
+
+const handleSaveModule = async (caseData: CaseDetail) => {
+  modal.confirm({
+    title: t('actions.saveModule'),
+    content: t('testCase.messages.saveModuleConfirm'),
+    onOk: async () => {
+      const {name, description, testLayer, testPurpose, precondition, stepView, steps} = caseData;
+      const templateContent = {
+        description,
+        testLayer,
+        testPurpose,
+        precondition,
+        stepView,
+        steps,
+        templateType: TestTemplateType.TEST_CASE
+      };
+
+      const [error] = await testTemplate.addTemplate({templateContent, name, templateType: TestTemplateType.TEST_CASE});
+      if (error) {
+        return;
+      }
+      notification.success(t('actions.tips.saveSuccess'));
+    }
+  });
+};
 // Case editing functionality
 const editCaseVisible = ref(false);
 const isDebug = ref(false);

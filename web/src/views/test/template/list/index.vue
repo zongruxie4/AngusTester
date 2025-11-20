@@ -41,10 +41,7 @@ const loadData = async () => {
   isLoading.value = false;
 
   if (error) {
-    notification.error({
-      message: t('common.error'),
-      description: error.message || t('testTemplate.messages.loadFailed')
-    });
+    notification.error(error.message || t('testTemplate.messages.loadFailed'));
     dataList.value = [];
     return;
   }
@@ -74,30 +71,20 @@ const handleEdit = (templateData: TestTemplateDetail) => {
  */
 const handleDelete = async (templateData: TestTemplateDetail) => {
   if (templateData.isSystem) {
-    notification.warning({
-      message: t('common.warning'),
-      description: t('testTemplate.messages.systemTemplateCannotDelete')
-    });
+    notification.warning(t('testTemplate.messages.systemTemplateCannotDelete'));
     return;
   }
 
   modal.confirm({
-    title: t('common.confirm'),
+    title: t('actions.delete'),
     content: t('testTemplate.messages.deleteConfirm', { name: templateData.name }),
     onOk: async () => {
-      const [error] = await testTemplate.deleteTemplate(Number(templateData.id));
+      const [error] = await testTemplate.deleteTemplate(templateData.id);
       if (error) {
-        notification.error({
-          message: t('common.error'),
-          description: error.message || t('testTemplate.messages.deleteFailed')
-        });
         return;
       }
 
-      notification.success({
-        message: t('common.success'),
-        description: t('testTemplate.messages.deleteSuccess')
-      });
+      notification.success(t('actions.tips.deleteSuccess'));
       loadData();
     }
   });
@@ -107,12 +94,13 @@ const handleDelete = async (templateData: TestTemplateDetail) => {
  * Handles template add action
  */
 const handleAdd = () => {
+  const newId = utils.uuid();
   addTabPane({
-    _id: utils.uuid(),
+    _id: newId,
     name: t('testTemplate.actions.addTemplate'),
     value: 'templateEdit',
     noCache: true,
-    data: { _id: utils.uuid() }
+    data: { _id: newId }
   });
 };
 

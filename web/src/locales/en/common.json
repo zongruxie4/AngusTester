@@ -468,6 +468,7 @@
     "off": "OFF"
   },
   "actions": {
+    "saveModule": "Save as Template",
     "view": "View",
     "detail": "Detail",
     "add": "Add",
