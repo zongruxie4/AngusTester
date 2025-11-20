@@ -782,5 +782,6 @@ export const enumNamespaceMap = new Map<any, string>([
   [AssociateTargetType, 'xcm.enum.AssociateTargetType'],
   [CombinedTargetType, 'xcm.enum.CombinedTargetType'],
   [SmokeCheckSetting, 'xcm.enum.SmokeCheckSetting'],
-  [SecurityCheckSetting, 'xcm.enum.SecurityCheckSetting']
+  [SecurityCheckSetting, 'xcm.enum.SecurityCheckSetting'],
+  [TestTemplateType, 'xcm.enum.TestTemplateType']
 ]);

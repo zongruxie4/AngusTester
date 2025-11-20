@@ -104,6 +104,15 @@ const handleAdd = () => {
   });
 };
 
+const handleView = (templateData: TestTemplateDetail) => {
+  addTabPane({
+    _id: templateData.id + 'detail',
+    value: 'templateDetail',
+    noCache: true,
+    data: { _id: templateData.id + 'detail', id: templateData.id }
+  });
+};
+
 // lifecycle hooks
 onMounted(() => {
   watch(() => props.notify, (newValue) => {
@@ -142,7 +151,8 @@ onMounted(() => {
             :loading="isLoading"
             @edit="handleEdit"
             @delete="handleDelete"
-            @add="handleAdd" />
+            @add="handleAdd"
+            @view="handleView" />
         </div>
       </template>
     </Spin>

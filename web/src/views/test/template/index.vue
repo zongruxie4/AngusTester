@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
 // Async Components
 const TemplateList = defineAsyncComponent(() => import('@/views/test/template/list/index.vue'));
 const TemplateEdit = defineAsyncComponent(() => import('@/views/test/template/edit/index.vue'));
+const TemplateDetail = defineAsyncComponent(() => import('@/views/test/template/detail/index.vue'));
 
 // Router and UI References
 const route = useRoute();
@@ -200,6 +201,13 @@ provide('replaceTabPane', replaceTabPane);
 
       <template v-else-if="record.value === 'templateEdit'">
         <TemplateEdit
+          v-bind="record"
+          :userInfo="props.userInfo"
+          :appInfo="props.appInfo"
+          :projectId="props.projectId" />
+      </template>
+      <template v-else-if="record.value === 'templateDetail'">
+        <TemplateDetail
           v-bind="record"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"

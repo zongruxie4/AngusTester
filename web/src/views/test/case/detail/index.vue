@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, ref, Ref, watch } from 'vue';
-import { ActivityInfo, AsyncComponent, Icon, notification, Scroll, SmartComment } from '@xcan-angus/vue-ui';
+import { ActivityInfo, AsyncComponent, Icon, notification, Scroll, SmartComment, Modal, Input } from '@xcan-angus/vue-ui';
 import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
 import {
   appContext, duration, PageQuery, ReviewStatus, SearchCriteria, TESTER, toClipboard, XCanDexie, enumUtils
@@ -9,10 +9,11 @@ import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 import { TestMenuKey } from '@/views/test/menu';
-import { CaseTestResult, CombinedTargetType, FuncPlanPermission, TaskType } from '@/enums/enums';
+import { CaseTestResult, CombinedTargetType, FuncPlanPermission, TaskType, TestTemplateType, CaseStepView } from '@/enums/enums';
 import { testCase, testPlan } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { CaseActionAuth, getActionAuth } from '@/views/test/case/types';
+import { testTemplate } from '@/api/tester';
 
 const CaseDetailTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/index.vue'));
 const ReviewRecordTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/ReviewRecord.vue'));
@@ -274,6 +275,36 @@ const isAddBugModalVisible = ref(false);
 const openAddBugModal = () => {
   isAddBugModalVisible.value = true;
 };
+
+const addTemplateVisible = ref(false);
+const templateName =ref<string | undefined>();
+const openAddTemplate = () => {
+  addTemplateVisible.value = true;
+  templateName.value = undefined;
+};
+
+const handleAddTemplate = async() => {
+  if (!templateName.value?.trim()) {
+    return;
+  }
+  const {name, description, testLayer, testPurpose, precondition, stepView, steps} = caseDetail.value;
+  const templateContent = {
+    description,
+    testLayer,
+    testPurpose,
+    precondition,
+    stepView: stepView?.value || CaseStepView.TABLE,
+    steps,
+    templateType: TestTemplateType.TEST_CASE
+  };
+
+  const [error] = await testTemplate.addTemplate({templateContent, name, templateType: TestTemplateType.TEST_CASE});
+  if (error) {
+    return;
+  }
+  addTemplateVisible.value = false;
+  notification.success(t('actions.tips.saveSuccess'));
+}
 
 const handleAddIssueSuccess = async () => {
   onEditSuccess();
@@ -566,7 +597,7 @@ defineExpose({
           </Button>
         </template>
 
-        <Button class="mt-2 mr-2" size="small" @click="handleActionClick('saveModule')">
+        <Button class="mt-2 mr-2" size="small" @click="openAddTemplate">
           <Icon class="mr-1" icon="icon-baocun" />
           <span>{{ t('actions.saveModule') }}</span>
         </Button>
@@ -800,6 +831,17 @@ defineExpose({
         :taskType="TaskType.BUG"
         :confirmerId="caseDetail?.testerId"
         @ok="handleAddIssueSuccess" />
+    </AsyncComponent>
+
+    <AsyncComponent :visible="addTemplateVisible">
+      <Modal
+        v-model:visible="addTemplateVisible"
+        :title="t('actions.saveModule')"
+        @cancel="addTemplateVisible = false"
+        @ok="handleAddTemplate">
+        <Input v-model:value="templateName" :placeholder="t('testTemplate.placeholders.namePlaceholder')" />
+      </Modal>
+
     </AsyncComponent>
   </div>
 </template>

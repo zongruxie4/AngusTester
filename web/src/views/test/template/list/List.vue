@@ -20,6 +20,7 @@ const emit = defineEmits<{
   edit: [templateData: TestTemplateDetail];
   delete: [templateData: TestTemplateDetail];
   add: [];
+  view: [templateData: TestTemplateDetail];
 }>();
 
 const { t } = useI18n();
@@ -106,6 +107,11 @@ const handleDropdownClick = (template: TestTemplateDetail, key: string) => {
     handleDelete(template);
   }
 };
+
+const handleView = (template: TestTemplateDetail) => {
+  emit('view', template);
+};
+
 </script>
 
 <template>
@@ -126,7 +132,7 @@ const handleDropdownClick = (template: TestTemplateDetail, key: string) => {
       <NoData />
     </div>
 
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-3">
+    <div v-else class="grid grid-cols-1 md:grid-cols-2  gap-4 text-3 template-list-wrapper">
       <Card
         v-for="template in showData"
         :key="template.id"
@@ -135,7 +141,7 @@ const handleDropdownClick = (template: TestTemplateDetail, key: string) => {
         <template #title>
           <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2 flex-1 min-w-0">
-              <span class="font-semibold text-3.5 truncate text-theme-special">{{ template.name }}</span>
+              <span class="font-semibold text-3.5 truncate text-theme-special" @click="handleView(template)">{{ template.name }}</span>
               <Tag v-if="template.isSystem" color="orange">
                 {{ t('testTemplate.messages.systemTemplate') }}
               </Tag>
@@ -190,6 +196,19 @@ const handleDropdownClick = (template: TestTemplateDetail, key: string) => {
 
 .system-template {
   border-color: #ffa940;
+}
+
+
+@media (max-width: 1200px) {
+  .template-list-wrapper {
+    @apply lg:grid-cols-2
+  }
+}
+
+@media (min-width: 1200px) {
+  .template-list-wrapper {
+    @apply lg:grid-cols-4
+  }
 }
 </style>
 
