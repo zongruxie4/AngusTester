@@ -126,7 +126,7 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
   @Override
   public FuncCaseCount count(Set<SearchCriteria> criteria) {
     // @formatter:off
-    StringBuilder groupBySql = new StringBuilder("SELECT a.`review_status`,a.test_result, COUNT(*) num FROM func_case a ");
+    StringBuilder groupBySql = new StringBuilder("SELECT a.review_status, a.test_result, a.test_layer, COUNT(*) num FROM func_case a ");
     StringBuilder overdueSql = new StringBuilder("SELECT COUNT(a.id) FROM func_case a ");
     StringBuilder oneTimePassReviewSql = new StringBuilder("SELECT COUNT(a.id) FROM func_case a ");
     StringBuilder alreadyTestedSql = new StringBuilder("SELECT COUNT(a.id) FROM func_case a ");
