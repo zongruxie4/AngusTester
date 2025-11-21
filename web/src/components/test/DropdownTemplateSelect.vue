@@ -51,6 +51,6 @@ onMounted(() => {
     class="!w-40"
     :options="templateList"
     allowClear
-    :placeholder="t('test.actions.selectTemplate')"
+    :placeholder="t('testCase.actions.selectTemplate')"
     @change="handleTemplateClick" />
 </template>
