@@ -57,7 +57,7 @@ import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecQuery;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecSampleExtcQuery;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecSampleQuery;
-import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
+import cloud.xcan.angus.core.tester.application.query.config.NodeInfoQuery;
 import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
 import cloud.xcan.angus.core.tester.domain.exec.Exec;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;

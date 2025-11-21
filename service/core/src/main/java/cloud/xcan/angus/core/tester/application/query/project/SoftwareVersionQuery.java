@@ -1,0 +1,27 @@
+package cloud.xcan.angus.core.tester.application.query.project;
+
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.tester.domain.project.version.SoftwareVersion;
+import java.util.Collection;
+import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+public interface SoftwareVersionQuery {
+
+  SoftwareVersion detail(Long id);
+
+  Page<SoftwareVersion> list(GenericSpecification<SoftwareVersion> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
+
+  SoftwareVersion checkAndFind(Long id);
+
+  List<SoftwareVersion> checkAndFind(Collection<Long> ids);
+
+  void checkExits(Long projectId, String name);
+
+  void checkNotExits(Long projectId, String name);
+
+  void setVersionProgress(List<SoftwareVersion> versionsDb);
+
+}

@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.application.cmd.mock.impl;
 
-import static cloud.xcan.angus.core.tester.application.query.node.impl.NodeInfoQueryImpl.doHttpPostRequest;
+import static cloud.xcan.angus.core.tester.application.query.config.impl.NodeInfoQueryImpl.doHttpPostRequest;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.AGENT_NOT_RUNNING;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.AGENT_PUSH_START_FAILED;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.AGENT_PUSH_STATUS_FAILED;
@@ -29,7 +29,7 @@ import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceManageCmd;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceMetricsCmd;
-import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
+import cloud.xcan.angus.core.tester.application.query.config.NodeInfoQuery;
 import cloud.xcan.angus.core.tester.domain.config.node.Node;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceApisDeleteDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceApisSyncDto;

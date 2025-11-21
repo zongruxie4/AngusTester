@@ -9,7 +9,7 @@ import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorPerfListRep
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStability;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStabilityListRepo;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStabilitySearchRepo;
-import cloud.xcan.angus.core.tester.infra.persistence.mysql.master.indicator.IndicatorPerfListRepoMysql;
+import cloud.xcan.angus.core.tester.infra.persistence.mysql.master.config.IndicatorPerfListRepoMysql;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import jakarta.annotation.Resource;
 import java.util.Set;

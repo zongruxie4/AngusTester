@@ -11,7 +11,6 @@ import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.jpa.multitenancy.TenantAuditingEntity;
 import cloud.xcan.angus.core.tester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.angus.core.tester.domain.activity.MainTargetActivityResource;
-import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

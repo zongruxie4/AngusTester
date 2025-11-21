@@ -12,7 +12,7 @@ import static cloud.xcan.angus.core.tester.application.converter.ExecConverter.r
 import static cloud.xcan.angus.core.tester.application.converter.ExecConverter.replaceOptionalConfig;
 import static cloud.xcan.angus.core.tester.application.converter.ExecConverter.safeTrialConfiguration;
 import static cloud.xcan.angus.core.tester.application.converter.ScriptConverter.toAngusAddScript;
-import static cloud.xcan.angus.core.tester.application.query.node.impl.NodeInfoQueryImpl.doHttpPostRequest;
+import static cloud.xcan.angus.core.tester.application.query.config.impl.NodeInfoQueryImpl.doHttpPostRequest;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.AGENT_NOT_RUNNING;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.AGENT_PUSH_START_FAILED;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.AGENT_PUSH_STOP_FAILED;
@@ -71,7 +71,7 @@ import cloud.xcan.angus.core.tester.application.cmd.exec.ExecCmd;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecNodeCmd;
 import cloud.xcan.angus.core.tester.application.cmd.script.ScriptCmd;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecQuery;
-import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
+import cloud.xcan.angus.core.tester.application.query.config.NodeInfoQuery;
 import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
 import cloud.xcan.angus.core.tester.domain.exec.Exec;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;

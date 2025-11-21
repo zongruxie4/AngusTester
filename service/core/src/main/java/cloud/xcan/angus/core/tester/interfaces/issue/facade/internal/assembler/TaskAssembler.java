@@ -22,7 +22,6 @@ import cloud.xcan.angus.core.tester.domain.issue.BugLevel;
 import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.issue.TaskStatus;
-import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskAddDto;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskFindDto;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.TaskReplaceDto;

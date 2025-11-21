@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.infra.job;
 
 import cloud.xcan.angus.core.job.JobTemplate;
 import cloud.xcan.angus.core.spring.condition.CloudServiceEditionCondition;
-import cloud.xcan.angus.core.tester.application.cmd.node.NodeCmd;
+import cloud.xcan.angus.core.tester.application.cmd.config.NodeCmd;
 import jakarta.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;

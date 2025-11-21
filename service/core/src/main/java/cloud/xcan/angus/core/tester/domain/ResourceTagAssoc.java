@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.domain;
 
-import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
+import cloud.xcan.angus.core.tester.domain.project.tag.TagTarget;
 import cloud.xcan.angus.spec.experimental.Entity;
 import java.util.List;
 
