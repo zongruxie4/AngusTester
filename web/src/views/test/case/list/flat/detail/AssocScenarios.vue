@@ -142,23 +142,24 @@ const columns = [
   {
     key: 'name',
     dataIndex: 'name',
-    title: '场景名称',
+    title: t('common.scenarioName'),
   },
   {
     key: 'plugin',
     dataIndex: 'plugin',
-    title: '类型',
+    title: t('common.type'),
     width: 80
   },
   {
     key: 'lastExecName',
     dataIndex: 'lastExecName',
-    title: '执行名称',
+    title: t('common.execName'),
+    width: 130
   },
   {
     key: 'scriptType',
     dataIndex: 'scriptType',
-    title: '脚本类型',
+    title: t('common.scriptType'),
     width: 120,
     customRender: ({text}) => {
       return text?.message;
@@ -167,7 +168,7 @@ const columns = [
   {
     key: 'lastExecStatus',
     dataIndex: 'lastExecStatus',
-    title: '执行状态',
+    title: t('common.execStatus'),
     width: 120,
     customRender: ({text}) => {
       return text?.message || t('scenario.list.table.noExecute')
@@ -176,19 +177,19 @@ const columns = [
   {
     key: 'lastExecFailureMessage',
     dataIndex: 'lastExecFailureMessage',
-    title: '失败原因',
+    title: t('common.failureReason'),
     width: 140
   },
   {
     key: 'lastExecDate',
     dataIndex: 'lastExecDate',
-    title: '执行时间',
+    title: t('common.execDate'),
     width: 120
   },
   {
     key: 'action',
     dataIndex: 'action',
-    title: '操作',
+    title: t('common.actions'),
     width: 110
   }
 ];
@@ -232,7 +233,7 @@ onMounted(() => {
         :disabled="!selectedScenarioIds.length"
         @click="handleBatchExecScenarios">
         <Icon icon="icon-zhihang" class="mr-1" />
-        批量执行
+        {{ t('testCase.actions.batchExec') }}
       </Button>
       <Button
         :disabled="dataSource?.length > 19"

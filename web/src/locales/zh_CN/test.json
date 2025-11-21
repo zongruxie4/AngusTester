@@ -130,7 +130,8 @@
       "assocIssues": "关联{name}",
       "assocScenarios": "关联场景",
       "submitBug": "提交Bug",
-      "review": "去评审"
+      "review": "去评审",
+      "batchExec": "批量执行"
     },
     "messages": {
       "caseSetBlocked": "用例设为阻塞中",

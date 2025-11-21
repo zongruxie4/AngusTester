@@ -231,6 +231,7 @@
     "testLayer": "测试对象",
     "testPurpose": "测试目的",
     "assocScenarios": "自动化",
+    "scenarioName": "场景名称",
     "counts": {
       "progress": "进度",
       "totalCount": "总数",

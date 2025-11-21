@@ -130,7 +130,8 @@
       "assocIssues": "Associate {name}",
       "assocScenarios": "Associate Scenarios",
       "submitBug": "Submit Bug",
-      "review": "Go to Review"
+      "review": "Go to Review",
+      "batchExec": "Batch Execute"
     },
     "messages": {
       "caseSetBlocked": "Case set to blocked",

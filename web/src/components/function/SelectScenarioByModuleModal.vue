@@ -2,9 +2,8 @@
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Input, Modal, Table } from '@xcan-angus/vue-ui';
-import { http, duration } from '@xcan-angus/infra';
+import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
-import TestResult from '@/components/test/TestResult.vue';
 import { ScenarioInfo } from '@/views/scenario/scenario/list/types';
 import { scenario } from '@/api/tester/';
 
@@ -31,15 +30,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
-  (e: 'ok', value: number[], rowValue: ScenarioInfo[]): void;
+  (e: 'ok', value: string[], rowValue: ScenarioInfo[]): void;
 }>();
 
 // Component state management
-const selectedScenarioIds = ref<number[]>([]);
+const selectedScenarioIds = ref<string[]>([]);
 const selectedScenarioRows = ref<ScenarioInfo[]>([]);
 const allScenarioData = ref<any[]>([]);
 const isLoading = ref(false);
-const selectedModuleId = ref<number>();
+const selectedModuleId = ref<string>();
 const searchKeywords = ref<string>('');
 
 /**
@@ -97,14 +96,20 @@ const handleSearchFilter = debounce(duration.search, () => {
  * @param selectedRowKeys - Selected row keys
  * @param selectedRows - Selected row data
  */
- const handleRowSelectionChange = (selectedRowKeys: number[], selectedRows: ScenarioInfo[]) => {
+ const handleRowSelectionChange = (selectedRowKeys: string[], selectedRows: ScenarioInfo[]) => {
   selectedScenarioIds.value = selectedRowKeys;
   selectedScenarioRows.value = selectedRows;
 };
 
 // Table row selection configuration
 const tableRowSelection = ref({
-  onChange: handleRowSelectionChange
+  onChange: handleRowSelectionChange,
+  getCheckboxProps: (record: ScenarioInfo) => {
+    return {
+      disabled: !selectedScenarioIds.value.includes(record.id) && (selectedScenarioIds.value.length + props.hadSelectedIds.length > 19)
+    }
+  },
+  hideSelectAll: true
 });
 
 // Component watchers
@@ -127,13 +132,13 @@ const tableColumns = [
   {
     key: 'name',
     title: t('common.name'),
-    dataIndex: 'name',
-    width: '40%'
+    dataIndex: 'name'
   },
   {
     key: 'plugin',
     title: t('common.plugin'),
-    dataIndex: 'plugin'
+    dataIndex: 'plugin',
+    width: '20%'
   },
   {
     key: 'scriptType',
@@ -141,7 +146,8 @@ const tableColumns = [
     dataIndex: 'scriptType',
     customRender: ({text}) => {
       return text?.message;
-    }
+    },
+     width: '30%'
   }
 ];
 </script>
