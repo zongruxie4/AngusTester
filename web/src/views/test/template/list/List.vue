@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, defineAsyncComponent } from 'vue';
 import { Button, Card, Dropdown, Menu, Tag } from 'ant-design-vue';
 import { Icon, NoData, Input } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
@@ -7,7 +7,6 @@ import { TestTemplateDetail } from '../types';
 import { TestTemplateType } from '@/enums/enums';
 import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
-// Props definition
 interface Props {
   dataList: TestTemplateDetail[];
   loading: boolean;
@@ -26,6 +25,8 @@ const emit = defineEmits<{
 const { t } = useI18n();
 
 const searchKeyword = ref<string>('');
+
+const richTextContent = defineAsyncComponent(() => import('@/components/editor/richEditor/textContent/index.vue'));
 
 const handleSearchKeywordChange = debounce(duration.search, (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -164,18 +165,22 @@ const handleView = (template: TestTemplateDetail) => {
           </div>
         </template>
 
-        <div class="flex flex-col space-y-2">
+        <div class="flex flex-col space-y-2 text-3 h-full justify-between">
+          <div v-if="template.templateType === TestTemplateType.TEST_CASE" class="truncate">
+            <richTextContent
+              :value="template.templateContent?.description"
+              :emptyText="t('common.noDescription')" />
+          </div>
+          <div class="truncate" v-if="template.templateType === TestTemplateType.TEST_PLAN">
+            <richTextContent
+              :value="template.templateContent?.otherInformation"
+              :emptyText="t('common.noDescription')" />
+          </div>
           <div class="flex items-center space-x-2">
             <Tag :color="getTemplateTypeColor(template.templateType)">
               {{ getTemplateTypeText(template.templateType) }}
             </Tag>
-          </div>
-
-          <div class="text-3 text-theme-sub-content">
-            <div v-if="template.createdByName">
-              {{ t('common.createdBy') }}: {{ template.createdByName }}
-            </div>
-            <div v-if="template.createdDate">
+            <div>
               {{ t('common.createdDate') }}: {{ template.createdDate }}
             </div>
           </div>
@@ -196,6 +201,9 @@ const handleView = (template: TestTemplateDetail) => {
 
 .system-template {
   border-color: #ffa940;
+}
+:deep(.ant-card-body) {
+  height: calc(100% - 55px);
 }
 
 
