@@ -13,6 +13,7 @@ import cloud.xcan.angus.core.tester.domain.ResourceTagAssoc;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.issue.cases.TaskFuncCaseAssoc;
+import cloud.xcan.angus.core.tester.domain.project.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestStep;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;

@@ -62,6 +62,8 @@ import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
 import cloud.xcan.angus.core.tester.domain.kanban.DataTimeSeries;
 import cloud.xcan.angus.core.tester.domain.project.module.Module;
 import cloud.xcan.angus.core.tester.domain.project.Project;
+import cloud.xcan.angus.core.tester.domain.project.tag.Tag;
+import cloud.xcan.angus.core.tester.domain.project.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.project.version.SoftwareVersion;
 import cloud.xcan.angus.core.tester.domain.project.version.SoftwareVersionStatus;

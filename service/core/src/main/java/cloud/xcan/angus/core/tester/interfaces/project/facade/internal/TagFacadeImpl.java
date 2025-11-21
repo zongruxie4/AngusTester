@@ -8,6 +8,7 @@ import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.project.TagCmd;
 import cloud.xcan.angus.core.tester.application.query.project.TagQuery;
+import cloud.xcan.angus.core.tester.domain.project.tag.Tag;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.TagFacade;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.TagAddDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.TagFindDto;

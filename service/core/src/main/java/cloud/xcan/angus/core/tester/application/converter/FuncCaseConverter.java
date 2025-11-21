@@ -38,6 +38,8 @@ import cloud.xcan.angus.core.tester.domain.issue.count.BurnDownChartCount;
 import cloud.xcan.angus.core.tester.domain.kanban.BurnDownResourceType;
 import cloud.xcan.angus.core.tester.domain.kanban.DataTimeSeries;
 import cloud.xcan.angus.core.tester.domain.project.module.Module;
+import cloud.xcan.angus.core.tester.domain.project.tag.Tag;
+import cloud.xcan.angus.core.tester.domain.project.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.test.FuncTargetType;
 import cloud.xcan.angus.core.tester.domain.test.TestLayer;
 import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaseline;
@@ -88,7 +90,7 @@ public class FuncCaseConverter {
   public static void assembleAddInfo(List<FuncCase> cases, FuncPlan planDb) {
     // Set case code and name prefix
     for (FuncCase case0 : cases) {
-      if(isNull(case0.getId())){
+      if (isNull(case0.getId())) {
         case0.setId(BIDUtils.getId(BIDKey.caseId));
       }
       if (isEmpty(case0.getCode())) {
@@ -296,9 +298,12 @@ public class FuncCaseConverter {
         .setReviewFailNum(caseDb.getReviewFailNum() + (case0.getReviewStatus().isFailed() ? 1 : 0));
   }
 
-  public static void setTestInfoAndStatus(FuncCase caseDb, FuncCase case0, boolean replace) {
+  public static void setTestInfoAndResult(FuncCase caseDb, FuncCase case0, boolean replace) {
     if (case0.getTestResult().isTestAction()) {
       caseDb.setTestResultHandleDate(LocalDateTime.now()); // Last test time.
+      caseDb.setTestScore(
+          replace ? nullSafe(case0.getTestScore(), case0.getTestResult().isPassed() ? 10 : 0)
+              : caseDb.getTestScore());
     }
     caseDb.setTestResult(case0.getTestResult())
         .setEvalWorkload(replace ? case0.getEvalWorkload()
@@ -306,7 +311,6 @@ public class FuncCaseConverter {
         .setActualWorkload(replace ? case0.getActualWorkload()
             : nullSafe(caseDb.getActualWorkload(), caseDb.getEvalWorkload()))
         .setTestRemark(replace ? case0.getTestRemark() : caseDb.getTestRemark())
-        .setTestScore(replace ? case0.getTestScore() : caseDb.getTestScore())
         .setTestNum(caseDb.getTestNum() + (case0.getTestResult().isTestAction() ? 1 : 0))
         .setTestFailNum(caseDb.getTestFailNum() + (case0.getTestResult().isNotPassed() ? 1 : 0));
     if (nonNull(caseDb.getActualWorkload()) && isNull(caseDb.getEvalWorkload())) {

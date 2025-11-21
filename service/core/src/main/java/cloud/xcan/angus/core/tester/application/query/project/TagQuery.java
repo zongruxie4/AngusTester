@@ -2,6 +2,8 @@ package cloud.xcan.angus.core.tester.application.query.project;
 
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.domain.ResourceTagAssoc;
+import cloud.xcan.angus.core.tester.domain.project.tag.Tag;
+import cloud.xcan.angus.core.tester.domain.project.tag.TagTarget;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.util.Collection;
 import java.util.List;
