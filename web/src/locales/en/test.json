@@ -128,8 +128,10 @@
       "viewStatistics": "View Statistics",
       "assocCases": "Associate Cases",
       "assocIssues": "Associate {name}",
+      "assocScenarios": "Associate Scenarios",
       "submitBug": "Submit Bug",
-      "review": "Go to Review"
+      "review": "Go to Review",
+      "batchExec": "Batch Execute"
     },
     "messages": {
       "caseSetBlocked": "Case set to blocked",
@@ -205,7 +207,8 @@
       "assocApiTestTip": "Associate the corresponding API test task to track progress and verify API availability.",
       "assocScenarioTestTip": "Associate the corresponding scenario test task to assess effectiveness in real scenarios and ensure solution completeness.",
       "assocTaskTip": "Associate development and testing tasks related to this case for unified team tracking.",
-      "assocScenarioTip": "Associate automation test scenarios to map cases to automation scripts for improved testing efficiency."
+      "assocScenarioTip": "Associate automation test scenarios to map cases to automation scripts for improved testing efficiency.",
+      "saveModuleConfirm": "Confirm to save case as template?"
     }
   },
   "testCaseReview": {
@@ -597,7 +600,8 @@
       "maxTemplatesReached": "Maximum number of custom templates (200) has been reached",
       "nameRequired": "Please enter template name",
       "templateTypeRequired": "Please select template type",
-      "systemTemplate": "System Template"
+      "systemTemplate": "System Template",
+      "deleteConfirm": "Confirm to delete template 「{name}」?"
     },
     "templateContent": "Template Content"
   }

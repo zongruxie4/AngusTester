@@ -9,6 +9,7 @@ export type CaseActionAuth =
   | 'updateTestResult_notPassed' | 'updateTestResult_blocked'
   | 'updateTestResult_canceled' | 'resetTestResult' | 'retestResult'
   | 'resetReviewResult' | 'copy' | 'addFavourite' | 'addFollow' | 'copyUrl'
+  | 'saveModule';
 
 export type ActionMenuItem = {
   name: string;

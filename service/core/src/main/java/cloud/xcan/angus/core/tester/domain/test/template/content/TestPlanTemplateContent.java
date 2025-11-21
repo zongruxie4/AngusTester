@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 public class TestPlanTemplateContent implements TestTemplateContent{
 
-  private TestTemplateType templateType;
+  private TestTemplateType templateType = TestTemplateType.TEST_PLAN;
 
   private String testingScope;
 

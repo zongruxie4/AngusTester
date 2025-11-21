@@ -128,8 +128,10 @@
       "viewStatistics": "查看统计",
       "assocCases": "关联用例",
       "assocIssues": "关联{name}",
+      "assocScenarios": "关联场景",
       "submitBug": "提交Bug",
-      "review": "去评审"
+      "review": "去评审",
+      "batchExec": "批量执行"
     },
     "messages": {
       "caseSetBlocked": "用例设为阻塞中",
@@ -205,7 +207,8 @@
       "assocApiTestTip": "关联对应的接口测试任务，便于追踪测试进展并验证接口可用性。",
       "assocScenarioTestTip": "关联对应的场景测试任务，便于评估真实场景下的功能有效性，确保方案完整性。",
       "assocTaskTip": "关联与当前用例相关的开发和测试任务，便于团队统一跟踪。",
-      "assocScenarioTip": "关联自动化测试场景，实现用例与自动化脚本的精准映射，提升测试效率。"
+      "assocScenarioTip": "关联自动化测试场景，实现用例与自动化脚本的精准映射，提升测试效率。",
+      "saveModuleConfirm": "确认保存用例为模版吗"
     }
   },
   "testCaseReview": {
@@ -596,7 +599,8 @@
       "maxTemplatesReached": "已达到自定义模版最大数量限制（200个）",
       "nameRequired": "请输入模版名称",
       "templateTypeRequired": "请选择模版类型",
-      "systemTemplate": "系统模版"
+      "systemTemplate": "系统模版",
+      "deleteConfirm": "确定要删除模版「{name}」吗？"
     },
     "templateContent": "模版内容"
   }

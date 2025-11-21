@@ -10,24 +10,26 @@ const props = withDefaults(defineProps<DataSourceProps<CaseCount>>(), {
 });
 
 const ReviewStatusChart = defineAsyncComponent(() => import('./ReviewStatusChart.vue'));
+const TestLayerChart = defineAsyncComponent(() => import('./TestLayerChart.vue'));
 </script>
 
 <template>
   <!-- Chart container with single chart component -->
   <div class="chart-container">
+    <TestLayerChart :dataSource="props.dataSource" class="chart-item" />
     <ReviewStatusChart :dataSource="props.dataSource" class="chart-item" />
   </div>
 </template>
 
 <style scoped>
 .chart-container {
-  @apply w-65;
+  @apply w-120;
   flex-shrink: 0;
   display: flex;
   align-items: center;
 }
 
 .chart-item {
-  width: 100%;
+  width: 50%;
 }
 </style>

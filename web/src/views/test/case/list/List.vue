@@ -13,9 +13,10 @@ import { TestMenuKey } from '@/views/test/menu';
 import { useRouter } from 'vue-router';
 
 import { CaseActionAuth, EnabledModuleGroup } from './types';
-import { CaseTestResult, FuncPlanPermission, TaskType } from '@/enums/enums';
+import { CaseTestResult, FuncPlanPermission, TaskType, TestTemplateType } from '@/enums/enums';
 import { CaseCount, CaseViewMode, getActionAuth } from '@/views/test/case/types';
 import { CaseDetail } from '@/views/test/types';
+import { testTemplate } from '@/api/tester';
 
 // eslint-disable-next-line import/no-absolute-path
 import Template from '/file/Import_Case_Template.xlsx?url';
@@ -669,6 +670,9 @@ const handleDetailAction = (type: CaseActionAuth, value: CaseDetail) => {
     case 'copyUrl':
       handleCopy(value);
       break;
+    case 'saveModule':
+      handleSaveModule(value);
+      break;
   }
 };
 
@@ -737,6 +741,32 @@ const handleCopy = async (value: CaseDetail) => {
     notification.success(t('actions.tips.copySuccess'));
   }).catch(() => {
     notification.error(t('actions.tips.copyFailed'));
+  });
+};
+
+
+const handleSaveModule = async (caseData: CaseDetail) => {
+  modal.confirm({
+    title: t('actions.saveModule'),
+    content: t('testCase.messages.saveModuleConfirm'),
+    onOk: async () => {
+      const {name, description, testLayer, testPurpose, precondition, stepView, steps} = caseData;
+      const templateContent = {
+        description,
+        testLayer,
+        testPurpose,
+        precondition,
+        stepView,
+        steps,
+        templateType: TestTemplateType.TEST_CASE
+      };
+
+      const [error] = await testTemplate.addTemplate({templateContent, name, templateType: TestTemplateType.TEST_CASE});
+      if (error) {
+        return;
+      }
+      notification.success(t('actions.tips.saveSuccess'));
+    }
   });
 };
 

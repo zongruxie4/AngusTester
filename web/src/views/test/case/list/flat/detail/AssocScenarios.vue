@@ -12,11 +12,16 @@ import { useRouter } from 'vue-router';
 const SelectScenarioByModuleModal = defineAsyncComponent(() => import('@/components/function/SelectScenarioByModuleModal.vue'));
 const ExecTestModal = defineAsyncComponent(() => import('@/views/scenario/scenario/list/ExecTest.vue'));
 
-const props = withDefaults(defineProps<AssocScenarioProps>(), {
+
+interface Props extends AssocScenarioProps {
+  assocScenariosCount: number;
+}
+const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   caseId: undefined,
+  assocScenariosCount: 0
 });
 
 const { t } = useI18n();
@@ -24,6 +29,7 @@ const router = useRouter();
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'editSuccess'): void;
+  (event: 'update:assocScenariosCount', value: number): void;
 }>();
 
 const isSubmitting = ref(false);
@@ -55,7 +61,7 @@ const openCaseSelectionModal = () => {
  * Submit association of selected case IDs to the current case
  * @param selectedCaseIds - Selected associated case IDs
  */
-const handleAssociateCases = async (selectedCaseIds) => {
+const handleAssociateDesign = async (selectedCaseIds) => {
   isSelectCaseModalVisible.value = false;
   if (!selectedCaseIds.length) {
     cancelCaseSelectionModal();
@@ -95,7 +101,7 @@ const handleExecScenario = async (scenarioRecord) => {
 
 const handleBatchExecScenarios = () => {
   selectedScenarioIds.value = dataSource.value.map((item: any) => item.id);
-  isExecScenarioModalVisible.value = true;
+  handleExecScenarioOk([]);
 };
 
 const handleExecScenarioOk = async(params: any) => {
@@ -113,33 +119,48 @@ const tableRowSelection = ref({
   onChange: (selectedRowKeys: string[]) => {
     selectedScenarioIds.value = selectedRowKeys;
   },
-  getCheckboxProps: (record: any) => ({
-    disabled: !!record.lastExecId
-  })
+  getCheckboxProps: (record: any) => {
+    return {
+      disabled: !!record.lastExecId
+    }
+  },
+  hideSelectAll: true
 });
+
+const resBgColorMap = {
+  CREATED: 'rgba(45, 142, 255, 1)',
+  PENDING: 'rgba(45, 142, 255, 1)',
+  RUNNING: 'rgba(103, 215, 255, 1)',
+  STOPPED: 'rgba(245, 34, 45, 1)',
+  FAILED: 'rgba(245, 34, 45, 1)',
+  TIMEOUT: 'rgba(245, 34, 45, 1)',
+  COMPLETED: 'rgba(82, 196, 26, 1)',
+  '': 'gray'
+};
 
 const columns = [
   {
     key: 'name',
     dataIndex: 'name',
-    title: '场景名称',
-    width: 130
+    title: t('common.scenarioName'),
   },
   {
     key: 'plugin',
     dataIndex: 'plugin',
-    title: '类型'
+    title: t('common.type'),
+    width: 80
   },
   {
     key: 'lastExecName',
     dataIndex: 'lastExecName',
-    title: '执行名称',
-    width: 120
+    title: t('common.execName'),
+    width: 130
   },
   {
     key: 'scriptType',
     dataIndex: 'scriptType',
-    title: '脚本类型',
+    title: t('common.scriptType'),
+    width: 120,
     customRender: ({text}) => {
       return text?.message;
     }
@@ -147,7 +168,7 @@ const columns = [
   {
     key: 'lastExecStatus',
     dataIndex: 'lastExecStatus',
-    title: '执行状态',
+    title: t('common.execStatus'),
     width: 120,
     customRender: ({text}) => {
       return text?.message || t('scenario.list.table.noExecute')
@@ -156,18 +177,19 @@ const columns = [
   {
     key: 'lastExecFailureMessage',
     dataIndex: 'lastExecFailureMessage',
-    title: '失败原因',
+    title: t('common.failureReason'),
     width: 140
   },
   {
     key: 'lastExecDate',
     dataIndex: 'lastExecDate',
-    title: '执行时间',
+    title: t('common.execDate'),
+    width: 120
   },
   {
     key: 'action',
     dataIndex: 'action',
-    title: '操作',
+    title: t('common.actions'),
     width: 110
   }
 ];
@@ -183,6 +205,7 @@ const loadScenarioList = async () => {
   }
   isLoading.value = false;
   dataSource.value = response?.data || [];
+  emit('update:assocScenariosCount', dataSource.value.length);
 };
 
 const handleOpenScenarioDetail = (record: any) => {
@@ -210,7 +233,7 @@ onMounted(() => {
         :disabled="!selectedScenarioIds.length"
         @click="handleBatchExecScenarios">
         <Icon icon="icon-zhihang" class="mr-1" />
-        批量执行
+        {{ t('testCase.actions.batchExec') }}
       </Button>
       <Button
         :disabled="dataSource?.length > 19"
@@ -218,7 +241,7 @@ onMounted(() => {
         size="small"
         @click="openCaseSelectionModal">
         <Icon icon="icon-jia" class="mr-1" />
-        {{ t('testCase.actions.assocCases') }}
+        {{ t('testCase.actions.assocScenarios') }}
       </Button>
     </div>
 
@@ -228,6 +251,7 @@ onMounted(() => {
       :pagination="false"
       :rowSelection="tableRowSelection"
       :loading="isLoading"
+      rowKey="id"
       size="small"
       noDataSize="small"
       :noDataText="t('common.noData')">
@@ -238,10 +262,13 @@ onMounted(() => {
             size="small"
             @click="handleOpenScenarioDetail(record)">
             {{ record.name }}
-            <!-- <RouterLink :to="`/scenario#scenario?id=${record.id}&name=${record.name}&plugin=${record.plugin}&type=detail`">
-             
-            </RouterLink> -->
           </Button>
+        </template>
+
+        <template v-if="column.dataIndex === 'lastExecName'">
+          <RouterLink :to="`/execution/info/${record.lastExecId}`">
+            {{ record.lastExecName }}
+          </RouterLink>
         </template>
 
         <template v-if="column.dataIndex === 'execName'">
@@ -250,6 +277,16 @@ onMounted(() => {
             size="small">
             {{ record.execName }}
           </Button>
+        </template>
+
+        <template v-if="column.dataIndex === 'lastExecName'">
+          {{ record.plugin?.message }}
+        </template>
+
+        <template v-if="column.dataIndex === 'lastExecStatus'">
+          <span :style="{ color: resBgColorMap[record.lastExecStatus?.value || ''] }">
+            {{ record.lastExecStatus?.message || t('scenario.list.table.noExecute') }}
+          </span>
         </template>
 
         <template v-if="column.dataIndex === 'action'">
@@ -280,7 +317,7 @@ onMounted(() => {
         v-model:visible="isSelectCaseModalVisible"
         :projectId="props.projectId"
         :hadSelectedIds="dataSource.map((item: any) => item.id)"
-        @ok="handleAssociateCases" />
+        @ok="handleAssociateDesign" />
     </AsyncComponent>
     <AsyncComponent :visible="isExecScenarioModalVisible">
       <ExecTestModal

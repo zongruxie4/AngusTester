@@ -231,6 +231,7 @@
     "testLayer": "Test Layer",
     "testPurpose": "Test Purpose",
     "assocScenarios": "Automation",
+    "scenarioName": "Scenario Name",
     "counts": {
       "progress": "Progress",
       "totalCount": "Total",
@@ -468,6 +469,7 @@
     "off": "OFF"
   },
   "actions": {
+    "saveModule": "Save as Template",
     "view": "View",
     "detail": "Detail",
     "add": "Add",

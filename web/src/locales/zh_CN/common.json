@@ -231,6 +231,7 @@
     "testLayer": "测试对象",
     "testPurpose": "测试目的",
     "assocScenarios": "自动化",
+    "scenarioName": "场景名称",
     "counts": {
       "progress": "进度",
       "totalCount": "总数",
@@ -468,6 +469,7 @@
     "off": "关闭"
   },
   "actions": {
+    "saveModule": "保存为模板",
     "view": "查看",
     "detail": "详情",
     "add": "添加",
