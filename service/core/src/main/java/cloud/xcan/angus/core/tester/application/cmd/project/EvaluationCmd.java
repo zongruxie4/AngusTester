@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.application.cmd.project.evaluation;
+package cloud.xcan.angus.core.tester.application.cmd.project;
 
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluation;
 import cloud.xcan.angus.spec.experimental.IdKey;

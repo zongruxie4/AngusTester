@@ -7,8 +7,8 @@ import static cloud.xcan.angus.core.tester.interfaces.project.facade.internal.as
 import static cloud.xcan.angus.core.tester.interfaces.project.facade.internal.assembler.EvaluationAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
-import cloud.xcan.angus.core.tester.application.cmd.project.evaluation.EvaluationCmd;
-import cloud.xcan.angus.core.tester.application.query.project.evaluation.EvaluationQuery;
+import cloud.xcan.angus.core.tester.application.cmd.project.EvaluationCmd;
+import cloud.xcan.angus.core.tester.application.query.project.EvaluationQuery;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluation;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.EvaluationFacade;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.EvaluationAddDto;
