@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.application.query.project.evaluation.impl;
+package cloud.xcan.angus.core.tester.application.query.project.impl;
 
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;

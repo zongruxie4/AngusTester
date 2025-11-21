@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.application.cmd.project.evaluation.impl;
+package cloud.xcan.angus.core.tester.application.cmd.project.impl;
 
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.EVALUATION;
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.PROJECT;
