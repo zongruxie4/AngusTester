@@ -212,10 +212,10 @@
     "title": "AI Assistant"
   },
   "evaluation": {
-    "title": "Assessment",  
+    "title": "Evaluation",
     "introduce": {
-      "aboutAssessment": "About Assessment",
-      "description": "Assessment is used to evaluate the quality and reliability of software systems. Through assessment, potential problems and risks of software systems can be found, and the quality and reliability of software systems can be improved."
+      "aboutAssessment": "About Evaluation",
+      "description": "Evaluate the quality and reliability of software systems. Through assessment, potential problems and risks of software systems can be found, and the quality and reliability of software systems can be improved."
     }
   }
 }
