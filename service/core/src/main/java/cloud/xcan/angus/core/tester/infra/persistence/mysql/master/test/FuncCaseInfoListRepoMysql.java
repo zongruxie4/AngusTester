@@ -153,7 +153,7 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
     groupBySql.append(joinTag)
         .append(" WHERE 1=1 ").append(mainCondition)
         .append(getMatchCondition(searchValue))
-        .append(" GROUP BY a.`review_status`, a.test_result "); // Use Covering Index
+        .append(" GROUP BY a.review_status, a.test_result, a.test_layer "); // Use Covering Index
     overdueSql.append(joinTag)
         .append(" WHERE 1=1 ").append(mainCondition)
         .append(" AND a.test_result <> 'CANCELED' ")

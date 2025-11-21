@@ -46,6 +46,17 @@ public class FuncCaseCount {
   @Schema(description = "The total number(times) of review")
   private int totalReviewTimes;
 
+  @Schema(description = "The number of UI test cases")
+  private int uiTestNum;
+  @Schema(description = "The number of api test cases")
+  private int apiTestNum;
+  @Schema(description = "The number of unit test cases")
+  private int unitTestNum;
+  @Schema(description = "The total number of integration test cases")
+  private int integrationTestNum;
+  @Schema(description = "The total number of e2e test cases")
+  private int e2eTestNum;
+
   @Schema(description = "The number of cases that the review passed at one time")
   private int oneTimePassReviewNum;
   @NumberFormat("#.##")
