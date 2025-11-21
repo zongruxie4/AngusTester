@@ -7,6 +7,7 @@ import { useI18n } from 'vue-i18n';
 import { TESTER, http } from '@xcan-angus/infra';
 import { AssocScenarioProps } from '@/views/test/case/types';
 import { useRouter } from 'vue-router';
+import { ExecStatus } from '@/enums/enums';
 
 
 const SelectScenarioByModuleModal = defineAsyncComponent(() => import('@/components/function/SelectScenarioByModuleModal.vue'));
@@ -121,7 +122,7 @@ const tableRowSelection = ref({
   },
   getCheckboxProps: (record: any) => {
     return {
-      disabled: !!record.lastExecId
+      disabled: record.lastExecStatus?.value === ExecStatus.RUNNING || record.lastExecStatus?.value === ExecStatus.PENDING
     }
   },
   hideSelectAll: true

@@ -131,7 +131,8 @@
       "assocScenarios": "关联场景",
       "submitBug": "提交Bug",
       "review": "去评审",
-      "batchExec": "批量执行"
+      "batchExec": "批量执行",
+      "selectTemplate": "选择模版"
     },
     "messages": {
       "caseSetBlocked": "用例设为阻塞中",

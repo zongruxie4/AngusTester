@@ -131,7 +131,8 @@
       "assocScenarios": "Associate Scenarios",
       "submitBug": "Submit Bug",
       "review": "Go to Review",
-      "batchExec": "Batch Execute"
+      "batchExec": "Batch Execute",
+      "selectTemplate": "Select Template"
     },
     "messages": {
       "caseSetBlocked": "Case set to blocked",

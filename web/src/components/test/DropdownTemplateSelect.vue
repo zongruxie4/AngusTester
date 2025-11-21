@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { Dropdown } from '@xcan-angus/vue-ui';
+import { Dropdown, Select } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { testTemplate } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 import { TestTemplateType } from '@/enums/enums';
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<{templateType?: TestTemplateType}>(), {
   templateType: TestTemplateType.TEST_PLAN
@@ -13,7 +16,7 @@ const emit = defineEmits<{
   (e: 'change', value: any): void;
 }>();
 
-const templateList = ref<{name: string, key: string}[]>([]);
+const templateList = ref<{label: string, value: string}[]>([]);
 const templateData = ref<{[key: string]: any}[]>([]);
 
 const loadTemplateList = async () => {
@@ -22,11 +25,14 @@ const loadTemplateList = async () => {
     return;
   }
   templateData.value = (res.data || []).filter(item => item.templateType === props.templateType);
-  templateList.value = templateData.value.map(item => ({ name: item.name, key: item.id }));
+  templateList.value = templateData.value.map(item => ({ label: item.name, value: item.id }));
 };
 
-const handleTemplateClick = ({key}: {key: string}) => {
-  emit('change', templateData.value.find(item => item.id === key));
+const handleTemplateClick = (value: string) => {
+  if (!value) {
+    return;
+  }
+  emit('change', templateData.value.find(item => item.id === value));
 };
 
 onMounted(() => {
@@ -36,9 +42,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <Dropdown :menuItems="templateList" @click="handleTemplateClick">
+  <!-- <Dropdown :menuItems="templateList" @click="handleTemplateClick">
     <Button size="small" type="primary">
       <span>选择模版</span>
     </Button>
-  </Dropdown>
+  </Dropdown> -->
+  <Select
+    class="!w-40"
+    :options="templateList"
+    allowClear
+    :placeholder="t('test.actions.selectTemplate')"
+    @change="handleTemplateClick" />
 </template>
