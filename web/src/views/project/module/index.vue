@@ -193,9 +193,9 @@ onMounted(() => {
     <!-- Header Section -->
     <div ref="headerRef" class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-100">
       <div class="flex items-center">
-        <div class="w-8 h-8 bg-blue-100 rounded flex items-center justify-center mr-3">
-          <Icon icon="icon-mokuai" class="text-blue-600" />
-        </div>
+        <div class="w-16 h-16 rounded flex items-center justify-center mr-3">
+            <Icon icon="icon-mokuai" class="text-purple-600 text-4xl" />
+          </div>
         <div>
           <h2 class="text-base font-medium text-gray-900">{{ t('module.introduce.aboutModule') }}</h2>
           <p class="text-3.5 text-gray-500 mt-0.5">{{ t('module.introduce.description') }}</p>

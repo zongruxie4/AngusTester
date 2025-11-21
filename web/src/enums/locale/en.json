@@ -61,11 +61,11 @@
         "CUSTOMIZATION": "Custom Test"
       },
       "TestLayer": {
-        "UI": "UI Testing",
-        "API": "API Testing",
-        "UNIT": "Unit Testing",
-        "INTEGRATION": "Integration Testing",
-        "E2E": "End-to-End Testing"
+        "UI": "UI",
+        "API": "API",
+        "UNIT": "Unit",
+        "INTEGRATION": "Integration",
+        "E2E": "End-to-End"
       },
       "TestPurpose": {
         "FUNCTIONAL": "Functional Testing",

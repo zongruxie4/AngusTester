@@ -41,6 +41,7 @@ import cloud.xcan.angus.core.tester.domain.module.Module;
 import cloud.xcan.angus.core.tester.domain.tag.Tag;
 import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.test.FuncTargetType;
+import cloud.xcan.angus.core.tester.domain.test.TestLayer;
 import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaseline;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestResult;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestStep;
@@ -426,7 +427,7 @@ public class FuncCaseConverter {
 
     // Statistics by review_status
     Map<String, Integer> reviewStatusMap = groupByResult.stream().collect(Collectors.toMap(
-        x -> convert(x[0], String.class), x -> convert(x[2], Integer.class), Integer::sum));
+        x -> convert(x[0], String.class), x -> convert(x[3], Integer.class), Integer::sum));
     statistics.setPendingReviewNum(nullSafe(reviewStatusMap.get(ReviewStatus.PENDING.name()), 0))
         .setPassedReviewNum(nullSafe(reviewStatusMap.get(ReviewStatus.PASSED.name()), 0))
         .setFailedReviewNum(nullSafe(reviewStatusMap.get(ReviewStatus.FAILED.name()), 0))
@@ -436,7 +437,7 @@ public class FuncCaseConverter {
 
     // Statistics by test_result
     Map<String, Integer> testResultMap = groupByResult.stream().collect(Collectors.toMap(
-        x -> convert(x[1], String.class), x -> convert(x[2], Integer.class), Integer::sum));
+        x -> convert(x[1], String.class), x -> convert(x[3], Integer.class), Integer::sum));
     statistics.setPendingTestNum(nullSafe(testResultMap.get(CaseTestResult.PENDING.name()), 0))
         .setPassedTestNum(nullSafe(testResultMap.get(CaseTestResult.PASSED.name()), 0))
         .setNotPassedTestNum(nullSafe(testResultMap.get(CaseTestResult.NOT_PASSED.name()), 0))
@@ -445,6 +446,15 @@ public class FuncCaseConverter {
         .setValidCaseNum(statistics.getPendingTestNum() + statistics.getPassedTestNum()
                 + statistics.getNotPassedTestNum() + statistics.getBlockedTestNum()
             /*+ statistics.getCanceledTestNum()*/);
+
+    // Statistics by test_result
+    Map<String, Integer> testLayerMap = groupByResult.stream().collect(Collectors.toMap(
+        x -> convert(x[2], String.class), x -> convert(x[3], Integer.class), Integer::sum));
+    statistics.setPendingTestNum(nullSafe(testLayerMap.get(TestLayer.UI.name()), 0))
+        .setPassedTestNum(nullSafe(testLayerMap.get(TestLayer.API.name()), 0))
+        .setNotPassedTestNum(nullSafe(testLayerMap.get(TestLayer.UNIT.name()), 0))
+        .setBlockedTestNum(nullSafe(testLayerMap.get(TestLayer.INTEGRATION.name()), 0))
+        .setCanceledTestNum(nullSafe(testLayerMap.get(TestLayer.E2E.name()), 0));
 
     statistics.setTotalCaseNum(statistics.getValidCaseNum() + statistics.getCanceledTestNum());
 

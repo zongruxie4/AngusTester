@@ -126,7 +126,7 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
   @Override
   public FuncCaseCount count(Set<SearchCriteria> criteria) {
     // @formatter:off
-    StringBuilder groupBySql = new StringBuilder("SELECT a.`review_status`,a.test_result, COUNT(*) num FROM func_case a ");
+    StringBuilder groupBySql = new StringBuilder("SELECT a.review_status, a.test_result, a.test_layer, COUNT(*) num FROM func_case a ");
     StringBuilder overdueSql = new StringBuilder("SELECT COUNT(a.id) FROM func_case a ");
     StringBuilder oneTimePassReviewSql = new StringBuilder("SELECT COUNT(a.id) FROM func_case a ");
     StringBuilder alreadyTestedSql = new StringBuilder("SELECT COUNT(a.id) FROM func_case a ");
@@ -153,7 +153,7 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
     groupBySql.append(joinTag)
         .append(" WHERE 1=1 ").append(mainCondition)
         .append(getMatchCondition(searchValue))
-        .append(" GROUP BY a.`review_status`, a.test_result "); // Use Covering Index
+        .append(" GROUP BY a.review_status, a.test_result, a.test_layer "); // Use Covering Index
     overdueSql.append(joinTag)
         .append(" WHERE 1=1 ").append(mainCondition)
         .append(" AND a.test_result <> 'CANCELED' ")
