@@ -26,8 +26,8 @@ export default class API {
     return http.get(`${baseUrl}/${reportId}`);
   }
 
-  getReportWideContent <T> (reportId: string, params: T): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${reportId}/wide/content`, params);
+  getReportWideContent <T> (reportId: string, params: T, axiosConfig = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${reportId}/wide/content`, params, axiosConfig);
   }
 
   getReportList (params, axiosConfig = {}) : Promise<[Error | null, any]> {
