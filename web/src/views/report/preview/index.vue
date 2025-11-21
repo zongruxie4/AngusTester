@@ -143,6 +143,8 @@ const loadReportContent = async (id: string) => {
   loading.value = true;
   const [error, res] = await report.getReportWideContent(id, {
     recordId: recordId.value
+  }, {
+    silence: false
   });
   loading.value = false;
   if (error) {

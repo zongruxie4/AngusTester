@@ -159,7 +159,6 @@ const initializeBrowserTabs = () => {
     }
   }, { immediate: true });
 
-  debugger;
   handleHashChange(route.hash);
 };
 
