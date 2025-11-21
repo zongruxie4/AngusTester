@@ -20,7 +20,6 @@ import cloud.xcan.angus.core.tester.application.cmd.test.FuncPlanCmd;
 import cloud.xcan.angus.core.tester.application.cmd.test.FuncTrashCmd;
 import cloud.xcan.angus.core.tester.application.query.test.FuncTrashQuery;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
-import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfoRepo;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseRepo;
 import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlanRepo;
 import cloud.xcan.angus.core.tester.domain.test.plan.auth.FuncPlanAuthRepo;

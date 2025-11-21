@@ -72,7 +72,7 @@ public class TestEvaluationResult implements Serializable {
 
     /**
      * Denominator value for rate calculation
-     * Used for: CASE_REQUIREMENT_COVERAGE_RATE, FUNCTIONAL_PASSED_RATE,
+     * Used for: FUNCTIONAL_PASSED_RATE,
      * PERFORMANCE_PASSED_RATE, STABILITY_PASSED_RATE
      * Example: total test cases count, total requirements count
      */

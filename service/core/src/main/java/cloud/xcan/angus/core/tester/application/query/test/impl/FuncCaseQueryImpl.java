@@ -140,7 +140,6 @@ import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaselineRepo;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCase;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfoListRepo;
-import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfoRepo;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfoSearchRepo;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseRepo;
 import cloud.xcan.angus.core.tester.domain.test.cases.count.BackloggedOverview;

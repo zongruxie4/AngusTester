@@ -17,17 +17,11 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface FuncCaseRepo extends BaseRepository<FuncCase, Long> {
 
-  @Query(value = "SELECT id FROM func_case WHERE project_id in ?1", nativeQuery = true)
-  List<Long> findAll0IdByProjectIdIn(Collection<Long> projectIds);
-
   @Query(value = "SELECT id FROM func_case WHERE plan_id in ?1", nativeQuery = true)
   List<Long> findAll0IdByPlanIdIn(Collection<Long> planIds);
 
   @Query(value = "SELECT id FROM func_case WHERE plan_id = ?1 AND id IN ?2", nativeQuery = true)
   Set<Long> findAll0IdByPlanIdAndIdIn(Long planId, Collection<Long> ids);
-
-  @Query(value = "SELECT DISTINCT module FROM func_case WHERE project_id = ?1 AND deleted = 0 AND plan_deleted = 0", nativeQuery = true)
-  List<String> findModuleByPlanId(Long projectId);
 
   @Query(value = "SELECT DISTINCT planId as planId, testerId as testerId FROM FuncCase WHERE planId in ?1")
   List<PlanMember> findMemberByPlanIdIn(Collection<Long> planIds);

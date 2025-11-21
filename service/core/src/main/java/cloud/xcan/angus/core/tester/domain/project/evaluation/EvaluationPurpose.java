@@ -7,10 +7,6 @@ import cloud.xcan.angus.spec.locale.EnumMessage;
 @EndpointRegister
 public enum EvaluationPurpose implements EnumMessage<String> {
 
-  BUG_RATE,
-
-  CASE_REQUIREMENT_COVERAGE_RATE,
-
   FUNCTIONAL_PASSED_RATE,
 
   PERFORMANCE_PASSED_RATE,
