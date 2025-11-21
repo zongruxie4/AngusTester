@@ -577,7 +577,7 @@
     "addedTemplates": "Added Templates",
     "noTemplates": "You haven't added any templates yet, ",
     "introduce": {
-      "title": "About Test Template",
+      "title": "About Template",
       "description": "Test templates provide standardized formats and structures for creating test plans and test cases, helping teams maintain consistency and improve efficiency. Through predefined fields, formats, and content guidelines, test templates ensure the quality and completeness of test documentation while enhancing team collaboration efficiency and standardizing workflows."
     },
     "actions": {
