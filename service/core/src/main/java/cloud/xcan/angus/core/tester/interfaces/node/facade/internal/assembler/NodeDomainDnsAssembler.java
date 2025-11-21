@@ -5,7 +5,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import cloud.xcan.angus.api.enums.NormalStatus;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
-import cloud.xcan.angus.core.tester.domain.node.dns.NodeDomainDns;
+import cloud.xcan.angus.core.tester.domain.config.node.dns.NodeDomainDns;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.dns.NodeDomainDnsAddDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.dns.NodeDomainDnsFindDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.dns.NodeDomainDnsUpdateDto;

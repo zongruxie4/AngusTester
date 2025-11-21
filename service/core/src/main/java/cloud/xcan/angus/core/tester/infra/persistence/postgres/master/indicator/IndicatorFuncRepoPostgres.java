@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.infra.persistence.postgres.master.indicator;
 
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFuncRepo;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFuncRepo;
 import org.springframework.stereotype.Repository;
 
 @Repository("indicatorFuncRepo")

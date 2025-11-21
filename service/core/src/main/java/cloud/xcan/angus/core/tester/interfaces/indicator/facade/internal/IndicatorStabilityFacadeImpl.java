@@ -11,7 +11,7 @@ import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.indicator.IndicatorStabilityCmd;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorStabilityQuery;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStability;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStability;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.IndicatorStabilityFacade;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityFindDto;

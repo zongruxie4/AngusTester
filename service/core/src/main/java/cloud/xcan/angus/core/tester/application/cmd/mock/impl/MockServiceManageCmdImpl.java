@@ -30,7 +30,7 @@ import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceManageCmd;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceMetricsCmd;
 import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
-import cloud.xcan.angus.core.tester.domain.node.Node;
+import cloud.xcan.angus.core.tester.domain.config.node.Node;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceApisDeleteDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceApisSyncDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceStartDto;

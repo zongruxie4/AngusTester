@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.application.query.node;
 
 import cloud.xcan.angus.api.enums.NodeRole;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
-import cloud.xcan.angus.core.tester.domain.node.Node;
+import cloud.xcan.angus.core.tester.domain.config.node.Node;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.util.Collection;
 import java.util.List;

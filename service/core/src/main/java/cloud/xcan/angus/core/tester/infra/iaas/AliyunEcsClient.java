@@ -22,7 +22,7 @@ import cloud.xcan.angus.api.commonlink.TesterConstant;
 import cloud.xcan.angus.api.pojo.node.NodeSpecData;
 import cloud.xcan.angus.core.spring.SpringContextHolder;
 import cloud.xcan.angus.core.tester.application.converter.NodeConverter;
-import cloud.xcan.angus.core.tester.domain.node.Node;
+import cloud.xcan.angus.core.tester.domain.config.node.Node;
 import cloud.xcan.angus.core.utils.GsonUtils;
 import com.aliyun.ecs20140526.Client;
 import com.aliyun.ecs20140526.models.DeleteInstancesRequest;

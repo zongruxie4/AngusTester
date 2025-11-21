@@ -9,7 +9,7 @@ import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
 import cloud.xcan.angus.api.pojo.node.NodeInfo;
 import cloud.xcan.angus.core.tester.domain.exec.debug.ExecDebug;
 import cloud.xcan.angus.core.tester.domain.exec.debug.ExecDebugSource;
-import cloud.xcan.angus.core.tester.domain.node.Node;
+import cloud.xcan.angus.core.tester.domain.config.node.Node;
 import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.model.element.pipeline.PipelineBuilder;
 import cloud.xcan.angus.model.script.AngusScript;

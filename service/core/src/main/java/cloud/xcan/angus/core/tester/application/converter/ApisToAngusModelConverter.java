@@ -31,7 +31,7 @@ import cloud.xcan.angus.core.tester.domain.apis.Apis;
 import cloud.xcan.angus.core.tester.domain.apis.cases.ApisCase;
 import cloud.xcan.angus.core.tester.domain.data.dataset.Dataset;
 import cloud.xcan.angus.core.tester.domain.data.variables.Variable;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFunc;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFunc;
 import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.idgen.uid.impl.CachedUidGenerator;
 import cloud.xcan.angus.model.AngusConstant;

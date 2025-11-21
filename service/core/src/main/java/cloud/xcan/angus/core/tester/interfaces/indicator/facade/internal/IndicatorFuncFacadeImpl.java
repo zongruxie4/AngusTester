@@ -11,7 +11,7 @@ import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.indicator.IndicatorFuncCmd;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorFuncQuery;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFunc;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFunc;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.IndicatorFuncFacade;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncFindDto;

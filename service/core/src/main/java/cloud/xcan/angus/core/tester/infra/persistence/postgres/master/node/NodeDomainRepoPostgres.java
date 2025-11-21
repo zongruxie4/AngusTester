@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.infra.persistence.postgres.master.node;
 
-import cloud.xcan.angus.core.tester.domain.node.domain.NodeDomainRepo;
+import cloud.xcan.angus.core.tester.domain.config.node.domain.NodeDomainRepo;
 import org.springframework.stereotype.Repository;
 
 @Repository

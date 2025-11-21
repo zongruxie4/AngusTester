@@ -19,10 +19,10 @@ import cloud.xcan.angus.core.tester.application.converter.IndicatorFuncConverter
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorFuncQuery;
 import cloud.xcan.angus.core.tester.domain.CombinedTarget;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFunc;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFuncListRepo;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFuncRepo;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFuncSearchRepo;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFunc;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFuncListRepo;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFuncRepo;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFuncSearchRepo;
 import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;

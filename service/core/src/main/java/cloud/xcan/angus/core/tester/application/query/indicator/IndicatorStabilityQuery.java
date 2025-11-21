@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.application.query.indicator;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStability;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStability;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 

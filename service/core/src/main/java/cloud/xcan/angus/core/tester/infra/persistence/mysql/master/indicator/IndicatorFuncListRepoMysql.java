@@ -6,9 +6,9 @@ import static cloud.xcan.angus.core.tester.infra.util.AngusTesterUtils.assembleT
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.core.jpa.repository.AbstractSearchRepository;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFunc;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFuncListRepo;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerfListRepo;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFunc;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFuncListRepo;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorPerfListRepo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import jakarta.annotation.Resource;
 import java.util.Set;

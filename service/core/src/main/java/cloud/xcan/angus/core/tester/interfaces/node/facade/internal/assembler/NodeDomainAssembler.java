@@ -3,7 +3,7 @@ package cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler;
 import cloud.xcan.angus.api.enums.NormalStatus;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
-import cloud.xcan.angus.core.tester.domain.node.domain.NodeDomain;
+import cloud.xcan.angus.core.tester.domain.config.node.domain.NodeDomain;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.domain.NodeDomainAddDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.domain.NodeDomainFindDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.domain.NodeDomainUpdateDto;

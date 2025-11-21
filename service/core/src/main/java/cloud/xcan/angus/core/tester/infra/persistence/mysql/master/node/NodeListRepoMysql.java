@@ -6,8 +6,8 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.core.jpa.repository.AbstractSearchRepository;
 import cloud.xcan.angus.core.jpa.repository.SearchMode;
-import cloud.xcan.angus.core.tester.domain.node.Node;
-import cloud.xcan.angus.core.tester.domain.node.NodeListRepo;
+import cloud.xcan.angus.core.tester.domain.config.node.Node;
+import cloud.xcan.angus.core.tester.domain.config.node.NodeListRepo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.remote.search.SearchOperation;
 import cloud.xcan.angus.spec.utils.StringUtils;

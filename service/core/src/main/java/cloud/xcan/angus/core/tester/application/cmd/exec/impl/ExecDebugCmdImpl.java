@@ -43,8 +43,8 @@ import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
 import cloud.xcan.angus.core.tester.domain.exec.debug.ExecDebug;
 import cloud.xcan.angus.core.tester.domain.exec.debug.ExecDebugRepo;
 import cloud.xcan.angus.core.tester.domain.exec.debug.ExecDebugSource;
-import cloud.xcan.angus.core.tester.domain.node.Node;
-import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
+import cloud.xcan.angus.core.tester.domain.config.node.Node;
+import cloud.xcan.angus.core.tester.domain.config.node.info.NodeInfo;
 import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContentRepo;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleErrorCauseRepo;
@@ -89,13 +89,13 @@ import org.springframework.transaction.annotation.Transactional;
  * Command implementation for managing debug executions of test scripts.
  * </p>
  * <p>
- * Provides comprehensive debug execution management services including starting, monitoring, 
- * and deleting debug executions. Handles permission checks, node selection, distributed 
- * execution, and result aggregation. Supports debug execution from scripts, scenarios, 
+ * Provides comprehensive debug execution management services including starting, monitoring,
+ * and deleting debug executions. Handles permission checks, node selection, distributed
+ * execution, and result aggregation. Supports debug execution from scripts, scenarios,
  * and monitors with server configuration overrides.
  * </p>
  * <p>
- * Key features include single-node debug execution, remote controller communication, 
+ * Key features include single-node debug execution, remote controller communication,
  * script parsing and assembly, and comprehensive error handling with detailed status reporting.
  * </p>
  */
@@ -210,7 +210,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
 
           // Determine tenant ID for node communication
           Long nodeTenantId = nodeQuery.isTrailNode(nodeId) ? OWNER_TENANT_ID : debugDb.getTenantId();
-          
+
           // Get local channel router for node communication
           ChannelRouter router = nodeInfoQuery.getLocalChannelRouter(nodeId, nodeTenantId);
           if (nonNull(router)) {
@@ -250,14 +250,14 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
               List<ServiceInstance> instances = discoveryClient.getInstances(appInfo.getArtifactId());
               if (isNotEmpty(instances)) {
                 String currentInstanceIp = appInfo.getInstanceId().split(":")[0];
-                
+
                 // Build debug start command for remote execution
                 ExecDebugStartDto runCmd = ExecDebugStartDto.newBuilder()
                     .broadcast(false).id(debugDb.getId())
                     .name(debugDb.getName()).plugin(debugDb.getPlugin())
                     .configuration(debugDb.getConfiguration()).task(debugDb.getTask())
                     .build();
-                
+
                 boolean broadcastSuccess = false;
                 for (ServiceInstance inst : instances) {
                   String broadcastInstanceIp = inst.getHost();
@@ -280,7 +280,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
                     break;
                   }
                 }
-                
+
                 // Handle broadcast failure
                 if (!broadcastSuccess) {
                   String message = message(EXEC_AGENT_ROUTER_NOT_FOUND_T, new Object[]{nodeId});
@@ -350,7 +350,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
       protected void checkParams() {
         // Validate script exists and retrieve details
         script = scriptQuery.findById(scriptId);
-        
+
         // Parse script content from YAML
         angusScript = parseAngusScript(script.getContent());
       }
@@ -359,7 +359,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
       protected ExecDebug process() {
         // Set operation tenant from script
         PrincipalContext.get().setOptTenantId(script.getTenantId());
-        
+
         // Clear historical debugging results for this script
         deleteByScriptId(ExecDebugSource.SCRIPT, scriptId);
 
@@ -399,7 +399,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
       protected void checkParams() {
         // Validate script exists and retrieve details
         script = scriptQuery.findById(scriptId);
-        
+
         // Parse script content from YAML
         angusScript = parseAngusScript(script.getContent());
       }
@@ -408,7 +408,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
       protected ExecDebug process() {
         // Set operation tenant from script
         PrincipalContext.get().setOptTenantId(script.getTenantId());
-        
+
         // Clear historical debugging results for this script
         deleteByScriptId(ExecDebugSource.SCENARIO, scriptId);
 
@@ -451,7 +451,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
       protected void checkParams() {
         // Validate script exists and retrieve details
         script = scriptQuery.findById(scriptId);
-        
+
         // Parse script content from YAML
         angusScript = parseAngusScript(script.getContent());
       }
@@ -460,7 +460,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
       protected ExecDebug process() {
         // Set operation tenant from script
         PrincipalContext.get().setOptTenantId(script.getTenantId());
-        
+
         // Clear historical debugging results for this script
         deleteByScriptId(ExecDebugSource.MONITOR, scriptId);
 
@@ -469,10 +469,10 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
           // Create server map for parameter overrides
           Map<String, Server> serverMap = isEmpty(servers) ? Collections.emptyMap()
               : servers.stream().collect(Collectors.toMap(Server::getUrl, x -> x));
-          
+
           // Override server parameters in configuration variables
           overrideExecServerParameter(serverMap, angusScript.getConfiguration().getVariables());
-          
+
           // Override server parameters in HTTP pipelines
           if (nonNull(angusScript.getTask()) && isNotEmpty(angusScript.getTask().getPipelines())) {
             for (TestTargetType pipeline : angusScript.getTask().getPipelines()) {

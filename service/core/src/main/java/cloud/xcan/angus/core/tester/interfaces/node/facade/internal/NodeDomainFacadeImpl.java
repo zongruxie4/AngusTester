@@ -8,7 +8,7 @@ import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.node.NodeDomainCmd;
 import cloud.xcan.angus.core.tester.application.query.node.NodeDomainQuery;
-import cloud.xcan.angus.core.tester.domain.node.domain.NodeDomain;
+import cloud.xcan.angus.core.tester.domain.config.node.domain.NodeDomain;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.NodeDomainFacade;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.domain.NodeDomainAddDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.domain.NodeDomainFindDto;

@@ -38,11 +38,11 @@ import cloud.xcan.angus.core.jpa.page.FixedPageImpl;
 import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
 import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
-import cloud.xcan.angus.core.tester.domain.node.Node;
-import cloud.xcan.angus.core.tester.domain.node.NodeListRepo;
-import cloud.xcan.angus.core.tester.domain.node.NodeRepo;
-import cloud.xcan.angus.core.tester.domain.node.NodeSearchRepo;
-import cloud.xcan.angus.core.tester.domain.node.role.NodeRoleRepo;
+import cloud.xcan.angus.core.tester.domain.config.node.Node;
+import cloud.xcan.angus.core.tester.domain.config.node.NodeListRepo;
+import cloud.xcan.angus.core.tester.domain.config.node.NodeRepo;
+import cloud.xcan.angus.core.tester.domain.config.node.NodeSearchRepo;
+import cloud.xcan.angus.core.tester.domain.config.node.role.NodeRoleRepo;
 import cloud.xcan.angus.core.utils.PrincipalContextUtils;
 import cloud.xcan.angus.model.result.command.SimpleCommandResult;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
@@ -554,7 +554,7 @@ public class NodeQueryImpl implements NodeQuery {
   public Map<Long, Set<NodeRole>> getNodeRoles(List<Long> nodeIds) {
     return nodeRoleRepo.findByNodeIdIn(nodeIds).stream()
         .collect(Collectors.groupingBy(
-            cloud.xcan.angus.core.tester.domain.node.role.NodeRole::getNodeId,
+            cloud.xcan.angus.core.tester.domain.config.node.role.NodeRole::getNodeId,
             Collectors.mapping(x -> NodeRole.valueOf(x.getRole()), Collectors.toSet())));
   }
 

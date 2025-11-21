@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.application.cmd.node;
 
-import cloud.xcan.angus.core.tester.domain.node.role.NodeRole;
+import cloud.xcan.angus.core.tester.domain.config.node.role.NodeRole;
 import java.util.List;
 
 public interface NodeRoleCmd {

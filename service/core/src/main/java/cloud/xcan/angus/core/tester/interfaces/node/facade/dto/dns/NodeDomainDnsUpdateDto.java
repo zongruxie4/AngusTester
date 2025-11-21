@@ -2,8 +2,8 @@ package cloud.xcan.angus.core.tester.interfaces.node.facade.dto.dns;
 
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH_X2;
 
-import cloud.xcan.angus.core.tester.domain.node.dns.DnsLine;
-import cloud.xcan.angus.core.tester.domain.node.dns.DnsRecordType;
+import cloud.xcan.angus.core.tester.domain.config.node.dns.DnsLine;
+import cloud.xcan.angus.core.tester.domain.config.node.dns.DnsRecordType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotNull;

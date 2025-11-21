@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.application.cmd.indicator;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFunc;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFunc;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import java.util.Collection;
 import java.util.List;

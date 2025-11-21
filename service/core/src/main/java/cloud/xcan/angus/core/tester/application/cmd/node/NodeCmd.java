@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.application.cmd.node;
 
 import cloud.xcan.angus.api.commonlink.node.AgentInstallCmd;
-import cloud.xcan.angus.core.tester.domain.node.Node;
+import cloud.xcan.angus.core.tester.domain.config.node.Node;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import java.util.HashSet;
 import java.util.List;

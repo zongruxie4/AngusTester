@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.application.query.node;
 
-import cloud.xcan.angus.core.tester.domain.node.domain.NodeDomain;
+import cloud.xcan.angus.core.tester.domain.config.node.domain.NodeDomain;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

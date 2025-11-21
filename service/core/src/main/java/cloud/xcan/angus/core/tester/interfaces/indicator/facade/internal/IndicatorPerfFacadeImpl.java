@@ -11,7 +11,7 @@ import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.indicator.IndicatorPerfCmd;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorPerfQuery;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerf;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorPerf;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.IndicatorPerfFacade;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfFindDto;

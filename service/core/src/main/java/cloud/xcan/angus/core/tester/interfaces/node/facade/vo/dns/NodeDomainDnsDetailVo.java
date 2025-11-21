@@ -2,8 +2,8 @@ package cloud.xcan.angus.core.tester.interfaces.node.facade.vo.dns;
 
 
 import cloud.xcan.angus.api.enums.NormalStatus;
-import cloud.xcan.angus.core.tester.domain.node.dns.DnsLine;
-import cloud.xcan.angus.core.tester.domain.node.dns.DnsRecordType;
+import cloud.xcan.angus.core.tester.domain.config.node.dns.DnsLine;
+import cloud.xcan.angus.core.tester.domain.config.node.dns.DnsRecordType;
 import cloud.xcan.angus.remote.NameJoinField;
 import java.time.LocalDateTime;
 import lombok.Getter;

@@ -4,8 +4,8 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.core.job.JobTemplate;
 import cloud.xcan.angus.core.tester.application.cmd.node.NodeInfoCmd;
-import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
-import cloud.xcan.angus.core.tester.domain.node.info.NodeInfoRepo;
+import cloud.xcan.angus.core.tester.domain.config.node.info.NodeInfo;
+import cloud.xcan.angus.core.tester.domain.config.node.info.NodeInfoRepo;
 import cloud.xcan.angus.spec.annotations.DoInFuture;
 import jakarta.annotation.Resource;
 import java.util.List;

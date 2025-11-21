@@ -17,10 +17,10 @@ import cloud.xcan.angus.core.tester.application.converter.IndicatorStabilityConv
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorStabilityQuery;
 import cloud.xcan.angus.core.tester.domain.CombinedTarget;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStability;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStabilityListRepo;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStabilityRepo;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStabilitySearchRepo;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStability;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStabilityListRepo;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStabilityRepo;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStabilitySearchRepo;
 import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;

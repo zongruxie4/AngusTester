@@ -65,7 +65,7 @@ import cloud.xcan.angus.core.tester.domain.exec.ExecInfoListRepo;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfoRepo;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfoSearchRepo;
 import cloud.xcan.angus.core.tester.domain.exec.ExecRepo;
-import cloud.xcan.angus.core.tester.domain.node.Node;
+import cloud.xcan.angus.core.tester.domain.config.node.Node;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContent;
 import cloud.xcan.angus.core.utils.CoreUtils;

@@ -14,7 +14,7 @@ import cloud.xcan.angus.core.tester.application.cmd.node.NodeInfoCmd;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;
-import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
+import cloud.xcan.angus.core.tester.domain.config.node.info.NodeInfo;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.NodeInfoFacade;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeAgentCheckPortDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeAgentStatusQueryDto;
