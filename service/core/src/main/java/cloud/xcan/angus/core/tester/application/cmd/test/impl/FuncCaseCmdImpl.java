@@ -21,7 +21,7 @@ import static cloud.xcan.angus.core.tester.application.converter.FuncCaseConvert
 import static cloud.xcan.angus.core.tester.application.converter.FuncCaseConverter.importToDomain;
 import static cloud.xcan.angus.core.tester.application.converter.FuncCaseConverter.setReplaceInfo;
 import static cloud.xcan.angus.core.tester.application.converter.FuncCaseConverter.setReviewInfoAndStatus;
-import static cloud.xcan.angus.core.tester.application.converter.FuncCaseConverter.setTestInfoAndStatus;
+import static cloud.xcan.angus.core.tester.application.converter.FuncCaseConverter.setTestInfoAndResult;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.CASE_IMPORT_COLUMNS;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.CASE_IMPORT_REQUIRED_COLUMNS;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.ASSOC_CASE;
@@ -926,7 +926,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         Map<Long, FuncCase> casesMap = cases.stream()
             .collect(Collectors.toMap(FuncCase::getId, x -> x));
         for (FuncCase caseDb : casesDb) {
-          setTestInfoAndStatus(caseDb, casesMap.get(caseDb.getId()), replace);
+          setTestInfoAndResult(caseDb, casesMap.get(caseDb.getId()), replace);
         }
         funcCaseRepo.saveAll(casesDb);
 

@@ -2,6 +2,7 @@ package cloud.xcan.angus.core.tester.interfaces.project.facade.internal.assemble
 
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
+import cloud.xcan.angus.core.tester.domain.project.tag.Tag;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.TagFindDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.TagUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.TagVo;

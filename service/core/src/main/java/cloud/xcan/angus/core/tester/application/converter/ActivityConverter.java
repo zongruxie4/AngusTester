@@ -21,6 +21,7 @@ import cloud.xcan.angus.core.tester.domain.activity.MainTargetActivityResource;
 import cloud.xcan.angus.core.tester.domain.activity.summary.ActivitySummary;
 import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
+import cloud.xcan.angus.core.tester.domain.project.tag.Tag;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.spec.locale.EnumValueMessage;
 import cloud.xcan.angus.spec.principal.Principal;

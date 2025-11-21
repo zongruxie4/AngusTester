@@ -15,6 +15,7 @@ import cloud.xcan.angus.core.tester.domain.ResourceTagAssoc;
 import cloud.xcan.angus.core.tester.domain.activity.MainTargetActivityResource;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.issue.cases.TaskFuncCaseAssoc;
+import cloud.xcan.angus.core.tester.domain.project.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.test.TestLayer;
 import cloud.xcan.angus.core.tester.domain.test.TestPurpose;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
