@@ -293,7 +293,7 @@ onMounted(() => {
         <template v-if="column.dataIndex === 'action'">
           <div class="flex items-center space-x-1">
             <Button
-              :disabled="!!record.lastExecId"
+              :disabled="record.lastExecStatus?.value === ExecStatus.RUNNING || record.lastExecStatus?.value === ExecStatus.PENDING"
               size="small"
               type="text"
               @click="handleExecScenario(record)">
