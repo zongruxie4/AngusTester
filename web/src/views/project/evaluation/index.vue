@@ -249,7 +249,7 @@ onMounted(() => {
       <div class="flex items-center justify-between">
         <div class="flex items-center">
           <div class="w-8 h-8 bg-purple-100 rounded flex items-center justify-center mr-3">
-            <Icon icon="icon-pingce" class="text-purple-600" />
+            <Icon icon="icon-pingshen" class="text-purple-600" />
           </div>
           <div>
             <h2 class="text-base font-medium text-gray-900">{{ t('evaluation.introduce.aboutAssessment') }}</h2>
