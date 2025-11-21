@@ -68,9 +68,9 @@ onMounted(() => {
 provide('updateProjectInfo', updateProjectInfo);
 provide('addTabPane', (params) => {
   router.replace(`/apis#${ApiMenuKey.SERVICES}`);
-  nextTick(() => {
-    servicesRef.value.addTabPane(params);
-  });
+  setTimeout(() => {
+    servicesRef.value &&servicesRef.value.addTabPane(params);
+  }, 100);
 });
 provide('deleteTabPane', (params) => servicesRef.value && servicesRef.value.deleteTabPane(params));
 provide('updateTabPane', (params) => servicesRef.value && servicesRef.value.updateTabPane(params));
