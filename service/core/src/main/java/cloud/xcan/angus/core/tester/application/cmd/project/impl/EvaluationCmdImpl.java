@@ -1,7 +1,6 @@
-package cloud.xcan.angus.core.tester.application.cmd.project.evaluation.impl;
+package cloud.xcan.angus.core.tester.application.cmd.project.impl;
 
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.EVALUATION;
-import static cloud.xcan.angus.api.commonlink.CombinedTargetType.PROJECT;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.angus.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static java.util.Objects.nonNull;
@@ -11,9 +10,9 @@ import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
-import cloud.xcan.angus.core.tester.application.cmd.project.evaluation.EvaluationCmd;
+import cloud.xcan.angus.core.tester.application.cmd.project.EvaluationCmd;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
-import cloud.xcan.angus.core.tester.application.query.project.evaluation.EvaluationQuery;
+import cloud.xcan.angus.core.tester.application.query.project.EvaluationQuery;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationRepo;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluation;

@@ -1,11 +1,11 @@
-package cloud.xcan.angus.core.tester.application.query.project.evaluation.impl;
+package cloud.xcan.angus.core.tester.application.query.project.impl;
 
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
-import cloud.xcan.angus.core.tester.application.query.project.evaluation.EvaluationQuery;
+import cloud.xcan.angus.core.tester.application.query.project.EvaluationQuery;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluation;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationRepo;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationSearchRepo;
@@ -78,12 +78,9 @@ public class EvaluationQueryImpl implements EvaluationQuery {
       protected Page<TestEvaluation> process() {
         Set<SearchCriteria> criteria = spec.getCriteria();
 
-        // Set authorization conditions when you are not an administrator or only query yourself
-        commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
-        Page<TestEvaluation> page = fullTextSearch
+        return fullTextSearch
             ? evaluationSearchRepo.find(criteria, pageable, TestEvaluation.class, match)
             : evaluationRepo.findAll(spec, pageable);
-        return page;
       }
     }.execute();
   }

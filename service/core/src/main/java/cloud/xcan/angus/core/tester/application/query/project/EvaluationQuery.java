@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.application.query.project.evaluation;
+package cloud.xcan.angus.core.tester.application.query.project;
 
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluation;
