@@ -248,8 +248,8 @@ onMounted(() => {
     <div class="bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-4 border-b border-gray-100">
       <div class="flex items-center justify-between">
         <div class="flex items-center">
-          <div class="w-8 h-8 bg-purple-100 rounded flex items-center justify-center mr-3">
-            <Icon icon="icon-pingshen" class="text-purple-600" />
+          <div class="w-16 h-16 rounded flex items-center justify-center mr-3">
+            <Icon icon="icon-pingshen" class="text-purple-600 text-4xl" />
           </div>
           <div>
             <h2 class="text-base font-medium text-gray-900">{{ t('evaluation.introduce.aboutAssessment') }}</h2>
