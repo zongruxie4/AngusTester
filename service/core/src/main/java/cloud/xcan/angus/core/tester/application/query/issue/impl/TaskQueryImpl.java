@@ -125,7 +125,7 @@ import cloud.xcan.angus.core.tester.application.query.issue.TaskRemarkQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskSprintQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
-import cloud.xcan.angus.core.tester.application.query.tag.TagQuery;
+import cloud.xcan.angus.core.tester.application.query.project.TagQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncCaseQuery;
 import cloud.xcan.angus.core.tester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.angus.core.tester.domain.activity.Activity;

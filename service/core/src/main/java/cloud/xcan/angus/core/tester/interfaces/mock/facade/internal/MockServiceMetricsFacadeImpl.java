@@ -8,7 +8,7 @@ import cloud.xcan.angus.core.tester.infra.metricsds.domain.jvmservice.JvmService
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.MockServiceMetricsFacade;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceMetricsAssembler;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.MockServiceMetricsVo;
-import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeMetricsFindDto;
+import cloud.xcan.angus.core.tester.interfaces.config.facade.dto.NodeMetricsFindDto;
 import cloud.xcan.angus.remote.PageResult;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;

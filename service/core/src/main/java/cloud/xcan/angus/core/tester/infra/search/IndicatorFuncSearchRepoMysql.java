@@ -5,11 +5,11 @@ import static cloud.xcan.angus.core.tester.infra.util.AngusTesterUtils.assembleT
 
 import cloud.xcan.angus.core.jpa.repository.AbstractSearchRepository;
 import cloud.xcan.angus.core.jpa.repository.SearchMode;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFunc;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFuncListRepo;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFuncSearchRepo;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerfListRepo;
-import cloud.xcan.angus.core.tester.infra.persistence.mysql.master.indicator.IndicatorPerfListRepoMysql;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFunc;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFuncListRepo;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFuncSearchRepo;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorPerfListRepo;
+import cloud.xcan.angus.core.tester.infra.persistence.mysql.master.config.IndicatorPerfListRepoMysql;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import jakarta.annotation.Resource;
 import java.util.Set;

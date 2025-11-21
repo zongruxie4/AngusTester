@@ -2,9 +2,9 @@ package cloud.xcan.angus.core.tester.infra.search;
 
 import cloud.xcan.angus.core.jpa.repository.AbstractSearchRepository;
 import cloud.xcan.angus.core.jpa.repository.SearchMode;
-import cloud.xcan.angus.core.tester.domain.node.Node;
-import cloud.xcan.angus.core.tester.domain.node.NodeListRepo;
-import cloud.xcan.angus.core.tester.domain.node.NodeSearchRepo;
+import cloud.xcan.angus.core.tester.domain.config.node.Node;
+import cloud.xcan.angus.core.tester.domain.config.node.NodeListRepo;
+import cloud.xcan.angus.core.tester.domain.config.node.NodeSearchRepo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import jakarta.annotation.Resource;
 import java.util.Set;

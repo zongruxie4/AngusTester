@@ -78,6 +78,16 @@ export type CaseCount = {
   completedWorkload: number;
   /** progress = passedTestNum / validCaseNum * 100 **/
   progress: string;
+  /** The number of UI test cases */
+  uiTestNum: number;
+  /** The number of API test cases */
+  apiTestNum: number;
+  /** The number of unit test cases */
+  unitTestNum: number;
+  /** The number of integration test cases */
+  integrationTestNum: number;
+  /** The number of E2E test cases */
+  e2eTestNum: number;
 }
 
 export interface AssocCaseProps {

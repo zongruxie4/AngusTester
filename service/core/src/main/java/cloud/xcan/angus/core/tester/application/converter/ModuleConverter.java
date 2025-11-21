@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.application.converter;
 
-import cloud.xcan.angus.core.tester.domain.module.Module;
+import cloud.xcan.angus.core.tester.domain.project.module.Module;
 
 public class ModuleConverter {
 

@@ -17,7 +17,7 @@ import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.FuncCaseWorkloadR
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseReviewVo;
-import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionRefReplaceDto;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.SoftwareVersionRefReplaceDto;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.servlet.http.HttpServletResponse;

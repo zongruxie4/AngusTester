@@ -8,7 +8,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.api.commonlink.setting.indicator.Func;
 import cloud.xcan.angus.api.gm.indicator.SmokeCheckSetting;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFunc;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFunc;
 import cloud.xcan.angus.core.utils.GsonUtils;
 import cloud.xcan.angus.model.element.assertion.Assertion;
 import cloud.xcan.angus.model.element.extraction.HttpExtraction;

@@ -126,28 +126,23 @@ const updateChartData = (): void => {
   if (props.dataSource === undefined) {
     return;
   }
-  // UI = 'UI',
-  // API = 'API',
-  // UNIT = 'UNIT',
-  // INTEGRATION = 'INTEGRATION',
-  // E2E = 'E2E'
 
   // Reset chart data
   chartOptions.series![0].data = [{
     name: enumUtils.getEnumDescription(TestLayer, TestLayer.UI),
-    value: 0
+    value: props.dataSource?.uiTestNum || 0
   }, {
     name: enumUtils.getEnumDescription(TestLayer,TestLayer.API),
-    value: 0
+    value: props.dataSource?.apiTestNum || 0
   }, {
     name: enumUtils.getEnumDescription(TestLayer,TestLayer.UNIT),
-    value: 0
+    value: props.dataSource?.unitTestNum || 0
   }, {
     name: enumUtils.getEnumDescription(TestLayer,TestLayer.INTEGRATION),
-    value: 0
+    value: props.dataSource?.integrationTestNum || 0
   }, {
     name: enumUtils.getEnumDescription(TestLayer,TestLayer.E2E),
-    value: 0
+    value: props.dataSource?.e2eTestNum || 0
   }];
 
   renderChart();

@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.infra.iaas;
 
-import cloud.xcan.angus.core.tester.domain.node.dns.NodeDomainDns;
+import cloud.xcan.angus.core.tester.domain.config.node.dns.NodeDomainDns;
 
 /**
  * @author wjl

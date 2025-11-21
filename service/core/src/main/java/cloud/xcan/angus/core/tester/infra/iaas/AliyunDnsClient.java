@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.infra.iaas;
 
 
-import cloud.xcan.angus.core.tester.domain.node.dns.NodeDomainDns;
+import cloud.xcan.angus.core.tester.domain.config.node.dns.NodeDomainDns;
 import cloud.xcan.angus.core.utils.GsonUtils;
 import cloud.xcan.angus.remote.message.ProtocolException;
 import com.aliyun.alidns20150109.Client;

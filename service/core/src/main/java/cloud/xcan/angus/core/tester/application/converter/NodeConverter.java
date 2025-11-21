@@ -21,7 +21,7 @@ import cloud.xcan.angus.api.pojo.Pair;
 import cloud.xcan.angus.api.pojo.node.NodeSpecData;
 import cloud.xcan.angus.core.biz.SystemAssert;
 import cloud.xcan.angus.core.event.source.EventContent;
-import cloud.xcan.angus.core.tester.domain.node.Node;
+import cloud.xcan.angus.core.tester.domain.config.node.Node;
 import cloud.xcan.angus.remote.ExceptionLevel;
 import cloud.xcan.angus.spec.locale.MessageHolder;
 import cloud.xcan.angus.spec.principal.Principal;
