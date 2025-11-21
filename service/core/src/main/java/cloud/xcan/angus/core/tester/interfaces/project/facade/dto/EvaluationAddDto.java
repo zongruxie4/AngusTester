@@ -23,7 +23,7 @@ public class EvaluationAddDto {
 
   @NotBlank
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Evaluation name for identification and management", example = "项目质量测评 - 2024年Q1", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Evaluation name for identification and management", example = "Evaluation01", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
   @NotNull

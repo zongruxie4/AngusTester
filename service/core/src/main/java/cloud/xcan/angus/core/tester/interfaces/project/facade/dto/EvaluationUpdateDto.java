@@ -24,7 +24,7 @@ public class EvaluationUpdateDto {
   private Long id;
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Evaluation name for identification and management", example = "项目质量测评 - 2024年Q1")
+  @Schema(description = "Evaluation name for identification and management", example = "Evaluation01")
   private String name;
 
   @Schema(description = "Evaluation scope (PROJECT, PLAN, MODULE)", example = "PROJECT")

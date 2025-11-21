@@ -7,6 +7,7 @@ import static cloud.xcan.angus.core.tester.interfaces.project.facade.internal.as
 import static cloud.xcan.angus.core.tester.interfaces.project.facade.internal.assembler.EvaluationAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
+import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.project.EvaluationCmd;
 import cloud.xcan.angus.core.tester.application.query.project.EvaluationQuery;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluation;
@@ -51,11 +52,13 @@ public class EvaluationFacadeImpl implements EvaluationFacade {
     evaluationCmd.delete(id);
   }
 
+  @NameJoin
   @Override
   public EvaluationDetailVo detail(Long id) {
     return toDetailVo(evaluationQuery.detail(id));
   }
 
+  @NameJoin
   @Override
   public PageResult<EvaluationDetailVo> list(EvaluationFindDto dto) {
     Page<TestEvaluation> page = evaluationQuery.list(getSpecification(dto), dto.tranPage(),
