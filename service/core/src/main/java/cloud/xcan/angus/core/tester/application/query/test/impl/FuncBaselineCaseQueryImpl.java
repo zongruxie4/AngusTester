@@ -14,7 +14,7 @@ import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.comment.CommentQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskFuncCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
-import cloud.xcan.angus.core.tester.application.query.tag.TagQuery;
+import cloud.xcan.angus.core.tester.application.query.project.TagQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncBaselineCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncPlanAuthQuery;
 import cloud.xcan.angus.core.tester.domain.comment.CommentTargetType;

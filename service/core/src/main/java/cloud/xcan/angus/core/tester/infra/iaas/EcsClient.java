@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.infra.iaas;
 
 import cloud.xcan.angus.api.pojo.node.NodeSpecData;
-import cloud.xcan.angus.core.tester.domain.node.Node;
+import cloud.xcan.angus.core.tester.domain.config.node.Node;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;

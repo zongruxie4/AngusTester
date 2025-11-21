@@ -8,7 +8,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.api.commonlink.setting.indicator.Perf;
 import cloud.xcan.angus.api.enums.Percentile;
-import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerf;
+import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorPerf;
 import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.utils.GsonUtils;
 import cloud.xcan.angus.spec.unit.TimeValue;

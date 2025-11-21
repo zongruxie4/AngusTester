@@ -15,8 +15,8 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.core.spring.SpringContextHolder;
-import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
-import cloud.xcan.angus.core.tester.domain.node.info.NodeInfoRepo;
+import cloud.xcan.angus.core.tester.domain.config.node.info.NodeInfo;
+import cloud.xcan.angus.core.tester.domain.config.node.info.NodeInfoRepo;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.usage.NodeUsageRepo;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.usage.disk.DiskUsage;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.usage.disk.DiskUsageRepo;

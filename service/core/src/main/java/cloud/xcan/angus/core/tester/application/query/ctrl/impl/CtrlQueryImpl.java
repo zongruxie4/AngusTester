@@ -20,8 +20,8 @@ import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.query.ctrl.CtrlQuery;
-import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
-import cloud.xcan.angus.core.tester.domain.node.Node;
+import cloud.xcan.angus.core.tester.application.query.config.NodeQuery;
+import cloud.xcan.angus.core.tester.domain.config.node.Node;
 import cloud.xcan.angus.core.tester.infra.agent.AgentServerProperties;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remoting.common.node.DiscoveryNodeDto;
@@ -134,7 +134,7 @@ public class CtrlQueryImpl implements CtrlQuery {
         log.info("Discovery up instance ips: {}", upInstanceIps);
         log.info("Discovery isCloudServiceEdition={}, upInstanceIps.contains(nodes[0].ip)={}",
             isCloudServiceEdition(), nodes.get(0).getIp());
-        
+
         // Filter valid nodes based on edition type and health status
         List<Node> validNodes = isCloudServiceEdition()
             ? nodes.stream().filter(x ->

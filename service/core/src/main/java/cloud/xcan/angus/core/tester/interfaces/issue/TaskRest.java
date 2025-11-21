@@ -25,7 +25,7 @@ import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskInfoVo;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskListVo;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseListVo;
-import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionRefReplaceDto;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.SoftwareVersionRefReplaceDto;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;

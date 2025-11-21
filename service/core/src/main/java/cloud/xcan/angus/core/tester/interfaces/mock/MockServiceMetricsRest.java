@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.interfaces.mock;
 
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.MockServiceMetricsFacade;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.MockServiceMetricsVo;
-import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeMetricsFindDto;
+import cloud.xcan.angus.core.tester.interfaces.config.facade.dto.NodeMetricsFindDto;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import io.swagger.v3.oas.annotations.Operation;

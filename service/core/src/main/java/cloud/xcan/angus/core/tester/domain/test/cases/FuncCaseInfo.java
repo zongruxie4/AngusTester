@@ -14,7 +14,6 @@ import cloud.xcan.angus.core.tester.domain.ResourceTagAssoc;
 import cloud.xcan.angus.core.tester.domain.activity.MainTargetActivityResource;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.issue.cases.TaskFuncCaseAssoc;
-import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.test.TestLayer;
 import cloud.xcan.angus.core.tester.domain.test.TestPurpose;
 import jakarta.persistence.Column;

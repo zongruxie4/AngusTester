@@ -53,9 +53,9 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.tester.domain.node.info.Info;
-import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
-import cloud.xcan.angus.core.tester.domain.node.info.Os;
+import cloud.xcan.angus.core.tester.domain.config.node.info.Info;
+import cloud.xcan.angus.core.tester.domain.config.node.info.NodeInfo;
+import cloud.xcan.angus.core.tester.domain.config.node.info.Os;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.usage.NodeUsage;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.usage.NodeUsage.Cpu;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.usage.NodeUsage.FileSystem;

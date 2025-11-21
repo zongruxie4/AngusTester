@@ -9,9 +9,9 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
-import cloud.xcan.angus.core.tester.domain.node.NodeRepo;
-import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
-import cloud.xcan.angus.core.tester.domain.node.info.NodeInfoRepo;
+import cloud.xcan.angus.core.tester.domain.config.node.NodeRepo;
+import cloud.xcan.angus.core.tester.domain.config.node.info.NodeInfo;
+import cloud.xcan.angus.core.tester.domain.config.node.info.NodeInfoRepo;
 import cloud.xcan.angus.remoting.common.MessageService;
 import cloud.xcan.angus.remoting.common.spi.BindValidator;
 import cloud.xcan.angus.spec.http.HttpSender;

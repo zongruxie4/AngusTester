@@ -6,7 +6,7 @@ import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.jvmservice.JvmServiceUsage;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.MockServiceMetricsVo;
-import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeMetricsFindDto;
+import cloud.xcan.angus.core.tester.interfaces.config.facade.dto.NodeMetricsFindDto;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.util.Set;
 
