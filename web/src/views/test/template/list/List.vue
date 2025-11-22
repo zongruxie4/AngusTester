@@ -143,9 +143,6 @@ const handleView = (template: TestTemplateDetail) => {
           <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2 flex-1 min-w-0">
               <span class="font-semibold text-3.5 truncate text-theme-special" @click="handleView(template)">{{ template.name }}</span>
-              <Tag v-if="template.isSystem" color="orange">
-                {{ t('testTemplate.messages.systemTemplate') }}
-              </Tag>
             </div>
             <Dropdown
               v-if="!template.isSystem"
