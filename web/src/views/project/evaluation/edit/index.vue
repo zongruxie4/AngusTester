@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
-import { Button, Checkbox, CheckboxGroup, Form, FormItem, Radio, RadioGroup, Tree } from 'ant-design-vue';
+import { Button, Form, FormItem, Radio, RadioGroup, Tree } from 'ant-design-vue';
 import { DatePicker, Icon, Input, notification, Select, Spin } from '@xcan-angus/vue-ui';
 import { enumUtils, TESTER, utils } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
@@ -96,6 +96,29 @@ const validatePurposes = async (_rule: Rule, value: EvaluationPurpose[]) => {
     return Promise.reject(new Error(t('evaluation.placeholders.selectPurposes')));
   }
   return Promise.resolve();
+};
+
+/**
+ * Check if a purpose is selected
+ */
+const isPurposeSelected = (purpose: EvaluationPurpose): boolean => {
+  return formState.value.purposes?.includes(purpose) || false;
+};
+
+/**
+ * Toggle purpose selection
+ */
+const togglePurpose = (purpose: string) => {
+  const currentPurposes = formState.value.purposes || [];
+  const purposeValue = purpose as EvaluationPurpose;
+  const index = currentPurposes.indexOf(purposeValue);
+  if (index > -1) {
+    // Remove if already selected
+    formState.value.purposes = currentPurposes.filter(p => p !== purposeValue);
+  } else {
+    // Add if not selected
+    formState.value.purposes = [...currentPurposes, purposeValue];
+  }
 };
 
 /**
@@ -567,18 +590,45 @@ onMounted(() => {
         :label="t('evaluation.columns.purposes')"
         name="purposes"
         :rules="{ required: true, validator: validatePurposes }">
-        <CheckboxGroup
-          v-model:value="formState.purposes"
-          class="mt-0.5">
-          <div class="flex flex-col space-y-1">
-            <Checkbox
+        <div class="mt-0.5">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div
               v-for="item in purposeOptions"
               :key="item.value"
-              :value="item.value">
-              {{ item.label }}
-            </Checkbox>
+              :class="[
+                'p-4 rounded-lg border-2 cursor-pointer transition-all duration-200',
+                'hover:shadow-md active:scale-98',
+                isPurposeSelected(item.value as EvaluationPurpose)
+                  ? 'border-blue-500 bg-blue-50 shadow-sm'
+                  : 'border-gray-200 bg-white hover:border-blue-300 hover:bg-gray-50'
+              ]"
+              @click="togglePurpose(item.value)">
+              <div class="flex items-center">
+                <div
+                  :class="[
+                    'w-5 h-5 rounded border-2 mr-3 flex items-center justify-center flex-shrink-0 transition-all',
+                    isPurposeSelected(item.value as EvaluationPurpose)
+                      ? 'border-blue-500 bg-blue-500 shadow-sm'
+                      : 'border-gray-300 bg-white'
+                  ]">
+                  <Icon
+                    v-if="isPurposeSelected(item.value as EvaluationPurpose)"
+                    icon="icon-duigou"
+                    class="text-white text-3" />
+                </div>
+                <span
+                  :class="[
+                    'text-3.5 leading-5 flex-1',
+                    isPurposeSelected(item.value as EvaluationPurpose)
+                      ? 'text-blue-700 font-semibold'
+                      : 'text-gray-700'
+                  ]">
+                  {{ item.label }}
+                </span>
+              </div>
+            </div>
           </div>
-        </CheckboxGroup>
+        </div>
       </FormItem>
 
       <FormItem
