@@ -180,11 +180,6 @@
       </properties>
       <modules/>
       <dependencies>
-        <dependency>
-          <groupId>cloud.xcan.angus</groupId>
-          <artifactId>xcan-angustester.professional</artifactId>
-          <version>${project.version}</version>
-        </dependency>
       </dependencies>
     </profile>
     <!-- Deploy only datacenter edition -->
@@ -195,11 +190,6 @@
       </properties>
       <modules/>
       <dependencies>
-        <dependency>
-          <groupId>cloud.xcan.angus</groupId>
-          <artifactId>xcan-angustester.professional</artifactId>
-          <version>${project.version}</version>
-        </dependency>
       </dependencies>
     </profile>
     <!-- Deploy only cloud service edition -->
@@ -210,11 +200,6 @@
       </properties>
       <modules/>
       <dependencies>
-        <dependency>
-          <groupId>cloud.xcan.angus</groupId>
-          <artifactId>xcan-angustester.professional</artifactId>
-          <version>${project.version}</version>
-        </dependency>
       </dependencies>
     </profile>
   </profiles>
