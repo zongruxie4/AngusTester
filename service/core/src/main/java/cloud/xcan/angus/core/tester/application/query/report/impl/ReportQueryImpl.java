@@ -42,6 +42,7 @@ import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.JoinSupplier;
+import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.event.EventSender;
 import cloud.xcan.angus.core.event.source.EventContent;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -58,6 +59,7 @@ import cloud.xcan.angus.core.tester.application.query.issue.TaskSprintQuery;
 import cloud.xcan.angus.core.tester.application.query.kanban.KanbanEfficiencyQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
+import cloud.xcan.angus.core.tester.application.query.project.TestEvaluationQuery;
 import cloud.xcan.angus.core.tester.application.query.report.ReportAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.report.ReportQuery;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioQuery;
@@ -80,6 +82,9 @@ import cloud.xcan.angus.core.tester.domain.issue.summary.TaskRemarkSummary;
 import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyCaseOverview;
 import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyTaskOverview;
 import cloud.xcan.angus.core.tester.domain.project.Project;
+import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationScope;
+import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluation;
+import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluationResult;
 import cloud.xcan.angus.core.tester.domain.report.Report;
 import cloud.xcan.angus.core.tester.domain.report.ReportCategory;
 import cloud.xcan.angus.core.tester.domain.report.ReportInfo;
@@ -152,6 +157,9 @@ public class ReportQueryImpl implements ReportQuery {
 
   @Resource
   private ProjectMemberQuery projectMemberQuery;
+
+  @Resource
+  private TestEvaluationQuery testEvaluationQuery;
 
   @Resource
   private TaskQuery taskQuery;
@@ -622,6 +630,21 @@ public class ReportQueryImpl implements ReportQuery {
             + scenarioResult.getTestResultCount().getTestPassedNum());
     content.setProgress(progress);
     return content;
+  }
+
+  @Override
+  public TestEvaluationResult assembleTestEvaluationContent(ContentFilterSetting filter,
+      Long projectId) {
+    TestEvaluation evaluation = new TestEvaluation();
+    evaluation.setProjectId(projectId);
+    evaluation.setScope(EvaluationScope.valueOf(filter.getTargetType().name()));
+    evaluation.setResourceId(filter.getTargetId());
+    evaluation.setStartDate(filter.getCreatedDateStart());
+    evaluation.setDeadlineDate(filter.getCreatedDateEnd());
+    ProtocolAssert.assertNotEmpty(filter.getEvaluationPurposes(),
+        "evaluation purposes is missing");
+    evaluation.setPurposes(filter.getEvaluationPurposes());
+    return testEvaluationQuery.getEvaluationResult(evaluation);
   }
 
   @Override

@@ -2,10 +2,11 @@ package cloud.xcan.angus.core.tester.application.query.project;
 
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluation;
+import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluationResult;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-public interface EvaluationQuery {
+public interface TestEvaluationQuery {
 
   TestEvaluation detail(Long id);
 
@@ -13,5 +14,7 @@ public interface EvaluationQuery {
 
   Page<TestEvaluation> list(GenericSpecification<TestEvaluation> spec, PageRequest pageable,
       boolean fullTextSearch, String[] match);
+
+  TestEvaluationResult getEvaluationResult(TestEvaluation evaluation);
 }
 

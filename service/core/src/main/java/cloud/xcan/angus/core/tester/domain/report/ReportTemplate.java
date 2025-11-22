@@ -6,7 +6,7 @@ import cloud.xcan.angus.spec.locale.EnumMessage;
 
 @EndpointRegister
 public enum ReportTemplate implements EnumMessage<String> {
-  PROJECT_PROGRESS, PROJECT_DATA_ASSETS, PROJECT_EFFICIENCY, PROJECT_ACTIVITY,
+  PROJECT_PROGRESS, PROJECT_DATA_ASSETS, PROJECT_EFFICIENCY, PROJECT_ACTIVITY, TEST_EVALUATION,
   TASK_SPRINT, TASK,
   FUNC_TESTING_PLAN, FUNC_TESTING_CASE,
   SERVICES_TESTING_RESULT, APIS_TESTING_RESULT,
@@ -28,32 +28,18 @@ public enum ReportTemplate implements EnumMessage<String> {
   }
 
   public CombinedTargetType getReportTargetType() {
-    switch (this) {
-      case PROJECT_PROGRESS:
-      case PROJECT_DATA_ASSETS:
-      case PROJECT_EFFICIENCY:
-      case PROJECT_ACTIVITY:
-        return CombinedTargetType.PROJECT;
-      case TASK_SPRINT:
-        return CombinedTargetType.TASK_SPRINT;
-      case TASK:
-        return CombinedTargetType.TASK;
-      case FUNC_TESTING_PLAN:
-        return CombinedTargetType.FUNC_PLAN;
-      case FUNC_TESTING_CASE:
-        return CombinedTargetType.FUNC_CASE;
-      case SERVICES_TESTING_RESULT:
-        return CombinedTargetType.SERVICE;
-      case APIS_TESTING_RESULT:
-        return CombinedTargetType.API;
-      case SCENARIO_TESTING_RESULT:
-        return CombinedTargetType.SCENARIO;
-      case EXEC_FUNCTIONAL_RESULT:
-      case EXEC_PERFORMANCE_RESULT:
-      case EXEC_STABILITY_RESULT:
-      case EXEC_CUSTOMIZATION_RESULT:
-        return CombinedTargetType.EXECUTION;
-    }
-    throw new IllegalStateException("Not target value for " + this.name());
+    return switch (this) {
+      case PROJECT_PROGRESS, PROJECT_DATA_ASSETS, PROJECT_EFFICIENCY, PROJECT_ACTIVITY,
+           TEST_EVALUATION -> CombinedTargetType.PROJECT;
+      case TASK_SPRINT -> CombinedTargetType.TASK_SPRINT;
+      case TASK -> CombinedTargetType.TASK;
+      case FUNC_TESTING_PLAN -> CombinedTargetType.FUNC_PLAN;
+      case FUNC_TESTING_CASE -> CombinedTargetType.FUNC_CASE;
+      case SERVICES_TESTING_RESULT -> CombinedTargetType.SERVICE;
+      case APIS_TESTING_RESULT -> CombinedTargetType.API;
+      case SCENARIO_TESTING_RESULT -> CombinedTargetType.SCENARIO;
+      case EXEC_FUNCTIONAL_RESULT, EXEC_PERFORMANCE_RESULT, EXEC_STABILITY_RESULT,
+           EXEC_CUSTOMIZATION_RESULT -> CombinedTargetType.EXECUTION;
+    };
   }
 }

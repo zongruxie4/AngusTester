@@ -187,7 +187,7 @@
       },
       "EvaluationScope": {
         "PROJECT": "项目",
-        "PLAN": "计划",
+        "FUNC_PLAN": "计划",
         "MODULE": "模块"
       },
       "EvaluationPurpose": {
@@ -509,6 +509,7 @@
         "PROJECT_DATA_ASSETS": "项目数据资产报告",
         "PROJECT_EFFICIENCY": "项目效能报告",
         "PROJECT_ACTIVITY": "项目活动报告",
+        "TEST_EVALUATION": "测试评估报告",
         "TASK_SPRINT": "迭代报告",
         "TASK": "问题报告",
         "FUNC_TESTING_PLAN": "测试计划报告",

@@ -1,8 +1,7 @@
 package cloud.xcan.angus.core.tester.domain.project.evaluation;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import cloud.xcan.angus.core.tester.domain.report.record.content.ReportContent;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,9 +19,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestEvaluationResult implements Serializable {
+public class TestEvaluationResult implements ReportContent, Serializable {
 
   private static final long serialVersionUID = 1L;
+
+  private final String template = TEST_EVALUATION;
 
   /**
    * The total number of test cases meeting the assessment criteria.
@@ -40,7 +41,6 @@ public class TestEvaluationResult implements Serializable {
    * Value: MetricResult containing score and formatted value
    */
   private LinkedHashMap<EvaluationPurpose, MetricResult> metrics;
-
 
   /**
    * <p>Individual metric result for a specific evaluation purpose</p>

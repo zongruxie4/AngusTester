@@ -187,7 +187,7 @@
       },
       "EvaluationScope": {
         "PROJECT": "Project",
-        "PLAN": "Plan",
+        "FUNC_PLAN": "Plan",
         "MODULE": "Module"
       },
       "EvaluationPurpose": {
@@ -509,6 +509,7 @@
         "PROJECT_DATA_ASSETS": "Project Data Assets Report",
         "PROJECT_EFFICIENCY": "Project Efficiency Report",
         "PROJECT_ACTIVITY": "Project Activity Report",
+        "TEST_EVALUATION": "Test Evaluation Report",
         "TASK_SPRINT": "Sprint Report",
         "TASK": "Task Report",
         "FUNC_TESTING_PLAN": "Test Plan Report",

@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.project;
 
-import cloud.xcan.angus.core.tester.interfaces.project.facade.EvaluationFacade;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.TestEvaluationFacade;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.EvaluationAddDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.EvaluationFindDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.EvaluationUpdateDto;
@@ -32,10 +32,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequestMapping("/api/v1/project/evaluation")
-public class EvaluationRest {
+public class TestEvaluationRest {
 
   @Resource
-  private EvaluationFacade evaluationFacade;
+  private TestEvaluationFacade evaluationFacade;
 
   @Operation(summary = "Create test evaluation",
       description = "Create a new test evaluation with specified scope, purposes, and timeline",

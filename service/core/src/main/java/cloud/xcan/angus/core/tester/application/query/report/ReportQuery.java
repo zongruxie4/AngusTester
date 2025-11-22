@@ -4,6 +4,7 @@ import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
+import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluationResult;
 import cloud.xcan.angus.core.tester.domain.report.Report;
 import cloud.xcan.angus.core.tester.domain.report.ReportInfo;
 import cloud.xcan.angus.core.tester.domain.report.ReportResourcesCount;
@@ -12,6 +13,7 @@ import cloud.xcan.angus.core.tester.domain.report.record.content.ApisTestingCont
 import cloud.xcan.angus.core.tester.domain.report.record.content.FuncCaseContent;
 import cloud.xcan.angus.core.tester.domain.report.record.content.FuncPlanContent;
 import cloud.xcan.angus.core.tester.domain.report.record.content.ProjectProgressContent;
+import cloud.xcan.angus.core.tester.domain.report.record.content.ReportContent;
 import cloud.xcan.angus.core.tester.domain.report.record.content.ScenarioTestingContent;
 import cloud.xcan.angus.core.tester.domain.report.record.content.ServicesTestingContent;
 import cloud.xcan.angus.core.tester.domain.report.record.content.TaskContent;
@@ -61,8 +63,7 @@ public interface ReportQuery {
 
   ApisTestingContent assembleApisTestingContent(ContentFilterSetting filter);
 
-  ServicesTestingContent assembleServicesTestingContent(ContentFilterSetting filter,
-      Long projectId);
+  ServicesTestingContent assembleServicesTestingContent(ContentFilterSetting filter, Long projectId);
 
   FuncCaseContent assembleFuncCaseContent(ContentFilterSetting filter);
 
@@ -72,8 +73,9 @@ public interface ReportQuery {
 
   TaskSprintContent assembleTaskSprintContent(ContentFilterSetting filter, Long projectId);
 
-  ProjectProgressContent assembleProjectProgressContent(ContentFilterSetting filter,
-      Long projectId);
+  ProjectProgressContent assembleProjectProgressContent(ContentFilterSetting filter, Long projectId);
+
+  TestEvaluationResult assembleTestEvaluationContent(ContentFilterSetting filter, Long projectId);
 
   void assembleAndSendReportGenerationSuccessfulNoticeEvent(Report reportDb);
 

@@ -10,7 +10,9 @@ import static cloud.xcan.angus.core.tester.domain.report.record.content.ReportCo
 import static cloud.xcan.angus.core.tester.domain.report.record.content.ReportContent.SERVICES_TESTING_RESULT;
 import static cloud.xcan.angus.core.tester.domain.report.record.content.ReportContent.TASK;
 import static cloud.xcan.angus.core.tester.domain.report.record.content.ReportContent.TASK_SPRINT;
+import static cloud.xcan.angus.core.tester.domain.report.record.content.ReportContent.TEST_EVALUATION;
 
+import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluationResult;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
@@ -22,6 +24,7 @@ import lombok.experimental.Accessors;
 @JsonTypeInfo(use = Id.NAME, property = "template")
 @JsonSubTypes({
     @Type(value = ProjectProgressContent.class, name = PROJECT_PROGRESS),
+    @Type(value = TestEvaluationResult.class, name = TEST_EVALUATION),
     @Type(value = TaskSprintContent.class, name = TASK_SPRINT),
     @Type(value = TaskContent.class, name = TASK),
     @Type(value = FuncPlanContent.class, name = FUNC_TESTING_PLAN),
@@ -35,6 +38,7 @@ import lombok.experimental.Accessors;
 public interface ReportContent {
 
   String PROJECT_PROGRESS = "PROJECT_PROGRESS";
+  String TEST_EVALUATION = "TEST_EVALUATION";
   String TASK_SPRINT = "TASK_SPRINT";
   String TASK = "TASK";
   String FUNC_TESTING_PLAN = "FUNC_TESTING_PLAN";

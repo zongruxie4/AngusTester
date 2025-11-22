@@ -606,7 +606,7 @@ export enum SecurityCheckSetting {
 // Evaluation Enums
 export enum EvaluationScope {
   PROJECT = 'PROJECT',
-  PLAN = 'PLAN',
+  FUNC_PLAN = 'FUNC_PLAN',
   MODULE = 'MODULE'
 }
 

@@ -7,7 +7,7 @@ import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.EvaluationDetai
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
 
-public interface EvaluationFacade {
+public interface TestEvaluationFacade {
 
   IdKey<Long, Object> add(EvaluationAddDto dto);
 

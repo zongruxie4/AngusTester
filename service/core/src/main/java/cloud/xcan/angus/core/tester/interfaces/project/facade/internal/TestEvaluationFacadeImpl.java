@@ -8,10 +8,10 @@ import static cloud.xcan.angus.core.tester.interfaces.project.facade.internal.as
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
-import cloud.xcan.angus.core.tester.application.cmd.project.EvaluationCmd;
-import cloud.xcan.angus.core.tester.application.query.project.EvaluationQuery;
+import cloud.xcan.angus.core.tester.application.cmd.project.TestEvaluationCmd;
+import cloud.xcan.angus.core.tester.application.query.project.TestEvaluationQuery;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluation;
-import cloud.xcan.angus.core.tester.interfaces.project.facade.EvaluationFacade;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.TestEvaluationFacade;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.EvaluationAddDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.EvaluationFindDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.EvaluationUpdateDto;
@@ -24,13 +24,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EvaluationFacadeImpl implements EvaluationFacade {
+public class TestEvaluationFacadeImpl implements TestEvaluationFacade {
 
   @Resource
-  private EvaluationCmd evaluationCmd;
+  private TestEvaluationCmd evaluationCmd;
 
   @Resource
-  private EvaluationQuery evaluationQuery;
+  private TestEvaluationQuery evaluationQuery;
 
   @Override
   public IdKey<Long, Object> add(EvaluationAddDto dto) {

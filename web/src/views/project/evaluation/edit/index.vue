@@ -150,11 +150,11 @@ const prepareFormParams = () => {
     params.deadlineDate = dateRange[1];
   }
 
-  // Only set resourceId for PLAN and MODULE scopes
+  // Only set resourceId for FUNC_PLAN and MODULE scopes
   if (formState.value.scope !== EvaluationScope.PROJECT) {
     if (formState.value.resourceId !== undefined && formState.value.resourceId !== null && formState.value.resourceId !== '') {
-      params.resourceId = typeof formState.value.resourceId === 'string' 
-        ? Number(formState.value.resourceId) 
+      params.resourceId = typeof formState.value.resourceId === 'string'
+        ? Number(formState.value.resourceId)
         : formState.value.resourceId;
     }
   }
@@ -302,9 +302,9 @@ const initializeFormData = (data: EvaluationDetail) => {
   formState.value.startDate = startDate;
   formState.value.deadlineDate = deadlineDate;
   formState.value.date = [startDate, deadlineDate];
-  
+
   // Set resource selection based on scope
-  if (formState.value.scope === EvaluationScope.PLAN && resourceId) {
+  if (formState.value.scope === EvaluationScope.FUNC_PLAN && resourceId) {
     selectedPlanId.value = String(resourceId);
   } else if (formState.value.scope === EvaluationScope.MODULE && resourceId) {
     selectedModuleId.value = String(resourceId);
@@ -316,7 +316,7 @@ const initializeFormData = (data: EvaluationDetail) => {
       formState.value.projectId = String(projectIdToUse);
     }
   }
-  
+
   // Load module tree if scope is MODULE
   if (formState.value.scope === EvaluationScope.MODULE) {
     loadModuleTree();
@@ -402,7 +402,7 @@ watch(() => formState.value.scope, (newScope) => {
   selectedPlanId.value = undefined;
   selectedModuleId.value = undefined;
   formState.value.resourceId = undefined;
-  
+
   // Load data based on scope
   if (newScope === EvaluationScope.MODULE) {
     loadModuleTree();
@@ -424,7 +424,7 @@ const cancelEdit = async () => {
 onMounted(() => {
   // Load project list for project selection
   loadProjectList();
-  
+
   // Initialize form data immediately on mount
   if (!props.data?.id || props.data.id === 'new-evaluation') {
     initializeFormData(null as any);
@@ -528,7 +528,7 @@ onMounted(() => {
 
       <!-- Plan Selection -->
       <FormItem
-        v-if="formState.scope === EvaluationScope.PLAN"
+        v-if="formState.scope === EvaluationScope.FUNC_PLAN"
         :label="t('common.plan')"
         name="selectedPlan"
         :rules="{ required: true, message: t('common.placeholders.selectOrSearchPlan') }">

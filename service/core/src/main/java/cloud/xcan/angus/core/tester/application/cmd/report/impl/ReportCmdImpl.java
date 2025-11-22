@@ -44,6 +44,7 @@ import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprint;
 import cloud.xcan.angus.core.tester.domain.project.Project;
+import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluation;
 import cloud.xcan.angus.core.tester.domain.report.Report;
 import cloud.xcan.angus.core.tester.domain.report.ReportCategory;
 import cloud.xcan.angus.core.tester.domain.report.ReportRepo;
@@ -79,6 +80,7 @@ public class ReportCmdImpl extends CommCmd<Report, Long> implements ReportCmd {
 
   @Resource
   private ProjectQuery projectQuery;
+
 
   @Resource
   private ProjectMemberQuery projectMemberQuery;
@@ -308,6 +310,8 @@ public class ReportCmdImpl extends CommCmd<Report, Long> implements ReportCmd {
 
           reportContent = switch (template) {
             case PROJECT_PROGRESS -> reportQuery.assembleProjectProgressContent(
+                filter, projectId);
+            case TEST_EVALUATION -> reportQuery.assembleTestEvaluationContent(
                 filter, projectId);
             case TASK_SPRINT -> reportQuery.assembleTaskSprintContent(filter, projectId);
             case TASK -> reportQuery.assembleTaskContent(filter);

@@ -5,7 +5,7 @@ import cloud.xcan.angus.spec.locale.EnumMessage;
 
 @EndpointRegister
 public enum EvaluationScope implements EnumMessage<String> {
-  PROJECT, PLAN, MODULE;
+  PROJECT, FUNC_PLAN, MODULE;
 
   @Override
   public String getValue() {
