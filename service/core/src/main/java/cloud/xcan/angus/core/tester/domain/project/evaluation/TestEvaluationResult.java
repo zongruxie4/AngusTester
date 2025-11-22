@@ -25,6 +25,11 @@ public class TestEvaluationResult implements Serializable {
   private static final long serialVersionUID = 1L;
 
   /**
+   * The total number of test cases meeting the assessment criteria.
+   */
+  private long totalCases;
+
+  /**
    * Overall evaluation score (weighted average of all metrics)
    */
   private Double overallScore;

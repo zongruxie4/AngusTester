@@ -185,6 +185,21 @@
         "TEST_PLAN": "Test Plan",
         "TEST_CASE": "Test Case"
       },
+      "EvaluationScope": {
+        "PROJECT": "Project",
+        "PLAN": "Plan",
+        "MODULE": "Module"
+      },
+      "EvaluationPurpose": {
+        "FUNCTIONAL_PASSED_RATE": "Functional Passed Rate",
+        "PERFORMANCE_PASSED_RATE": "Performance Passed Rate",
+        "STABILITY_PASSED_RATE": "Stability Passed Rate",
+        "SECURITY_SCORE": "Security Score",
+        "COMPATIBILITY_SCORE": "Compatibility Score",
+        "USABILITY_SCORE": "Usability Score",
+        "MAINTAINABILITY_SCORE": "Maintainability Score",
+        "SCALABILITY_SCORE": "Scalability Score"
+      },
       "ProjectType": {
         "AGILE": "Agile Project Management",
         "GENERAL": "General Project Management",

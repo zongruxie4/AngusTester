@@ -216,9 +216,47 @@
   "evaluation": {
     "title": "测评",
     "introduce": {
-      "aboutAssessment": "关于测评",
-      "description": "测评用于评估软件系统的质量和可靠性，通过评估可以发现软件系统的潜在问题和风险，从而提高软件系统的质量和可靠性。"
-    }
+      "title": "关于测评",
+      "description": "测评用于评估软件系统的质量和可靠性，通过评估可以发现软件系统的潜在问题和风险，从而提高软件系统的质量和可靠性。",
+      "scope": {
+        "title": "测评范围",
+        "description": "支持项目、计划、模块三个层级的测评范围选择，灵活适应不同粒度的质量评估需求。"
+      },
+      "purpose": {
+        "title": "测评目的",
+        "description": "涵盖功能通过率、性能通过率、稳定性通过率、安全得分、兼容性得分、可用性得分、可维护性得分、可扩展性得分等多个维度。"
+      },
+      "result": {
+        "title": "测评结果",
+        "description": "自动生成测评结果报告，全面展示软件系统在各个维度的质量表现，为质量改进提供数据支撑。"
+      }
+    },
+    "actions": {
+      "addEvaluation": "添加测评",
+      "generateResult": "生成结果",
+      "generateResultSuccess": "生成结果成功"
+    },
+    "columns": {
+      "scope": "测评范围",
+      "purposes": "测评目的",
+      "resourceId": "资源ID",
+      "resourceCreationTime": "创建时间",
+      "result": "结果"
+    },
+    "placeholders": {
+      "enterName": "请输入名称",
+      "namePlaceholder": "输入测评名称，最多100个字符",
+      "selectScope": "请选择测评范围",
+      "selectPurposes": "请选择测评目的",
+      "selectProject": "请选择项目",
+      "selectModule": "请选择模块",
+      "resourceIdPlaceholder": "请输入资源ID"
+    },
+    "status": {
+      "hasResult": "已生成"
+    },
+    "addedEvaluations": "已添加测评",
+    "noEvaluations": "您尚未添加任何测评，"
   }
 }
 

@@ -603,6 +603,23 @@ export enum SecurityCheckSetting {
   USER_DEFINED_ASSERTION = 'USER_DEFINED_ASSERTION'
 }
 
+// Evaluation Enums
+export enum EvaluationScope {
+  PROJECT = 'PROJECT',
+  PLAN = 'PLAN',
+  MODULE = 'MODULE'
+}
+
+export enum EvaluationPurpose {
+  FUNCTIONAL_PASSED_RATE = 'FUNCTIONAL_PASSED_RATE',
+  PERFORMANCE_PASSED_RATE = 'PERFORMANCE_PASSED_RATE',
+  STABILITY_PASSED_RATE = 'STABILITY_PASSED_RATE',
+  SECURITY_SCORE = 'SECURITY_SCORE',
+  COMPATIBILITY_SCORE = 'COMPATIBILITY_SCORE',
+  USABILITY_SCORE = 'USABILITY_SCORE',
+  MAINTAINABILITY_SCORE = 'MAINTAINABILITY_SCORE',
+  SCALABILITY_SCORE = 'SCALABILITY_SCORE'
+}
 
 export enum ReportCategory {
   PROJECT = 'PROJECT',
@@ -783,5 +800,7 @@ export const enumNamespaceMap = new Map<any, string>([
   [CombinedTargetType, 'xcm.enum.CombinedTargetType'],
   [SmokeCheckSetting, 'xcm.enum.SmokeCheckSetting'],
   [SecurityCheckSetting, 'xcm.enum.SecurityCheckSetting'],
-  [TestTemplateType, 'xcm.enum.TestTemplateType']
+  [TestTemplateType, 'xcm.enum.TestTemplateType'],
+  [EvaluationScope, 'xcm.enum.EvaluationScope'],
+  [EvaluationPurpose, 'xcm.enum.EvaluationPurpose']
 ]);

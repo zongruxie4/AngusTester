@@ -1,69 +1,40 @@
-/**
- * <p>Evaluation module type definitions</p>
- */
+import { EnumMessage } from '@xcan-angus/infra';
+import { EvaluationScope, EvaluationPurpose } from '@/enums/enums';
 
 /**
- * <p>Evaluation scope type</p>
+ * Evaluation detail interface
  */
-export type ScopeType = 'project' | 'application' | 'plan';
-
-/**
- * <p>Evaluation scope information</p>
- */
-export interface EvaluationScope {
-  type: ScopeType;
+export interface EvaluationDetail {
+  id: number;
   name: string;
-  id?: string;
+  projectId: number;
+  projectName?: string;
+  scope?: EnumMessage<EvaluationScope> | EvaluationScope;
+  purposes?: Array<EnumMessage<EvaluationPurpose> | EvaluationPurpose>;
+  resourceId?: number;
+  startDate?: string;
+  deadlineDate?: string;
+  result?: any;
+  createdBy?: number;
+  createdByName?: string;
+  createdDate?: string;
+  lastModifiedBy?: number;
+  lastModifiedName?: string;
+  lastModifiedDate?: string;
 }
 
 /**
- * <p>Evaluation metrics key</p>
+ * Evaluation form state interface
  */
-export type MetricKey =
-  | 'requirement_completion_rate'
-  | 'function_test_coverage'
-  | 'function_test_pass_rate'
-  | 'performance_test_pass_rate'
-  | 'stability_test_pass_rate'
-  | 'compatibility_score'
-  | 'usability_score'
-  | 'maintainability_score'
-  | 'extensibility_score';
-
-/**
- * <p>Evaluation metrics configuration</p>
- */
-export interface EvaluationMetrics {
-  [key: string]: {
-    score: number;
-    value: string;
-  };
-}
-
-/**
- * <p>Evaluation result</p>
- */
-export interface EvaluationResult {
-  overallScore: number;
-  metrics: EvaluationMetrics;
-  generatedAt?: string;
-}
-
-/**
- * <p>Evaluation status</p>
- */
-export type EvaluationStatus = 'completed' | 'processing' | 'failed';
-
-/**
- * <p>Evaluation item</p>
- */
-export interface EvaluationItem {
-  id: string;
+export interface EvaluationFormState {
+  id?: number;
+  projectId: string;
   name: string;
-  scope: EvaluationScope;
-  metrics: MetricKey[];
-  createdAt: string;
-  createdBy: string;
-  status: EvaluationStatus;
-  result?: EvaluationResult;
+  scope?: EvaluationScope;
+  purposes?: EvaluationPurpose[];
+  resourceId?: number | string;
+  startDate?: string;
+  deadlineDate?: string;
+  date?: [string, string];
 }
+

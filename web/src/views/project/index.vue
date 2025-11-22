@@ -111,8 +111,7 @@ onMounted(() => {
       <Evaluation
         :projectId="activeKey === ProjectMenuKey.EVALUATION ? projectId : undefined"
         :userInfo="userInfo"
-        :appInfo="appInfo"
-        class="p-5" />
+        :appInfo="appInfo"/>
     </template>
   </LeftMenu>
 </template>

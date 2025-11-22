@@ -173,6 +173,7 @@ public class EvaluationCmdImpl extends CommCmd<TestEvaluation, Long> implements 
 
         // Build evaluation result
         TestEvaluationResult result = TestEvaluationResult.builder()
+            .totalCases(cases.size())
             .overallScore(overallScore)
             .metrics(metrics)
             .build();

@@ -214,8 +214,46 @@
   "evaluation": {
     "title": "Evaluation",
     "introduce": {
-      "aboutAssessment": "About Evaluation",
-      "description": "Evaluate the quality and reliability of software systems. Through assessment, potential problems and risks of software systems can be found, and the quality and reliability of software systems can be improved."
-    }
+      "title": "About Evaluation",
+      "description": "Evaluate the quality and reliability of software systems. Through assessment, potential problems and risks of software systems can be found, and the quality and reliability of software systems can be improved.",
+      "scope": {
+        "title": "Evaluation Scope",
+        "description": "Supports evaluation at three levels: project, plan, and module, flexibly adapting to quality assessment needs at different granularities."
+      },
+      "purpose": {
+        "title": "Evaluation Purpose",
+        "description": "Covers multiple dimensions including functional passed rate, performance passed rate, stability passed rate, security score, compatibility score, usability score, maintainability score, and scalability score."
+      },
+      "result": {
+        "title": "Evaluation Result",
+        "description": "Automatically generates evaluation result reports, comprehensively displaying the quality performance of software systems across various dimensions, providing data support for quality improvement."
+      }
+    },
+    "actions": {
+      "addEvaluation": "Add Evaluation",
+      "generateResult": "Generate Result",
+      "generateResultSuccess": "Result generated successfully"
+    },
+    "columns": {
+      "scope": "Scope",
+      "purposes": "Purposes",
+      "resourceId": "Resource ID",
+      "resourceCreationTime": "Creation Time",
+      "result": "Result"
+    },
+    "placeholders": {
+      "enterName": "Please enter name",
+      "namePlaceholder": "Enter evaluation name, maximum 100 characters",
+      "selectScope": "Please select scope",
+      "selectPurposes": "Please select purposes",
+      "selectProject": "Please select project",
+      "selectModule": "Please select module",
+      "resourceIdPlaceholder": "Please enter resource ID"
+    },
+    "status": {
+      "hasResult": "Generated"
+    },
+    "addedEvaluations": "Added Evaluations",
+    "noEvaluations": "You haven't added any evaluations, "
   }
 }
