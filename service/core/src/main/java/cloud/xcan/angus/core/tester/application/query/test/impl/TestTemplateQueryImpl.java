@@ -54,7 +54,7 @@ public class TestTemplateQueryImpl implements TestTemplateQuery {
       @Override
       protected List<TestTemplate> process() {
         List<TestTemplate> templates = new ArrayList<>();
-        List<TestTemplate> tenantTemplates = testTemplateRepo.findAll();
+        List<TestTemplate> tenantTemplates = testTemplateRepo.findByIsSystem(false);
         templates.addAll(tenantTemplates);
 
         closeMultiTenantCtrl();
