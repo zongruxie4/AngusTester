@@ -17,8 +17,8 @@ public interface FuncCaseInfoRepo extends BaseRepository<FuncCaseInfo, Long> {
   @Query(value = "SELECT id FROM func_case WHERE plan_id = ?1", nativeQuery = true)
   List<Long> findIdByPlanId(Long planId);
 
-  @Query(value = "SELECT id FROM func_case WHERE module_id = ?1", nativeQuery = true)
-  List<Long> findIdByModuleId(Long moduleId);
+  @Query(value = "SELECT id FROM func_case WHERE module_id IN ?1", nativeQuery = true)
+  List<Long> findIdByModuleIdIn(Collection<Long> moduleIds);
 
   @Query(value = "SELECT * FROM func_case WHERE id = ?1", nativeQuery = true)
   Optional<FuncCaseInfo> find0ById(Long id);

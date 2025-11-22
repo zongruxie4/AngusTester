@@ -14,6 +14,7 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.tester.application.query.project.ModuleQuery;
 import cloud.xcan.angus.core.tester.application.query.project.TestEvaluationQuery;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationRepo;
@@ -56,10 +57,14 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
   @Resource
   private FuncCaseInfoRepo funcCaseInfoRepo;
 
+  @Resource
+  private ModuleQuery moduleQuery;
+
   /**
    * <p>
    * Get detailed evaluation information including configuration and results.
    * </p>
+   *
    * @param id Evaluation ID
    * @return Evaluation with complete information
    */
@@ -80,10 +85,11 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
    * <p>
    * Only returns non-deleted evaluations. Applies authorization conditions for non-admin users.
    * </p>
-   * @param spec Evaluation search specification
-   * @param pageable Pagination information
+   *
+   * @param spec           Evaluation search specification
+   * @param pageable       Pagination information
    * @param fullTextSearch Whether to use full-text search
-   * @param match Full-text search keywords
+   * @param match          Full-text search keywords
    * @return Page of evaluations
    */
   @Override
@@ -106,6 +112,7 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
    * <p>
    * Check and find an evaluation by ID, throw exception if not found.
    * </p>
+   *
    * @param id Evaluation ID
    * @return Evaluation entity
    */
@@ -144,7 +151,6 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
         .build();
   }
 
-
   /**
    * Get cases based on evaluation scope and resourceId
    */
@@ -163,10 +169,11 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
       // Get all cases in the module
       if (nonNull(evaluation.getResourceId())) {
         // Query cases by moduleId
-        caseIds = funcCaseInfoRepo.findIdByModuleId(evaluation.getResourceId());
+        Set<Long> moduleIds = moduleQuery.findModuleAndSubIds(
+            evaluation.getProjectId(), List.of(evaluation.getResourceId()));
+        caseIds = funcCaseInfoRepo.findIdByModuleIdIn(moduleIds);
       }
     }
-
     if (caseIds.isEmpty()) {
       return new ArrayList<>();
     }
