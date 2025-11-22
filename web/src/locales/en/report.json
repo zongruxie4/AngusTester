@@ -105,14 +105,14 @@
         }
       },
       "task": {
-        "label": "Task Report",
+        "label": "Issue Report",
         "sprint": {
           "label": "Sprint Report",
           "description": "Report sprint information, development task completion progress, iteration and assignee summary statistics information."
         },
         "task": {
-          "label": "Task Report",
-          "description": "Report the processing results and detailed information of a single task."
+          "label": "Issue Report",
+          "description": "Report the processing results and detailed information of a single issue."
         }
       },
       "functional": {

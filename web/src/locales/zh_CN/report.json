@@ -109,14 +109,14 @@
         }
       },
       "task": {
-        "label": "任务报告",
+        "label": "问题报告",
         "sprint": {
           "label": "迭代报告",
           "description": "报告迭代信息、研发任务完成进度，迭代和经办人汇总统计信息。"
         },
         "task": {
-          "label": "任务报告",
-          "description": "报告单个任务处理结果及详情信息。"
+          "label": "问题报告",
+          "description": "报告单个问题处理结果及详情信息。"
         }
       },
       "functional": {
