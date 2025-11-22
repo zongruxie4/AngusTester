@@ -498,10 +498,10 @@
       },
       "ReportCategory": {
         "PROJECT": "Project Report",
-        "TASK": "Task Report",
-        "FUNCTIONAL": "Functional Test Report",
-        "APIS": "API Test Report",
-        "SCENARIO": "Scenario Test Report",
+        "TASK": "Issue Report",
+        "FUNCTIONAL": "Test Report",
+        "APIS": "API Report",
+        "SCENARIO": "Scenario Report",
         "EXECUTION": "Execution Report"
       },
       "ReportTemplate": {

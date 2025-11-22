@@ -120,7 +120,7 @@
         }
       },
       "functional": {
-        "label": "功能测试报告",
+        "label": "测试报告",
         "plan": {
           "label": "测试计划报告",
           "description": "报告测试计划信息、用例测试进度、测试计划和测试人汇总统计信息。"
@@ -508,7 +508,7 @@
       },
       "testResultDetail": {
         "title": "场景测试结果详细信息",
-        
+
         "functionalTest": {
           "title": "功能测试结果",
           "testCaseResults": "测试用例结果明细"

@@ -498,10 +498,10 @@
       },
       "ReportCategory": {
         "PROJECT": "项目报告",
-        "TASK": "任务报告",
-        "FUNCTIONAL": "功能测试报告",
-        "APIS": "接口测试报告",
-        "SCENARIO": "场景测试报告",
+        "TASK": "问题报告",
+        "FUNCTIONAL": "测试报告",
+        "APIS": "接口报告",
+        "SCENARIO": "场景报告",
         "EXECUTION": "执行报告"
       },
       "ReportTemplate": {
@@ -510,7 +510,7 @@
         "PROJECT_EFFICIENCY": "项目效能报告",
         "PROJECT_ACTIVITY": "项目活动报告",
         "TASK_SPRINT": "迭代报告",
-        "TASK": "任务报告",
+        "TASK": "问题报告",
         "FUNC_TESTING_PLAN": "测试计划报告",
         "FUNC_TESTING_CASE": "测试用例报告",
         "SERVICES_TESTING_RESULT": "服务测试结果报告",
