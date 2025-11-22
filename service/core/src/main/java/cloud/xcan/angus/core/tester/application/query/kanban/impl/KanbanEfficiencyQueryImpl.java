@@ -43,6 +43,7 @@ import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyTaskOverview;
 import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyTaskRanking;
 import cloud.xcan.angus.core.tester.domain.project.Project;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfoRepo;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseRepo;
 import cloud.xcan.angus.core.tester.domain.test.summary.FuncCaseEfficiencySummary;
 import cloud.xcan.angus.remote.search.SearchCriteria;

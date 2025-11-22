@@ -25,6 +25,7 @@ import cloud.xcan.angus.core.tester.application.query.test.FuncReviewQuery;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCase;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfoRepo;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseRepo;
 import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlanStatus;
 import cloud.xcan.angus.core.tester.domain.test.review.FuncReview;
