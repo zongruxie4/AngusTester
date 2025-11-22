@@ -176,11 +176,16 @@ const handleView = (template: TestTemplateDetail) => {
               :value="template.templateContent?.otherInformation"
               :emptyText="t('common.noDescription')" />
           </div>
-          <div class="flex items-center space-x-2">
-            <Tag :color="getTemplateTypeColor(template.templateType)">
-              {{ getTemplateTypeText(template.templateType) }}
-            </Tag>
-            <div>
+          <div class="flex items-center justify-between flex-wrap">
+            <div class="flex items-center space-x-1 mt-2">
+              <Tag :color="getTemplateTypeColor(template.templateType)">
+                {{ getTemplateTypeText(template.templateType) }}
+              </Tag>
+              <Tag :color="template.isSystem ? 'orange' : 'default'">
+                {{ template.isSystem ? t('testTemplate.messages.systemTemplate') : t('testTemplate.messages.customTemplate') }}
+              </Tag>
+            </div>
+            <div class="ml-2 mt-2">
               {{ t('common.createdDate') }}: {{ template.createdDate }}
             </div>
           </div>

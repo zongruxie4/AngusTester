@@ -601,6 +601,7 @@
       "nameRequired": "请输入模版名称",
       "templateTypeRequired": "请选择模版类型",
       "systemTemplate": "系统模版",
+      "customTemplate": "自定义模版",
       "deleteConfirm": "确定要删除模版「{name}」吗？"
     },
     "templateContent": "模版内容"

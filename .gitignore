@@ -48,3 +48,4 @@ build/
 nbbuild/
 nbdist/
 .nb-gradle/
+/web/report-html/

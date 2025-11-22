@@ -602,6 +602,7 @@
       "nameRequired": "Please enter template name",
       "templateTypeRequired": "Please select template type",
       "systemTemplate": "System Template",
+      "customTemplate": "Custom Template",
       "deleteConfirm": "Confirm to delete template 「{name}」?"
     },
     "templateContent": "Template Content"
