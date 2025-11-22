@@ -102,6 +102,10 @@
         "progress": {
           "label": "Project Progress Report",
           "description": "Report project task, functional test, API test, scenario test four parts of completion progress."
+        },
+        "testEvaluation": {
+          "label": "Test Evaluation Report",
+          "description": "Report test evaluation information, test evaluation results and detailed information."
         }
       },
       "task": {
