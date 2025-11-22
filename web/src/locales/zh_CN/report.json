@@ -106,6 +106,10 @@
         "progress": {
           "label": "项目进度报告",
           "description": "报告项目任务、功能测试、接口测试、场景测试四部分完成进度。"
+        },
+        "testEvaluation": {
+          "label": "测试评估报告",
+          "description": "报告测试评估信息、测试评估结果及详情信息。"
         }
       },
       "task": {
