@@ -22,7 +22,7 @@ public class KanbanTestEvaluationFacadeImpl implements KanbanTestEvaluationFacad
   @Override
   public TestEvaluationResult testEvaluationOverview(KanbanTestEvaluationDto dto) {
     TestEvaluation evaluation = new TestEvaluation();
-    evaluation.setProjectId(evaluation.getProjectId());
+    evaluation.setProjectId(dto.getProjectId());
     evaluation.setScope(
         isNull(dto.getPlanId()) ? EvaluationScope.PROJECT : EvaluationScope.FUNC_PLAN);
     evaluation.setResourceId(isNull(dto.getPlanId()) ? dto.getProjectId() : dto.getPlanId());

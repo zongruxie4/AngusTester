@@ -1,5 +1,8 @@
 package cloud.xcan.angus.core.tester.application.converter;
 
+import static cloud.xcan.angus.spec.utils.ObjectUtils.calcRate;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.formatDouble;
+
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluationResult;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluationResult.MetricResult;
@@ -63,10 +66,10 @@ public class TestEvaluationConverter {
         .filter(c -> c.getTestResult() == CaseTestResult.PASSED)
         .count();
 
-    double rate = (double) passedCases / totalCases * 100.0;
-    double score = rate / 10.0;
+    double rate = calcRate(passedCases, totalCases);
+    double score = formatDouble(rate / 10, "0.00");
 
-    return builder.score(Math.max(0.0, Math.min(10.0, score)))
+    return builder.score(Math.max(0.0, score))
         .numerator(passedCases)
         .denominator(totalCases)
         .rate(rate)
