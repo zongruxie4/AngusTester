@@ -17,7 +17,7 @@ export default class API {
    * 更新评估
    */
   updateEvaluation (params): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}`, params);
+    return http.put(`${baseUrl}`, params);
   }
 
   /**

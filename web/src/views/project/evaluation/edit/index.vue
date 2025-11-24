@@ -127,8 +127,10 @@ const togglePurpose = (purpose: string) => {
  */
 const prepareFormParams = () => {
   // Determine projectId based on scope
+  const { projectId, scope} = formState.value;
+
   const params: any = {
-    projectId: formState.value.projectId,
+    projectId: scope === EvaluationScope.PROJECT ? projectId : props.projectId,
     name: formState.value.name,
     scope: formState.value.scope,
     purposes: formState.value.purposes || []
