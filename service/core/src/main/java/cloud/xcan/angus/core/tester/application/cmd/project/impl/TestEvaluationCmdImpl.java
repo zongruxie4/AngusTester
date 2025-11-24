@@ -2,16 +2,7 @@ package cloud.xcan.angus.core.tester.application.cmd.project.impl;
 
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.EVALUATION;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
-import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateCompatibilityScore;
-import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateFunctionalPassedRate;
-import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateMaintainabilityScore;
-import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateOverallScore;
-import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculatePerformancePassedRate;
-import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateScalabilityScore;
-import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateSecurityScore;
-import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateStabilityPassedRate;
-import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateUsabilityScore;
-import static cloud.xcan.angus.core.utils.CoreUtils.copyPropertiesIgnoreNull;
+import static cloud.xcan.angus.core.utils.CoreUtils.copyPropertiesIgnoreTenantAuditing;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.core.biz.Biz;
@@ -20,23 +11,16 @@ import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.angus.core.tester.application.cmd.project.TestEvaluationCmd;
-import cloud.xcan.angus.core.tester.application.query.project.TestEvaluationQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
+import cloud.xcan.angus.core.tester.application.query.project.TestEvaluationQuery;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
-import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationRepo;
-import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationScope;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluation;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluationResult;
-import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfoRepo;
+import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -123,7 +107,7 @@ public class TestEvaluationCmdImpl extends CommCmd<TestEvaluation, Long> impleme
       @Override
       protected Void process() {
         // Update evaluation information in database
-        evaluationRepo.save(copyPropertiesIgnoreNull(evaluation, evaluationDb));
+        evaluationRepo.save(copyPropertiesIgnoreTenantAuditing(evaluation, evaluationDb, "result"));
 
         // Log evaluation update activity for audit
         activityCmd.add(toActivity(EVALUATION, evaluationDb, ActivityType.UPDATED));
