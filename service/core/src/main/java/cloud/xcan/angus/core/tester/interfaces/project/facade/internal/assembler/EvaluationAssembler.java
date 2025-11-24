@@ -27,6 +27,7 @@ public class EvaluationAssembler {
   public static TestEvaluation updateDtoToDomain(EvaluationUpdateDto dto) {
     TestEvaluation evaluation = new TestEvaluation();
     evaluation.setId(dto.getId());
+    evaluation.setProjectId(dto.getProjectId());
     evaluation.setName(dto.getName());
     evaluation.setScope(dto.getScope());
     evaluation.setPurposes(dto.getPurposes());

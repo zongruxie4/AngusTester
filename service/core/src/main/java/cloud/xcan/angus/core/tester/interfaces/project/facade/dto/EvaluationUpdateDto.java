@@ -6,6 +6,8 @@ import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationScope;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,14 +25,21 @@ public class EvaluationUpdateDto {
   @Schema(description = "Evaluation identifier for update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
+  @NotBlank
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Evaluation name for identification and management", example = "Evaluation01")
+  @Schema(description = "Evaluation name for identification and management", example = "Evaluation01", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
-  @Schema(description = "Evaluation scope (PROJECT, PLAN, MODULE)", example = "PROJECT")
+  @NotNull
+  @Schema(description = "Project identifier for evaluation association", requiredMode = RequiredMode.REQUIRED)
+  private Long projectId;
+
+  @NotNull
+  @Schema(description = "Evaluation scope (PROJECT, PLAN, MODULE)", example = "PROJECT", requiredMode = RequiredMode.REQUIRED)
   private EvaluationScope scope;
 
-  @Schema(description = "List of evaluation purposes to be assessed")
+  @NotEmpty
+  @Schema(description = "List of evaluation purposes to be assessed", requiredMode = RequiredMode.REQUIRED)
   private List<EvaluationPurpose> purposes;
 
   @Schema(description = "Resource identifier based on scope type (plan ID, module ID, etc.)")
