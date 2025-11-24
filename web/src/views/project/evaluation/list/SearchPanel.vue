@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { TIME_FORMAT } from '@/utils/constant';
-import { ProjectMenuKey } from '@/views/project/menu';
+
 import {
   QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig
 } from 'src/components/form/quickSearch';
@@ -59,9 +59,6 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
     { key: 'last7Days', name: t('quickSearch.last7Days'), timeRange: 'last7Days' }
   ], 'createdDate'),
   externalClearFunction: () => {
-    if (typeof searchPanelRef.value?.clear === 'function') {
-      searchPanelRef.value.clear();
-    }
   }
 }));
 
@@ -167,6 +164,9 @@ const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchC
   }
   searchCriteria = searchCriteria.filter(f => !assocKeys.includes(f.key as string));
   quickSearchFilters.value = searchCriteria;
+  if (key === 'createdByMe') {
+    return
+  }
   emits('change', getSearchParams());
 };
 

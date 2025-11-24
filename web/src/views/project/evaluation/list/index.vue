@@ -119,7 +119,7 @@ const handleDeleteEvaluation = async (evaluationData: EvaluationDetail) => {
 
       notification.success(t('actions.tips.deleteSuccess'));
       refresh();
-      deleteTabPane([String(id)]);
+      deleteTabPane([id, id+ '-detail']);
     }
   });
 };
@@ -220,7 +220,7 @@ onMounted(() => {
         <template v-else>
           <SearchPanel
             :loading="isLoading"
-            :userId="props.userInfo?.id"
+            :userId="props.userInfo?.id as string"
             @change="handleSearchChange"
             @refresh="refresh" />
 

@@ -30,7 +30,7 @@ export default class API {
     return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
-  getJoinedProject (userId: number, params: {[key: string]: any} = {}): Promise<[Error | null, any]> {
+  getJoinedProject (userId: string, params: {[key: string]: any} = {}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/user/${userId}/joined`, params);
   }
 

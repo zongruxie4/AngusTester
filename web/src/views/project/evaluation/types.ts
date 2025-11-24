@@ -5,20 +5,20 @@ import { EvaluationScope, EvaluationPurpose } from '@/enums/enums';
  * Evaluation detail interface
  */
 export interface EvaluationDetail {
-  id: number;
+  id: string;
   name: string;
-  projectId: number;
+  projectId: string;
   projectName?: string;
   scope?: EnumMessage<EvaluationScope> | EvaluationScope;
   purposes?: Array<EnumMessage<EvaluationPurpose> | EvaluationPurpose>;
-  resourceId?: number;
+  resourceId?: string;
   startDate?: string;
   deadlineDate?: string;
   result?: any;
-  createdBy?: number;
+  createdBy?: string;
   createdByName?: string;
   createdDate?: string;
-  lastModifiedBy?: number;
+  lastModifiedBy?: string;
   lastModifiedName?: string;
   lastModifiedDate?: string;
 }
@@ -27,12 +27,12 @@ export interface EvaluationDetail {
  * Evaluation form state interface
  */
 export interface EvaluationFormState {
-  id?: number;
+  id?: string;
   projectId: string;
   name: string;
   scope?: EvaluationScope;
   purposes?: EvaluationPurpose[];
-  resourceId?: number | string;
+  resourceId?: string | string;
   startDate?: string;
   deadlineDate?: string;
   date?: [string, string];

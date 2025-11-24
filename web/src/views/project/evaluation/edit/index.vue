@@ -38,9 +38,6 @@ const loading = ref(false);
 const evaluationDetail = ref<EvaluationDetail>();
 
 // Resource selection state
-const selectedProjectId = ref<string>();
-const selectedPlanId = ref<string>();
-const selectedModuleId = ref<string>();
 const moduleTreeData = ref<any[]>([]);
 const projectList = ref<any[]>([]);
 
@@ -98,6 +95,10 @@ const validatePurposes = async (_rule: Rule, value: EvaluationPurpose[]) => {
   return Promise.resolve();
 };
 
+const handleScopeChange = () => {
+  formState.value.resourceId = undefined;
+};
+
 /**
  * Check if a purpose is selected
  */
@@ -126,15 +127,8 @@ const togglePurpose = (purpose: string) => {
  */
 const prepareFormParams = () => {
   // Determine projectId based on scope
-  let projectIdToUse: number;
-  if (formState.value.scope === EvaluationScope.PROJECT && selectedProjectId.value) {
-    projectIdToUse = Number(selectedProjectId.value);
-  } else {
-    projectIdToUse = Number(props.projectId);
-  }
-
   const params: any = {
-    projectId: projectIdToUse,
+    projectId: formState.value.projectId,
     name: formState.value.name,
     scope: formState.value.scope,
     purposes: formState.value.purposes || []
@@ -153,9 +147,7 @@ const prepareFormParams = () => {
   // Only set resourceId for FUNC_PLAN and MODULE scopes
   if (formState.value.scope !== EvaluationScope.PROJECT) {
     if (formState.value.resourceId !== undefined && formState.value.resourceId !== null && formState.value.resourceId !== '') {
-      params.resourceId = typeof formState.value.resourceId === 'string'
-        ? Number(formState.value.resourceId)
-        : formState.value.resourceId;
+      params.resourceId = formState.value.resourceId
     }
   }
 
@@ -246,7 +238,7 @@ const loadEvaluationData = async (evaluationId: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await evaluation.getEvaluationDetail(Number(evaluationId));
+  const [error, res] = await evaluation.getEvaluationDetail(evaluationId);
   loading.value = false;
   if (error) {
     return;
@@ -292,7 +284,8 @@ const initializeFormData = (data: EvaluationDetail) => {
     purposes = [],
     resourceId,
     startDate = '',
-    deadlineDate = ''
+    deadlineDate = '',
+    projectId = ''
   } = data;
 
   formState.value.name = name;
@@ -302,25 +295,7 @@ const initializeFormData = (data: EvaluationDetail) => {
   formState.value.startDate = startDate;
   formState.value.deadlineDate = deadlineDate;
   formState.value.date = [startDate, deadlineDate];
-
-  // Set resource selection based on scope
-  if (formState.value.scope === EvaluationScope.FUNC_PLAN && resourceId) {
-    selectedPlanId.value = String(resourceId);
-  } else if (formState.value.scope === EvaluationScope.MODULE && resourceId) {
-    selectedModuleId.value = String(resourceId);
-  } else if (formState.value.scope === EvaluationScope.PROJECT) {
-    // For PROJECT scope, use projectId from data
-    const projectIdToUse = data.projectId || props.projectId;
-    if (projectIdToUse) {
-      selectedProjectId.value = String(projectIdToUse);
-      formState.value.projectId = String(projectIdToUse);
-    }
-  }
-
-  // Load module tree if scope is MODULE
-  if (formState.value.scope === EvaluationScope.MODULE) {
-    loadModuleTree();
-  }
+  formState.value.projectId = projectId;
 };
 
 /**
@@ -330,8 +305,8 @@ const loadProjectList = async () => {
   if (!props.userInfo?.id) {
     return;
   }
-  const userId = typeof props.userInfo.id === 'string' ? Number(props.userInfo.id) : props.userInfo.id;
-  const [error, res] = await project.getJoinedProject(userId);
+  const userId = props.userInfo.id;
+  const [error, res] = await project.getJoinedProject(userId as string);
   if (error) {
     return;
   }
@@ -358,13 +333,9 @@ const loadModuleTree = async () => {
  * Handle project selection change
  */
 const handleProjectChange = (value: any) => {
-  selectedProjectId.value = value ? String(value) : undefined;
   // For PROJECT scope, update projectId instead of resourceId
   if (formState.value.scope === EvaluationScope.PROJECT) {
     formState.value.projectId = value ? String(value) : '';
-    formState.value.resourceId = undefined;
-  } else {
-    formState.value.resourceId = value ? Number(value) : undefined;
   }
 };
 
@@ -372,8 +343,7 @@ const handleProjectChange = (value: any) => {
  * Handle plan selection change
  */
 const handlePlanChange = (value: any) => {
-  selectedPlanId.value = value ? String(value) : undefined;
-  formState.value.resourceId = value ? Number(value) : undefined;
+  formState.value.resourceId = value || undefined;
 };
 
 /**
@@ -381,28 +351,19 @@ const handlePlanChange = (value: any) => {
  */
 const handleModuleChange = (selectKeys: any[]) => {
   if (!selectKeys.length) {
-    selectedModuleId.value = undefined;
     formState.value.resourceId = undefined;
     return;
   }
   const moduleId = selectKeys[0];
   if (moduleId === '-1' || moduleId === undefined) {
-    selectedModuleId.value = undefined;
     formState.value.resourceId = undefined;
   } else {
-    selectedModuleId.value = moduleId;
-    formState.value.resourceId = Number(moduleId);
+    formState.value.resourceId = moduleId;
   }
 };
 
 // Watch scope change to reset resource selection
 watch(() => formState.value.scope, (newScope) => {
-  // Reset resource selection when scope changes
-  selectedProjectId.value = undefined;
-  selectedPlanId.value = undefined;
-  selectedModuleId.value = undefined;
-  formState.value.resourceId = undefined;
-
   // Load data based on scope
   if (newScope === EvaluationScope.MODULE) {
     loadModuleTree();
@@ -493,7 +454,8 @@ onMounted(() => {
         :rules="{ required: true, message: t('evaluation.placeholders.selectScope') }">
         <RadioGroup
           v-model:value="formState.scope"
-          class="mt-0.5">
+          class="mt-0.5"
+          @change="handleScopeChange">
           <Radio
             v-for="item in scopeOptions"
             :key="item.value"
@@ -507,10 +469,10 @@ onMounted(() => {
       <FormItem
         v-if="formState.scope === EvaluationScope.PROJECT"
         :label="t('project.project')"
-        name="selectedProject"
+        name="projectId"
         :rules="{ required: true, message: t('evaluation.placeholders.selectProject') }">
         <Select
-          v-model:value="selectedProjectId"
+          v-model:value="formState.projectId"
           size="small"
           showSearch
           :options="projectList"
@@ -530,12 +492,13 @@ onMounted(() => {
       <FormItem
         v-if="formState.scope === EvaluationScope.FUNC_PLAN"
         :label="t('common.plan')"
-        name="selectedPlan"
-        :rules="{ required: true, message: t('common.placeholders.selectOrSearchPlan') }">
+        name="resourceId"
+        :rules="[{ required: true, message: t('common.placeholders.selectOrSearchPlan') }]">
         <Select
-          v-model:value="selectedPlanId"
+          v-model:value="formState.resourceId"
           size="small"
           showSearch
+          allowClea
           :action="`${TESTER}/func/plan?projectId=${props.projectId}&fullTextSearch=true`"
           :fieldNames="{ value: 'id', label: 'name' }"
           :placeholder="t('common.placeholders.selectOrSearchPlan')"
@@ -553,11 +516,11 @@ onMounted(() => {
       <FormItem
         v-if="formState.scope === EvaluationScope.MODULE"
         :label="t('module.title')"
-        name="selectedModule"
+        name="resourceId"
         :rules="{ required: true, message: t('evaluation.placeholders.selectModule') }">
         <div class="border border-gray-300 rounded p-2" style="max-height: 300px; overflow-y: auto;">
           <div
-            :class="{'bg-blue-50': selectedModuleId === undefined}"
+            :class="{'bg-blue-50': formState.resourceId === undefined}"
             class="flex items-center space-x-2 h-9 leading-9 pl-2 cursor-pointer hover:bg-gray-100 rounded"
             @click="handleModuleChange([undefined])">
             <Icon icon="icon-liebiaoshitu" class="text-3.5" />
@@ -566,7 +529,7 @@ onMounted(() => {
           <Tree
             v-if="moduleTreeData.length > 0"
             :treeData="moduleTreeData"
-            :selectedKeys="selectedModuleId ? [selectedModuleId] : []"
+            :selectedKeys="formState.resourceId ? [formState.resourceId] : []"
             blockNode
             defaultExpandAll
             :fieldNames="{

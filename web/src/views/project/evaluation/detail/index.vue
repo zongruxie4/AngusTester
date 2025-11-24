@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, watch } from 'vue';
+import {  inject, onMounted, ref, watch } from 'vue';
 import { Button, Descriptions, DescriptionsItem, Tag } from 'ant-design-vue';
 import { Icon, notification, Spin } from '@xcan-angus/vue-ui';
 import { toClipboard } from '@xcan-angus/infra';
@@ -35,7 +35,7 @@ const loadEvaluationDetail = async (evaluationId: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await evaluation.getEvaluationDetail(Number(evaluationId));
+  const [error, res] = await evaluation.getEvaluationDetail(evaluationId);
   loading.value = false;
   if (error) {
     return;
@@ -158,7 +158,7 @@ onMounted(() => {
         size="small"
         class="flex items-center space-x-1"
         @click="handleGenerateResult">
-        <Icon icon="icon-shengcheng" class="text-3.5" />
+        <Icon icon="icon-shengchengshuju" class="text-3.5" />
         <span>{{ t('evaluation.actions.generateResult') }}</span>
       </Button>
 

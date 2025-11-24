@@ -30,21 +30,21 @@ export default class API {
   /**
    * 获取评估详情
    */
-  getEvaluationDetail (id: number): Promise<[Error | null, any]> {
+  getEvaluationDetail (id: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}`);
   }
 
   /**
    * 删除评估
    */
-  deleteEvaluation (id: number): Promise<[Error | null, any]> {
+  deleteEvaluation (id: string): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${id}`);
   }
 
   /**
    * 生成评估结果
    */
-  generateResult (id: number): Promise<[Error | null, any]> {
+  generateResult (id: string): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${id}/result`);
   }
 }
