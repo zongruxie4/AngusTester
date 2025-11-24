@@ -38,7 +38,8 @@ public class EvaluationAddDto {
   @Schema(description = "List of evaluation purposes to be assessed", requiredMode = RequiredMode.REQUIRED)
   private List<EvaluationPurpose> purposes;
 
-  @Schema(description = "Resource identifier based on scope type (plan ID, module ID, etc.)")
+  @NotNull
+  @Schema(description = "Resource identifier based on scope type (project ID, plan ID, module ID)", requiredMode = RequiredMode.REQUIRED)
   private Long resourceId;
 
   @Schema(description = "Evaluation start date for timeline planning", example = "2024-01-01 00:00:00")
