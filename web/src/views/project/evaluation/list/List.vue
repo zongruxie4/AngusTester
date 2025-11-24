@@ -47,21 +47,21 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
 };
 
 const dropdownMenuItems = [
-  {
-    key: 'view',
-    icon: 'icon-chakan',
-    name: t('actions.view')
-  },
-  {
-    key: 'edit',
-    icon: 'icon-shuxie',
-    name: t('actions.edit')
-  },
-  {
-    key: 'generateResult',
-    icon: 'icon-shengcheng',
-    name: t('evaluation.actions.generateResult')
-  },
+  // {
+  //   key: 'view',
+  //   icon: 'icon-chakan',
+  //   name: t('actions.view')
+  // },
+  // {
+  //   key: 'edit',
+  //   icon: 'icon-shuxie',
+  //   name: t('actions.edit')
+  // },
+  // {
+  //   key: 'generateResult',
+  //   icon: 'icon-shengcheng',
+  //   name: t('evaluation.actions.generateResult')
+  // },
   {
     key: 'delete',
     icon: 'icon-qingchu',
@@ -214,7 +214,7 @@ const handleDropdownClick = (
             <a
               class="flex items-center space-x-1 cursor-pointer"
               @click="handleViewDetail(item)">
-              <Icon icon="icon-chakan" class="text-3.5" />
+              <Icon icon="icon-chakanhuodong" class="text-3.5" />
               <span>{{ t('actions.view') }}</span>
             </a>
 
@@ -230,7 +230,7 @@ const handleDropdownClick = (
               type="text"
               class="px-0 flex items-center ml-2"
               @click="handleGenerateResult(item)">
-              <Icon icon="icon-shengcheng" class="mr-0.5" />
+              <Icon icon="icon-shengchengshuju" class="mr-0.5" />
               <span>{{ t('evaluation.actions.generateResult') }}</span>
             </Button>
 
