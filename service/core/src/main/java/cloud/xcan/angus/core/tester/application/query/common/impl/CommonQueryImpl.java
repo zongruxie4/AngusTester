@@ -51,6 +51,7 @@ import cloud.xcan.angus.core.tester.application.query.exec.ExecQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskSprintQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
+import cloud.xcan.angus.core.tester.application.query.project.TestEvaluationQuery;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesQuery;
@@ -109,6 +110,8 @@ public class CommonQueryImpl implements CommonQuery {
 
   @Resource
   private ProjectQuery projectQuery;
+  @Resource
+  private TestEvaluationQuery testEvaluationQuery;
   @Resource
   private TaskSprintQuery taskSprintQuery;
   @Resource
@@ -411,6 +414,7 @@ public class CommonQueryImpl implements CommonQuery {
       Long targetId) {
     return switch (targetType) {
       case PROJECT -> projectQuery.checkAndFind(targetId);
+      case EVALUATION -> testEvaluationQuery.checkAndFind(targetId);
       case TASK_SPRINT -> taskSprintQuery.checkAndFind(targetId);
       case TASK -> taskQuery.checkAndFindInfo(targetId);
       case FUNC_PLAN -> funcPlanQuery.checkAndFind(targetId);
