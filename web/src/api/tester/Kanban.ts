@@ -150,4 +150,14 @@ export default class API {
   }): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/cto/case/overview`, params);
   }
+
+
+  getEvaluationData (params: {
+    projectId: string,
+    planId?: string;
+    createdDateStart?: string;
+    createdDateEnd?: string;
+  }): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/test-evaluation/overview`, params);
+  }
 }

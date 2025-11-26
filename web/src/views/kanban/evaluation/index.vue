@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { Progress, Card, Tag, Statistic } from 'ant-design-vue';
+import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
+import { Card, Tag, Statistic } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
-
-const { t } = useI18n();
+import { throttle } from 'throttle-debounce';
+import { kanban } from '@/api/tester';
+import { useChartManagement } from './composables/useChartManagement';
+import { EvaluationData } from './types';
 
 /**
  * Component props with default values
@@ -12,75 +13,94 @@ const { t } = useI18n();
 const props = withDefaults(defineProps<{
   projectId?: string;
   onShow?: boolean;
+  planId?: string;
+  createdDateStart?: string;
+  createdDateEnd?: string;
 }>(), {
   projectId: undefined,
-  onShow: false
+  onShow: false,
+  planId: undefined,
+  createdDateStart: undefined,
+  createdDateEnd: undefined,
 });
 
 /**
- * Mock evaluation data - 使用 JSON 配置数据
+ * Evaluation data
  */
-const evaluationData = ref({
-  // 综合评分
-  overallScore: 85.5,
-  scoreLevel: '良好',
-  
-  // 需求完成率
-  requirementCompletion: {
-    rate: 90,
-    completed: 45,
-    total: 50
+const evaluationData = ref<EvaluationData>({
+  PERFORMANCE_PASSED_RATE: {
+    rate: 0,
+    numerator: 0,
+    denominator: 0,
+    score: 0
   },
-  
-  // 功能测试覆盖率
-  functionTestCoverage: {
-    rate: 88,
-    covered: 220,
-    total: 250
+  FUNCTIONAL_PASSED_RATE: {
+    rate: 0,
+    numerator: 0,
+    denominator: 0,
+    score: 0
   },
-  
-  // 功能测试通过率
-  functionTestPassRate: {
-    rate: 92,
-    passed: 202,
-    total: 220
+  STABILITY_PASSED_RATE: {
+    rate: 0,
+    numerator: 0,
+    denominator: 0,
+    score: 0
   },
-  
-  // 性能测试通过率
-  performanceTestPassRate: {
-    rate: 85,
-    passed: 85,
-    total: 100
+  COMPATIBILITY_SCORE: {
+    score: 0
   },
-  
-  // 稳定性测试通过率
-  stabilityTestPassRate: {
-    rate: 80,
-    passed: 80,
-    total: 100
+  USABILITY_SCORE: {
+    score: 0
   },
-  
-  // 兼容性评分
-  compatibilityScore: 88,
-  
-  // 易用性评分
-  usabilityScore: 82,
-  
-  // 可维护性评分
-  maintainabilityScore: 90,
-  
-  // 可扩展性得分
-  extensibilityScore: 85,
-  
-  // 测评统计
+  MAINTAINABILITY_SCORE: {
+    score: 0
+  },
+  SCALABILITY_SCORE: {
+    score: 0
+  },
+  SECURITY_SCORE: {
+    score: 0
+  },
+  overallScore: 0,
+  scoreLevel: '',
+  compatibilityScore: 0,
+  usabilityScore: 0,
+  maintainabilityScore: 0,
+  extensibilityScore: 0,
   statistics: {
-    totalEvaluations: 12,
-    completedEvaluations: 10,
-    averageScore: 82.3,
-    highestScore: 92.5,
-    lowestScore: 68.0
+    totalEvaluations: 0,
+    completedEvaluations: 0,
+    averageScore: 0,
+    highestScore: 0,
+    lowestScore: 0
   }
 });
+
+/**
+ * Chart container references
+ */
+const overallScoreRef = ref<HTMLElement>();
+const requirementCompletionRef = ref<HTMLElement>();
+const functionTestCoverageRef = ref<HTMLElement>();
+const functionTestPassRateRef = ref<HTMLElement>();
+const performanceTestPassRateRef = ref<HTMLElement>();
+const stabilityTestPassRateRef = ref<HTMLElement>();
+const compatibilityRef = ref<HTMLElement>();
+const usabilityRef = ref<HTMLElement>();
+const maintainabilityRef = ref<HTMLElement>();
+const extensibilityRef = ref<HTMLElement>();
+const qualityRadarRef = ref<HTMLElement>();
+const statisticsBarRef = ref<HTMLElement>();
+
+/**
+ * Initialize chart management
+ */
+const {
+  initializeCharts,
+  resizeAllCharts,
+  updateCharts,
+  disposeAllCharts
+} = useChartManagement();
 
 /**
  * Get score color based on score value
@@ -96,27 +116,145 @@ const getScoreColor = (score: number) => {
  * Get score level text and color
  */
 const getScoreLevel = (score: number) => {
-  if (score >= 90) return { text: '优秀', color: 'success' };
-  if (score >= 80) return { text: '良好', color: 'processing' };
-  if (score >= 60) return { text: '及格', color: 'warning' };
+  if (score >= 9) return { text: '优秀', color: 'success' };
+  if (score >= 8) return { text: '良好', color: 'processing' };
+  if (score >= 6) return { text: '及格', color: 'warning' };
   return { text: '需改进', color: 'error' };
 };
 
 /**
- * Refresh data (placeholder for future API integration)
+ * Load evaluation data from API
  */
-const refresh = () => {
-  // TODO: Load data from API
-  console.log('Refreshing evaluation data');
+const loadEvaluationData = async () => {
+  if (!props.projectId) {
+    return;
+  }
+
+  const [error, res] = await kanban.getEvaluationData({
+    projectId: props.projectId as string,
+    createdDateStart: props.createdDateStart as string,
+    createdDateEnd: props.createdDateEnd as string,
+    planId: props.planId as string,
+  });
+
+  if (error || !res?.data) {
+    return;
+  }
+
+  const scroeArr = [
+    +res.data.metrics.COMPATIBILITY_SCORE.score,
+    +res.data.metrics.USABILITY_SCORE.score,
+    +res.data.metrics.MAINTAINABILITY_SCORE.score,
+    +res.data.metrics.SCALABILITY_SCORE.score,
+    +res.data.metrics.SECURITY_SCORE.score,
+    +res.data.metrics.PERFORMANCE_PASSED_RATE.score,
+    +res.data.metrics.FUNCTIONAL_PASSED_RATE.score,
+    +res.data.metrics.STABILITY_PASSED_RATE.score,
+  ];
+  const maxScore = Math.max(...scroeArr);
+  const minScore = Math.min(...scroeArr);
+  const averageScore = scroeArr.reduce((acc, curr) => acc + curr, 0) / scroeArr.length;
+  evaluationData.value = {
+    ...res.data,
+    ...res.data.metrics,
+    statistics: {
+      total: res.data.totalCases,
+      completed: res.data.completedCases,
+      highestScore: maxScore,
+      lowestScore: minScore,
+      averageScore: Number(averageScore).toFixed(1)
+    }
+  };
+  
+  // Update charts with new data
+  nextTick(() => {
+    updateCharts(evaluationData.value);
+  });
 };
 
 /**
- * Handle window resize (placeholder for future chart integration)
+ * Handle window resize with throttling
  */
-const handleWindowResize = () => {
-  // TODO: Resize charts if needed
-  console.log('Handling window resize');
+const handleWindowResize = throttle(500, () => {
+  if (!props.onShow) {
+    return;
+  }
+  resizeAllCharts();
+});
+
+/**
+ * Refresh data
+ */
+const refresh = async () => {
+  await loadEvaluationData();
 };
+
+const shouldNotify = ref(false);
+
+/**
+ * Setup lifecycle hooks
+ */
+onMounted(async () => {
+  // Initialize charts with DOM references
+  const chartRefs: Record<string, HTMLElement> = {};
+
+  if (overallScoreRef.value) chartRefs.overallScoreRef = overallScoreRef.value;
+  if (requirementCompletionRef.value) chartRefs.requirementCompletionRef = requirementCompletionRef.value;
+  if (functionTestCoverageRef.value) chartRefs.functionTestCoverageRef = functionTestCoverageRef.value;
+  if (functionTestPassRateRef.value) chartRefs.functionTestPassRateRef = functionTestPassRateRef.value;
+  if (performanceTestPassRateRef.value) chartRefs.performanceTestPassRateRef = performanceTestPassRateRef.value;
+  if (stabilityTestPassRateRef.value) chartRefs.stabilityTestPassRateRef = stabilityTestPassRateRef.value;
+  if (compatibilityRef.value) chartRefs.compatibilityRef = compatibilityRef.value;
+  if (usabilityRef.value) chartRefs.usabilityRef = usabilityRef.value;
+  if (maintainabilityRef.value) chartRefs.maintainabilityRef = maintainabilityRef.value;
+  if (extensibilityRef.value) chartRefs.extensibilityRef = extensibilityRef.value;
+  if (qualityRadarRef.value) chartRefs.qualityRadarRef = qualityRadarRef.value;
+  if (statisticsBarRef.value) chartRefs.statisticsBarRef = statisticsBarRef.value;
+
+  initializeCharts(chartRefs);
+
+  // Watch for props changes and load data
+  watch([
+    () => props.projectId,
+    () => props.planId,
+    () => props.createdDateStart,
+    () => props.createdDateEnd
+  ], () => {
+    if (!props.onShow) {
+      shouldNotify.value = true;
+      return;
+    }
+    if (props.projectId) {
+      loadEvaluationData();
+    }
+  }, {
+    immediate: true
+  });
+
+  // Watch for onShow changes
+  watch(() => props.onShow, (newValue) => {
+    if (newValue && shouldNotify.value) {
+      shouldNotify.value = false;
+      nextTick(() => {
+        resizeAllCharts();
+        if (props.projectId) {
+          loadEvaluationData();
+        }
+      });
+    }
+  });
+
+  // Add window resize event listener
+  window.addEventListener('resize', handleWindowResize);
+});
+
+/**
+ * Cleanup on unmount
+ */
+onBeforeUnmount(() => {
+  disposeAllCharts();
+  window.removeEventListener('resize', handleWindowResize);
+});
 
 defineExpose({
   refresh,
@@ -125,282 +263,217 @@ defineExpose({
 </script>
 
 <template>
-  <div class="py-2 text-3 space-y-2">
-    <!-- Row 0: Statistics Summary (Full width) - Moved to top -->
-    <div class="flex space-x-2 mb-2">
-      <div class="statistics-card border rounded h-35 flex-1 p-4 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50">
-        <div class="section-title mb-4 flex items-center">
+  <div class="evaluation-dashboard py-2 text-3 space-y-2">
+    <!-- Row 0: Statistics Summary with Bar Chart -->
+    <Card class="statistics-card" :bordered="false">
+      <template #title>
+        <div class="section-title flex items-center">
           <Icon icon="icon-zonglan" class="mr-2 text-blue-600 text-lg" />
           <span class="text-base font-semibold">测评统计</span>
         </div>
-        <div class="flex justify-around">
+      </template>
+      <div class="flex space-x-4">
+        <div class="flex-1 flex justify-around items-center">
           <div class="statistic-item">
             <Statistic
               title="总测评数"
-              :value="evaluationData.statistics.totalEvaluations"
+              :value="evaluationData.statistics.total"
               suffix="次"
-              :value-style="{ fontSize: '28px', fontWeight: 'bold', color: '#1890ff' }" />
-          </div>
-          <div class="statistic-item">
-            <Statistic
-              title="已完成"
-              :value="evaluationData.statistics.completedEvaluations"
-              suffix="次"
-              :value-style="{ fontSize: '28px', fontWeight: 'bold', color: '#52c41a' }" />
+              class="flex flex-col-reverse"
+              :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
           </div>
           <div class="statistic-item">
             <Statistic
               title="平均得分"
               :value="evaluationData.statistics.averageScore"
+              class="flex flex-col-reverse"
               :precision="1"
               suffix="分"
-              :value-style="{ fontSize: '28px', fontWeight: 'bold', color: '#722ed1' }" />
+              :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
           </div>
           <div class="statistic-item">
             <Statistic
               title="最高分"
               :value="evaluationData.statistics.highestScore"
+              class="flex flex-col-reverse"
               :precision="1"
               suffix="分"
-              :value-style="{ fontSize: '28px', fontWeight: 'bold', color: '#52c41a' }" />
+              :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }" />
           </div>
           <div class="statistic-item">
             <Statistic
               title="最低分"
               :value="evaluationData.statistics.lowestScore"
+              class="flex flex-col-reverse"
               :precision="1"
               suffix="分"
-              :value-style="{ fontSize: '28px', fontWeight: 'bold', color: '#ff4d4f' }" />
+              :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#ff4d4f' }" />
           </div>
         </div>
+        <div class="statistics-chart-container">
+          <div ref="statisticsBarRef" class="chart-container"></div>
+        </div>
       </div>
-    </div>
+    </Card>
 
-    <!-- Row 1: Overall Score and Requirement Completion (3:5 ratio) -->
-    <div class="flex space-x-2 h-44">
-      <!-- Overall Score Section (3/8 width) -->
-      <div class="border rounded h-full flex-3/8 p-2">
-        <div class="section-title">综合评分</div>
-        <div class="flex items-center justify-center h-3/4 space-x-4">
-          <Progress
-            type="circle"
-            :width="120"
-            :percent="evaluationData.overallScore"
-            :strokeColor="getScoreColor(evaluationData.overallScore)"
-            :format="() => evaluationData.overallScore.toFixed(1)" />
-          <div class="flex flex-col justify-center">
+    <!-- Row 1: Overall Score and Requirement Completion -->
+    <div class="flex space-x-2 ">
+      <!-- Overall Score Section -->
+      <Card class="flex-1 h-full" :bordered="false">
+        <template #title>
+          <div class="section-title">综合评分</div>
+        </template>
+        <div class="overall-score-container">
+          <div ref="overallScoreRef" style="height: 155px;" class="w-full flex-1 min-w-0"></div>
+          <div class="score-info">
             <Tag :color="getScoreLevel(evaluationData.overallScore).color" class="text-base px-3 py-1 mb-2">
               {{ getScoreLevel(evaluationData.overallScore).text }}
             </Tag>
-            <div class="text-sm text-slate-500">综合得分：{{ evaluationData.overallScore.toFixed(1) }} 分</div>
+            <div class="text-sm text-slate-500">综合得分：{{ evaluationData.overallScore ? Number(evaluationData.overallScore).toFixed(1) : '0.0' }} 分</div>
           </div>
         </div>
-      </div>
+      </Card>
 
-      <!-- Requirement Completion Section (5/8 width) -->
-      <div class="border rounded h-full flex-5/8 p-2">
-        <div class="section-title mb-2">需求完成率</div>
-        <div class="flex items-center h-3/4 space-x-4">
-          <div class="flex-shrink-0 ml-10">
-            <Progress
-              type="circle"
-              :width="100"
-              :percent="evaluationData.requirementCompletion.rate"
-              :strokeColor="getScoreColor(evaluationData.requirementCompletion.rate)"
-              :format="() => `${evaluationData.requirementCompletion.rate}%`" />
-          </div>
-          <div class="flex-1 flex space-x-2 justify-around">
-            <div class="flex-1 text-center">
-              <div class="font-bold text-5" :style="{ color: getScoreColor(evaluationData.requirementCompletion.rate) }">
-                {{ evaluationData.requirementCompletion.rate }}%
+      <Card class="flex-1 h-full quality-radar-card" :bordered="false">
+        <template #title>
+          <div class="section-title">质量评分雷达图</div>
+        </template>
+        <div ref="qualityRadarRef" class="quality-radar-chart"></div>
+      </Card>
+
+      <Card class="flex-2 h-full" :bordered="false">
+        <template #title>
+          <div class="section-title">测试通过率</div>
+        </template>
+        <div class="test-pass-rates-container">
+          <div class="pass-rate-charts">
+            <div class="pass-rate-item">
+              <div ref="functionTestPassRateRef" class="chart-container-small"></div>
+              <div class="pass-rate-info">
+                <div class="pass-rate-title">功能测试</div>
+                <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.FUNCTIONAL_PASSED_RATE?.rate) }">
+                  {{ evaluationData.FUNCTIONAL_PASSED_RATE?.rate }}%
+                </div>
+                <div class="pass-rate-detail">
+                  {{ evaluationData.FUNCTIONAL_PASSED_RATE?.numerator }}/{{ evaluationData.FUNCTIONAL_PASSED_RATE?.denominator }}
+                </div>
               </div>
-              <div class="text-sm text-slate-500 mt-1">完成率</div>
             </div>
-            <div class="flex-1 text-center">
-              <div class="font-bold text-5 text-blue-600">
-                {{ evaluationData.requirementCompletion.completed }}/{{ evaluationData.requirementCompletion.total }}
+            <div class="pass-rate-item">
+              <div ref="performanceTestPassRateRef" class="chart-container-small"></div>
+              <div class="pass-rate-info">
+                <div class="pass-rate-title">性能测试</div>
+                <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.PERFORMANCE_PASSED_RATE?.rate) }">
+                  {{ evaluationData. PERFORMANCE_PASSED_RATE?.rate }}%
+                </div>
+                <div class="pass-rate-detail">
+                  {{ evaluationData. PERFORMANCE_PASSED_RATE?.numerator }}/{{ evaluationData.PERFORMANCE_PASSED_RATE?.denominator }}
+                </div>
               </div>
-              <div class="text-sm text-slate-500 mt-1">已完成/总数</div>
             </div>
-            <div class="flex-1 text-center">
-              <div class="font-bold text-5 text-emerald-600">
-                {{ evaluationData.requirementCompletion.total - evaluationData.requirementCompletion.completed }}
+            <div class="pass-rate-item">
+              <div ref="stabilityTestPassRateRef" class="chart-container-small"></div>
+              <div class="pass-rate-info">
+                <div class="pass-rate-title">稳定性测试</div>
+                <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.STABILITY_PASSED_RATE?.rate) }">
+                  {{ evaluationData.STABILITY_PASSED_RATE?.rate }}%
+                </div>
+                <div class="pass-rate-detail">
+                  {{ evaluationData.STABILITY_PASSED_RATE?.numerator }}/{{ evaluationData.STABILITY_PASSED_RATE?.denominator }}
+                </div>
               </div>
-              <div class="text-sm text-slate-500 mt-1">待完成</div>
             </div>
           </div>
         </div>
-      </div>
+      </Card>
+
+
+      
     </div>
 
-    <!-- Row 2: Test Coverage and Pass Rates (3:5 ratio) -->
-    <div class="flex space-x-2 h-45">
-      <!-- Test Coverage Section (3/8 width) -->
-      <div class="border rounded h-full flex-3/8 p-2 space-y-2">
-        <div class="section-title">功能测试覆盖率</div>
-        <div class="flex items-center justify-center h-3/4 space-x-4">
-          <Progress
-            type="circle"
-            :width="100"
-            :percent="evaluationData.functionTestCoverage.rate"
-            :strokeColor="getScoreColor(evaluationData.functionTestCoverage.rate)"
-            :format="() => `${evaluationData.functionTestCoverage.rate}%`" />
-          <div class="flex flex-col justify-center">
-            <div class="font-bold text-4 text-slate-700">
-              {{ evaluationData.functionTestCoverage.covered }}/{{ evaluationData.functionTestCoverage.total }}
-            </div>
-            <div class="text-sm text-slate-500 mt-1">已覆盖/总数</div>
-          </div>
+    <!-- Row 4: Quality Scores Gauges -->
+    <div class="flex space-x-2 h-64">
+      <Card class="flex-1 h-full quality-score-card" :bordered="false">
+        <template #title>
+          <div class="section-title">兼容性评分</div>
+        </template>
+        <div ref="compatibilityRef" class="chart-container-gauge"></div>
+        <div class="quality-score-tag">
+          <Tag :color="getScoreLevel(evaluationData.COMPATIBILITY_SCORE?.score).color">
+            {{ getScoreLevel(evaluationData.COMPATIBILITY_SCORE?.score).text }}
+          </Tag>
         </div>
-      </div>
+      </Card>
 
-      <!-- Test Pass Rates Section (5/8 width) -->
-      <div class="border rounded h-full flex-5/8 p-2 space-y-2">
-        <div class="section-title">测试通过率</div>
-        <div class="flex space-x-2 justify-around">
-          <div class="flex-1 text-center">
-            <div class="font-bold text-4" :style="{ color: getScoreColor(evaluationData.functionTestPassRate.rate) }">
-              {{ evaluationData.functionTestPassRate.rate }}%
-            </div>
-            <div class="text-sm text-slate-500 mt-1">功能测试</div>
-            <div class="text-xs text-slate-400 mt-0.5">
-              {{ evaluationData.functionTestPassRate.passed }}/{{ evaluationData.functionTestPassRate.total }}
-            </div>
-          </div>
-          <div class="flex-1 text-center">
-            <div class="font-bold text-4" :style="{ color: getScoreColor(evaluationData.performanceTestPassRate.rate) }">
-              {{ evaluationData.performanceTestPassRate.rate }}%
-            </div>
-            <div class="text-sm text-slate-500 mt-1">性能测试</div>
-            <div class="text-xs text-slate-400 mt-0.5">
-              {{ evaluationData.performanceTestPassRate.passed }}/{{ evaluationData.performanceTestPassRate.total }}
-            </div>
-          </div>
-          <div class="flex-1 text-center">
-            <div class="font-bold text-4" :style="{ color: getScoreColor(evaluationData.stabilityTestPassRate.rate) }">
-              {{ evaluationData.stabilityTestPassRate.rate }}%
-            </div>
-            <div class="text-sm text-slate-500 mt-1">稳定性测试</div>
-            <div class="text-xs text-slate-400 mt-0.5">
-              {{ evaluationData.stabilityTestPassRate.passed }}/{{ evaluationData.stabilityTestPassRate.total }}
-            </div>
-          </div>
+      <Card class="flex-1 h-full quality-score-card" :bordered="false">
+        <template #title>
+          <div class="section-title">易用性评分</div>
+        </template>
+        <div ref="usabilityRef" class="chart-container-gauge"></div>
+        <div class="quality-score-tag">
+          <Tag :color="getScoreLevel(evaluationData.USABILITY_SCORE?.score).color">
+            {{ getScoreLevel(evaluationData.USABILITY_SCORE?.score).text }}
+          </Tag>
         </div>
-        <div class="flex space-x-2 h-1/2">
-          <div class="flex-1 flex items-center justify-center">
-            <Progress
-              type="circle"
-              :width="70"
-              :percent="evaluationData.functionTestPassRate.rate"
-              :strokeColor="getScoreColor(evaluationData.functionTestPassRate.rate)" />
-          </div>
-          <div class="flex-1 flex items-center justify-center">
-            <Progress
-              type="circle"
-              :width="70"
-              :percent="evaluationData.performanceTestPassRate.rate"
-              :strokeColor="getScoreColor(evaluationData.performanceTestPassRate.rate)" />
-          </div>
-          <div class="flex-1 flex items-center justify-center">
-            <Progress
-              type="circle"
-              :width="70"
-              :percent="evaluationData.stabilityTestPassRate.rate"
-              :strokeColor="getScoreColor(evaluationData.stabilityTestPassRate.rate)" />
-          </div>
+      </Card>
+
+      <Card class="flex-1 h-full quality-score-card" :bordered="false">
+        <template #title>
+          <div class="section-title">可维护性评分</div>
+        </template>
+        <div ref="maintainabilityRef" class="chart-container-gauge"></div>
+        <div class="quality-score-tag">
+          <Tag :color="getScoreLevel(evaluationData.MAINTAINABILITY_SCORE?.score).color">
+            {{ getScoreLevel(evaluationData.MAINTAINABILITY_SCORE?.score).text }}
+          </Tag>
         </div>
-      </div>
+      </Card>
+
+      <Card class="flex-1 h-full quality-score-card" :bordered="false">
+        <template #title>
+          <div class="section-title">可扩展性得分</div>
+        </template>
+        <div ref="extensibilityRef" class="chart-container-gauge"></div>
+        <div class="quality-score-tag">
+          <Tag :color="getScoreLevel(evaluationData.SCALABILITY_SCORE?.score).color">
+            {{ getScoreLevel(evaluationData.SCALABILITY_SCORE?.score).text }}
+          </Tag>
+        </div>
+      </Card>
     </div>
-
-    <!-- Row 3: Quality Scores (Full width) -->
-    <div class="flex space-x-2 h-43.5">
-      <!-- Compatibility Score -->
-      <div class="border rounded h-full flex-1 p-2">
-        <div class="section-title">兼容性评分</div>
-        <div class="flex flex-col items-center justify-center h-3/4">
-          <Progress
-            type="circle"
-            :width="100"
-            :percent="evaluationData.compatibilityScore"
-            :strokeColor="getScoreColor(evaluationData.compatibilityScore)"
-            :format="() => `${evaluationData.compatibilityScore}分`" />
-          <div class="mt-4">
-            <Tag :color="getScoreLevel(evaluationData.compatibilityScore).color">
-              {{ getScoreLevel(evaluationData.compatibilityScore).text }}
-            </Tag>
-          </div>
-        </div>
-      </div>
-
-      <!-- Usability Score -->
-      <div class="border rounded h-full flex-1 p-2">
-        <div class="section-title">易用性评分</div>
-        <div class="flex flex-col items-center justify-center h-3/4">
-          <Progress
-            type="circle"
-            :width="100"
-            :percent="evaluationData.usabilityScore"
-            :strokeColor="getScoreColor(evaluationData.usabilityScore)"
-            :format="() => `${evaluationData.usabilityScore}分`" />
-          <div class="mt-4">
-            <Tag :color="getScoreLevel(evaluationData.usabilityScore).color">
-              {{ getScoreLevel(evaluationData.usabilityScore).text }}
-            </Tag>
-          </div>
-        </div>
-      </div>
-
-      <!-- Maintainability Score -->
-      <div class="border rounded h-full flex-1 p-2">
-        <div class="section-title">可维护性评分</div>
-        <div class="flex flex-col items-center justify-center h-3/4">
-          <Progress
-            type="circle"
-            :width="100"
-            :percent="evaluationData.maintainabilityScore"
-            :strokeColor="getScoreColor(evaluationData.maintainabilityScore)"
-            :format="() => `${evaluationData.maintainabilityScore}分`" />
-          <div class="mt-4">
-            <Tag :color="getScoreLevel(evaluationData.maintainabilityScore).color">
-              {{ getScoreLevel(evaluationData.maintainabilityScore).text }}
-            </Tag>
-          </div>
-        </div>
-      </div>
-
-      <!-- Extensibility Score -->
-      <div class="border rounded h-full flex-1 p-2">
-        <div class="section-title">可扩展性得分</div>
-        <div class="flex flex-col items-center justify-center h-3/4">
-          <Progress
-            type="circle"
-            :width="100"
-            :percent="evaluationData.extensibilityScore"
-            :strokeColor="getScoreColor(evaluationData.extensibilityScore)"
-            :format="() => `${evaluationData.extensibilityScore}分`" />
-          <div class="mt-4">
-            <Tag :color="getScoreLevel(evaluationData.extensibilityScore).color">
-              {{ getScoreLevel(evaluationData.extensibilityScore).text }}
-            </Tag>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 
 <style scoped>
-/* Custom flex classes for 3:5 ratio layout */
-.flex-3\/8 {
-  flex: 0 0 37.5%; /* 3/8 = 37.5% */
+/* Dashboard container */
+.evaluation-dashboard {
+  background: #f5f5f5;
+  min-height: 100vh;
 }
 
-.flex-5\/8 {
-  flex: 0 0 62.5%; /* 5/8 = 62.5% */
+/* Card styling */
+:deep(.ant-card) {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  background: #fff;
 }
 
-/* Section title styling - consistent with CTO page */
+:deep(.ant-card):hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+:deep(.ant-card-head) {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 0px 10px;
+}
+
+:deep(.ant-card-body) {
+  padding: 20px;
+}
+
+/* Section title styling */
 .section-title {
   margin: 0;
   font-size: 14px;
@@ -408,29 +481,17 @@ defineExpose({
   color: #262626;
 }
 
-/* Height utilities */
-.h-45 {
-  height: 260px;
-}
-
-.h-50 {
-  height: 200px;
-}
-
-.h-3\/4 {
-  height: 75%;
-}
-
 /* Statistics card styling */
 .statistics-card {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e8e8e8;
-  transition: all 0.3s ease;
+  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
 }
 
-.statistics-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  transform: translateY(-2px);
+.statistics-card :deep(.ant-card-head) {
+  border-bottom-color: #f0f0f0;
+}
+
+.statistics-card .section-title {
+  /* color: #fff; */
 }
 
 .statistic-item {
@@ -441,7 +502,7 @@ defineExpose({
 
 .statistic-item :deep(.ant-statistic-title) {
   font-size: 13px;
-  color: #8c8c8c;
+  /* color: rgba(255, 255, 255, 0.8); */
   margin-bottom: 4px;
   font-weight: 500;
 }
@@ -455,6 +516,168 @@ defineExpose({
 .statistic-item :deep(.ant-statistic-content-suffix) {
   font-size: 16px;
   margin-left: 4px;
+  /* color: rgba(255, 255, 255, 0.9); */
+}
+
+.statistics-chart-container {
+  width: 400px;
+  height: 150px;
+}
+
+/* Chart containers */
+.chart-container {
+  width: 100%;
+  height: 100%;
+  min-height: 130px;
+}
+
+.chart-container-small {
+  width: 100%;
+  height: 150px;
+}
+
+.chart-container-gauge {
+  width: 100%;
+  height: 120px;
+}
+
+/* Overall score container */
+.overall-score-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+}
+
+.score-info {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Requirement completion container */
+.requirement-completion-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+}
+
+.completion-details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.detail-item {
+  text-align: center;
+}
+
+.detail-value {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.detail-label {
+  font-size: 12px;
   color: #8c8c8c;
+}
+
+/* Test coverage container */
+.test-coverage-container {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.coverage-info {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Test pass rates container */
+.test-pass-rates-container {
+  height: 100%;
+}
+
+.pass-rate-charts {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+}
+
+.pass-rate-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.pass-rate-info {
+  @apply items-center flex-col space-x-2;
+
+  margin-top: 12px;
+  text-align: center;
+  display: flex;
+  
+  
+}
+
+.pass-rate-title {
+  font-size: 12px;
+  color: #8c8c8c;
+  margin-bottom: 4px;
+}
+
+.pass-rate-value {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.pass-rate-detail {
+  font-size: 11px;
+  color: #bfbfbf;
+}
+
+/* Quality radar chart */
+.quality-radar-card {
+  height: 330px;
+}
+
+.quality-radar-chart {
+  width: 100%;
+  height: 220px;
+}
+
+/* Quality score cards */
+.quality-score-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.quality-score-tag {
+  text-align: center;
+  margin-top: 12px;
+}
+
+/* Flex utilities */
+.flex-2 {
+  flex: 2;
+}
+
+/* Height utilities */
+.h-72 {
+  height: 280px;
+}
+
+.h-64 {
+  height: 240px;
 }
 </style>

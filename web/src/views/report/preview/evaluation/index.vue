@@ -1,0 +1,61 @@
+<script setup lang="ts">
+import { defineAsyncComponent, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import { ReportContent } from './PropsType';
+
+const { t } = useI18n();
+
+type Props = {
+  projectInfo: { [key: string]: any };
+  userInfo: { [key: string]: any };
+  appInfo: { [key: string]: any };
+  dataSource: ReportContent;
+  domId: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  projectInfo: undefined,
+  userInfo: undefined,
+  appInfo: undefined,
+  dataSource: undefined,
+  domId: undefined
+});
+
+const MainTitle = defineAsyncComponent(() => import('@/views/report/preview/components/mainTitle/index.vue'));
+const Summary = defineAsyncComponent(() => import('@/views/report/preview/evaluation/summary/index.vue'));
+const Catalog = defineAsyncComponent(() => import('@/views/report/preview/evaluation/catalog/index.vue'));
+const EvaluationContent = defineAsyncComponent(() => import('@/views/report/preview/evaluation/evaluationContent/index.vue'));
+
+onMounted(() => {
+  console.log(props.dataSource);
+  debugger;
+})
+
+</script>
+
+<template>
+  <MainTitle
+    :userInfo="props.userInfo"
+    :projectInfo="props.projectInfo"
+    :appInfo="props.appInfo"
+    :dataSource="props.dataSource"
+    class="mb-7" />
+  <Summary
+    :userInfo="props.userInfo"
+    :projectInfo="props.projectInfo"
+    :appInfo="props.appInfo"
+    :dataSource="props.dataSource"
+    class="mb-8" />
+  <Catalog
+    :userInfo="props.userInfo"
+    :projectInfo="props.projectInfo"
+    :appInfo="props.appInfo"
+    :dataSource="props.dataSource"
+    class="mb-8" />
+  <div class="text-theme-title font-medium text-4.5 mb-4">
+    <span>{{ t('reportPreview.apis.content') }}</span>
+    <div class="mt-1 rounded w-8.5 h-1 bg-gray-500"></div>
+  </div>
+  <EvaluationContent :dataSource="props.dataSource" />
+</template>

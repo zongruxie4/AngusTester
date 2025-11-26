@@ -232,6 +232,7 @@
     "testPurpose": "Test Purpose",
     "assocScenarios": "Automation",
     "scenarioName": "Scenario Name",
+    "testEvaluation": "Test Evaluation",
     "counts": {
       "progress": "Progress",
       "totalCount": "Total",

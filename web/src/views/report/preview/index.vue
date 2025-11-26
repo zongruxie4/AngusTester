@@ -27,6 +27,7 @@ const ApisReport = defineAsyncComponent(() => import('@/views/report/preview/api
 const ScenarioReport = defineAsyncComponent(() => import('@/views/report/preview/scenario/index.vue'));
 const ExecFunctionReport = defineAsyncComponent(() => import('@/views/report/preview/execFunction/index.vue'));
 const ExecPerfReport = defineAsyncComponent(() => import('@/views/report/preview/execPerf/index.vue'));
+const EvaluationReport = defineAsyncComponent(() => import('@/views/report/preview/evaluation/index.vue'));
 
 const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
@@ -370,6 +371,12 @@ const tipText = computed(() => {
             :appInfo="appInfo"
             :dataSource="reportContent"
             :execContent="execContent" />
+          <EvaluationReport 
+            v-else-if="templateType === 'TEST_EVALUATION'"
+            :userInfo="userInfo"
+            :projectInfo="projectInfo"
+            :appInfo="appInfo"
+            :dataSource="reportContent" />
         </template>
         <ExecFunctionReport
           v-else-if="templateType === 'EXEC_FUNCTIONAL_RESULT'"

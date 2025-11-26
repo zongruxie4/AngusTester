@@ -60,9 +60,9 @@ const { viewTypeOptions } = useKanbanOptions();
 
 // react to product type visibility
 watch(
-  () => proTypeShowMap.value,
+  [() => proTypeShowMap.value, () => viewMode.value],
   () => {
-    if (!proTypeShowMap.value.showTask) {
+    if (!proTypeShowMap.value.showTask || viewMode.value === 'evaluation') {
       countType.value = 'useCase';
     }
   },
@@ -77,7 +77,7 @@ watch(
         :defaultImg="DefaultAvatar"
         class="w-10 h-10 rounded-full flex-shrink-0 mr-2.5" />
       <div class="flex items-center flex-1 flex-nowrap space-x-5">
-        <div class="flex items-center space-x-1">
+        <div v-show="viewMode !== 'evaluation'" class="flex items-center space-x-1">
           <div class="flex items-center flex-shrink-0">
             <span class="flex-shrink-0 whitespace-nowrap">{{ t('kanban.organizationPersonnel') }}</span>
             <Colon class="mr-1 flex-shrink-0" />
@@ -97,7 +97,7 @@ watch(
             @click="openCreatorModal" />
         </div>
 
-        <template v-if="['effectiveness', 'cto'].includes(viewMode)">
+        <template v-if="['effectiveness', 'cto', 'evaluation'].includes(viewMode)">
           <div class="flex items-center flex-shrink-0">
             <div class="mr-1 flex-shrink-0">
               <span class="flex-shrink-0 whitespace-nowrap">{{ t('kanban.statisticsType') }}</span>
@@ -107,7 +107,7 @@ watch(
               v-model:value="countType"
               name="countType"
               class="radio-group-small">
-              <Radio v-if="proTypeShowMap.showTask" value="task">{{ t('common.issue') }}</Radio>
+              <Radio v-if="proTypeShowMap.showTask && viewMode !== 'evaluation'" value="task">{{ t('common.issue') }}</Radio>
               <Radio value="useCase">{{ t('kanban.test') }}</Radio>
             </RadioGroup>
           </div>
@@ -190,6 +190,9 @@ watch(
         <EvaluationView
           ref="evaluationRef"
           :onShow="viewMode === 'evaluation'"
+          :planId="planIdSafe"
+          :createdDateStart="createdDateStartSafe"
+          :createdDateEnd="createdDateEndSafe"
           :projectId="projectIdSafe" />
       </TabPane>
 

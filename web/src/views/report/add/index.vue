@@ -54,6 +54,7 @@ const PlanContent = defineAsyncComponent(() => import('@/views/report/add/PlanCo
 const CasesContent = defineAsyncComponent(() => import('@/views/report/add/CaseContent.vue'));
 const ExecFuncContent = defineAsyncComponent(() => import('@/views/report/add/ExecFuncContent.vue'));
 const ExecPerfStabilityCustomContent = defineAsyncComponent(() => import('@/views/report/add/ExecPerfContent.vue'));
+const TestEvaluation = defineAsyncComponent(() => import('@/views/report/add/TestEvaluation.vue'));
 
 // Form state
 const formState = ref({
@@ -112,9 +113,11 @@ const category = computed(() => {
   if (type === 'FUNC') {
     type = ReportCategory.FUNCTIONAL;
   }
-
   if (type === 'EXEC') {
     type = ReportCategory.EXECUTION;
+  }
+  if (type === 'TEST') {
+    type = ReportCategory.PROJECT;
   }
   return reportMenus.find(i => i.key === type);
 });
@@ -516,6 +519,14 @@ onMounted(() => {
                   :disabled="!!reportId"
                   :projectId="projectId"
                   :contentSetting="contentSetting.filter" />
+              </template>
+
+              <template v-if="reportTemplate[0] === ReportTemplate.TEST_EVALUATION">
+                <TestEvaluation
+                  ref="contentRef"
+                  :disabled="!!reportId"
+                  :projectId="projectId"
+                  :contentSetting="contentSetting.filter"/>
               </template>
             </TabPane>
           </Tabs>

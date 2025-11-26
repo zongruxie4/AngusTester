@@ -14,6 +14,11 @@ export const reportMenus = [
         key: 'PROJECT_PROGRESS',
         label: t('reportAdd.menus.project.progress.label'),
         description: t('reportAdd.menus.project.progress.description')
+      },
+      {
+        key: 'TEST_EVALUATION',
+        label: t('reportAdd.menus.project.testEvaluation.label'),
+        description: t('reportAdd.menus.project.testEvaluation.description')
       }
     ]
   },

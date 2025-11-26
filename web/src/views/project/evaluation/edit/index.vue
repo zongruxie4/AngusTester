@@ -151,6 +151,8 @@ const prepareFormParams = () => {
     if (formState.value.resourceId !== undefined && formState.value.resourceId !== null && formState.value.resourceId !== '') {
       params.resourceId = formState.value.resourceId
     }
+  } else {
+    params.resourceId = formState.value.projectId;
   }
 
   return params;
@@ -193,7 +195,7 @@ const handleEvaluationUpdate = async () => {
 const handleEvaluationCreation = async () => {
   const params = prepareFormParams();
   loading.value = true;
-  const [error, res] = await evaluation.addEvaluation(params);
+  const [error] = await evaluation.addEvaluation(params);
   loading.value = false;
   if (error) {
     return;
@@ -201,17 +203,7 @@ const handleEvaluationCreation = async () => {
 
   notification.success(t('actions.tips.addSuccess'));
 
-  const currentTabId = props.data?._id;
-  const newEvaluationId = res?.data?.id;
-  const name = params.name;
-  if (newEvaluationId && currentTabId) {
-    replaceTabPane(currentTabId, {
-      _id: String(newEvaluationId),
-      uiKey: String(newEvaluationId),
-      name,
-      data: { _id: String(newEvaluationId), id: String(newEvaluationId) }
-    });
-  }
+  deleteTabPane([props?.data?._id as string]);
 };
 
 /**
@@ -293,7 +285,7 @@ const initializeFormData = (data: EvaluationDetail) => {
   formState.value.name = name;
   formState.value.scope = (scope as any)?.value || scope || EvaluationScope.PROJECT;
   formState.value.purposes = purposes.map((p: any) => p.value || p) || [];
-  formState.value.resourceId = resourceId;
+  formState.value.resourceId = formState.value.scope === EvaluationScope.PROJECT ? undefined : resourceId;
   formState.value.startDate = startDate;
   formState.value.deadlineDate = deadlineDate;
   formState.value.date = [startDate, deadlineDate];
@@ -323,7 +315,7 @@ const loadModuleTree = async () => {
     return;
   }
   const [error, { data }] = await modules.getModuleTree({
-    projectId: props.projectId
+    projectId: formState.value.projectId
   });
   if (error) {
     return;
@@ -335,10 +327,8 @@ const loadModuleTree = async () => {
  * Handle project selection change
  */
 const handleProjectChange = (value: any) => {
-  // For PROJECT scope, update projectId instead of resourceId
-  if (formState.value.scope === EvaluationScope.PROJECT) {
-    formState.value.projectId = value ? String(value) : '';
-  }
+  formState.value.resourceId = undefined;
+  loadModuleTree();
 };
 
 /**
@@ -469,7 +459,6 @@ onMounted(() => {
 
       <!-- Project Selection -->
       <FormItem
-        v-if="formState.scope === EvaluationScope.PROJECT"
         :label="t('project.project')"
         name="projectId"
         :rules="{ required: true, message: t('evaluation.placeholders.selectProject') }">
@@ -500,8 +489,7 @@ onMounted(() => {
           v-model:value="formState.resourceId"
           size="small"
           showSearch
-          allowClea
-          :action="`${TESTER}/func/plan?projectId=${props.projectId}&fullTextSearch=true`"
+          :action="`${TESTER}/func/plan?projectId=${formState.projectId}&fullTextSearch=true`"
           :fieldNames="{ value: 'id', label: 'name' }"
           :placeholder="t('common.placeholders.selectOrSearchPlan')"
           @change="handlePlanChange">
