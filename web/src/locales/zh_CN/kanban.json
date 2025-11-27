@@ -195,6 +195,59 @@
       "testStatusLabel": "测试状态",
       "taskStatusName": "任务状态",
       "reviewStatusLabel": "评审状态"
+    },
+    "evaluation": {
+      "statistics": {
+        "title": "测评统计",
+        "totalEvaluations": "总测评数",
+        "averageScore": "平均得分",
+        "highestScore": "最高分",
+        "lowestScore": "最低分",
+        "times": "次",
+        "points": "分"
+      },
+      "overallScore": {
+        "title": "综合评分",
+        "overallScoreLabel": "综合得分",
+        "excellent": "优秀",
+        "good": "良好",
+        "pass": "及格",
+        "needsImprovement": "需改进"
+      },
+      "qualityRadar": {
+        "title": "质量评分雷达图",
+        "qualityScore": "质量评分",
+        "score": "评分",
+        "compatibility": "兼容性",
+        "usability": "易用性",
+        "maintainability": "可维护性",
+        "scalability": "可扩展性",
+        "security": "安全性"
+      },
+      "testPassRate": {
+        "title": "测试通过率",
+        "functionalTest": "功能测试",
+        "performanceTest": "性能测试",
+        "stabilityTest": "稳定性测试"
+      },
+      "qualityScores": {
+        "compatibility": "兼容性评分",
+        "usability": "易用性评分",
+        "maintainability": "可维护性评分",
+        "scalability": "可扩展性得分"
+      },
+      "chartLabels": {
+        "completed": "已完成",
+        "incomplete": "未完成",
+        "overallScore": "综合评分",
+        "requirementCompletionRate": "需求完成率",
+        "value": "数值"
+      },
+      "statisticsBar": {
+        "averageScore": "平均得分",
+        "highestScore": "最高分",
+        "lowestScore": "最低分"
+      }
     }
   }
 }

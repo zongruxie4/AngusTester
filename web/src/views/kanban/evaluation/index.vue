@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Card, Tag, Statistic } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import { throttle } from 'throttle-debounce';
 import { kanban } from '@/api/tester';
 import { useChartManagement } from './composables/useChartManagement';
 import { EvaluationData } from './types';
+
+const { t } = useI18n();
 
 /**
  * Component props with default values
@@ -116,10 +119,10 @@ const getScoreColor = (score: number) => {
  * Get score level text and color
  */
 const getScoreLevel = (score: number) => {
-  if (score >= 9) return { text: '优秀', color: 'success' };
-  if (score >= 8) return { text: '良好', color: 'processing' };
-  if (score >= 6) return { text: '及格', color: 'warning' };
-  return { text: '需改进', color: 'error' };
+  if (score >= 9) return { text: t('kanban.evaluation.overallScore.excellent'), color: 'success' };
+  if (score >= 8) return { text: t('kanban.evaluation.overallScore.good'), color: 'processing' };
+  if (score >= 6) return { text: t('kanban.evaluation.overallScore.pass'), color: 'warning' };
+  return { text: t('kanban.evaluation.overallScore.needsImprovement'), color: 'error' };
 };
 
 /**
@@ -269,44 +272,44 @@ defineExpose({
       <template #title>
         <div class="section-title flex items-center">
           <Icon icon="icon-zonglan" class="mr-2 text-blue-600 text-lg" />
-          <span class="text-base font-semibold">测评统计</span>
+          <span class="text-base font-semibold">{{ t('kanban.evaluation.statistics.title') }}</span>
         </div>
       </template>
       <div class="flex space-x-4">
         <div class="flex-1 flex justify-around items-center">
           <div class="statistic-item">
             <Statistic
-              title="总测评数"
+              :title="t('kanban.evaluation.statistics.totalEvaluations')"
               :value="evaluationData.statistics.total"
-              suffix="次"
+              :suffix="t('kanban.evaluation.statistics.times')"
               class="flex flex-col-reverse"
               :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
           </div>
           <div class="statistic-item">
             <Statistic
-              title="平均得分"
+              :title="t('kanban.evaluation.statistics.averageScore')"
               :value="evaluationData.statistics.averageScore"
               class="flex flex-col-reverse"
               :precision="1"
-              suffix="分"
+              :suffix="t('kanban.evaluation.statistics.points')"
               :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
           </div>
           <div class="statistic-item">
             <Statistic
-              title="最高分"
+              :title="t('kanban.evaluation.statistics.highestScore')"
               :value="evaluationData.statistics.highestScore"
               class="flex flex-col-reverse"
               :precision="1"
-              suffix="分"
+              :suffix="t('kanban.evaluation.statistics.points')"
               :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }" />
           </div>
           <div class="statistic-item">
             <Statistic
-              title="最低分"
+              :title="t('kanban.evaluation.statistics.lowestScore')"
               :value="evaluationData.statistics.lowestScore"
               class="flex flex-col-reverse"
               :precision="1"
-              suffix="分"
+              :suffix="t('kanban.evaluation.statistics.points')"
               :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#ff4d4f' }" />
           </div>
         </div>
@@ -321,7 +324,7 @@ defineExpose({
       <!-- Overall Score Section -->
       <Card class="flex-1 h-full" :bordered="false">
         <template #title>
-          <div class="section-title">综合评分</div>
+          <div class="section-title">{{ t('kanban.evaluation.overallScore.title') }}</div>
         </template>
         <div class="overall-score-container">
           <div ref="overallScoreRef" style="height: 155px;" class="w-full flex-1 min-w-0"></div>
@@ -329,28 +332,28 @@ defineExpose({
             <Tag :color="getScoreLevel(evaluationData.overallScore).color" class="text-base px-3 py-1 mb-2">
               {{ getScoreLevel(evaluationData.overallScore).text }}
             </Tag>
-            <div class="text-sm text-slate-500">综合得分：{{ evaluationData.overallScore ? Number(evaluationData.overallScore).toFixed(1) : '0.0' }} 分</div>
+            <div class="text-sm text-slate-500">{{ t('kanban.evaluation.overallScore.overallScoreLabel') }}：{{ evaluationData.overallScore ? Number(evaluationData.overallScore).toFixed(1) : '0.0' }} {{ t('kanban.evaluation.statistics.points') }}</div>
           </div>
         </div>
       </Card>
 
       <Card class="flex-1 h-full quality-radar-card" :bordered="false">
         <template #title>
-          <div class="section-title">质量评分雷达图</div>
+          <div class="section-title">{{ t('kanban.evaluation.qualityRadar.title') }}</div>
         </template>
         <div ref="qualityRadarRef" class="quality-radar-chart"></div>
       </Card>
 
       <Card class="flex-2 h-full" :bordered="false">
         <template #title>
-          <div class="section-title">测试通过率</div>
+          <div class="section-title">{{ t('kanban.evaluation.testPassRate.title') }}</div>
         </template>
         <div class="test-pass-rates-container">
           <div class="pass-rate-charts">
             <div class="pass-rate-item">
               <div ref="functionTestPassRateRef" class="chart-container-small"></div>
               <div class="pass-rate-info">
-                <div class="pass-rate-title">功能测试</div>
+                <div class="pass-rate-title">{{ t('kanban.evaluation.testPassRate.functionalTest') }}</div>
                 <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.FUNCTIONAL_PASSED_RATE?.rate) }">
                   {{ evaluationData.FUNCTIONAL_PASSED_RATE?.rate }}%
                 </div>
@@ -362,7 +365,7 @@ defineExpose({
             <div class="pass-rate-item">
               <div ref="performanceTestPassRateRef" class="chart-container-small"></div>
               <div class="pass-rate-info">
-                <div class="pass-rate-title">性能测试</div>
+                <div class="pass-rate-title">{{ t('kanban.evaluation.testPassRate.performanceTest') }}</div>
                 <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.PERFORMANCE_PASSED_RATE?.rate) }">
                   {{ evaluationData. PERFORMANCE_PASSED_RATE?.rate }}%
                 </div>
@@ -374,7 +377,7 @@ defineExpose({
             <div class="pass-rate-item">
               <div ref="stabilityTestPassRateRef" class="chart-container-small"></div>
               <div class="pass-rate-info">
-                <div class="pass-rate-title">稳定性测试</div>
+                <div class="pass-rate-title">{{ t('kanban.evaluation.testPassRate.stabilityTest') }}</div>
                 <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.STABILITY_PASSED_RATE?.rate) }">
                   {{ evaluationData.STABILITY_PASSED_RATE?.rate }}%
                 </div>
@@ -395,7 +398,7 @@ defineExpose({
     <div class="flex space-x-2 h-64">
       <Card class="flex-1 h-full quality-score-card" :bordered="false">
         <template #title>
-          <div class="section-title">兼容性评分</div>
+          <div class="section-title">{{ t('kanban.evaluation.qualityScores.compatibility') }}</div>
         </template>
         <div ref="compatibilityRef" class="chart-container-gauge"></div>
         <div class="quality-score-tag">
@@ -407,7 +410,7 @@ defineExpose({
 
       <Card class="flex-1 h-full quality-score-card" :bordered="false">
         <template #title>
-          <div class="section-title">易用性评分</div>
+          <div class="section-title">{{ t('kanban.evaluation.qualityScores.usability') }}</div>
         </template>
         <div ref="usabilityRef" class="chart-container-gauge"></div>
         <div class="quality-score-tag">
@@ -419,7 +422,7 @@ defineExpose({
 
       <Card class="flex-1 h-full quality-score-card" :bordered="false">
         <template #title>
-          <div class="section-title">可维护性评分</div>
+          <div class="section-title">{{ t('kanban.evaluation.qualityScores.maintainability') }}</div>
         </template>
         <div ref="maintainabilityRef" class="chart-container-gauge"></div>
         <div class="quality-score-tag">
@@ -431,7 +434,7 @@ defineExpose({
 
       <Card class="flex-1 h-full quality-score-card" :bordered="false">
         <template #title>
-          <div class="section-title">可扩展性得分</div>
+          <div class="section-title">{{ t('kanban.evaluation.qualityScores.scalability') }}</div>
         </template>
         <div ref="extensibilityRef" class="chart-container-gauge"></div>
         <div class="quality-score-tag">

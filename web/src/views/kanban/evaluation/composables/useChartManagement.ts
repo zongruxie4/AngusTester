@@ -1,6 +1,7 @@
 import { nextTick, ref } from 'vue';
 import eCharts from '@/utils/echarts';
 import { ChartConfig, EvaluationData } from '../types';
+import { i18n } from '@xcan-angus/infra';
 import {
   createScorePieConfig,
   createCompletionPieConfig,
@@ -8,6 +9,8 @@ import {
   createQualityRadarConfig,
   createStatisticsBarConfig
 } from './useChartConfigs';
+
+const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
 
 /**
  * Chart management composable for evaluation dashboard
@@ -175,14 +178,14 @@ export function useChartManagement() {
   const updateCharts = (data: EvaluationData) => {
     // Update overall score pie chart
     if (overallScoreChart && data.overallScore !== undefined) {
-      overallScoreConfig.value = createScorePieConfig(data.overallScore, '综合评分');
+      overallScoreConfig.value = createScorePieConfig(data.overallScore, t('kanban.evaluation.chartLabels.overallScore'));
       overallScoreChart.setOption(overallScoreConfig.value, true);
     }
 
     // Update requirement completion pie chart
     if (requirementCompletionChart && data.PERFORMANCE_PASSED_RATE) {
       const { rate, numerator: completed, denominator: total } = data.PERFORMANCE_PASSED_RATE;
-      requirementCompletionConfig.value = createCompletionPieConfig(rate, completed, total, '需求完成率');
+      requirementCompletionConfig.value = createCompletionPieConfig(rate, completed, total, t('kanban.evaluation.chartLabels.requirementCompletionRate'));
       requirementCompletionChart.setOption(requirementCompletionConfig.value, true);
     }
 
@@ -210,22 +213,22 @@ export function useChartManagement() {
 
     // // Update quality score pie charts
     if (compatibilityChart && data.COMPATIBILITY_SCORE !== undefined) {
-      compatibilityConfig.value = createScorePieConfig(+data.COMPATIBILITY_SCORE.score, '兼容性');
+      compatibilityConfig.value = createScorePieConfig(+data.COMPATIBILITY_SCORE.score, t('kanban.evaluation.qualityRadar.compatibility'));
       compatibilityChart.setOption(compatibilityConfig.value, true);
     }
 
     if (usabilityChart && data.USABILITY_SCORE !== undefined) {
-      usabilityConfig.value = createScorePieConfig(+data.USABILITY_SCORE.score, '易用性');
+      usabilityConfig.value = createScorePieConfig(+data.USABILITY_SCORE.score, t('kanban.evaluation.qualityRadar.usability'));
       usabilityChart.setOption(usabilityConfig.value, true);
     }
 
     if (maintainabilityChart && data.MAINTAINABILITY_SCORE !== undefined) {
-      maintainabilityConfig.value = createScorePieConfig(+data.MAINTAINABILITY_SCORE.score, '可维护性');
+      maintainabilityConfig.value = createScorePieConfig(+data.MAINTAINABILITY_SCORE.score, t('kanban.evaluation.qualityRadar.maintainability'));
       maintainabilityChart.setOption(maintainabilityConfig.value, true);
     }
 
     if (extensibilityChart && data.SCALABILITY_SCORE !== undefined) {
-      extensibilityConfig.value = createScorePieConfig(+data.SCALABILITY_SCORE.score, '可扩展性');
+      extensibilityConfig.value = createScorePieConfig(+data.SCALABILITY_SCORE.score, t('kanban.evaluation.qualityRadar.scalability'));
       extensibilityChart.setOption(extensibilityConfig.value, true);
     }
 
@@ -245,7 +248,11 @@ export function useChartManagement() {
     if (statisticsBarChart && data.statistics) {
       const { statistics } = data;
       statisticsBarConfig.value = createStatisticsBarConfig(
-        [ '平均得分', '最高分', '最低分'],
+        [
+          t('kanban.evaluation.statisticsBar.averageScore'),
+          t('kanban.evaluation.statisticsBar.highestScore'),
+          t('kanban.evaluation.statisticsBar.lowestScore')
+        ],
         [
           Math.round(statistics.averageScore),
           Math.round(statistics.highestScore),

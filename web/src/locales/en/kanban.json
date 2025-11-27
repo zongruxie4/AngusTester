@@ -189,6 +189,59 @@
       "testStatusLabel": "Test Status",
       "taskStatusName": "Task Status",
       "reviewStatusLabel": "Review Status"
+    },
+    "evaluation": {
+      "statistics": {
+        "title": "Evaluation Statistics",
+        "totalEvaluations": "Total Evaluations",
+        "averageScore": "Average Score",
+        "highestScore": "Highest Score",
+        "lowestScore": "Lowest Score",
+        "times": "Times",
+        "points": "Points"
+      },
+      "overallScore": {
+        "title": "Overall Score",
+        "overallScoreLabel": "Overall Score",
+        "excellent": "Excellent",
+        "good": "Good",
+        "pass": "Pass",
+        "needsImprovement": "Needs Improvement"
+      },
+      "qualityRadar": {
+        "title": "Quality Score Radar",
+        "qualityScore": "Quality Score",
+        "score": "Score",
+        "compatibility": "Compatibility",
+        "usability": "Usability",
+        "maintainability": "Maintainability",
+        "scalability": "Scalability",
+        "security": "Security"
+      },
+      "testPassRate": {
+        "title": "Test Pass Rate",
+        "functionalTest": "Functional Test",
+          "performanceTest": "Performance Test",
+        "stabilityTest": "Stability Test"
+      },
+      "qualityScores": {
+        "compatibility": "Compatibility",
+        "usability": "Usability",
+        "maintainability": "Maintainability",
+        "scalability": "Scalability"
+      },
+      "chartLabels": {
+        "completed": "Completed",
+        "incomplete": "Incomplete",
+        "overallScore": "Overall Score",
+        "requirementCompletionRate": "Requirement Completion Rate",
+        "value": "Value"
+      },
+      "statisticsBar": {
+        "averageScore": "Average Score",
+        "highestScore": "Highest Score",
+        "lowestScore": "Lowest Score"
+      }
     }
   }
 }

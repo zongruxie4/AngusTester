@@ -1,4 +1,7 @@
 import { ChartConfig } from '../types';
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
 
 /**
  * Gets color based on score value
@@ -19,7 +22,9 @@ export const createScorePieConfig = (score: number, title: string): ChartConfig 
   return {
     tooltip: {
       trigger: 'item',
-      formatter: `${title}: ${score}分`
+      formatter: (params: any) => {
+        return `${title}: ${score}${t('kanban.evaluation.statistics.points')}`;
+      }
     },
     series: [
       {
@@ -133,12 +138,12 @@ export const createCompletionPieConfig = (rate: number, completed: number, total
         data: [
           {
             value: completed,
-            name: '已完成',
+            name: t('kanban.evaluation.chartLabels.completed'),
             itemStyle: { color: color }
           },
           {
             value: remaining,
-            name: '未完成',
+            name: t('kanban.evaluation.chartLabels.incomplete'),
             itemStyle: { color: '#E4E7ED' }
           }
         ]
@@ -251,11 +256,11 @@ export const createQualityRadarConfig = (
     },
     radar: {
       indicator: [
-        { name: '兼容性', max: 10 },
-        { name: '易用性', max: 10 },
-        { name: '可维护性', max: 10 },
-        { name: '可扩展性', max: 10 },
-        { name: '安全性', max: 10 }
+        { name: t('kanban.evaluation.qualityRadar.compatibility'), max: 10 },
+        { name: t('kanban.evaluation.qualityRadar.usability'), max: 10 },
+        { name: t('kanban.evaluation.qualityRadar.maintainability'), max: 10 },
+        { name: t('kanban.evaluation.qualityRadar.scalability'), max: 10 },
+        { name: t('kanban.evaluation.qualityRadar.security'), max: 10 }
       ],
       center: ['50%', '50%'],
       radius: '70%',
@@ -281,12 +286,12 @@ export const createQualityRadarConfig = (
     },
     series: [
       {
-        name: '质量评分',
+        name: t('kanban.evaluation.qualityRadar.qualityScore'),
         type: 'radar',
         data: [
           {
             value: [compatibility, usability, maintainability, extensibility],
-            name: '评分',
+            name: t('kanban.evaluation.qualityRadar.score'),
             areaStyle: {
               color: 'rgba(24, 144, 255, 0.3)'
             },
@@ -353,7 +358,7 @@ export const createStatisticsBarConfig = (labels: string[], values: number[]): C
     },
     series: [
       {
-        name: '数值',
+        name: t('kanban.evaluation.chartLabels.value'),
         type: 'bar',
         barWidth: '60%',
         itemStyle: {
