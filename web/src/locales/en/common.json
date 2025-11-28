@@ -363,6 +363,7 @@
       "enterParameterName": "Enter parameter name",
       "selectTestLayer": "Select test layer",
       "selectTestPurpose": "Select test purpose",
+      "selectTemplate": "Select template",
       "selectDate": [
         "Date from",
         "Date to"

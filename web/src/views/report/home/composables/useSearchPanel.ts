@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash-es';
 import { PageQuery, SearchCriteria, CombinedTargetType, XCanDexie } from '@xcan-angus/infra';
+import { ReportTemplate } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
 import { createAuditOptions, createTimeOptions, type QuickSearchConfig } from 'src/components/form/quickSearch';
 
@@ -115,6 +116,21 @@ export function useSearchPanel (
       placeholder: t('common.placeholders.searchKeyword'),
       type: 'input',
       maxlength: 100
+    },
+    {
+      valueKey: 'template',
+      type: 'select-enum',
+      enumKey: ReportTemplate as any,
+      placeholder: t('common.placeholders.selectTemplate'),
+      excludes: (data: { message: string; value: ReportTemplate }) => {
+        return [
+          ReportTemplate.PROJECT_DATA_ASSETS,
+          ReportTemplate.PROJECT_EFFICIENCY,
+          ReportTemplate.PROJECT_ACTIVITY,
+          ReportTemplate.APIS_TESTING,
+          ReportTemplate.SCENARIO_TESTING,
+        ].includes(data.value);
+      }
     },
     {
       valueKey: 'targetType',

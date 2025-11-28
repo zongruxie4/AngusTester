@@ -1,11 +1,39 @@
 <script setup lang="ts">
 import { Button, Pagination, Tag } from 'ant-design-vue';
-import { Colon, Dropdown, Icon, NoData } from '@xcan-angus/vue-ui';
+import { Colon, Icon, NoData } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { EvaluationDetail } from '../types';
-import { ProjectMenuKey } from '@/views/project/menu';
+import { EvaluationPurpose } from '@/enums/enums';
 
 const { t } = useI18n();
+
+/**
+ * Get tag color based on purpose value
+ */
+const getPurposeTagColor = (purpose: any): string => {
+  const value = purpose?.value || purpose;
+  
+  switch (value) {
+    case EvaluationPurpose.FUNCTIONAL_PASSED_RATE:
+      return 'blue';
+    case EvaluationPurpose.PERFORMANCE_PASSED_RATE:
+      return 'cyan';
+    case EvaluationPurpose.STABILITY_PASSED_RATE:
+      return 'geekblue';
+    case EvaluationPurpose.SECURITY_SCORE:
+      return 'red';
+    case EvaluationPurpose.COMPATIBILITY_SCORE:
+      return 'green';
+    case EvaluationPurpose.USABILITY_SCORE:
+      return 'orange';
+    case EvaluationPurpose.MAINTAINABILITY_SCORE:
+      return 'purple';
+    case EvaluationPurpose.SCALABILITY_SCORE:
+      return 'magenta';
+    default:
+      return 'default';
+  }
+};
 
 interface Props {
   dataList: EvaluationDetail[];
@@ -111,15 +139,15 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
           </div>
 
           <div class="text-3 whitespace-nowrap">
-            <span class="text-theme-title ml-2">{{ item.startDate || '-' }}</span>
+            <span class="text-sub-content ml-2">{{ item.startDate || '-' }}</span>
             <span class="text-theme-sub-content mx-2">-</span>
-            <span class="text-theme-title">{{ item.deadlineDate || '-' }}</span>
+            <span class="text-sub-content">{{ item.deadlineDate || '-' }}</span>
           </div>
 
           <div class="flex items-center">
-            <Tag v-if="item.scope" class="mr-3">
+            <!-- <Tag v-if="item.scope" class="mr-3">
               {{ item.scope?.message || item.scope?.value }}
-            </Tag>
+            </Tag> -->
           </div>
         </div>
 
@@ -133,7 +161,7 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
                 <div class="flex flex-col">
                   <span class="text-xs text-theme-sub-content">{{ t('evaluation.columns.scope') }}</span>
                   <span class="text-sm font-medium text-theme-content">
-                    {{ item.scope?.message || item.scope?.value || '-' }}
+                    {{ (item.scope as any)?.message || (item.scope as any)?.value || item.scope || '-' }}
                   </span>
                 </div>
               </div>
@@ -144,29 +172,16 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
                   <span class="text-xs text-theme-sub-content">{{ t('evaluation.columns.purposes') }}</span>
                   <div class="flex flex-wrap gap-1 mt-1">
                     <Tag
-                      v-for="(purpose, index) in (item.purposes || []).slice(0, 3)"
+                      v-for="(purpose, index) in (item.purposes || [])"
                       :key="index"
+                      :color="getPurposeTagColor(purpose)"
                       size="small">
-                      {{ purpose?.message || purpose?.value }}
-                    </Tag>
-                    <Tag
-                      v-if="(item.purposes || []).length > 3"
-                      size="small">
-                      +{{ (item.purposes || []).length - 3 }}
+                      {{ (purpose as any)?.message || (purpose as any)?.value || purpose }}
                     </Tag>
                   </div>
                 </div>
               </div>
 
-              <!-- Resource ID -->
-              <div v-if="item.resourceId" class="flex items-center space-x-2">
-                <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('evaluation.columns.resourceName') }}</span>
-                  <span class="text-sm font-medium text-theme-content">
-                    {{ item.resourceName || '-' }}
-                  </span>
-                </div>
-              </div>
             </div>
 
             <!-- Right side: Created info -->
@@ -191,12 +206,14 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
           <!-- Details section -->
           <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
             <div class="flex flex-wrap">
+
+              <!-- Resource Name -->
               <div class="flex">
                 <div class="mr-2 whitespace-nowrap">
-                  <span>{{ t('common.id') }}</span>
+                  <span>{{  t('evaluation.columns.resourceName') }}</span>
                   <Colon />
                 </div>
-                <div class="text-theme-content">{{ item.id || '--' }}</div>
+                <div class="text-theme-content">{{ (item as any)?.resourceName || '-'  }}</div>
               </div>
   
               <div v-if="item.result" class="flex ml-8">

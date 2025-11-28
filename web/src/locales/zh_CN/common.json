@@ -363,6 +363,7 @@
       "enterParameterName": "请输入参数名称",
       "selectTestLayer": "选择测试对象",
       "selectTestPurpose": "选择测试目的",
+      "selectTemplate": "选择模板",
       "selectDate": [
         "时间从",
         "时间到"

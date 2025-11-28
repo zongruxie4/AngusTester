@@ -70,20 +70,6 @@ const formState = ref<EvaluationFormState>({
   date: [defaultStartDate, defaultDeadlineDate]
 });
 
-/**
- * Validates the date range selection
- */
-const validateDateRange = async (_rule: Rule, value: string) => {
-  if (!value) {
-    return Promise.reject(new Error(t('common.placeholders.selectPlanTime')));
-  } else if (!value[0]) {
-    return Promise.reject(new Error(t('common.placeholders.selectStartDate')));
-  } else if (!value[1]) {
-    return Promise.reject(new Error(t('common.placeholders.selectDeadline')));
-  } else {
-    return Promise.resolve();
-  }
-};
 
 /**
  * Validates purposes selection
@@ -586,8 +572,7 @@ onMounted(() => {
 
       <FormItem
         :label="t('evaluation.columns.resourceCreationTime')"
-        name="date"
-        :rules="{ validator: validateDateRange, trigger: 'change' }">
+        name="date">
         <DatePicker
           v-model:value="formState.date"
           format="YYYY-MM-DD HH:mm:ss"
