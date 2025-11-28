@@ -86,6 +86,7 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
       @Override
       protected TestEvaluation process() {
         TestEvaluation evaluation = checkAndFind(id);
+        setResourceName(List.of(evaluation));
         return evaluation;
       }
     }.execute();
@@ -118,6 +119,7 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
             ? evaluationSearchRepo.find(criteria, pageable, TestEvaluation.class, match)
             : evaluationRepo.findAll(spec, pageable);
 
+        setResourceName(page.getContent());
         return page;
       }
     }.execute();
