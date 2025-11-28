@@ -38,6 +38,13 @@ public class EvaluationFindDto extends PageQuery {
   @Schema(description = "Evaluation creation date for temporal filtering")
   private LocalDateTime createdDate;
 
+  @Schema(description = "Last modifier identifier for modification-based filtering")
+  private Long lastModifiedBy;
+
+  @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Scenario last modification date for temporal filtering")
+  private LocalDateTime lastModifiedDate;
+
   @Override
   public String getDefaultOrderBy() {
     return "createdDate";
