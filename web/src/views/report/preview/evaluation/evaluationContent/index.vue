@@ -102,12 +102,12 @@ const createPassRatePieConfig = (rate: number, numerator: number, denominator: n
         data: [
           {
             value: numerator,
-            name: '通过',
+            name: t('reportPreview.evaluation.detail.chartLabels.passed'),
             itemStyle: { color: color }
           },
           {
             value: remaining,
-            name: '未通过',
+            name: t('reportPreview.evaluation.detail.chartLabels.notPassed'),
             itemStyle: { color: '#E4E7ED' }
           }
         ]
@@ -152,7 +152,7 @@ const createScorePieConfig = (score: number, title: string) => {
   return {
     tooltip: {
       trigger: 'item',
-      formatter: `${title}: ${(+score).toFixed(1)}分`
+      formatter: `${title}: ${(+score).toFixed(1)}${t('reportPreview.evaluation.detail.chartLabels.points')}`
     },
     series: [
       {
@@ -196,7 +196,7 @@ const createScorePieConfig = (score: number, title: string) => {
         top: '35%',
         z: 10,
         style: {
-          text: `${(+score).toFixed(1)}分`,
+          text: `${(+score).toFixed(1)}${t('reportPreview.evaluation.detail.chartLabels.points')}`,
           fontSize: 28,
           fontWeight: 'bold',
           fill: color,
@@ -238,7 +238,7 @@ const initCharts = () => {
     performanceChart = initOrUpdateChart(
       performanceChart,
       performancePassedRateRef.value,
-      createPassRatePieConfig(data.rate, data.numerator, data.denominator, '性能测试通过率')
+      createPassRatePieConfig(data.rate, data.numerator, data.denominator, t('reportPreview.evaluation.detail.performanceTestPassRate.title'))
     );
   }
 
@@ -248,7 +248,7 @@ const initCharts = () => {
     functionalChart = initOrUpdateChart(
       functionalChart,
       functionalPassedRateRef.value,
-      createPassRatePieConfig(data.rate, data.numerator, data.denominator, '功能测试通过率')
+      createPassRatePieConfig(data.rate, data.numerator, data.denominator, t('reportPreview.evaluation.detail.functionalTestPassRate.title'))
     );
   }
 
@@ -258,7 +258,7 @@ const initCharts = () => {
     stabilityChart = initOrUpdateChart(
       stabilityChart,
       stabilityPassedRateRef.value,
-      createPassRatePieConfig(data.rate, data.numerator, data.denominator, '稳定性测试通过率')
+      createPassRatePieConfig(data.rate, data.numerator, data.denominator, t('reportPreview.evaluation.detail.stabilityTestPassRate.title'))
     );
   }
 
@@ -267,7 +267,7 @@ const initCharts = () => {
     compatibilityChart = initOrUpdateChart(
       compatibilityChart,
       compatibilityScoreRef.value,
-      createScorePieConfig(Number(metrics.COMPATIBILITY_SCORE.score), '兼容性评分')
+      createScorePieConfig(Number(metrics.COMPATIBILITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.compatibility'))
     );
   }
 
@@ -276,7 +276,7 @@ const initCharts = () => {
     usabilityChart = initOrUpdateChart(
       usabilityChart,
       usabilityScoreRef.value,
-      createScorePieConfig(Number(metrics.USABILITY_SCORE.score), '易用性评分')
+      createScorePieConfig(Number(metrics.USABILITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.usability'))
     );
   }
 
@@ -285,7 +285,7 @@ const initCharts = () => {
     maintainabilityChart = initOrUpdateChart(
       maintainabilityChart,
       maintainabilityScoreRef.value,
-      createScorePieConfig(Number(metrics.MAINTAINABILITY_SCORE.score), '可维护性评分')
+      createScorePieConfig(Number(metrics.MAINTAINABILITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.maintainability'))
     );
   }
 
@@ -294,7 +294,7 @@ const initCharts = () => {
     scalabilityChart = initOrUpdateChart(
       scalabilityChart,
       scalabilityScoreRef.value,
-      createScorePieConfig(Number(metrics.SCALABILITY_SCORE.score), '可扩展性评分')
+      createScorePieConfig(Number(metrics.SCALABILITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.scalability'))
     );
   }
 
@@ -303,7 +303,7 @@ const initCharts = () => {
     securityChart = initOrUpdateChart(
       securityChart,
       securityScoreRef.value,
-      createScorePieConfig(Number(metrics.SECURITY_SCORE.score), '安全性评分')
+      createScorePieConfig(Number(metrics.SECURITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.security'))
     );
   }
 };
@@ -353,14 +353,14 @@ const disposeCharts = () => {
 const basicColumns = computed(() => [
    [
     {
-      name: '测评对象类型',
+      name: t('reportPreview.evaluation.overview.targetType'),
       dataIndex: 'totalCases',
       customRender: () => {
         return props.dataSource?.report?.targetType?.message;
       }
     },
     {
-      name: '测评对象名称',
+      name: t('reportPreview.evaluation.overview.targetName'),
       dataIndex: 'overallScore',
       customRender: () => {
         return props.dataSource?.report?.targetName;
@@ -369,14 +369,14 @@ const basicColumns = computed(() => [
   ],
   [
     {
-      name: '总测评数',
+      name: t('reportPreview.evaluation.overview.totalCases'),
       dataIndex: 'totalCases',
       customRender: () => {
         return props.dataSource?.content?.totalCases;
       }
     },
     {
-      name: '综合评分',
+      name: t('reportPreview.evaluation.overview.overallScore'),
       dataIndex: 'overallScore',
       customRender: () => {
         return props.dataSource?.content?.overallScore;
@@ -413,11 +413,11 @@ onBeforeUnmount(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>测评信息</span>
+      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.evaluation.title') }}</span>
     </h1>
 
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a1.1" class="text-3.5 text-theme-title font-medium">1.1、<em class="inline-block w-0.25"></em>测评概览</span>
+      <span id="a1.1" class="text-3.5 text-theme-title font-medium">1.1、<em class="inline-block w-0.25"></em>{{ t('reportPreview.evaluation.overview.title') }}</span>
     </h1>
 
     <div class="border-t border-l border-solid border-border-input mb-8">
@@ -438,32 +438,32 @@ onBeforeUnmount(() => {
     </div>
 
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a1.2" class="text-3.5 text-theme-title font-medium">1.2、<em class="inline-block w-0.25"></em>测评信息详情</span>
+      <span id="a1.2" class="text-3.5 text-theme-title font-medium">1.2、<em class="inline-block w-0.25"></em>{{ t('reportPreview.evaluation.detail.title') }}</span>
     </h1>
 
     <div v-if="props.dataSource?.content?.metrics" class="metrics-charts-container">
       <!-- Performance Passed Rate -->
       <div v-if="props.dataSource?.content?.metrics.PERFORMANCE_PASSED_RATE" class="metric-item mb-6">
-        <h2 class="text-3.5 text-theme-title font-medium mb-3">性能测试通过率</h2>
+        <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.title') }}</h2>
         <div class="metric-chart-wrapper">
           <div ref="performancePassedRateRef" class="metric-chart"></div>
           <div class="metric-info">
             <div class="info-row">
-              <span class="info-label">通过率：</span>
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.passRate') }}</span>
               <span class="info-value" :style="{ color: getRateColor(props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.rate) }">
                 {{ (+props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.rate).toFixed(1) }}%
               </span>
             </div>
             <div class="info-row">
-              <span class="info-label">通过数量：</span>
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.passCount') }}</span>
               <span class="info-value">
                 {{ props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.numerator }}/{{ props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.denominator }}
               </span>
             </div>
             <div class="info-row">
-              <span class="info-label">得分：</span>
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.score') }}</span>
               <span class="info-value">
-                {{ (+props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.score).toFixed(1) }} 分
+                {{ (+props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
               </span>
             </div>
           </div>
@@ -472,26 +472,26 @@ onBeforeUnmount(() => {
 
       <!-- Functional Passed Rate -->
       <div v-if="props.dataSource?.content?.metrics.FUNCTIONAL_PASSED_RATE" class="metric-item mb-6">
-        <h2 class="text-3.5 text-theme-title font-medium mb-3">功能测试通过率</h2>
+        <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.functionalTestPassRate.title') }}</h2>
         <div class="metric-chart-wrapper">
           <div ref="functionalPassedRateRef" class="metric-chart"></div>
           <div class="metric-info">
             <div class="info-row">
-              <span class="info-label">通过率：</span>
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.functionalTestPassRate.passRate') }}</span>
               <span class="info-value" :style="{ color: getRateColor(props.dataSource.content.metrics.FUNCTIONAL_PASSED_RATE.rate) }">
                 {{ (+props.dataSource.content.metrics.FUNCTIONAL_PASSED_RATE.rate).toFixed(1) }}%
               </span>
             </div>
             <div class="info-row">
-              <span class="info-label">通过数量：</span>
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.functionalTestPassRate.passCount') }}</span>
               <span class="info-value">
                 {{ props.dataSource.content.metrics.FUNCTIONAL_PASSED_RATE.numerator }}/{{ props.dataSource.content.metrics.FUNCTIONAL_PASSED_RATE.denominator }}
               </span>
             </div>
             <div class="info-row">
-              <span class="info-label">得分：</span>
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.functionalTestPassRate.score') }}</span>
               <span class="info-value">
-                {{ (+props.dataSource.content.metrics.FUNCTIONAL_PASSED_RATE.score).toFixed(1) }} 分
+                {{ (+props.dataSource.content.metrics.FUNCTIONAL_PASSED_RATE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
               </span>
             </div>
           </div>
@@ -500,26 +500,26 @@ onBeforeUnmount(() => {
 
       <!-- Stability Passed Rate -->
       <div v-if="props.dataSource?.content?.metrics.STABILITY_PASSED_RATE" class="metric-item mb-6">
-        <h2 class="text-3.5 text-theme-title font-medium mb-3">稳定性测试通过率</h2>
+        <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.stabilityTestPassRate.title') }}</h2>
         <div class="metric-chart-wrapper">
           <div ref="stabilityPassedRateRef" class="metric-chart"></div>
           <div class="metric-info">
             <div class="info-row">
-              <span class="info-label">通过率：</span>
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.stabilityTestPassRate.passRate') }}</span>
               <span class="info-value" :style="{ color: getRateColor(props.dataSource.content.metrics.STABILITY_PASSED_RATE.rate) }">
                 {{ (+props.dataSource.content.metrics.STABILITY_PASSED_RATE.rate).toFixed(1) }}%
               </span>
             </div>
             <div class="info-row">
-              <span class="info-label">通过数量：</span>
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.stabilityTestPassRate.passCount') }}</span>
               <span class="info-value">
                 {{ props.dataSource.content.metrics.STABILITY_PASSED_RATE.numerator }}/{{ props.dataSource.content.metrics.STABILITY_PASSED_RATE.denominator }}
               </span>
             </div>
             <div class="info-row">
-              <span class="info-label">得分：</span>
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.stabilityTestPassRate.score') }}</span>
               <span class="info-value">
-                {{ (+props.dataSource.content.metrics.STABILITY_PASSED_RATE.score).toFixed(1) }} 分
+                {{ (+props.dataSource.content.metrics.STABILITY_PASSED_RATE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
               </span>
             </div>
           </div>
@@ -530,55 +530,55 @@ onBeforeUnmount(() => {
       <div class="quality-scores-grid mb-6">
         <!-- Compatibility Score -->
         <div v-if="props.dataSource?.content?.metrics.COMPATIBILITY_SCORE" class="quality-score-item">
-          <h3 class="text-3.5 text-theme-title font-medium mb-3">兼容性评分</h3>
+          <h3 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.qualityScores.compatibility') }}</h3>
           <div ref="compatibilityScoreRef" class="quality-score-chart"></div>
           <div class="quality-score-info">
             <span class="score-value" :style="{ color: getScoreColor(Number(props.dataSource.content.metrics.COMPATIBILITY_SCORE.score)) }">
-              {{ Number(props.dataSource.content.metrics.COMPATIBILITY_SCORE.score).toFixed(1) }} 分
+              {{ Number(props.dataSource.content.metrics.COMPATIBILITY_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
             </span>
           </div>
         </div>
 
         <!-- Usability Score -->
         <div v-if="props.dataSource?.content?.metrics.USABILITY_SCORE" class="quality-score-item">
-          <h3 class="text-3.5 text-theme-title font-medium mb-3">易用性评分</h3>
+          <h3 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.qualityScores.usability') }}</h3>
           <div ref="usabilityScoreRef" class="quality-score-chart"></div>
           <div class="quality-score-info">
             <span class="score-value" :style="{ color: getScoreColor(Number(props.dataSource.content.metrics.USABILITY_SCORE.score)) }">
-              {{ Number(props.dataSource.content.metrics.USABILITY_SCORE.score).toFixed(1) }} 分
+              {{ Number(props.dataSource.content.metrics.USABILITY_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
             </span>
           </div>
         </div>
 
         <!-- Maintainability Score -->
         <div v-if="props.dataSource?.content?.metrics.MAINTAINABILITY_SCORE" class="quality-score-item">
-          <h3 class="text-3.5 text-theme-title font-medium mb-3">可维护性评分</h3>
+          <h3 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.qualityScores.maintainability') }}</h3>
           <div ref="maintainabilityScoreRef" class="quality-score-chart"></div>
           <div class="quality-score-info">
             <span class="score-value" :style="{ color: getScoreColor(Number(props.dataSource.content.metrics.MAINTAINABILITY_SCORE.score)) }">
-              {{ Number(props.dataSource.content.metrics.MAINTAINABILITY_SCORE.score).toFixed(1) }} 分
+              {{ Number(props.dataSource.content.metrics.MAINTAINABILITY_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
             </span>
           </div>
         </div>
 
         <!-- Scalability Score -->
         <div v-if="props.dataSource?.content?.metrics.SCALABILITY_SCORE" class="quality-score-item">
-          <h3 class="text-3.5 text-theme-title font-medium mb-3">可扩展性评分</h3>
+          <h3 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.qualityScores.scalability') }}</h3>
           <div ref="scalabilityScoreRef" class="quality-score-chart"></div>
           <div class="quality-score-info">
             <span class="score-value" :style="{ color: getScoreColor(Number(props.dataSource.content.metrics.SCALABILITY_SCORE.score)) }">
-              {{ Number(props.dataSource.content.metrics.SCALABILITY_SCORE.score).toFixed(1) }} 分
+              {{ Number(props.dataSource.content.metrics.SCALABILITY_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
             </span>
           </div>
         </div>
 
         <!-- Security Score -->
         <div v-if="props.dataSource?.content?.metrics.SECURITY_SCORE" class="quality-score-item">
-          <h3 class="text-3.5 text-theme-title font-medium mb-3">安全性评分</h3>
+          <h3 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.qualityScores.security') }}</h3>
           <div ref="securityScoreRef" class="quality-score-chart"></div>
           <div class="quality-score-info">
             <span class="score-value" :style="{ color: getScoreColor(Number(props.dataSource.content.metrics.SECURITY_SCORE.score)) }">
-              {{ Number(props.dataSource.content.metrics.SECURITY_SCORE.score).toFixed(1) }} 分
+              {{ Number(props.dataSource.content.metrics.SECURITY_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
             </span>
           </div>
         </div>

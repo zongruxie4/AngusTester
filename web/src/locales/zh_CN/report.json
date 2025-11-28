@@ -1916,6 +1916,52 @@
           }
         }
       }
+    },
+    "evaluation": {
+      "title": "测评信息",
+      "catalog": {
+        "title": "目录"
+      },
+      "overview": {
+        "title": "测评概览",
+        "targetType": "测评对象类型",
+        "targetName": "测评对象名称",
+        "totalCases": "总测评数",
+        "overallScore": "综合评分"
+      },
+      "detail": {
+        "title": "测评信息详情",
+        "performanceTestPassRate": {
+          "title": "性能测试通过率",
+          "passRate": "通过率：",
+          "passCount": "通过数量：",
+          "score": "得分："
+        },
+        "functionalTestPassRate": {
+          "title": "功能测试通过率",
+          "passRate": "通过率：",
+          "passCount": "通过数量：",
+          "score": "得分："
+        },
+        "stabilityTestPassRate": {
+          "title": "稳定性测试通过率",
+          "passRate": "通过率：",
+          "passCount": "通过数量：",
+          "score": "得分："
+        },
+        "qualityScores": {
+          "compatibility": "兼容性评分",
+          "usability": "易用性评分",
+          "maintainability": "可维护性评分",
+          "scalability": "可扩展性评分",
+          "security": "安全性评分"
+        },
+        "chartLabels": {
+          "passed": "通过",
+          "notPassed": "未通过",
+          "points": "分"
+        }
+      }
     }
   }
 }

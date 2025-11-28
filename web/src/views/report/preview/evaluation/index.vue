@@ -27,11 +27,6 @@ const Summary = defineAsyncComponent(() => import('@/views/report/preview/evalua
 const Catalog = defineAsyncComponent(() => import('@/views/report/preview/evaluation/catalog/index.vue'));
 const EvaluationContent = defineAsyncComponent(() => import('@/views/report/preview/evaluation/evaluationContent/index.vue'));
 
-onMounted(() => {
-  console.log(props.dataSource);
-  debugger;
-})
-
 </script>
 
 <template>

@@ -1911,6 +1911,52 @@
           }
         }
       }
+    },
+    "evaluation": {
+      "title": "Evaluation Information",
+      "catalog": {
+        "title": "Catalog"
+      },
+      "overview": {
+          "title": "Evaluation Overview",
+        "targetType": "Target Type",
+        "targetName": "Target Name",
+        "totalCases": "Total Cases",
+        "overallScore": "Overall Score"
+      },
+      "detail": {
+        "title": "Evaluation Information Details",
+        "performanceTestPassRate": {
+          "title": "Performance Test Pass Rate",
+          "passRate": "Pass Rate:",
+          "passCount": "Pass Count:",
+          "score": "Score:"
+        },
+        "functionalTestPassRate": {
+          "title": "Functional Test Pass Rate",
+          "passRate": "Pass Rate:",
+          "passCount": "Pass Count:",
+          "score": "Score:"
+        },
+        "stabilityTestPassRate": {
+          "title": "Stability Test Pass Rate",
+          "passRate": "Pass Rate:",
+          "passCount": "Pass Count:",
+          "score": "Score:"
+        },
+        "qualityScores": {
+          "compatibility": "Compatibility Score",
+          "usability": "Usability Score",
+          "maintainability": "Maintainability Score",
+          "scalability": "Scalability Score",
+          "security": "Security Score"
+        },
+        "chartLabels": {
+          "passed": "Passed",
+          "notPassed": "Not Passed",
+          "points": "Points"
+        }
+      }
     }
   }
 }

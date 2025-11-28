@@ -10,21 +10,21 @@ const DashedLine = defineAsyncComponent(() => import('./dashedLine.vue'));
 <template>
   <div class="text-theme-title">
     <div class="font-medium text-4.5 mb-4">
-      <span>{{ t('reportPreview.apis.catalog.title') }}</span>
+      <span>{{ t('reportPreview.evaluation.catalog.title') }}</span>
       <div class="mt-1 rounded w-8.5 h-1 bg-gray-500"></div>
     </div>
 
     <div class="space-y-3.5">
       <a href="#a1" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>测评信息</span>
+        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.evaluation.title') }}</span>
         <DashedLine />
       </a>
       <a href="#a1.1" class="flex items-center space-x-2.5">
-        <span>1.1<em class="inline-block w-4.25 font-medium"></em>测评概览</span>
+        <span>1.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.evaluation.overview.title') }}</span>
         <DashedLine />
       </a>
       <a href="#a1.2" class="flex items-center space-x-2.5">
-        <span>1.2<em class="inline-block w-4.25 font-medium"></em>测评信息详情</span>
+        <span>1.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.evaluation.detail.title') }}</span>
         <DashedLine />
       </a>
      

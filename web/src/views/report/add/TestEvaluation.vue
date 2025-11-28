@@ -313,7 +313,7 @@ defineExpose({
     <span>{{ t('reportAdd.execFuncContent.content') }}</span>
     <Hints :text="t('reportAdd.execFuncContent.contentHints')" />
   </div>
-  <Tree
+  <!-- <Tree
     v-model:checkedKeys="checked"
     class="mt-2 text-3"
     disabled
@@ -330,5 +330,5 @@ defineExpose({
           class="leading-6 items-center" />
       </div>
     </template>
-  </Tree>
+  </Tree> -->
 </template>
