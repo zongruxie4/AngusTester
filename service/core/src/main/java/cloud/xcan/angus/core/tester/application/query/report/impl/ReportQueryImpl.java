@@ -198,9 +198,6 @@ public class ReportQueryImpl implements ReportQuery {
   private ScenarioTestQuery scenarioTestQuery;
 
   @Resource
-  private ScriptQuery scriptQuery;
-
-  @Resource
   private KanbanEfficiencyQuery kanbanEfficiencyQuery;
 
   @Resource
@@ -385,10 +382,10 @@ public class ReportQueryImpl implements ReportQuery {
   }
 
   @Override
-  public ActivityResource checkAndFindResource(Long projectId,
+  public ActivityResource checkAndFindResource(ReportTemplate template, Long projectId,
       CombinedTargetType targetType, Long targetId) {
-    long count = reportRepo.countByProjectIdAndTargetTypeAndTargetId(
-        projectId, targetType, targetId);
+    long count = reportRepo.countByTemplateAndProjectIdAndTargetTypeAndTargetId(
+        template, projectId, targetType, targetId);
     assertResourceExisted(count <= 0, REPORT_REPEATED_T, new Object[]{targetType, targetId});
     ActivityResource resource = commonQuery.checkAndFindActivityResource(targetType, targetId);
     assertTrue(projectId.equals(resource.getProjectId()),
