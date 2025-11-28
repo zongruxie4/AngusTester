@@ -16,17 +16,21 @@ const DashedLine = defineAsyncComponent(() => import('./dashedLine.vue'));
 
     <div class="space-y-3.5">
       <a href="#a1" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.evaluation.title') }}</span>
+        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.evaluation.overview.title') }}</span>
         <DashedLine />
       </a>
-      <a href="#a1.1" class="flex items-center space-x-2.5">
+      <a href="#a2" class="flex items-center space-x-2.5">
+        <span class="h1">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.evaluation.detail.title') }}</span>
+        <DashedLine />
+      </a>
+      <!-- <a href="#a1.1" class="flex items-center space-x-2.5">
         <span>1.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.evaluation.overview.title') }}</span>
         <DashedLine />
       </a>
       <a href="#a1.2" class="flex items-center space-x-2.5">
         <span>1.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.evaluation.detail.title') }}</span>
         <DashedLine />
-      </a>
+      </a> -->
      
     </div>
     <div class="pdf-page-break"></div>

@@ -192,22 +192,19 @@ export function useChartManagement() {
     // // Update test pass rate pie charts
     if (functionTestPassRateChart && data.FUNCTIONAL_PASSED_RATE) {
       const { rate } = data.FUNCTIONAL_PASSED_RATE;
-      const color = rate >= 90 ? '#52c41a' : rate >= 80 ? '#1890ff' : rate >= 60 ? '#faad14' : '#ff4d4f';
-      functionTestPassRateConfig.value = createSimpleProgressPieConfig(rate, color);
+      functionTestPassRateConfig.value = createSimpleProgressPieConfig(rate);
       functionTestPassRateChart.setOption(functionTestPassRateConfig.value, true);
     }
 
     if (performanceTestPassRateChart && data.PERFORMANCE_PASSED_RATE) {
       const { rate } = data.PERFORMANCE_PASSED_RATE;
-      const color = rate >= 90 ? '#52c41a' : rate >= 80 ? '#1890ff' : rate >= 60 ? '#faad14' : '#ff4d4f';
-      performanceTestPassRateConfig.value = createSimpleProgressPieConfig(rate, color);
+      performanceTestPassRateConfig.value = createSimpleProgressPieConfig(rate);
       performanceTestPassRateChart.setOption(performanceTestPassRateConfig.value, true);
     }
 
     if (stabilityTestPassRateChart && data.STABILITY_PASSED_RATE) {
       const { rate } = data.STABILITY_PASSED_RATE;
-      const color = rate >= 90 ? '#52c41a' : rate >= 80 ? '#1890ff' : rate >= 60 ? '#faad14' : '#ff4d4f';
-      stabilityTestPassRateConfig.value = createSimpleProgressPieConfig(rate, color);
+      stabilityTestPassRateConfig.value = createSimpleProgressPieConfig(rate);
       stabilityTestPassRateChart.setOption(stabilityTestPassRateConfig.value, true);
     }
 

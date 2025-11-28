@@ -237,7 +237,7 @@
     "columns": {
       "scope": "Scope",
       "purposes": "Purposes",
-      "resourceId": "Resource ID",
+      "resourceName": "Resource Name",
       "resourceCreationTime": "Creation Time",
       "result": "Result"
     },

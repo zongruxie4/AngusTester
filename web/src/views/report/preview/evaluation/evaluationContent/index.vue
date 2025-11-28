@@ -144,63 +144,56 @@ const createPassRatePieConfig = (rate: number, numerator: number, denominator: n
 };
 
 /**
- * Create pie chart for score (0-10 scale)
+ * Create progress bar chart for score (0-10 scale)
  */
-const createScorePieConfig = (score: number, title: string) => {
+const createScoreProgressBarConfig = (score: number, title: string) => {
   const color = getScoreColor(score);
   
   return {
-    tooltip: {
-      trigger: 'item',
-      formatter: `${title}: ${(+score).toFixed(1)}${t('reportPreview.evaluation.detail.chartLabels.points')}`
+    grid: {
+      left: '0%',
+      right: '10%',
+      top: '0%',
+      bottom: '0%',
+      containLabel: false
+    },
+    xAxis: {
+      type: 'value',
+      max: 10,
+      min: 0,
+      show: false,
+      splitLine: {
+        show: false
+      }
+    },
+    yAxis: {
+      type: 'category',
+      data: [''],
+      show: false
     },
     series: [
       {
         name: title,
-        type: 'pie',
-        radius: ['60%', '85%'],
-        center: ['50%', '50%'],
-        avoidLabelOverlap: false,
+        type: 'bar',
+        barWidth: '100%',
+        data: [score],
         itemStyle: {
-          borderRadius: 8,
-          borderColor: '#fff',
-          borderWidth: 2
+          color: color,
+          borderRadius: score >= 9.9 ? [4, 4, 4, 4] : [4, 0, 0, 4]
         },
         label: {
-          show: false
+          show: true,
+          position: 'right',
+          formatter: `${(+score).toFixed(1)}${t('reportPreview.evaluation.detail.chartLabels.points')}`,
+          fontSize: 14,
+          fontWeight: 'bold',
+          color: color,
+          offset: [10, 0]
         },
         emphasis: {
-          label: {
-            show: false
+          itemStyle: {
+            color: color
           }
-        },
-        labelLine: {
-          show: false
-        },
-        data: [
-          {
-            value: score,
-            itemStyle: { color: color }
-          },
-          {
-            value: 10 - score,
-            itemStyle: { color: '#E4E7ED' }
-          }
-        ]
-      }
-    ],
-    graphic: [
-      {
-        type: 'text',
-        left: 'center',
-        top: '35%',
-        z: 10,
-        style: {
-          text: `${(+score).toFixed(1)}${t('reportPreview.evaluation.detail.chartLabels.points')}`,
-          fontSize: 28,
-          fontWeight: 'bold',
-          fill: color,
-          textAlign: 'center'
         }
       }
     ]
@@ -262,48 +255,48 @@ const initCharts = () => {
     );
   }
 
-  // Compatibility Score Chart
+  // Compatibility Score Chart - Progress Bar
   if (metrics.COMPATIBILITY_SCORE && compatibilityScoreRef.value) {
     compatibilityChart = initOrUpdateChart(
       compatibilityChart,
       compatibilityScoreRef.value,
-      createScorePieConfig(Number(metrics.COMPATIBILITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.compatibility'))
+      createScoreProgressBarConfig(Number(metrics.COMPATIBILITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.compatibility'))
     );
   }
 
-  // Usability Score Chart
+  // Usability Score Chart - Progress Bar
   if (metrics.USABILITY_SCORE && usabilityScoreRef.value) {
     usabilityChart = initOrUpdateChart(
       usabilityChart,
       usabilityScoreRef.value,
-      createScorePieConfig(Number(metrics.USABILITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.usability'))
+      createScoreProgressBarConfig(Number(metrics.USABILITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.usability'))
     );
   }
 
-  // Maintainability Score Chart
+  // Maintainability Score Chart - Progress Bar
   if (metrics.MAINTAINABILITY_SCORE && maintainabilityScoreRef.value) {
     maintainabilityChart = initOrUpdateChart(
       maintainabilityChart,
       maintainabilityScoreRef.value,
-      createScorePieConfig(Number(metrics.MAINTAINABILITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.maintainability'))
+      createScoreProgressBarConfig(Number(metrics.MAINTAINABILITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.maintainability'))
     );
   }
 
-  // Scalability Score Chart
+  // Scalability Score Chart - Progress Bar
   if (metrics.SCALABILITY_SCORE && scalabilityScoreRef.value) {
     scalabilityChart = initOrUpdateChart(
       scalabilityChart,
       scalabilityScoreRef.value,
-      createScorePieConfig(Number(metrics.SCALABILITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.scalability'))
+      createScoreProgressBarConfig(Number(metrics.SCALABILITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.scalability'))
     );
   }
 
-  // Security Score Chart
+  // Security Score Chart - Progress Bar
   if (metrics.SECURITY_SCORE && securityScoreRef.value) {
     securityChart = initOrUpdateChart(
       securityChart,
       securityScoreRef.value,
-      createScorePieConfig(Number(metrics.SECURITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.security'))
+      createScoreProgressBarConfig(Number(metrics.SECURITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.security'))
     );
   }
 };
@@ -413,11 +406,7 @@ onBeforeUnmount(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.evaluation.title') }}</span>
-    </h1>
-
-    <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a1.1" class="text-3.5 text-theme-title font-medium">1.1、<em class="inline-block w-0.25"></em>{{ t('reportPreview.evaluation.overview.title') }}</span>
+      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.evaluation.overview.title') }}</span>
     </h1>
 
     <div class="border-t border-l border-solid border-border-input mb-8">
@@ -438,38 +427,10 @@ onBeforeUnmount(() => {
     </div>
 
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a1.2" class="text-3.5 text-theme-title font-medium">1.2、<em class="inline-block w-0.25"></em>{{ t('reportPreview.evaluation.detail.title') }}</span>
+      <span id="a2" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.evaluation.detail.title') }}</span>
     </h1>
 
     <div v-if="props.dataSource?.content?.metrics" class="metrics-charts-container">
-      <!-- Performance Passed Rate -->
-      <div v-if="props.dataSource?.content?.metrics.PERFORMANCE_PASSED_RATE" class="metric-item mb-6">
-        <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.title') }}</h2>
-        <div class="metric-chart-wrapper">
-          <div ref="performancePassedRateRef" class="metric-chart"></div>
-          <div class="metric-info">
-            <div class="info-row">
-              <span class="info-label">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.passRate') }}</span>
-              <span class="info-value" :style="{ color: getRateColor(props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.rate) }">
-                {{ (+props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.rate).toFixed(1) }}%
-              </span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.passCount') }}</span>
-              <span class="info-value">
-                {{ props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.numerator }}/{{ props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.denominator }}
-              </span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.score') }}</span>
-              <span class="info-value">
-                {{ (+props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- Functional Passed Rate -->
       <div v-if="props.dataSource?.content?.metrics.FUNCTIONAL_PASSED_RATE" class="metric-item mb-6">
         <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.functionalTestPassRate.title') }}</h2>
@@ -492,6 +453,34 @@ onBeforeUnmount(() => {
               <span class="info-label">{{ t('reportPreview.evaluation.detail.functionalTestPassRate.score') }}</span>
               <span class="info-value">
                 {{ (+props.dataSource.content.metrics.FUNCTIONAL_PASSED_RATE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Performance Passed Rate -->
+      <div v-if="props.dataSource?.content?.metrics.PERFORMANCE_PASSED_RATE" class="metric-item mb-6">
+        <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.title') }}</h2>
+        <div class="metric-chart-wrapper">
+          <div ref="performancePassedRateRef" class="metric-chart"></div>
+          <div class="metric-info">
+            <div class="info-row">
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.passRate') }}</span>
+              <span class="info-value" :style="{ color: getRateColor(props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.rate) }">
+                {{ (+props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.rate).toFixed(1) }}%
+              </span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.passCount') }}</span>
+              <span class="info-value">
+                {{ props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.numerator }}/{{ props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.denominator }}
+              </span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.score') }}</span>
+              <span class="info-value">
+                {{ (+props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
               </span>
             </div>
           </div>
@@ -526,61 +515,46 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <!-- Quality Scores Grid -->
-      <div class="quality-scores-grid mb-6">
+      <!-- Quality Scores Grid with Progress Bars -->
+      <div class="quality-scores-progress-container mb-6 space-y-6">
         <!-- Compatibility Score -->
-        <div v-if="props.dataSource?.content?.metrics.COMPATIBILITY_SCORE" class="quality-score-item">
-          <h3 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.qualityScores.compatibility') }}</h3>
-          <div ref="compatibilityScoreRef" class="quality-score-chart"></div>
-          <div class="quality-score-info">
-            <span class="score-value" :style="{ color: getScoreColor(Number(props.dataSource.content.metrics.COMPATIBILITY_SCORE.score)) }">
-              {{ Number(props.dataSource.content.metrics.COMPATIBILITY_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
-            </span>
+        <div v-if="props.dataSource?.content?.metrics.COMPATIBILITY_SCORE" class="quality-score-progress-item">
+          <div class="progress-header">
+            <span class="progress-title">{{ t('reportPreview.evaluation.detail.qualityScores.compatibility') }}</span>
           </div>
+          <div ref="compatibilityScoreRef" class="quality-score-progress-bar"></div>
         </div>
 
         <!-- Usability Score -->
-        <div v-if="props.dataSource?.content?.metrics.USABILITY_SCORE" class="quality-score-item">
-          <h3 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.qualityScores.usability') }}</h3>
-          <div ref="usabilityScoreRef" class="quality-score-chart"></div>
-          <div class="quality-score-info">
-            <span class="score-value" :style="{ color: getScoreColor(Number(props.dataSource.content.metrics.USABILITY_SCORE.score)) }">
-              {{ Number(props.dataSource.content.metrics.USABILITY_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
-            </span>
+        <div v-if="props.dataSource?.content?.metrics.USABILITY_SCORE" class="quality-score-progress-item">
+          <div class="progress-header">
+            <span class="progress-title">{{ t('reportPreview.evaluation.detail.qualityScores.usability') }}</span>
           </div>
+          <div ref="usabilityScoreRef" class="quality-score-progress-bar"></div>
         </div>
 
         <!-- Maintainability Score -->
-        <div v-if="props.dataSource?.content?.metrics.MAINTAINABILITY_SCORE" class="quality-score-item">
-          <h3 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.qualityScores.maintainability') }}</h3>
-          <div ref="maintainabilityScoreRef" class="quality-score-chart"></div>
-          <div class="quality-score-info">
-            <span class="score-value" :style="{ color: getScoreColor(Number(props.dataSource.content.metrics.MAINTAINABILITY_SCORE.score)) }">
-              {{ Number(props.dataSource.content.metrics.MAINTAINABILITY_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
-            </span>
+        <div v-if="props.dataSource?.content?.metrics.MAINTAINABILITY_SCORE" class="quality-score-progress-item">
+          <div class="progress-header">
+            <span class="progress-title">{{ t('reportPreview.evaluation.detail.qualityScores.maintainability') }}</span>
           </div>
+          <div ref="maintainabilityScoreRef" class="quality-score-progress-bar"></div>
         </div>
 
         <!-- Scalability Score -->
-        <div v-if="props.dataSource?.content?.metrics.SCALABILITY_SCORE" class="quality-score-item">
-          <h3 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.qualityScores.scalability') }}</h3>
-          <div ref="scalabilityScoreRef" class="quality-score-chart"></div>
-          <div class="quality-score-info">
-            <span class="score-value" :style="{ color: getScoreColor(Number(props.dataSource.content.metrics.SCALABILITY_SCORE.score)) }">
-              {{ Number(props.dataSource.content.metrics.SCALABILITY_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
-            </span>
+        <div v-if="props.dataSource?.content?.metrics.SCALABILITY_SCORE" class="quality-score-progress-item">
+          <div class="progress-header">
+            <span class="progress-title">{{ t('reportPreview.evaluation.detail.qualityScores.scalability') }}</span>
           </div>
+          <div ref="scalabilityScoreRef" class="quality-score-progress-bar"></div>
         </div>
 
         <!-- Security Score -->
-        <div v-if="props.dataSource?.content?.metrics.SECURITY_SCORE" class="quality-score-item">
-          <h3 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.qualityScores.security') }}</h3>
-          <div ref="securityScoreRef" class="quality-score-chart"></div>
-          <div class="quality-score-info">
-            <span class="score-value" :style="{ color: getScoreColor(Number(props.dataSource.content.metrics.SECURITY_SCORE.score)) }">
-              {{ Number(props.dataSource.content.metrics.SECURITY_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
-            </span>
+        <div v-if="props.dataSource?.content?.metrics.SECURITY_SCORE" class="quality-score-progress-item">
+          <div class="progress-header">
+            <span class="progress-title">{{ t('reportPreview.evaluation.detail.qualityScores.security') }}</span>
           </div>
+          <div ref="securityScoreRef" class="quality-score-progress-bar"></div>
         </div>
       </div>
     </div>
@@ -667,6 +641,53 @@ onBeforeUnmount(() => {
 .score-value {
   font-size: 20px;
   font-weight: bold;
+}
+
+.quality-scores-progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+}
+
+.quality-score-progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #262626;
+}
+
+.quality-score-progress-bar {
+  width: 100%;
+  height: 30px;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.quality-score-progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 90%;
+  height: 100%;
+  border-radius: 4px;
+  background-color: #D9D9D9;
 }
 
 @media print {

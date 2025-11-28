@@ -7,9 +7,14 @@ const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
  * Gets color based on score value
  */
 const getScoreColor = (score: number): string => {
-  if (score >= 90) return '#52c41a'; // green
-  if (score >= 80) return '#1890ff'; // blue
-  if (score >= 60) return '#faad14'; // orange
+  if (score >= 9) return '#52c41a'; // green
+  if (score >= 6) return '#faad14'; // orange
+  return '#ff4d4f'; // red
+};
+
+const getRateColor = (rate: number): string => {
+  if (rate >= 90) return '#52c41a'; // green
+  if (rate >= 60) return '#faad14'; // orange
   return '#ff4d4f'; // red
 };
 
@@ -182,7 +187,8 @@ export const createCompletionPieConfig = (rate: number, completed: number, total
 /**
  * Creates simple progress pie chart configuration
  */
-export const createSimpleProgressPieConfig = (rate: number, color: string): ChartConfig => {
+export const createSimpleProgressPieConfig = (rate: number): ChartConfig => {
+  const color = getRateColor(rate);
   return {
     tooltip: {
       trigger: 'item',

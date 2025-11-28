@@ -239,7 +239,7 @@
     "columns": {
       "scope": "测评范围",
       "purposes": "测评目的",
-      "resourceId": "资源ID",
+      "resourceName": "测评资源名称",
       "resourceCreationTime": "创建时间",
       "result": "结果"
     },

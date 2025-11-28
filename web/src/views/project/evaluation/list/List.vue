@@ -46,7 +46,7 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
   emit('paginationChange', newPageNo, newPageSize);
 };
 
-const dropdownMenuItems = [
+// const dropdownMenuItems = [
   // {
   //   key: 'view',
   //   icon: 'icon-chakan',
@@ -62,32 +62,32 @@ const dropdownMenuItems = [
   //   icon: 'icon-shengcheng',
   //   name: t('evaluation.actions.generateResult')
   // },
-  {
-    key: 'delete',
-    icon: 'icon-qingchu',
-    name: t('actions.delete')
-  }
-];
+  // {
+  //   key: 'delete',
+  //   icon: 'icon-qingchu',
+  //   name: t('actions.delete')
+  // }
+// ];
 
-const handleDropdownClick = (
-  evaluationData: EvaluationDetail,
-  actionKey: 'view' | 'edit' | 'delete' | 'generateResult'
-) => {
-  switch (actionKey) {
-    case 'view':
-      handleViewDetail(evaluationData);
-      break;
-    case 'edit':
-      handleEditEvaluation(evaluationData);
-      break;
-    case 'delete':
-      handleDeleteEvaluation(evaluationData);
-      break;
-    case 'generateResult':
-      handleGenerateResult(evaluationData);
-      break;
-  }
-};
+// const handleDropdownClick = (
+//   evaluationData: EvaluationDetail,
+//   actionKey: 'view' | 'edit' | 'delete' | 'generateResult'
+// ) => {
+//   switch (actionKey) {
+//     case 'view':
+//       handleViewDetail(evaluationData);
+//       break;
+//     case 'edit':
+//       handleEditEvaluation(evaluationData);
+//       break;
+//     case 'delete':
+//       handleDeleteEvaluation(evaluationData);
+//       break;
+//     case 'generateResult':
+//       handleGenerateResult(evaluationData);
+//       break;
+//   }
+// };
 </script>
 
 <template>
@@ -161,9 +161,9 @@ const handleDropdownClick = (
               <!-- Resource ID -->
               <div v-if="item.resourceId" class="flex items-center space-x-2">
                 <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('evaluation.columns.resourceId') }}</span>
+                  <span class="text-xs text-theme-sub-content">{{ t('evaluation.columns.resourceName') }}</span>
                   <span class="text-sm font-medium text-theme-content">
-                    {{ item.resourceId }}
+                    {{ item.resourceName || '-' }}
                   </span>
                 </div>
               </div>
@@ -183,66 +183,80 @@ const handleDropdownClick = (
         </div>
 
         <!-- Divider line -->
-        <div class="border-t border-theme-border-subtle/50"></div>
+        <div class="border-t flex border-theme-border-subtle/50"></div>
+        
 
-        <!-- Details section -->
-        <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
-          <div class="flex flex-wrap">
-            <div class="flex mt-3">
-              <div class="mr-2 whitespace-nowrap">
-                <span>{{ t('common.id') }}</span>
-                <Colon />
+        <div class="flex items-center justify-between py-2">
+
+          <!-- Details section -->
+          <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
+            <div class="flex flex-wrap">
+              <div class="flex">
+                <div class="mr-2 whitespace-nowrap">
+                  <span>{{ t('common.id') }}</span>
+                  <Colon />
+                </div>
+                <div class="text-theme-content">{{ item.id || '--' }}</div>
               </div>
-              <div class="text-theme-content">{{ item.id || '--' }}</div>
+  
+              <div v-if="item.result" class="flex ml-8">
+                <div class="mr-2 whitespace-nowrap">
+                  <span>{{ t('evaluation.columns.result') }}</span>
+                  <Colon />
+                </div>
+                <div class="text-theme-content text-green-600">{{ t('evaluation.status.hasResult') }}</div>
+              </div>
             </div>
-
-            <div v-if="item.result" class="flex ml-8 mt-3">
-              <div class="mr-2 whitespace-nowrap">
-                <span>{{ t('evaluation.columns.result') }}</span>
-                <Colon />
-              </div>
-              <div class="text-theme-content text-green-600">{{ t('evaluation.status.hasResult') }}</div>
+          </div>
+  
+          <!-- Actions section -->
+          <div class="px-3.5 flex justify-between items-center text-3">
+            <div class="flex-1"></div>
+  
+            <div class="flex items-center justify-between h-4 leading-5">
+              <a
+                class="flex items-center space-x-1 cursor-pointer"
+                @click="handleViewDetail(item)">
+                <Icon icon="icon-chakanhuodong" class="text-3.5" />
+                <span>{{ t('actions.view') }}</span>
+              </a>
+  
+              <a
+                class="flex items-center space-x-1 ml-3 cursor-pointer"
+                @click="handleEditEvaluation(item)">
+                <Icon icon="icon-shuxie" class="text-3.5" />
+                <span>{{ t('actions.edit') }}</span>
+              </a>
+  
+              <Button
+                size="small"
+                type="text"
+                class="px-0 flex items-center ml-2"
+                @click="handleGenerateResult(item)">
+                <Icon icon="icon-shengchengshuju" class="mr-0.5" />
+                <span>{{ t('evaluation.actions.generateResult') }}</span>
+              </Button>
+  
+              <Button
+                size="small"
+                type="text"
+                class="px-0 flex items-center ml-2"
+                @click="handleDeleteEvaluation(item)">
+                <Icon icon="icon-qingchu" class="mr-0.5" />
+                <span>{{ t('actions.delete') }}</span>
+              </Button>
+  
+              <!-- <Dropdown
+                class="ml-2"
+                :admin="false"
+                :menuItems="dropdownMenuItems"
+                @click="handleDropdownClick(item, $event.key)">
+                <Icon icon="icon-gengduo" class="cursor-pointer outline-none items-center" />
+              </Dropdown> -->
             </div>
           </div>
         </div>
 
-        <!-- Actions section -->
-        <div class="px-3.5 flex justify-between items-center text-3 my-2.5">
-          <div class="flex-1"></div>
-
-          <div class="flex items-center justify-between h-4 leading-5">
-            <a
-              class="flex items-center space-x-1 cursor-pointer"
-              @click="handleViewDetail(item)">
-              <Icon icon="icon-chakanhuodong" class="text-3.5" />
-              <span>{{ t('actions.view') }}</span>
-            </a>
-
-            <a
-              class="flex items-center space-x-1 ml-3 cursor-pointer"
-              @click="handleEditEvaluation(item)">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-              <span>{{ t('actions.edit') }}</span>
-            </a>
-
-            <Button
-              size="small"
-              type="text"
-              class="px-0 flex items-center ml-2"
-              @click="handleGenerateResult(item)">
-              <Icon icon="icon-shengchengshuju" class="mr-0.5" />
-              <span>{{ t('evaluation.actions.generateResult') }}</span>
-            </Button>
-
-            <Dropdown
-              class="ml-2"
-              :admin="false"
-              :menuItems="dropdownMenuItems"
-              @click="handleDropdownClick(item, $event.key)">
-              <Icon icon="icon-gengduo" class="cursor-pointer outline-none items-center" />
-            </Dropdown>
-          </div>
-        </div>
       </div>
 
       <Pagination
