@@ -1930,7 +1930,7 @@
         "overallScore": "综合评分"
       },
       "detail": {
-        "title": "测评信息详情",
+        "title": "测评指标",
         "performanceTestPassRate": {
           "title": "性能测试通过率",
           "passRate": "通过率：",

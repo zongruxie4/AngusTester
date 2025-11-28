@@ -162,9 +162,14 @@ const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchC
       }
     }
   }
+  if (key === 'all') {
+    if (typeof searchPanelRef.value?.setConfigs === 'function') {
+      searchPanelRef.value.clear();
+    }
+  }
   searchCriteria = searchCriteria.filter(f => !assocKeys.includes(f.key as string));
   quickSearchFilters.value = searchCriteria;
-  if (key === 'createdByMe') {
+  if (key === 'createdByMe' || key === 'all') {
     return
   }
   emits('change', getSearchParams());
