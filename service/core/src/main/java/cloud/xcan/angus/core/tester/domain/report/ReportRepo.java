@@ -26,8 +26,8 @@ public interface ReportRepo extends BaseRepository<Report, Long>, NameJoinReposi
 
   long countByProjectIdAndNameAndVersion(Long projectId, String name, String version);
 
-  long countByProjectIdAndTargetTypeAndTargetId(Long projectId, CombinedTargetType targetType,
-      Long targetId);
+  long countByTemplateAndProjectIdAndTargetTypeAndTargetId(ReportTemplate template, Long projectId,
+      CombinedTargetType targetType, Long targetId);
 
   @Modifying
   @Query("UPDATE Report s SET s.auth=?2 WHERE s.id=?1")
