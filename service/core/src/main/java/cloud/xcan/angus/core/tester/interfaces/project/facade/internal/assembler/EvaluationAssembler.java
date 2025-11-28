@@ -45,6 +45,7 @@ public class EvaluationAssembler {
     vo.setScope(evaluation.getScope());
     vo.setPurposes(evaluation.getPurposes());
     vo.setResourceId(evaluation.getResourceId());
+    vo.setResourceName(evaluation.getResourceName());
     vo.setStartDate(evaluation.getStartDate());
     vo.setDeadlineDate(evaluation.getDeadlineDate());
     vo.setResult(evaluation.getResult());

@@ -4,6 +4,7 @@ import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationScope;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluationResult;
 import cloud.xcan.angus.remote.NameJoinField;
+import jakarta.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
@@ -29,6 +30,8 @@ public class EvaluationDetailVo {
   private List<EvaluationPurpose> purposes;
 
   private Long resourceId;
+
+  private String resourceName;
 
   private LocalDateTime startDate;
 
