@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { AsyncComponent, notification, Spin, modal } from '@xcan-angus/vue-ui';
-import { ProjectPageQuery } from '@xcan-angus/infra';
+import { ProjectPageQuery, PageQuery } from '@xcan-angus/infra';
 import { evaluation } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { BasicProps } from '@/types/types';
@@ -78,8 +78,7 @@ const handlePaginationChange = (_pageNo: number, _pageSize: number) => {
  */
 const loadData = async () => {
   isLoading.value = true;
-  const params: ProjectPageQuery = {
-    projectId: props.projectId,
+  const params: PageQuery = {
     pageNo: pageNo.value,
     pageSize: pageSize.value,
     ...searchPanelParams.value
@@ -165,28 +164,11 @@ const handleGenerateResult = async (evaluationData: EvaluationDetail) => {
   notification.success(t('evaluation.actions.generateResultSuccess'));
   refresh();
 };
-
-/**
- * Resets pagination and clears data list
- */
-const resetData = () => {
-  pageNo.value = 1;
-  dataList.value = [];
-};
-
 // Lifecycle hooks
 onMounted(() => {
-  watch(() => props.projectId, () => {
-    resetData();
+  watch(() => props.notify, () => {
     loadData();
   }, { immediate: true });
-
-  watch(() => props.notify, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-    loadData();
-  }, { immediate: false });
 });
 </script>
 
