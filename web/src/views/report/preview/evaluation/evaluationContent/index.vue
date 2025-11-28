@@ -52,8 +52,7 @@ const getScoreColor = (score: number) => {
  * Get rate color based on rate value (0-100 scale)
  */
 const getRateColor = (rate: number) => {
-  if (rate >= 90) return '#52c41a'; // green
-  if (rate >= 80) return '#1890ff'; // blue
+  if (rate >= 9) return '#52c41a'; // green
   if (rate >= 60) return '#faad14'; // orange
   return '#ff4d4f'; // red
 };
