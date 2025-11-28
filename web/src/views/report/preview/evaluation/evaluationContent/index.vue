@@ -52,8 +52,7 @@ const getScoreColor = (score: number) => {
  * Get rate color based on rate value (0-100 scale)
  */
 const getRateColor = (rate: number) => {
-  if (rate >= 90) return '#52c41a'; // green
-  if (rate >= 80) return '#1890ff'; // blue
+  if (rate >= 9) return '#52c41a'; // green
   if (rate >= 60) return '#faad14'; // orange
   return '#ff4d4f'; // red
 };
@@ -66,10 +65,10 @@ const createPassRatePieConfig = (rate: number, numerator: number, denominator: n
   const remaining = denominator - numerator;
   
   return {
-    tooltip: {
-      trigger: 'item',
-      formatter: '{b}: {c} ({d}%)'
-    },
+    // tooltip: {
+    //   trigger: 'item',
+    //   formatter: '{b}: {c} ({d}%)'
+    // },
     series: [
       {
         name: title,
@@ -83,7 +82,7 @@ const createPassRatePieConfig = (rate: number, numerator: number, denominator: n
           borderWidth: 2
         },
         label: {
-          show: true,
+          show: false,
           formatter: '{d}%',
           fontSize: 16,
           fontWeight: 'bold',
@@ -347,7 +346,7 @@ const basicColumns = computed(() => [
    [
     {
       name: t('reportPreview.evaluation.overview.targetType'),
-      dataIndex: 'totalCases',
+      dataIndex: 'targetType',
       customRender: () => {
         return props.dataSource?.report?.targetType?.message;
       }

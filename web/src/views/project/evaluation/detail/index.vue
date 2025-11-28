@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {  inject, onMounted, ref, watch } from 'vue';
-import { Button, Descriptions, DescriptionsItem, Tag } from 'ant-design-vue';
+import { inject, onMounted, onBeforeUnmount, ref, watch, nextTick } from 'vue';
+import { Button, Tag, Card, Divider } from 'ant-design-vue';
 import { Icon, notification, Spin } from '@xcan-angus/vue-ui';
 import { toClipboard } from '@xcan-angus/infra';
 import { evaluation } from '@/api/tester';
@@ -8,6 +8,8 @@ import { useI18n } from 'vue-i18n';
 import { BasicProps } from '@/types/types';
 import { ProjectMenuKey } from '@/views/project/menu';
 import { EvaluationDetail } from '../types';
+import eCharts from '@/utils/echarts';
+import { throttle } from 'throttle-debounce';
 
 const { t } = useI18n();
 
@@ -25,6 +27,389 @@ const addTabPane = inject<(data: any) => void>('addTabPane', () => ({}));
 // Reactive data
 const loading = ref(false);
 const evaluationDetail = ref<EvaluationDetail>();
+
+/**
+ * Chart references
+ */
+const performancePassedRateRef = ref<HTMLElement>();
+const functionalPassedRateRef = ref<HTMLElement>();
+const stabilityPassedRateRef = ref<HTMLElement>();
+const compatibilityScoreRef = ref<HTMLElement>();
+const usabilityScoreRef = ref<HTMLElement>();
+const maintainabilityScoreRef = ref<HTMLElement>();
+const scalabilityScoreRef = ref<HTMLElement>();
+const securityScoreRef = ref<HTMLElement>();
+
+/**
+ * Chart instances
+ */
+let performanceChart: any = null;
+let functionalChart: any = null;
+let stabilityChart: any = null;
+let compatibilityChart: any = null;
+let usabilityChart: any = null;
+let maintainabilityChart: any = null;
+let scalabilityChart: any = null;
+let securityChart: any = null;
+
+/**
+ * Get score color based on score value (0-10 scale)
+ */
+const getScoreColor = (score: number) => {
+  if (score >= 9) return '#52c41a'; // green
+  if (score >= 8) return '#1890ff'; // blue
+  if (score >= 6) return '#faad14'; // orange
+  return '#ff4d4f'; // red
+};
+
+/**
+ * Get rate color based on rate value
+ */
+const getRateColor = (rate: number) => {
+  if (rate >= 90) return '#52c41a'; // green
+  if (rate >= 80) return '#1890ff'; // blue
+  if (rate >= 60) return '#faad14'; // orange
+  return '#ff4d4f'; // red
+};
+
+/**
+ * Create pie chart for pass rate
+ */
+const createPassRatePieConfig = (rate: number, numerator: number, denominator: number, title: string) => {
+  const color = getRateColor(rate);
+  const remaining = denominator - numerator;
+  
+  return {
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b}: {c} ({d}%)'
+    },
+    series: [
+      {
+        name: title,
+        type: 'pie',
+        radius: ['50%', '70%'],
+        center: ['50%', '50%'],
+        avoidLabelOverlap: true,
+        itemStyle: {
+          borderRadius: 8,
+          borderColor: '#fff',
+          borderWidth: 2
+        },
+        label: {
+          show: true,
+          formatter: '{d}%',
+          fontSize: 16,
+          fontWeight: 'bold',
+          color: '#333'
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: 18,
+            fontWeight: 'bold'
+          }
+        },
+        labelLine: {
+          show: false
+        },
+        data: [
+          {
+            value: numerator,
+            name: '通过',
+            itemStyle: { color: color }
+          },
+          {
+            value: remaining,
+            name: '未通过',
+            itemStyle: { color: '#E4E7ED' }
+          }
+        ]
+      }
+    ],
+    graphic: [
+      {
+        type: 'text',
+        left: 'center',
+        top: 'center',
+        z: 10,
+        style: {
+          text: `${(+rate).toFixed(1)}%`,
+          fontSize: 24,
+          fontWeight: 'bold',
+          fill: color,
+          textAlign: 'center'
+        }
+      },
+      {
+        type: 'text',
+        left: 'center',
+        top: '60%',
+        z: 10,
+        style: {
+          text: `${numerator}/${denominator}`,
+          fontSize: 14,
+          fill: '#666',
+          textAlign: 'center'
+        }
+      }
+    ]
+  };
+};
+
+/**
+ * Create progress bar chart for score (0-10 scale)
+ */
+const createScoreProgressBarConfig = (score: number, title: string) => {
+  const color = getScoreColor(score);
+  
+  return {
+    grid: {
+      left: '20',
+      right: '15%',
+      top: '20%',
+      bottom: '30%',
+      containLabel: false
+    },
+    xAxis: {
+      type: 'value',
+      max: 10,
+      min: 0,
+      show: true,
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: '#d9d9d9'
+        }
+      },
+      axisTick: {
+        show: false
+      },
+      splitLine: {
+        show: true,
+        lineStyle: {
+          type: 'dashed',
+          color: '#E8E8E8'
+        }
+      },
+      axisLabel: {
+        show: true,
+        fontSize: 11,
+        color: '#8c8c8c',
+        formatter: '{value}'
+      }
+    },
+    yAxis: {
+      type: 'category',
+      data: [''],
+      show: false
+    },
+    // tooltip: {
+    //   show: true,
+    //   formatter: `${title}: ${score.toFixed(1)}分 / 10分`
+    // },
+    series: [
+      // Background bar (gray base)
+      // {
+      //   name: '总分',
+      //   type: 'bar',
+      //   barWidth: '60%',
+      //   data: [10],
+      //   itemStyle: {
+      //     color: '#D9D9D9',
+      //     borderRadius: [0, 4, 4, 0]
+      //   },
+      //   label: {
+      //     show: false
+      //   },
+      //   silent: true,
+      //   z: 1
+      // },
+      // Score bar (overlapping)
+      {
+        name: title,
+        type: 'bar',
+        barWidth: '60%',
+        data: [score],
+        itemStyle: {
+          color: {
+            type: 'linear',
+            x: 0,
+            y: 0,
+            x2: 1,
+            y2: 0,
+            colorStops: [
+              {
+                offset: 0,
+                color: color
+              },
+              {
+                offset: 1,
+                color: color + 'DD'
+              }
+            ]
+          },
+          borderRadius: score >= 9.9 ? [0, 4, 4, 0] : [0, 0, 0, 0],
+          shadowBlur: 4,
+          shadowColor: color + '40'
+        },
+        label: {
+          show: true,
+          position: 'right',
+          formatter: `${score.toFixed(1)}分`,
+          fontSize: 13,
+          fontWeight: 'bold',
+          color: color,
+          offset: [8, 0]
+        },
+        z: 2
+      }
+    ]
+  };
+};
+
+/**
+ * Initialize or update a chart
+ */
+const initOrUpdateChart = (chartInstance: any, ref: HTMLElement | undefined, config: any) => {
+  if (!ref) return null;
+  
+  if (chartInstance && !chartInstance.isDisposed()) {
+    chartInstance.setOption(config, true);
+    return chartInstance;
+  } else {
+    const chart = eCharts.init(ref);
+    chart.setOption(config);
+    return chart;
+  }
+};
+
+/**
+ * Initialize and update charts
+ */
+const initCharts = () => {
+  const result = evaluationDetail.value?.result;
+  if (!result || !result.metrics) return;
+
+  const metrics = result.metrics;
+
+  // Performance Passed Rate Chart
+  if (metrics.PERFORMANCE_PASSED_RATE && performancePassedRateRef.value) {
+    const data = metrics.PERFORMANCE_PASSED_RATE;
+    performanceChart = initOrUpdateChart(
+      performanceChart,
+      performancePassedRateRef.value,
+      createPassRatePieConfig(data.rate, data.numerator, data.denominator, '性能测试通过率')
+    );
+  }
+
+  // Functional Passed Rate Chart
+  if (metrics.FUNCTIONAL_PASSED_RATE && functionalPassedRateRef.value) {
+    const data = metrics.FUNCTIONAL_PASSED_RATE;
+    functionalChart = initOrUpdateChart(
+      functionalChart,
+      functionalPassedRateRef.value,
+      createPassRatePieConfig(data.rate, data.numerator, data.denominator, '功能测试通过率')
+    );
+  }
+
+  // Stability Passed Rate Chart
+  if (metrics.STABILITY_PASSED_RATE && stabilityPassedRateRef.value) {
+    const data = metrics.STABILITY_PASSED_RATE;
+    stabilityChart = initOrUpdateChart(
+      stabilityChart,
+      stabilityPassedRateRef.value,
+      createPassRatePieConfig(data.rate, data.numerator, data.denominator, '稳定性测试通过率')
+    );
+  }
+
+  // Compatibility Score Chart - Progress Bar
+  if (metrics.COMPATIBILITY_SCORE && compatibilityScoreRef.value) {
+    compatibilityChart = initOrUpdateChart(
+      compatibilityChart,
+      compatibilityScoreRef.value,
+      createScoreProgressBarConfig(Number(metrics.COMPATIBILITY_SCORE.score), '兼容性')
+    );
+  }
+
+  // Usability Score Chart - Progress Bar
+  if (metrics.USABILITY_SCORE && usabilityScoreRef.value) {
+    usabilityChart = initOrUpdateChart(
+      usabilityChart,
+      usabilityScoreRef.value,
+      createScoreProgressBarConfig(Number(metrics.USABILITY_SCORE.score), '易用性')
+    );
+  }
+
+  // Maintainability Score Chart - Progress Bar
+  if (metrics.MAINTAINABILITY_SCORE && maintainabilityScoreRef.value) {
+    maintainabilityChart = initOrUpdateChart(
+      maintainabilityChart,
+      maintainabilityScoreRef.value,
+      createScoreProgressBarConfig(Number(metrics.MAINTAINABILITY_SCORE.score), '可维护性')
+    );
+  }
+
+  // Scalability Score Chart - Progress Bar
+  if (metrics.SCALABILITY_SCORE && scalabilityScoreRef.value) {
+    scalabilityChart = initOrUpdateChart(
+      scalabilityChart,
+      scalabilityScoreRef.value,
+      createScoreProgressBarConfig(Number(metrics.SCALABILITY_SCORE.score), '可扩展性')
+    );
+  }
+
+  // Security Score Chart - Progress Bar
+  if (metrics.SECURITY_SCORE && securityScoreRef.value) {
+    securityChart = initOrUpdateChart(
+      securityChart,
+      securityScoreRef.value,
+      createScoreProgressBarConfig(Number(metrics.SECURITY_SCORE.score), '安全性')
+    );
+  }
+};
+
+/**
+ * Resize all charts
+ */
+const resizeCharts = throttle(500, () => {
+  const charts = [
+    performanceChart,
+    functionalChart,
+    stabilityChart,
+    compatibilityChart,
+    usabilityChart,
+    maintainabilityChart,
+    scalabilityChart,
+    securityChart
+  ];
+  charts.forEach(chart => {
+    if (chart && !chart.isDisposed()) {
+      chart.resize();
+    }
+  });
+});
+
+/**
+ * Dispose all charts
+ */
+const disposeCharts = () => {
+  const charts = [
+    performanceChart,
+    functionalChart,
+    stabilityChart,
+    compatibilityChart,
+    usabilityChart,
+    maintainabilityChart,
+    scalabilityChart,
+    securityChart
+  ];
+  charts.forEach(chart => {
+    if (chart && !chart.isDisposed()) {
+      chart.dispose();
+    }
+  });
+};
 
 /**
  * Loads evaluation detail data from API
@@ -48,6 +433,11 @@ const loadEvaluationDetail = async (evaluationId: string) => {
 
   evaluationDetail.value = data;
   updateTabPaneTitle(data.name, evaluationId);
+  
+  // Initialize charts after data loaded
+  nextTick(() => {
+    initCharts();
+  });
 };
 
 /**
@@ -135,12 +525,28 @@ onMounted(() => {
 
     await loadEvaluationDetail(String(evaluationId));
   }, { immediate: true });
+
+  // Watch for result changes to update charts
+  watch(() => evaluationDetail.value?.result, () => {
+    nextTick(() => {
+      initCharts();
+    });
+  }, { deep: true });
+
+  // Add window resize listener
+  window.addEventListener('resize', resizeCharts);
+});
+
+onBeforeUnmount(() => {
+  disposeCharts();
+  window.removeEventListener('resize', resizeCharts);
 });
 </script>
 
 <template>
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
-    <div class="flex items-start flex-wrap space-y-b-2 space-x-2.5 mb-3.5">
+    <!-- Action Buttons -->
+    <div class="flex items-start flex-wrap space-y-b-2 space-x-2.5 mb-4">
       <Button
         type="default"
         size="small"
@@ -180,79 +586,618 @@ onMounted(() => {
       </Button>
     </div>
 
-    <Descriptions
-      v-if="evaluationDetail"
-      :column="2"
-      bordered
-      size="small">
-      <DescriptionsItem :label="t('common.name')">
-        {{ evaluationDetail.name }}
-      </DescriptionsItem>
-
-      <DescriptionsItem :label="t('evaluation.columns.scope')">
-        <Tag v-if="evaluationDetail.scope">
-          {{ evaluationDetail.scope?.message || evaluationDetail.scope?.value }}
-        </Tag>
-      </DescriptionsItem>
-
-      <DescriptionsItem :label="t('evaluation.columns.purposes')">
-        <div class="flex flex-wrap gap-1">
-          <Tag
-            v-for="(purpose, index) in evaluationDetail.purposes"
-            :key="index">
-            {{ purpose?.message || purpose?.value }}
-          </Tag>
+    <!-- Part 1: Evaluation Information -->
+    <Card class="evaluation-info-card mb-4" :bordered="false">
+      <template #title>
+        <div class="card-header">
+          <Icon icon="icon-xinxi" class="header-icon" />
+          <span class="text-base font-semibold">测评信息</span>
         </div>
-      </DescriptionsItem>
+      </template>
+      <div v-if="evaluationDetail" class="info-column">
+        <div class="info-row">
+          <div class="info-label">
+            <Icon icon="icon-mingcheng" class="label-icon" />
+            <span>{{ t('common.name') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="value-text">{{ evaluationDetail.name }}</span>
+          </div>
+        </div>
 
-      <DescriptionsItem
-        v-if="evaluationDetail.resourceId"
-        :label="t('evaluation.columns.resourceId')">
-        {{ evaluationDetail.resourceId }}
-      </DescriptionsItem>
+        <div class="info-row">
+          <div class="info-label">
+            <Icon icon="icon-fanwei" class="label-icon" />
+            <span>{{ t('evaluation.columns.scope') }}</span>
+          </div>
+          <div class="info-value">
+            <Tag v-if="evaluationDetail.scope" class="custom-tag scope-tag">
+              {{ (evaluationDetail.scope as any)?.message || (evaluationDetail.scope as any)?.value || evaluationDetail.scope }}
+            </Tag>
+            <span v-else class="empty-text">-</span>
+          </div>
+        </div>
 
-      <DescriptionsItem :label="t('common.startDate')">
-        {{ evaluationDetail.startDate || '-' }}
-      </DescriptionsItem>
+        <div class="info-row">
+          <div class="info-label">
+            <Icon icon="icon-mudi" class="label-icon" />
+            <span>{{ t('evaluation.columns.purposes') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-if="evaluationDetail.purposes && evaluationDetail.purposes.length > 0" class="tag-group">
+              <Tag
+                v-for="(purpose, index) in evaluationDetail.purposes"
+                :key="index"
+                class="custom-tag purpose-tag">
+                {{ (purpose as any)?.message || (purpose as any)?.value || purpose }}
+              </Tag>
+            </div>
+            <span v-else class="empty-text">-</span>
+          </div>
+        </div>
 
-      <DescriptionsItem :label="t('common.deadlineDate')">
-        {{ evaluationDetail.deadlineDate || '-' }}
-      </DescriptionsItem>
+        <div v-if="evaluationDetail.resourceId || (evaluationDetail as any).resourceName" class="info-row">
+          <div class="info-label">
+            <Icon icon="icon-ziyuan" class="label-icon" />
+            <span>{{ t('evaluation.columns.resourceName') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="value-text resource-id">{{ (evaluationDetail as any).resourceName || evaluationDetail.resourceName || '-' }}</span>
+          </div>
+        </div>
 
-      <DescriptionsItem :label="t('common.createdBy')">
-        {{ evaluationDetail.createdByName || '-' }}
-      </DescriptionsItem>
+        <div class="info-row">
+          <div class="info-label">
+            <Icon icon="icon-kaishishijian" class="label-icon" />
+            <span>{{ t('common.startDate') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="value-text">{{ evaluationDetail.startDate || '-' }}</span>
+          </div>
+        </div>
 
-      <DescriptionsItem :label="t('common.createdDate')">
-        {{ evaluationDetail.createdDate || '-' }}
-      </DescriptionsItem>
+        <div class="info-row">
+          <div class="info-label">
+            <Icon icon="icon-jieshushijian" class="label-icon" />
+            <span>{{ t('common.deadlineDate') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="value-text">{{ evaluationDetail.deadlineDate || '-' }}</span>
+          </div>
+        </div>
 
-      <DescriptionsItem
-        v-if="evaluationDetail.lastModifiedName"
-        :label="t('common.lastModifiedBy')">
-        {{ evaluationDetail.lastModifiedName }}
-      </DescriptionsItem>
+        <div class="info-row">
+          <div class="info-label">
+            <Icon icon="icon-chuangjianzhe" class="label-icon" />
+            <span>{{ t('common.createdBy') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="value-text">{{ evaluationDetail.createdByName || '-' }}</span>
+          </div>
+        </div>
 
-      <DescriptionsItem
-        v-if="evaluationDetail.lastModifiedDate"
-        :label="t('common.lastModifiedDate')">
-        {{ evaluationDetail.lastModifiedDate }}
-      </DescriptionsItem>
+        <div class="info-row">
+          <div class="info-label">
+            <Icon icon="icon-chuangjianshijian" class="label-icon" />
+            <span>{{ t('common.createdDate') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="value-text">{{ evaluationDetail.createdDate || '-' }}</span>
+          </div>
+        </div>
 
-      <DescriptionsItem
-        v-if="evaluationDetail.result"
-        :label="t('evaluation.columns.result')"
-        :span="2">
-        <pre class="whitespace-pre-wrap break-words">{{ JSON.stringify(evaluationDetail.result, null, 2) }}</pre>
-      </DescriptionsItem>
-    </Descriptions>
+        <div v-if="evaluationDetail.lastModifiedName" class="info-row">
+          <div class="info-label">
+            <Icon icon="icon-xiugaizhe" class="label-icon" />
+            <span>{{ t('common.lastModifiedBy') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="value-text">{{ evaluationDetail.lastModifiedName }}</span>
+          </div>
+        </div>
+
+        <div v-if="evaluationDetail.lastModifiedDate" class="info-row">
+          <div class="info-label">
+            <Icon icon="icon-xiugaishijian" class="label-icon" />
+            <span>{{ t('common.lastModifiedDate') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="value-text">{{ evaluationDetail.lastModifiedDate }}</span>
+          </div>
+        </div>
+      </div>
+    </Card>
+
+    <!-- Part 2: Evaluation Results with Charts -->
+    <Card v-if="evaluationDetail?.result" :bordered="false">
+      <template #title>
+        <div class="text-base font-semibold">测评结果</div>
+      </template>
+      
+      <div class="evaluation-results-container">
+        <!-- Test Pass Rates Section -->
+        <div class="results-section mb-6">
+          <h3 class="text-4 font-semibold mb-4 text-title">测试通过率</h3>
+          
+          <div class="pass-rate-charts-grid">
+            <!-- Functional Test Pass Rate -->
+            <Card
+              v-if="evaluationDetail.result.metrics?.FUNCTIONAL_PASSED_RATE"
+              class="pass-rate-card"
+              :bordered="false">
+              <template #title>
+                <div class="card-title">功能测试通过率</div>
+              </template>
+              <div class="pass-rate-content">
+                <div ref="functionalPassedRateRef" class="pass-rate-chart"></div>
+                <div class="pass-rate-info">
+                  <div class="info-item">
+                    <span class="info-label">通过率：</span>
+                    <span
+                      class="info-value"
+                      :style="{ color: getRateColor(evaluationDetail.result.metrics.FUNCTIONAL_PASSED_RATE.rate) }">
+                      {{ (+evaluationDetail.result.metrics.FUNCTIONAL_PASSED_RATE.rate).toFixed(1) }}%
+                    </span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">通过数量：</span>
+                    <span class="info-value">
+                      {{ evaluationDetail.result.metrics.FUNCTIONAL_PASSED_RATE.numerator }}/{{ evaluationDetail.result.metrics.FUNCTIONAL_PASSED_RATE.denominator }}
+                    </span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">得分：</span>
+                    <span class="info-value">
+                      {{ (+evaluationDetail.result.metrics.FUNCTIONAL_PASSED_RATE.score).toFixed(1) }} 分
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <!-- Performance Test Pass Rate -->
+            <Card
+              v-if="evaluationDetail.result.metrics?.PERFORMANCE_PASSED_RATE"
+              class="pass-rate-card"
+              :bordered="false">
+              <template #title>
+                <div class="card-title">性能测试通过率</div>
+              </template>
+              <div class="pass-rate-content">
+                <div ref="performancePassedRateRef" class="pass-rate-chart"></div>
+                <div class="pass-rate-info">
+                  <div class="info-item">
+                    <span class="info-label">通过率：</span>
+                    <span
+                      class="info-value"
+                      :style="{ color: getRateColor(evaluationDetail.result.metrics.PERFORMANCE_PASSED_RATE.rate) }">
+                      {{ (+evaluationDetail.result.metrics.PERFORMANCE_PASSED_RATE.rate).toFixed(1) }}%
+                    </span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">通过数量：</span>
+                    <span class="info-value">
+                      {{ evaluationDetail.result.metrics.PERFORMANCE_PASSED_RATE.numerator }}/{{ evaluationDetail.result.metrics.PERFORMANCE_PASSED_RATE.denominator }}
+                    </span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">得分：</span>
+                    <span class="info-value">
+                      {{ (+evaluationDetail.result.metrics.PERFORMANCE_PASSED_RATE.score).toFixed(1) }} 分
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <!-- Stability Test Pass Rate -->
+            <Card
+              v-if="evaluationDetail.result.metrics?.STABILITY_PASSED_RATE"
+              class="pass-rate-card"
+              :bordered="false">
+              <template #title>
+                <div class="card-title">稳定性测试通过率</div>
+              </template>
+              <div class="pass-rate-content">
+                <div ref="stabilityPassedRateRef" class="pass-rate-chart"></div>
+                <div class="pass-rate-info">
+                  <div class="info-item">
+                    <span class="info-label">通过率：</span>
+                    <span
+                      class="info-value"
+                      :style="{ color: getRateColor(evaluationDetail.result.metrics.STABILITY_PASSED_RATE.rate) }">
+                      {{ (+evaluationDetail.result.metrics.STABILITY_PASSED_RATE.rate).toFixed(1) }}%
+                    </span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">通过数量：</span>
+                    <span class="info-value">
+                      {{ evaluationDetail.result.metrics.STABILITY_PASSED_RATE.numerator }}/{{ evaluationDetail.result.metrics.STABILITY_PASSED_RATE.denominator }}
+                    </span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">得分：</span>
+                    <span class="info-value">
+                      {{ (+evaluationDetail.result.metrics.STABILITY_PASSED_RATE.score).toFixed(1) }} 分
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+
+        <Divider />
+
+        <!-- Quality Scores Section -->
+        <div class="results-section">
+          <h3 class="text-4 font-semibold mb-4 text-title">质量评分</h3>
+          
+          <div class="quality-scores-container space-y-2">
+            <!-- Compatibility Score -->
+            <Card
+              v-if="evaluationDetail.result.metrics?.COMPATIBILITY_SCORE"
+              class="quality-score-card"
+              :bordered="false">
+              <template #title>
+                <div class="card-title">兼容性评分</div>
+              </template>
+              <div ref="compatibilityScoreRef" class="quality-score-chart"></div>
+            </Card>
+
+            <!-- Usability Score -->
+            <Card
+              v-if="evaluationDetail.result.metrics?.USABILITY_SCORE"
+              class="quality-score-card"
+              :bordered="false">
+              <template #title>
+                <div class="card-title">易用性评分</div>
+              </template>
+              <div ref="usabilityScoreRef" class="quality-score-chart"></div>
+            </Card>
+
+            <!-- Maintainability Score -->
+            <Card
+              v-if="evaluationDetail.result.metrics?.MAINTAINABILITY_SCORE"
+              class="quality-score-card"
+              :bordered="false">
+              <template #title>
+                <div class="card-title">可维护性评分</div>
+              </template>
+              <div ref="maintainabilityScoreRef" class="quality-score-chart"></div>
+            </Card>
+
+            <!-- Scalability Score -->
+            <Card
+              v-if="evaluationDetail.result.metrics?.SCALABILITY_SCORE"
+              class="quality-score-card"
+              :bordered="false">
+              <template #title>
+                <div class="card-title">可扩展性评分</div>
+              </template>
+              <div ref="scalabilityScoreRef" class="quality-score-chart"></div>
+            </Card>
+
+            <!-- Security Score -->
+            <Card
+              v-if="evaluationDetail.result.metrics?.SECURITY_SCORE"
+              class="quality-score-card"
+              :bordered="false">
+              <template #title>
+                <div class="card-title">安全性评分</div>
+              </template>
+              <div ref="securityScoreRef" class="quality-score-chart"></div>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </Card>
+
+    <!-- No Result Placeholder -->
+    <Card v-else-if="evaluationDetail && !evaluationDetail.result" :bordered="false">
+      <div class="no-result-placeholder">
+        <Icon icon="icon-shuju" class="text-6xl text-gray-400 mb-4" />
+        <div class="text-lg text-gray-500 mb-2">暂无测评结果</div>
+        <div class="text-sm text-gray-400">请点击"生成结果"按钮生成测评结果</div>
+      </div>
+    </Card>
   </Spin>
 </template>
 
 <style scoped>
-:deep(.ant-descriptions-item-label) {
+/* Card Styles */
+:deep(.ant-card) {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+:deep(.ant-card):hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+:deep(.ant-card-head) {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+}
+
+:deep(.ant-card-body) {
+  padding: 16px;
+}
+
+/* Evaluation Info Card */
+.evaluation-info-card {
+  background: #fff;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-icon {
+  font-size: 18px;
+  color: #1890ff;
+}
+
+/* Info Column Layout */
+.info-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.2s ease;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row:hover {
+  background: #fafafa;
+}
+
+.info-row:nth-child(even) {
+  background: #fafbfc;
+}
+
+.info-row:nth-child(even):hover {
+  background: #f5f5f5;
+}
+
+.info-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 140px;
+  flex-shrink: 0;
+  font-size: 13px;
   font-weight: 500;
-  color: #000;
+  color: #595959;
+}
+
+.label-icon {
+  font-size: 14px;
+  color: #8c8c8c;
+  flex-shrink: 0;
+}
+
+.info-value {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.value-text {
+  font-size: 13px;
+  color: #262626;
+  word-break: break-word;
+}
+
+.resource-id {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  background: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.empty-text {
+  color: #bfbfbf;
+  font-style: italic;
+}
+
+/* Tag Styles */
+.custom-tag {
+  margin: 0;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 2px 10px;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.scope-tag {
+  background: linear-gradient(135deg, #e6f7ff 0%, #bae7ff 100%);
+  color: #0958d9;
+}
+
+.scope-tag:hover {
+  background: linear-gradient(135deg, #bae7ff 0%, #91d5ff 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(24, 144, 255, 0.2);
+}
+
+.tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.purpose-tag {
+  background: linear-gradient(135deg, #f6ffed 0%, #d9f7be 100%);
+  color: #389e0d;
+}
+
+.purpose-tag:hover {
+  background: linear-gradient(135deg, #d9f7be 0%, #b7eb8f 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(82, 196, 26, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .info-label {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  :deep(.ant-card-body) {
+    padding: 16px;
+  }
+
+  .info-row {
+    padding: 12px;
+  }
+}
+
+.evaluation-results-container {
+  padding: 8px 0;
+}
+
+.results-section {
+  width: 100%;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+}
+
+/* Pass Rate Charts Grid */
+.pass-rate-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.pass-rate-card {
+  border: 1px solid #e8e8e8;
+}
+
+.pass-rate-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.pass-rate-chart {
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
+}
+
+.pass-rate-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.info-label {
+  color: #666;
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.info-value {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Quality Scores Container */
+.quality-scores-container {
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px; */
+}
+
+.quality-score-card {
+  border: 1px solid #e8e8e8;
+}
+
+:deep(.quality-score-card > .ant-card-head) {
+  padding: 0 16px;
+}
+
+:deep(.quality-score-card > .ant-card-body) {
+  padding: 0 16px;
+}
+
+.quality-score-chart {
+  width: 100%;
+  height: 80px;
+  min-height: 80px;
+}
+
+/* No Result Placeholder */
+.no-result-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .pass-rate-charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pass-rate-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* .quality-scores-container {
+    grid-template-columns: 1fr;
+  } */
 }
 </style>
 

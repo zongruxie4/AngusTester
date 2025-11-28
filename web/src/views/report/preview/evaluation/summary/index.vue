@@ -52,10 +52,6 @@ const apis = computed(() => {
       </div>
 
       <div class="flex">
-        <!-- <div
-          class="w-24 flex-shrink-0 flex items-center justify-center space-x-5 px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ apis?.status?.message }}
-        </div> -->
 
         <div class="flex-1">
           <div class="flex border-b border-solid border-border-input">
