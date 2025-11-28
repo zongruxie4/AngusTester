@@ -19,7 +19,7 @@ public interface FuncPlanRepo extends BaseRepository<FuncPlan, Long>,
   List<FuncPlan> findByProjectId(Long projectId);
 
   @Query(value = "SELECT * FROM func_plan WHERE id IN (?1)", nativeQuery = true)
-  List<FuncPlan> findAll0ByIdIn(List<Long> ids);
+  List<FuncPlan> findAll0ByIdIn(Collection<Long> ids);
 
   @Query(value = "SELECT DISTINCT id FROM func_plan WHERE id IN (?1) AND auth = ?2 ", nativeQuery = true)
   Collection<Long> findIds0ByIdInAndAuth(Collection<Long> planIds, Boolean auth);

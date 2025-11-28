@@ -2,6 +2,7 @@ package cloud.xcan.angus.core.tester.application.query.project;
 
 
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.core.tester.domain.project.module.Module;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.util.Collection;
@@ -32,6 +33,8 @@ public interface ModuleQuery {
   List<Long> findSubIds(Long projectId, Collection<Long> moduleIds);
 
   Map<String, Module> checkAndFindByName(Long projectId, Set<String> names);
+
+  List<Module> find0ById(Set<Long> moduleIds);
 
   void checkAddNameExist(Long projectId, Set<String> names);
 

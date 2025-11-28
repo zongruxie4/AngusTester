@@ -68,6 +68,9 @@ public class TestEvaluation extends TenantAuditingEntity<TestEvaluation, Long> i
   @Column(columnDefinition = "json", name = "result")
   private TestEvaluationResult result;
 
+  @Transient
+  private String resourceName;
+
   @Override
   public Long getParentId() {
     return projectId;
