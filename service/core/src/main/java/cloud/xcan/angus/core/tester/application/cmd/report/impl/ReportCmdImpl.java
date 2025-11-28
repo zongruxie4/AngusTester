@@ -136,7 +136,7 @@ public class ReportCmdImpl extends CommCmd<Report, Long> implements ReportCmd {
         // Check the report exists
         reportQuery.checkExists(report.getProjectId(), report.getName(), report.getVersion());
         // Check the report resource exists
-        resourceDb = reportQuery.checkAndFindResource(report.getProjectId(),
+        resourceDb = reportQuery.checkAndFindResource(report.getTemplate(), report.getProjectId(),
             filter.getTargetType(), filter.getTargetId());
         // Check the quota limit
         reportQuery.checkQuota();

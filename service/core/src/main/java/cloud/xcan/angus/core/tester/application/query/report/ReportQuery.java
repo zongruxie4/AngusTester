@@ -46,8 +46,8 @@ public interface ReportQuery {
 
   void checkExists(Long projectId, String name, String version);
 
-  ActivityResource checkAndFindResource(Long projectId, CombinedTargetType targetType,
-      Long targetId);
+  ActivityResource checkAndFindResource(ReportTemplate template, Long projectId,
+      CombinedTargetType targetType, Long targetId);
 
   void checkQuota();
 
