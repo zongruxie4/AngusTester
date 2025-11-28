@@ -450,12 +450,12 @@ defineExpose({
 <style scoped>
 /* Dashboard container */
 .evaluation-dashboard {
-  background: #f5f5f5;
   min-height: 100vh;
 }
 
 /* Card styling */
 :deep(.ant-card) {
+  border-width: 1px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   transition: all 0.3s ease;
