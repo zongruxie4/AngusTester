@@ -65,10 +65,10 @@ const createPassRatePieConfig = (rate: number, numerator: number, denominator: n
   const remaining = denominator - numerator;
   
   return {
-    tooltip: {
-      trigger: 'item',
-      formatter: '{b}: {c} ({d}%)'
-    },
+    // tooltip: {
+    //   trigger: 'item',
+    //   formatter: '{b}: {c} ({d}%)'
+    // },
     series: [
       {
         name: title,
@@ -82,7 +82,7 @@ const createPassRatePieConfig = (rate: number, numerator: number, denominator: n
           borderWidth: 2
         },
         label: {
-          show: true,
+          show: false,
           formatter: '{d}%',
           fontSize: 16,
           fontWeight: 'bold',
@@ -346,7 +346,7 @@ const basicColumns = computed(() => [
    [
     {
       name: t('reportPreview.evaluation.overview.targetType'),
-      dataIndex: 'totalCases',
+      dataIndex: 'targetType',
       customRender: () => {
         return props.dataSource?.report?.targetType?.message;
       }

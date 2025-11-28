@@ -1926,7 +1926,7 @@
         "title": "测评概览",
         "targetType": "测评对象类型",
         "targetName": "测评对象名称",
-        "totalCases": "总测评数",
+        "totalCases": "总用例数",
         "overallScore": "综合评分"
       },
       "detail": {
