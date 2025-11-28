@@ -10,12 +10,16 @@ import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationC
 import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateStabilityPassedRate;
 import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateUsabilityScore;
 import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.project.ModuleQuery;
+import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.application.query.project.TestEvaluationQuery;
+import cloud.xcan.angus.core.tester.application.query.test.FuncPlanQuery;
+import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationRepo;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationScope;
@@ -32,6 +36,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
@@ -60,6 +66,12 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
   @Resource
   private ModuleQuery moduleQuery;
 
+  @Resource
+  private ProjectQuery projectQuery;
+
+  @Resource
+  private FuncPlanQuery funcPlanQuery;
+
   /**
    * <p>
    * Get detailed evaluation information including configuration and results.
@@ -73,7 +85,9 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
     return new BizTemplate<TestEvaluation>() {
       @Override
       protected TestEvaluation process() {
-        return checkAndFind(id);
+        TestEvaluation evaluation = checkAndFind(id);
+        setResourceName(List.of(evaluation));
+        return evaluation;
       }
     }.execute();
   }
@@ -101,9 +115,12 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
       protected Page<TestEvaluation> process() {
         Set<SearchCriteria> criteria = spec.getCriteria();
 
-        return fullTextSearch
+        Page<TestEvaluation> page = fullTextSearch
             ? evaluationSearchRepo.find(criteria, pageable, TestEvaluation.class, match)
             : evaluationRepo.findAll(spec, pageable);
+
+        setResourceName(page.getContent());
+        return page;
       }
     }.execute();
   }
@@ -149,6 +166,39 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
         .overallScore(overallScore)
         .metrics(metrics)
         .build();
+  }
+
+  @Override
+  public void setResourceName(List<TestEvaluation> evaluations) {
+    if (isNotEmpty(evaluations)) {
+      Map<EvaluationScope, Set<Long>> evaluationResourceMap = evaluations.stream()
+          .collect(Collectors.groupingBy(TestEvaluation::getScope,
+              Collectors.mapping(TestEvaluation::getResourceId, Collectors.toSet())
+          ));
+
+      for (Entry<EvaluationScope, Set<Long>> entry : evaluationResourceMap.entrySet()) {
+        EvaluationScope scope = entry.getKey();
+        Set<Long> resourceIds = entry.getValue();
+        Map<Long, ActivityResource> resourceNameMap = switch (scope) {
+          case PROJECT ->
+              projectQuery.find0ById(resourceIds).stream().map(r -> (ActivityResource) r)
+                  .collect(Collectors.toMap(ActivityResource::getId, r -> r));
+          case FUNC_PLAN ->
+              funcPlanQuery.find0ById(resourceIds).stream().map(r -> (ActivityResource) r)
+                  .collect(Collectors.toMap(ActivityResource::getId, r -> r));
+          case MODULE ->
+              moduleQuery.find0ById(resourceIds).stream().map(r -> (ActivityResource) r)
+              .collect(Collectors.toMap(ActivityResource::getId, r -> r));
+        };
+
+        for (TestEvaluation evaluation : evaluations) {
+          if (evaluation.getScope() == scope) {
+            ActivityResource resource = resourceNameMap.get(evaluation.getResourceId());
+            evaluation.setResourceName(resource.getName());
+          }
+        }
+      }
+    }
   }
 
   /**

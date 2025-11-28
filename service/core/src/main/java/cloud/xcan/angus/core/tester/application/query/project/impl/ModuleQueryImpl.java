@@ -365,6 +365,11 @@ public class ModuleQueryImpl implements ModuleQuery {
     return casesDb.stream().collect(Collectors.toMap(Module::getName, x -> x));
   }
 
+  @Override
+  public List<Module> find0ById(Set<Long> moduleIds) {
+    return moduleRepo.findByIdIn(moduleIds);
+  }
+
   /**
    * Validates that module names do not already exist within a project.
    * <p>

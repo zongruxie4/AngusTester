@@ -42,7 +42,7 @@ public class EvaluationFindDto extends PageQuery {
   private Long lastModifiedBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Scenario last modification date for temporal filtering")
+  @Schema(description = "Evaluation last modification date for temporal filtering")
   private LocalDateTime lastModifiedDate;
 
   @Override

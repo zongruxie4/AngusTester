@@ -45,6 +45,7 @@ public class EvaluationAssembler {
     vo.setScope(evaluation.getScope());
     vo.setPurposes(evaluation.getPurposes());
     vo.setResourceId(evaluation.getResourceId());
+    vo.setResourceName(evaluation.getResourceName());
     vo.setStartDate(evaluation.getStartDate());
     vo.setDeadlineDate(evaluation.getDeadlineDate());
     vo.setResult(evaluation.getResult());
@@ -58,7 +59,7 @@ public class EvaluationAssembler {
   public static GenericSpecification<TestEvaluation> getSpecification(EvaluationFindDto dto) {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id")
+        .rangeSearchFields("id", "createdDate", "lastModifiedDate")
         .orderByFields("id", "name", "scope", "createdBy", "createdDate")
         .matchSearchFields("name")
         .build();
