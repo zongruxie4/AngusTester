@@ -58,7 +58,7 @@ public class EvaluationAssembler {
   public static GenericSpecification<TestEvaluation> getSpecification(EvaluationFindDto dto) {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id")
+        .rangeSearchFields("id", "createdDate", "lastModifiedDate")
         .orderByFields("id", "name", "scope", "createdBy", "createdDate")
         .matchSearchFields("name")
         .build();
