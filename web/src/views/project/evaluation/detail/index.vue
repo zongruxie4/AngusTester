@@ -649,20 +649,10 @@ onBeforeUnmount(() => {
         <div class="info-row">
           <div class="info-label">
             <Icon icon="icon-kaishishijian" class="label-icon" />
-            <span>{{ t('common.startDate') }}</span>
+            <span>{{ t('common.createdDate') }}</span>
           </div>
           <div class="info-value">
-            <span class="value-text">{{ evaluationDetail.startDate || '-' }}</span>
-          </div>
-        </div>
-
-        <div class="info-row">
-          <div class="info-label">
-            <Icon icon="icon-jieshushijian" class="label-icon" />
-            <span>{{ t('common.deadlineDate') }}</span>
-          </div>
-          <div class="info-value">
-            <span class="value-text">{{ evaluationDetail.deadlineDate || '-' }}</span>
+            <span class="value-text">{{ evaluationDetail.createdDate || '-' }}</span>
           </div>
         </div>
 
@@ -686,25 +676,6 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <div v-if="evaluationDetail.lastModifiedName" class="info-row">
-          <div class="info-label">
-            <Icon icon="icon-xiugaizhe" class="label-icon" />
-            <span>{{ t('common.lastModifiedBy') }}</span>
-          </div>
-          <div class="info-value">
-            <span class="value-text">{{ evaluationDetail.lastModifiedName }}</span>
-          </div>
-        </div>
-
-        <div v-if="evaluationDetail.lastModifiedDate" class="info-row">
-          <div class="info-label">
-            <Icon icon="icon-xiugaishijian" class="label-icon" />
-            <span>{{ t('common.lastModifiedDate') }}</span>
-          </div>
-          <div class="info-value">
-            <span class="value-text">{{ evaluationDetail.lastModifiedDate }}</span>
-          </div>
-        </div>
       </div>
     </Card>
 
