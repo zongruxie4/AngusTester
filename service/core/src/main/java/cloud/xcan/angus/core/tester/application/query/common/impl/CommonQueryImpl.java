@@ -21,11 +21,8 @@ import cloud.xcan.angus.api.commonlink.dept.Dept;
 import cloud.xcan.angus.api.commonlink.dept.DeptRepo;
 import cloud.xcan.angus.api.commonlink.group.Group;
 import cloud.xcan.angus.api.commonlink.group.GroupRepo;
-import cloud.xcan.angus.api.commonlink.setting.SettingKey;
 import cloud.xcan.angus.api.commonlink.setting.quota.Quota;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
-import cloud.xcan.angus.api.commonlink.setting.tenant.SettingTenant;
-import cloud.xcan.angus.api.commonlink.setting.tenant.event.TesterEvent;
 import cloud.xcan.angus.api.commonlink.setting.tenant.quota.SettingTenantQuota;
 import cloud.xcan.angus.api.commonlink.tag.OrgTargetInfo;
 import cloud.xcan.angus.api.commonlink.tag.OrgTargetType;
@@ -36,8 +33,6 @@ import cloud.xcan.angus.api.commonlink.user.UserBaseRepo;
 import cloud.xcan.angus.api.commonlink.user.UserInfo;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.enums.NoticeType;
-import cloud.xcan.angus.api.manager.SettingManager;
-import cloud.xcan.angus.api.manager.SettingTenantManager;
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.core.biz.Biz;
@@ -46,6 +41,7 @@ import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisQuery;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
+import cloud.xcan.angus.core.tester.application.query.config.SettingTenantQuery;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskSprintQuery;
@@ -60,6 +56,8 @@ import cloud.xcan.angus.core.tester.domain.CombinedTarget;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.core.tester.domain.activity.SimpleActivityResource;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
+import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
+import cloud.xcan.angus.core.tester.domain.config.tenant.event.TesterEvent;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprint;
@@ -140,9 +138,7 @@ public class CommonQueryImpl implements CommonQuery {
   @Resource
   private UserManager userManager;
   @Resource
-  private SettingManager settingManager;
-  @Resource
-  private SettingTenantManager settingTenantManager;
+  private SettingTenantQuery settingTenantQuery;
   @Resource
   private SettingTenantQuotaManager settingTenantQuotaManager;
   @Resource
@@ -511,12 +507,8 @@ public class CommonQueryImpl implements CommonQuery {
   @Override
   public Map<String, List<NoticeType>> findTenantEventNoticeTypes(Long tenantId) {
     Long finalTenantId = nullSafe(tenantId, getOptTenantId());
-    String cachedSettingTenant = settingTenantManager.getCachedSetting(finalTenantId);
-    SettingTenant settingTenant = settingTenantManager.parseCachedSetting(cachedSettingTenant);
-    List<TesterEvent> eventData =
-        isNull(settingTenant) || isEmpty(settingTenant.getTesterEventData())
-            ? settingManager.setting(SettingKey.TESTER_EVENT).getTesterEvent()
-            : settingTenant.getTesterEventData();
+    SettingTenant settingTenant = settingTenantQuery.findAndInit(finalTenantId);
+    List<TesterEvent> eventData = settingTenant.getTesterEventData();
     return eventData.stream()
         .filter(x -> isNotEmpty(x.getEventCode()) && isNotEmpty(x.getNoticeTypes())).
         collect(Collectors.toMap(TesterEvent::getEventCode, TesterEvent::getNoticeTypes));

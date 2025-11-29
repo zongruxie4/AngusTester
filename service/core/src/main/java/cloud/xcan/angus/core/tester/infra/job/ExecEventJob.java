@@ -24,6 +24,7 @@ import cloud.xcan.angus.core.event.EventSender;
 import cloud.xcan.angus.core.event.source.EventContent;
 import cloud.xcan.angus.core.job.JobTemplate;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
+import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecQuery;
 import cloud.xcan.angus.core.tester.domain.exec.Exec;
 import cloud.xcan.angus.core.tester.domain.exec.ExecRepo;
@@ -60,6 +61,9 @@ public class ExecEventJob {
 
   @Resource
   private UserManager userManager;
+
+  @Resource
+  private CommonQuery commonQuery;
 
   @Resource
   private ApplicationInfo applicationInfo;
@@ -135,7 +139,7 @@ public class ExecEventJob {
     receiveObjectIds.add(execDb.getLastModifiedBy());
     EventContent event;
     if (execDb.getStatus().isCompleted()) {
-      List<NoticeType> noticeTypes = execQuery.findTenantEventNoticeTypes(execDb.getTenantId())
+      List<NoticeType> noticeTypes = commonQuery.findTenantEventNoticeTypes(execDb.getTenantId())
           .get(ExecutionTestCompletedCode);
       if (isEmpty(noticeTypes)) {
         return;
@@ -146,7 +150,7 @@ public class ExecEventJob {
           receiveObjectIds);
       EventSender.CommonQueue.send(event);
     } else {
-      List<NoticeType> noticeTypes = execQuery.findTenantEventNoticeTypes(execDb.getTenantId())
+      List<NoticeType> noticeTypes = commonQuery.findTenantEventNoticeTypes(execDb.getTenantId())
           .get(ExecutionTestFailedCode);
       if (isEmpty(noticeTypes)) {
         return;

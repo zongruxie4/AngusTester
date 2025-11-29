@@ -1,6 +1,5 @@
 package cloud.xcan.angus.core.tester.application.query.exec;
 
-import cloud.xcan.angus.api.enums.NoticeType;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.entity.projection.IdAndName;
 import cloud.xcan.angus.core.tester.domain.exec.Exec;
@@ -44,8 +43,6 @@ public interface ExecQuery {
   List<ExecInfo> findInfo(Collection<Long> execIds);
 
   Map<Long, IdAndName> findInfoMap(Collection<Long> execIds);
-
-  Map<String, List<NoticeType>> findTenantEventNoticeTypes(Long tenantId);
 
   Exec checkAndFind(Long id);
 

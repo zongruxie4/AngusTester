@@ -39,7 +39,6 @@ import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
 import cloud.xcan.angus.api.commonlink.setting.SettingKey;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.api.commonlink.setting.tenant.SettingTenant;
-import cloud.xcan.angus.api.commonlink.setting.tenant.event.TesterEvent;
 import cloud.xcan.angus.api.enums.NodeRole;
 import cloud.xcan.angus.api.enums.NoticeType;
 import cloud.xcan.angus.api.manager.SettingManager;
@@ -60,6 +59,7 @@ import cloud.xcan.angus.core.tester.application.query.exec.ExecSampleExtcQuery;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecSampleQuery;
 import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
 import cloud.xcan.angus.core.tester.domain.config.node.Node;
+import cloud.xcan.angus.core.tester.domain.config.tenant.event.TesterEvent;
 import cloud.xcan.angus.core.tester.domain.exec.Exec;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfoListRepo;
@@ -451,29 +451,6 @@ public class ExecQueryImpl implements ExecQuery {
   public Map<Long, IdAndName> findInfoMap(Collection<Long> execIds) {
     return execRepo.findInfoByIdIn(execIds).stream()
         .collect(Collectors.toMap(IdAndName::getId, x -> x));
-  }
-
-  /**
-   * Finds tenant event notice types configuration.
-   * <p>
-   * Retrieves the configured event notice types for a tenant, either from
-   * cached settings or from the global default configuration.
-   *
-   * @param tenantId the tenant ID to get event notice types for
-   * @return Map of event codes to notice types
-   */
-  @Override
-  public Map<String, List<NoticeType>> findTenantEventNoticeTypes(Long tenantId) {
-    Long finalTenantId = nullSafe(tenantId, getOptTenantId());
-    String cachedSettingTenant = settingTenantManager.getCachedSetting(finalTenantId);
-    SettingTenant settingTenant = settingTenantManager.parseCachedSetting(cachedSettingTenant);
-    List<TesterEvent> eventData =
-        isNull(settingTenant) || isEmpty(settingTenant.getTesterEventData())
-            ? settingManager.setting(SettingKey.TESTER_EVENT).getTesterEvent()
-            : settingTenant.getTesterEventData();
-    return eventData.stream()
-        .filter(x -> isNotEmpty(x.getEventCode()) && isNotEmpty(x.getNoticeTypes())).
-        collect(Collectors.toMap(TesterEvent::getEventCode, TesterEvent::getNoticeTypes));
   }
 
   /**
