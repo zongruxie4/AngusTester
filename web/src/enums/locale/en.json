@@ -73,6 +73,8 @@
         "STABILITY": "Stability Testing",
         "SECURITY": "Security Testing",
         "COMPATIBILITY": "Compatibility Testing",
+        "COMPLIANCE": "Compliance Testing",
+        "AVAILABILITY": "Availability Testing",
         "USABILITY": "Usability Testing",
         "MAINTAINABILITY": "Maintainability Testing",
         "SCALABILITY": "Scalability Testing"
@@ -191,11 +193,13 @@
         "MODULE": "Module"
       },
       "EvaluationPurpose": {
-        "FUNCTIONAL_PASSED_RATE": "Functional Passed Rate",
-        "PERFORMANCE_PASSED_RATE": "Performance Passed Rate",
-        "STABILITY_PASSED_RATE": "Stability Passed Rate",
+        "FUNCTIONAL_SCORE": "Functional Score",
+        "PERFORMANCE_SCORE": "Performance Score",
+        "STABILITY_SCORE": "Stability Score",
         "SECURITY_SCORE": "Security Score",
         "COMPATIBILITY_SCORE": "Compatibility Score",
+        "COMPLIANCE_SCORE": "Compliance Score",
+        "AVAILABILITY_SCORE": "Availability Score",
         "USABILITY_SCORE": "Usability Score",
         "MAINTAINABILITY_SCORE": "Maintainability Score",
         "SCALABILITY_SCORE": "Scalability Score"

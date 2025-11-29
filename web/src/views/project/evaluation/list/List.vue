@@ -12,13 +12,13 @@ const { t } = useI18n();
  */
 const getPurposeTagColor = (purpose: any): string => {
   const value = purpose?.value || purpose;
-  
+
   switch (value) {
-    case EvaluationPurpose.FUNCTIONAL_PASSED_RATE:
+    case EvaluationPurpose.FUNCTIONAL_SCORE:
       return 'blue';
-    case EvaluationPurpose.PERFORMANCE_PASSED_RATE:
+    case EvaluationPurpose.PERFORMANCE_SCORE:
       return 'cyan';
-    case EvaluationPurpose.STABILITY_PASSED_RATE:
+    case EvaluationPurpose.STABILITY_SCORE:
       return 'geekblue';
     case EvaluationPurpose.SECURITY_SCORE:
       return 'red';
@@ -199,7 +199,7 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
 
         <!-- Divider line -->
         <div class="border-t flex border-theme-border-subtle/50"></div>
-        
+
 
         <div class="flex items-center justify-between py-2">
 
@@ -215,7 +215,7 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
                 </div>
                 <div class="text-theme-content">{{ (item as any)?.resourceName || '-'  }}</div>
               </div>
-  
+
               <div v-if="item.result" class="flex ml-8">
                 <div class="mr-2 whitespace-nowrap">
                   <span>{{ t('evaluation.columns.result') }}</span>
@@ -225,11 +225,11 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
               </div>
             </div>
           </div>
-  
+
           <!-- Actions section -->
           <div class="px-3.5 flex justify-between items-center text-3">
             <div class="flex-1"></div>
-  
+
             <div class="flex items-center justify-between h-4 leading-5">
               <a
                 class="flex items-center space-x-1 cursor-pointer"
@@ -237,14 +237,14 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
                 <Icon icon="icon-chakanhuodong" class="text-3.5" />
                 <span>{{ t('actions.view') }}</span>
               </a>
-  
+
               <a
                 class="flex items-center space-x-1 ml-3 cursor-pointer"
                 @click="handleEditEvaluation(item)">
                 <Icon icon="icon-shuxie" class="text-3.5" />
                 <span>{{ t('actions.edit') }}</span>
               </a>
-  
+
               <Button
                 size="small"
                 type="text"
@@ -253,7 +253,7 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
                 <Icon icon="icon-shengchengshuju" class="mr-0.5" />
                 <span>{{ t('evaluation.actions.generateResult') }}</span>
               </Button>
-  
+
               <Button
                 size="small"
                 type="text"
@@ -262,7 +262,7 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
                 <Icon icon="icon-qingchu" class="mr-0.5" />
                 <span>{{ t('actions.delete') }}</span>
               </Button>
-  
+
               <!-- <Dropdown
                 class="ml-2"
                 :admin="false"

@@ -103,6 +103,30 @@ public class TestEvaluationConverter {
   /**
    * Calculate usability score
    */
+  public static TestEvaluationResult.MetricResult calculateAvailabilityScore(
+      List<FuncCaseInfo> cases, TestEvaluationResult.MetricResult.MetricResultBuilder builder) {
+    List<FuncCaseInfo> usabilityCases = cases.stream()
+        .filter(c -> c.getTestPurpose() == TestPurpose.AVAILABILITY)
+        .collect(Collectors.toList());
+
+    return calculateScoreByTestResult(usabilityCases, builder);
+  }
+
+  /**
+   * Calculate usability score
+   */
+  public static TestEvaluationResult.MetricResult calculateComplianceScore(
+      List<FuncCaseInfo> cases, TestEvaluationResult.MetricResult.MetricResultBuilder builder) {
+    List<FuncCaseInfo> usabilityCases = cases.stream()
+        .filter(c -> c.getTestPurpose() == TestPurpose.COMPLIANCE)
+        .collect(Collectors.toList());
+
+    return calculateScoreByTestResult(usabilityCases, builder);
+  }
+
+  /**
+   * Calculate usability score
+   */
   public static TestEvaluationResult.MetricResult calculateUsabilityScore(
       List<FuncCaseInfo> cases, TestEvaluationResult.MetricResult.MetricResultBuilder builder) {
     List<FuncCaseInfo> usabilityCases = cases.stream()

@@ -7,15 +7,19 @@ import cloud.xcan.angus.spec.locale.EnumMessage;
 @EndpointRegister
 public enum EvaluationPurpose implements EnumMessage<String> {
 
-  FUNCTIONAL_PASSED_RATE,
+  FUNCTIONAL_SCORE,
 
-  PERFORMANCE_PASSED_RATE,
+  PERFORMANCE_SCORE,
 
-  STABILITY_PASSED_RATE,
+  STABILITY_SCORE,
 
   SECURITY_SCORE,
 
   COMPATIBILITY_SCORE,
+
+  COMPLIANCE_SCORE,
+
+  AVAILABILITY_SCORE,
 
   USABILITY_SCORE,
 

@@ -30,6 +30,16 @@ public enum TestPurpose {
   COMPATIBILITY,
 
   /**
+   * Compliance Testing
+   */
+  COMPLIANCE,
+
+  /**
+   * Availability Testing
+   */
+  AVAILABILITY,
+
+  /**
    * User experience and ease of use testing
    */
   USABILITY,

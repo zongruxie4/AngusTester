@@ -1,6 +1,8 @@
 package cloud.xcan.angus.core.tester.application.query.project.impl;
 
+import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateAvailabilityScore;
 import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateCompatibilityScore;
+import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateComplianceScore;
 import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateFunctionalPassedRate;
 import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateMaintainabilityScore;
 import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateOverallScore;
@@ -259,11 +261,13 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
         TestEvaluationResult.MetricResult.builder();
 
     return switch (purpose) {
-      case FUNCTIONAL_PASSED_RATE -> calculateFunctionalPassedRate(cases, builder);
-      case PERFORMANCE_PASSED_RATE -> calculatePerformancePassedRate(cases, builder);
-      case STABILITY_PASSED_RATE -> calculateStabilityPassedRate(cases, builder);
+      case FUNCTIONAL_SCORE -> calculateFunctionalPassedRate(cases, builder);
+      case PERFORMANCE_SCORE -> calculatePerformancePassedRate(cases, builder);
+      case STABILITY_SCORE -> calculateStabilityPassedRate(cases, builder);
       case SECURITY_SCORE -> calculateSecurityScore(cases, builder);
       case COMPATIBILITY_SCORE -> calculateCompatibilityScore(cases, builder);
+      case COMPLIANCE_SCORE -> calculateComplianceScore(cases, builder);
+      case AVAILABILITY_SCORE -> calculateAvailabilityScore(cases, builder);
       case USABILITY_SCORE -> calculateUsabilityScore(cases, builder);
       case MAINTAINABILITY_SCORE -> calculateMaintainabilityScore(cases, builder);
       case SCALABILITY_SCORE -> calculateScalabilityScore(cases, builder);
