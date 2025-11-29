@@ -35,7 +35,7 @@ UPDATE `app_func` SET `created_date` = now(), `last_modified_date` = now();
 -- ----------------------------
 -- Table data for web_tag_target
 -- ----------------------------
--- Func Tag
+-- FuncData Tag
 DELETE FROM `web_tag_target` WHERE target_id IN (SELECT id FROM `app_func` WHERE app_id = 100010);
 INSERT INTO `web_tag_target` (`id`, `tag_id`, `target_type`, `target_id`, `tenant_id`, `created_by`, `created_date`) VALUES (239132446770069593, 1, 'MENU', 1000101502001, :TENANT_ID, -1, '2024-07-31 14:58:04');
 INSERT INTO `web_tag_target` (`id`, `tag_id`, `target_type`, `target_id`, `tenant_id`, `created_by`, `created_date`) VALUES (239132446770069594, 4, 'MENU', 1000101502001, :TENANT_ID, -1, '2024-07-31 14:58:04');

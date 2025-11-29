@@ -134,7 +134,7 @@ public class ApisUpdateDto {
   @Schema(description = "Performance testing enablement flag, defaults to enabled")
   private Boolean testPerf;
 
-  @Schema(description = "Stability testing enablement flag, defaults to enabled")
+  @Schema(description = "StabilityData testing enablement flag, defaults to enabled")
   private Boolean testStability;
 
   @Schema(example = "1", description = "API owner or developer identifier for ownership management")

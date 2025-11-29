@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.domain.apis.share;
 
-import cloud.xcan.angus.api.gm.setting.vo.UserApiProxyVo;
 import cloud.xcan.angus.core.jpa.multitenancy.TenantAuditingEntity;
+import cloud.xcan.angus.core.tester.interfaces.config.facade.vo.setting.UserApiProxyVo;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,8 +17,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Type;
-
-
 
 @Entity
 @Table(name = "apis_share")

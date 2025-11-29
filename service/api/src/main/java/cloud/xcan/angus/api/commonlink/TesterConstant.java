@@ -21,7 +21,16 @@ public interface TesterConstant {
   int MOCK_EXCEPTION_SALF_LENGTH = 200;
 
   /**
-   * Samples
+   * Config Data
+   */
+  String CONFIG_EVALUATION_INDICATOR = "EvaluationIndicator.json";
+  String CONFIG_FUNCTION_INDICATOR = "FunctionIndicator.json";
+  String CONFIG_PREF_INDICATOR = "PrefIndicator.json";
+  String CONFIG_STABILITY_INDICATOR = "StabilityIndicator.json";
+  String CONFIG_EVENT = "Event.json";
+
+  /**
+   * Sample Files
    */
   String SAMPLE_PROJECT_FILE = "ProjectExample.json";
   String SAMPLE_MODULE_FILE = "ModuleExample.json";
@@ -110,6 +119,9 @@ public interface TesterConstant {
 
   String IMPORT_MOCK_SERVICE_DIR = "importMockService" + File.separator;
   String EXPORT_MOCK_SERVICE_DIR = "exportMockService" + File.separator;
+
+  String DEFAULT_LOCAL_API_PROXY = "ws://localhost:6806/angusProxy";
+  String DEFAULT_CLOUD_API_PROXY = "wss://bj-c1-prod-angusproxy.xcan.cloud/angusProxy";
 
   // @DoInFuture("Move purchase logic to IAAS proxy service(Multi-cloud management)")
   /*******************阿里云节点购买参数*******************/

@@ -5,21 +5,22 @@ import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertUnauthorized;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_SHARE_EXPIRED;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_SHARE_TOKEN_ERROR_T;
+import static cloud.xcan.angus.core.tester.interfaces.config.facade.internal.assembler.SettingUserAssembler.toApiProxyVo;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.StringUtils.format;
 
-import cloud.xcan.angus.api.gm.setting.SettingUserInnerRemote;
-import cloud.xcan.angus.api.gm.setting.vo.UserApiProxyVo;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisShareQuery;
+import cloud.xcan.angus.core.tester.application.query.config.SettingUserQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesSchemaQuery;
 import cloud.xcan.angus.core.tester.domain.apis.share.ApisShare;
 import cloud.xcan.angus.core.tester.domain.apis.share.ApisShareRepo;
 import cloud.xcan.angus.core.tester.domain.apis.share.ApisShareSearchRepo;
+import cloud.xcan.angus.core.tester.domain.config.user.apiproxy.UserApiProxy;
 import cloud.xcan.angus.core.tester.domain.services.schema.SchemaFormat;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;
@@ -31,13 +32,13 @@ import org.springframework.data.domain.PageRequest;
 
 /**
  * Implementation of API share query operations for shared API management.
- * 
+ *
  * <p>This class provides comprehensive functionality for querying and managing
  * shared APIs, including share details, pagination, search, and access validation.</p>
- * 
+ *
  * <p>It handles shared API lifecycle management, token validation,
  * expiration checking, and user access control with proper security measures.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>API share detail and list queries with pagination</li>
@@ -62,16 +63,16 @@ public class ApisShareQueryImpl implements ApisShareQuery {
   @Resource
   private ServicesSchemaQuery servicesSchemaQuery;
   @Resource
-  private UserManager userManager;
+  private SettingUserQuery settingUserQuery;
   @Resource
-  private SettingUserInnerRemote settingUserInnerRemote;
+  private UserManager userManager;
 
   /**
    * Retrieves detailed API share information with URL generation.
-   * 
+   *
    * <p>This method fetches API share details and generates the complete
    * share URL with public access token for external access.</p>
-   * 
+   *
    * @param id the API share ID to retrieve details for
    * @return the detailed API share information with generated URL
    */
@@ -98,13 +99,13 @@ public class ApisShareQueryImpl implements ApisShareQuery {
 
   /**
    * Lists API shares with pagination, filtering, and optional full-text search.
-   * 
+   *
    * <p>This method retrieves API shares based on specification criteria with support
    * for pagination and optional full-text search capabilities.</p>
-   * 
+   *
    * <p>The method automatically enriches share data with user information
    * for enhanced display.</p>
-   * 
+   *
    * @param spec the specification for filtering API shares
    * @param pageable the pagination and sorting parameters
    * @param fullTextSearch whether to use full-text search
@@ -133,13 +134,13 @@ public class ApisShareQueryImpl implements ApisShareQuery {
 
   /**
    * Views an API share with public access token validation.
-   * 
+   *
    * <p>This method validates the public access token and retrieves API share
    * information with OpenAPI content for external access.</p>
-   * 
+   *
    * <p>The method includes expiration checking and API proxy information
    * for cross-tenant access.</p>
-   * 
+   *
    * @param id the API share ID to view
    * @param pat the public access token for validation
    * @return the API share information with OpenAPI content
@@ -168,9 +169,8 @@ public class ApisShareQueryImpl implements ApisShareQuery {
             shareDb.getApisIds(), SchemaFormat.json, false, true);
         shareDb.setOpenapi(openapi);
         // Retrieve API proxy information for cross-tenant access
-        UserApiProxyVo apiProxy = settingUserInnerRemote.proxyDetail(shareDb.getTenantId())
-            .orElseContentThrow();
-        shareDb.setApiProxy(apiProxy);
+        UserApiProxy proxy = settingUserQuery.findProxyByTenantId(shareDb.getTenantId());
+        shareDb.setApiProxy(toApiProxyVo(proxy));
         return shareDb;
       }
     }.execute();
@@ -190,5 +190,4 @@ public class ApisShareQueryImpl implements ApisShareQuery {
     }
     return shares;
   }
-
 }

@@ -28,8 +28,8 @@ import static java.util.Objects.nonNull;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.api.gm.indicator.SecurityCheckSetting;
-import cloud.xcan.angus.api.gm.indicator.SmokeCheckSetting;
+import cloud.xcan.angus.core.tester.domain.config.indicator.SecurityCheckSetting;
+import cloud.xcan.angus.core.tester.domain.config.indicator.SmokeCheckSetting;
 import cloud.xcan.angus.core.tester.domain.script.ScriptFormat;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
 import cloud.xcan.angus.model.element.assertion.Assertion;
@@ -64,13 +64,13 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * Utility class for Angus Tester core functionality and common operations.
  * <p>
- * Provides file handling utilities, SQL assembly helpers, assertion builders, 
+ * Provides file handling utilities, SQL assembly helpers, assertion builders,
  * and sample data processing functions.
  * <p>
- * Implements import/export file operations, authorization query building, 
+ * Implements import/export file operations, authorization query building,
  * and test case assertion generation.
  * <p>
- * Supports multiple target types (API, Service, Scenario, Script) and 
+ * Supports multiple target types (API, Service, Scenario, Script) and
  * various data formats (JSON, YAML).
  */
 public class AngusTesterUtils {
@@ -89,10 +89,10 @@ public class AngusTesterUtils {
   public static @NotNull File convertImportFile(MultipartFile file) {
     // Create temporary directory for import processing
     File tmpPath = getImportTmpPath(ApiImportSource.OPENAPI, null);
-    
+
     // Create file with original name in temporary directory
     File importFile = new File(tmpPath.getPath() + File.separator + file.getOriginalFilename());
-    
+
     try {
       // Transfer uploaded file to temporary location
       file.transferTo(importFile);
@@ -118,10 +118,10 @@ public class AngusTesterUtils {
   public static @NotNull File writeExportFile(String name, String content) {
     // Create temporary directory for export processing
     File tmpPath = getExportTmpPath(null);
-    
+
     // Create file with specified name in temporary directory
     File exportFile = new File(tmpPath.getPath() + File.separator + name);
-    
+
     try {
       // Write content to file with UTF-8 encoding
       FileUtils.writeStringToFile(exportFile, content, UTF_8);
@@ -145,7 +145,7 @@ public class AngusTesterUtils {
   public static void assembleIndicatorJoinTargetSql(String targetType, StringBuilder sql) {
     // Get current tenant ID for data isolation
     long tenantId = getOptTenantId();
-    
+
     // Build JOIN clause based on target type
     if (targetType.equals(CombinedTargetType.API.getValue())) {
       // Join with APIs table
@@ -182,17 +182,17 @@ public class AngusTesterUtils {
       // Admin can query all resources when authObjectIds is empty
       return;
     }
-    
+
     // Validate target type is provided
     assertNotNull(targetType, "targetType is required");
-    
+
     // Build grant permission filter condition
     String grantFilter = assembleGrantPermissionCondition(criteria, "a3", "GRANT");
-    
+
     // Get authorization object IDs for IN clause
     String authObjectIdsInValue = getInConditionValue(authObjectIds);
     long tenantId = getOptTenantId();
-    
+
     // Build authorization condition based on target type and permission level
     if (isEmpty(grantFilter)) {
       // Query resources with VIEW permission
@@ -341,7 +341,7 @@ public class AngusTesterUtils {
     // Use default setting if none provided
     SmokeCheckSetting safeSetting = nullSafe(smokeCheckSetting, SmokeCheckSetting.API_AVAILABLE);
     List<Assertion<HttpExtraction>> assertions = new ArrayList<>();
-    
+
     switch (safeSetting) {
       case SERVICE_AVAILABLE:
         // Create assertion to check if server is responsive (status > 0)
@@ -353,7 +353,7 @@ public class AngusTesterUtils {
             .setExpected("0");
         assertions.add(assertion);
         return assertions;
-        
+
       case API_AVAILABLE:
         // Create assertion to check if API returns success status (200-299)
         assertion = new Assertion<>();
@@ -373,7 +373,7 @@ public class AngusTesterUtils {
             .setExpected(HttpStatus.MULTIPLE_CHOICES.getValue());
         assertions.add(assertion);
         return assertions;
-        
+
       default:
         // Use user-defined assertion or create default OK status assertion
         if (nonNull(userDefinedSmokeAssertion)) {
@@ -409,7 +409,7 @@ public class AngusTesterUtils {
     SecurityCheckSetting safeSetting = nullSafe(securityCheckSetting,
         SecurityCheckSetting.NOT_SECURITY_CODE);
     List<Assertion<HttpExtraction>> assertions = new ArrayList<>();
-    
+
     switch (safeSetting) {
       case NOT_SECURITY_CODE:
         // Create assertion to check that response is NOT a security code (401/403)
@@ -421,7 +421,7 @@ public class AngusTesterUtils {
             .setExpression(NOT_SECURITY_CODE_REG);
         assertions.add(assertion);
         return assertions;
-        
+
       case IS_SECURITY_CODE:
         // Create assertion to check that response IS a security code (401/403)
         assertion = new Assertion<>();
@@ -432,7 +432,7 @@ public class AngusTesterUtils {
             .setExpression(IS_SECURITY_CODE_REG);
         assertions.add(assertion);
         return assertions;
-        
+
       default:
         // Use user-defined assertion or create default non-security code assertion
         if (nonNull(userDefinedSecurityAssertion)) {
@@ -469,11 +469,11 @@ public class AngusTesterUtils {
     String content = format.isYaml()
         ? AngusParser.YAML_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(obj)
         : AngusParser.JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-    
+
     // Convert content to bytes for streaming
     byte[] contentBytes = content.getBytes();
     InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(contentBytes));
-    
+
     // Build and return download response entity
     return buildDownloadResourceResponseEntity(-1, APPLICATION_OCTET_STREAM,
         fileName + format.getFileSuffix(), contentBytes.length, resource);
@@ -542,7 +542,7 @@ public class AngusTesterUtils {
     // Build resource path with language-specific directory
     URL resourceUrl = resClz.getResource("/samples/services/"
         + getDefaultLanguage().getValue() + "/" + servicesFile);
-    
+
     String content;
     try {
       // Read content from resource URL
@@ -570,10 +570,10 @@ public class AngusTesterUtils {
       // Build resource path with language-specific directory
       URL resourceUrl = resClz.getResource("/samples/script/"
           + getDefaultLanguage().getValue() + "/" + scriptFile);
-      
+
       // Validate resource URL exists
       assert resourceUrl != null;
-      
+
       // Read content from resource URL
       return copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
     } catch (IOException e) {
@@ -598,10 +598,10 @@ public class AngusTesterUtils {
       // Build resource path with language-specific directory using constant file name
       URL resourceUrl = resClz.getResource("/samples/mock/"
           + getDefaultLanguage().getValue() + "/" + SAMPLE_MOCK_APIS_FILE);
-      
+
       // Validate resource URL exists
       assert resourceUrl != null;
-      
+
       // Read content from resource URL
       return copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
     } catch (IOException e) {

@@ -6,9 +6,9 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.convert;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.api.commonlink.setting.indicator.Func;
-import cloud.xcan.angus.api.gm.indicator.SmokeCheckSetting;
+import cloud.xcan.angus.core.tester.domain.config.indicator.FuncData;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFunc;
+import cloud.xcan.angus.core.tester.domain.config.indicator.SmokeCheckSetting;
 import cloud.xcan.angus.core.utils.GsonUtils;
 import cloud.xcan.angus.model.element.assertion.Assertion;
 import cloud.xcan.angus.model.element.extraction.HttpExtraction;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
  */
 public class IndicatorFuncConverter {
 
-  public static IndicatorFunc toIndicatorFunc(Func default0, Long targetId,
+  public static IndicatorFunc toIndicatorFunc(FuncData default0, Long targetId,
       CombinedTargetType targetType) {
     return new IndicatorFunc()
         .setTargetType(targetType)

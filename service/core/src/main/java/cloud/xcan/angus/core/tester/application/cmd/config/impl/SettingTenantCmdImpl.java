@@ -1,0 +1,198 @@
+package cloud.xcan.angus.core.tester.application.cmd.config.impl;
+
+import static cloud.xcan.angus.core.tester.application.converter.SettingTenantConverter.initTenantSetting;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
+
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.cmd.CommCmd;
+import cloud.xcan.angus.core.jpa.repository.BaseRepository;
+import cloud.xcan.angus.core.tester.application.cmd.config.SettingTenantCmd;
+import cloud.xcan.angus.core.tester.application.query.config.SettingTenantQuery;
+import cloud.xcan.angus.core.tester.domain.config.indicator.FuncData;
+import cloud.xcan.angus.core.tester.domain.config.indicator.PerfData;
+import cloud.xcan.angus.core.tester.domain.config.indicator.StabilityData;
+import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
+import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenantRepo;
+import cloud.xcan.angus.core.tester.domain.config.tenant.apiproxy.ServerApiProxy;
+import cloud.xcan.angus.core.tester.domain.config.tenant.event.TesterEvent;
+import jakarta.annotation.Resource;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * <p>
+ * Implementation of tenant setting command operations.
+ * </p>
+ * <p>
+ * Manages tenant-level settings including locale, security, API proxy, and performance indicator
+ * configurations.
+ * </p>
+ * <p>
+ * Provides tenant setting initialization, updates, and cache management for real-time configuration
+ * updates.
+ * </p>
+ */
+@Biz
+@Slf4j
+public class SettingTenantCmdImpl extends CommCmd<SettingTenant, Long> implements SettingTenantCmd {
+
+  @Resource
+  private SettingTenantRepo settingTenantRepo;
+  @Resource
+  private SettingTenantQuery settingTenantQuery;
+
+  /**
+   * <p>
+   * Replaces tenant API proxy settings.
+   * </p>
+   * <p>
+   * Updates server API proxy configuration for the tenant.
+   * </p>
+   */
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void proxyReplace(ServerApiProxy apiProxy) {
+    new BizTemplate<Void>() {
+
+      @Override
+      protected Void process() {
+        SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+        setting.setServerApiProxyData(apiProxy);
+        updateTenantSetting(getOptTenantId(), setting);
+        return null;
+      }
+    }.execute();
+  }
+
+  /**
+   * <p>
+   * Replaces tenant tester event settings.
+   * </p>
+   * <p>
+   * Updates tester event configuration for the tenant.
+   * </p>
+   */
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void testerEventReplace(List<TesterEvent> testerEvent) {
+    new BizTemplate<Void>() {
+
+      @Override
+      protected Void process() {
+        SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+        setting.setTesterEventData(testerEvent);
+        updateTenantSetting(getOptTenantId(), setting);
+        return null;
+      }
+    }.execute();
+  }
+
+  /**
+   * <p>
+   * Replaces tenant function indicator settings.
+   * </p>
+   * <p>
+   * Updates function performance indicator configuration for the tenant.
+   * </p>
+   */
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void funcReplace(FuncData data) {
+    new BizTemplate<Void>() {
+
+      @Override
+      protected Void process() {
+        SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+        setting.setFuncData(data);
+        updateTenantSetting(getOptTenantId(), setting);
+        return null;
+      }
+    }.execute();
+  }
+
+  /**
+   * <p>
+   * Replaces tenant performance indicator settings.
+   * </p>
+   * <p>
+   * Updates performance indicator configuration for the tenant.
+   * </p>
+   */
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void perfReplace(PerfData data) {
+    new BizTemplate<Void>() {
+
+      @Override
+      protected Void process() {
+        SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+        setting.setPerfData(data);
+        updateTenantSetting(getOptTenantId(), setting);
+        return null;
+      }
+    }.execute();
+  }
+
+  /**
+   * <p>
+   * Replaces tenant stability indicator settings.
+   * </p>
+   * <p>
+   * Updates stability indicator configuration for the tenant.
+   * </p>
+   */
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void stabilityReplace(StabilityData stability) {
+    new BizTemplate<Void>() {
+
+      @Override
+      protected Void process() {
+        SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+        setting.setStabilityData(stability);
+        updateTenantSetting(getOptTenantId(), setting);
+        return null;
+      }
+    }.execute();
+  }
+
+  /**
+   * <p>
+   * Updates tenant setting with cache eviction.
+   * </p>
+   * <p>
+   * Saves tenant setting to database and evicts related cache entries to ensure real-time updates
+   * across the system.
+   * </p>
+   */
+  @CacheEvict(key = "'key_' + #tenantId", value = "settingTenant")
+  public void updateTenantSetting(Long tenantId, SettingTenant setting) {
+    settingTenantRepo.save(setting);
+  }
+
+  /**
+   * <p>
+   * Initializes tenant settings.
+   * </p>
+   * <p>
+   * Creates default tenant settings with timezone configuration when tenant settings don't exist.
+   * </p>
+   */
+  @Override
+  public SettingTenant init(Long tenantId) {
+    SettingTenant tenantSetting = null;
+    if (!settingTenantRepo.existsByTenantId(tenantId)) {
+      tenantSetting = initTenantSetting(tenantId);
+      settingTenantRepo.save(tenantSetting);
+    }
+    return tenantSetting;
+  }
+
+  @Override
+  protected BaseRepository<SettingTenant, Long> getRepository() {
+    return this.settingTenantRepo;
+  }
+}

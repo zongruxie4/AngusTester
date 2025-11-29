@@ -36,7 +36,7 @@ import org.springframework.data.domain.PageRequest;
  * <p>
  * Key features include:
  * <ul>
- *   <li>Stability indicator retrieval with target validation</li>
+ *   <li>StabilityData indicator retrieval with target validation</li>
  *   <li>Default platform indicator fallback mechanism</li>
  *   <li>Paginated indicator listing with search capabilities</li>
  *   <li>Target name enrichment and association</li>

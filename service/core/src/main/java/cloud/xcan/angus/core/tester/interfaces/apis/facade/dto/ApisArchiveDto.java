@@ -129,7 +129,7 @@ public class ApisArchiveDto {
   @Schema(description = "Performance testing enablement flag, defaults to enabled")
   private Boolean testPerf;
 
-  @Schema(description = "Stability testing enablement flag, defaults to enabled")
+  @Schema(description = "StabilityData testing enablement flag, defaults to enabled")
   private Boolean testStability;
 
   @NotNull

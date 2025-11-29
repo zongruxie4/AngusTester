@@ -1,0 +1,12 @@
+{
+  "smoke": true,
+  "smokeCheckSetting": {
+    "value": "API_AVAILABLE",
+    "message": "xcm.enum.SmokeCheckSetting.API_AVAILABLE"
+  },
+  "security": true,
+  "securityCheckSetting": {
+    "value": "NOT_SECURITY_CODE",
+    "message": "xcm.enum.SecurityCheckSetting.NOT_SECURITY_CODE"
+  }
+}

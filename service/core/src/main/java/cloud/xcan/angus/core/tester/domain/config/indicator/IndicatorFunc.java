@@ -4,8 +4,6 @@ package cloud.xcan.angus.core.tester.domain.config.indicator;
 import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.api.gm.indicator.SecurityCheckSetting;
-import cloud.xcan.angus.api.gm.indicator.SmokeCheckSetting;
 import cloud.xcan.angus.core.jpa.multitenancy.TenantEntity;
 import cloud.xcan.angus.model.element.assertion.Assertion;
 import cloud.xcan.angus.model.element.extraction.HttpExtraction;

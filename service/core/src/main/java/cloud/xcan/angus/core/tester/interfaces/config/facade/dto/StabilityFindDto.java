@@ -21,7 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class StabilityFindDto extends PageQuery {
 
-  @Schema(description = "Stability test indicator identifier for precise query")
+  @Schema(description = "StabilityData test indicator identifier for precise query")
   private Long id;
 
   @NotNull
@@ -36,10 +36,10 @@ public class StabilityFindDto extends PageQuery {
   @Schema(description = "Target name for fuzzy search and filtering")
   private String targetName;
 
-  @Schema(description = "Stability test indicator creator identifier")
+  @Schema(description = "StabilityData test indicator creator identifier")
   private Long createdBy;
 
-  @Schema(description = "Stability test indicator creation timestamp")
+  @Schema(description = "StabilityData test indicator creation timestamp")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime createdDate;
 

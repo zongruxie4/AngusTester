@@ -1,0 +1,15 @@
+{
+  "threads": 200,
+  "duration": "30min",
+  "tps": 500,
+  "art": "500",
+  "percentile": {
+    "value": "P90",
+    "message": "P90"
+  },
+  "errorRate": 0.01,
+  "cpu": 75.0,
+  "memory": 75.0,
+  "disk": 75.0,
+  "network": 75.0
+}

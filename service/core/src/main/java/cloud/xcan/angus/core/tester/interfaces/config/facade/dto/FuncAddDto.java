@@ -1,8 +1,8 @@
 package cloud.xcan.angus.core.tester.interfaces.config.facade.dto;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.api.gm.indicator.SecurityCheckSetting;
-import cloud.xcan.angus.api.gm.indicator.SmokeCheckSetting;
+import cloud.xcan.angus.core.tester.domain.config.indicator.SecurityCheckSetting;
+import cloud.xcan.angus.core.tester.domain.config.indicator.SmokeCheckSetting;
 import cloud.xcan.angus.model.element.assertion.Assertion;
 import cloud.xcan.angus.model.element.extraction.HttpExtraction;
 import cloud.xcan.angus.validator.EnumPart;

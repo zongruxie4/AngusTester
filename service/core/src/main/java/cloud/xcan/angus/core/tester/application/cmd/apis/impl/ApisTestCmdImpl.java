@@ -549,7 +549,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
       scriptCmd.add(script, script.getAngusScript(), false);
 
     } else if (script.getType().isStabilityTesting() /*&& apisDb.getTestStability()*/) {
-      // Stability testing script initialization
+      // StabilityData testing script initialization
       // Assemble API script without functional testing components
       assembleAddApisScript(apisDb, serverMap, null, null, script, variables, datasets);
 

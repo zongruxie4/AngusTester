@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Indicator - Stability Test", description = "Stability Test Indicator Management - APIs for configuring stability test profiles (duration, concurrency, error tolerance) with target-based configuration and batch operations")
+@Tag(name = "Indicator - StabilityData Test", description = "StabilityData Test Indicator Management - APIs for configuring stability test profiles (duration, concurrency, error tolerance) with target-based configuration and batch operations")
 @Validated
 @RestController
 @RequestMapping("/api/v1/indicator")
@@ -52,7 +52,7 @@ public class IndicatorStabilityRest {
       description = "Create a new stability test indicator with configuration for stability parameters",
       operationId = "indicator:stability:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Stability test indicator created successfully")})
+      @ApiResponse(responseCode = "201", description = "StabilityData test indicator created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/stability")
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody StabilityAddDto dto) {
@@ -63,8 +63,8 @@ public class IndicatorStabilityRest {
       description = "Replace an existing stability test indicator with new configuration",
       operationId = "indicator:stability:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Stability test indicator replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Stability test indicator not found")
+      @ApiResponse(responseCode = "200", description = "StabilityData test indicator replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "StabilityData test indicator not found")
   })
   @PutMapping("/stability")
   public ApiLocaleResult<?> replace(@Valid @RequestBody StabilityReplaceDto dto) {
@@ -76,11 +76,11 @@ public class IndicatorStabilityRest {
       description = "Delete multiple stability test indicators with batch operation support",
       operationId = "indicator:stability:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Stability test indicators deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "StabilityData test indicators deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/stability")
   public void delete(
-      @Parameter(name = "ids", description = "Stability indicator identifiers for batch deletion", required = true)
+      @Parameter(name = "ids", description = "StabilityData indicator identifiers for batch deletion", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     indicatorStabilityFacade.delete(ids);
   }
@@ -89,7 +89,7 @@ public class IndicatorStabilityRest {
       description = "Remove stability test indicator configuration for a specific target type and identifier",
       operationId = "indicator:stability:target:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Stability test indicator deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "StabilityData test indicator deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping(value = "/{targetType}/{targetId}/stability")
   public void deleteByTarget(
@@ -102,8 +102,8 @@ public class IndicatorStabilityRest {
       description = "Retrieve details of stability test indicator for a specific target",
       operationId = "indicator:stability:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Stability test indicator details retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Stability test indicator not found")})
+      @ApiResponse(responseCode = "200", description = "StabilityData test indicator details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "StabilityData test indicator not found")})
   @GetMapping(value = "/{targetType}/{targetId}/stability")
   public ApiLocaleResult<StabilityVo> detail(
       @Parameter(name = "targetType", description = "Target type for indicator query (API, SCENARIO)", required = true) @PathVariable("targetType") CombinedTargetType targetType,
@@ -115,8 +115,8 @@ public class IndicatorStabilityRest {
       description = "Retrieve stability test indicator details for a specific target, returning default configuration when not set",
       operationId = "indicator:stability:detailOrDefault")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Stability test indicator details retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Stability test indicator not found")})
+      @ApiResponse(responseCode = "200", description = "StabilityData test indicator details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "StabilityData test indicator not found")})
   @GetMapping(value = "/{targetType}/{targetId}/stability/detailOrDefault")
   public ApiLocaleResult<StabilityVo> detailOrDefault(
       @Parameter(name = "targetType", description = "Target type for indicator query (API, SCENARIO)", required = true) @PathVariable("targetType") CombinedTargetType targetType,
@@ -128,7 +128,7 @@ public class IndicatorStabilityRest {
       description = "Retrieve paginated list of stability test indicators with filtering and search options",
       operationId = "indicator:stability:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Stability test indicator list retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "StabilityData test indicator list retrieved successfully")})
   @GetMapping("/stability")
   public ApiLocaleResult<PageResult<StabilityListVo>> list(@Valid @ParameterObject StabilityFindDto dto) {
     return ApiLocaleResult.success(indicatorStabilityFacade.list(dto));

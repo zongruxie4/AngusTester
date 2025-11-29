@@ -152,8 +152,8 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
    *   <li>Function: Plan, Use Cases</li>
    *   <li>Interface: Service, Interface</li>
    *   <li>Task: Sprint, Task</li>
-   *   <li>Scenario: Total, Function, Performance, Stability, Customization</li>
-   *   <li>Script: Total, Function, Performance, Stability, Customization</li>
+   *   <li>Scenario: Total, Function, Performance, StabilityData, Customization</li>
+   *   <li>Script: Total, Function, Performance, StabilityData, Customization</li>
    *   <li>Mock: services, interfaces, files, data sources</li>
    *   <li>Report: Total, Type Grouping</li>
    * </ul>

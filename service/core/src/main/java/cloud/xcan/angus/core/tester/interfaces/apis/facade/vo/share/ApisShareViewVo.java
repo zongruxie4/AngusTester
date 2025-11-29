@@ -1,8 +1,8 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.share;
 
-import cloud.xcan.angus.api.gm.setting.vo.UserApiProxyVo;
 import cloud.xcan.angus.core.tester.domain.apis.share.ApisShareScope;
 import cloud.xcan.angus.core.tester.domain.apis.share.DisplayOptions;
+import cloud.xcan.angus.core.tester.interfaces.config.facade.vo.setting.UserApiProxyVo;
 import cloud.xcan.angus.remote.NameJoinField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;

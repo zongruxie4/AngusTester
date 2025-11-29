@@ -4,8 +4,8 @@ package cloud.xcan.angus.core.tester.interfaces.config.facade.vo;
 import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.api.gm.indicator.SecurityCheckSetting;
-import cloud.xcan.angus.api.gm.indicator.SmokeCheckSetting;
+import cloud.xcan.angus.core.tester.domain.config.indicator.SecurityCheckSetting;
+import cloud.xcan.angus.core.tester.domain.config.indicator.SmokeCheckSetting;
 import cloud.xcan.angus.model.element.assertion.Assertion;
 import cloud.xcan.angus.model.element.extraction.HttpExtraction;
 import cloud.xcan.angus.remote.NameJoinField;
@@ -15,7 +15,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
-
 
 @Setter
 @Getter

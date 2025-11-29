@@ -1,0 +1,100 @@
+[
+  {
+    "eventCode": "TaskWillOverdue",
+    "noticeTypes": [
+      "IN_SITE",
+      "EMAIL"
+    ]
+  },
+  {
+    "eventCode": "TaskOverdue",
+    "noticeTypes": [
+      "IN_SITE",
+      "EMAIL"
+    ]
+  },
+  {
+    "eventCode": "TaskAssignment",
+    "noticeTypes": [
+      "IN_SITE",
+      "EMAIL"
+    ]
+  },
+  {
+    "eventCode": "TaskPendingConfirmation",
+    "noticeTypes": [
+      "IN_SITE",
+      "EMAIL"
+    ]
+  },
+  {
+    "eventCode": "TaskModification",
+    "noticeTypes": [
+      "IN_SITE",
+      "EMAIL"
+    ]
+  },
+  {
+    "eventCode": "FunctionCaseWillOverdue",
+    "noticeTypes": [
+      "IN_SITE",
+      "EMAIL"
+    ]
+  },
+  {
+    "eventCode": "FunctionCaseOverdue",
+    "noticeTypes": [
+      "IN_SITE",
+      "EMAIL"
+    ]
+  },
+  {
+    "eventCode": "FunctionCaseAssignment",
+    "noticeTypes": [
+      "IN_SITE",
+      "EMAIL"
+    ]
+  },
+  {
+    "eventCode": "FunctionCaseModification",
+    "noticeTypes": [
+      "IN_SITE",
+      "EMAIL"
+    ]
+  },
+  {
+    "eventCode": "ApisModification",
+    "noticeTypes": [
+      "IN_SITE",
+      "EMAIL"
+    ]
+  },
+  {
+    "eventCode": "ScenarioModification",
+    "noticeTypes": [
+      "IN_SITE",
+      "EMAIL"
+    ]
+  },
+  {
+    "eventCode": "ReportGenerationSuccessful",
+    "noticeTypes": [
+      "IN_SITE",
+      "EMAIL"
+    ]
+  },
+  {
+    "eventCode": "ExecutionTestCompleted",
+    "noticeTypes": [
+      "IN_SITE",
+      "EMAIL"
+    ]
+  },
+  {
+    "eventCode": "ExecutionTestFailed",
+    "noticeTypes": [
+      "IN_SITE",
+      "EMAIL"
+    ]
+  }
+]
