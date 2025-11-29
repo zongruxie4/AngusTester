@@ -1,7 +1,9 @@
 package cloud.xcan.angus.core.tester.application.cmd.config.impl;
 
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.SettingTenantConverter.initTenantSetting;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
+import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
@@ -16,7 +18,9 @@ import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
 import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenantRepo;
 import cloud.xcan.angus.core.tester.domain.config.tenant.apiproxy.ServerApiProxy;
 import cloud.xcan.angus.core.tester.domain.config.tenant.event.TesterEvent;
+import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
 import jakarta.annotation.Resource;
+import java.util.LinkedHashMap;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -84,6 +88,31 @@ public class SettingTenantCmdImpl extends CommCmd<SettingTenant, Long> implement
       protected Void process() {
         SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
         setting.setTesterEventData(testerEvent);
+        updateTenantSetting(getOptTenantId(), setting);
+        return null;
+      }
+    }.execute();
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void evaluationReplace(LinkedHashMap<EvaluationPurpose, Integer> evaluation) {
+    new BizTemplate<Void>() {
+
+      @Override
+      protected void checkParams() {
+        assertTrue(evaluation.values().stream().noneMatch(x -> isNull(x) || x < 0 || x > 100),
+            "The weight value of the evaluation indicator cannot be empty and must be between 0 and 100.");
+        assertTrue(
+            evaluation.values().stream().mapToInt(weight -> weight == null ? 0 : weight).sum()
+                > 100,
+            "The weight value of the evaluation indicator cannot be empty and must be between 0 and 100.");
+      }
+
+      @Override
+      protected Void process() {
+        SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+        setting.setEvaluationData(evaluation);
         updateTenantSetting(getOptTenantId(), setting);
         return null;
       }

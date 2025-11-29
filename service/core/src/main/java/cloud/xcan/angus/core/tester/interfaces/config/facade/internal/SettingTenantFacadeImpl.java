@@ -14,12 +14,14 @@ import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import cloud.xcan.angus.core.tester.application.cmd.config.SettingTenantCmd;
 import cloud.xcan.angus.core.tester.application.query.config.SettingTenantQuery;
 import cloud.xcan.angus.core.tester.domain.config.tenant.event.TesterEvent;
+import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
 import cloud.xcan.angus.core.tester.interfaces.config.facade.SettingTenantFacade;
 import cloud.xcan.angus.core.tester.interfaces.config.facade.to.FuncTo;
 import cloud.xcan.angus.core.tester.interfaces.config.facade.to.PerfTo;
 import cloud.xcan.angus.core.tester.interfaces.config.facade.to.StabilityTo;
 import cloud.xcan.angus.core.tester.interfaces.config.facade.to.TenantServerApiProxyTo;
 import jakarta.annotation.Resource;
+import java.util.LinkedHashMap;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
@@ -50,6 +52,16 @@ public class SettingTenantFacadeImpl implements SettingTenantFacade {
   @Override
   public List<TesterEvent> testerEventDetail() {
     return settingTenantQuery.findAndInit(getOptTenantId()).getTesterEventData();
+  }
+
+  @Override
+  public void evaluationReplace(LinkedHashMap<EvaluationPurpose, Integer> evaluation) {
+    settingTenantCmd.evaluationReplace(evaluation);
+  }
+
+  @Override
+  public LinkedHashMap<EvaluationPurpose, Integer> evaluationDetail() {
+    return settingTenantQuery.findAndInit(getOptTenantId()).getEvaluationData();
   }
 
   @Override

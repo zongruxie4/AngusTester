@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.config;
 
 import cloud.xcan.angus.core.tester.domain.config.tenant.event.TesterEvent;
+import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
 import cloud.xcan.angus.core.tester.interfaces.config.facade.SettingTenantFacade;
 import cloud.xcan.angus.core.tester.interfaces.config.facade.to.FuncTo;
 import cloud.xcan.angus.core.tester.interfaces.config.facade.to.PerfTo;
@@ -13,7 +14,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import java.util.LinkedHashMap;
 import java.util.List;
+import org.codehaus.commons.nullanalysis.NotNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -66,6 +69,26 @@ public class SettingTenantRest {
     return ApiLocaleResult.success(settingTenantFacade.testerEventDetail());
   }
 
+  @Operation(summary = "Update tenant platform evaluation indicators", operationId = "setting:tenant:indicator:evaluation:replace")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Tenant evaluation indicators updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Tenant evaluation indicators not found")})
+  @PutMapping(value = "/indicator/evaluation")
+  public ApiLocaleResult<?> evaluationReplace(
+      @Valid @RequestBody LinkedHashMap<EvaluationPurpose, Integer> evaluation) {
+    settingTenantFacade.evaluationReplace(evaluation);
+    return ApiLocaleResult.success();
+  }
+
+  @Operation(summary = "Get tenant platform evaluation indicators", operationId = "setting:tenant:indicator:evaluation:detail")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Tenant evaluation indicators retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Tenant evaluation indicators not found")})
+  @GetMapping(value = "/indicator/evaluation")
+  public ApiLocaleResult<LinkedHashMap<EvaluationPurpose, Integer>> evaluationDetail() {
+    return ApiLocaleResult.success(settingTenantFacade.evaluationDetail());
+  }
+
   @Operation(summary = "Update tenant platform functionality indicators", operationId = "setting:tenant:indicator:func:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Tenant functionality indicators updated successfully"),
@@ -76,7 +99,7 @@ public class SettingTenantRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Get tenant platform functionality indicators", operationId = "setting:indicator:func:detail")
+  @Operation(summary = "Get tenant platform functionality indicators", operationId = "setting:tenant:indicator:func:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Tenant functionality indicators retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Tenant functionality indicators not found")})
@@ -95,7 +118,7 @@ public class SettingTenantRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Get tenant platform performance indicators", operationId = "setting:indicator:perf:detail")
+  @Operation(summary = "Get tenant platform performance indicators", operationId = "setting:tenant:indicator:perf:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Tenant performance indicators retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Tenant performance indicators not found")})
