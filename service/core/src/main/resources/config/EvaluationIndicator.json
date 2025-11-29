@@ -1,0 +1,62 @@
+{
+  "FUNCTIONAL_SCORE": {
+    "name": "功能得分",
+    "description": "功能实现完整性与正确性",
+    "weight": 20,
+    "category": "核心功能"
+  },
+  "PERFORMANCE_SCORE": {
+    "name": "性能得分",
+    "description": "系统处理速度与资源效率",
+    "weight": 15,
+    "category": "质量属性"
+  },
+  "STABILITY_SCORE": {
+    "name": "稳定性得分",
+    "description": "系统长时间无故障运行能力",
+    "weight": 15,
+    "category": "质量属性"
+  },
+  "SECURITY_SCORE": {
+    "name": "安全得分",
+    "description": "抵御安全威胁与数据保护能力",
+    "weight": 15,
+    "category": "安全合规"
+  },
+  "COMPATIBILITY_SCORE": {
+    "name": "兼容性得分",
+    "description": "与不同软硬件环境适配程度",
+    "weight": 5,
+    "category": "技术特性"
+  },
+  "COMPLIANCE_SCORE": {
+    "name": "合规性得分",
+    "description": "符合行业标准与法规要求",
+    "weight": 5,
+    "category": "安全合规"
+  },
+  "AVAILABILITY_SCORE": {
+    "name": "可用性得分",
+    "description": "服务可正常访问的时间比例",
+    "weight": 10,
+    "category": "质量属性"
+  },
+  "USABILITY_SCORE": {
+    "name": "易用性得分",
+    "description": "界面友好与操作便捷程度",
+    "weight": 5,
+    "category": "用户体验"
+  },
+  "MAINTAINABILITY_SCORE": {
+    "name": "可维护性得分",
+    "description": "系统修改、更新与修复便利性",
+    "weight": 5,
+    "category": "技术特性"
+  },
+  "SCALABILITY_SCORE": {
+    "name": "可扩展性得分",
+    "description": "适应业务增长的处理能力",
+    "weight": 5,
+    "category": "技术特性"
+  }
+}
