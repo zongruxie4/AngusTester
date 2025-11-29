@@ -18,7 +18,6 @@ import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationRepo;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluation;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluationResult;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfoRepo;
-import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;

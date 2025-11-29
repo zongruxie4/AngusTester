@@ -11,7 +11,6 @@ import static cloud.xcan.angus.core.utils.PrincipalContextUtils.hasPolicy;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isOpSysAdmin;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isTenantSysAdmin;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
-import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.isNull;

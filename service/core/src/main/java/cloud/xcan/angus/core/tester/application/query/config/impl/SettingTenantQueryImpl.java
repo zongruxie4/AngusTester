@@ -9,7 +9,6 @@ import cloud.xcan.angus.core.tester.application.cmd.config.SettingTenantCmd;
 import cloud.xcan.angus.core.tester.application.query.config.SettingTenantQuery;
 import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
 import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenantRepo;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 

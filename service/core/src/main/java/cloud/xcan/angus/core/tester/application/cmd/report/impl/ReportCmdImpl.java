@@ -44,7 +44,6 @@ import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprint;
 import cloud.xcan.angus.core.tester.domain.project.Project;
-import cloud.xcan.angus.core.tester.domain.project.evaluation.TestEvaluation;
 import cloud.xcan.angus.core.tester.domain.report.Report;
 import cloud.xcan.angus.core.tester.domain.report.ReportCategory;
 import cloud.xcan.angus.core.tester.domain.report.ReportRepo;

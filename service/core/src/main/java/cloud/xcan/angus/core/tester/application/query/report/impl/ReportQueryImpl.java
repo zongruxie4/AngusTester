@@ -64,7 +64,6 @@ import cloud.xcan.angus.core.tester.application.query.report.ReportAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.report.ReportQuery;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioQuery;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioTestQuery;
-import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncPlanQuery;

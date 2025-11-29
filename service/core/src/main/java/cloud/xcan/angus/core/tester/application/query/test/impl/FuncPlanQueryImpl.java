@@ -35,7 +35,6 @@ import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery
 import cloud.xcan.angus.core.tester.application.query.test.FuncBaselineQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncPlanAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncPlanQuery;
-import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.core.tester.domain.test.baseline.FuncBaseline;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfoRepo;

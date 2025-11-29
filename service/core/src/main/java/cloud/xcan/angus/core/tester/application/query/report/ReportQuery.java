@@ -13,7 +13,6 @@ import cloud.xcan.angus.core.tester.domain.report.record.content.ApisTestingCont
 import cloud.xcan.angus.core.tester.domain.report.record.content.FuncCaseContent;
 import cloud.xcan.angus.core.tester.domain.report.record.content.FuncPlanContent;
 import cloud.xcan.angus.core.tester.domain.report.record.content.ProjectProgressContent;
-import cloud.xcan.angus.core.tester.domain.report.record.content.ReportContent;
 import cloud.xcan.angus.core.tester.domain.report.record.content.ScenarioTestingContent;
 import cloud.xcan.angus.core.tester.domain.report.record.content.ServicesTestingContent;
 import cloud.xcan.angus.core.tester.domain.report.record.content.TaskContent;

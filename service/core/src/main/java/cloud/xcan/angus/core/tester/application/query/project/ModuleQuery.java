@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.application.query.project;
 
 
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
-import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.core.tester.domain.project.module.Module;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.util.Collection;

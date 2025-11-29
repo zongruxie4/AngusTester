@@ -3,6 +3,7 @@ package cloud.xcan.angus.core.tester.interfaces.test.facade;
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.core.tester.domain.issue.TaskType;
 import cloud.xcan.angus.core.tester.interfaces.issue.facade.vo.TaskInfoVo;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.SoftwareVersionRefReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.FuncCaseAddDto;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.FuncCaseAttachmentReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.FuncCaseFindDto;
@@ -17,7 +18,6 @@ import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.FuncCaseWorkloadR
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.FuncCaseReviewVo;
-import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.SoftwareVersionRefReplaceDto;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.servlet.http.HttpServletResponse;
