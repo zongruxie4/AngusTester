@@ -6,9 +6,9 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.convert;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.api.commonlink.setting.indicator.Perf;
 import cloud.xcan.angus.api.enums.Percentile;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorPerf;
+import cloud.xcan.angus.core.tester.domain.config.indicator.PerfData;
 import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.utils.GsonUtils;
 import cloud.xcan.angus.spec.unit.TimeValue;
@@ -20,7 +20,7 @@ import java.util.Objects;
  */
 public class IndicatorPerfConverter {
 
-  public static IndicatorPerf toIndicatorPerf(Perf default0, Long targetId,
+  public static IndicatorPerf toIndicatorPerf(PerfData default0, Long targetId,
       CombinedTargetType targetType) {
     return new IndicatorPerf()
         .setTargetType(targetType)
@@ -68,5 +68,4 @@ public class IndicatorPerfConverter {
     }
     return null;
   }
-
 }

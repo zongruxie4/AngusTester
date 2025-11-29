@@ -8,19 +8,19 @@ import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.api.commonlink.setting.tenant.SettingTenant;
-import cloud.xcan.angus.api.manager.SettingTenantManager;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.converter.IndicatorStabilityConverter;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.config.IndicatorStabilityQuery;
+import cloud.xcan.angus.core.tester.application.query.config.SettingTenantQuery;
 import cloud.xcan.angus.core.tester.domain.CombinedTarget;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStability;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStabilityListRepo;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStabilityRepo;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStabilitySearchRepo;
+import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
 import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;
@@ -60,7 +60,7 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
   @Resource
   private IndicatorStabilitySearchRepo indicatorStabilitySearchRepo;
   @Resource
-  private SettingTenantManager settingTenantManager;
+  private SettingTenantQuery settingTenantQuery;
   @Resource
   private CommonQuery commonQuery;
 
@@ -128,7 +128,7 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
         // Query the default stability indicators of the platform
         try {
           // Retrieve tenant-specific platform settings
-          SettingTenant setting = settingTenantManager.checkAndFindSetting(getOptTenantId());
+          SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
 
           // Convert platform data to indicator format
           IndicatorStability stability = toIndicatorStability(setting.getStabilityData(),

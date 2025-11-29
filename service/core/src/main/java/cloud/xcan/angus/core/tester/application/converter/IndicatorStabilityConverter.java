@@ -6,9 +6,9 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.convert;
 import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.api.commonlink.setting.indicator.Stability;
 import cloud.xcan.angus.api.enums.Percentile;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStability;
+import cloud.xcan.angus.core.tester.domain.config.indicator.StabilityData;
 import cloud.xcan.angus.core.utils.GsonUtils;
 import cloud.xcan.angus.spec.unit.TimeValue;
 import java.time.LocalDateTime;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  */
 public class IndicatorStabilityConverter {
 
-  public static IndicatorStability toIndicatorStability(Stability default0, Long targetId,
+  public static IndicatorStability toIndicatorStability(StabilityData default0, Long targetId,
       CombinedTargetType targetType) {
     return new IndicatorStability()
         .setTargetType(targetType)
