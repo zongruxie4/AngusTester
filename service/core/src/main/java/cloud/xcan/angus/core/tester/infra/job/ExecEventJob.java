@@ -25,7 +25,6 @@ import cloud.xcan.angus.core.event.source.EventContent;
 import cloud.xcan.angus.core.job.JobTemplate;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
-import cloud.xcan.angus.core.tester.application.query.exec.ExecQuery;
 import cloud.xcan.angus.core.tester.domain.exec.Exec;
 import cloud.xcan.angus.core.tester.domain.exec.ExecRepo;
 import cloud.xcan.angus.spec.principal.Principal;
@@ -52,9 +51,6 @@ public class ExecEventJob {
 
   @Resource
   private ExecRepo execRepo;
-
-  @Resource
-  private ExecQuery execQuery;
 
   @Resource
   private TenantRepo tenantRepo;
