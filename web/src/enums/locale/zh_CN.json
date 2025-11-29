@@ -191,12 +191,14 @@
         "MODULE": "模块"
       },
       "EvaluationPurpose": {
-        "FUNCTIONAL_PASSED_RATE": "功能通过率",
-        "PERFORMANCE_PASSED_RATE": "性能通过率",
-        "STABILITY_PASSED_RATE": "稳定性通过率",
+        "FUNCTIONAL_SCORE": "功能得分",
+        "PERFORMANCE_SCORE": "性能得分",
+        "STABILITY_SCORE": "稳定性得分",
         "SECURITY_SCORE": "安全得分",
         "COMPATIBILITY_SCORE": "兼容性得分",
-        "USABILITY_SCORE": "可用性得分",
+        "COMPLIANCE_SCORE": "合规性得分",
+        "AVAILABILITY_SCORE": "可用性得分",
+        "USABILITY_SCORE": "易用性得分",
         "MAINTAINABILITY_SCORE": "可维护性得分",
         "SCALABILITY_SCORE": "可扩展性得分"
       },

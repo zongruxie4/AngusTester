@@ -58,7 +58,9 @@ public class TestEvaluationConverter {
       List<FuncCaseInfo> cases, TestEvaluationResult.MetricResult.MetricResultBuilder builder) {
     long totalCases = cases.size();
     if (totalCases == 0) {
-      return builder.score(0.0).numerator(0L).denominator(0L).rate(0.0).build();
+      return builder.totalCases(0).totalScore(0.0).score(0.0)
+          .numerator(0L).denominator(0L).rate(0.0)
+          .build();
     }
 
     // Count passed cases (excluding canceled)
@@ -69,7 +71,10 @@ public class TestEvaluationConverter {
     double rate = calcRate(passedCases, totalCases);
     double score = formatDouble(rate / 10, "0.00");
 
-    return builder.score(Math.max(0.0, score))
+    return builder
+        .totalCases(cases.size())
+        .totalScore(passedCases * 10D)
+        .score(Math.max(0.0, score))
         .numerator(passedCases)
         .denominator(totalCases)
         .rate(rate)
@@ -98,6 +103,30 @@ public class TestEvaluationConverter {
         .collect(Collectors.toList());
 
     return calculateScoreByTestResult(compatibilityCases, builder);
+  }
+
+  /**
+   * Calculate usability score
+   */
+  public static TestEvaluationResult.MetricResult calculateAvailabilityScore(
+      List<FuncCaseInfo> cases, TestEvaluationResult.MetricResult.MetricResultBuilder builder) {
+    List<FuncCaseInfo> usabilityCases = cases.stream()
+        .filter(c -> c.getTestPurpose() == TestPurpose.AVAILABILITY)
+        .collect(Collectors.toList());
+
+    return calculateScoreByTestResult(usabilityCases, builder);
+  }
+
+  /**
+   * Calculate usability score
+   */
+  public static TestEvaluationResult.MetricResult calculateComplianceScore(
+      List<FuncCaseInfo> cases, TestEvaluationResult.MetricResult.MetricResultBuilder builder) {
+    List<FuncCaseInfo> usabilityCases = cases.stream()
+        .filter(c -> c.getTestPurpose() == TestPurpose.COMPLIANCE)
+        .collect(Collectors.toList());
+
+    return calculateScoreByTestResult(usabilityCases, builder);
   }
 
   /**
@@ -143,7 +172,7 @@ public class TestEvaluationConverter {
       List<FuncCaseInfo> cases, TestEvaluationResult.MetricResult.MetricResultBuilder builder) {
     long totalCases = cases.size();
     if (totalCases == 0) {
-      return builder.score(0.0).build();
+      return builder.totalCases(0).totalScore(0.0).score(0.0).build();
     }
 
     // Calculate average score based on test results
@@ -164,14 +193,15 @@ public class TestEvaluationConverter {
     }
 
     if (scoredCases == 0) {
-      return builder.score(0.0).build();
+      return builder.totalCases(totalCases).totalScore(0.0).score(0.0).build();
     }
 
     double avgScore = totalScore / scoredCases;
     // Normalize to 0-10 scale
     double normalizedScore = avgScore / 10.0 * 10.0;
 
-    return builder.score(Math.max(0.0, Math.min(10.0, normalizedScore))).build();
+    return builder.totalCases(totalCases).totalScore(totalScore)
+        .score(Math.max(0.0, Math.min(10.0, normalizedScore))).build();
   }
 
   /**
