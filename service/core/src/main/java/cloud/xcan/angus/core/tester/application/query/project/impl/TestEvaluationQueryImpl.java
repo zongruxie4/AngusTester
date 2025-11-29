@@ -11,6 +11,7 @@ import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationC
 import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateSecurityScore;
 import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateStabilityPassedRate;
 import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateUsabilityScore;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.formatDouble;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
@@ -160,7 +161,7 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
     }
 
     // Calculate overall score (weighted average of all metrics)
-    Double overallScore = calculateOverallScore(metrics);
+    Double overallScore = formatDouble(calculateOverallScore(metrics), "0.00");
 
     // Build evaluation result
     return TestEvaluationResult.builder()
