@@ -15,8 +15,7 @@ import { debounce } from 'throttle-debounce';
 import { ApiMenuKey } from '@/views/apis/menu';
 import { ProxyType } from '@/views/config/proxy/types';
 import { MockServicePermission } from '@/enums/enums';
-import { mock } from 'src/api/tester';
-import { setting } from 'src/api/gm';
+import { mock, testerSetting } from 'src/api/tester';
 import { MockAPIConfig, MockAPIInfo, ResponseConfig, ResponseInfo } from './types';
 
 interface Props {
@@ -1147,7 +1146,7 @@ const loadServiceInfo = async () => {
 
 const readyState = ref(-1);
 const loadProxyUrl = async () => {
-  const [error, resp] = await setting.getUserApiProxy();
+  const [error, resp] = await testerSetting.getUserApiProxy();
   if (error) {
     return;
   }

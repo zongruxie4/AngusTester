@@ -9,7 +9,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { ApiMenuKey } from '@/views/apis/menu';
 
-import { setting } from '@/api/gm';
+import { testerSetting } from '@/api/tester';
 import { ProjectInfo } from '@/layout/types';
 import { createAngusWebSocketProxy, type WebSocketEventHandlers } from '@/views/config/proxy/composables/angusProxy';
 
@@ -80,7 +80,7 @@ const updateWs = (): void => {
  * Loads URL and configures proxy connection from user settings
  */
 const setupProxyConnection = async (): Promise<void> => {
-  const [error, { data }] = await setting.getUserApiProxy();
+  const [error, { data }] = await testerSetting.getUserApiProxy();
   if (error) {
     console.error('Failed to load proxy configuration:', error);
     return;

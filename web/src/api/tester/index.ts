@@ -28,6 +28,7 @@ import TestPlan from './TestPlan';
 import TestCase from './TestCase';
 import TestTemplate from './TestTemplate';
 import Evaluation from './Evaluation';
+import TesterSetting from './TesterSetting';
 
 const baseUrl = TESTER;
 const pubBaseUrl = PUB_TESTER;
@@ -60,3 +61,4 @@ export const testPlan = new TestPlan(baseUrl);
 export const testCase = new TestCase(baseUrl);
 export const testTemplate = new TestTemplate(baseUrl);
 export const evaluation = new Evaluation(baseUrl);
+export const testerSetting = new TesterSetting(baseUrl);

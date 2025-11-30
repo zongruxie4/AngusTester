@@ -3,7 +3,8 @@ import { useI18n } from 'vue-i18n';
 import { CombinedTargetType, EnumMessage, enumUtils, EventPushStatus, NoticeType } from '@xcan-angus/infra';
 import DOMPurify from 'dompurify';
 import { PushRecord, PushSetting, TableColumn } from '../types';
-import { event, setting } from '@/api/gm';
+import { event } from '@/api/gm';
+import { testerSetting } from '@/api/tester';
 import { analysis } from 'src/api/gm';
 
 interface SearchLogOption {
@@ -94,7 +95,7 @@ export function useEventData () {
    * Load event notice types by event code
    */
   const loadEventNoticeTypeByEventCode = async () => {
-    const [error, { data }] = await setting.getEventNoticeType();
+    const [error, { data }] = await testerSetting.getEventNoticeType();
     if (error) {
       return;
     }
@@ -239,7 +240,7 @@ export function useEventData () {
         noticeTypes: i.eventCode === eventCode ? typesValue : i.noticeTypes
       };
     });
-    const [error] = await setting.putEventNotice(paramsData);
+    const [error] = await testerSetting.putEventNotice(paramsData);
 
     if (error) {
       return;

@@ -1,7 +1,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
-import { setting } from '@/api/gm';
+import { testerSetting } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { notification } from '@xcan-angus/vue-ui';
 import { ProxyConfig, ProxyConnectionStatus } from '../types';
@@ -74,7 +74,7 @@ export function useProxyData () {
    */
   const loadProxyConfiguration = async () => {
     loading.value = true;
-    const [error, { data = {} }] = await setting.getTenantApiProxy();
+    const [error, { data = {} }] = await testerSetting.getTenantApiProxy();
     loading.value = false;
 
     if (error || !data) {
@@ -106,7 +106,7 @@ export function useProxyData () {
       return;
     }
     loading.value = true;
-    const [error] = await setting.updateTenantApiProxy(params);
+    const [error] = await testerSetting.updateTenantApiProxy(params);
     loading.value = false;
     if (error) {
       return;

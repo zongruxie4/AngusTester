@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { setting } from '@/api/gm';
+import { testerSetting } from '@/api/tester';
 import { ProxyType } from '../types';
 
 export interface ProxyOption {
@@ -76,7 +76,7 @@ export function useProxyOptions (
    * Load proxy configuration from server and update local state
    */
   const loadProxyConfiguration = async () => {
-    const [error, response = { data: {} }] = await setting.getUserApiProxy();
+    const [error, response = { data: {} }] = await testerSetting.getUserApiProxy();
     if (error) {
       return;
     }
@@ -103,7 +103,7 @@ export function useProxyOptions (
    * @param proxyValue - Selected proxy value
    */
   const handleProxyChange = async (proxyValue: string) => {
-    const [error] = await setting.enabledUserApiProxy({ name: proxyValue });
+    const [error] = await testerSetting.enabledUserApiProxy({ name: proxyValue });
     if (error) {
       return;
     }
@@ -147,7 +147,7 @@ export function useProxyOptions (
     }
 
     isLoading.value = true;
-    const [error] = await setting.patchUserApiProxyUrl({ url: proxyOption.url });
+    const [error] = await testerSetting.patchUserApiProxyUrl({ url: proxyOption.url });
     isLoading.value = false;
 
     if (error) {

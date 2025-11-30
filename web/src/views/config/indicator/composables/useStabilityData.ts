@@ -1,7 +1,7 @@
 import { ref, onMounted } from 'vue';
 import { notification } from '@xcan-angus/vue-ui';
 import { EnumMessage, enumUtils, Percentile, ShortTimeUnit } from '@xcan-angus/infra';
-import { setting } from '@/api/gm';
+import { testerSetting } from '@/api/tester';
 import { splitDuration } from '@/utils/utils';
 import { useI18n } from 'vue-i18n';
 import { StabilityIndicator } from '../types';
@@ -99,7 +99,7 @@ export function useStabilityData () {
    * Load stability indicator data from API
    */
   const loadStabilityInfo = async () => {
-    const [error, res] = await setting.getStabilityIndicator();
+    const [error, res] = await testerSetting.getStabilityIndicator();
     if (error) {
       return;
     }
@@ -179,7 +179,7 @@ export function useStabilityData () {
     const { percentileName, ...otherInfo } = editInfo.value;
 
     // Save to API
-    const [error] = await setting.saveStabilityIndicator({ ...otherInfo });
+    const [error] = await testerSetting.saveStabilityIndicator({ ...otherInfo });
     if (error) {
       return;
     }

@@ -1,7 +1,7 @@
 import { ref, onMounted } from 'vue';
 import { notification } from '@xcan-angus/vue-ui';
 import { EnumMessage, enumUtils, Percentile } from '@xcan-angus/infra';
-import { setting } from '@/api/gm';
+import { testerSetting } from '@/api/tester';
 import { splitDuration } from '@/utils/utils';
 import { useI18n } from 'vue-i18n';
 import { PerformanceIndicator } from '../types';
@@ -80,7 +80,7 @@ export function usePerformanceData () {
    * Load performance indicator data from API
    */
   const loadPerformanceInfo = async () => {
-    const [error, res] = await setting.getPerfIndicator();
+    const [error, res] = await testerSetting.getPerfIndicator();
     if (error) {
       return;
     }
@@ -186,7 +186,7 @@ export function usePerformanceData () {
     const { percentileName, ...otherInfo } = editInfo.value;
 
     // Save to API
-    const [error] = await setting.savePerIndicator({ ...otherInfo });
+    const [error] = await testerSetting.savePerIndicator({ ...otherInfo });
     if (error) {
       return;
     }
