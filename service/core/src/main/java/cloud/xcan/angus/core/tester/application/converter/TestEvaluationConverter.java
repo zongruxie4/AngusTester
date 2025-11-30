@@ -206,6 +206,8 @@ public class TestEvaluationConverter {
 
   /**
    * Calculate overall score as weighted average of all metrics
+   * Uses weight from each MetricResult if available and greater than 0,
+   * otherwise falls back to simple average
    */
   public static Double calculateOverallScore(
       LinkedHashMap<EvaluationPurpose, MetricResult> metrics) {
@@ -213,16 +215,41 @@ public class TestEvaluationConverter {
       return 0.0;
     }
 
-    double totalScore = 0.0;
-    int count = 0;
+    double weightedSum = 0.0;
+    int totalWeight = 0;
+    int unweightedCount = 0;
+    double unweightedSum = 0.0;
 
     for (TestEvaluationResult.MetricResult metric : metrics.values()) {
       if (metric.getScore() != null) {
-        totalScore += metric.getScore();
-        count++;
+        Integer weight = metric.getWeight();
+        if (weight != null && weight > 0) {
+          // Use weighted calculation
+          weightedSum += metric.getScore() * weight;
+          totalWeight += weight;
+        } else {
+          // Track unweighted metrics for fallback
+          unweightedSum += metric.getScore();
+          unweightedCount++;
+        }
       }
     }
 
-    return count > 0 ? totalScore / count : 0.0;
+    // If we have weighted metrics, use weighted average
+    if (totalWeight > 0) {
+      // If there are also unweighted metrics, include them with default weight of 1
+      if (unweightedCount > 0) {
+        // Combine weighted and unweighted metrics
+        // Unweighted metrics get default weight of 1
+        double combinedSum = weightedSum + unweightedSum;
+        int combinedWeight = totalWeight + unweightedCount;
+        return formatDouble(combinedSum / combinedWeight, "0.00");
+      }
+      // All metrics have weights, use pure weighted average
+      return formatDouble(weightedSum / totalWeight, "0.00");
+    }
+
+    // Fallback to simple average if no weights are available
+    return unweightedCount > 0 ? formatDouble(unweightedSum / unweightedCount, "0.00") : 0.0;
   }
 }
