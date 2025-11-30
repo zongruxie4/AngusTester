@@ -7,9 +7,9 @@ import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.config.SettingTenantQuery;
 import cloud.xcan.angus.core.tester.application.query.config.SettingUserQuery;
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
-import cloud.xcan.angus.core.tester.domain.config.user.SettingUser;
-import cloud.xcan.angus.core.tester.domain.config.user.SettingUserRepo;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSetting;
+import cloud.xcan.angus.core.tester.domain.config.user.UserSetting;
+import cloud.xcan.angus.core.tester.domain.config.user.UserSettingRepo;
 import cloud.xcan.angus.core.tester.domain.config.user.apiproxy.UserApiProxy;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.spec.experimental.Assert;
@@ -33,7 +33,7 @@ import java.util.Objects;
 public class SettingUserQueryImpl implements SettingUserQuery {
 
   @Resource
-  private SettingUserRepo settingUserRepo;
+  private UserSettingRepo settingUserRepo;
   @Resource
   private SettingTenantQuery settingTenantQuery;
 
@@ -52,7 +52,7 @@ public class SettingUserQueryImpl implements SettingUserQuery {
 
       @Override
       protected UserApiProxy process() {
-        SettingTenant tenantSetting = settingTenantQuery.findAndInit(optTenantId);
+        TenantSetting tenantSetting = settingTenantQuery.findAndInit(optTenantId);
         Assert.assertNotNull(tenantSetting, "Tenant setting not found");
         return assembleProxyConfig(tenantSetting);
       }
@@ -69,7 +69,7 @@ public class SettingUserQueryImpl implements SettingUserQuery {
    * </p>
    */
   @Override
-  public SettingUser find(Long userId) {
+  public UserSetting find(Long userId) {
     return settingUserRepo.findById(userId).orElseThrow(
         () -> ResourceNotFound.of(userId, "UserSetting"));
   }
@@ -84,8 +84,8 @@ public class SettingUserQueryImpl implements SettingUserQuery {
    * </p>
    */
   @Override
-  public SettingUser find0(Long userId) {
-    SettingUser settingUser = settingUserRepo.findById(userId).orElse(null);
+  public UserSetting find0(Long userId) {
+    UserSetting settingUser = settingUserRepo.findById(userId).orElse(null);
     return Objects.isNull(settingUser) ? null : settingUser;
   }
 }

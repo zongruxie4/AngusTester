@@ -12,9 +12,9 @@ import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.config.SettingUserCmd;
 import cloud.xcan.angus.core.tester.application.query.config.SettingTenantQuery;
 import cloud.xcan.angus.core.tester.application.query.config.SettingUserQuery;
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
-import cloud.xcan.angus.core.tester.domain.config.user.SettingUser;
-import cloud.xcan.angus.core.tester.domain.config.user.SettingUserRepo;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSetting;
+import cloud.xcan.angus.core.tester.domain.config.user.UserSetting;
+import cloud.xcan.angus.core.tester.domain.config.user.UserSettingRepo;
 import cloud.xcan.angus.core.tester.domain.config.user.apiproxy.ApiProxyType;
 import cloud.xcan.angus.core.tester.domain.config.user.apiproxy.UserApiProxy;
 import jakarta.annotation.Resource;
@@ -34,10 +34,10 @@ import org.springframework.transaction.annotation.Transactional;
  * </p>
  */
 @Biz
-public class SettingUserCmdImpl extends CommCmd<SettingUser, Long> implements SettingUserCmd {
+public class SettingUserCmdImpl extends CommCmd<UserSetting, Long> implements SettingUserCmd {
 
   @Resource
-  private SettingUserRepo settingUserRepo;
+  private UserSettingRepo settingUserRepo;
   @Resource
   private SettingUserQuery settingUserQuery;
   @Resource
@@ -54,13 +54,13 @@ public class SettingUserCmdImpl extends CommCmd<SettingUser, Long> implements Se
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public SettingUser findAndInit(Long userId) {
-    return new BizTemplate<SettingUser>() {
+  public UserSetting findAndInit(Long userId) {
+    return new BizTemplate<UserSetting>() {
 
       @Override
-      protected SettingUser process() {
-        SettingUser userSetting = settingUserQuery.find0(userId);
-        SettingTenant tenantSetting = settingTenantQuery.findAndInit(getOptTenantId());
+      protected UserSetting process() {
+        UserSetting userSetting = settingUserQuery.find0(userId);
+        TenantSetting tenantSetting = settingTenantQuery.findAndInit(getOptTenantId());
         if (nonNull(userSetting)) {
           // Load latest server proxy URL without persistence
           UserApiProxy apiProxy = userSetting.getApiProxy().copy();
@@ -93,7 +93,7 @@ public class SettingUserCmdImpl extends CommCmd<SettingUser, Long> implements Se
 
       @Override
       protected Void process() {
-        SettingUser settingDb = settingUserQuery.find(getUserId());
+        UserSetting settingDb = settingUserQuery.find(getUserId());
         settingDb.getApiProxy().getClientProxy().setUrl(url);
         settingUserRepo.save(settingDb);
         return null;
@@ -117,7 +117,7 @@ public class SettingUserCmdImpl extends CommCmd<SettingUser, Long> implements Se
 
       @Override
       protected Void process() {
-        SettingUser settingDb = settingUserQuery.find(getUserId());
+        UserSetting settingDb = settingUserQuery.find(getUserId());
         switch (proxyType) {
           case NO_PROXY:
             // Enable no proxy, disable all others
@@ -157,7 +157,7 @@ public class SettingUserCmdImpl extends CommCmd<SettingUser, Long> implements Se
   }
 
   @Override
-  protected BaseRepository<SettingUser, Long> getRepository() {
+  protected BaseRepository<UserSetting, Long> getRepository() {
     return settingUserRepo;
   }
 }

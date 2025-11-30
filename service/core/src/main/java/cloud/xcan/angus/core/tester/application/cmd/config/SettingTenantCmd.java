@@ -3,7 +3,7 @@ package cloud.xcan.angus.core.tester.application.cmd.config;
 import cloud.xcan.angus.core.tester.domain.config.indicator.FuncData;
 import cloud.xcan.angus.core.tester.domain.config.indicator.PerfData;
 import cloud.xcan.angus.core.tester.domain.config.indicator.StabilityData;
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSetting;
 import cloud.xcan.angus.core.tester.domain.config.tenant.apiproxy.ServerApiProxy;
 import cloud.xcan.angus.core.tester.domain.config.tenant.event.TesterEvent;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
@@ -24,6 +24,6 @@ public interface SettingTenantCmd {
 
   void stabilityReplace(StabilityData stability);
 
-  SettingTenant init(Long tenantId);
+  TenantSetting init(Long tenantId);
 
 }

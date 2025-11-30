@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.domain.config.user;
 
 import cloud.xcan.angus.core.jpa.multitenancy.TenantEntity;
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSetting;
 import cloud.xcan.angus.core.tester.domain.config.user.apiproxy.UserApiProxy;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
@@ -19,13 +19,13 @@ import org.hibernate.annotations.Type;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class SettingUser extends TenantEntity<SettingTenant, Long> {
+public class UserSetting extends TenantEntity<TenantSetting, Long> {
 
   @Id
   private Long id;
 
   /**
-   * The server proxy may be modified. Use {@link SettingTenant#getServerApiProxyData()} overwrite
+   * The server proxy may be modified. Use {@link TenantSetting#getServerApiProxyData()} overwrite
    * server proxy.
    */
   @Type(JsonType.class)

@@ -6,7 +6,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 @DoInFuture("Add cache")
 @NoRepositoryBean
-public interface SettingUserRepo extends BaseRepository<SettingUser, Long> {
+public interface UserSettingRepo extends BaseRepository<UserSetting, Long> {
 
   boolean existsByTenantId(Long tenantId);
 }

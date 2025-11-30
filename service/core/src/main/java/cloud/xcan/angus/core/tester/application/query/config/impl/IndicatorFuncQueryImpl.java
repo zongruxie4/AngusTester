@@ -22,7 +22,7 @@ import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFunc;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFuncListRepo;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFuncRepo;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorFuncSearchRepo;
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSetting;
 import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;
@@ -128,7 +128,7 @@ public class IndicatorFuncQueryImpl implements IndicatorFuncQuery {
         // Query the default functional indicators of the platform
         try {
           // Retrieve tenant-specific platform settings
-          SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+          TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
 
           // Convert platform data to indicator format
           IndicatorFunc func = toIndicatorFunc(setting.getFuncData(), targetId, targetType);

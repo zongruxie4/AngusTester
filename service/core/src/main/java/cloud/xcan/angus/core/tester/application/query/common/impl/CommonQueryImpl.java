@@ -56,7 +56,7 @@ import cloud.xcan.angus.core.tester.domain.CombinedTarget;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.core.tester.domain.activity.SimpleActivityResource;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSetting;
 import cloud.xcan.angus.core.tester.domain.config.tenant.event.TesterEvent;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
@@ -507,7 +507,7 @@ public class CommonQueryImpl implements CommonQuery {
   @Override
   public Map<String, List<NoticeType>> findTenantEventNoticeTypes(Long tenantId) {
     Long finalTenantId = nullSafe(tenantId, getOptTenantId());
-    SettingTenant settingTenant = settingTenantQuery.findAndInit(finalTenantId);
+    TenantSetting settingTenant = settingTenantQuery.findAndInit(finalTenantId);
     List<TesterEvent> eventData = settingTenant.getTesterEventData();
     return eventData.stream()
         .filter(x -> isNotEmpty(x.getEventCode()) && isNotEmpty(x.getNoticeTypes())).

@@ -3,8 +3,8 @@ package cloud.xcan.angus.core.tester.application.converter;
 import static cloud.xcan.angus.api.commonlink.TesterConstant.DEFAULT_CLOUD_API_PROXY;
 import static cloud.xcan.angus.api.commonlink.TesterConstant.DEFAULT_LOCAL_API_PROXY;
 
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
-import cloud.xcan.angus.core.tester.domain.config.user.SettingUser;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSetting;
+import cloud.xcan.angus.core.tester.domain.config.user.UserSetting;
 import cloud.xcan.angus.core.tester.domain.config.user.apiproxy.ApiProxy;
 import cloud.xcan.angus.core.tester.domain.config.user.apiproxy.ApiProxyType;
 import cloud.xcan.angus.core.tester.domain.config.user.apiproxy.UserApiProxy;
@@ -12,8 +12,8 @@ import java.util.Objects;
 
 public class SettingUserConverter {
 
-  public static SettingUser initUserSetting(Long tenantId, SettingTenant tenantSetting) {
-    SettingUser user = new SettingUser();
+  public static UserSetting initUserSetting(Long tenantId, TenantSetting tenantSetting) {
+    UserSetting user = new UserSetting();
     user.setTenantId(tenantId);
 
     UserApiProxy apiProxyData = assembleProxyConfig(tenantSetting);
@@ -21,7 +21,7 @@ public class SettingUserConverter {
     return user;
   }
 
-  public static UserApiProxy assembleProxyConfig(SettingTenant tenantSetting) {
+  public static UserApiProxy assembleProxyConfig(TenantSetting tenantSetting) {
     return new UserApiProxy()
         .setNoProxy(new ApiProxy()
             .setName(ApiProxyType.NO_PROXY)

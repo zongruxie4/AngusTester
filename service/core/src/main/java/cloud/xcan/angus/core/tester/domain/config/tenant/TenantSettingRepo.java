@@ -5,9 +5,9 @@ import java.util.Optional;
 import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
-public interface SettingTenantRepo extends BaseRepository<SettingTenant, Long> {
+public interface TenantSettingRepo extends BaseRepository<TenantSetting, Long> {
 
-  Optional<SettingTenant> findByTenantId(Long tenantId);
+  Optional<TenantSetting> findByTenantId(Long tenantId);
 
   boolean existsByTenantId(Long tenantId);
 

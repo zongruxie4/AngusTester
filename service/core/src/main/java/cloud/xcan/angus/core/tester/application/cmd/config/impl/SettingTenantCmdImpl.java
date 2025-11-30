@@ -14,8 +14,8 @@ import cloud.xcan.angus.core.tester.application.query.config.SettingTenantQuery;
 import cloud.xcan.angus.core.tester.domain.config.indicator.FuncData;
 import cloud.xcan.angus.core.tester.domain.config.indicator.PerfData;
 import cloud.xcan.angus.core.tester.domain.config.indicator.StabilityData;
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenantRepo;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSetting;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSettingRepo;
 import cloud.xcan.angus.core.tester.domain.config.tenant.apiproxy.ServerApiProxy;
 import cloud.xcan.angus.core.tester.domain.config.tenant.event.TesterEvent;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
@@ -41,10 +41,10 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Biz
 @Slf4j
-public class SettingTenantCmdImpl extends CommCmd<SettingTenant, Long> implements SettingTenantCmd {
+public class SettingTenantCmdImpl extends CommCmd<TenantSetting, Long> implements SettingTenantCmd {
 
   @Resource
-  private SettingTenantRepo settingTenantRepo;
+  private TenantSettingRepo settingTenantRepo;
   @Resource
   private SettingTenantQuery settingTenantQuery;
 
@@ -63,7 +63,7 @@ public class SettingTenantCmdImpl extends CommCmd<SettingTenant, Long> implement
 
       @Override
       protected Void process() {
-        SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+        TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
         setting.setServerApiProxyData(apiProxy);
         updateTenantSetting(getOptTenantId(), setting);
         return null;
@@ -86,7 +86,7 @@ public class SettingTenantCmdImpl extends CommCmd<SettingTenant, Long> implement
 
       @Override
       protected Void process() {
-        SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+        TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
         setting.setTesterEventData(testerEvent);
         updateTenantSetting(getOptTenantId(), setting);
         return null;
@@ -105,13 +105,13 @@ public class SettingTenantCmdImpl extends CommCmd<SettingTenant, Long> implement
             "The weight value of the evaluation indicator cannot be empty and must be between 0 and 100.");
         assertTrue(
             evaluation.values().stream().mapToInt(weight -> weight == null ? 0 : weight).sum()
-                > 100,
+                <= 100,
             "The weight value of the evaluation indicator cannot be empty and must be between 0 and 100.");
       }
 
       @Override
       protected Void process() {
-        SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+        TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
         setting.setEvaluationWeightData(evaluation);
         updateTenantSetting(getOptTenantId(), setting);
         return null;
@@ -134,7 +134,7 @@ public class SettingTenantCmdImpl extends CommCmd<SettingTenant, Long> implement
 
       @Override
       protected Void process() {
-        SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+        TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
         setting.setFuncData(data);
         updateTenantSetting(getOptTenantId(), setting);
         return null;
@@ -157,7 +157,7 @@ public class SettingTenantCmdImpl extends CommCmd<SettingTenant, Long> implement
 
       @Override
       protected Void process() {
-        SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+        TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
         setting.setPerfData(data);
         updateTenantSetting(getOptTenantId(), setting);
         return null;
@@ -180,7 +180,7 @@ public class SettingTenantCmdImpl extends CommCmd<SettingTenant, Long> implement
 
       @Override
       protected Void process() {
-        SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+        TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
         setting.setStabilityData(stability);
         updateTenantSetting(getOptTenantId(), setting);
         return null;
@@ -198,7 +198,7 @@ public class SettingTenantCmdImpl extends CommCmd<SettingTenant, Long> implement
    * </p>
    */
   @CacheEvict(key = "'key_' + #tenantId", value = "settingTenant")
-  public void updateTenantSetting(Long tenantId, SettingTenant setting) {
+  public void updateTenantSetting(Long tenantId, TenantSetting setting) {
     settingTenantRepo.save(setting);
   }
 
@@ -211,8 +211,8 @@ public class SettingTenantCmdImpl extends CommCmd<SettingTenant, Long> implement
    * </p>
    */
   @Override
-  public SettingTenant init(Long tenantId) {
-    SettingTenant tenantSetting = null;
+  public TenantSetting init(Long tenantId) {
+    TenantSetting tenantSetting = null;
     if (!settingTenantRepo.existsByTenantId(tenantId)) {
       tenantSetting = initTenantSetting(tenantId);
       settingTenantRepo.save(tenantSetting);
@@ -221,7 +221,7 @@ public class SettingTenantCmdImpl extends CommCmd<SettingTenant, Long> implement
   }
 
   @Override
-  protected BaseRepository<SettingTenant, Long> getRepository() {
+  protected BaseRepository<TenantSetting, Long> getRepository() {
     return this.settingTenantRepo;
   }
 }

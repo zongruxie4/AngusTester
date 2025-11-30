@@ -12,7 +12,7 @@ import static java.util.Objects.requireNonNull;
 import cloud.xcan.angus.core.tester.domain.config.indicator.FuncData;
 import cloud.xcan.angus.core.tester.domain.config.indicator.PerfData;
 import cloud.xcan.angus.core.tester.domain.config.indicator.StabilityData;
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSetting;
 import cloud.xcan.angus.core.tester.domain.config.tenant.event.TesterEvent;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -22,8 +22,8 @@ import java.util.List;
 
 public class SettingTenantConverter {
 
-  public static SettingTenant initTenantSetting(Long tenantId) {
-    SettingTenant tenant = new SettingTenant();
+  public static TenantSetting initTenantSetting(Long tenantId) {
+    TenantSetting tenant = new TenantSetting();
     tenant.setId(tenantId);
     tenant.setTenantId(tenantId);
 
@@ -44,42 +44,37 @@ public class SettingTenantConverter {
     return tenant;
   }
 
-  public static List<TesterEvent> getDefaultTesterEvents(SettingTenant tenant) {
-    URL resourceUrl = tenant.getClass().getResource("/config/"
-        + getDefaultLanguage().getValue() + "/" + CONFIG_EVENT);
+  public static List<TesterEvent> getDefaultTesterEvents(TenantSetting tenant) {
+    URL resourceUrl = tenant.getClass().getResource("/config/" + CONFIG_EVENT);
     return parseSample(requireNonNull(resourceUrl),
         new TypeReference<List<TesterEvent>>() {
         }, CONFIG_EVENT);
   }
 
-  public static StabilityData getDefaultStabilityData(SettingTenant tenant) {
-    URL resourceUrl = tenant.getClass().getResource("/config/"
-        + getDefaultLanguage().getValue() + "/" + CONFIG_STABILITY_INDICATOR);
+  public static StabilityData getDefaultStabilityData(TenantSetting tenant) {
+    URL resourceUrl = tenant.getClass().getResource("/config/" + CONFIG_STABILITY_INDICATOR);
     return parseSample(requireNonNull(resourceUrl),
         new TypeReference<StabilityData>() {
         }, CONFIG_STABILITY_INDICATOR);
   }
 
-  public static PerfData getDefaultPerfData(SettingTenant tenant) {
-    URL resourceUrl = tenant.getClass().getResource("/config/"
-        + getDefaultLanguage().getValue() + "/" + CONFIG_PREF_INDICATOR);
+  public static PerfData getDefaultPerfData(TenantSetting tenant) {
+    URL resourceUrl = tenant.getClass().getResource("/config/" + CONFIG_PREF_INDICATOR);
     return parseSample(requireNonNull(resourceUrl),
         new TypeReference<PerfData>() {
         }, CONFIG_PREF_INDICATOR);
   }
 
-  public static FuncData getDefaultFuncData(SettingTenant tenant) {
-    URL resourceUrl = tenant.getClass().getResource("/config/"
-        + getDefaultLanguage().getValue() + "/" + CONFIG_FUNCTION_INDICATOR);
+  public static FuncData getDefaultFuncData(TenantSetting tenant) {
+    URL resourceUrl = tenant.getClass().getResource("/config/" + CONFIG_FUNCTION_INDICATOR);
     return parseSample(requireNonNull(resourceUrl),
         new TypeReference<FuncData>() {
         }, CONFIG_FUNCTION_INDICATOR);
   }
 
   public static LinkedHashMap<EvaluationPurpose, Integer> getDefaultEvaluationPurpose(
-      SettingTenant tenant) {
-    URL resourceUrl = tenant.getClass().getResource("/config/"
-        + getDefaultLanguage().getValue() + "/" + CONFIG_EVALUATION_INDICATOR);
+      TenantSetting tenant) {
+    URL resourceUrl = tenant.getClass().getResource("/config/" + CONFIG_EVALUATION_INDICATOR);
     return parseSample(requireNonNull(resourceUrl),
         new TypeReference<LinkedHashMap<EvaluationPurpose, Integer>>() {
         }, CONFIG_EVALUATION_INDICATOR);

@@ -22,7 +22,7 @@ import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorPerf;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorPerfListRepo;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorPerfRepo;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorPerfSearchRepo;
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSetting;
 import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;
@@ -128,7 +128,7 @@ public class IndicatorPerfQueryImpl implements IndicatorPerfQuery {
         // Query the default performance indicators of the platform
         try {
           // Retrieve tenant-specific platform settings
-          SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+          TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
 
           // Convert platform data to indicator format
           IndicatorPerf perf = toIndicatorPerf(setting.getPerfData(), targetId, targetType);

@@ -46,7 +46,7 @@ import org.hibernate.annotations.Type;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class SettingTenant extends TenantEntity<SettingTenant, Long> {
+public class TenantSetting extends TenantEntity<TenantSetting, Long> {
 
   @Id
   private Long id;

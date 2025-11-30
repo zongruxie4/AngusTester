@@ -25,7 +25,7 @@ import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.application.query.project.TestEvaluationQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncPlanQuery;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSetting;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationRepo;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationScope;
@@ -168,7 +168,7 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
     }
 
     // Get evaluation indicator weight setting
-    SettingTenant settingTenant = settingTenantQuery.findAndInit(evaluation.getTenantId());
+    TenantSetting settingTenant = settingTenantQuery.findAndInit(evaluation.getTenantId());
 
     // Calculate metrics for each evaluation purpose
     LinkedHashMap<EvaluationPurpose, MetricResult> metrics = new LinkedHashMap<>();

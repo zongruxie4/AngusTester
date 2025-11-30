@@ -20,7 +20,7 @@ import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStability;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStabilityListRepo;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStabilityRepo;
 import cloud.xcan.angus.core.tester.domain.config.indicator.IndicatorStabilitySearchRepo;
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSetting;
 import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;
@@ -128,7 +128,7 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
         // Query the default stability indicators of the platform
         try {
           // Retrieve tenant-specific platform settings
-          SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
+          TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
 
           // Convert platform data to indicator format
           IndicatorStability stability = toIndicatorStability(setting.getStabilityData(),

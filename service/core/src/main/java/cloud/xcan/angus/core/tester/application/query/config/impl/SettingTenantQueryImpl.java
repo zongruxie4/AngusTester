@@ -7,8 +7,8 @@ import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.cmd.config.SettingTenantCmd;
 import cloud.xcan.angus.core.tester.application.query.config.SettingTenantQuery;
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
-import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenantRepo;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSetting;
+import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSettingRepo;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SettingTenantQueryImpl implements SettingTenantQuery {
 
   @Resource
-  private SettingTenantRepo settingTenantRepo;
+  private TenantSettingRepo settingTenantRepo;
 
   @Resource
   private SettingTenantCmd settingTenantCmd;
@@ -45,12 +45,12 @@ public class SettingTenantQueryImpl implements SettingTenantQuery {
    */
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public SettingTenant findAndInit(Long tenantId) {
-    return new BizTemplate<SettingTenant>() {
+  public TenantSetting findAndInit(Long tenantId) {
+    return new BizTemplate<TenantSetting>() {
 
       @Override
-      protected SettingTenant process() {
-        SettingTenant settingTenant = find0(tenantId);
+      protected TenantSetting process() {
+        TenantSetting settingTenant = find0(tenantId);
 
         if (isNull(settingTenant)) {
           settingTenant = settingTenantCmd.init(getOptTenantId());
@@ -70,7 +70,7 @@ public class SettingTenantQueryImpl implements SettingTenantQuery {
    * </p>
    */
   @Override
-  public SettingTenant find0(Long tenantId) {
+  public TenantSetting find0(Long tenantId) {
     return settingTenantRepo.findByTenantId(tenantId).orElse(null);
   }
 }
