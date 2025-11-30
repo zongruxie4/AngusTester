@@ -73,7 +73,9 @@
         "STABILITY": "稳定性测试",
         "SECURITY": "安全测试",
         "COMPATIBILITY": "兼容性测试",
-        "USABILITY": "可用性测试",
+        "COMPLIANCE": "合规性测试",
+        "AVAILABILITY": "可用性测试",
+        "USABILITY": "易用性测试",
         "MAINTAINABILITY": "可维护性测试",
         "SCALABILITY": "可扩展性测试"
       },
