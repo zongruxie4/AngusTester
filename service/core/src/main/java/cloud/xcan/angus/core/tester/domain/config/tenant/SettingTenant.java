@@ -52,8 +52,8 @@ public class SettingTenant extends TenantEntity<SettingTenant, Long> {
   private Long id;
 
   @Type(JsonType.class)
-  @Column(name = "evaluation_data", columnDefinition = "json")
-  private LinkedHashMap<EvaluationPurpose, Integer> evaluationData;
+  @Column(name = "evaluation_weight_data", columnDefinition = "json")
+  private LinkedHashMap<EvaluationPurpose, Integer> evaluationWeightData;
 
   @Column(name = "func_data", columnDefinition = "json")
   @Convert(converter = FuncDataConverter.class)
@@ -81,8 +81,8 @@ public class SettingTenant extends TenantEntity<SettingTenant, Long> {
     return this.id;
   }
 
-  public LinkedHashMap<EvaluationPurpose, Integer> getEvaluationData() {
-    return nullSafe(evaluationData, getDefaultEvaluationPurpose(this));
+  public LinkedHashMap<EvaluationPurpose, Integer> getEvaluationWeightData() {
+    return nullSafe(evaluationWeightData, getDefaultEvaluationPurpose(this));
   }
 
   public FuncData getFuncData() {

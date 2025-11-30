@@ -112,7 +112,7 @@ public class SettingTenantCmdImpl extends CommCmd<SettingTenant, Long> implement
       @Override
       protected Void process() {
         SettingTenant setting = settingTenantQuery.findAndInit(getOptTenantId());
-        setting.setEvaluationData(evaluation);
+        setting.setEvaluationWeightData(evaluation);
         updateTenantSetting(getOptTenantId(), setting);
         return null;
       }

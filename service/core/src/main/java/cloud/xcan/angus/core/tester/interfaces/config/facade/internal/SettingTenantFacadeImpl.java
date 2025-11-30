@@ -61,7 +61,7 @@ public class SettingTenantFacadeImpl implements SettingTenantFacade {
 
   @Override
   public LinkedHashMap<EvaluationPurpose, Integer> evaluationDetail() {
-    return settingTenantQuery.findAndInit(getOptTenantId()).getEvaluationData();
+    return settingTenantQuery.findAndInit(getOptTenantId()).getEvaluationWeightData();
   }
 
   @Override

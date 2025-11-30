@@ -28,7 +28,7 @@ public class SettingTenantConverter {
     tenant.setTenantId(tenantId);
 
     LinkedHashMap<EvaluationPurpose, Integer> evaluation = getDefaultEvaluationPurpose(tenant);
-    tenant.setEvaluationData(evaluation);
+    tenant.setEvaluationWeightData(evaluation);
 
     FuncData func = getDefaultFuncData(tenant);
     tenant.setFuncData(func);

@@ -70,6 +70,11 @@ public class TestEvaluationResult implements ReportContent, Serializable {
     private Double totalScore;
 
     /**
+     * Evaluation indicator weight value
+     */
+    private Integer weight;
+
+    /**
      * Numeric score value (0-10) for calculation purposes
      * Used for overall score calculation and comparison
      */

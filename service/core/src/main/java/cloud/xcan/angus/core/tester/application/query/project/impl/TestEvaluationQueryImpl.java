@@ -12,17 +12,20 @@ import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationC
 import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateStabilityPassedRate;
 import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateUsabilityScore;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.formatDouble;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.tester.application.query.config.SettingTenantQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ModuleQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.application.query.project.TestEvaluationQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncPlanQuery;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
+import cloud.xcan.angus.core.tester.domain.config.tenant.SettingTenant;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationRepo;
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationScope;
@@ -74,6 +77,9 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
 
   @Resource
   private FuncPlanQuery funcPlanQuery;
+
+  @Resource
+  private SettingTenantQuery settingTenantQuery;
 
   /**
    * <p>
@@ -147,16 +153,28 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
     // Get all cases based on scope and resourceId
     List<FuncCaseInfo> cases = getCasesByScope(evaluation);
 
+    if (isEmpty(cases)){
+      return TestEvaluationResult.builder()
+          .totalCases(0)
+          .overallScore(0.0)
+          .metrics(new LinkedHashMap<>())
+          .build();
+    }
+
     // Filter cases by time range if specified
     if (nonNull(evaluation.getStartDate()) || nonNull(evaluation.getDeadlineDate())) {
       cases = filterCasesByTimeRange(cases, evaluation.getStartDate(),
           evaluation.getDeadlineDate());
     }
 
+    // Get evaluation indicator weight setting
+    SettingTenant settingTenant = settingTenantQuery.findAndInit(evaluation.getTenantId());
+
     // Calculate metrics for each evaluation purpose
     LinkedHashMap<EvaluationPurpose, MetricResult> metrics = new LinkedHashMap<>();
     for (EvaluationPurpose purpose : evaluation.getPurposes()) {
-      TestEvaluationResult.MetricResult metricResult = calculateMetric(cases, purpose);
+      TestEvaluationResult.MetricResult metricResult = calculateMetric(cases, purpose,
+          settingTenant.getEvaluationWeightData());
       metrics.put(purpose, metricResult);
     }
 
@@ -257,11 +275,11 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
    * Calculate metric for a specific evaluation purpose
    */
   private TestEvaluationResult.MetricResult calculateMetric(List<FuncCaseInfo> cases,
-      EvaluationPurpose purpose) {
+      EvaluationPurpose purpose, LinkedHashMap<EvaluationPurpose, Integer> evaluationWeight) {
     TestEvaluationResult.MetricResult.MetricResultBuilder builder =
         TestEvaluationResult.MetricResult.builder();
 
-    return switch (purpose) {
+    TestEvaluationResult.MetricResult metricResult = switch (purpose) {
       case FUNCTIONAL_SCORE -> calculateFunctionalPassedRate(cases, builder);
       case PERFORMANCE_SCORE -> calculatePerformancePassedRate(cases, builder);
       case STABILITY_SCORE -> calculateStabilityPassedRate(cases, builder);
@@ -274,6 +292,9 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
       case SCALABILITY_SCORE -> calculateScalabilityScore(cases, builder);
       default -> builder.score(0.0).build();
     };
+
+    metricResult.setWeight(evaluationWeight.getOrDefault(purpose, 0));
+    return metricResult;
   }
 }
 
