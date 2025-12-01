@@ -198,7 +198,8 @@
         "highestScore": "Highest Score",
         "lowestScore": "Lowest Score",
         "times": "Times",
-        "points": "Points"
+        "points": "Points",
+        "overallScore": "Overall Score"
       },
       "overallScore": {
         "title": "Overall Score",

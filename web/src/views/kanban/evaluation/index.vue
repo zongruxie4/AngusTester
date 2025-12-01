@@ -304,7 +304,7 @@ defineExpose({
           </div>
           <div class="statistic-item">
             <Statistic
-              title="综合得分"
+              :title="t('kanban.evaluation.statistics.overallScore')"
               :value="evaluationData.statistics.overallScore"
               :suffix="t('kanban.evaluation.statistics.points')"
               class="flex flex-col-reverse"

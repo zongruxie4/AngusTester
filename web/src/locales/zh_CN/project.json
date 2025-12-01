@@ -256,7 +256,61 @@
       "hasResult": "已生成"
     },
     "addedEvaluations": "已添加测评",
-    "noEvaluations": "您尚未添加任何测评，"
+    "noEvaluations": "您尚未添加任何测评，",
+    "detail": {
+      "infoTitle": "测评信息",
+      "resultTitle": "测评结果",
+      "caseCreationTime": "用例创建时间",
+      "comprehensiveResult": "综合结果",
+      "mainIndicators": "主要指标",
+      "otherIndicators": "其他指标",
+      "comprehensiveScore": "综合得分",
+      "totalCases": "总用例",
+      "totalScore": "总得分",
+      "totalIndicators": "总指标数",
+      "passRate": "通过率：",
+      "passedCases": "通过用例：",
+      "score": "得分：",
+      "weight": "权重",
+      "averageScore": "平均得分",
+      "points": "分",
+      "chartLabels": {
+        "passed": "通过",
+        "notPassed": "未通过"
+      },
+      "chartTitles": {
+        "performanceTestPassRate": "性能测试通过率",
+        "functionalTestPassRate": "功能测试通过率",
+        "stabilityTestPassRate": "稳定性测试通过率"
+      },
+      "scoreTitles": {
+        "compatibility": "兼容性评分",
+        "usability": "易用性评分",
+        "maintainability": "可维护性评分",
+        "scalability": "可扩展性评分",
+        "security": "安全性评分",
+        "compliance": "合规性评分",
+        "availability": "可用性评分"
+      },
+      "placeholders": {
+        "noResult": "暂无测评结果",
+        "generateResultHint": "请点击\"生成结果\"按钮生成测评结果"
+      }
+    },
+    "edit": {
+      "purposeDescriptions": {
+        "functionalScore": "功能实现完整性与正确性",
+        "performanceScore": "系统处理速度与资源效率",
+        "stabilityScore": "系统长时间无故障运行能力",
+        "securityScore": "抵御安全威胁与数据保护能力",
+        "compatibilityScore": "与不同软硬件环境适配程度",
+        "complianceScore": "符合行业标准与法规要求",
+        "availabilityScore": "服务可正常访问的时间比例",
+        "usabilityScore": "界面友好与操作便捷程度",
+        "maintainabilityScore": "系统修改、更新与修复便利性",
+        "scalabilityScore": "系统可扩展性与性能优化能力"
+      }
+    }
   }
 }
 

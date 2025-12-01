@@ -482,7 +482,7 @@ onBeforeUnmount(() => {
               </span>
             </div>
             <div class="info-row">
-              <span class="info-label">权重</span>
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.weight') }}</span>
               <span class="info-value">
                 {{ props.dataSource.content.metrics.FUNCTIONAL_SCORE.weight }} %
               </span>
@@ -516,7 +516,7 @@ onBeforeUnmount(() => {
               </span>
             </div>
             <div class="info-row">
-              <span class="info-label">权重</span>
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.weight') }}</span>
               <span class="info-value">
                 {{ props.dataSource.content.metrics.PERFORMANCE_SCORE.weight }}
               </span>
@@ -550,7 +550,7 @@ onBeforeUnmount(() => {
               </span>
             </div>
             <div class="info-row">
-              <span class="info-label">权重</span>
+              <span class="info-label">{{ t('reportPreview.evaluation.detail.weight') }}</span>
               <span class="info-value">
                 {{ props.dataSource.content.metrics.STABILITY_SCORE.weight }}
               </span>
@@ -569,25 +569,25 @@ onBeforeUnmount(() => {
           <div class="flex items-center">
             <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
               <Statistic
-                title="总用例"
+                :title="t('reportPreview.evaluation.detail.totalCases')"
                 :value="props.dataSource?.content?.metrics?.COMPATIBILITY_SCORE.totalCases"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
               <Statistic
-                title="总得分"
+                :title="t('reportPreview.evaluation.detail.totalScore')"
                 :value="props.dataSource?.content?.metrics?.COMPATIBILITY_SCORE.totalScore"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
               <Statistic
-                title="权重"
+                :title="t('reportPreview.evaluation.detail.weight')"
                 :value="props.dataSource?.content?.metrics?.COMPATIBILITY_SCORE.weight"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
             </div>
-            <span class="mr-1">平均得分</span>
+            <span class="mr-1">{{ t('reportPreview.evaluation.detail.averageScore') }}</span>
             <div ref="compatibilityScoreRef" class="quality-score-progress-bar flex-1"></div>
           </div>
          
@@ -601,25 +601,25 @@ onBeforeUnmount(() => {
           <div class="flex items-center">
             <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
               <Statistic
-                  title="总用例"
+                  :title="t('reportPreview.evaluation.detail.totalCases')"
                   :value="props.dataSource?.content?.metrics?.USABILITY_SCORE.totalCases"
                   suffix=""
                   class="flex flex-col-reverse"
                   :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
                 <Statistic
-                  title="总得分"
+                  :title="t('reportPreview.evaluation.detail.totalScore')"
                   :value="props.dataSource?.content?.metrics?.USABILITY_SCORE.totalScore"
                   suffix=""
                   class="flex flex-col-reverse"
                   :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
                 <Statistic
-                  title="权重"
+                  :title="t('reportPreview.evaluation.detail.weight')"
                   :value="props.dataSource?.content?.metrics?.USABILITY_SCORE.weight"
                   suffix=""
                   class="flex flex-col-reverse"
                   :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
               </div>
-            <span class="mr-1">平均得分</span>
+            <span class="mr-1">{{ t('reportPreview.evaluation.detail.averageScore') }}</span>
             <div ref="usabilityScoreRef" class="quality-score-progress-bar flex-1"></div>
           </div>
         </div>
@@ -632,25 +632,25 @@ onBeforeUnmount(() => {
           <div class="flex items-center">
             <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
               <Statistic
-                title="总用例"
+                :title="t('reportPreview.evaluation.detail.totalCases')"
                 :value="props.dataSource?.content?.metrics?.MAINTAINABILITY_SCORE.totalCases"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
               <Statistic
-                title="总得分"
+                :title="t('reportPreview.evaluation.detail.totalScore')"
                 :value="props.dataSource?.content?.metrics?.MAINTAINABILITY_SCORE.totalScore"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
               <Statistic
-                title="权重"
+                :title="t('reportPreview.evaluation.detail.weight')"
                 :value="props.dataSource?.content?.metrics?.MAINTAINABILITY_SCORE.weight"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
             </div>
-            <span class="mr-1">平均得分</span>
+            <span class="mr-1">{{ t('reportPreview.evaluation.detail.averageScore') }}</span>
             <div ref="maintainabilityScoreRef" class="quality-score-progress-bar flex-1"></div>
           </div>
         </div>
@@ -663,25 +663,25 @@ onBeforeUnmount(() => {
           <div class="flex items-center"> 
             <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
               <Statistic
-                title="总用例"
+                :title="t('reportPreview.evaluation.detail.totalCases')"
                 :value="props.dataSource?.content?.metrics?.SCALABILITY_SCORE.totalCases"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
               <Statistic
-                title="总得分"
+                :title="t('reportPreview.evaluation.detail.totalScore')"
                 :value="props.dataSource?.content?.metrics?.SCALABILITY_SCORE.totalScore"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
               <Statistic
-                title="权重"
+                :title="t('reportPreview.evaluation.detail.weight')"
                 :value="props.dataSource?.content?.metrics?.SCALABILITY_SCORE.weight"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
             </div>
-            <span class="mr-1">平均得分</span>
+            <span class="mr-1">{{ t('reportPreview.evaluation.detail.averageScore') }}</span>
             <div ref="scalabilityScoreRef" class="quality-score-progress-bar flex-1"></div>
           </div>
         </div>
@@ -694,25 +694,25 @@ onBeforeUnmount(() => {
           <div class="flex items-center"> 
             <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
               <Statistic
-                title="总用例"
+                :title="t('reportPreview.evaluation.detail.totalCases')"
                 :value="props.dataSource?.content?.metrics?.SECURITY_SCORE.totalCases"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
               <Statistic
-                title="总得分"
+                :title="t('reportPreview.evaluation.detail.totalScore')"
                 :value="props.dataSource?.content?.metrics?.SECURITY_SCORE.totalScore"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
               <Statistic
-                title="权重"
+                :title="t('reportPreview.evaluation.detail.weight')"
                 :value="props.dataSource?.content?.metrics?.SECURITY_SCORE.weight"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
             </div>
-            <span class="mr-1">平均得分</span>
+            <span class="mr-1">{{ t('reportPreview.evaluation.detail.averageScore') }}</span>
             <div ref="securityScoreRef" class="quality-score-progress-bar flex-1"></div>
           </div>
         </div>
@@ -725,25 +725,25 @@ onBeforeUnmount(() => {
           <div class="flex items-center">  
             <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
               <Statistic
-                title="总用例"
+                :title="t('reportPreview.evaluation.detail.totalCases')"
                 :value="props.dataSource?.content?.metrics?.COMPLIANCE_SCORE.totalCases"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
               <Statistic
-                title="总得分"
+                :title="t('reportPreview.evaluation.detail.totalScore')"
                 :value="props.dataSource?.content?.metrics?.COMPLIANCE_SCORE.totalScore"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
               <Statistic
-                title="权重"
+                :title="t('reportPreview.evaluation.detail.weight')"
                 :value="props.dataSource?.content?.metrics?.COMPLIANCE_SCORE.weight"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
             </div>
-            <span class="mr-1">平均得分</span>
+            <span class="mr-1">{{ t('reportPreview.evaluation.detail.averageScore') }}</span>
             <div ref="complianceScoreRef" class="quality-score-progress-bar flex-1"></div>
           </div>
         </div>
@@ -756,25 +756,25 @@ onBeforeUnmount(() => {
           <div class="flex items-center"> 
             <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
               <Statistic
-                title="总用例"
+                :title="t('reportPreview.evaluation.detail.totalCases')"
                 :value="props.dataSource?.content?.metrics?.AVAILABILITY_SCORE.totalCases"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
               <Statistic
-                title="总得分"
+                :title="t('reportPreview.evaluation.detail.totalScore')"
                 :value="props.dataSource?.content?.metrics?.AVAILABILITY_SCORE.totalScore"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
               <Statistic
-                title="权重"
+                :title="t('reportPreview.evaluation.detail.weight')"
                 :value="props.dataSource?.content?.metrics?.AVAILABILITY_SCORE.weight"
                 suffix=""
                 class="flex flex-col-reverse"
                 :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
             </div>
-            <span class="mr-1">平均得分</span>
+            <span class="mr-1">{{ t('reportPreview.evaluation.detail.averageScore') }}</span>
             <div ref="availabilityScoreRef" class="quality-score-progress-bar flex-1"></div>
           </div>
         </div>

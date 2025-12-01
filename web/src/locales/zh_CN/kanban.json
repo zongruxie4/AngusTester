@@ -204,7 +204,8 @@
         "highestScore": "最高分",
         "lowestScore": "最低分",
         "times": "次",
-        "points": "分"
+        "points": "分",
+        "overallScore": "综合得分"
       },
       "overallScore": {
         "title": "综合评分",
@@ -234,19 +235,63 @@
         "compatibility": "兼容性评分",
         "usability": "易用性评分",
         "maintainability": "可维护性评分",
-        "scalability": "可扩展性得分"
+        "scalability": "可扩展性得分",
+        "compliance": "合规性评分",
+        "availability": "可用性评分"
       },
       "chartLabels": {
         "completed": "已完成",
         "incomplete": "未完成",
         "overallScore": "综合评分",
         "requirementCompletionRate": "需求完成率",
-        "value": "数值"
+        "value": "数值",
+        "passed": "通过",
+        "notPassed": "未通过",
+        "points": "分"
       },
       "statisticsBar": {
         "averageScore": "平均得分",
         "highestScore": "最高分",
         "lowestScore": "最低分"
+      },
+      "detail": {
+        "evaluationInfo": "测评信息",
+        "caseCreationTime": "用例创建时间",
+        "evaluationResult": "测评结果",
+        "overallResult": "综合结果",
+        "totalCases": "总用例",
+        "totalIndicators": "总指标数",
+        "totalScore": "总得分",
+        "mainIndicators": "主要指标",
+        "otherIndicators": "其他指标",
+        "passRate": "通过率：",
+        "passedCases": "通过用例：",
+        "score": "得分：",
+        "weight": "权重",
+        "averageScore": "平均得分",
+        "noResult": "暂无测评结果",
+        "generateResultHint": "请点击\"生成结果\"按钮生成测评结果",
+        "compatibility": "兼容性",
+        "usability": "易用性",
+        "maintainability": "可维护性",
+        "scalability": "可扩展性",
+        "security": "安全性",
+        "compliance": "合规性",
+        "availability": "可用性"
+      },
+      "edit": {
+        "purposeDescriptions": {
+          "FUNCTIONAL_SCORE": "功能实现完整性与正确性",
+          "PERFORMANCE_SCORE": "系统处理速度与资源效率",
+          "STABILITY_SCORE": "系统长时间无故障运行能力",
+          "SECURITY_SCORE": "抵御安全威胁与数据保护能力",
+          "COMPATIBILITY_SCORE": "与不同软硬件环境适配程度",
+          "COMPLIANCE_SCORE": "符合行业标准与法规要求",
+          "AVAILABILITY_SCORE": "服务可正常访问的时间比例",
+          "USABILITY_SCORE": "界面友好与操作便捷程度",
+          "MAINTAINABILITY_SCORE": "系统修改、更新与修复便利性",
+          "SCALABILITY_SCORE": "系统可扩展性与性能优化能力"
+        }
       }
     }
   }

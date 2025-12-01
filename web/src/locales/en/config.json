@@ -156,6 +156,24 @@
         "diskUsageMustBeLessThan100": "Disk usage must be less than 100%",
         "networkUsageMustBeLessThan10000MB": "Network usage must be less than 10000MB"
       }
+    },
+    "evaluation": {
+      "title": "Evaluation Score Calculation Indicator Weights",
+      "messages": {
+        "weightMustBeBetween0And100": "Evaluation indicator weights must be integers between 0 and 100",
+        "weightTotalMustBe100": "Evaluation indicator weights must total 100",
+        "saveSuccess": "Evaluation indicator weights saved successfully"
+      },
+      "steps": {
+        "weightDescription": {
+          "title": "Weight Description",
+          "content": "The weight range for each indicator is 0-100, with higher values indicating greater importance. The weight should total 100%."
+        },
+        "weightSuggestion": {
+          "title": "Weight Allocation Suggestion",
+          "content": "Core functionality indicators are typically assigned higher weights;\nAdjust security and performance weights based on project type;\nCompliance indicators may have higher weights in specific industries;\nConsider allocating weights based on user actual usage scenarios"
+        }
+      }
     }
   },
   "event": {

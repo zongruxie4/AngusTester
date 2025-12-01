@@ -254,6 +254,60 @@
       "hasResult": "Generated"
     },
     "addedEvaluations": "Added Evaluations",
-    "noEvaluations": "You haven't added any evaluations, "
+    "noEvaluations": "You haven't added any evaluations, ",
+    "detail": {
+      "infoTitle": "Evaluation Information",
+      "resultTitle": "Evaluation Result",
+      "caseCreationTime": "Case Creation Time",
+      "comprehensiveResult": "Comprehensive Result",
+      "mainIndicators": "Main Indicators",
+      "otherIndicators": "Other Indicators",
+      "comprehensiveScore": "Comprehensive Score",
+      "totalCases": "Total Cases",
+      "totalScore": "Total Score",
+      "totalIndicators": "Total Indicators",
+      "passRate": "Pass Rate:",
+      "passedCases": "Passed Cases:",
+      "score": "Score:",
+      "weight": "Weight",
+      "averageScore": "Average Score",
+      "points": "Points",
+      "chartLabels": {
+        "passed": "Passed",
+        "notPassed": "Not Passed"
+      },
+      "chartTitles": {
+        "performanceTestPassRate": "Performance Test Pass Rate",
+        "functionalTestPassRate": "Functional Test Pass Rate",
+        "stabilityTestPassRate": "Stability Test Pass Rate"
+      },
+      "scoreTitles": {
+        "compatibility": "Compatibility Score",
+        "usability": "Usability Score",
+        "maintainability": "Maintainability Score",
+        "scalability": "Scalability Score",
+        "security": "Security Score",
+        "compliance": "Compliance Score",
+        "availability": "Availability Score"
+      },
+      "placeholders": {
+        "noResult": "No Evaluation Result",
+        "generateResultHint": "Please click the \"Generate Result\" button to generate the evaluation result"
+      }
+    },
+    "edit": {
+      "purposeDescriptions": {
+        "functionalScore": "Functionality Implementation Completeness and Correctness",
+        "performanceScore": "System Processing Speed and Resource Efficiency",
+        "stabilityScore": "System Long-term Fault-tolerant Operation Ability",
+        "securityScore": "Ability to Defend Against Security Threats and Data Protection",
+        "compatibilityScore": "Compatibility with Different Software and Hardware Environments",
+        "complianceScore": "Compliance with Industry Standards and Regulatory Requirements",
+        "availabilityScore": "Service Availability Time Ratio",
+        "usabilityScore": "User-Friendly and Operational Convenience",
+        "maintainabilityScore": "System Modification, Update, and Repair Convenience",
+        "scalabilityScore": "System Scalability and Performance Optimization Ability"
+      }
+    }
   }
 }

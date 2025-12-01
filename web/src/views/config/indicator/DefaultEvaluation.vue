@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, defineAsyncComponent } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { testerSetting } from '@/api/tester';
 import ExpandGrid from './ExpandGrid.vue';
@@ -41,13 +41,13 @@ const toggleEditMode = () => {
 const validateEvaluationInfo = () => {
     for (const key in evaluationData.value) {
         if (evaluationData.value[key] < 0 || evaluationData.value[key] > 100) {
-            notification.error('评估指标权重必须为0-100之间的整数');
+            notification.error(t('indicator.evaluation.messages.weightMustBeBetween0And100'));
             return false;
         }
     }
     const total = Object.values(evaluationData.value).reduce((acc: number, curr: string) => acc + (+curr), 0) as number;
     if (total !== 100) {
-        notification.error('评估指标权重总和必须为100');
+        notification.error(t('indicator.evaluation.messages.weightTotalMustBe100'));
         return false;
     }
     return true;
@@ -59,7 +59,7 @@ const saveEvaluationInfo = async () => {
         if (error) {
             return;
         }
-        notification.success('评估指标权重保存成功');
+        notification.success(t('indicator.evaluation.messages.saveSuccess'));
         editable.value = false;
         await loadEvaluationData();
     }
@@ -74,7 +74,7 @@ onMounted(() => {
 </script>
 
 <template>
- <ExpandGrid title="评估得分计算指标权重">
+ <ExpandGrid :title="t('indicator.evaluation.title')">
     <template #button>
       <div class="text-3 flex items-center">
         <template v-if="editable">

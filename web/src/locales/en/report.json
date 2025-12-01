@@ -1949,13 +1949,19 @@
           "usability": "Usability Score",
           "maintainability": "Maintainability Score",
           "scalability": "Scalability Score",
-          "security": "Security Score"
+          "security": "Security Score",
+          "compliance": "Compliance Score",
+          "availability": "Availability Score"
         },
         "chartLabels": {
           "passed": "Passed",
           "notPassed": "Not Passed",
           "points": "Points"
-        }
+        },
+        "weight": "Weight",
+        "totalCases": "Total Cases",
+        "totalScore": "Total Score",
+        "averageScore": "Average Score"
       }
     }
   }

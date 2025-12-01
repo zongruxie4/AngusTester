@@ -1954,13 +1954,19 @@
           "usability": "易用性评分",
           "maintainability": "可维护性评分",
           "scalability": "可扩展性评分",
-          "security": "安全性评分"
+          "security": "安全性评分",
+          "compliance": "合规性评分",
+          "availability": "可用性评分"
         },
         "chartLabels": {
           "passed": "通过",
           "notPassed": "未通过",
           "points": "分"
-        }
+        },
+        "weight": "权重",
+        "totalCases": "总用例",
+        "totalScore": "总得分",
+        "averageScore": "平均得分"
       }
     }
   }

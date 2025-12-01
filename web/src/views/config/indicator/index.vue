@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue';
+import { computed, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -11,16 +11,18 @@ const DefaultStability = defineAsyncComponent(() => import('./DefaultStability.v
 const DefaultEfficiency = defineAsyncComponent(() => import('./DefaultEfficiency.vue'));
 const DefaultEvaluation = defineAsyncComponent(() => import('./DefaultEvaluation.vue'));
 
-const steps = [
+const steps = computed(() => [
   {
-    title: '权重说明',
-    content: '每个指标的权重范围为0-100，数值越大表示该指标越重要，权重应为100%。'
+    icon: '',
+    title: t('indicator.evaluation.steps.weightDescription.title'),
+    content: t('indicator.evaluation.steps.weightDescription.content')
   },
   {
-    title: '权重分配建议',
-    content: '核心功能指标通常分配较高权重；\n根据项目类型调整安全和性能权重；\n合规性指标在特定行业可能权重较高；\n考虑用户实际使用场景分配易用性权重'
+    icon: '',
+    title: t('indicator.evaluation.steps.weightSuggestion.title'),
+    content: t('indicator.evaluation.steps.weightSuggestion.content')
   }
-];
+]);
 
 </script>
 <template>

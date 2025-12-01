@@ -123,12 +123,12 @@ const createPassRatePieConfig = (rate: number, numerator: number, denominator: n
         data: [
           {
             value: numerator,
-            name: '通过',
+            name: t('evaluation.detail.chartLabels.passed'),
             itemStyle: { color: color }
           },
           {
             value: remaining,
-            name: '未通过',
+            name: t('evaluation.detail.chartLabels.notPassed'),
             itemStyle: { color: '#E4E7ED' }
           }
         ]
@@ -172,7 +172,7 @@ const createScoreProgressBarConfig = (score: number, title: string) => {
   
   return {
     grid: {
-      title: '平均得分',
+      title: t('evaluation.detail.averageScore'),
       left: '20',
       right: '15%',
       top: '20%',
@@ -209,7 +209,7 @@ const createScoreProgressBarConfig = (score: number, title: string) => {
     },
     yAxis: {
       type: 'category',
-      data: ['平均得分'],
+      data: [t('evaluation.detail.averageScore')],
       show: true
     },
     series: [
@@ -243,7 +243,7 @@ const createScoreProgressBarConfig = (score: number, title: string) => {
         label: {
           show: true,
           position: 'right',
-          formatter: `${score.toFixed(1)}分`,
+          formatter: `${score.toFixed(1)}${t('evaluation.detail.points')}`,
           fontSize: 13,
           fontWeight: 'bold',
           color: color,
@@ -286,7 +286,7 @@ const initCharts = () => {
     performanceChart = initOrUpdateChart(
       performanceChart,
       performancePassedRateRef.value,
-      createPassRatePieConfig(data.rate, data.numerator, data.denominator, '性能测试通过率')
+      createPassRatePieConfig(data.rate, data.numerator, data.denominator, t('evaluation.detail.chartTitles.performanceTestPassRate'))
     );
   }
 
@@ -296,7 +296,7 @@ const initCharts = () => {
     functionalChart = initOrUpdateChart(
       functionalChart,
       functionalPassedRateRef.value,
-      createPassRatePieConfig(data.rate, data.numerator, data.denominator, '功能测试通过率')
+      createPassRatePieConfig(data.rate, data.numerator, data.denominator, t('evaluation.detail.chartTitles.functionalTestPassRate'))
     );
   }
 
@@ -306,7 +306,7 @@ const initCharts = () => {
     stabilityChart = initOrUpdateChart(
       stabilityChart,
       stabilityPassedRateRef.value,
-      createPassRatePieConfig(data.rate, data.numerator, data.denominator, '稳定性测试通过率')
+      createPassRatePieConfig(data.rate, data.numerator, data.denominator, t('evaluation.detail.chartTitles.stabilityTestPassRate'))
     );
   }
 
@@ -315,7 +315,7 @@ const initCharts = () => {
     compatibilityChart = initOrUpdateChart(
       compatibilityChart,
       compatibilityScoreRef.value,
-      createScoreProgressBarConfig(Number(metrics.COMPATIBILITY_SCORE.score), '兼容性')
+      createScoreProgressBarConfig(Number(metrics.COMPATIBILITY_SCORE.score), enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.COMPATIBILITY_SCORE))
     );
   }
 
@@ -324,7 +324,7 @@ const initCharts = () => {
     usabilityChart = initOrUpdateChart(
       usabilityChart,
       usabilityScoreRef.value,
-      createScoreProgressBarConfig(Number(metrics.USABILITY_SCORE.score), '易用性')
+      createScoreProgressBarConfig(Number(metrics.USABILITY_SCORE.score), enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.USABILITY_SCORE))
     );
   }
 
@@ -333,7 +333,7 @@ const initCharts = () => {
     maintainabilityChart = initOrUpdateChart(
       maintainabilityChart,
       maintainabilityScoreRef.value,
-      createScoreProgressBarConfig(Number(metrics.MAINTAINABILITY_SCORE.score), '可维护性')
+      createScoreProgressBarConfig(Number(metrics.MAINTAINABILITY_SCORE.score), enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.MAINTAINABILITY_SCORE))
     );
   }
 
@@ -342,7 +342,7 @@ const initCharts = () => {
     scalabilityChart = initOrUpdateChart(
       scalabilityChart,
       scalabilityScoreRef.value,
-      createScoreProgressBarConfig(Number(metrics.SCALABILITY_SCORE.score), '可扩展性')
+      createScoreProgressBarConfig(Number(metrics.SCALABILITY_SCORE.score), enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.SCALABILITY_SCORE))
     );
   }
 
@@ -351,7 +351,7 @@ const initCharts = () => {
     securityChart = initOrUpdateChart(
       securityChart,
       securityScoreRef.value,
-      createScoreProgressBarConfig(Number(metrics.SECURITY_SCORE.score), '安全性')
+      createScoreProgressBarConfig(Number(metrics.SECURITY_SCORE.score), enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.SECURITY_SCORE))
     );
   }
 
@@ -360,7 +360,7 @@ const initCharts = () => {
     complianceChart = initOrUpdateChart(
       complianceChart,
       complianceScoreRef.value,
-      createScoreProgressBarConfig(Number(metrics.COMPLIANCE_SCORE.score), '合规性')
+      createScoreProgressBarConfig(Number(metrics.COMPLIANCE_SCORE.score), enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.COMPLIANCE_SCORE))
     );
   }
 
@@ -369,7 +369,7 @@ const initCharts = () => {
     availabilityChart = initOrUpdateChart(
       availabilityChart,
       availabilityScoreRef.value,
-      createScoreProgressBarConfig(Number(metrics.AVAILABILITY_SCORE.score), '可用性')
+      createScoreProgressBarConfig(Number(metrics.AVAILABILITY_SCORE.score), enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.AVAILABILITY_SCORE))
     );
   }
 };
@@ -624,7 +624,7 @@ onBeforeUnmount(() => {
       <template #title>
         <div class="card-header">
           <Icon icon="icon-xinxi" class="header-icon" />
-          <span class="text-base font-semibold">测评信息</span>
+          <span class="text-base font-semibold">{{ t('evaluation.detail.infoTitle') }}</span>
         </div>
       </template>
       <div v-if="evaluationDetail" class="info-column">
@@ -682,7 +682,7 @@ onBeforeUnmount(() => {
         <div class="info-row">
           <div class="info-label">
             <Icon icon="icon-kaishishijian" class="label-icon" />
-            <span>用例创建时间</span>
+            <span>{{ t('evaluation.detail.caseCreationTime') }}</span>
           </div>
           <div class="info-value">
             <span class="value-text">{{ evaluationDetail.startDate || '-' }} - {{ evaluationDetail.deadlineDate || '-' }}</span>
@@ -715,7 +715,7 @@ onBeforeUnmount(() => {
     <!-- Part 2: Evaluation Results with Charts -->
     <Card v-if="evaluationDetail?.result" :bordered="false">
       <template #title>
-        <div class="text-base font-semibold">测评结果</div>
+        <div class="text-base font-semibold">{{ t('evaluation.detail.resultTitle') }}</div>
       </template>
 
       
@@ -723,23 +723,23 @@ onBeforeUnmount(() => {
 
         <div v-if="showQualityScores" class="flex items-center">
           <div class="">
-            <h3 class="text-4 font-semibold mb-4 text-title">综合结果</h3>
+            <h3 class="text-4 font-semibold mb-4 text-title">{{ t('evaluation.detail.comprehensiveResult') }}</h3>
           </div>
           <div class="quality-score-content inline-flex flex-1 justify-around space-x-4">
             <Statistic
-              title="综合得分"
+              :title="t('evaluation.detail.comprehensiveScore')"
               :value="evaluationDetail.result.overallScore"
               suffix=""
               class="flex flex-col-reverse"
               :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
             <Statistic
-              title="总用例"
+              :title="t('evaluation.detail.totalCases')"
               :value="evaluationDetail.result.totalCases"
               suffix=""
               class="flex flex-col-reverse"
               :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
             <Statistic
-              title="总指标数"
+              :title="t('evaluation.detail.totalIndicators')"
               :value="Object.keys(evaluationDetail.result.metrics || {}).length"
               suffix=""
               class="flex flex-col-reverse"
@@ -752,7 +752,7 @@ onBeforeUnmount(() => {
         <template v-if="showPassRateScores">
           <!-- Test Pass Rates Section -->
           <div class="results-section mb-6">
-            <h3 class="text-4 font-semibold mb-4 text-title">主要指标</h3>
+            <h3 class="text-4 font-semibold mb-4 text-title">{{ t('evaluation.detail.mainIndicators') }}</h3>
             
             <div class="pass-rate-charts-grid">
               <!-- Functional Test Pass Rate -->
@@ -767,7 +767,7 @@ onBeforeUnmount(() => {
                   <div ref="functionalPassedRateRef" class="pass-rate-chart"></div>
                   <div class="pass-rate-info">
                     <div class="info-item">
-                      <span class="info-label">通过率：</span>
+                      <span class="info-label">{{ t('evaluation.detail.passRate') }}</span>
                       <span
                         class="info-value"
                         :style="{ color: getRateColor(evaluationDetail.result.metrics.FUNCTIONAL_SCORE.rate) }">
@@ -775,19 +775,19 @@ onBeforeUnmount(() => {
                       </span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">通过用例：</span>
+                      <span class="info-label">{{ t('evaluation.detail.passedCases') }}</span>
                       <span class="info-value">
                         {{ evaluationDetail.result.metrics.FUNCTIONAL_SCORE.numerator }}/{{ evaluationDetail.result.metrics.FUNCTIONAL_SCORE.denominator }}
                       </span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">得分：</span>
+                      <span class="info-label">{{ t('evaluation.detail.score') }}</span>
                       <span class="info-value">
-                        {{ (+evaluationDetail.result.metrics.FUNCTIONAL_SCORE.score).toFixed(1) }} 分
+                        {{ (+evaluationDetail.result.metrics.FUNCTIONAL_SCORE.score).toFixed(1) }} {{ t('evaluation.detail.points') }}
                       </span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">权重</span>
+                      <span class="info-label">{{ t('evaluation.detail.weight') }}</span>
                       <span class="info-value">
                         {{ indicatorConfig[EvaluationPurpose.FUNCTIONAL_SCORE] }} %
                       </span>
@@ -808,7 +808,7 @@ onBeforeUnmount(() => {
                   <div ref="performancePassedRateRef" class="pass-rate-chart"></div>
                   <div class="pass-rate-info">
                     <div class="info-item">
-                      <span class="info-label">通过率：</span>
+                      <span class="info-label">{{ t('evaluation.detail.passRate') }}</span>
                       <span
                         class="info-value"
                         :style="{ color: getRateColor(evaluationDetail.result.metrics.PERFORMANCE_SCORE.rate) }">
@@ -816,19 +816,19 @@ onBeforeUnmount(() => {
                       </span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">通过用例：</span>
+                      <span class="info-label">{{ t('evaluation.detail.passedCases') }}</span>
                       <span class="info-value">
                         {{ evaluationDetail.result.metrics.PERFORMANCE_SCORE.numerator }}/{{ evaluationDetail.result.metrics.PERFORMANCE_SCORE.denominator }}
                       </span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">得分：</span>
+                      <span class="info-label">{{ t('evaluation.detail.score') }}</span>
                       <span class="info-value">
-                        {{ (+evaluationDetail.result.metrics.PERFORMANCE_SCORE.score).toFixed(1) }} 分
+                        {{ (+evaluationDetail.result.metrics.PERFORMANCE_SCORE.score).toFixed(1) }} {{ t('evaluation.detail.points') }}
                       </span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">权重</span>
+                      <span class="info-label">{{ t('evaluation.detail.weight') }}</span>
                       <span class="info-value">
                         {{ indicatorConfig[EvaluationPurpose.PERFORMANCE_SCORE] }} %
                       </span>
@@ -849,7 +849,7 @@ onBeforeUnmount(() => {
                   <div ref="stabilityPassedRateRef" class="pass-rate-chart"></div>
                   <div class="pass-rate-info">
                     <div class="info-item">
-                      <span class="info-label">通过率：</span>
+                      <span class="info-label">{{ t('evaluation.detail.passRate') }}</span>
                       <span
                         class="info-value"
                         :style="{ color: getRateColor(evaluationDetail.result.metrics.STABILITY_SCORE.rate) }">
@@ -857,19 +857,19 @@ onBeforeUnmount(() => {
                       </span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">通过用例：</span>
+                      <span class="info-label">{{ t('evaluation.detail.passedCases') }}</span>
                       <span class="info-value">
                         {{ evaluationDetail.result.metrics.STABILITY_SCORE.numerator }}/{{ evaluationDetail.result.metrics.STABILITY_SCORE.denominator }}
                       </span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">得分：</span>
+                      <span class="info-label">{{ t('evaluation.detail.score') }}</span>
                       <span class="info-value">
-                        {{ (+evaluationDetail.result.metrics.STABILITY_SCORE.score).toFixed(1) }} 分
+                        {{ (+evaluationDetail.result.metrics.STABILITY_SCORE.score).toFixed(1) }} {{ t('evaluation.detail.points') }}
                       </span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">权重</span>
+                      <span class="info-label">{{ t('evaluation.detail.weight') }}</span>
                       <span class="info-value">
                         {{ indicatorConfig[EvaluationPurpose.STABILITY_SCORE] }} %
                       </span>
@@ -885,7 +885,7 @@ onBeforeUnmount(() => {
         <template v-if="showQualityScores">
           <!-- Quality Scores Section -->
           <div class="results-section">
-            <h3 class="text-4 font-semibold mb-4 text-title">其他指标</h3>
+            <h3 class="text-4 font-semibold mb-4 text-title">{{ t('evaluation.detail.otherIndicators') }}</h3>
             
             <div class="quality-scores-container space-y-2">
               <!-- Compatibility Score -->
@@ -894,24 +894,24 @@ onBeforeUnmount(() => {
                 class="quality-score-card"
                 :bordered="false">
                 <template #title>
-                  <div class="card-title">兼容性评分</div>
+                  <div class="card-title">{{ t('evaluation.detail.scoreTitles.compatibility') }}</div>
                 </template>
                 <div class="flex ">
                   <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
                     <Statistic
-                      title="总用例"
+                      :title="t('evaluation.detail.totalCases')"
                       :value="evaluationDetail.result.metrics?.COMPATIBILITY_SCORE.totalCases"
                       suffix=""
                       class="flex flex-col-reverse"
                       :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
                     <Statistic
-                      title="总得分"
+                      :title="t('evaluation.detail.totalScore')"
                       :value="evaluationDetail.result.metrics?.COMPATIBILITY_SCORE.totalScore"
                       suffix=""
                       class="flex flex-col-reverse"
                       :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
                     <Statistic
-                      title="权重"
+                      :title="t('evaluation.detail.weight')"
                       :value="evaluationDetail.result.metrics?.COMPATIBILITY_SCORE.weight"
                       suffix=""
                       class="flex flex-col-reverse"
@@ -927,24 +927,24 @@ onBeforeUnmount(() => {
                 class="quality-score-card"
                 :bordered="false">
                 <template #title>
-                  <div class="card-title">易用性评分</div>
+                  <div class="card-title">{{ t('evaluation.detail.scoreTitles.usability') }}</div>
                 </template>
                 <div class="flex">
                   <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
                       <Statistic
-                        title="总用例"
+                        :title="t('evaluation.detail.totalCases')"
                         :value="evaluationDetail.result.metrics?.USABILITY_SCORE.totalCases"
                         suffix=""
                         class="flex flex-col-reverse"
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
                       <Statistic
-                        title="总得分"
+                        :title="t('evaluation.detail.totalScore')"
                         :value="evaluationDetail.result.metrics?.USABILITY_SCORE.totalScore"
                         suffix=""
                         class="flex flex-col-reverse"
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
                       <Statistic
-                        title="权重"
+                        :title="t('evaluation.detail.weight')"
                         :value="evaluationDetail.result.metrics?.USABILITY_SCORE.weight"
                         suffix=""
                         class="flex flex-col-reverse"
@@ -960,25 +960,25 @@ onBeforeUnmount(() => {
                 class="quality-score-card"
                 :bordered="false">
                 <template #title>
-                  <div class="card-title">可维护性评分</div>
+                  <div class="card-title">{{ t('evaluation.detail.scoreTitles.maintainability') }}</div>
                 </template>
                 <div class="flex">
                   
                   <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
                       <Statistic
-                        title="总用例"
+                        :title="t('evaluation.detail.totalCases')"
                         :value="evaluationDetail.result.metrics?.MAINTAINABILITY_SCORE.totalCases"
                         suffix=""
                         class="flex flex-col-reverse"
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
                       <Statistic
-                        title="总得分"
+                        :title="t('evaluation.detail.totalScore')"
                         :value="evaluationDetail.result.metrics?.MAINTAINABILITY_SCORE.totalScore"
                         suffix=""
                         class="flex flex-col-reverse"
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
                       <Statistic
-                        title="权重"
+                        :title="t('evaluation.detail.weight')"
                         :value="evaluationDetail.result.metrics?.MAINTAINABILITY_SCORE.weight"
                         suffix=""
                         class="flex flex-col-reverse"
@@ -994,25 +994,25 @@ onBeforeUnmount(() => {
                 class="quality-score-card"
                 :bordered="false">
                 <template #title>
-                  <div class="card-title">可扩展性评分</div>
+                  <div class="card-title">{{ t('evaluation.detail.scoreTitles.scalability') }}</div>
                 </template>
                 <div class="flex">
                   
                   <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
                       <Statistic
-                        title="总用例"
+                        :title="t('evaluation.detail.totalCases')"
                         :value="evaluationDetail.result.metrics?.SCALABILITY_SCORE.totalCases"
                         suffix=""
                         class="flex flex-col-reverse"
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
                       <Statistic
-                        title="总得分"
+                        :title="t('evaluation.detail.totalScore')"
                         :value="evaluationDetail.result.metrics?.SCALABILITY_SCORE.totalScore"
                         suffix=""
                         class="flex flex-col-reverse"
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
                       <Statistic
-                        title="权重"
+                        :title="t('evaluation.detail.weight')"
                         :value="evaluationDetail.result.metrics?.SCALABILITY_SCORE.weight"
                         suffix=""
                         class="flex flex-col-reverse"
@@ -1028,25 +1028,25 @@ onBeforeUnmount(() => {
                 class="quality-score-card"
                 :bordered="false">
                 <template #title>
-                  <div class="card-title">安全性评分</div>
+                  <div class="card-title">{{ t('evaluation.detail.scoreTitles.security') }}</div>
                 </template>
                 <div class="flex">
                   
                   <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
                       <Statistic
-                        title="总用例"
+                        :title="t('evaluation.detail.totalCases')"
                         :value="evaluationDetail.result.metrics?.SECURITY_SCORE.totalCases"
                         suffix=""
                         class="flex flex-col-reverse"
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
                       <Statistic
-                        title="总得分"
+                        :title="t('evaluation.detail.totalScore')"
                         :value="evaluationDetail.result.metrics?.SECURITY_SCORE.totalScore"
                         suffix=""
                         class="flex flex-col-reverse"
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
                       <Statistic
-                        title="权重"
+                        :title="t('evaluation.detail.weight')"
                         :value="evaluationDetail.result.metrics?.SECURITY_SCORE.weight"
                         suffix=""
                         class="flex flex-col-reverse"
@@ -1062,24 +1062,24 @@ onBeforeUnmount(() => {
                 class="quality-score-card"
                 :bordered="false">
                 <template #title>
-                  <div class="card-title">合规性评分</div>
+                  <div class="card-title">{{ t('evaluation.detail.scoreTitles.compliance') }}</div>
                 </template>
                 <div class="flex">
                   <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
                     <Statistic
-                      title="总用例"
+                      :title="t('evaluation.detail.totalCases')"
                       :value="evaluationDetail.result.metrics?.COMPLIANCE_SCORE.totalCases"
                       suffix=""
                       class="flex flex-col-reverse"
                       :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
                     <Statistic
-                      title="总得分"
+                      :title="t('evaluation.detail.totalScore')"
                       :value="evaluationDetail.result.metrics?.COMPLIANCE_SCORE.totalScore"
                       suffix=""
                       class="flex flex-col-reverse"
                       :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
                     <Statistic
-                      title="权重"
+                      :title="t('evaluation.detail.weight')"
                       :value="evaluationDetail.result.metrics?.COMPLIANCE_SCORE.weight"
                       suffix=""
                       class="flex flex-col-reverse"
@@ -1095,24 +1095,24 @@ onBeforeUnmount(() => {
                 class="quality-score-card"
                 :bordered="false">
                 <template #title>
-                  <div class="card-title">可用性评分</div>
+                  <div class="card-title">{{ t('evaluation.detail.scoreTitles.availability') }}</div>
                 </template>
                 <div class="flex">
                   <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
                     <Statistic
-                      title="总用例"
+                      :title="t('evaluation.detail.totalCases')"
                       :value="evaluationDetail.result.metrics?.AVAILABILITY_SCORE.totalCases"
                       suffix=""
                       class="flex flex-col-reverse"
                       :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
                     <Statistic
-                      title="总得分"
+                      :title="t('evaluation.detail.totalScore')"
                       :value="evaluationDetail.result.metrics?.AVAILABILITY_SCORE.totalScore"
                       suffix=""
                       class="flex flex-col-reverse"
                       :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
                     <Statistic
-                      title="权重"
+                      :title="t('evaluation.detail.weight')"
                       :value="evaluationDetail.result.metrics?.AVAILABILITY_SCORE.weight"
                       suffix=""
                       class="flex flex-col-reverse"
@@ -1131,8 +1131,8 @@ onBeforeUnmount(() => {
     <Card v-else-if="evaluationDetail && !evaluationDetail.result" :bordered="false">
       <div class="no-result-placeholder">
         <Icon icon="icon-shuju" class="text-6xl text-gray-400 mb-4" />
-        <div class="text-lg text-gray-500 mb-2">暂无测评结果</div>
-        <div class="text-sm text-gray-400">请点击"生成结果"按钮生成测评结果</div>
+        <div class="text-lg text-gray-500 mb-2">{{ t('evaluation.detail.placeholders.noResult') }}</div>
+        <div class="text-sm text-gray-400">{{ t('evaluation.detail.placeholders.generateResultHint') }}</div>
       </div>
     </Card>
   </Spin>

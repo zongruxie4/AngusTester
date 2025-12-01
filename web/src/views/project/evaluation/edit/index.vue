@@ -32,38 +32,28 @@ const isEditMode = computed(() => {
   return !!props.data?.id && props.data.id !== 'new-evaluation';
 });
 
-// FUNCTIONAL_SCORE：功能实现完整性与正确性
-// PERFORMANCE_SCORE：系统处理速度与资源效率
-// STABILITY_SCORE：系统长时间无故障运行能力
-// SECURITY_SCORE：抵御安全威胁与数据保护能力
-// COMPATIBILITY_SCORE：与不同软硬件环境适配程度
-// COMPLIANCE_SCORE：符合行业标准与法规要求
-// AVAILABILITY_SCORE：服务可正常访问的时间比例
-// USABILITY_SCORE：界面友好与操作便捷程度
-// MAINTAINABILITY_SCORE：系统修改、更新与修复便利性
-
 const getPurposeMessage = (purpose: EvaluationPurpose) => {
   switch (purpose) {
     case EvaluationPurpose.FUNCTIONAL_SCORE:
-      return '功能实现完整性与正确性';
+      return t('evaluation.edit.purposeDescriptions.functionalScore');
     case EvaluationPurpose.PERFORMANCE_SCORE:
-      return '系统处理速度与资源效率';
+      return t('evaluation.edit.purposeDescriptions.performanceScore');
     case EvaluationPurpose.STABILITY_SCORE:
-      return '系统长时间无故障运行能力';
+      return t('evaluation.edit.purposeDescriptions.stabilityScore');
     case EvaluationPurpose.SECURITY_SCORE:
-      return '抵御安全威胁与数据保护能力';
+      return t('evaluation.edit.purposeDescriptions.securityScore');
     case EvaluationPurpose.COMPATIBILITY_SCORE:
-      return '与不同软硬件环境适配程度';
+      return t('evaluation.edit.purposeDescriptions.compatibilityScore');
     case EvaluationPurpose.COMPLIANCE_SCORE:
-      return '符合行业标准与法规要求';
+      return t('evaluation.edit.purposeDescriptions.complianceScore');
     case EvaluationPurpose.AVAILABILITY_SCORE:
-      return '服务可正常访问的时间比例';
+      return t('evaluation.edit.purposeDescriptions.availabilityScore');
     case EvaluationPurpose.USABILITY_SCORE:
-      return '界面友好与操作便捷程度';
+      return t('evaluation.edit.purposeDescriptions.usabilityScore');
     case EvaluationPurpose.MAINTAINABILITY_SCORE:
-      return '系统修改、更新与修复便利性';
+      return t('evaluation.edit.purposeDescriptions.maintainabilityScore');
     case EvaluationPurpose.SCALABILITY_SCORE:
-      return '系统可扩展性与性能优化能力';
+      return t('evaluation.edit.purposeDescriptions.scalabilityScore');
     default:
       return '';
   }
