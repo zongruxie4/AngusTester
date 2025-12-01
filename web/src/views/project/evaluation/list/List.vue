@@ -171,7 +171,7 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
               </div>
 
               <!-- Purposes -->
-              <div class="flex items-center space-x-2">
+              <div class="flex items-center space-x-2 flex-1 min-w-0">
                 <div class="flex flex-col">
                   <span class="text-xs text-theme-sub-content">{{ t('evaluation.columns.purposes') }}</span>
                   <div class="flex flex-wrap gap-1 mt-1">
@@ -189,14 +189,12 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
             </div>
 
             <!-- Right side: Created info -->
-            <div class="flex items-center">
-              <div class="flex items-center space-x-2 text-xs text-theme-sub-content">
-                <span class="text-theme-content font-medium truncate max-w-16" :title="item.createdByName">
-                  {{ item.createdByName || '-' }}
-                </span>
-                <span>{{ t('status.createdAt') }}</span>
-                <span class="text-theme-sub-content">{{ item.createdDate || '-' }}</span>
-              </div>
+            <div class="flex items-center space-x-2 text-xs text-theme-sub-content">
+              <span class="text-theme-content font-medium truncate max-w-16" :title="item.createdByName">
+                {{ item.createdByName || '-' }}
+              </span>
+              <span class="whitespace-nowrap">{{ t('status.createdAt') }}</span>
+              <span class="text-theme-sub-content whitespace-nowrap">{{ item.createdDate || '-' }}</span>
             </div>
           </div>
         </div>

@@ -298,7 +298,7 @@ defineExpose({
             <Statistic
               :title="t('kanban.evaluation.statistics.totalEvaluations')"
               :value="evaluationData.statistics.total"
-              :suffix="t('kanban.evaluation.statistics.times')"
+              suffix="个"
               class="flex flex-col-reverse"
               :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
           </div>
@@ -306,7 +306,7 @@ defineExpose({
             <Statistic
               title="综合得分"
               :value="evaluationData.statistics.overallScore"
-              :suffix="t('kanban.evaluation.statistics.times')"
+              :suffix="t('kanban.evaluation.statistics.points')"
               class="flex flex-col-reverse"
               :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
           </div>
