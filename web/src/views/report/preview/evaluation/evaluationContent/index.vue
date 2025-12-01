@@ -5,6 +5,7 @@ import { ReportContent } from '@/views/report/preview/PropsType';
 import eCharts from '@/utils/echarts';
 import { EvaluationPurpose } from '@/enums/enums';
 import { enumUtils } from '@xcan-angus/infra';
+import { Statistic } from 'ant-design-vue';
 
 const { t } = useI18n();
 
@@ -155,7 +156,7 @@ const createScoreProgressBarConfig = (score: number, title: string) => {
   return {
     grid: {
       left: '0%',
-      right: '10%',
+      right: '15%',
       top: '0%',
       bottom: '0%',
       containLabel: false
@@ -191,7 +192,7 @@ const createScoreProgressBarConfig = (score: number, title: string) => {
           fontSize: 14,
           fontWeight: 'bold',
           color: color,
-          offset: [10, 0]
+          offset: [2, 0]
         },
         emphasis: {
           itemStyle: {
@@ -480,6 +481,12 @@ onBeforeUnmount(() => {
                 {{ (+props.dataSource.content.metrics.FUNCTIONAL_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
               </span>
             </div>
+            <div class="info-row">
+              <span class="info-label">权重</span>
+              <span class="info-value">
+                {{ props.dataSource.content.metrics.FUNCTIONAL_SCORE.weight }} %
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -508,6 +515,12 @@ onBeforeUnmount(() => {
                 {{ (+props.dataSource.content.metrics.PERFORMANCE_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
               </span>
             </div>
+            <div class="info-row">
+              <span class="info-label">权重</span>
+              <span class="info-value">
+                {{ props.dataSource.content.metrics.PERFORMANCE_SCORE.weight }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -521,7 +534,7 @@ onBeforeUnmount(() => {
             <div class="info-row">
               <span class="info-label">{{ t('reportPreview.evaluation.detail.stabilityTestPassRate.passRate') }}</span>
               <span class="info-value" :style="{ color: getRateColor(props.dataSource.content.metrics.STABILITY_SCORE.rate) }">
-                {{ (+props.dataSource.content.metrics.STABILITY_SCORE.rate).toFixed(1) }}%
+                {{ (+props.dataSource.content.metrics.STABILITY_SCORE.rate).toFixed(1) }}
               </span>
             </div>
             <div class="info-row">
@@ -536,6 +549,12 @@ onBeforeUnmount(() => {
                 {{ (+props.dataSource.content.metrics.STABILITY_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
               </span>
             </div>
+            <div class="info-row">
+              <span class="info-label">权重</span>
+              <span class="info-value">
+                {{ props.dataSource.content.metrics.STABILITY_SCORE.weight }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -547,7 +566,31 @@ onBeforeUnmount(() => {
           <div class="progress-header">
             <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.COMPATIBILITY_SCORE) }}</span>
           </div>
-          <div ref="compatibilityScoreRef" class="quality-score-progress-bar"></div>
+          <div class="flex items-center">
+            <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
+              <Statistic
+                title="总用例"
+                :value="props.dataSource?.content?.metrics?.COMPATIBILITY_SCORE.totalCases"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
+              <Statistic
+                title="总得分"
+                :value="props.dataSource?.content?.metrics?.COMPATIBILITY_SCORE.totalScore"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
+              <Statistic
+                title="权重"
+                :value="props.dataSource?.content?.metrics?.COMPATIBILITY_SCORE.weight"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
+            </div>
+            <span class="mr-1">平均得分</span>
+            <div ref="compatibilityScoreRef" class="quality-score-progress-bar flex-1"></div>
+          </div>
+         
         </div>
 
         <!-- Usability Score -->
@@ -555,15 +598,61 @@ onBeforeUnmount(() => {
           <div class="progress-header">
             <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.USABILITY_SCORE) }}</span>
           </div>
-          <div ref="usabilityScoreRef" class="quality-score-progress-bar"></div>
+          <div class="flex items-center">
+            <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
+              <Statistic
+                  title="总用例"
+                  :value="props.dataSource?.content?.metrics?.USABILITY_SCORE.totalCases"
+                  suffix=""
+                  class="flex flex-col-reverse"
+                  :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
+                <Statistic
+                  title="总得分"
+                  :value="props.dataSource?.content?.metrics?.USABILITY_SCORE.totalScore"
+                  suffix=""
+                  class="flex flex-col-reverse"
+                  :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
+                <Statistic
+                  title="权重"
+                  :value="props.dataSource?.content?.metrics?.USABILITY_SCORE.weight"
+                  suffix=""
+                  class="flex flex-col-reverse"
+                  :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
+              </div>
+            <span class="mr-1">平均得分</span>
+            <div ref="usabilityScoreRef" class="quality-score-progress-bar flex-1"></div>
+          </div>
         </div>
-
         <!-- Maintainability Score -->
         <div v-if="props.dataSource?.content?.metrics.MAINTAINABILITY_SCORE" class="quality-score-progress-item">
           <div class="progress-header">
             <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.MAINTAINABILITY_SCORE) }}</span>
           </div>
-          <div ref="maintainabilityScoreRef" class="quality-score-progress-bar"></div>
+
+          <div class="flex items-center">
+            <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
+              <Statistic
+                title="总用例"
+                :value="props.dataSource?.content?.metrics?.MAINTAINABILITY_SCORE.totalCases"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
+              <Statistic
+                title="总得分"
+                :value="props.dataSource?.content?.metrics?.MAINTAINABILITY_SCORE.totalScore"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
+              <Statistic
+                title="权重"
+                :value="props.dataSource?.content?.metrics?.MAINTAINABILITY_SCORE.weight"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
+            </div>
+            <span class="mr-1">平均得分</span>
+            <div ref="maintainabilityScoreRef" class="quality-score-progress-bar flex-1"></div>
+          </div>
         </div>
 
         <!-- Scalability Score -->
@@ -571,7 +660,30 @@ onBeforeUnmount(() => {
           <div class="progress-header">
             <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.SCALABILITY_SCORE) }}</span>
           </div>
-          <div ref="scalabilityScoreRef" class="quality-score-progress-bar"></div>
+          <div class="flex items-center"> 
+            <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
+              <Statistic
+                title="总用例"
+                :value="props.dataSource?.content?.metrics?.SCALABILITY_SCORE.totalCases"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
+              <Statistic
+                title="总得分"
+                :value="props.dataSource?.content?.metrics?.SCALABILITY_SCORE.totalScore"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
+              <Statistic
+                title="权重"
+                :value="props.dataSource?.content?.metrics?.SCALABILITY_SCORE.weight"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
+            </div>
+            <span class="mr-1">平均得分</span>
+            <div ref="scalabilityScoreRef" class="quality-score-progress-bar flex-1"></div>
+          </div>
         </div>
 
         <!-- Security Score -->
@@ -579,7 +691,30 @@ onBeforeUnmount(() => {
           <div class="progress-header">
             <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.SECURITY_SCORE) }}</span>
           </div>
-          <div ref="securityScoreRef" class="quality-score-progress-bar"></div>
+          <div class="flex items-center"> 
+            <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
+              <Statistic
+                title="总用例"
+                :value="props.dataSource?.content?.metrics?.SECURITY_SCORE.totalCases"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
+              <Statistic
+                title="总得分"
+                :value="props.dataSource?.content?.metrics?.SECURITY_SCORE.totalScore"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
+              <Statistic
+                title="权重"
+                :value="props.dataSource?.content?.metrics?.SECURITY_SCORE.weight"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
+            </div>
+            <span class="mr-1">平均得分</span>
+            <div ref="securityScoreRef" class="quality-score-progress-bar flex-1"></div>
+          </div>
         </div>
 
         <!-- Compliance Score -->
@@ -587,7 +722,30 @@ onBeforeUnmount(() => {
           <div class="progress-header">
             <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.COMPLIANCE_SCORE) }}</span>
           </div>
-          <div ref="complianceScoreRef" class="quality-score-progress-bar"></div>
+          <div class="flex items-center">  
+            <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
+              <Statistic
+                title="总用例"
+                :value="props.dataSource?.content?.metrics?.COMPLIANCE_SCORE.totalCases"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
+              <Statistic
+                title="总得分"
+                :value="props.dataSource?.content?.metrics?.COMPLIANCE_SCORE.totalScore"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
+              <Statistic
+                title="权重"
+                :value="props.dataSource?.content?.metrics?.COMPLIANCE_SCORE.weight"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
+            </div>
+            <span class="mr-1">平均得分</span>
+            <div ref="complianceScoreRef" class="quality-score-progress-bar flex-1"></div>
+          </div>
         </div>
 
         <!-- Availability Score -->
@@ -595,17 +753,36 @@ onBeforeUnmount(() => {
           <div class="progress-header">
             <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.AVAILABILITY_SCORE) }}</span>
           </div>
-          <div ref="availabilityScoreRef" class="quality-score-progress-bar"></div>
+          <div class="flex items-center"> 
+            <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
+              <Statistic
+                title="总用例"
+                :value="props.dataSource?.content?.metrics?.AVAILABILITY_SCORE.totalCases"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
+              <Statistic
+                title="总得分"
+                :value="props.dataSource?.content?.metrics?.AVAILABILITY_SCORE.totalScore"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
+              <Statistic
+                title="权重"
+                :value="props.dataSource?.content?.metrics?.AVAILABILITY_SCORE.weight"
+                suffix=""
+                class="flex flex-col-reverse"
+                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
+            </div>
+            <span class="mr-1">平均得分</span>
+            <div ref="availabilityScoreRef" class="quality-score-progress-bar flex-1"></div>
+          </div>
         </div>
       </div>
     </div>
-
-
-
-
-
-
   </div>
+
+
 </template>
 
 <style scoped>
@@ -725,7 +902,7 @@ onBeforeUnmount(() => {
   position: absolute;
   top: 0;
   left: 0;
-  width: 90%;
+  width: 85%;
   height: 100%;
   border-radius: 4px;
   background-color: #D9D9D9;
