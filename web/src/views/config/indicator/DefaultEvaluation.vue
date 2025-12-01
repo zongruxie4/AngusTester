@@ -5,8 +5,9 @@ import { testerSetting } from '@/api/tester';
 import ExpandGrid from './ExpandGrid.vue';
 import { EvaluationPurpose } from '@/enums/enums';
 import { enumUtils } from '@xcan-angus/infra';
-import { InputNumber } from 'ant-design-vue';
-import { notification } from '@xcan-angus/vue-ui';
+import { InputNumber, Button } from 'ant-design-vue';
+import { notification, Icon } from '@xcan-angus/vue-ui';
+import { appContext } from '@xcan-angus/infra';
 const { t } = useI18n();
 
 const evaluationData = ref({});
@@ -88,6 +89,7 @@ onMounted(() => {
         </template>
         <Button
           v-else
+           v-show="appContext.isAdmin()"
           class="text-3 py-0 h-5"
           type="text"
           @click.stop="toggleEditMode">
