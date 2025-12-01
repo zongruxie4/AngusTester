@@ -175,6 +175,7 @@ const loadEvaluationData = async () => {
     ...res.data,
     ...res.data.metrics,
     statistics: {
+      overallScore: res.data.overallScore,
       total: res.data.totalCases,
       completed: res.data.completedCases,
       highestScore: maxScore,
@@ -297,6 +298,14 @@ defineExpose({
             <Statistic
               :title="t('kanban.evaluation.statistics.totalEvaluations')"
               :value="evaluationData.statistics.total"
+              :suffix="t('kanban.evaluation.statistics.times')"
+              class="flex flex-col-reverse"
+              :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
+          </div>
+          <div class="statistic-item">
+            <Statistic
+              title="综合得分"
+              :value="evaluationData.statistics.overallScore"
               :suffix="t('kanban.evaluation.statistics.times')"
               class="flex flex-col-reverse"
               :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />

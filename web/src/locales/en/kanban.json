@@ -193,7 +193,7 @@
     "evaluation": {
       "statistics": {
         "title": "Evaluation Statistics",
-        "totalEvaluations": "Total Evaluations",
+        "totalEvaluations": "Total Cases",
         "averageScore": "Average Score",
         "highestScore": "Highest Score",
         "lowestScore": "Lowest Score",

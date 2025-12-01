@@ -199,7 +199,7 @@
     "evaluation": {
       "statistics": {
         "title": "测评统计",
-        "totalEvaluations": "总测评数",
+        "totalEvaluations": "总用例数",
         "averageScore": "平均得分",
         "highestScore": "最高分",
         "lowestScore": "最低分",

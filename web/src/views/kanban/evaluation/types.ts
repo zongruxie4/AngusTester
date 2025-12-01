@@ -97,6 +97,8 @@ export interface EvaluationData {
     averageScore: number;
     highestScore: number;
     lowestScore: number;
+    totalCases: number;
+    overallScore: number;
   };
 }
 

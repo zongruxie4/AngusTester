@@ -59,7 +59,7 @@ const getScoreColor = (score: number) => {
  * Get rate color based on rate value (0-100 scale)
  */
 const getRateColor = (rate: number) => {
-  if (rate >= 9) return '#52c41a'; // green
+  if (rate >= 90) return '#52c41a'; // green
   if (rate >= 60) return '#faad14'; // orange
   return '#ff4d4f'; // red
 };
@@ -458,7 +458,7 @@ onBeforeUnmount(() => {
     <div v-if="props.dataSource?.content?.metrics" class="metrics-charts-container">
       <!-- Functional Passed Rate -->
       <div v-if="props.dataSource?.content?.metrics.FUNCTIONAL_SCORE" class="metric-item mb-6">
-        <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.functionalTestPassRate.title') }}</h2>
+        <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.FUNCTIONAL_SCORE) }}</h2>
         <div class="metric-chart-wrapper">
           <div ref="functionalPassedRateRef" class="metric-chart"></div>
           <div class="metric-info">
@@ -486,7 +486,7 @@ onBeforeUnmount(() => {
 
       <!-- Performance Passed Rate -->
       <div v-if="props.dataSource?.content?.metrics.PERFORMANCE_SCORE" class="metric-item mb-6">
-        <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.title') }}</h2>
+        <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.PERFORMANCE_SCORE) }}</h2>
         <div class="metric-chart-wrapper">
           <div ref="performancePassedRateRef" class="metric-chart"></div>
           <div class="metric-info">
@@ -514,7 +514,7 @@ onBeforeUnmount(() => {
 
       <!-- Stability Passed Rate -->
       <div v-if="props.dataSource?.content?.metrics.STABILITY_SCORE" class="metric-item mb-6">
-        <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.stabilityTestPassRate.title') }}</h2>
+        <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.STABILITY_SCORE) }}</h2>
         <div class="metric-chart-wrapper">
           <div ref="stabilityPassedRateRef" class="metric-chart"></div>
           <div class="metric-info">

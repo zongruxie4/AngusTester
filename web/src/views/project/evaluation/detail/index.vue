@@ -10,8 +10,12 @@ import { ProjectMenuKey } from '@/views/project/menu';
 import { EvaluationDetail } from '../types';
 import eCharts from '@/utils/echarts';
 import { throttle } from 'throttle-debounce';
+import { enumUtils } from '@xcan-angus/infra';
+import { EvaluationPurpose } from '@/enums/enums';
+import { testerSetting } from '@/api/tester';
 
 const { t } = useI18n();
+enumUtils.enumToMessages(EvaluationPurpose);
 
 // Props
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -529,8 +533,18 @@ const showPassRateScores = computed(() => {
   return evaluationDetail.value?.result?.metrics?.FUNCTIONAL_SCORE || evaluationDetail.value?.result?.metrics?.PERFORMANCE_SCORE || evaluationDetail.value?.result?.metrics?.STABILITY_SCORE;
 });
 
+const indicatorConfig = ref<any>({});
+const loadIndicatorConfig = async () => {
+  const [error, res] = await testerSetting.getEvaluationIndicator();
+  if (error) {
+    return;
+  }
+  indicatorConfig.value = res?.data || {};
+};
+
 // Lifecycle hooks
-onMounted(() => {
+onMounted(async () => {
+  loadIndicatorConfig();
   watch(() => props.data, async (newValue, oldValue) => {
     const evaluationId = newValue?.id;
     if (!evaluationId) {
@@ -703,13 +717,42 @@ onBeforeUnmount(() => {
       <template #title>
         <div class="text-base font-semibold">测评结果</div>
       </template>
+
       
       <div class="evaluation-results-container">
-        <template v-if="showPassRateScores">
 
+        <div v-if="showQualityScores" class="flex items-center">
+          <div class="">
+            <h3 class="text-4 font-semibold mb-4 text-title">综合结果</h3>
+          </div>
+          <div class="quality-score-content inline-flex flex-1 justify-around space-x-4">
+            <Statistic
+              title="综合得分"
+              :value="evaluationDetail.result.overallScore"
+              suffix=""
+              class="flex flex-col-reverse"
+              :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
+            <Statistic
+              title="总用例"
+              :value="evaluationDetail.result.totalCases"
+              suffix=""
+              class="flex flex-col-reverse"
+              :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
+            <Statistic
+              title="总指标数"
+              :value="Object.keys(evaluationDetail.result.metrics || {}).length"
+              suffix=""
+              class="flex flex-col-reverse"
+              :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }" />
+          </div>
+        </div>
+
+        <Divider />
+
+        <template v-if="showPassRateScores">
           <!-- Test Pass Rates Section -->
           <div class="results-section mb-6">
-            <h3 class="text-4 font-semibold mb-4 text-title">测试通过率</h3>
+            <h3 class="text-4 font-semibold mb-4 text-title">主要指标</h3>
             
             <div class="pass-rate-charts-grid">
               <!-- Functional Test Pass Rate -->
@@ -718,7 +761,7 @@ onBeforeUnmount(() => {
                 class="pass-rate-card"
                 :bordered="false">
                 <template #title>
-                  <div class="card-title">功能测试通过率</div>
+                  <div class="card-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.FUNCTIONAL_SCORE) }}</div>
                 </template>
                 <div class="pass-rate-content">
                   <div ref="functionalPassedRateRef" class="pass-rate-chart"></div>
@@ -743,6 +786,12 @@ onBeforeUnmount(() => {
                         {{ (+evaluationDetail.result.metrics.FUNCTIONAL_SCORE.score).toFixed(1) }} 分
                       </span>
                     </div>
+                    <div class="info-item">
+                      <span class="info-label">权重</span>
+                      <span class="info-value">
+                        {{ indicatorConfig[EvaluationPurpose.FUNCTIONAL_SCORE] }} %
+                      </span>
+                    </div>
                   </div>
                 </div>
               </Card>
@@ -753,7 +802,7 @@ onBeforeUnmount(() => {
                 class="pass-rate-card"
                 :bordered="false">
                 <template #title>
-                  <div class="card-title">性能测试通过率</div>
+                  <div class="card-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.PERFORMANCE_SCORE) }}</div>
                 </template>
                 <div class="pass-rate-content">
                   <div ref="performancePassedRateRef" class="pass-rate-chart"></div>
@@ -778,6 +827,12 @@ onBeforeUnmount(() => {
                         {{ (+evaluationDetail.result.metrics.PERFORMANCE_SCORE.score).toFixed(1) }} 分
                       </span>
                     </div>
+                    <div class="info-item">
+                      <span class="info-label">权重</span>
+                      <span class="info-value">
+                        {{ indicatorConfig[EvaluationPurpose.PERFORMANCE_SCORE] }} %
+                      </span>
+                    </div>
                   </div>
                 </div>
               </Card>
@@ -788,7 +843,7 @@ onBeforeUnmount(() => {
                 class="pass-rate-card"
                 :bordered="false">
                 <template #title>
-                  <div class="card-title">稳定性测试通过率</div>
+                  <div class="card-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.STABILITY_SCORE) }}</div>
                 </template>
                 <div class="pass-rate-content">
                   <div ref="stabilityPassedRateRef" class="pass-rate-chart"></div>
@@ -813,19 +868,24 @@ onBeforeUnmount(() => {
                         {{ (+evaluationDetail.result.metrics.STABILITY_SCORE.score).toFixed(1) }} 分
                       </span>
                     </div>
+                    <div class="info-item">
+                      <span class="info-label">权重</span>
+                      <span class="info-value">
+                        {{ indicatorConfig[EvaluationPurpose.STABILITY_SCORE] }} %
+                      </span>
+                    </div>
                   </div>
                 </div>
               </Card>
             </div>
           </div>
-  
           <Divider />
         </template>
 
         <template v-if="showQualityScores">
           <!-- Quality Scores Section -->
           <div class="results-section">
-            <h3 class="text-4 font-semibold mb-4 text-title">质量评分</h3>
+            <h3 class="text-4 font-semibold mb-4 text-title">其他指标</h3>
             
             <div class="quality-scores-container space-y-2">
               <!-- Compatibility Score -->
@@ -846,7 +906,7 @@ onBeforeUnmount(() => {
                       :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
                     <Statistic
                       title="总得分"
-                      :value="evaluationDetail.result.metrics?.COMPATIBILITY_SCORE.score"
+                      :value="evaluationDetail.result.metrics?.COMPATIBILITY_SCORE.totalScore"
                       suffix=""
                       class="flex flex-col-reverse"
                       :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
@@ -879,7 +939,7 @@ onBeforeUnmount(() => {
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
                       <Statistic
                         title="总得分"
-                        :value="evaluationDetail.result.metrics?.USABILITY_SCORE.score"
+                        :value="evaluationDetail.result.metrics?.USABILITY_SCORE.totalScore"
                         suffix=""
                         class="flex flex-col-reverse"
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
@@ -913,7 +973,7 @@ onBeforeUnmount(() => {
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
                       <Statistic
                         title="总得分"
-                        :value="evaluationDetail.result.metrics?.MAINTAINABILITY_SCORE.score"
+                        :value="evaluationDetail.result.metrics?.MAINTAINABILITY_SCORE.totalScore"
                         suffix=""
                         class="flex flex-col-reverse"
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
@@ -947,7 +1007,7 @@ onBeforeUnmount(() => {
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
                       <Statistic
                         title="总得分"
-                        :value="evaluationDetail.result.metrics?.SCALABILITY_SCORE.score"
+                        :value="evaluationDetail.result.metrics?.SCALABILITY_SCORE.totalScore"
                         suffix=""
                         class="flex flex-col-reverse"
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
@@ -981,7 +1041,7 @@ onBeforeUnmount(() => {
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
                       <Statistic
                         title="总得分"
-                        :value="evaluationDetail.result.metrics?.SECURITY_SCORE.score"
+                        :value="evaluationDetail.result.metrics?.SECURITY_SCORE.totalScore"
                         suffix=""
                         class="flex flex-col-reverse"
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
@@ -1014,7 +1074,7 @@ onBeforeUnmount(() => {
                       :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
                     <Statistic
                       title="总得分"
-                      :value="evaluationDetail.result.metrics?.COMPLIANCE_SCORE.score"
+                      :value="evaluationDetail.result.metrics?.COMPLIANCE_SCORE.totalScore"
                       suffix=""
                       class="flex flex-col-reverse"
                       :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
@@ -1047,7 +1107,7 @@ onBeforeUnmount(() => {
                       :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
                     <Statistic
                       title="总得分"
-                      :value="evaluationDetail.result.metrics?.AVAILABILITY_SCORE.score"
+                      :value="evaluationDetail.result.metrics?.AVAILABILITY_SCORE.totalScore"
                       suffix=""
                       class="flex flex-col-reverse"
                       :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />

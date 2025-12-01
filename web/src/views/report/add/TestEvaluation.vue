@@ -146,7 +146,7 @@ const valid = ref(false);
  */
 const validate = () => {
   valid.value = true;
-  return !!evaluationId.value && purposes.value.length > 0 && date.value[0] && date.value[1];
+  return !!evaluationId.value && purposes.value.length > 0;
 };
 
 /**
@@ -159,8 +159,8 @@ const getData = () => {
     targetId: evaluationId.value,
     targetType: evaluationScope.value,
     evaluationPurposes: purposes.value,
-    createdDateStart: date.value[0],
-    createdDateEnd: date.value[1]
+    createdDateStart: date.value[0] || undefined,
+    createdDateEnd: date.value[1] || undefined
   };
 };
 
@@ -294,7 +294,7 @@ defineExpose({
     </div>
 
     <div class="flex flex-1 items-center space-x-2">
-      <div class="w-16 text-right"><IconRequired class="mr-1" />{{ t('evaluation.columns.resourceCreationTime') }}</div>
+      <div class="w-16 text-right">{{ t('evaluation.columns.resourceCreationTime') }}</div>
       <Colon />
       <DatePicker
         v-model:value="date"

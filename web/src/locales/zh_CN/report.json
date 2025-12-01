@@ -1932,19 +1932,19 @@
       "detail": {
         "title": "测评指标",
         "performanceTestPassRate": {
-          "title": "性能测试通过率",
+          "title": "性能得分",
           "passRate": "通过率：",
           "passCount": "通过数量：",
           "score": "得分："
         },
         "functionalTestPassRate": {
-          "title": "功能测试通过率",
+          "title": "功能得分",
           "passRate": "通过率：",
           "passCount": "通过数量：",
           "score": "得分："
         },
         "stabilityTestPassRate": {
-          "title": "稳定性测试通过率",
+          "title": "稳定性得分" ,
           "passRate": "通过率：",
           "passCount": "通过数量：",
           "score": "得分："

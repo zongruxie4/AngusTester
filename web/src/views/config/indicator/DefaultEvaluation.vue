@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { testerSetting } from '@/api/tester';
 import ExpandGrid from './ExpandGrid.vue';
@@ -8,6 +8,7 @@ import { enumUtils } from '@xcan-angus/infra';
 import { InputNumber, Button } from 'ant-design-vue';
 import { notification, Icon } from '@xcan-angus/vue-ui';
 import { appContext } from '@xcan-angus/infra';
+
 const { t } = useI18n();
 
 const evaluationData = ref({});
@@ -73,6 +74,7 @@ onMounted(() => {
 </script>
 
 <template>
+
  <ExpandGrid title="评估指标权重">
     <template #button>
       <div class="text-3 flex items-center">
