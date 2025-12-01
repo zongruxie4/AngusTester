@@ -37,7 +37,8 @@ const orderSort = ref();
 const searchFilters = ref<SearchCriteria[]>([]);
 const quickSearchFilters = ref<SearchCriteria[]>([]);
 const assocFilters = ref<SearchCriteria[]>([]);
-const assocKeys = ['createdBy'];
+const assocKeys = ['createdBy', 'createdDate'];
+const addTabPane = inject<(data: any) => void>('addTabPane', () => ({}));
 
 const quickSearchConfig = computed<QuickSearchConfig>(() => ({
   title: t('quickSearch.title'),
@@ -78,20 +79,11 @@ const searchPanelOptions = [
     maxlength: 100
   },
   {
-    valueKey: 'startDate',
-    type: 'date',
+    valueKey: 'createdDate',
+    type: 'date-range',
     valueType: 'start',
     op: SearchCriteria.OpEnum.GreaterThanEqual,
-    placeholder: t('common.placeholders.selectStartDate'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
-    allowClear: true
-  },
-  {
-    valueKey: 'deadlineDate',
-    type: 'date',
-    valueType: 'start',
-    op: SearchCriteria.OpEnum.LessThanEqual,
-    placeholder: t('common.placeholders.selectDeadline'),
+    placeholder: [t('common.placeholders.selectCreatedDateRange.0'),  t('common.placeholders.selectCreatedDateRange.1')],
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
   }
@@ -136,6 +128,10 @@ const handleSearchChange = (data: SearchCriteria[], _headers?: { [key: string]: 
     quickSearchOptionsRef.value.clearSelectedMap(['createdByMe']);
     quickSearchFilters.value = quickSearchFilters.value.filter(f => f.key !== 'createdBy');
   }
+  if (key === 'createdDate') {
+    quickSearchOptionsRef.value.clearSelectedMap(['createdDate', 'last1Day', 'last3Days', 'last7Days']);
+    quickSearchFilters.value = quickSearchFilters.value.filter(f => f.key !== 'createdDate');
+  }
   searchFilters.value = [...(data || []).filter(f => !assocKeys.includes(f.key as string))];
   assocFilters.value = data.filter(item => assocKeys.includes(item.key as string));
 
@@ -143,6 +139,8 @@ const handleSearchChange = (data: SearchCriteria[], _headers?: { [key: string]: 
 };
 
 const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void => {
+  
+  quickSearchFilters.value = searchCriteria.filter(f => !assocKeys.includes(f.key as string));
   if (key === 'createdByMe') {
     if (selectedKeys.includes(key)) {
       if (typeof searchPanelRef.value?.setConfigs === 'function') {
@@ -166,10 +164,37 @@ const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchC
     if (typeof searchPanelRef.value?.setConfigs === 'function') {
       searchPanelRef.value.clear();
     }
+    if (!searchFilters.value.length && !assocFilters.value.length) {
+      searchPanelRef.value.change();
+    }
+    quickSearchFilters.value = [];
+    searchFilters.value = [];
+    assocFilters.value = [];
   }
-  searchCriteria = searchCriteria.filter(f => !assocKeys.includes(f.key as string));
-  quickSearchFilters.value = searchCriteria;
-  if (key === 'createdByMe' || key === 'all') {
+  if (key?.startsWith('last') ) {
+    if (selectedKeys.includes(key)) {
+      const createdDateSearchCriteria = searchCriteria.filter(f => f.key === 'createdDate');
+      if (createdDateSearchCriteria.length > 0) {
+        const createdDateValue = [createdDateSearchCriteria[0].value, createdDateSearchCriteria[1].value];
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{
+            valueKey: 'createdDate',
+            type: 'date-range',
+            value: createdDateValue
+          }]);
+        }
+      }
+    } else {
+      if (typeof searchPanelRef.value?.setConfigs === 'function') {
+        searchPanelRef.value.setConfigs([{
+          valueKey: 'createdDate',
+          type: 'date-range',
+          value: []
+        }]);
+      }
+    }
+  }
+  if (key === 'createdByMe' || key === 'all' || key === 'createdDate') {
     return
   }
   emits('change', getSearchParams());
@@ -184,8 +209,6 @@ const handleSortChange = (sortData) => {
 const handleRefresh = () => {
   emits('refresh');
 };
-
-const addTabPane = inject<(data: any) => void>('addTabPane', () => ({}));
 
 onMounted(() => {
   // Component mounted
