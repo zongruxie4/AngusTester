@@ -59,7 +59,9 @@ const showTestScore = computed(() => {
   TestPurpose.COMPATIBILITY,
   TestPurpose.USABILITY,
   TestPurpose.MAINTAINABILITY,
-  TestPurpose.SCALABILITY].includes(props.selectedCase?.testPurpose as TestPurpose || '');
+  TestPurpose.SCALABILITY,
+  TestPurpose.COMPLIANCE,
+  TestPurpose.AVAILABILITY].includes(props.selectedCase?.testPurpose as TestPurpose || '');
 });
 
 /**

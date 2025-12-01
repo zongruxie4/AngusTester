@@ -233,6 +233,7 @@
     "assocScenarios": "自动化",
     "scenarioName": "场景名称",
     "testEvaluation": "测评",
+    "score": "分",
     "counts": {
       "progress": "进度",
       "totalCount": "总数",

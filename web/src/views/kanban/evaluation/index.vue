@@ -7,6 +7,9 @@ import { throttle } from 'throttle-debounce';
 import { kanban } from '@/api/tester';
 import { useChartManagement } from './composables/useChartManagement';
 import { EvaluationData } from './types';
+import { EvaluationPurpose } from '@/enums/enums';
+import { enumUtils } from '@xcan-angus/infra';
+
 
 const { t } = useI18n();
 
@@ -64,6 +67,13 @@ const evaluationData = ref<EvaluationData>({
   SECURITY_SCORE: {
     score: 0
   },
+  COMPLIANCE_SCORE: {
+    score: 0
+  },
+  AVAILABILITY_SCORE: {
+    score: 0
+  },
+  
   overallScore: 0,
   scoreLevel: '',
   compatibilityScore: 0,
@@ -94,7 +104,9 @@ const maintainabilityRef = ref<HTMLElement>();
 const extensibilityRef = ref<HTMLElement>();
 const qualityRadarRef = ref<HTMLElement>();
 const statisticsBarRef = ref<HTMLElement>();
-
+const complianceRef = ref<HTMLElement>();
+const availabilityRef = ref<HTMLElement>();
+const securityRef = ref<HTMLElement>();
 /**
  * Initialize chart management
  */
@@ -150,9 +162,11 @@ const loadEvaluationData = async () => {
     +res.data.metrics.MAINTAINABILITY_SCORE.score,
     +res.data.metrics.SCALABILITY_SCORE.score,
     +res.data.metrics.SECURITY_SCORE.score,
-    +res.data.metrics.PERFORMANCE_PASSED_RATE.score,
-    +res.data.metrics.FUNCTIONAL_PASSED_RATE.score,
-    +res.data.metrics.STABILITY_PASSED_RATE.score,
+    +res.data.metrics.PERFORMANCE_SCORE.score,
+    +res.data.metrics.FUNCTIONAL_SCORE.score,
+    +res.data.metrics.STABILITY_SCORE.score,
+    +res.data.metrics.COMPLIANCE_SCORE.score,
+    +res.data.metrics.AVAILABILITY_SCORE.score,
   ];
   const maxScore = Math.max(...scroeArr);
   const minScore = Math.min(...scroeArr);
@@ -213,7 +227,9 @@ onMounted(async () => {
   if (extensibilityRef.value) chartRefs.extensibilityRef = extensibilityRef.value;
   if (qualityRadarRef.value) chartRefs.qualityRadarRef = qualityRadarRef.value;
   if (statisticsBarRef.value) chartRefs.statisticsBarRef = statisticsBarRef.value;
-
+  if (complianceRef.value) chartRefs.complianceRef = complianceRef.value;
+  if (availabilityRef.value) chartRefs.availabilityRef = availabilityRef.value;
+  if (securityRef.value) chartRefs.securityRef = securityRef.value;
   initializeCharts(chartRefs);
 
   // Watch for props changes and load data
@@ -332,7 +348,7 @@ defineExpose({
             <Tag :color="getScoreLevel(evaluationData.overallScore).color" class="text-base px-3 py-1 mb-2">
               {{ getScoreLevel(evaluationData.overallScore).text }}
             </Tag>
-            <div class="text-sm text-slate-500">{{ t('kanban.evaluation.overallScore.overallScoreLabel') }}：{{ evaluationData.overallScore ? Number(evaluationData.overallScore).toFixed(1) : '0.0' }} {{ t('kanban.evaluation.statistics.points') }}</div>
+            <div class="text-sm text-slate-500">{{ t('kanban.evaluation.overallScore.overallScoreLabel') }}：{{ evaluationData.overallScore ? Number(evaluationData.overallScore).toFixed(2) : '0.0' }} {{ t('kanban.evaluation.statistics.points') }}</div>
           </div>
         </div>
       </Card>
@@ -348,41 +364,41 @@ defineExpose({
         <template #title>
           <div class="section-title">{{ t('kanban.evaluation.testPassRate.title') }}</div>
         </template>
-        <div class="test-pass-rates-container">
+        <div class="test-pass-rates-container"> 
           <div class="pass-rate-charts">
             <div class="pass-rate-item">
               <div ref="functionTestPassRateRef" class="chart-container-small"></div>
               <div class="pass-rate-info">
-                <div class="pass-rate-title">{{ t('kanban.evaluation.testPassRate.functionalTest') }}</div>
-                <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.FUNCTIONAL_PASSED_RATE?.rate) }">
-                  {{ evaluationData.FUNCTIONAL_PASSED_RATE?.rate }}%
+                <div class="pass-rate-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.FUNCTIONAL_SCORE) }}</div>
+                  <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.FUNCTIONAL_SCORE?.rate) }">
+                  {{ evaluationData.FUNCTIONAL_SCORE?.rate }}%
                 </div>
                 <div class="pass-rate-detail">
-                  {{ evaluationData.FUNCTIONAL_PASSED_RATE?.numerator }}/{{ evaluationData.FUNCTIONAL_PASSED_RATE?.denominator }}
+                  {{ evaluationData.FUNCTIONAL_SCORE?.numerator }}/{{ evaluationData.FUNCTIONAL_SCORE?.denominator }}
                 </div>
               </div>
             </div>
             <div class="pass-rate-item">
               <div ref="performanceTestPassRateRef" class="chart-container-small"></div>
               <div class="pass-rate-info">
-                <div class="pass-rate-title">{{ t('kanban.evaluation.testPassRate.performanceTest') }}</div>
-                <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.PERFORMANCE_PASSED_RATE?.rate) }">
-                  {{ evaluationData. PERFORMANCE_PASSED_RATE?.rate }}%
+                <div class="pass-rate-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.PERFORMANCE_SCORE) }}</div>
+                <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.PERFORMANCE_SCORE?.rate) }">
+                      {{ evaluationData.PERFORMANCE_SCORE?.rate }}%
                 </div>
                 <div class="pass-rate-detail">
-                  {{ evaluationData. PERFORMANCE_PASSED_RATE?.numerator }}/{{ evaluationData.PERFORMANCE_PASSED_RATE?.denominator }}
+                  {{ evaluationData.PERFORMANCE_SCORE?.numerator }}/{{ evaluationData.PERFORMANCE_SCORE?.denominator }}
                 </div>
               </div>
             </div>
             <div class="pass-rate-item">
               <div ref="stabilityTestPassRateRef" class="chart-container-small"></div>
               <div class="pass-rate-info">
-                <div class="pass-rate-title">{{ t('kanban.evaluation.testPassRate.stabilityTest') }}</div>
-                <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.STABILITY_PASSED_RATE?.rate) }">
-                  {{ evaluationData.STABILITY_PASSED_RATE?.rate }}%
+                <div class="pass-rate-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.STABILITY_SCORE) }}</div>
+                <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.STABILITY_SCORE?.rate) }">
+                  {{ evaluationData.STABILITY_SCORE?.rate }}%
                 </div>
                 <div class="pass-rate-detail">
-                  {{ evaluationData.STABILITY_PASSED_RATE?.numerator }}/{{ evaluationData.STABILITY_PASSED_RATE?.denominator }}
+                  {{ evaluationData.STABILITY_SCORE?.numerator }}/{{ evaluationData.STABILITY_SCORE?.denominator }}
                 </div>
               </div>
             </div>
@@ -390,15 +406,13 @@ defineExpose({
         </div>
       </Card>
 
-
-      
     </div>
 
     <!-- Row 4: Quality Scores Gauges -->
     <div class="flex space-x-2 h-64">
       <Card class="flex-1 h-full quality-score-card" :bordered="false">
         <template #title>
-          <div class="section-title">{{ t('kanban.evaluation.qualityScores.compatibility') }}</div>
+          <div class="section-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.COMPATIBILITY_SCORE) }}</div>
         </template>
         <div ref="compatibilityRef" class="chart-container-gauge"></div>
         <div class="quality-score-tag">
@@ -410,7 +424,7 @@ defineExpose({
 
       <Card class="flex-1 h-full quality-score-card" :bordered="false">
         <template #title>
-          <div class="section-title">{{ t('kanban.evaluation.qualityScores.usability') }}</div>
+          <div class="section-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.USABILITY_SCORE) }}</div>
         </template>
         <div ref="usabilityRef" class="chart-container-gauge"></div>
         <div class="quality-score-tag">
@@ -422,7 +436,7 @@ defineExpose({
 
       <Card class="flex-1 h-full quality-score-card" :bordered="false">
         <template #title>
-          <div class="section-title">{{ t('kanban.evaluation.qualityScores.maintainability') }}</div>
+          <div class="section-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.MAINTAINABILITY_SCORE) }}</div>
         </template>
         <div ref="maintainabilityRef" class="chart-container-gauge"></div>
         <div class="quality-score-tag">
@@ -434,7 +448,7 @@ defineExpose({
 
       <Card class="flex-1 h-full quality-score-card" :bordered="false">
         <template #title>
-          <div class="section-title">{{ t('kanban.evaluation.qualityScores.scalability') }}</div>
+          <div class="section-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.SCALABILITY_SCORE) }}</div>
         </template>
         <div ref="extensibilityRef" class="chart-container-gauge"></div>
         <div class="quality-score-tag">
@@ -443,10 +457,52 @@ defineExpose({
           </Tag>
         </div>
       </Card>
+
+    </div>
+
+    <div class="flex space-x-2 h-64">
+      <!-- Availability Score -->
+      <Card class="flex-1 h-full quality-score-card" :bordered="false">
+        <template #title>
+          <div class="section-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.AVAILABILITY_SCORE) }}</div>
+        </template>
+        <div ref="availabilityRef" class="chart-container-gauge"></div>
+        <div class="quality-score-tag">
+          <Tag :color="getScoreLevel(evaluationData.AVAILABILITY_SCORE?.score).color">
+            {{ getScoreLevel(evaluationData.AVAILABILITY_SCORE?.score).text }}
+          </Tag>
+        </div>
+      </Card>
+
+      <!-- Security Score -->
+      <Card class="flex-1 h-full quality-score-card" :bordered="false"> 
+        <template #title>
+          <div class="section-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.SECURITY_SCORE) }}</div>
+        </template>
+        <div ref="securityRef" class="chart-container-gauge"></div>
+        <div class="quality-score-tag">
+          <Tag :color="getScoreLevel(evaluationData.SECURITY_SCORE?.score).color">
+            {{ getScoreLevel(evaluationData.SECURITY_SCORE?.score).text }}
+          </Tag>
+        </div>
+      </Card>
+
+      <!-- Compliance Score -->
+      <Card class="flex-1 h-full quality-score-card" :bordered="false"> 
+        <template #title>
+          <div class="section-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.COMPLIANCE_SCORE) }}</div>
+        </template>
+        <div ref="complianceRef" class="chart-container-gauge"></div>   
+        <div class="quality-score-tag">
+          <Tag :color="getScoreLevel(evaluationData.COMPLIANCE_SCORE?.score).color">
+            {{ getScoreLevel(evaluationData.COMPLIANCE_SCORE?.score).text }}
+          </Tag>
+        </div>
+      </Card>
+      <div class="flex-1 h-full quality-score-card" :bordered="false"></div>
     </div>
   </div>
 </template>
-
 <style scoped>
 /* Dashboard container */
 .evaluation-dashboard {

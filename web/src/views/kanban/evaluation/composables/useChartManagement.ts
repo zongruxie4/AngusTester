@@ -54,6 +54,14 @@ export function useChartManagement() {
   /** Statistics bar chart instance */
   let statisticsBarChart: eCharts.ECharts | null = null;
 
+  /** Compliance score pie chart instance */
+  let complianceChart: eCharts.ECharts | null = null;
+
+  /** Availability score pie chart instance */
+  let availabilityChart: eCharts.ECharts | null = null;
+
+  let securityChart: eCharts.ECharts | null = null;
+
   /** Chart configuration references */
   const overallScoreConfig = ref<ChartConfig>({});
   const requirementCompletionConfig = ref<ChartConfig>({});
@@ -67,7 +75,9 @@ export function useChartManagement() {
   const extensibilityConfig = ref<ChartConfig>({});
   const qualityRadarConfig = ref<ChartConfig>({});
   const statisticsBarConfig = ref<ChartConfig>({});
-
+  const complianceConfig = ref<ChartConfig>({});
+  const availabilityConfig = ref<ChartConfig>({});
+  const securityConfig = ref<ChartConfig>({});
   /**
    * Initializes all charts with their configurations
    *
@@ -142,6 +152,23 @@ export function useChartManagement() {
       statisticsBarChart = eCharts.init(chartRefs.statisticsBarRef);
       statisticsBarChart.setOption(statisticsBarConfig.value);
     }
+
+    // Initialize compliance score pie chart
+    if (chartRefs.complianceRef) {
+      complianceChart = eCharts.init(chartRefs.complianceRef);
+      complianceChart.setOption(complianceConfig.value);
+    }
+    
+    // Initialize availability score pie chart
+    if (chartRefs.availabilityRef) {
+      availabilityChart = eCharts.init(chartRefs.availabilityRef);
+      availabilityChart.setOption(availabilityConfig.value);
+    }
+
+    if (chartRefs.securityRef) {
+      securityChart = eCharts.init(chartRefs.securityRef);
+      securityChart.setOption(securityConfig.value);
+    }
   };
 
   /**
@@ -160,7 +187,9 @@ export function useChartManagement() {
       maintainabilityChart,
       extensibilityChart,
       qualityRadarChart,
-      statisticsBarChart
+      statisticsBarChart,
+      complianceChart,
+      availabilityChart
     ];
 
     charts.forEach(chart => {
@@ -183,27 +212,27 @@ export function useChartManagement() {
     }
 
     // Update requirement completion pie chart
-    if (requirementCompletionChart && data.PERFORMANCE_PASSED_RATE) {
-      const { rate, numerator: completed, denominator: total } = data.PERFORMANCE_PASSED_RATE;
+    if (requirementCompletionChart && data.PERFORMANCE_SCORE) {
+      const { rate, numerator: completed, denominator: total } = data.PERFORMANCE_SCORE;
       requirementCompletionConfig.value = createCompletionPieConfig(rate, completed, total, t('kanban.evaluation.chartLabels.requirementCompletionRate'));
       requirementCompletionChart.setOption(requirementCompletionConfig.value, true);
     }
 
     // // Update test pass rate pie charts
-    if (functionTestPassRateChart && data.FUNCTIONAL_PASSED_RATE) {
-      const { rate } = data.FUNCTIONAL_PASSED_RATE;
+    if (functionTestPassRateChart && data.FUNCTIONAL_SCORE) {
+      const { rate } = data.FUNCTIONAL_SCORE;
       functionTestPassRateConfig.value = createSimpleProgressPieConfig(rate);
       functionTestPassRateChart.setOption(functionTestPassRateConfig.value, true);
     }
 
-    if (performanceTestPassRateChart && data.PERFORMANCE_PASSED_RATE) {
-      const { rate } = data.PERFORMANCE_PASSED_RATE;
+    if (performanceTestPassRateChart && data.PERFORMANCE_SCORE) {
+      const { rate } = data.PERFORMANCE_SCORE;
       performanceTestPassRateConfig.value = createSimpleProgressPieConfig(rate);
       performanceTestPassRateChart.setOption(performanceTestPassRateConfig.value, true);
     }
 
-    if (stabilityTestPassRateChart && data.STABILITY_PASSED_RATE) {
-      const { rate } = data.STABILITY_PASSED_RATE;
+    if (stabilityTestPassRateChart && data.STABILITY_SCORE) {
+      const { rate } = data.STABILITY_SCORE;
       stabilityTestPassRateConfig.value = createSimpleProgressPieConfig(rate);
       stabilityTestPassRateChart.setOption(stabilityTestPassRateConfig.value, true);
     }
@@ -229,17 +258,37 @@ export function useChartManagement() {
       extensibilityChart.setOption(extensibilityConfig.value, true);
     }
 
-    // // Update quality radar chart
-    if (qualityRadarChart && data.COMPATIBILITY_SCORE !== undefined) {
+    
+    if (complianceChart && data.COMPLIANCE_SCORE !== undefined) {
+      complianceConfig.value = createScorePieConfig(+data.COMPLIANCE_SCORE.score, t('kanban.evaluation.qualityRadar.compliance'));
+      complianceChart.setOption(complianceConfig.value, true);
+    }
+
+    // Update availability score pie chart
+    if (availabilityChart && data.AVAILABILITY_SCORE !== undefined) {
+      availabilityConfig.value = createScorePieConfig(+data.AVAILABILITY_SCORE.score, t('kanban.evaluation.qualityRadar.availability'));
+      availabilityChart.setOption(availabilityConfig.value, true);
+    }
+
+    if (securityChart && data.SECURITY_SCORE !== undefined) {
+      securityConfig.value = createScorePieConfig(+data.SECURITY_SCORE.score, t('kanban.evaluation.qualityRadar.security'));
+      securityChart.setOption(securityConfig.value, true);
+    }
+
+      if (qualityRadarChart && data.COMPATIBILITY_SCORE !== undefined) {
       qualityRadarConfig.value = createQualityRadarConfig(
         +data.COMPATIBILITY_SCORE.score,
         +data.USABILITY_SCORE.score,
         +data.MAINTAINABILITY_SCORE.score,
         +data.SCALABILITY_SCORE.score,
-        +data.SECURITY_SCORE.score
+        +data.SECURITY_SCORE.score,
+        +data.COMPLIANCE_SCORE.score,
+        +data.AVAILABILITY_SCORE.score
       );
       qualityRadarChart.setOption(qualityRadarConfig.value, true);
     }
+
+    // // Update quality radar chart  
 
     // // Update statistics bar chart
     if (statisticsBarChart && data.statistics) {
@@ -276,7 +325,10 @@ export function useChartManagement() {
       maintainabilityChart,
       extensibilityChart,
       qualityRadarChart,
-      statisticsBarChart
+      statisticsBarChart,
+      complianceChart,
+      availabilityChart,
+      securityChart
     ];
 
     charts.forEach(chart => {
@@ -300,6 +352,8 @@ export function useChartManagement() {
     extensibilityConfig,
     qualityRadarConfig,
     statisticsBarConfig,
+    complianceConfig,
+    availabilityConfig,
 
     // Methods
     initializeCharts,

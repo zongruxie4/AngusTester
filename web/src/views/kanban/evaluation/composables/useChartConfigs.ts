@@ -1,5 +1,7 @@
 import { ChartConfig } from '../types';
 import { i18n } from '@xcan-angus/infra';
+import { EvaluationPurpose } from '@/enums/enums';
+import { enumUtils } from '@xcan-angus/infra';
 
 const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
 
@@ -70,11 +72,11 @@ export const createScorePieConfig = (score: number, title: string): ChartConfig 
       {
         type: 'text',
         left: 'center',
-        top: '35%',
+        top: '40%',
         z: 10,
         style: {
-          text: `${Math.round(score)}分`,
-          fontSize: 32,
+          text: `${score}分`,
+          fontSize: 24,
           fontWeight: 'bold',
           fill: color,
           textAlign: 'center'
@@ -254,7 +256,9 @@ export const createQualityRadarConfig = (
   usability: number,
   maintainability: number,
   extensibility: number,
-  security: number
+  security: number,
+  compliance: number,
+  availability: number
 ): ChartConfig => {
   return {
     tooltip: {
@@ -262,11 +266,13 @@ export const createQualityRadarConfig = (
     },
     radar: {
       indicator: [
-        { name: t('kanban.evaluation.qualityRadar.compatibility'), max: 10 },
-        { name: t('kanban.evaluation.qualityRadar.usability'), max: 10 },
-        { name: t('kanban.evaluation.qualityRadar.maintainability'), max: 10 },
-        { name: t('kanban.evaluation.qualityRadar.scalability'), max: 10 },
-        { name: t('kanban.evaluation.qualityRadar.security'), max: 10 }
+        { name: enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.COMPATIBILITY_SCORE), max: 10 },
+        { name: enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.USABILITY_SCORE), max: 10 },
+        { name: enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.MAINTAINABILITY_SCORE), max: 10 },
+        { name: enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.SCALABILITY_SCORE), max: 10 },
+        { name: enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.SECURITY_SCORE), max: 10 },
+        { name: enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.COMPLIANCE_SCORE), max: 10 },
+        { name: enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.AVAILABILITY_SCORE), max: 10 },
       ],
       center: ['50%', '50%'],
       radius: '70%',
@@ -296,7 +302,7 @@ export const createQualityRadarConfig = (
         type: 'radar',
         data: [
           {
-            value: [compatibility, usability, maintainability, extensibility],
+            value: [compatibility, usability, maintainability, extensibility, security, compliance, availability],
             name: t('kanban.evaluation.qualityRadar.score'),
             areaStyle: {
               color: 'rgba(24, 144, 255, 0.3)'

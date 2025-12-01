@@ -297,7 +297,7 @@ const handleVersionBlur = async () => {
             </div>
             <div class="info-value">
               <span class="info-text">{{ dataSource?.testPurpose ? enumUtils.getEnumDescription(TestPurpose, dataSource?.testPurpose) : '--' }}</span>
-              <Tag v-if="dataSource?.testScore > -1" class="h-3.5 ml-1 py-0.5"  color="green">{{ dataSource?.testScore }}</Tag>
+              <Tag v-if="dataSource?.testScore > -1" class="h-3.5 ml-1 py-0.5"  color="green">{{ dataSource?.testScore }}{{ t('common.score') }}</Tag>
             </div>
           </div>
         </div>

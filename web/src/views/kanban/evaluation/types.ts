@@ -2,22 +2,30 @@
  * Evaluation data interface
  */
 export interface EvaluationData {
+  /** Compliance score */
+  COMPLIANCE_SCORE: {
+    score: number;
+  };
+  /** Availability score */
+  AVAILABILITY_SCORE: {
+    score: number;
+  };
   /** Performance passed rate */
-  PERFORMANCE_PASSED_RATE: {
+  PERFORMANCE_SCORE: {
     rate: number;
     numerator: number;
     denominator: number;
     score: number;
   };
   /** Functional passed rate */
-  FUNCTIONAL_PASSED_RATE: {
+  FUNCTIONAL_SCORE: {
     rate: number;
     numerator: number;
     denominator: number;
     score: number;
   };
 
-  STABILITY_PASSED_RATE: {
+  STABILITY_SCORE: {
     rate: number;
     numerator: number;
     denominator: number;
