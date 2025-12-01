@@ -39,6 +39,8 @@ const usabilityScoreRef = ref<HTMLElement>();
 const maintainabilityScoreRef = ref<HTMLElement>();
 const scalabilityScoreRef = ref<HTMLElement>();
 const securityScoreRef = ref<HTMLElement>();
+const complianceScoreRef = ref<HTMLElement>();
+const availabilityScoreRef = ref<HTMLElement>();
 
 /**
  * Chart instances
@@ -51,7 +53,8 @@ let usabilityChart: any = null;
 let maintainabilityChart: any = null;
 let scalabilityChart: any = null;
 let securityChart: any = null;
-
+let complianceChart: any = null;
+let availabilityChart: any = null;
 /**
  * Get score color based on score value (0-10 scale)
  */
@@ -165,11 +168,12 @@ const createScoreProgressBarConfig = (score: number, title: string) => {
   
   return {
     grid: {
+      title: '平均得分',
       left: '20',
       right: '15%',
       top: '20%',
-      bottom: '30%',
-      containLabel: false
+      bottom: '10%',
+      containLabel: true
     },
     xAxis: {
       type: 'value',
@@ -201,31 +205,10 @@ const createScoreProgressBarConfig = (score: number, title: string) => {
     },
     yAxis: {
       type: 'category',
-      data: [''],
-      show: false
+      data: ['平均得分'],
+      show: true
     },
-    // tooltip: {
-    //   show: true,
-    //   formatter: `${title}: ${score.toFixed(1)}分 / 10分`
-    // },
     series: [
-      // Background bar (gray base)
-      // {
-      //   name: '总分',
-      //   type: 'bar',
-      //   barWidth: '60%',
-      //   data: [10],
-      //   itemStyle: {
-      //     color: '#D9D9D9',
-      //     borderRadius: [0, 4, 4, 0]
-      //   },
-      //   label: {
-      //     show: false
-      //   },
-      //   silent: true,
-      //   z: 1
-      // },
-      // Score bar (overlapping)
       {
         name: title,
         type: 'bar',
@@ -367,6 +350,24 @@ const initCharts = () => {
       createScoreProgressBarConfig(Number(metrics.SECURITY_SCORE.score), '安全性')
     );
   }
+
+  // Compliance Score Chart - Progress Bar
+  if (metrics.COMPLIANCE_SCORE && complianceScoreRef.value) {
+    complianceChart = initOrUpdateChart(
+      complianceChart,
+      complianceScoreRef.value,
+      createScoreProgressBarConfig(Number(metrics.COMPLIANCE_SCORE.score), '合规性')
+    );
+  }
+
+  // Availability Score Chart - Progress Bar
+  if (metrics.AVAILABILITY_SCORE && availabilityScoreRef.value) {
+    availabilityChart = initOrUpdateChart(
+      availabilityChart,
+      availabilityScoreRef.value,
+      createScoreProgressBarConfig(Number(metrics.AVAILABILITY_SCORE.score), '可用性')
+    );
+  }
 };
 
 /**
@@ -381,7 +382,9 @@ const resizeCharts = throttle(500, () => {
     usabilityChart,
     maintainabilityChart,
     scalabilityChart,
-    securityChart
+    securityChart,
+    complianceChart,
+    availabilityChart
   ];
   charts.forEach(chart => {
     if (chart && !chart.isDisposed()) {
@@ -402,7 +405,9 @@ const disposeCharts = () => {
     usabilityChart,
     maintainabilityChart,
     scalabilityChart,
-    securityChart
+    securityChart,
+    complianceChart,
+    availabilityChart
   ];
   charts.forEach(chart => {
     if (chart && !chart.isDisposed()) {
@@ -511,7 +516,13 @@ const refreshEvaluationData = async () => {
 };
 
 const showQualityScores = computed(() => {
-  return evaluationDetail.value?.result?.metrics?.COMPATIBILITY_SCORE || evaluationDetail.value?.result?.metrics?.USABILITY_SCORE || evaluationDetail.value?.result?.metrics?.MAINTAINABILITY_SCORE || evaluationDetail.value?.result?.metrics?.SCALABILITY_SCORE || evaluationDetail.value?.result?.metrics?.SECURITY_SCORE;
+  return evaluationDetail.value?.result?.metrics?.COMPATIBILITY_SCORE
+  || evaluationDetail.value?.result?.metrics?.USABILITY_SCORE
+  || evaluationDetail.value?.result?.metrics?.MAINTAINABILITY_SCORE
+  || evaluationDetail.value?.result?.metrics?.SCALABILITY_SCORE
+  || evaluationDetail.value?.result?.metrics?.SECURITY_SCORE
+  || evaluationDetail.value?.result?.metrics?.COMPLIANCE_SCORE
+  || evaluationDetail.value?.result?.metrics?.AVAILABILITY_SCORE;
 });
 
 const showPassRateScores = computed(() => {
@@ -982,6 +993,72 @@ onBeforeUnmount(() => {
                         :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }" />
                   </div>
                   <div ref="securityScoreRef" class="quality-score-chart flex-1"></div>
+                </div>
+              </Card>
+
+              <!-- Compliance Score -->
+              <Card
+                v-if="evaluationDetail.result.metrics?.COMPLIANCE_SCORE"
+                class="quality-score-card"
+                :bordered="false">
+                <template #title>
+                  <div class="card-title">合规性评分</div>
+                </template>
+                <div class="flex">
+                  <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
+                    <Statistic
+                      title="总用例"
+                      :value="evaluationDetail.result.metrics?.COMPLIANCE_SCORE.totalCases"
+                      suffix=""
+                      class="flex flex-col-reverse"
+                      :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
+                    <Statistic
+                      title="总得分"
+                      :value="evaluationDetail.result.metrics?.COMPLIANCE_SCORE.score"
+                      suffix=""
+                      class="flex flex-col-reverse"
+                      :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
+                    <Statistic
+                      title="权重"
+                      :value="evaluationDetail.result.metrics?.COMPLIANCE_SCORE.weight"
+                      suffix=""
+                      class="flex flex-col-reverse"
+                      :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }" />
+                  </div>
+                  <div ref="complianceScoreRef" class="quality-score-chart flex-1"></div>
+                </div>
+              </Card> 
+
+              <!-- Availability Score -->
+              <Card
+                v-if="evaluationDetail.result.metrics?.AVAILABILITY_SCORE"
+                class="quality-score-card"
+                :bordered="false">
+                <template #title>
+                  <div class="card-title">可用性评分</div>
+                </template>
+                <div class="flex">
+                  <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
+                    <Statistic
+                      title="总用例"
+                      :value="evaluationDetail.result.metrics?.AVAILABILITY_SCORE.totalCases"
+                      suffix=""
+                      class="flex flex-col-reverse"
+                      :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
+                    <Statistic
+                      title="总得分"
+                      :value="evaluationDetail.result.metrics?.AVAILABILITY_SCORE.score"
+                      suffix=""
+                      class="flex flex-col-reverse"
+                      :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
+                    <Statistic
+                      title="权重"
+                      :value="evaluationDetail.result.metrics?.AVAILABILITY_SCORE.weight"
+                      suffix=""
+                      class="flex flex-col-reverse"
+                      :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }" />
+                  </div>
+                  <div ref="availabilityScoreRef" class="quality-score-chart flex-1"></div>
                 </div>
               </Card>
             </div>

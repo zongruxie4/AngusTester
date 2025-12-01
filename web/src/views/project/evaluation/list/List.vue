@@ -30,6 +30,10 @@ const getPurposeTagColor = (purpose: any): string => {
       return 'purple';
     case EvaluationPurpose.SCALABILITY_SCORE:
       return 'magenta';
+    case EvaluationPurpose.COMPLIANCE_SCORE:
+      return 'blue';
+    case EvaluationPurpose.AVAILABILITY_SCORE:
+      return 'cyan';
     default:
       return 'default';
   }
