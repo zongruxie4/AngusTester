@@ -179,7 +179,7 @@ const loadEvaluationData = async () => {
       completed: res.data.completedCases,
       highestScore: maxScore,
       lowestScore: minScore,
-      averageScore: Number(averageScore).toFixed(1)
+      averageScore: Number(averageScore).toFixed(2)
     }
   };
   
@@ -371,7 +371,7 @@ defineExpose({
               <div class="pass-rate-info">
                 <div class="pass-rate-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.FUNCTIONAL_SCORE) }}</div>
                   <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.FUNCTIONAL_SCORE?.rate) }">
-                  {{ evaluationData.FUNCTIONAL_SCORE?.rate }}%
+                  {{ evaluationData.FUNCTIONAL_SCORE?.rate }}
                 </div>
                 <div class="pass-rate-detail">
                   {{ evaluationData.FUNCTIONAL_SCORE?.numerator }}/{{ evaluationData.FUNCTIONAL_SCORE?.denominator }}
@@ -383,7 +383,7 @@ defineExpose({
               <div class="pass-rate-info">
                 <div class="pass-rate-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.PERFORMANCE_SCORE) }}</div>
                 <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.PERFORMANCE_SCORE?.rate) }">
-                      {{ evaluationData.PERFORMANCE_SCORE?.rate }}%
+                      {{ evaluationData.PERFORMANCE_SCORE?.rate }}
                 </div>
                 <div class="pass-rate-detail">
                   {{ evaluationData.PERFORMANCE_SCORE?.numerator }}/{{ evaluationData.PERFORMANCE_SCORE?.denominator }}
@@ -395,7 +395,7 @@ defineExpose({
               <div class="pass-rate-info">
                 <div class="pass-rate-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.STABILITY_SCORE) }}</div>
                 <div class="pass-rate-value" :style="{ color: getScoreColor(evaluationData.STABILITY_SCORE?.rate) }">
-                  {{ evaluationData.STABILITY_SCORE?.rate }}%
+                  {{ evaluationData.STABILITY_SCORE?.rate }}
                 </div>
                 <div class="pass-rate-detail">
                   {{ evaluationData.STABILITY_SCORE?.numerator }}/{{ evaluationData.STABILITY_SCORE?.denominator }}
