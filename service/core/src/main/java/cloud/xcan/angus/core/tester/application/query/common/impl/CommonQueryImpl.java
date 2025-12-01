@@ -508,7 +508,7 @@ public class CommonQueryImpl implements CommonQuery {
   public Map<String, List<NoticeType>> findTenantEventNoticeTypes(Long tenantId) {
     Long finalTenantId = nullSafe(tenantId, getOptTenantId());
     TenantSetting settingTenant = settingTenantQuery.findAndInit(finalTenantId);
-    List<TesterEvent> eventData = settingTenant.getTesterEventData();
+    List<TesterEvent> eventData = settingTenant.getSafeTesterEventData();
     return eventData.stream()
         .filter(x -> isNotEmpty(x.getEventCode()) && isNotEmpty(x.getNoticeTypes())).
         collect(Collectors.toMap(TesterEvent::getEventCode, TesterEvent::getNoticeTypes));

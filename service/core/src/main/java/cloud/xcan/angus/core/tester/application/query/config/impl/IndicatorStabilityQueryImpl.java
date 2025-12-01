@@ -131,7 +131,7 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
           TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
 
           // Convert platform data to indicator format
-          IndicatorStability stability = toIndicatorStability(setting.getStabilityData(),
+          IndicatorStability stability = toIndicatorStability(setting.getSafeStabilityData(),
               targetId, targetType);
 
           // Enrich indicator with target name information

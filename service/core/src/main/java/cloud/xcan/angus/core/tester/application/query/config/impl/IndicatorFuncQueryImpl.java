@@ -131,7 +131,7 @@ public class IndicatorFuncQueryImpl implements IndicatorFuncQuery {
           TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
 
           // Convert platform data to indicator format
-          IndicatorFunc func = toIndicatorFunc(setting.getFuncData(), targetId, targetType);
+          IndicatorFunc func = toIndicatorFunc(setting.getSafeFuncData(), targetId, targetType);
 
           // Enrich indicator with target name information
           assembleTargetName(func, targetType, targetId);
