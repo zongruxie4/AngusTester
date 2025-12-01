@@ -74,8 +74,7 @@ onMounted(() => {
 </script>
 
 <template>
-
- <ExpandGrid title="评估指标权重">
+ <ExpandGrid title="评估得分计算指标权重">
     <template #button>
       <div class="text-3 flex items-center">
         <template v-if="editable">

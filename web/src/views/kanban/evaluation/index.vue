@@ -347,7 +347,7 @@ defineExpose({
     <!-- Row 1: Overall Score and Requirement Completion -->
     <div class="flex space-x-2 ">
       <!-- Overall Score Section -->
-      <Card class="flex-1 h-full" :bordered="false">
+      <!-- <Card class="flex-1 h-full" :bordered="false">
         <template #title>
           <div class="section-title">{{ t('kanban.evaluation.overallScore.title') }}</div>
         </template>
@@ -360,7 +360,7 @@ defineExpose({
             <div class="text-sm text-slate-500">{{ t('kanban.evaluation.overallScore.overallScoreLabel') }}：{{ evaluationData.overallScore ? Number(evaluationData.overallScore).toFixed(2) : '0.0' }} {{ t('kanban.evaluation.statistics.points') }}</div>
           </div>
         </div>
-      </Card>
+      </Card> -->
 
       <Card class="flex-1 h-full quality-radar-card" :bordered="false">
         <template #title>
