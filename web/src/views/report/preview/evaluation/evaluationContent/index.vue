@@ -3,6 +3,8 @@ import { computed, ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n';
 import { ReportContent } from '@/views/report/preview/PropsType';
 import eCharts from '@/utils/echarts';
+import { EvaluationPurpose } from '@/enums/enums';
+import { enumUtils } from '@xcan-angus/infra';
 
 const { t } = useI18n();
 
@@ -13,6 +15,8 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
+
+enumUtils.enumToMessages(EvaluationPurpose);
 
 /**
  * Chart references
@@ -25,6 +29,8 @@ const usabilityScoreRef = ref<HTMLElement>();
 const maintainabilityScoreRef = ref<HTMLElement>();
 const scalabilityScoreRef = ref<HTMLElement>();
 const securityScoreRef = ref<HTMLElement>();
+const complianceScoreRef = ref<HTMLElement>();
+const availabilityScoreRef = ref<HTMLElement>();
 
 /**
  * Chart instances
@@ -37,7 +43,8 @@ let usabilityChart: any = null;
 let maintainabilityChart: any = null;
 let scalabilityChart: any = null;
 let securityChart: any = null;
-
+let complianceChart: any = null;
+let availabilityChart: any = null;
 /**
  * Get score color based on score value (0-10 scale)
  */
@@ -65,10 +72,7 @@ const createPassRatePieConfig = (rate: number, numerator: number, denominator: n
   const remaining = denominator - numerator;
   
   return {
-    // tooltip: {
-    //   trigger: 'item',
-    //   formatter: '{b}: {c} ({d}%)'
-    // },
+ 
     series: [
       {
         name: title,
@@ -183,7 +187,7 @@ const createScoreProgressBarConfig = (score: number, title: string) => {
         label: {
           show: true,
           position: 'right',
-          formatter: `${(+score).toFixed(1)}${t('reportPreview.evaluation.detail.chartLabels.points')}`,
+          formatter: `${(+score).toFixed(2)}${t('reportPreview.evaluation.detail.chartLabels.points')}`,
           fontSize: 14,
           fontWeight: 'bold',
           color: color,
@@ -225,8 +229,8 @@ const initCharts = () => {
   if (!metrics) return;
 
   // Performance Passed Rate Chart
-  if (metrics.PERFORMANCE_PASSED_RATE && performancePassedRateRef.value) {
-    const data = metrics.PERFORMANCE_PASSED_RATE;
+  if (metrics.PERFORMANCE_SCORE && performancePassedRateRef.value) {
+    const data = metrics.PERFORMANCE_SCORE;
     performanceChart = initOrUpdateChart(
       performanceChart,
       performancePassedRateRef.value,
@@ -235,8 +239,8 @@ const initCharts = () => {
   }
 
   // Functional Passed Rate Chart
-  if (metrics.FUNCTIONAL_PASSED_RATE && functionalPassedRateRef.value) {
-    const data = metrics.FUNCTIONAL_PASSED_RATE;
+  if (metrics.FUNCTIONAL_SCORE && functionalPassedRateRef.value) {
+    const data = metrics.FUNCTIONAL_SCORE;
     functionalChart = initOrUpdateChart(
       functionalChart,
       functionalPassedRateRef.value,
@@ -245,8 +249,8 @@ const initCharts = () => {
   }
 
   // Stability Passed Rate Chart
-  if (metrics.STABILITY_PASSED_RATE && stabilityPassedRateRef.value) {
-    const data = metrics.STABILITY_PASSED_RATE;
+  if (metrics.STABILITY_SCORE && stabilityPassedRateRef.value) {
+    const data = metrics.STABILITY_SCORE;
     stabilityChart = initOrUpdateChart(
       stabilityChart,
       stabilityPassedRateRef.value,
@@ -298,6 +302,24 @@ const initCharts = () => {
       createScoreProgressBarConfig(Number(metrics.SECURITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.security'))
     );
   }
+
+  // Compliance Score Chart - Progress Bar
+  if (metrics.COMPLIANCE_SCORE && complianceScoreRef.value) {
+    complianceChart = initOrUpdateChart(
+      complianceChart,
+      complianceScoreRef.value,
+      createScoreProgressBarConfig(Number(metrics.COMPLIANCE_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.compliance'))
+    );
+  }
+
+  // Availability Score Chart - Progress Bar
+  if (metrics.AVAILABILITY_SCORE && availabilityScoreRef.value) {
+    availabilityChart = initOrUpdateChart(
+      availabilityChart,
+      availabilityScoreRef.value,
+      createScoreProgressBarConfig(Number(metrics.AVAILABILITY_SCORE.score), t('reportPreview.evaluation.detail.qualityScores.availability'))
+    );
+  }
 };
 
 /**
@@ -312,7 +334,9 @@ const resizeCharts = () => {
     usabilityChart,
     maintainabilityChart,
     scalabilityChart,
-    securityChart
+    securityChart,
+    complianceChart,
+    availabilityChart
   ];
   charts.forEach(chart => {
     if (chart) {
@@ -333,7 +357,9 @@ const disposeCharts = () => {
     usabilityChart,
     maintainabilityChart,
     scalabilityChart,
-    securityChart
+    securityChart,
+    complianceChart,
+    availabilityChart
   ];
   charts.forEach(chart => {
     if (chart) {
@@ -431,27 +457,27 @@ onBeforeUnmount(() => {
 
     <div v-if="props.dataSource?.content?.metrics" class="metrics-charts-container">
       <!-- Functional Passed Rate -->
-      <div v-if="props.dataSource?.content?.metrics.FUNCTIONAL_PASSED_RATE" class="metric-item mb-6">
+      <div v-if="props.dataSource?.content?.metrics.FUNCTIONAL_SCORE" class="metric-item mb-6">
         <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.functionalTestPassRate.title') }}</h2>
         <div class="metric-chart-wrapper">
           <div ref="functionalPassedRateRef" class="metric-chart"></div>
           <div class="metric-info">
             <div class="info-row">
               <span class="info-label">{{ t('reportPreview.evaluation.detail.functionalTestPassRate.passRate') }}</span>
-              <span class="info-value" :style="{ color: getRateColor(props.dataSource.content.metrics.FUNCTIONAL_PASSED_RATE.rate) }">
-                {{ (+props.dataSource.content.metrics.FUNCTIONAL_PASSED_RATE.rate).toFixed(1) }}%
+              <span class="info-value" :style="{ color: getRateColor(props.dataSource.content.metrics.FUNCTIONAL_SCORE.rate) }">
+                {{ (+props.dataSource.content.metrics.FUNCTIONAL_SCORE.rate).toFixed(1) }}%
               </span>
             </div>
             <div class="info-row">
               <span class="info-label">{{ t('reportPreview.evaluation.detail.functionalTestPassRate.passCount') }}</span>
               <span class="info-value">
-                {{ props.dataSource.content.metrics.FUNCTIONAL_PASSED_RATE.numerator }}/{{ props.dataSource.content.metrics.FUNCTIONAL_PASSED_RATE.denominator }}
+                {{ props.dataSource.content.metrics.FUNCTIONAL_SCORE.numerator }}/{{ props.dataSource.content.metrics.FUNCTIONAL_SCORE.denominator }}
               </span>
             </div>
             <div class="info-row">
               <span class="info-label">{{ t('reportPreview.evaluation.detail.functionalTestPassRate.score') }}</span>
               <span class="info-value">
-                {{ (+props.dataSource.content.metrics.FUNCTIONAL_PASSED_RATE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
+                {{ (+props.dataSource.content.metrics.FUNCTIONAL_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
               </span>
             </div>
           </div>
@@ -459,27 +485,27 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- Performance Passed Rate -->
-      <div v-if="props.dataSource?.content?.metrics.PERFORMANCE_PASSED_RATE" class="metric-item mb-6">
+      <div v-if="props.dataSource?.content?.metrics.PERFORMANCE_SCORE" class="metric-item mb-6">
         <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.title') }}</h2>
         <div class="metric-chart-wrapper">
           <div ref="performancePassedRateRef" class="metric-chart"></div>
           <div class="metric-info">
             <div class="info-row">
               <span class="info-label">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.passRate') }}</span>
-              <span class="info-value" :style="{ color: getRateColor(props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.rate) }">
-                {{ (+props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.rate).toFixed(1) }}%
+              <span class="info-value" :style="{ color: getRateColor(props.dataSource.content.metrics.PERFORMANCE_SCORE.rate) }">
+                {{ (+props.dataSource.content.metrics.PERFORMANCE_SCORE.rate).toFixed(1) }}%
               </span>
             </div>
             <div class="info-row">
               <span class="info-label">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.passCount') }}</span>
               <span class="info-value">
-                {{ props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.numerator }}/{{ props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.denominator }}
+                {{ props.dataSource.content.metrics.PERFORMANCE_SCORE.numerator }}/{{ props.dataSource.content.metrics.PERFORMANCE_SCORE.denominator }}
               </span>
             </div>
             <div class="info-row">
               <span class="info-label">{{ t('reportPreview.evaluation.detail.performanceTestPassRate.score') }}</span>
               <span class="info-value">
-                {{ (+props.dataSource.content.metrics.PERFORMANCE_PASSED_RATE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
+                {{ (+props.dataSource.content.metrics.PERFORMANCE_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
               </span>
             </div>
           </div>
@@ -487,27 +513,27 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- Stability Passed Rate -->
-      <div v-if="props.dataSource?.content?.metrics.STABILITY_PASSED_RATE" class="metric-item mb-6">
+      <div v-if="props.dataSource?.content?.metrics.STABILITY_SCORE" class="metric-item mb-6">
         <h2 class="text-3.5 text-theme-title font-medium mb-3">{{ t('reportPreview.evaluation.detail.stabilityTestPassRate.title') }}</h2>
         <div class="metric-chart-wrapper">
           <div ref="stabilityPassedRateRef" class="metric-chart"></div>
           <div class="metric-info">
             <div class="info-row">
               <span class="info-label">{{ t('reportPreview.evaluation.detail.stabilityTestPassRate.passRate') }}</span>
-              <span class="info-value" :style="{ color: getRateColor(props.dataSource.content.metrics.STABILITY_PASSED_RATE.rate) }">
-                {{ (+props.dataSource.content.metrics.STABILITY_PASSED_RATE.rate).toFixed(1) }}%
+              <span class="info-value" :style="{ color: getRateColor(props.dataSource.content.metrics.STABILITY_SCORE.rate) }">
+                {{ (+props.dataSource.content.metrics.STABILITY_SCORE.rate).toFixed(1) }}%
               </span>
             </div>
             <div class="info-row">
               <span class="info-label">{{ t('reportPreview.evaluation.detail.stabilityTestPassRate.passCount') }}</span>
               <span class="info-value">
-                {{ props.dataSource.content.metrics.STABILITY_PASSED_RATE.numerator }}/{{ props.dataSource.content.metrics.STABILITY_PASSED_RATE.denominator }}
+                {{ props.dataSource.content.metrics.STABILITY_SCORE.numerator }}/{{ props.dataSource.content.metrics.STABILITY_SCORE.denominator }}
               </span>
             </div>
             <div class="info-row">
               <span class="info-label">{{ t('reportPreview.evaluation.detail.stabilityTestPassRate.score') }}</span>
               <span class="info-value">
-                {{ (+props.dataSource.content.metrics.STABILITY_PASSED_RATE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
+                {{ (+props.dataSource.content.metrics.STABILITY_SCORE.score).toFixed(1) }} {{ t('reportPreview.evaluation.detail.chartLabels.points') }}
               </span>
             </div>
           </div>
@@ -519,7 +545,7 @@ onBeforeUnmount(() => {
         <!-- Compatibility Score -->
         <div v-if="props.dataSource?.content?.metrics.COMPATIBILITY_SCORE" class="quality-score-progress-item">
           <div class="progress-header">
-            <span class="progress-title">{{ t('reportPreview.evaluation.detail.qualityScores.compatibility') }}</span>
+            <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.COMPATIBILITY_SCORE) }}</span>
           </div>
           <div ref="compatibilityScoreRef" class="quality-score-progress-bar"></div>
         </div>
@@ -527,7 +553,7 @@ onBeforeUnmount(() => {
         <!-- Usability Score -->
         <div v-if="props.dataSource?.content?.metrics.USABILITY_SCORE" class="quality-score-progress-item">
           <div class="progress-header">
-            <span class="progress-title">{{ t('reportPreview.evaluation.detail.qualityScores.usability') }}</span>
+            <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.USABILITY_SCORE) }}</span>
           </div>
           <div ref="usabilityScoreRef" class="quality-score-progress-bar"></div>
         </div>
@@ -535,7 +561,7 @@ onBeforeUnmount(() => {
         <!-- Maintainability Score -->
         <div v-if="props.dataSource?.content?.metrics.MAINTAINABILITY_SCORE" class="quality-score-progress-item">
           <div class="progress-header">
-            <span class="progress-title">{{ t('reportPreview.evaluation.detail.qualityScores.maintainability') }}</span>
+            <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.MAINTAINABILITY_SCORE) }}</span>
           </div>
           <div ref="maintainabilityScoreRef" class="quality-score-progress-bar"></div>
         </div>
@@ -543,7 +569,7 @@ onBeforeUnmount(() => {
         <!-- Scalability Score -->
         <div v-if="props.dataSource?.content?.metrics.SCALABILITY_SCORE" class="quality-score-progress-item">
           <div class="progress-header">
-            <span class="progress-title">{{ t('reportPreview.evaluation.detail.qualityScores.scalability') }}</span>
+            <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.SCALABILITY_SCORE) }}</span>
           </div>
           <div ref="scalabilityScoreRef" class="quality-score-progress-bar"></div>
         </div>
@@ -551,9 +577,25 @@ onBeforeUnmount(() => {
         <!-- Security Score -->
         <div v-if="props.dataSource?.content?.metrics.SECURITY_SCORE" class="quality-score-progress-item">
           <div class="progress-header">
-            <span class="progress-title">{{ t('reportPreview.evaluation.detail.qualityScores.security') }}</span>
+            <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.SECURITY_SCORE) }}</span>
           </div>
           <div ref="securityScoreRef" class="quality-score-progress-bar"></div>
+        </div>
+
+        <!-- Compliance Score -->
+        <div v-if="props.dataSource?.content?.metrics.COMPLIANCE_SCORE" class="quality-score-progress-item">
+          <div class="progress-header">
+            <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.COMPLIANCE_SCORE) }}</span>
+          </div>
+          <div ref="complianceScoreRef" class="quality-score-progress-bar"></div>
+        </div>
+
+        <!-- Availability Score -->
+        <div v-if="props.dataSource?.content?.metrics.AVAILABILITY_SCORE" class="quality-score-progress-item">
+          <div class="progress-header">
+            <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.AVAILABILITY_SCORE) }}</span>
+          </div>
+          <div ref="availabilityScoreRef" class="quality-score-progress-bar"></div>
         </div>
       </div>
     </div>
