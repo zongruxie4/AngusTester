@@ -13,6 +13,7 @@ import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationC
 import static cloud.xcan.angus.core.tester.application.converter.TestEvaluationConverter.calculateUsabilityScore;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.formatDouble;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
@@ -37,6 +38,7 @@ import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfoRepo;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.spec.principal.PrincipalContext;
 import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -168,13 +170,14 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
     }
 
     // Get evaluation indicator weight setting
-    TenantSetting settingTenant = settingTenantQuery.findAndInit(evaluation.getTenantId());
+    TenantSetting settingTenant = settingTenantQuery.findAndInit(
+        nullSafe(evaluation.getTenantId(), PrincipalContext.getTenantId()));
 
     // Calculate metrics for each evaluation purpose
     LinkedHashMap<EvaluationPurpose, MetricResult> metrics = new LinkedHashMap<>();
     for (EvaluationPurpose purpose : evaluation.getPurposes()) {
       TestEvaluationResult.MetricResult metricResult = calculateMetric(cases, purpose,
-          settingTenant.getEvaluationWeightData());
+          settingTenant.getSafeEvaluationWeightData());
       metrics.put(purpose, metricResult);
     }
 

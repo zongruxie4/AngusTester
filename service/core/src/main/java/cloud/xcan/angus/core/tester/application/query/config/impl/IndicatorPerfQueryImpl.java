@@ -131,7 +131,7 @@ public class IndicatorPerfQueryImpl implements IndicatorPerfQuery {
           TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
 
           // Convert platform data to indicator format
-          IndicatorPerf perf = toIndicatorPerf(setting.getPerfData(), targetId, targetType);
+          IndicatorPerf perf = toIndicatorPerf(setting.getSafePerfData(), targetId, targetType);
 
           // Enrich indicator with target name information
           assembleTargetName(perf, targetType, targetId);

@@ -51,7 +51,7 @@ public class SettingTenantFacadeImpl implements SettingTenantFacade {
 
   @Override
   public List<TesterEvent> testerEventDetail() {
-    return settingTenantQuery.findAndInit(getOptTenantId()).getTesterEventData();
+    return settingTenantQuery.findAndInit(getOptTenantId()).getSafeTesterEventData();
   }
 
   @Override
@@ -61,7 +61,7 @@ public class SettingTenantFacadeImpl implements SettingTenantFacade {
 
   @Override
   public LinkedHashMap<EvaluationPurpose, Integer> evaluationDetail() {
-    return settingTenantQuery.findAndInit(getOptTenantId()).getEvaluationWeightData();
+    return settingTenantQuery.findAndInit(getOptTenantId()).getSafeEvaluationWeightData();
   }
 
   @Override
@@ -71,7 +71,7 @@ public class SettingTenantFacadeImpl implements SettingTenantFacade {
 
   @Override
   public FuncTo funcDetail() {
-    return toFuncTo(settingTenantQuery.findAndInit(getOptTenantId()).getFuncData());
+    return toFuncTo(settingTenantQuery.findAndInit(getOptTenantId()).getSafeFuncData());
   }
 
   @Override
@@ -81,7 +81,7 @@ public class SettingTenantFacadeImpl implements SettingTenantFacade {
 
   @Override
   public PerfTo perfDetail() {
-    return toPerfTo(settingTenantQuery.findAndInit(getOptTenantId()).getPerfData());
+    return toPerfTo(settingTenantQuery.findAndInit(getOptTenantId()).getSafePerfData());
   }
 
   @Override
@@ -91,6 +91,6 @@ public class SettingTenantFacadeImpl implements SettingTenantFacade {
 
   @Override
   public StabilityTo stabilityDetail() {
-    return toStabilityTo(settingTenantQuery.findAndInit(getOptTenantId()).getStabilityData());
+    return toStabilityTo(settingTenantQuery.findAndInit(getOptTenantId()).getSafeStabilityData());
   }
 }

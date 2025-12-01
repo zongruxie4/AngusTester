@@ -81,23 +81,23 @@ public class TenantSetting extends TenantEntity<TenantSetting, Long> {
     return this.id;
   }
 
-  public LinkedHashMap<EvaluationPurpose, Integer> getEvaluationWeightData() {
+  public LinkedHashMap<EvaluationPurpose, Integer> getSafeEvaluationWeightData() {
     return nullSafe(evaluationWeightData, getDefaultEvaluationPurpose(this));
   }
 
-  public FuncData getFuncData() {
+  public FuncData getSafeFuncData() {
     return nullSafe(funcData, getDefaultFuncData(this));
   }
 
-  public PerfData getPerfData() {
+  public PerfData getSafePerfData() {
     return nullSafe(perfData, getDefaultPerfData(this));
   }
 
-  public StabilityData getStabilityData() {
+  public StabilityData getSafeStabilityData() {
     return nullSafe(stabilityData, getDefaultStabilityData(this));
   }
 
-  public List<TesterEvent> getTesterEventData() {
+  public List<TesterEvent> getSafeTesterEventData() {
     return nullSafe(testerEventData, getDefaultTesterEvents(this));
   }
 }
