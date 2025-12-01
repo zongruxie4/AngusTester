@@ -143,9 +143,9 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
           </div>
 
           <div class="text-3 whitespace-nowrap">
-            <span class="text-sub-content ml-2">{{ item.startDate || '-' }}</span>
+            <span class="text-sub-content ml-2">{{ item.startDate || '' }}</span>
             <span class="text-theme-sub-content mx-2">-</span>
-            <span class="text-sub-content">{{ item.deadlineDate || '-' }}</span>
+            <span class="text-sub-content">{{ item.deadlineDate || '' }}</span>
           </div>
 
           <div class="flex items-center">
