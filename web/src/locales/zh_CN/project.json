@@ -233,7 +233,7 @@
     },
     "actions": {
       "addEvaluation": "添加测评",
-      "generateResult": "开始测评",
+      "generateResult": "测评",
       "generateResultSuccess": "生成结果成功"
     },
     "columns": {

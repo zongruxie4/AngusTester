@@ -68,7 +68,6 @@ export function useCtoLifecycle (
       () => props.planId,
       () => props.sprintId
     ], () => {
-      debugger;
       if (!props.onShow && props.projectId) {
         shouldNotify.value = true;
         return;

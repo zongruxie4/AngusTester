@@ -4,7 +4,7 @@ import { Icon, Input, Select, ShortDuration } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import ExpandGrid from './ExpandGrid.vue';
 import { useStabilityData } from './composables';
-
+import { appContext } from '@xcan-angus/infra';
 // Initialize composables
 const { t } = useI18n();
 const {
@@ -45,6 +45,7 @@ defineExpose({
         </template>
         <Button
           v-else
+          v-show="appContext.isAdmin()"
           class="text-3 py-0 h-5"
           type="text"
           @click.stop="toggleEditMode">

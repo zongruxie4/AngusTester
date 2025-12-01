@@ -9,6 +9,7 @@ const DefaultPerform = defineAsyncComponent(() => import('./DefaultPerf.vue'));
 const DefaultStability = defineAsyncComponent(() => import('./DefaultStability.vue'));
 // const DefaultFunc = defineAsyncComponent(() => import('./DefaultFunction.vue'));
 const DefaultEfficiency = defineAsyncComponent(() => import('./DefaultEfficiency.vue'));
+const DefaultEvaluation = defineAsyncComponent(() => import('./DefaultEvaluation.vue'));
 </script>
 <template>
   <div class="py-3.5 px-5 h-full overflow-auto">
@@ -16,7 +17,8 @@ const DefaultEfficiency = defineAsyncComponent(() => import('./DefaultEfficiency
     <!-- <DefaultFunc class="mt-3" />-->
     <DefaultPerform class="mt-5" />
     <DefaultStability class="mt-10" />
-    <HeadIntroduction class="mt-10" :title="t('indicator.efficiencyHint')" />
-    <DefaultEfficiency class="mt-3 mb-10" />
+    <DefaultEvaluation class="mt-10" />
+    <!-- <HeadIntroduction class="mt-10" :title="t('indicator.efficiencyHint')" />
+    <DefaultEfficiency class="mt-3 mb-10" /> -->
   </div>
 </template>
