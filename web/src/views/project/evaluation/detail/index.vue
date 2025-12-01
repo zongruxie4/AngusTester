@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { inject, onMounted, onBeforeUnmount, ref, watch, nextTick } from 'vue';
-import { Button, Tag, Card, Divider } from 'ant-design-vue';
+import { inject, onMounted, onBeforeUnmount, ref, watch, nextTick, computed } from 'vue';
+import { Button, Tag, Card, Divider, Statistic } from 'ant-design-vue';
 import { Icon, notification, Spin } from '@xcan-angus/vue-ui';
 import { toClipboard } from '@xcan-angus/infra';
 import { evaluation } from '@/api/tester';
@@ -97,7 +97,7 @@ const createPassRatePieConfig = (rate: number, numerator: number, denominator: n
           borderWidth: 2
         },
         label: {
-          show: true,
+          show: false,
           formatter: '{d}%',
           fontSize: 16,
           fontWeight: 'bold',
@@ -105,7 +105,7 @@ const createPassRatePieConfig = (rate: number, numerator: number, denominator: n
         },
         emphasis: {
           label: {
-            show: true,
+            show: false,
             fontSize: 18,
             fontWeight: 'bold'
           }
@@ -294,8 +294,8 @@ const initCharts = () => {
   const metrics = result.metrics;
 
   // Performance Passed Rate Chart
-  if (metrics.PERFORMANCE_PASSED_RATE && performancePassedRateRef.value) {
-    const data = metrics.PERFORMANCE_PASSED_RATE;
+  if (metrics.PERFORMANCE_SCORE && performancePassedRateRef.value) {
+    const data = metrics.PERFORMANCE_SCORE;
     performanceChart = initOrUpdateChart(
       performanceChart,
       performancePassedRateRef.value,
@@ -304,8 +304,8 @@ const initCharts = () => {
   }
 
   // Functional Passed Rate Chart
-  if (metrics.FUNCTIONAL_PASSED_RATE && functionalPassedRateRef.value) {
-    const data = metrics.FUNCTIONAL_PASSED_RATE;
+  if (metrics.FUNCTIONAL_SCORE && functionalPassedRateRef.value) {
+    const data = metrics.FUNCTIONAL_SCORE;
     functionalChart = initOrUpdateChart(
       functionalChart,
       functionalPassedRateRef.value,
@@ -314,8 +314,8 @@ const initCharts = () => {
   }
 
   // Stability Passed Rate Chart
-  if (metrics.STABILITY_PASSED_RATE && stabilityPassedRateRef.value) {
-    const data = metrics.STABILITY_PASSED_RATE;
+  if (metrics.STABILITY_SCORE && stabilityPassedRateRef.value) {
+    const data = metrics.STABILITY_SCORE;
     stabilityChart = initOrUpdateChart(
       stabilityChart,
       stabilityPassedRateRef.value,
@@ -510,6 +510,14 @@ const refreshEvaluationData = async () => {
   await loadEvaluationDetail(String(evaluationId));
 };
 
+const showQualityScores = computed(() => {
+  return evaluationDetail.value?.result?.metrics?.COMPATIBILITY_SCORE || evaluationDetail.value?.result?.metrics?.USABILITY_SCORE || evaluationDetail.value?.result?.metrics?.MAINTAINABILITY_SCORE || evaluationDetail.value?.result?.metrics?.SCALABILITY_SCORE || evaluationDetail.value?.result?.metrics?.SECURITY_SCORE;
+});
+
+const showPassRateScores = computed(() => {
+  return evaluationDetail.value?.result?.metrics?.FUNCTIONAL_SCORE || evaluationDetail.value?.result?.metrics?.PERFORMANCE_SCORE || evaluationDetail.value?.result?.metrics?.STABILITY_SCORE;
+});
+
 // Lifecycle hooks
 onMounted(() => {
   watch(() => props.data, async (newValue, oldValue) => {
@@ -649,10 +657,10 @@ onBeforeUnmount(() => {
         <div class="info-row">
           <div class="info-label">
             <Icon icon="icon-kaishishijian" class="label-icon" />
-            <span>{{ t('common.createdDate') }}</span>
+            <span>用例创建时间</span>
           </div>
           <div class="info-value">
-            <span class="value-text">{{ evaluationDetail.createdDate || '-' }}</span>
+            <span class="value-text">{{ evaluationDetail.startDate || '-' }} - {{ evaluationDetail.deadlineDate || '-' }}</span>
           </div>
         </div>
 
@@ -686,181 +694,299 @@ onBeforeUnmount(() => {
       </template>
       
       <div class="evaluation-results-container">
-        <!-- Test Pass Rates Section -->
-        <div class="results-section mb-6">
-          <h3 class="text-4 font-semibold mb-4 text-title">测试通过率</h3>
-          
-          <div class="pass-rate-charts-grid">
-            <!-- Functional Test Pass Rate -->
-            <Card
-              v-if="evaluationDetail.result.metrics?.FUNCTIONAL_PASSED_RATE"
-              class="pass-rate-card"
-              :bordered="false">
-              <template #title>
-                <div class="card-title">功能测试通过率</div>
-              </template>
-              <div class="pass-rate-content">
-                <div ref="functionalPassedRateRef" class="pass-rate-chart"></div>
-                <div class="pass-rate-info">
-                  <div class="info-item">
-                    <span class="info-label">通过率：</span>
-                    <span
-                      class="info-value"
-                      :style="{ color: getRateColor(evaluationDetail.result.metrics.FUNCTIONAL_PASSED_RATE.rate) }">
-                      {{ (+evaluationDetail.result.metrics.FUNCTIONAL_PASSED_RATE.rate).toFixed(1) }}%
-                    </span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-label">通过数量：</span>
-                    <span class="info-value">
-                      {{ evaluationDetail.result.metrics.FUNCTIONAL_PASSED_RATE.numerator }}/{{ evaluationDetail.result.metrics.FUNCTIONAL_PASSED_RATE.denominator }}
-                    </span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-label">得分：</span>
-                    <span class="info-value">
-                      {{ (+evaluationDetail.result.metrics.FUNCTIONAL_PASSED_RATE.score).toFixed(1) }} 分
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Card>
+        <template v-if="showPassRateScores">
 
-            <!-- Performance Test Pass Rate -->
-            <Card
-              v-if="evaluationDetail.result.metrics?.PERFORMANCE_PASSED_RATE"
-              class="pass-rate-card"
-              :bordered="false">
-              <template #title>
-                <div class="card-title">性能测试通过率</div>
-              </template>
-              <div class="pass-rate-content">
-                <div ref="performancePassedRateRef" class="pass-rate-chart"></div>
-                <div class="pass-rate-info">
-                  <div class="info-item">
-                    <span class="info-label">通过率：</span>
-                    <span
-                      class="info-value"
-                      :style="{ color: getRateColor(evaluationDetail.result.metrics.PERFORMANCE_PASSED_RATE.rate) }">
-                      {{ (+evaluationDetail.result.metrics.PERFORMANCE_PASSED_RATE.rate).toFixed(1) }}%
-                    </span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-label">通过数量：</span>
-                    <span class="info-value">
-                      {{ evaluationDetail.result.metrics.PERFORMANCE_PASSED_RATE.numerator }}/{{ evaluationDetail.result.metrics.PERFORMANCE_PASSED_RATE.denominator }}
-                    </span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-label">得分：</span>
-                    <span class="info-value">
-                      {{ (+evaluationDetail.result.metrics.PERFORMANCE_PASSED_RATE.score).toFixed(1) }} 分
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            <!-- Stability Test Pass Rate -->
-            <Card
-              v-if="evaluationDetail.result.metrics?.STABILITY_PASSED_RATE"
-              class="pass-rate-card"
-              :bordered="false">
-              <template #title>
-                <div class="card-title">稳定性测试通过率</div>
-              </template>
-              <div class="pass-rate-content">
-                <div ref="stabilityPassedRateRef" class="pass-rate-chart"></div>
-                <div class="pass-rate-info">
-                  <div class="info-item">
-                    <span class="info-label">通过率：</span>
-                    <span
-                      class="info-value"
-                      :style="{ color: getRateColor(evaluationDetail.result.metrics.STABILITY_PASSED_RATE.rate) }">
-                      {{ (+evaluationDetail.result.metrics.STABILITY_PASSED_RATE.rate).toFixed(1) }}%
-                    </span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-label">通过数量：</span>
-                    <span class="info-value">
-                      {{ evaluationDetail.result.metrics.STABILITY_PASSED_RATE.numerator }}/{{ evaluationDetail.result.metrics.STABILITY_PASSED_RATE.denominator }}
-                    </span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-label">得分：</span>
-                    <span class="info-value">
-                      {{ (+evaluationDetail.result.metrics.STABILITY_PASSED_RATE.score).toFixed(1) }} 分
-                    </span>
+          <!-- Test Pass Rates Section -->
+          <div class="results-section mb-6">
+            <h3 class="text-4 font-semibold mb-4 text-title">测试通过率</h3>
+            
+            <div class="pass-rate-charts-grid">
+              <!-- Functional Test Pass Rate -->
+              <Card
+                v-if="evaluationDetail.result.metrics?.FUNCTIONAL_SCORE"
+                class="pass-rate-card"
+                :bordered="false">
+                <template #title>
+                  <div class="card-title">功能测试通过率</div>
+                </template>
+                <div class="pass-rate-content">
+                  <div ref="functionalPassedRateRef" class="pass-rate-chart"></div>
+                  <div class="pass-rate-info">
+                    <div class="info-item">
+                      <span class="info-label">通过率：</span>
+                      <span
+                        class="info-value"
+                        :style="{ color: getRateColor(evaluationDetail.result.metrics.FUNCTIONAL_SCORE.rate) }">
+                        {{ (+evaluationDetail.result.metrics.FUNCTIONAL_SCORE.rate).toFixed(1) }}%
+                      </span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">通过用例：</span>
+                      <span class="info-value">
+                        {{ evaluationDetail.result.metrics.FUNCTIONAL_SCORE.numerator }}/{{ evaluationDetail.result.metrics.FUNCTIONAL_SCORE.denominator }}
+                      </span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">得分：</span>
+                      <span class="info-value">
+                        {{ (+evaluationDetail.result.metrics.FUNCTIONAL_SCORE.score).toFixed(1) }} 分
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+  
+              <!-- Performance Test Pass Rate -->
+              <Card
+                v-if="evaluationDetail.result.metrics?.PERFORMANCE_SCORE"
+                class="pass-rate-card"
+                :bordered="false">
+                <template #title>
+                  <div class="card-title">性能测试通过率</div>
+                </template>
+                <div class="pass-rate-content">
+                  <div ref="performancePassedRateRef" class="pass-rate-chart"></div>
+                  <div class="pass-rate-info">
+                    <div class="info-item">
+                      <span class="info-label">通过率：</span>
+                      <span
+                        class="info-value"
+                        :style="{ color: getRateColor(evaluationDetail.result.metrics.PERFORMANCE_SCORE.rate) }">
+                        {{ (+evaluationDetail.result.metrics.PERFORMANCE_SCORE.rate).toFixed(1) }}%
+                      </span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">通过用例：</span>
+                      <span class="info-value">
+                        {{ evaluationDetail.result.metrics.PERFORMANCE_SCORE.numerator }}/{{ evaluationDetail.result.metrics.PERFORMANCE_SCORE.denominator }}
+                      </span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">得分：</span>
+                      <span class="info-value">
+                        {{ (+evaluationDetail.result.metrics.PERFORMANCE_SCORE.score).toFixed(1) }} 分
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+  
+              <!-- Stability Test Pass Rate -->
+              <Card
+                v-if="evaluationDetail.result.metrics?.STABILITY_SCORE"
+                class="pass-rate-card"
+                :bordered="false">
+                <template #title>
+                  <div class="card-title">稳定性测试通过率</div>
+                </template>
+                <div class="pass-rate-content">
+                  <div ref="stabilityPassedRateRef" class="pass-rate-chart"></div>
+                  <div class="pass-rate-info">
+                    <div class="info-item">
+                      <span class="info-label">通过率：</span>
+                      <span
+                        class="info-value"
+                        :style="{ color: getRateColor(evaluationDetail.result.metrics.STABILITY_SCORE.rate) }">
+                        {{ (+evaluationDetail.result.metrics.STABILITY_SCORE.rate).toFixed(1) }}%
+                      </span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">通过用例：</span>
+                      <span class="info-value">
+                        {{ evaluationDetail.result.metrics.STABILITY_SCORE.numerator }}/{{ evaluationDetail.result.metrics.STABILITY_SCORE.denominator }}
+                      </span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">得分：</span>
+                      <span class="info-value">
+                        {{ (+evaluationDetail.result.metrics.STABILITY_SCORE.score).toFixed(1) }} 分
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </div>
           </div>
-        </div>
+  
+          <Divider />
+        </template>
 
-        <Divider />
-
-        <!-- Quality Scores Section -->
-        <div class="results-section">
-          <h3 class="text-4 font-semibold mb-4 text-title">质量评分</h3>
-          
-          <div class="quality-scores-container space-y-2">
-            <!-- Compatibility Score -->
-            <Card
-              v-if="evaluationDetail.result.metrics?.COMPATIBILITY_SCORE"
-              class="quality-score-card"
-              :bordered="false">
-              <template #title>
-                <div class="card-title">兼容性评分</div>
-              </template>
-              <div ref="compatibilityScoreRef" class="quality-score-chart"></div>
-            </Card>
-
-            <!-- Usability Score -->
-            <Card
-              v-if="evaluationDetail.result.metrics?.USABILITY_SCORE"
-              class="quality-score-card"
-              :bordered="false">
-              <template #title>
-                <div class="card-title">易用性评分</div>
-              </template>
-              <div ref="usabilityScoreRef" class="quality-score-chart"></div>
-            </Card>
-
-            <!-- Maintainability Score -->
-            <Card
-              v-if="evaluationDetail.result.metrics?.MAINTAINABILITY_SCORE"
-              class="quality-score-card"
-              :bordered="false">
-              <template #title>
-                <div class="card-title">可维护性评分</div>
-              </template>
-              <div ref="maintainabilityScoreRef" class="quality-score-chart"></div>
-            </Card>
-
-            <!-- Scalability Score -->
-            <Card
-              v-if="evaluationDetail.result.metrics?.SCALABILITY_SCORE"
-              class="quality-score-card"
-              :bordered="false">
-              <template #title>
-                <div class="card-title">可扩展性评分</div>
-              </template>
-              <div ref="scalabilityScoreRef" class="quality-score-chart"></div>
-            </Card>
-
-            <!-- Security Score -->
-            <Card
-              v-if="evaluationDetail.result.metrics?.SECURITY_SCORE"
-              class="quality-score-card"
-              :bordered="false">
-              <template #title>
-                <div class="card-title">安全性评分</div>
-              </template>
-              <div ref="securityScoreRef" class="quality-score-chart"></div>
-            </Card>
+        <template v-if="showQualityScores">
+          <!-- Quality Scores Section -->
+          <div class="results-section">
+            <h3 class="text-4 font-semibold mb-4 text-title">质量评分</h3>
+            
+            <div class="quality-scores-container space-y-2">
+              <!-- Compatibility Score -->
+              <Card
+                v-if="evaluationDetail.result.metrics?.COMPATIBILITY_SCORE"
+                class="quality-score-card"
+                :bordered="false">
+                <template #title>
+                  <div class="card-title">兼容性评分</div>
+                </template>
+                <div class="flex ">
+                  <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
+                    <Statistic
+                      title="总用例"
+                      :value="evaluationDetail.result.metrics?.COMPATIBILITY_SCORE.totalCases"
+                      suffix=""
+                      class="flex flex-col-reverse"
+                      :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
+                    <Statistic
+                      title="总得分"
+                      :value="evaluationDetail.result.metrics?.COMPATIBILITY_SCORE.score"
+                      suffix=""
+                      class="flex flex-col-reverse"
+                      :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
+                    <Statistic
+                      title="权重"
+                      :value="evaluationDetail.result.metrics?.COMPATIBILITY_SCORE.weight"
+                      suffix=""
+                      class="flex flex-col-reverse"
+                      :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }" />
+                  </div>
+                  <div ref="compatibilityScoreRef" class="quality-score-chart flex-1"></div>
+                </div>
+              </Card>
+  
+              <!-- Usability Score -->
+              <Card
+                v-if="evaluationDetail.result.metrics?.USABILITY_SCORE"
+                class="quality-score-card"
+                :bordered="false">
+                <template #title>
+                  <div class="card-title">易用性评分</div>
+                </template>
+                <div class="flex">
+                  <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
+                      <Statistic
+                        title="总用例"
+                        :value="evaluationDetail.result.metrics?.USABILITY_SCORE.totalCases"
+                        suffix=""
+                        class="flex flex-col-reverse"
+                        :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
+                      <Statistic
+                        title="总得分"
+                        :value="evaluationDetail.result.metrics?.USABILITY_SCORE.score"
+                        suffix=""
+                        class="flex flex-col-reverse"
+                        :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
+                      <Statistic
+                        title="权重"
+                        :value="evaluationDetail.result.metrics?.USABILITY_SCORE.weight"
+                        suffix=""
+                        class="flex flex-col-reverse"
+                        :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }" />
+                  </div>
+                  <div ref="usabilityScoreRef" class="quality-score-chart flex-1"></div>
+                </div>
+              </Card>
+  
+              <!-- Maintainability Score -->
+              <Card
+                v-if="evaluationDetail.result.metrics?.MAINTAINABILITY_SCORE"
+                class="quality-score-card"
+                :bordered="false">
+                <template #title>
+                  <div class="card-title">可维护性评分</div>
+                </template>
+                <div class="flex">
+                  
+                  <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
+                      <Statistic
+                        title="总用例"
+                        :value="evaluationDetail.result.metrics?.MAINTAINABILITY_SCORE.totalCases"
+                        suffix=""
+                        class="flex flex-col-reverse"
+                        :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
+                      <Statistic
+                        title="总得分"
+                        :value="evaluationDetail.result.metrics?.MAINTAINABILITY_SCORE.score"
+                        suffix=""
+                        class="flex flex-col-reverse"
+                        :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
+                      <Statistic
+                        title="权重"
+                        :value="evaluationDetail.result.metrics?.MAINTAINABILITY_SCORE.weight"
+                        suffix=""
+                        class="flex flex-col-reverse"
+                        :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }" />
+                  </div>
+                  <div ref="maintainabilityScoreRef" class="quality-score-chart flex-1"></div>
+                </div>
+              </Card>
+  
+              <!-- Scalability Score -->
+              <Card
+                v-if="evaluationDetail.result.metrics?.SCALABILITY_SCORE"
+                class="quality-score-card"
+                :bordered="false">
+                <template #title>
+                  <div class="card-title">可扩展性评分</div>
+                </template>
+                <div class="flex">
+                  
+                  <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
+                      <Statistic
+                        title="总用例"
+                        :value="evaluationDetail.result.metrics?.SCALABILITY_SCORE.totalCases"
+                        suffix=""
+                        class="flex flex-col-reverse"
+                        :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
+                      <Statistic
+                        title="总得分"
+                        :value="evaluationDetail.result.metrics?.SCALABILITY_SCORE.score"
+                        suffix=""
+                        class="flex flex-col-reverse"
+                        :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
+                      <Statistic
+                        title="权重"
+                        :value="evaluationDetail.result.metrics?.SCALABILITY_SCORE.weight"
+                        suffix=""
+                        class="flex flex-col-reverse"
+                        :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }" />
+                  </div>
+                  <div ref="scalabilityScoreRef" class="quality-score-chart flex-1"></div>
+                </div>
+              </Card>
+  
+              <!-- Security Score -->
+              <Card
+                v-if="evaluationDetail.result.metrics?.SECURITY_SCORE"
+                class="quality-score-card"
+                :bordered="false">
+                <template #title>
+                  <div class="card-title">安全性评分</div>
+                </template>
+                <div class="flex">
+                  
+                  <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
+                      <Statistic
+                        title="总用例"
+                        :value="evaluationDetail.result.metrics?.SECURITY_SCORE.totalCases"
+                        suffix=""
+                        class="flex flex-col-reverse"
+                        :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#1890ff' }" />
+                      <Statistic
+                        title="总得分"
+                        :value="evaluationDetail.result.metrics?.SECURITY_SCORE.score"
+                        suffix=""
+                        class="flex flex-col-reverse"
+                        :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#722ed1' }" />
+                      <Statistic
+                        title="权重"
+                        :value="evaluationDetail.result.metrics?.SECURITY_SCORE.weight"
+                        suffix=""
+                        class="flex flex-col-reverse"
+                        :value-style="{ fontSize: '32px', fontWeight: 'bold', color: '#52c41a' }" />
+                  </div>
+                  <div ref="securityScoreRef" class="quality-score-chart flex-1"></div>
+                </div>
+              </Card>
+            </div>
           </div>
-        </div>
+        </template>
       </div>
     </Card>
 

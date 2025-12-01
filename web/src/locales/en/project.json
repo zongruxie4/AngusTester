@@ -231,7 +231,7 @@
     },
     "actions": {
       "addEvaluation": "Add Evaluation",
-      "generateResult": "Start Evaluation",
+      "generateResult": "Evaluation",
       "generateResultSuccess": "Result generated successfully"
     },
     "columns": {
