@@ -5,6 +5,7 @@ import static cloud.xcan.angus.spec.experimental.Assert.assertTrue;
 import static cloud.xcan.angus.spec.experimental.BizConstant.DEFAULT_ROOT_PID;
 import static cloud.xcan.angus.spec.locale.MessageHolder.message;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getDefaultLanguage;
+import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.DateUtils.DATE_TIME_FMT;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
@@ -19,6 +20,7 @@ import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.activity.MainTargetActivityResource;
 import cloud.xcan.angus.core.tester.domain.activity.summary.ActivitySummary;
+import cloud.xcan.angus.core.tester.domain.GlobalResourceType;
 import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.project.tag.Tag;
@@ -303,7 +305,8 @@ public class ActivityConverter {
     if (isNotEmpty(task.getSoftwareVersion())
         && !task.getSoftwareVersion().equals(taskDb.getSoftwareVersion())) {
       activity.append("<br/>").append(message(
-          ActivityType.SOFTWARE_VERSION_UPDATE.getDescMessageKey(), new Object[]{"", task.getSoftwareVersion()}));
+          ActivityType.SOFTWARE_VERSION_UPDATE.getDescMessageKey(),
+          new Object[]{"", task.getSoftwareVersion()}));
       hasChanged = true;
       if (activity.length() < MAX_ACTIVITY_LENGTH) {
         safeActivity = activity;
@@ -449,6 +452,24 @@ public class ActivityConverter {
     mainActivity.setDescription(mainActivity.getDescription() + safeActivity);
     mainActivity.setDetail(mainActivity.getDetail() + safeActivity);
     return mainActivity;
+  }
+
+  public static Activity toUpdateGlobalResourceActivity(CombinedTargetType targetType,
+      GlobalResourceType resourceType, String messageKey, String value) {
+    return new Activity()
+        .setProjectId(-1L)
+        .setTargetId(-1L)
+        .setParentTargetId(-1L)
+        .setTargetType(targetType)
+        .setTargetName(resourceType.getMessage())
+        .setMainTargetId(-1L)
+        .setUserId(getUserId())
+        .setType(ActivityType.UPDATED)
+        .setOptDate(LocalDateTime.now())
+        .setDescription(message(ActivityType.UPDATED.getDescMessageKey() + messageKey,
+            new Object[]{value}, getDefaultLanguage().toLocale()))
+        .setDetail(message(ActivityType.UPDATED.getDescMessageKey() + messageKey,
+            new Object[]{value}, getDefaultLanguage().toLocale()));
   }
 
   public static ActivitySummary toActivitySummary(Activity activity) {

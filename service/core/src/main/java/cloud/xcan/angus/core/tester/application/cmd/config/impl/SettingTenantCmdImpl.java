@@ -1,17 +1,23 @@
 package cloud.xcan.angus.core.tester.application.cmd.config.impl;
 
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
+import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toUpdateGlobalResourceActivity;
 import static cloud.xcan.angus.core.tester.application.converter.SettingTenantConverter.initTenantSetting;
+import static cloud.xcan.angus.core.tester.infra.util.LinkedHashMapDiffUtil.compareEvaluationMaps;
+import static cloud.xcan.angus.core.tester.infra.util.ObjectDiffUtil.compareObjects;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static java.util.Objects.isNull;
 
+import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
+import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.angus.core.tester.application.cmd.config.SettingTenantCmd;
 import cloud.xcan.angus.core.tester.application.query.config.SettingTenantQuery;
 import cloud.xcan.angus.core.tester.domain.config.indicator.FuncData;
+import cloud.xcan.angus.core.tester.domain.GlobalResourceType;
 import cloud.xcan.angus.core.tester.domain.config.indicator.PerfData;
 import cloud.xcan.angus.core.tester.domain.config.indicator.StabilityData;
 import cloud.xcan.angus.core.tester.domain.config.tenant.TenantSetting;
@@ -47,6 +53,8 @@ public class SettingTenantCmdImpl extends CommCmd<TenantSetting, Long> implement
   private TenantSettingRepo settingTenantRepo;
   @Resource
   private SettingTenantQuery settingTenantQuery;
+  @Resource
+  private ActivityCmd activityCmd;
 
   /**
    * <p>
@@ -114,6 +122,10 @@ public class SettingTenantCmdImpl extends CommCmd<TenantSetting, Long> implement
         TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
         setting.setEvaluationWeightData(evaluation);
         updateTenantSetting(getOptTenantId(), setting);
+
+        activityCmd.add(toUpdateGlobalResourceActivity(CombinedTargetType.INDICATOR,
+            GlobalResourceType.EVALUATION, "INDICATOR_UPDATE_TO",
+            compareEvaluationMaps(setting.getEvaluationWeightData(), evaluation)));
         return null;
       }
     }.execute();
@@ -137,6 +149,10 @@ public class SettingTenantCmdImpl extends CommCmd<TenantSetting, Long> implement
         TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
         setting.setFuncData(data);
         updateTenantSetting(getOptTenantId(), setting);
+
+        activityCmd.add(toUpdateGlobalResourceActivity(CombinedTargetType.INDICATOR,
+            GlobalResourceType.EVALUATION, "INDICATOR_UPDATE_TO",
+            compareObjects(setting.getFuncData(), data)));
         return null;
       }
     }.execute();
@@ -160,6 +176,10 @@ public class SettingTenantCmdImpl extends CommCmd<TenantSetting, Long> implement
         TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
         setting.setPerfData(data);
         updateTenantSetting(getOptTenantId(), setting);
+
+        activityCmd.add(toUpdateGlobalResourceActivity(CombinedTargetType.INDICATOR,
+            GlobalResourceType.EVALUATION, "INDICATOR_UPDATE_TO",
+            compareObjects(setting.getFuncData(), data)));
         return null;
       }
     }.execute();
@@ -167,22 +187,26 @@ public class SettingTenantCmdImpl extends CommCmd<TenantSetting, Long> implement
 
   /**
    * <p>
-   * Replaces tenant stability indicator settings.
+   * Replaces tenant data indicator settings.
    * </p>
    * <p>
-   * Updates stability indicator configuration for the tenant.
+   * Updates data indicator configuration for the tenant.
    * </p>
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void stabilityReplace(StabilityData stability) {
+  public void stabilityReplace(StabilityData data) {
     new BizTemplate<Void>() {
 
       @Override
       protected Void process() {
         TenantSetting setting = settingTenantQuery.findAndInit(getOptTenantId());
-        setting.setStabilityData(stability);
+        setting.setStabilityData(data);
         updateTenantSetting(getOptTenantId(), setting);
+
+        activityCmd.add(toUpdateGlobalResourceActivity(CombinedTargetType.INDICATOR,
+            GlobalResourceType.EVALUATION, "INDICATOR_UPDATE_TO",
+            compareObjects(setting.getFuncData(), data)));
         return null;
       }
     }.execute();
