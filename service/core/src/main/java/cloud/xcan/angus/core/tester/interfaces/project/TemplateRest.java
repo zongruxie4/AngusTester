@@ -109,16 +109,18 @@ public class TemplateRest {
     return ApiLocaleResult.success(templateFacade.imports(dto));
   }
 
-  @Operation(summary = "Export templates",
-      description = "Export all templates to Excel, CSV or JSON format for backup or migration purposes",
+  @Operation(summary = "Export template",
+      description = "Export a single template by ID to Excel, CSV or JSON format for backup or migration purposes",
       operationId = "func:test:template:export")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Templates exported successfully")
+      @ApiResponse(responseCode = "200", description = "Template exported successfully"),
+      @ApiResponse(responseCode = "404", description = "Template not found")
   })
-  @GetMapping(value = "/export")
+  @GetMapping(value = "/{id}/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(
+      @Parameter(name = "id", description = "Template identifier to export", required = true) @PathVariable("id") Long id,
       @Parameter(name = "format", description = "Export format: excel, csv, or json", example = "excel") @RequestParam(value = "format", defaultValue = "excel") String format,
       HttpServletResponse response) {
-    return templateFacade.export(format, response);
+    return templateFacade.export(id, format, response);
   }
 }

@@ -21,7 +21,7 @@ public interface TemplateFacade {
 
   IdKey<Long, Object> imports(TemplateImportDto dto);
 
-  ResponseEntity<org.springframework.core.io.Resource> export(String format, HttpServletResponse response);
+  ResponseEntity<org.springframework.core.io.Resource> export(Long id, String format, HttpServletResponse response);
 
 }
 
