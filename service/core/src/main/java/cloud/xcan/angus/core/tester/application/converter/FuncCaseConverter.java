@@ -137,6 +137,8 @@ public class FuncCaseConverter {
         //.setEvalWorkloadMethod(case0.getEvalWorkloadMethod())
         .setEvalWorkload(case0.getEvalWorkload())
         .setActualWorkload(case0.getActualWorkload())
+        .setTestLayer(case0.getTestLayer())
+        .setTestPurpose(case0.getTestPurpose())
         .setPrecondition(case0.getPrecondition())
         .setStepView(case0.getStepView())
         .setSteps(case0.getSteps())
