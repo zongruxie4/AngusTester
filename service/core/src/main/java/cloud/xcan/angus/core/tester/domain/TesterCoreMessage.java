@@ -336,4 +336,10 @@ public interface TesterCoreMessage extends TesterApisMessage {
       "创建时间"/*, "测试资源(接口或场景)ID"*/);
   List<String> TASK_IMPORT_REQUIRED_COLUMNS = List.of("任务名称", "任务类型", "经办人", "截止时间");
 
+  // Note: The order cannot be changed
+  List<String> TEMPLATE_IMPORT_COLUMNS = List.of("模版名称", "模版类型", "模版内容");
+  List<String> TEMPLATE_IMPORT_REQUIRED_COLUMNS = List.of("模版名称", "模版类型");
+
+  String EXPORT_TEMPLATE_LIST = "xcm.export.templateListExport";
+
 }

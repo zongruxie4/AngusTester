@@ -2,19 +2,25 @@ package cloud.xcan.angus.core.tester.interfaces.project;
 
 import cloud.xcan.angus.core.tester.interfaces.project.facade.TemplateFacade;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.template.TemplateAddDto;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.template.TemplateImportDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.template.TemplateUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.template.TemplateListVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -86,5 +93,32 @@ public class TemplateRest {
   @GetMapping
   public ApiLocaleResult<List<TemplateListVo>> list() {
     return ApiLocaleResult.success(templateFacade.list());
+  }
+
+  @Operation(summary = "Import template",
+      description = "Import a single template from Excel, CSV or JSON file. If a template with the same name already exists, import will be stopped.",
+      operationId = "func:test:template:import")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Template imported successfully"),
+      @ApiResponse(responseCode = "400", description = "Invalid file format, template name already exists, or maximum template quota exceeded (200 templates)")
+  })
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ApiLocaleResult<IdKey<Long, Object>> imports(
+      @Parameter(content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE), schema = @Schema(type = "object")) @Valid TemplateImportDto dto) {
+    return ApiLocaleResult.success(templateFacade.imports(dto));
+  }
+
+  @Operation(summary = "Export templates",
+      description = "Export all templates to Excel, CSV or JSON format for backup or migration purposes",
+      operationId = "func:test:template:export")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Templates exported successfully")
+  })
+  @GetMapping(value = "/export")
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      @Parameter(name = "format", description = "Export format: excel, csv, or json", example = "excel") @RequestParam(value = "format", defaultValue = "excel") String format,
+      HttpServletResponse response) {
+    return templateFacade.export(format, response);
   }
 }
