@@ -1,9 +1,9 @@
-package cloud.xcan.angus.core.tester.interfaces.test.facade.vo.template;
+package cloud.xcan.angus.core.tester.interfaces.project.facade.vo.template;
 
 import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DEFAULT_DATE_TIME_FORMAT;
 
-import cloud.xcan.angus.core.tester.domain.test.template.TestTemplateType;
-import cloud.xcan.angus.core.tester.domain.test.template.content.TestTemplateContent;
+import cloud.xcan.angus.core.tester.domain.project.template.TemplateType;
+import cloud.xcan.angus.core.tester.domain.project.template.content.TemplateContent;
 import cloud.xcan.angus.remote.NameJoinField;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
 import java.time.LocalDateTime;
@@ -14,15 +14,15 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class TestTemplateListVo {
+public class TemplateListVo {
 
   private Long id;
 
   private String name;
 
-  private TestTemplateType templateType;
+  private TemplateType templateType;
 
-  private TestTemplateContent templateContent;
+  private TemplateContent templateContent;
 
   private Boolean isSystem;
 

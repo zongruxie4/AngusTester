@@ -9,7 +9,7 @@ import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 import { PlanDetail } from '../types';
 import { TestMenuKey } from '@/views/test/menu';
 import { TestTemplateType } from '@/enums/enums';
-import { testTemplate } from '@/api/tester';
+import { template } from '@/api/tester';
 
 const RichText = defineAsyncComponent(() => import('@/components/editor/richEditor/textContent/index.vue'));
 
@@ -138,7 +138,7 @@ const handleSaveModule = async (planData: PlanDetail) => {
     templateType: TestTemplateType.TEST_PLAN
   };
 
-  const [error] = await testTemplate.addTemplate({templateContent, name: planData.name, templateType: TestTemplateType.TEST_PLAN});
+  const [error] = await template.addTemplate({templateContent, name: planData.name, templateType: TestTemplateType.TEST_PLAN});
   if (error) {
     return;
   }

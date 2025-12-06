@@ -16,7 +16,7 @@ import { CaseActionAuth, EnabledModuleGroup } from './types';
 import { CaseTestResult, FuncPlanPermission, TaskType, TestTemplateType } from '@/enums/enums';
 import { CaseCount, CaseViewMode, getActionAuth } from '@/views/test/case/types';
 import { CaseDetail } from '@/views/test/types';
-import { testTemplate } from '@/api/tester';
+import { template } from '@/api/tester';
 
 // eslint-disable-next-line import/no-absolute-path
 import Template from '/file/Import_Case_Template.xlsx?url';
@@ -761,7 +761,7 @@ const handleSaveModule = async (caseData: CaseDetail) => {
         templateType: TestTemplateType.TEST_CASE
       };
 
-      const [error] = await testTemplate.addTemplate({templateContent, name, templateType: TestTemplateType.TEST_CASE});
+      const [error] = await template.addTemplate({templateContent, name, templateType: TestTemplateType.TEST_CASE});
       if (error) {
         return;
       }

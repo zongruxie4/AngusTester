@@ -9,7 +9,7 @@ import { CaseTestResult, TestTemplateType } from '@/enums/enums';
 import { TestMenuKey } from '@/views/test/menu';
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
-import { testTemplate } from '@/api/tester';
+import { template } from '@/api/tester';
 
 const { t } = useI18n();
 
@@ -266,7 +266,7 @@ const handleSaveModule = async (caseData: CaseDetail) => {
         templateType: TestTemplateType.TEST_CASE
       };
 
-      const [error] = await testTemplate.addTemplate({templateContent, name, templateType: TestTemplateType.TEST_CASE});
+      const [error] = await template.addTemplate({templateContent, name, templateType: TestTemplateType.TEST_CASE});
       if (error) {
         return;
       }

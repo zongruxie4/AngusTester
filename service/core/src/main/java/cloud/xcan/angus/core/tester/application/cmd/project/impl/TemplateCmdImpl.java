@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.application.cmd.test.impl;
+package cloud.xcan.angus.core.tester.application.cmd.project.impl;
 
 import static java.util.Objects.nonNull;
 
@@ -7,10 +7,10 @@ import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.biz.exception.QuotaException;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
-import cloud.xcan.angus.core.tester.application.cmd.test.TestTemplateCmd;
-import cloud.xcan.angus.core.tester.application.query.test.TestTemplateQuery;
-import cloud.xcan.angus.core.tester.domain.test.template.TestTemplate;
-import cloud.xcan.angus.core.tester.domain.test.template.TestTemplateRepo;
+import cloud.xcan.angus.core.tester.application.cmd.project.TemplateCmd;
+import cloud.xcan.angus.core.tester.application.query.project.TemplateQuery;
+import cloud.xcan.angus.core.tester.domain.project.template.Template;
+import cloud.xcan.angus.core.tester.domain.project.template.TemplateRepo;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,15 +25,15 @@ import org.springframework.transaction.annotation.Transactional;
  * and activity logging for all template operations.
  */
 @Biz
-public class TestTemplateCmdImpl extends CommCmd<TestTemplate, Long> implements TestTemplateCmd {
+public class TemplateCmdImpl extends CommCmd<Template, Long> implements TemplateCmd {
 
   private static final int MAX_CUSTOM_TEMPLATE_COUNT = 200;
 
   @Resource
-  private TestTemplateRepo testTemplateRepo;
+  private TemplateRepo templateRepo;
 
   @Resource
-  private TestTemplateQuery testTemplateQuery;
+  private TemplateQuery templateQuery;
 
   /**
    * Adds a new test template to the system.
@@ -45,12 +45,12 @@ public class TestTemplateCmdImpl extends CommCmd<TestTemplate, Long> implements 
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public IdKey<Long, Object> add(TestTemplate template) {
+  public IdKey<Long, Object> add(Template template) {
     return new BizTemplate<IdKey<Long, Object>>() {
       @Override
       protected void checkParams() {
         // Check custom template quota (max 200)
-        long customTemplateCount = testTemplateRepo.countByIsSystem(false);
+        long customTemplateCount = templateRepo.countByIsSystem(false);
         if (customTemplateCount >= MAX_CUSTOM_TEMPLATE_COUNT) {
           throw QuotaException.of(
               String.format("最多只能创建 %d 个自定义模版，当前已有 %d 个", MAX_CUSTOM_TEMPLATE_COUNT, customTemplateCount));
@@ -77,14 +77,14 @@ public class TestTemplateCmdImpl extends CommCmd<TestTemplate, Long> implements 
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void update(TestTemplate template) {
+  public void update(Template template) {
     new BizTemplate<Void>() {
-      TestTemplate templateDb;
+      Template templateDb;
 
       @Override
       protected void checkParams() {
         // Ensure template exists
-        templateDb = testTemplateQuery.checkAndFind(template.getId());
+        templateDb = templateQuery.checkAndFind(template.getId());
 
         // Ensure it's a custom template (not system template)
         if (nonNull(templateDb.getIsSystem()) && templateDb.getIsSystem()) {
@@ -98,7 +98,7 @@ public class TestTemplateCmdImpl extends CommCmd<TestTemplate, Long> implements 
         templateDb.setName(template.getName());
         templateDb.setTemplateType(template.getTemplateType());
         templateDb.setTemplateContent(template.getTemplateContent());
-        testTemplateRepo.save(templateDb);
+        templateRepo.save(templateDb);
         return null;
       }
     }.execute();
@@ -116,12 +116,12 @@ public class TestTemplateCmdImpl extends CommCmd<TestTemplate, Long> implements 
   @Override
   public void delete(Long id) {
     new BizTemplate<Void>() {
-      TestTemplate templateDb;
+      Template templateDb;
 
       @Override
       protected void checkParams() {
         // Ensure template exists
-        templateDb = testTemplateQuery.checkAndFind(id);
+        templateDb = templateQuery.checkAndFind(id);
 
         // Ensure it's a custom template (not system template)
         if (nonNull(templateDb.getIsSystem()) && templateDb.getIsSystem()) {
@@ -132,15 +132,15 @@ public class TestTemplateCmdImpl extends CommCmd<TestTemplate, Long> implements 
       @Override
       protected Void process() {
         // Delete template
-        testTemplateRepo.delete(templateDb);
+        templateRepo.delete(templateDb);
         return null;
       }
     }.execute();
   }
 
   @Override
-  protected BaseRepository<TestTemplate, Long> getRepository() {
-    return this.testTemplateRepo;
+  protected BaseRepository<Template, Long> getRepository() {
+    return this.templateRepo;
   }
 }
 

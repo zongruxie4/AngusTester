@@ -1,30 +1,30 @@
-package cloud.xcan.angus.core.tester.interfaces.test.facade.internal.assembler;
+package cloud.xcan.angus.core.tester.interfaces.project.facade.internal;
 
-import cloud.xcan.angus.core.tester.domain.test.template.TestTemplate;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.template.TestTemplateAddDto;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.template.TestTemplateUpdateDto;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.template.TestTemplateListVo;
+import cloud.xcan.angus.core.tester.domain.project.template.Template;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.template.TemplateAddDto;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.template.TemplateUpdateDto;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.template.TemplateListVo;
 
-public class TestTemplateAssembler {
+public class TemplateAssembler {
 
-  public static TestTemplate addDtoToDomain(TestTemplateAddDto dto) {
-    return new TestTemplate()
+  public static Template addDtoToDomain(TemplateAddDto dto) {
+    return new Template()
         .setName(dto.getName())
         .setTemplateType(dto.getTemplateType())
         .setTemplateContent(dto.getTemplateContent())
         .setIsSystem(false);
   }
 
-  public static TestTemplate updateDtoToDomain(TestTemplateUpdateDto dto) {
-    return new TestTemplate()
+  public static Template updateDtoToDomain(TemplateUpdateDto dto) {
+    return new Template()
         .setId(dto.getId())
         .setName(dto.getName())
         .setTemplateType(dto.getTemplateType())
         .setTemplateContent(dto.getTemplateContent());
   }
 
-  public static TestTemplateListVo toListVo(TestTemplate template) {
-    return new TestTemplateListVo()
+  public static TemplateListVo toListVo(Template template) {
+    return new TemplateListVo()
         .setId(template.getId())
         .setName(template.getName())
         .setTemplateType(template.getTemplateType())

@@ -3,7 +3,7 @@ import {  defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { notification, Spin, Hints } from '@xcan-angus/vue-ui';
 import { enumUtils } from '@xcan-angus/infra';
-import { testTemplate } from '@/api/tester';
+import { template } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TestTemplateEditFormState, TestTemplateDetail } from '../types';
 import { BasicProps } from '@/types/types';
@@ -74,7 +74,7 @@ const loadTemplateDetail = async () => {
   }
 
   loading.value = true;
-  const [error, res] = await testTemplate.getTemplateList();
+  const [error, res] = await template.getTemplateList();
   loading.value = false;
 
   if (error) {
@@ -91,7 +91,7 @@ const loadTemplateDetail = async () => {
     const templateContent = template.templateContent || {};
 
     updateTabPane({name: template.name, _id: props.data?._id});
-    
+
     // Initialize stepView and steps for test case template
     let stepView = CaseStepView.TABLE;
     let steps: CaseTestStep[] = [];
@@ -186,7 +186,7 @@ onMounted(() => {
         <!-- Template Content -->
         <div>
           <div class="text-3.5 font-semibold mb-4">{{ t('testTemplate.templateContent') }}</div>
-          
+
           <!-- Test Plan Template Content -->
           <template v-if="formState.templateType === TestTemplateType.TEST_PLAN">
             <FormItem :label="t('testTemplate.columns.testingScope')">

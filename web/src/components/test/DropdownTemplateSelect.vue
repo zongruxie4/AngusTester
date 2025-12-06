@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { Dropdown, Select } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { testTemplate } from '@/api/tester';
+import { template } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TestTemplateType } from '@/enums/enums';
 
@@ -11,7 +11,7 @@ const { t } = useI18n();
 const props = withDefaults(defineProps<{templateType?: TestTemplateType}>(), {
   templateType: TestTemplateType.TEST_PLAN
 });
-    
+
 const emit = defineEmits<{
   (e: 'change', value: any): void;
 }>();
@@ -20,7 +20,7 @@ const templateList = ref<{label: string, value: string}[]>([]);
 const templateData = ref<{[key: string]: any}[]>([]);
 
 const loadTemplateList = async () => {
-  const [error, res] = await testTemplate.getTemplateList();
+  const [error, res] = await template.getTemplateList();
   if (error) {
     return;
   }

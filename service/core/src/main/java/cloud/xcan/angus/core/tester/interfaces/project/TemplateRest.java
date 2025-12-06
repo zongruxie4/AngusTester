@@ -1,9 +1,9 @@
-package cloud.xcan.angus.core.tester.interfaces.test;
+package cloud.xcan.angus.core.tester.interfaces.project;
 
-import cloud.xcan.angus.core.tester.interfaces.test.facade.TestTemplateFacade;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.template.TestTemplateAddDto;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.dto.template.TestTemplateUpdateDto;
-import cloud.xcan.angus.core.tester.interfaces.test.facade.vo.template.TestTemplateListVo;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.TemplateFacade;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.template.TemplateAddDto;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.template.TemplateUpdateDto;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.template.TemplateListVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,17 +26,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Test Template", description = "Test Template Management - APIs for creating, updating, deleting, and querying test templates with quota management (max 200 custom templates)")
+@Tag(name = "Template", description = "Template Management - APIs for creating, updating, deleting, and querying templates with quota management (max 200 custom templates)")
 @Validated
 @RestController
-@RequestMapping("/api/v1/func/test/template")
-public class FuncTestTemplateRest {
+@RequestMapping("/api/v1/template")
+public class TemplateRest {
 
   @Resource
-  private TestTemplateFacade testTemplateFacade;
+  private TemplateFacade templateFacade;
 
-  @Operation(summary = "Create test template",
-      description = "Create a new custom test template with detailed configuration. Maximum 200 custom templates allowed.",
+  @Operation(summary = "Create template",
+      description = "Create a new custom template with detailed configuration. Maximum 200 custom templates allowed.",
       operationId = "func:test:template:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Test template created successfully"),
@@ -44,12 +44,12 @@ public class FuncTestTemplateRest {
   })
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody TestTemplateAddDto dto) {
-    return ApiLocaleResult.success(testTemplateFacade.add(dto));
+  public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody TemplateAddDto dto) {
+    return ApiLocaleResult.success(templateFacade.add(dto));
   }
 
-  @Operation(summary = "Update custom test template",
-      description = "Update an existing custom test template with partial modification support. System templates cannot be updated.",
+  @Operation(summary = "Update custom template",
+      description = "Update an existing custom template with partial modification support. System templates cannot be updated.",
       operationId = "func:test:template:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Test template updated successfully"),
@@ -57,13 +57,13 @@ public class FuncTestTemplateRest {
       @ApiResponse(responseCode = "400", description = "System template cannot be updated")
   })
   @PatchMapping
-  public ApiLocaleResult<?> update(@Valid @RequestBody TestTemplateUpdateDto dto) {
-    testTemplateFacade.update(dto);
+  public ApiLocaleResult<?> update(@Valid @RequestBody TemplateUpdateDto dto) {
+    templateFacade.update(dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete custom test template",
-      description = "Delete a custom test template from the system. System templates cannot be deleted.",
+  @Operation(summary = "Delete custom template",
+      description = "Delete a custom template from the system. System templates cannot be deleted.",
       operationId = "func:test:template:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Test template deleted successfully"),
@@ -74,17 +74,17 @@ public class FuncTestTemplateRest {
   @DeleteMapping("/{id}")
   public void delete(
       @Parameter(name = "id", description = "Test template identifier for deletion", required = true) @PathVariable("id") Long id) {
-    testTemplateFacade.delete(id);
+    templateFacade.delete(id);
   }
 
-  @Operation(summary = "List all test templates",
-      description = "Retrieve list of all test templates (both system and custom templates) without pagination",
+  @Operation(summary = "List all templates",
+      description = "Retrieve list of all templates (both system and custom templates) without pagination",
       operationId = "func:test:template:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Test template list retrieved successfully")
   })
   @GetMapping
-  public ApiLocaleResult<List<TestTemplateListVo>> list() {
-    return ApiLocaleResult.success(testTemplateFacade.list());
+  public ApiLocaleResult<List<TemplateListVo>> list() {
+    return ApiLocaleResult.success(templateFacade.list());
   }
 }

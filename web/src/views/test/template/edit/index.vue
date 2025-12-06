@@ -4,7 +4,7 @@ import { Button, Form, FormItem, Input, Radio, RadioGroup } from 'ant-design-vue
 import { notification, Spin, Dropdown, Icon, Hints } from '@xcan-angus/vue-ui';
 import { utils, enumUtils } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
-import { testTemplate } from '@/api/tester';
+import { template } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TestTemplateEditFormState, TestTemplateDetail } from '../types';
 import { BasicProps } from '@/types/types';
@@ -92,7 +92,7 @@ const loadTemplateDetail = async () => {
   }
 
   loading.value = true;
-  const [error, res] = await testTemplate.getTemplateList();
+  const [error, res] = await template.getTemplateList();
   loading.value = false;
 
   if (error) {
@@ -109,7 +109,7 @@ const loadTemplateDetail = async () => {
     const templateContent = template.templateContent || {};
 
     updateTabPane({name: template.name, _id: template.id});
-    
+
     // Initialize stepView and steps for test case template
     let stepView = CaseStepView.TABLE;
     let steps: CaseTestStep[] = [];
@@ -150,7 +150,7 @@ const loadTemplateDetail = async () => {
  */
 const prepareFormParams = () => {
   const params: TestTemplateEditFormState = { ...formState.value };
-  
+
   // Ensure templateContent has templateType
   if (params.templateContent) {
     params.templateContent.templateType = params.templateType as TestTemplateType;
@@ -191,9 +191,9 @@ const handleTemplateUpdate = async () => {
 
   const params = prepareFormParams();
   loading.value = true;
-  const [error] = await testTemplate.updateTemplate({...params});
+  const [error] = await template.updateTemplate({...params});
   loading.value = false;
-  
+
   if (error) {
     notification.error( error.message || t('testTemplate.messages.updateFailed'));
     return;
@@ -217,9 +217,9 @@ const handleTemplateUpdate = async () => {
 const handleTemplateCreation = async () => {
   const params = prepareFormParams();
   loading.value = true;
-  const [error] = await testTemplate.addTemplate({...params});
+  const [error] = await template.addTemplate({...params});
   loading.value = false;
-  
+
   if (error) {
     notification.error({
       message: t('common.error'),
@@ -288,7 +288,7 @@ const loadEnumOptions = () => {
 watch(() => formState.value.templateType, (newType) => {
   if (formState.value.templateContent) {
     formState.value.templateContent.templateType = newType as TestTemplateType;
-    
+
     if (newType === TestTemplateType.TEST_CASE) {
       // Initialize step view and steps for test case template
       if (!formState.value.templateContent.stepView) {
@@ -371,7 +371,7 @@ onMounted(() => {
         <!-- Template Content -->
         <div>
           <div class="text-3.5 font-semibold mb-4">{{ t('testTemplate.templateContent') }}</div>
-          
+
           <!-- Test Plan Template Content -->
           <template v-if="formState.templateType === TestTemplateType.TEST_PLAN">
             <FormItem :label="t('testTemplate.columns.testingScope')">

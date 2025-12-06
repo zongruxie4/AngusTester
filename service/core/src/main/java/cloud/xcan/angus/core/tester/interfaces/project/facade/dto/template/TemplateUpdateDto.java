@@ -1,9 +1,9 @@
-package cloud.xcan.angus.core.tester.interfaces.test.facade.dto.template;
+package cloud.xcan.angus.core.tester.interfaces.project.facade.dto.template;
 
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH;
 
-import cloud.xcan.angus.core.tester.domain.test.template.TestTemplateType;
-import cloud.xcan.angus.core.tester.domain.test.template.content.TestTemplateContent;
+import cloud.xcan.angus.core.tester.domain.project.template.TemplateType;
+import cloud.xcan.angus.core.tester.domain.project.template.content.TemplateContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +16,7 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class TestTemplateUpdateDto {
+public class TemplateUpdateDto {
 
   @NotNull
   @Schema(description = "Test template identifier for update operation", requiredMode = RequiredMode.REQUIRED)
@@ -29,11 +29,11 @@ public class TestTemplateUpdateDto {
 
   @NotNull
   @Schema(description = "Test template type (TEST_PLAN or TEST_CASE)", requiredMode = RequiredMode.REQUIRED)
-  private TestTemplateType templateType;
+  private TemplateType templateType;
 
   @NotNull
   @Schema(description = "Test template content with specific structure based on template type", requiredMode = RequiredMode.REQUIRED)
-  private TestTemplateContent templateContent;
+  private TemplateContent templateContent;
 
 }
 

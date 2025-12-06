@@ -1,8 +1,8 @@
-package cloud.xcan.angus.core.tester.domain.test.template;
+package cloud.xcan.angus.core.tester.domain.project.template;
 
 
 import cloud.xcan.angus.core.jpa.multitenancy.TenantAuditingEntity;
-import cloud.xcan.angus.core.tester.domain.test.template.content.TestTemplateContent;
+import cloud.xcan.angus.core.tester.domain.project.template.content.TemplateContent;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +20,7 @@ import org.hibernate.annotations.Type;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class TestTemplate extends TenantAuditingEntity<TestTemplate, Long>  {
+public class Template extends TenantAuditingEntity<Template, Long>  {
 
   @Id
   private Long id;
@@ -29,11 +29,11 @@ public class TestTemplate extends TenantAuditingEntity<TestTemplate, Long>  {
 
   @Column(name = "template_type")
   @Enumerated(EnumType.STRING)
-  private TestTemplateType templateType;
+  private TemplateType templateType;
 
   @Type(JsonType.class)
   @Column(columnDefinition = "json", name = "template_content")
-  private TestTemplateContent templateContent;
+  private TemplateContent templateContent;
 
   @Column(name = "is_system")
   private Boolean isSystem;

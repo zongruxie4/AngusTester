@@ -13,7 +13,7 @@ import { CaseTestResult, CombinedTargetType, FuncPlanPermission, TaskType, TestT
 import { testCase, testPlan } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { CaseActionAuth, getActionAuth } from '@/views/test/case/types';
-import { testTemplate } from '@/api/tester';
+import { template } from '@/api/tester';
 
 const CaseDetailTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/index.vue'));
 const ReviewRecordTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/ReviewRecord.vue'));
@@ -298,7 +298,7 @@ const handleAddTemplate = async() => {
     templateType: TestTemplateType.TEST_CASE
   };
 
-  const [error] = await testTemplate.addTemplate({templateContent, name, templateType: TestTemplateType.TEST_CASE});
+  const [error] = await template.addTemplate({templateContent, name, templateType: TestTemplateType.TEST_CASE});
   if (error) {
     return;
   }

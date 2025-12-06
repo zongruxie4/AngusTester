@@ -2,7 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
-import { testTemplate } from '@/api/tester';
+import { template } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { BasicProps } from '@/types/types';
 import { TestTemplateDetail } from '../types';
@@ -36,7 +36,7 @@ const dataList = ref<TestTemplateDetail[]>([]);
  */
 const loadData = async () => {
   isLoading.value = true;
-  const [error, res] = await testTemplate.getTemplateList();
+  const [error, res] = await template.getTemplateList();
   isDataLoaded.value = true;
   isLoading.value = false;
 
@@ -79,7 +79,7 @@ const handleDelete = async (templateData: TestTemplateDetail) => {
     title: t('actions.delete'),
     content: t('testTemplate.messages.deleteConfirm', { name: templateData.name }),
     onOk: async () => {
-      const [error] = await testTemplate.deleteTemplate(templateData.id);
+      const [error] = await template.deleteTemplate(templateData.id);
       if (error) {
         return;
       }

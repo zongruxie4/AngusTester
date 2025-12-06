@@ -1,19 +1,19 @@
-package cloud.xcan.angus.core.tester.domain.test.template.content;
+package cloud.xcan.angus.core.tester.domain.project.template.content;
 
+import cloud.xcan.angus.core.tester.domain.project.template.TemplateType;
 import cloud.xcan.angus.core.tester.domain.test.TestLayer;
 import cloud.xcan.angus.core.tester.domain.test.TestPurpose;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseStepView;
 import cloud.xcan.angus.core.tester.domain.test.cases.CaseTestStep;
-import cloud.xcan.angus.core.tester.domain.test.template.TestTemplateType;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class TestCaseTemplateContent implements TestTemplateContent{
+public class CaseTemplateContent implements TemplateContent {
 
-  private TestTemplateType templateType = TestTemplateType.TEST_CASE;
+  private TemplateType templateType = TemplateType.TEST_CASE;
 
   private TestLayer testLayer;
 

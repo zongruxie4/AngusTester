@@ -26,7 +26,7 @@ import Tag from './Tag';
 import Test from './Test';
 import TestPlan from './TestPlan';
 import TestCase from './TestCase';
-import TestTemplate from './TestTemplate';
+import Template from './TestTemplate';
 import Evaluation from './Evaluation';
 import TesterSetting from './TesterSetting';
 
@@ -59,6 +59,6 @@ export const tag = new Tag(baseUrl);
 export const test = new Test(baseUrl);
 export const testPlan = new TestPlan(baseUrl);
 export const testCase = new TestCase(baseUrl);
-export const testTemplate = new TestTemplate(baseUrl);
+export const template = new Template(baseUrl);
 export const evaluation = new Evaluation(baseUrl);
 export const testerSetting = new TesterSetting(baseUrl);
