@@ -183,7 +183,7 @@ watch(() => props.visible, (newValue) => {
   formState.value.evalWorkload = props.selectedCase.evalWorkload?.toString();
   formState.value.actualWorkload = (props.selectedCase.actualWorkload || props.selectedCase.evalWorkload)?.toString();
   if (showTestScore.value) {
-    formState.value.testScore = formState.value.testResult === CaseTestResult.PASSED ? 7 : 0;
+    formState.value.testScore = formState.value.testResult === CaseTestResult.PASSED ? 10 : 0;
   } else {
     formState.value.testScore = undefined;
   }
@@ -195,7 +195,7 @@ watch(() => formState.value.testResult, () => {
   if (!showTestScore.value) {
     return;
   }
-  formState.value.testScore = formState.value.testResult === CaseTestResult.PASSED ? 7 : 0;
+  formState.value.testScore = formState.value.testResult === CaseTestResult.PASSED ? 10 : 0;
 }, {
   immediate: true
 });
