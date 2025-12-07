@@ -19,6 +19,7 @@ import cloud.xcan.angus.core.tester.domain.project.ProjectType;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.ProjectFacade;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectAddDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectFindDto;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectImportDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.internal.assembler.ProjectAssembler;
@@ -59,6 +60,11 @@ public class ProjectFacadeImpl implements ProjectFacade {
   public IdKey<Long, Object> importExample(String name, ProjectType type,
       Set<ExampleDataType> dataTypes) {
     return projectCmd.importExample(name, type, dataTypes);
+  }
+
+  @Override
+  public IdKey<Long, Object> imports(ProjectImportDto dto) {
+    return projectCmd.imports(dto.getProjectType(), dto.getName(), dto.getFile());
   }
 
   @Override

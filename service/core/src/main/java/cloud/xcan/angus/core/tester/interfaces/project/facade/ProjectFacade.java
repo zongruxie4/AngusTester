@@ -5,6 +5,7 @@ import cloud.xcan.angus.core.tester.domain.ExampleDataType;
 import cloud.xcan.angus.core.tester.domain.project.ProjectType;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectAddDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectFindDto;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectImportDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.ProjectDetailVo;
@@ -22,6 +23,8 @@ public interface ProjectFacade {
   IdKey<Long, Object> replace(ProjectReplaceDto dto);
 
   IdKey<Long, Object> importExample(String name, ProjectType type, Set<ExampleDataType> dataTypes);
+
+  IdKey<Long, Object> imports(ProjectImportDto dto);
 
   void delete(Long id);
 

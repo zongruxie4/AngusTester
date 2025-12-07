@@ -7,6 +7,7 @@ import cloud.xcan.angus.core.tester.domain.project.ProjectType;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.ProjectFacade;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectAddDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectFindDto;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectImportDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.ProjectDetailVo;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -93,6 +95,19 @@ public class ProjectRest {
       @Parameter(name = "dataTypes", description = "Example data types to import; imports all when empty")
       @RequestParam(value = "dataTypes", required = false) Set<ExampleDataType> dataTypes) {
     return ApiLocaleResult.success(projectFacade.importExample(name, type, dataTypes));
+  }
+
+  @Operation(summary = "Import project data",
+      description = "Import project data from ZIP (default) or TAR archive file containing JSON business data and YAML script files",
+      operationId = "project:import")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Project data imported successfully"),
+      @ApiResponse(responseCode = "400", description = "Invalid file format, project name and version combination already exists, or maximum project quota exceeded")})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ApiLocaleResult<IdKey<Long, Object>> imports(
+      @Parameter(content = @io.swagger.v3.oas.annotations.media.Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE), schema = @io.swagger.v3.oas.annotations.media.Schema(type = "object")) @Valid ProjectImportDto dto) {
+    return ApiLocaleResult.success(projectFacade.imports(dto));
   }
 
   @Operation(summary = "Delete project",

@@ -42,6 +42,7 @@ import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioCmd;
 import cloud.xcan.angus.core.tester.application.cmd.script.ScriptCmd;
 import cloud.xcan.angus.core.tester.application.cmd.services.ServicesCmd;
 import cloud.xcan.angus.core.tester.application.cmd.test.FuncCaseCmd;
+import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.domain.ExampleDataType;
@@ -49,24 +50,44 @@ import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.project.Project;
 import cloud.xcan.angus.core.tester.domain.project.ProjectRepo;
 import cloud.xcan.angus.core.tester.domain.project.ProjectType;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotEmpty;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
+
+import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
+import cloud.xcan.angus.core.tester.domain.issue.Task;
+import cloud.xcan.angus.core.tester.domain.mock.service.MockService;
+import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCase;
+import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
+import cloud.xcan.angus.core.tester.domain.project.module.Module;
+import cloud.xcan.angus.core.tester.domain.project.tag.Tag;
 import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
 import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
+import cloud.xcan.angus.core.tester.infra.util.ProjectImportFileUtils;
+import cloud.xcan.angus.remote.message.ProtocolException;
 import cloud.xcan.angus.spec.experimental.Assert;
 import cloud.xcan.angus.spec.experimental.IdKey;
+import cloud.xcan.angus.spec.utils.FileUtils;
+import cloud.xcan.angus.spec.utils.JsonUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import jakarta.annotation.Resource;
+import java.io.File;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Command implementation for project management operations.
@@ -531,6 +552,251 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
       LinkedHashSet<Long> memberSet = new LinkedHashSet<>();
       memberSet.add(ownerId);
       project.getMemberTypeIds().put(OrgTargetType.USER, memberSet);
+    }
+  }
+
+  /**
+   * Imports project data from ZIP or TAR archive file.
+   * <p>
+   * Extracts archive file, classifies files by business type, and imports project
+   * and related business data (tags, modules, tasks, cases, services, scenarios,
+   * scripts, variables, datasets, mocks, executions).
+   * <p>
+   * Supports JSON format for business data and YAML format for scripts.
+   * Scripts support multiple files, while other business types import only the first matching file.
+   */
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public IdKey<Long, Object> imports(ProjectType projectType, String name, MultipartFile file) {
+    return new BizTemplate<IdKey<Long, Object>>() {
+      @Override
+      protected void checkParams() {
+        // Check if project creation exceeds quota limits
+        projectQuery.checkQuota(1);
+
+        // Validate project name and version combination is unique within the tenant
+        projectQuery.checkAddNameAndVersionExists(name, "V1.0");
+
+        // Validate file name
+        String fileName = file.getOriginalFilename();
+        assertNotEmpty(fileName, "File name is required");
+        String lowerFileName = fileName.toLowerCase();
+        assertTrue(lowerFileName.endsWith(".zip") || lowerFileName.endsWith(".tar")
+                || lowerFileName.endsWith(".tar.gz") || lowerFileName.endsWith(".tgz"),
+            "不支持的文件格式，仅支持 ZIP (.zip) 或 TAR (.tar, .tar.gz, .tgz) 格式");
+      }
+
+      @Override
+      @SneakyThrows
+      protected IdKey<Long, Object> process() {
+        String fileName = file.getOriginalFilename();
+        File tmpPath = ProjectImportFileUtils.getImportTmpPath(fileName);
+        File importFile = new File(tmpPath.getPath() + File.separator + fileName);
+
+        try {
+          // Transfer uploaded file to temporary location
+          file.transferTo(importFile);
+
+          // Extract archive files
+          List<File> extractedFiles = ProjectImportFileUtils.extractArchiveFiles(tmpPath, importFile);
+
+          // Find project file
+          File projectFile = ProjectImportFileUtils.findProjectFile(extractedFiles);
+          assertNotEmpty(projectFile, "未找到项目信息文件（文件名需包含'项目'或'project'）");
+
+          // Parse project from JSON
+          String projectJson = FileUtils.readFileToString(projectFile, StandardCharsets.UTF_8);
+          Project project = JsonUtils.convert(projectJson, new TypeReference<Project>() {
+          });
+
+          // Set project properties
+          project.setId(BIDUtils.getId(BIDKey.projectId));
+          project.setType(projectType);
+          project.setName(name);
+          project.setOwnerId(getUserId());
+          project.setStartDate(LocalDateTime.now().minusHours(SAMPLE_BEFORE_HOURS));
+          project.setDeadlineDate(LocalDateTime.now().minusHours(SAMPLE_AFTER_HOURS));
+          if (isEmpty(project.getVersion())) {
+            project.setVersion("V1.0");
+          }
+
+          // Create project
+          IdKey<Long, Object> idKey = projectCmd.add0(project);
+
+          // Classify files by business type
+          Map<ExampleDataType, List<File>> classifiedFiles = ProjectImportFileUtils.classifyFilesByType(extractedFiles);
+
+          // Import business data based on file classification
+          importBusinessData(idKey.getId(), classifiedFiles);
+
+          // Log project creation activity for audit
+          activityCmd.add(toActivity(PROJECT, project, ActivityType.CREATED));
+
+          return idKey;
+        } finally {
+          // Clean up temporary files
+          FileUtils.deleteQuietly(tmpPath);
+        }
+      }
+    }.execute();
+  }
+
+  /**
+   * Imports business data from classified files.
+   */
+  @SneakyThrows
+  private void importBusinessData(Long projectId, Map<ExampleDataType, List<File>> classifiedFiles) {
+    // Import tags
+    if (classifiedFiles.containsKey(ExampleDataType.TAG)) {
+      File tagFile = classifiedFiles.get(ExampleDataType.TAG).get(0);
+      String tagJson = FileUtils.readFileToString(tagFile, StandardCharsets.UTF_8);
+      List<Tag> tags = JsonUtils.convert(tagJson, new TypeReference<List<Tag>>() {
+      });
+      Set<String> tagNames = tags.stream().map(Tag::getName).collect(Collectors.toSet());
+      tagCmd.add(projectId, tagNames);
+    }
+
+    // Import modules
+    if (classifiedFiles.containsKey(ExampleDataType.MODULE)) {
+      File moduleFile = classifiedFiles.get(ExampleDataType.MODULE).get(0);
+      String moduleJson = FileUtils.readFileToString(moduleFile, StandardCharsets.UTF_8);
+      List<Module> modules = JsonUtils.convert(moduleJson, new TypeReference<List<Module>>() {
+      });
+      for (Module module : modules) {
+        module.setProjectId(projectId);
+      }
+      moduleCmd.add(projectId, modules);
+    }
+
+    // Import tasks
+    if (classifiedFiles.containsKey(ExampleDataType.TASK)) {
+      File taskFile = classifiedFiles.get(ExampleDataType.TASK).get(0);
+      String taskJson = FileUtils.readFileToString(taskFile, StandardCharsets.UTF_8);
+      List<Task> tasks = JsonUtils.convert(taskJson, new TypeReference<List<Task>>() {
+      });
+      for (Task task : tasks) {
+        task.setProjectId(projectId);
+        // Clear ID to create new task
+        task.setId(null);
+        taskCmd.add(task);
+      }
+    }
+
+    // Import functional test cases
+    if (classifiedFiles.containsKey(ExampleDataType.FUNC)) {
+      File funcCaseFile = classifiedFiles.get(ExampleDataType.FUNC).get(0);
+      String funcCaseJson = FileUtils.readFileToString(funcCaseFile, StandardCharsets.UTF_8);
+      List<FuncCase> funcCases = JsonUtils.convert(funcCaseJson, new TypeReference<List<FuncCase>>() {
+      });
+      for (FuncCase funcCase : funcCases) {
+        funcCase.setProjectId(projectId);
+        // Clear ID to create new case
+        funcCase.setId(null);
+      }
+      funcCaseCmd.add(funcCases);
+    }
+
+    // Import services
+    if (classifiedFiles.containsKey(ExampleDataType.SERVICES)) {
+      File serviceFile = classifiedFiles.get(ExampleDataType.SERVICES).get(0);
+      String serviceJson = FileUtils.readFileToString(serviceFile, StandardCharsets.UTF_8);
+      // Extract service name from filename (remove extension)
+      String serviceName = serviceFile.getName().replaceAll("\\.(json)$", "");
+      // Services import requires file or content, use content parameter
+      // Default to OPENAPI import source, can be adjusted based on file content if needed
+      try {
+        servicesCmd.imports(projectId, null, serviceName, ApiImportSource.OPENAPI,
+            StrategyWhenDuplicated.IGNORE, false, null, serviceJson);
+      } catch (Exception e) {
+        log.error("Failed to import service file: " + serviceFile.getName(), e);
+        throw ProtocolException.of("导入服务文件失败: " + serviceFile.getName() + ", 原因: " + e.getMessage());
+      }
+    }
+
+    // Import scenarios
+    if (classifiedFiles.containsKey(ExampleDataType.SCENARIO)) {
+      File scenarioFile = classifiedFiles.get(ExampleDataType.SCENARIO).get(0);
+      String scenarioJson = FileUtils.readFileToString(scenarioFile, StandardCharsets.UTF_8);
+      List<Scenario> scenarios = JsonUtils.convert(scenarioJson, new TypeReference<List<Scenario>>() {
+      });
+      for (Scenario scenario : scenarios) {
+        scenario.setProjectId(projectId);
+        // Clear ID to create new scenario
+        scenario.setId(null);
+        scenarioCmd.add(scenario);
+      }
+    }
+
+    // Import scripts (YAML files) - support multiple files
+    if (classifiedFiles.containsKey(ExampleDataType.SCRIPT)) {
+      List<File> scriptFiles = classifiedFiles.get(ExampleDataType.SCRIPT);
+      for (File scriptFile : scriptFiles) {
+        String scriptContent = FileUtils.readFileToString(scriptFile, StandardCharsets.UTF_8);
+        try {
+          String scriptName = scriptFile.getName().replaceAll("\\.(yaml|yml)$", "");
+          Script script = new Script()
+              .setProjectId(projectId)
+              .setName(scriptName)
+              .setContent(scriptContent);
+          scriptCmd.imports(script);
+        } catch (Exception e) {
+          log.error("Failed to import script file: " + scriptFile.getName(), e);
+          throw ProtocolException.of("导入脚本文件失败: " + scriptFile.getName() + ", 原因: " + e.getMessage());
+        }
+      }
+    }
+
+    // Import variables
+    if (classifiedFiles.containsKey(ExampleDataType.VARIABLE)) {
+      File variableFile = classifiedFiles.get(ExampleDataType.VARIABLE).get(0);
+      String variableJson = FileUtils.readFileToString(variableFile, StandardCharsets.UTF_8);
+      try {
+        variableCmd.imports(projectId, StrategyWhenDuplicated.IGNORE, variableJson, null);
+      } catch (Exception e) {
+        log.error("Failed to import variable file: " + variableFile.getName(), e);
+        throw ProtocolException.of("导入变量文件失败: " + variableFile.getName() + ", 原因: " + e.getMessage());
+      }
+    }
+
+    // Import datasets
+    if (classifiedFiles.containsKey(ExampleDataType.DATASET)) {
+      File datasetFile = classifiedFiles.get(ExampleDataType.DATASET).get(0);
+      String datasetJson = FileUtils.readFileToString(datasetFile, StandardCharsets.UTF_8);
+      try {
+        datasetCmd.imports(projectId, StrategyWhenDuplicated.IGNORE, datasetJson, null);
+      } catch (Exception e) {
+        log.error("Failed to import dataset file: " + datasetFile.getName(), e);
+        throw ProtocolException.of("导入数据集文件失败: " + datasetFile.getName() + ", 原因: " + e.getMessage());
+      }
+    }
+
+    // Import mock services
+    if (classifiedFiles.containsKey(ExampleDataType.MOCK)) {
+      File mockFile = classifiedFiles.get(ExampleDataType.MOCK).get(0);
+      String mockJson = FileUtils.readFileToString(mockFile, StandardCharsets.UTF_8);
+      List<MockService> mockServices = JsonUtils.convert(mockJson, new TypeReference<List<MockService>>() {
+      });
+      for (MockService mockService : mockServices) {
+        mockService.setProjectId(projectId);
+        // Clear ID to create new mock service
+        mockService.setId(null);
+        IdKey<Long, Object> mockIdKey = mockServiceCmd.add(mockService);
+        // Import mock service content if available
+        if (isNotEmpty(mockService.getImportText())) {
+          mockServiceCmd.imports(mockIdKey.getId(), StrategyWhenDuplicated.IGNORE, false,
+              mockService.getImportText(), null);
+        }
+      }
+    }
+
+    // Import executions - Note: Execution import may require more complex logic
+    // ExecTestCmd only has importExample method, which imports from resource files
+    // For JSON import, we may need to parse and create execution records manually
+    if (classifiedFiles.containsKey(ExampleDataType.EXECUTION)) {
+      log.warn("Execution import from JSON file is not yet fully implemented. "
+          + "Execution data structure may be complex and require additional processing.");
+      // TODO: Implement execution import logic if needed
+      // Execution import typically requires script, scenario, or test case associations
     }
   }
 
