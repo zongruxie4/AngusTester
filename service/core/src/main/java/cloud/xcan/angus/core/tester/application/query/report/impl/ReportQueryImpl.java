@@ -640,7 +640,7 @@ public class ReportQueryImpl implements ReportQuery {
     ProtocolAssert.assertNotEmpty(filter.getEvaluationPurposes(),
         "evaluation purposes is missing");
     evaluation.setPurposes(filter.getEvaluationPurposes());
-    return testEvaluationQuery.getEvaluationResult(evaluation);
+    return testEvaluationQuery.getEvaluationResult(evaluation, true);
   }
 
   @Override

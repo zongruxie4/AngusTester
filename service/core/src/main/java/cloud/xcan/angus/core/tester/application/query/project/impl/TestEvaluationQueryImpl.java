@@ -151,15 +151,17 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
   }
 
   @Override
-  public TestEvaluationResult getEvaluationResult(TestEvaluation evaluation) {
+  public TestEvaluationResult getEvaluationResult(TestEvaluation evaluation,
+      boolean includeDetails) {
     // Get all cases based on scope and resourceId
     List<FuncCaseInfo> cases = getCasesByScope(evaluation);
 
-    if (isEmpty(cases)){
+    if (isEmpty(cases)) {
       return TestEvaluationResult.builder()
           .totalCases(0)
           .overallScore(0.0)
           .metrics(new LinkedHashMap<>())
+          .caseDetails(includeDetails ? new ArrayList<>() : null)
           .build();
     }
 
@@ -189,6 +191,7 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
         .totalCases(cases.size())
         .overallScore(overallScore)
         .metrics(metrics)
+        .caseDetails(includeDetails ? cases : null)
         .build();
   }
 
@@ -210,8 +213,7 @@ public class TestEvaluationQueryImpl implements TestEvaluationQuery {
           case FUNC_PLAN ->
               funcPlanQuery.find0ById(resourceIds).stream().map(r -> (ActivityResource) r)
                   .collect(Collectors.toMap(ActivityResource::getId, r -> r));
-          case MODULE ->
-              moduleQuery.find0ById(resourceIds).stream().map(r -> (ActivityResource) r)
+          case MODULE -> moduleQuery.find0ById(resourceIds).stream().map(r -> (ActivityResource) r)
               .collect(Collectors.toMap(ActivityResource::getId, r -> r));
         };
 

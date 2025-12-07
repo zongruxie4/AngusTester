@@ -136,7 +136,7 @@ public class TestEvaluationCmdImpl extends CommCmd<TestEvaluation, Long> impleme
 
       @Override
       protected Void process() {
-        TestEvaluationResult result = evaluationQuery.getEvaluationResult(evaluationDb);
+        TestEvaluationResult result = evaluationQuery.getEvaluationResult(evaluationDb, true);
 
         // Save result to evaluation
         evaluationDb.setResult(result);

@@ -29,6 +29,6 @@ public class KanbanTestEvaluationFacadeImpl implements KanbanTestEvaluationFacad
     evaluation.setPurposes(List.of(EvaluationPurpose.values()));
     evaluation.setStartDate(dto.getCreatedDateStart());
     evaluation.setDeadlineDate(dto.getCreatedDateEnd());
-    return testEvaluationQuery.getEvaluationResult(evaluation);
+    return testEvaluationQuery.getEvaluationResult(evaluation, false);
   }
 }

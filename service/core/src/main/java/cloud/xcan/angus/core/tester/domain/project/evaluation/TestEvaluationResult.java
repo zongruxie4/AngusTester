@@ -1,8 +1,10 @@
 package cloud.xcan.angus.core.tester.domain.project.evaluation;
 
 import cloud.xcan.angus.core.tester.domain.report.record.content.ReportContent;
+import cloud.xcan.angus.core.tester.domain.test.cases.FuncCaseInfo;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,6 +43,11 @@ public class TestEvaluationResult implements ReportContent, Serializable {
    * Value: MetricResult containing score and formatted value
    */
   private LinkedHashMap<EvaluationPurpose, MetricResult> metrics;
+
+  /**
+   * Test Case Details
+   */
+  List<FuncCaseInfo> caseDetails;
 
   /**
    * <p>Individual metric result for a specific evaluation purpose</p>

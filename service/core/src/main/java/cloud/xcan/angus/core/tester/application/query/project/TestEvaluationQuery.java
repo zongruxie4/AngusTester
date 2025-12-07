@@ -16,7 +16,7 @@ public interface TestEvaluationQuery {
   Page<TestEvaluation> list(GenericSpecification<TestEvaluation> spec, PageRequest pageable,
       boolean fullTextSearch, String[] match);
 
-  TestEvaluationResult getEvaluationResult(TestEvaluation evaluation);
+  TestEvaluationResult getEvaluationResult(TestEvaluation evaluation, boolean includeDetails);
 
   void setResourceName(List<TestEvaluation> evaluations);
 }
