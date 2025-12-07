@@ -37,6 +37,8 @@ public class ProjectDetailVo {
 
   private String description;
 
+  private String version;
+
   private LinkedHashMap<OrgTargetType, LinkedHashSet<OrgTargetInfo>> members;
 
   private Long createdBy;

@@ -59,6 +59,9 @@ public class Project extends TenantAuditingEntity<Project, Long> implements Acti
   @Column(name = "deadline_date")
   private LocalDateTime deadlineDate;
 
+  @Column(name = "version")
+  private String version;
+
   private Boolean deleted;
 
   @Column(name = "deleted_by")

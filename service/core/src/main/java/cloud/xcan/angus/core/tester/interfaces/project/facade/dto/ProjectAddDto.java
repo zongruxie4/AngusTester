@@ -51,6 +51,10 @@ public class ProjectAddDto {
   @EditorContentLength
   private String description;
 
+  @Schema(description = "Project version for version control and tracking", example = "V1.0")
+  @Length(max = 50)
+  private String version;
+
   @Schema(description = "Flag to import example data for rapid project setup and demonstration")
   private boolean importExample = false;
 

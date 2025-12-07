@@ -54,6 +54,10 @@ public class ProjectReplaceDto {
   @EditorContentLength
   private String description;
 
+  @Schema(description = "Project version for version control and tracking", example = "V1.0")
+  @Length(max = 50)
+  private String version;
+
   @Schema(description = "Flag to import example data for rapid project setup; effective only when creating a new project")
   private boolean importExample = false;
 

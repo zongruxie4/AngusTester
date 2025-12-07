@@ -46,6 +46,10 @@ public class ProjectUpdateDto {
   @EditorContentLength
   private String description;
 
+  @Schema(description = "Project version for version control and tracking", example = "V1.0")
+  @Length(max = 50)
+  private String version;
+
   @Schema(description = "Project member mapping by organization target type and member identifiers")
   private LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> memberTypeIds;
 }

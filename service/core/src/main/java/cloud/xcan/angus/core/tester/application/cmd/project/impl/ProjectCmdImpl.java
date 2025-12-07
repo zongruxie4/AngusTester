@@ -13,6 +13,7 @@ import static cloud.xcan.angus.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getDefaultLanguage;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
@@ -363,6 +364,10 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         .setOwnerId(getUserId())
         .setStartDate(LocalDateTime.now().minusHours(SAMPLE_BEFORE_HOURS))
         .setDeadlineDate(LocalDateTime.now().minusHours(SAMPLE_AFTER_HOURS));
+    // Set default version if not provided
+    if (isEmpty(project.getVersion())) {
+      project.setVersion("V1.0");
+    }
     IdKey<Long, Object> idKey = insert(project);
 
     // Get all valid users from the tenant for member setup

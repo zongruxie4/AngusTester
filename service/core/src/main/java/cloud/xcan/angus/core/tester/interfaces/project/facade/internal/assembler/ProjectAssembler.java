@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.project.facade.internal.assembler;
 
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.isNull;
 
@@ -17,6 +18,8 @@ import java.util.Set;
 
 public class ProjectAssembler {
 
+  private static final String DEFAULT_VERSION = "V1.0";
+
   public static Project addDtoToDomain(ProjectAddDto dto) {
     return new Project()
         .setType(nullSafe(dto.getType(), ProjectType.DEFAULT))
@@ -26,6 +29,7 @@ public class ProjectAssembler {
         .setOwnerId(dto.getOwnerId())
         .setStartDate(dto.getStartDate())
         .setDeadlineDate(dto.getDeadlineDate())
+        .setVersion(isEmpty(dto.getVersion()) ? DEFAULT_VERSION : dto.getVersion())
         .setDeleted(false)
         .setMemberTypeIds(dto.getMemberTypeIds())
         .setImportExample(dto.isImportExample());
@@ -40,6 +44,7 @@ public class ProjectAssembler {
         .setOwnerId(dto.getOwnerId())
         .setStartDate(dto.getStartDate())
         .setDeadlineDate(dto.getDeadlineDate())
+        .setVersion(dto.getVersion())
         .setDeleted(false)
         .setMemberTypeIds(dto.getMemberTypeIds());
   }
@@ -55,6 +60,7 @@ public class ProjectAssembler {
         .setOwnerId(dto.getOwnerId())
         .setStartDate(dto.getStartDate())
         .setDeadlineDate(dto.getDeadlineDate())
+        .setVersion(isEmpty(dto.getVersion()) ? DEFAULT_VERSION : dto.getVersion())
         .setDeleted(false)
         .setMemberTypeIds(dto.getMemberTypeIds());
   }
@@ -66,6 +72,7 @@ public class ProjectAssembler {
         .setType(project.getType())
         .setAvatar(project.getAvatar())
         .setDescription(project.getDescription())
+        .setVersion(nullSafe(project.getVersion(), DEFAULT_VERSION))
         .setOwnerId(project.getOwnerId())
         .setStartDate(project.getStartDate())
         .setDeadlineDate(project.getDeadlineDate())
