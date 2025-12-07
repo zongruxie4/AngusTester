@@ -630,7 +630,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
       @SneakyThrows
       protected IdKey<Long, Object> process() {
         String fileName = file.getOriginalFilename();
-        File tmpPath = ProjectImportFileUtils.getImportTmpPath(fileName);
+        File tmpPath = ProjectImportFileUtils.getImportTmpPath();
         File importFile = new File(tmpPath.getPath() + File.separator + fileName);
 
         try {

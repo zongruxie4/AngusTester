@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.infra.util;
 
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.angus.core.utils.CoreUtils.randomUUID;
-import static cloud.xcan.angus.spec.principal.PrincipalContext.getTenantId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 
 import cloud.xcan.angus.core.tester.domain.ExampleDataType;
@@ -25,20 +24,19 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 /**
  * Utility class for project data import file operations.
  * <p>
- * Provides file handling utilities for extracting ZIP and TAR archives,
- * classifying files by business type, and managing temporary paths.
+ * Provides file handling utilities for extracting ZIP and TAR archives, classifying files by
+ * business type, and managing temporary paths.
  */
 public class ProjectImportFileUtils {
 
-  private static final String IMPORT_PROJECT_DIR = "/import/project/";
+  private static final String IMPORT_PROJECT_DIR = "import/project/";
 
   /**
    * Creates a temporary directory path for project import operations.
    */
-  public static File getImportTmpPath(String fileName) {
+  public static File getImportTmpPath() {
     SpringAppDirUtils utils = new SpringAppDirUtils();
-    String tmpPath = utils.getTmpDir() + IMPORT_PROJECT_DIR + getTenantId()
-        + File.separator + randomUUID() + File.separator + nullSafe(fileName, "");
+    String tmpPath = utils.getTmpDir() + IMPORT_PROJECT_DIR + randomUUID();
     File file = new File(tmpPath);
     file.mkdirs();
     return file;
@@ -59,7 +57,8 @@ public class ProjectImportFileUtils {
           .filter(pathname -> pathname.getName().endsWith(".json")
               || pathname.getName().endsWith(".yaml"))
           .build().search();
-    } else if (fileName.endsWith(".tar") || fileName.endsWith(".tar.gz") || fileName.endsWith(".tgz")) {
+    } else if (fileName.endsWith(".tar") || fileName.endsWith(".tar.gz") || fileName.endsWith(
+        ".tgz")) {
       // Extract TAR file
       extractTarFile(archiveFile, tmpPath);
       extractedFiles = FileSearchUtils.newBuilder()
@@ -67,7 +66,8 @@ public class ProjectImportFileUtils {
               || pathname.getName().endsWith(".yaml"))
           .build().search();
     } else {
-      throw new IllegalArgumentException("不支持的文件格式，仅支持 ZIP (.zip) 或 TAR (.tar, .tar.gz, .tgz) 格式");
+      throw new IllegalArgumentException(
+          "不支持的文件格式，仅支持 ZIP (.zip) 或 TAR (.tar, .tar.gz, .tgz) 格式");
     }
 
     assertNotEmpty(extractedFiles, "导入文件中未找到业务数据文件（JSON格式）或脚本文件（YAML格式）");
@@ -109,9 +109,9 @@ public class ProjectImportFileUtils {
   }
 
   /**
-   * Classifies files by business type based on filename keywords.
-   * Returns a map where key is ExampleDataType and value is list of files.
-   * For SCRIPT type, returns all YAML files. For other types, returns only the first matching file.
+   * Classifies files by business type based on filename keywords. Returns a map where key is
+   * ExampleDataType and value is list of files. For SCRIPT type, returns all YAML files. For other
+   * types, returns only the first matching file.
    */
   public static Map<ExampleDataType, List<File>> classifyFilesByType(List<File> files) {
     Map<ExampleDataType, List<File>> classifiedFiles = new HashMap<>();
@@ -170,7 +170,8 @@ public class ProjectImportFileUtils {
     }
 
     // Func (Test Case) - contains "用例" or "case" or "func"
-    if (lowerFileName.contains("用例") || lowerFileName.contains("case") || lowerFileName.contains("func")) {
+    if (lowerFileName.contains("用例") || lowerFileName.contains("case") || lowerFileName.contains(
+        "func")) {
       return ExampleDataType.FUNC;
     }
 
@@ -200,7 +201,8 @@ public class ProjectImportFileUtils {
     }
 
     // Execution - contains "执行" or "execution" or "exec"
-    if (lowerFileName.contains("执行") || lowerFileName.contains("execution") || lowerFileName.contains("exec")) {
+    if (lowerFileName.contains("执行") || lowerFileName.contains("execution")
+        || lowerFileName.contains("exec")) {
       return ExampleDataType.EXECUTION;
     }
 
@@ -218,7 +220,7 @@ public class ProjectImportFileUtils {
   public static File findProjectFile(List<File> files) {
     for (File file : files) {
       String fileName = file.getName().toLowerCase();
-      if (fileName.endsWith(".json") && 
+      if (fileName.endsWith(".json") &&
           (fileName.contains("项目") || fileName.contains("project"))) {
         return file;
       }
