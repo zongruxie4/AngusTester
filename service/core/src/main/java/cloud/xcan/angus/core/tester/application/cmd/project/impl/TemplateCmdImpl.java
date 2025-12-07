@@ -56,11 +56,11 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * Command implementation for test template management operations.
  * <p>
- * Provides comprehensive CRUD operations for test templates including creation, modification,
- * and deletion with quota management and permission checks.
+ * Provides comprehensive CRUD operations for test templates including creation, modification, and
+ * deletion with quota management and permission checks.
  * <p>
- * Implements business logic validation, quota limits (max 200 custom templates),
- * and activity logging for all template operations.
+ * Implements business logic validation, quota limits (max 200 custom templates), and activity
+ * logging for all template operations.
  */
 @Biz
 public class TemplateCmdImpl extends CommCmd<Template, Long> implements TemplateCmd {
@@ -76,8 +76,8 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
   /**
    * Adds a new test template to the system.
    * <p>
-   * Performs comprehensive validation including quota limits (max 200 custom templates),
-   * name uniqueness, and sets template as custom template (isSystem = false).
+   * Performs comprehensive validation including quota limits (max 200 custom templates), name
+   * uniqueness, and sets template as custom template (isSystem = false).
    * <p>
    * Logs creation activity for audit purposes.
    */
@@ -91,9 +91,9 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
         long customTemplateCount = templateRepo.countByIsSystem(false);
         if (customTemplateCount >= MAX_CUSTOM_TEMPLATE_COUNT) {
           throw QuotaException.of(
-              String.format("最多只能创建 %d 个自定义模版，当前已有 %d 个", MAX_CUSTOM_TEMPLATE_COUNT, customTemplateCount));
+              String.format("最多只能创建 %d 个自定义模版，当前已有 %d 个",
+                  MAX_CUSTOM_TEMPLATE_COUNT, customTemplateCount));
         }
-
       }
 
       @Override
@@ -108,8 +108,8 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
   /**
    * Updates an existing custom test template.
    * <p>
-   * Validates template existence, ensures it's a custom template (not system template),
-   * and updates template information.
+   * Validates template existence, ensures it's a custom template (not system template), and updates
+   * template information.
    * <p>
    * Logs update activity for audit purposes.
    */
@@ -145,8 +145,8 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
   /**
    * Deletes a custom test template from the system.
    * <p>
-   * Validates template existence and ensures it's a custom template (not system template)
-   * before deletion.
+   * Validates template existence and ensures it's a custom template (not system template) before
+   * deletion.
    * <p>
    * Logs deletion activity for audit purposes.
    */
@@ -179,8 +179,8 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
   /**
    * Imports a single template from file (Excel, CSV, or JSON format).
    * <p>
-   * Supports multiple file formats and validates template data based on template type.
-   * If a template with the same name already exists, import will be stopped.
+   * Supports multiple file formats and validates template data based on template type. If a
+   * template with the same name already exists, import will be stopped.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -192,10 +192,8 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
         Optional<Template> existingTemplate = templateRepo.findAll().stream()
             .filter(t -> name.equals(t.getName()))
             .findFirst();
-        if (existingTemplate.isPresent()) {
-          throw new IllegalArgumentException(
-              String.format("模版名称 '%s' 已存在，请使用其他名称", name));
-        }
+        assertTrue(existingTemplate.isEmpty(),
+            String.format("模版名称 '%s' 已存在，请使用其他名称", name));
 
         // Check custom template quota
         long customTemplateCount = templateRepo.countByIsSystem(false);
@@ -218,15 +216,14 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
             .setTemplateType(templateType)
             .setTemplateContent(templateContent)
             .setIsSystem(false);
-
         return insert(template, "name");
       }
     }.execute();
   }
 
   /**
-   * Parses import file based on file extension (Excel, CSV, or JSON) and template type.
-   * Returns TemplateContent based on the template type.
+   * Parses import file based on file extension (Excel, CSV, or JSON) and template type. Returns
+   * TemplateContent based on the template type.
    */
   private TemplateContent parseImportFile(MultipartFile file, String fileName,
       TemplateType templateType) {
@@ -238,7 +235,8 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
     } else if (lowerFileName.endsWith(".json")) {
       return parseJsonFile(file, templateType);
     } else {
-      throw ProtocolException.of("不支持的文件格式，仅支持 Excel (.xlsx, .xls)、CSV (.csv) 或 JSON (.json) 格式");
+      throw ProtocolException.of(
+          "不支持的文件格式，仅支持 Excel (.xlsx, .xls)、CSV (.csv) 或 JSON (.json) 格式");
     }
   }
 
@@ -342,7 +340,6 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
   private TemplateContent parseTemplateContentFromRow(List<String> titles, String[] dataRow,
       TemplateType templateType) {
     Locale zhLocale = zh_CN.toLocale();
-
     switch (templateType) {
       case ISSUE:
         return parseIssueTemplateContent(titles, dataRow, zhLocale);
@@ -361,7 +358,6 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
   private TemplateContent parseTemplateContentFromJson(Map<String, Object> json,
       TemplateType templateType) {
     Locale zhLocale = zh_CN.toLocale();
-
     switch (templateType) {
       case ISSUE:
         return parseIssueTemplateContentFromJson(json, zhLocale);
@@ -457,7 +453,6 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
     if (idx != -1 && idx < dataRow.length) {
       content.setOtherInformation(stringSafe(dataRow[idx]));
     }
-
     return content;
   }
 
@@ -468,7 +463,7 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
       Locale locale) {
     CaseTemplateContent content = new CaseTemplateContent();
 
-    int     idx = getColumnIndex(titles, "测试层级");
+    int idx = getColumnIndex(titles, "测试层级");
     if (idx != -1 && idx < dataRow.length && isNotEmpty(dataRow[idx])) {
       content.setTestLayer(parseTestLayer(dataRow[idx], locale));
     }
@@ -497,7 +492,6 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
     if (idx != -1 && idx < dataRow.length) {
       content.setDescription(stringSafe(dataRow[idx]));
     }
-
     return content;
   }
 
@@ -541,7 +535,6 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
     if (json.containsKey("description")) {
       content.setDescription(stringSafe(json.get("description")));
     }
-
     return content;
   }
 
@@ -563,7 +556,6 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
     if (json.containsKey("otherInformation")) {
       content.setOtherInformation(stringSafe(json.get("otherInformation")));
     }
-
     return content;
   }
 
@@ -622,8 +614,7 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
   }
 
   /**
-   * Parses steps string to List<CaseTestStep>.
-   * Format: step1##expected1@@step2##expected2
+   * Parses steps string to List<CaseTestStep>. Format: step1##expected1@@step2##expected2
    */
   private List<CaseTestStep> parseSteps(String steps) {
     if (isEmpty(steps)) {

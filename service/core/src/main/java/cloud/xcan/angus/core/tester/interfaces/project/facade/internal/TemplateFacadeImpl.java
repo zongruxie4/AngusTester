@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.project.facade.internal;
 
 import static cloud.xcan.angus.core.tester.interfaces.project.facade.internal.TemplateAssembler.addDtoToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.project.facade.internal.TemplateAssembler.toTemplateListExportResource;
+import static cloud.xcan.angus.core.tester.interfaces.project.facade.internal.TemplateAssembler.toTemplateContentExportResource;
 import static cloud.xcan.angus.core.tester.interfaces.project.facade.internal.TemplateAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.ServletUtils.buildDownloadResourceResponseEntity;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
@@ -9,6 +9,7 @@ import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 import cloud.xcan.angus.core.tester.application.cmd.project.TemplateCmd;
 import cloud.xcan.angus.core.tester.application.query.project.TemplateQuery;
 import cloud.xcan.angus.core.tester.domain.project.template.Template;
+import cloud.xcan.angus.core.tester.domain.project.template.content.TemplateContent;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.TemplateFacade;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.template.TemplateAddDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.template.TemplateImportDto;
@@ -60,7 +61,11 @@ public class TemplateFacadeImpl implements TemplateFacade {
       HttpServletResponse response) {
     // Query single template by ID
     Template template = templateQuery.checkAndFind(id);
-    TemplateListVo templateVo = TemplateAssembler.toListVo(template);
+    TemplateContent templateContent = template.getTemplateContent();
+    
+    if (templateContent == null) {
+      throw new IllegalArgumentException("模版内容为空，无法导出");
+    }
     
     // Generate file name based on template name
     String templateName = template.getName() != null ? template.getName().replaceAll("[^a-zA-Z0-9\\u4e00-\\u9fa5]", "_") : "Template";
@@ -83,9 +88,9 @@ public class TemplateFacadeImpl implements TemplateFacade {
         fileExtension = "xlsx";
     }
     
-    // Export single template (wrap in list for compatibility)
-    org.springframework.core.io.InputStreamResource resource = toTemplateListExportResource(
-        List.of(templateVo), fileName, fileExtension);
+    // Export template content only
+    org.springframework.core.io.InputStreamResource resource = toTemplateContentExportResource(
+        templateContent, template.getTemplateType(), fileName, fileExtension);
     return buildDownloadResourceResponseEntity(-1, APPLICATION_OCTET_STREAM,
         fileName, 0, resource);
   }
