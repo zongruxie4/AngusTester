@@ -2,11 +2,9 @@ package cloud.xcan.angus.core.tester.infra.util;
 
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.angus.core.utils.CoreUtils.randomUUID;
-import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 
 import cloud.xcan.angus.core.tester.domain.ExampleDataType;
 import cloud.xcan.angus.core.utils.SpringAppDirUtils;
-import cloud.xcan.angus.spec.utils.FileSearchUtils;
 import cloud.xcan.angus.spec.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
@@ -51,20 +49,16 @@ public class ProjectImportFileUtils {
     String fileName = archiveFile.getName().toLowerCase();
 
     if (fileName.endsWith(".zip")) {
-      // Extract ZIP file
+      // Extract ZIP file - FileUtils.extract should handle file names with spaces correctly
       FileUtils.extract(archiveFile.getPath(), tmpPath.getPath());
-      extractedFiles = FileSearchUtils.newBuilder()
-          .filter(pathname -> pathname.getName().endsWith(".json")
-              || pathname.getName().endsWith(".yaml"))
-          .build().search();
+      // Manually search for files in tmpPath to ensure correct path handling
+      extractedFiles = searchFiles(tmpPath);
     } else if (fileName.endsWith(".tar") || fileName.endsWith(".tar.gz") || fileName.endsWith(
         ".tgz")) {
       // Extract TAR file
       extractTarFile(archiveFile, tmpPath);
-      extractedFiles = FileSearchUtils.newBuilder()
-          .filter(pathname -> pathname.getName().endsWith(".json")
-              || pathname.getName().endsWith(".yaml"))
-          .build().search();
+      // Manually search for files in tmpPath to ensure correct path handling
+      extractedFiles = searchFiles(tmpPath);
     } else {
       throw new IllegalArgumentException(
           "不支持的文件格式，仅支持 ZIP (.zip) 或 TAR (.tar, .tar.gz, .tgz) 格式");
@@ -72,6 +66,24 @@ public class ProjectImportFileUtils {
 
     assertNotEmpty(extractedFiles, "导入文件中未找到业务数据文件（JSON格式）或脚本文件（YAML格式）");
     return extractedFiles;
+  }
+
+  /**
+   * Recursively searches for JSON and YAML files in the given directory.
+   */
+  private static List<File> searchFiles(File directory) throws IOException {
+    List<File> files = new ArrayList<>();
+    if (!directory.exists() || !directory.isDirectory()) {
+      return files;
+    }
+    Files.walk(directory.toPath())
+        .filter(Files::isRegularFile)
+        .filter(path -> {
+          String fileName = path.getFileName().toString().toLowerCase();
+          return fileName.endsWith(".json") || fileName.endsWith(".yaml");
+        })
+        .forEach(path -> files.add(path.toFile()));
+    return files;
   }
 
   /**
