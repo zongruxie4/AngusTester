@@ -142,8 +142,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         // Check if project creation exceeds quota limits
         projectQuery.checkQuota(1);
 
-        // Validate project name is unique within the tenant
-        projectQuery.checkAddNameExists(project.getName());
+        // Validate project name and version combination is unique within the tenant
+        projectQuery.checkAddNameAndVersionExists(project.getName(), project.getVersion());
 
         // Ensure all specified members exist in the organization
         commonQuery.checkOrgExists(project.getMemberTypeIds());
@@ -221,9 +221,9 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         // Check user permission to modify the project (owner or admin only)
         projectQuery.checkModifyPermission(projectDb);
 
-        // Validate project name is unique if changed
+        // Validate project name and version combination is unique if changed
         if (isNotEmpty(project.getName())) {
-          projectQuery.checkUpdateNameExists(project.getId(), project.getName());
+          projectQuery.checkUpdateNameAndVersionExists(project.getId(), project.getName(), project.getVersion());
         }
 
         // Ensure all specified members exist in the organization
@@ -273,9 +273,9 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
           // Check user permission to modify the project (owner or admin only)
           projectQuery.checkModifyPermission(projectDb);
 
-          // Validate project name is unique if changed
+          // Validate project name and version combination is unique if changed
           if (isNotEmpty(project.getName())) {
-            projectQuery.checkUpdateNameExists(project.getId(), project.getName());
+            projectQuery.checkUpdateNameAndVersionExists(project.getId(), project.getName(), project.getVersion());
           }
 
           // Ensure all specified members exist in the organization

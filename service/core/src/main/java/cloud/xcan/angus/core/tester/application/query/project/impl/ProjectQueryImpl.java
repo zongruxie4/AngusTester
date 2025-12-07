@@ -246,6 +246,39 @@ public class ProjectQueryImpl implements ProjectQuery {
 
   /**
    * <p>
+   * Check if a project with the same name and version already exists when adding a new project.
+   * </p>
+   * @param name Project name
+   * @param version Project version (defaults to "V1.0" if null)
+   */
+  @Override
+  public void checkAddNameAndVersionExists(String name, String version) {
+    String finalVersion = isEmpty(version) ? "V1.0" : version;
+    long count = projectRepo.countAll0ByNameAndVersion(name, finalVersion);
+    if (count > 0) {
+      throw ResourceExisted.of(PROJECT_NAME_REPEATED_T, new Object[]{name + " (版本: " + finalVersion + ")"});
+    }
+  }
+
+  /**
+   * <p>
+   * Check if a project with the same name and version already exists when updating a project, excluding the current project.
+   * </p>
+   * @param id Project ID
+   * @param name Project name
+   * @param version Project version (defaults to "V1.0" if null)
+   */
+  @Override
+  public void checkUpdateNameAndVersionExists(Long id, String name, String version) {
+    String finalVersion = isEmpty(version) ? "V1.0" : version;
+    long count = projectRepo.countAll0ByNameAndVersionAndIdNot(name, finalVersion, id);
+    if (count > 0) {
+      throw ResourceExisted.of(PROJECT_NAME_REPEATED_T, new Object[]{name + " (版本: " + finalVersion + ")"});
+    }
+  }
+
+  /**
+   * <p>
    * Check if the current user has permission to modify the project.
    * </p>
    * <p>

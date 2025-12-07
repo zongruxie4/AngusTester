@@ -31,6 +31,10 @@ public interface ProjectQuery {
 
   void checkUpdateNameExists(Long id, String name);
 
+  void checkAddNameAndVersionExists(String name, String version);
+
+  void checkUpdateNameAndVersionExists(Long id, String name, String version);
+
   void checkModifyPermission(Project projectDb);
 
   void checkDeletePermission(Project projectDb);

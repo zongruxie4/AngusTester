@@ -34,6 +34,12 @@ public interface ProjectRepo extends NameJoinRepository<Project, Long>,
   @Query(value = "SELECT COUNT(*) FROM project WHERE name = ?1 AND id <> ?2", nativeQuery = true)
   long countAll0ByNameAndIdNot(String name, Long id);
 
+  @Query(value = "SELECT COUNT(*) FROM project WHERE name = ?1 AND COALESCE(version, 'V1.0') = COALESCE(?2, 'V1.0')", nativeQuery = true)
+  long countAll0ByNameAndVersion(String name, String version);
+
+  @Query(value = "SELECT COUNT(*) FROM project WHERE name = ?1 AND COALESCE(version, 'V1.0') = COALESCE(?2, 'V1.0') AND id <> ?3", nativeQuery = true)
+  long countAll0ByNameAndVersionAndIdNot(String name, String version, Long id);
+
   @Modifying
   @Query(value = "UPDATE project a SET a.deleted = false, a.deleted_by = null, a.deleted_date = null WHERE a.id in ?1", nativeQuery = true)
   void updateToUndeletedStatusByIdIn(Collection<Long> ids);
