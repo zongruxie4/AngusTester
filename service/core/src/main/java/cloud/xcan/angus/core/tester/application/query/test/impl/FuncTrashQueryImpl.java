@@ -26,9 +26,9 @@ import org.springframework.data.domain.PageRequest;
 /**
  * Implementation of FuncTrashQuery for managing functional test trash queries and operations.
  * <p>
- * This class provides functionality for querying and managing functional test trash items,
- * which represent deleted resources that can be restored or permanently cleared.
- * It handles trash retrieval, permission validation, and user information enrichment.
+ * This class provides functionality for querying and managing functional test trash items, which
+ * represent deleted resources that can be restored or permanently cleared. It handles trash
+ * retrieval, permission validation, and user information enrichment.
  * <p>
  * Key features include:
  * <ul>
@@ -81,15 +81,15 @@ public class FuncTrashQueryImpl implements FuncTrashQuery {
   /**
    * Retrieves a paginated list of trash items with search capabilities.
    * <p>
-   * Supports both regular search and full-text search with comprehensive filtering.
-   * Enriches results with user information for both creation and deletion operations.
+   * Supports both regular search and full-text search with comprehensive filtering. Enriches
+   * results with user information for both creation and deletion operations.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param spec the search specification with criteria and filters
-   * @param pageable pagination parameters (page, size, sort)
+   * @param spec           the search specification with criteria and filters
+   * @param pageable       pagination parameters (page, size, sort)
    * @param fullTextSearch whether to use full-text search capabilities
-   * @param match full-text search match parameters
+   * @param match          full-text search match parameters
    * @return Page of FuncTrash objects with enriched user information
    */
   @Override
@@ -120,16 +120,16 @@ public class FuncTrashQueryImpl implements FuncTrashQuery {
   /**
    * Finds a trash item with business operation permission validation.
    * <p>
-   * Validates that the current user has permission to perform the specified business
-   * operation (restore or clear) on the trash item. Admin users have full access.
+   * Validates that the current user has permission to perform the specified business operation
+   * (restore or clear) on the trash item. Admin users have full access.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param id the trash item ID to find
+   * @param id  the trash item ID to find
    * @param biz the business operation type ("BACK" for restore, "CLEAR" for permanent deletion)
    * @return FuncTrash object with validated permissions
    * @throws ResourceNotFound if the trash item is not found
-   * @throws BizException if the user lacks permission for the specified operation
+   * @throws BizException     if the user lacks permission for the specified operation
    */
   @Override
   public FuncTrash findMyTrashForBiz(Long id, String biz) {

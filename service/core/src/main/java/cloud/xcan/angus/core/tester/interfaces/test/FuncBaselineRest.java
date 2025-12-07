@@ -96,7 +96,8 @@ public class FuncBaselineRest {
       description = "Delete multiple functional test baselines with batch operation support",
       operationId = "func:baseline:delete")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Functional test baselines deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Functional test baselines deleted successfully")})
   @DeleteMapping
   public void delete(
       @Parameter(name = "ids", description = "Baseline identifiers for batch deletion", required = true)

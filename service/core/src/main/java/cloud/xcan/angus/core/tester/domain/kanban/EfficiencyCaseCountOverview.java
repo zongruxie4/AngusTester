@@ -185,7 +185,7 @@ public class EfficiencyCaseCountOverview implements WorkloadCountBase, Unplanned
   private double unplannedWorkloadCompletedRate = 0d;
   /*@Schema(description = "Daily processed average workload of completed cases")
   protected double dailyProcessedWorkload;*/
-  @Schema(description="Unplanned workload completion time")
+  @Schema(description = "Unplanned workload completion time")
   private double unplannedWorkloadProcessingTime;
 
   // Test hits

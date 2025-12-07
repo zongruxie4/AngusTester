@@ -21,6 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 @Accessors(chain = true)
 public class ModuleFindDto extends AbstractQuery {
+
   private Long id;
 
   @NotNull

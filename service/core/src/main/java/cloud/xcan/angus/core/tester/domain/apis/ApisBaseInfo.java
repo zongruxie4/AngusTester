@@ -168,29 +168,29 @@ public class ApisBaseInfo extends TenantAuditingEntity<ApisBaseInfo, Long>
     );
   }
 
-  public int getEnabledTestNum(){
+  public int getEnabledTestNum() {
     int testNum = 0;
-    if (testFunc){
+    if (testFunc) {
       testNum++;
     }
-    if (testPerf){
+    if (testPerf) {
       testNum++;
     }
-    if (testStability){
+    if (testStability) {
       testNum++;
     }
     return testNum;
   }
 
-  public int getPassedTestNum(){
+  public int getPassedTestNum() {
     int passedTestNum = 0;
-    if (testFunc && nullSafe(testFuncPassed, false)){
+    if (testFunc && nullSafe(testFuncPassed, false)) {
       passedTestNum++;
     }
-    if (testPerf && nullSafe(testPerfPassed, false)){
+    if (testPerf && nullSafe(testPerfPassed, false)) {
       passedTestNum++;
     }
-    if (testStability && nullSafe(testStabilityPassed, false)){
+    if (testStability && nullSafe(testStabilityPassed, false)) {
       passedTestNum++;
     }
     return passedTestNum;

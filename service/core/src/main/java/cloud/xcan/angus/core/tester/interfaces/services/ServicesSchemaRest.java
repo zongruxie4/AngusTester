@@ -359,8 +359,13 @@ public class ServicesSchemaRest {
 
   /**
    * @param serviceId       Service identifier
-   * @param forced          When the modification is not forced, if it detects that `Operation Object` is deleted or updated, it will stop the modification and return a prompt; otherwise, it will directly modify or delete the interface that does not exist in OpenAPI, Default false.
-   * @param gzipCompression It is recommended to enable gzip compression. After enabling it, the data size can be reduced by more than 20 times. By default, gzip compression is enabled.
+   * @param forced          When the modification is not forced, if it detects that `Operation
+   *                        Object` is deleted or updated, it will stop the modification and return
+   *                        a prompt; otherwise, it will directly modify or delete the interface
+   *                        that does not exist in OpenAPI, Default false.
+   * @param gzipCompression It is recommended to enable gzip compression. After enabling it, the
+   *                        data size can be reduced by more than 20 times. By default, gzip
+   *                        compression is enabled.
    * @param content         OpenAPI document yaml or json content
    */
   @Operation(summary = "Replace service OpenAPI document",

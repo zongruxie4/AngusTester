@@ -54,7 +54,7 @@ public class VariableRest {
   @Resource
   private VariableFacade variableFacade;
 
-  @Operation(summary = "Create new variable", 
+  @Operation(summary = "Create new variable",
       description = "Create a new test variable with configuration and value processing settings",
       operationId = "data:variable:add")
   @ApiResponses(value = {
@@ -65,7 +65,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.add(dto));
   }
 
-  @Operation(summary = "Update variable", 
+  @Operation(summary = "Update variable",
       description = "Update existing variable configuration and value processing with partial modification support",
       operationId = "data:variable:update")
   @ApiResponses(value = {
@@ -78,7 +78,7 @@ public class VariableRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace variable", 
+  @Operation(summary = "Replace variable",
       description = "Replace existing variable with new configuration and value processing settings",
       operationId = "data:variable:replace")
   @ApiResponses(value = {
@@ -90,7 +90,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.replace(dto));
   }
 
-  @Operation(summary = "Clone variables", 
+  @Operation(summary = "Clone variables",
       description = "Create copies of multiple variables with all configuration and value processing settings",
       operationId = "data:variable:clone")
   @ApiResponses(value = {
@@ -103,7 +103,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.clone(ids));
   }
 
-  @Operation(summary = "Import variables", 
+  @Operation(summary = "Import variables",
       description = "Import variables from external files with format support and validation",
       operationId = "data:variable:import")
   @ApiResponses(value = {
@@ -111,11 +111,11 @@ public class VariableRest {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ApiLocaleResult<List<IdKey<Long, Object>>> imports(
-      @Parameter(content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE), schema = @Schema(type = "object"))  @Valid VariableImportDto dto) {
+      @Parameter(content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE), schema = @Schema(type = "object")) @Valid VariableImportDto dto) {
     return ApiLocaleResult.success(variableFacade.imports(dto));
   }
 
-  @Operation(summary = "Import variable examples", 
+  @Operation(summary = "Import variable examples",
       description = "Import predefined variable examples with sample data and configuration templates",
       operationId = "data:variable:example:import")
   @ApiResponses(value = {
@@ -127,7 +127,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.importExample(projectId));
   }
 
-  @Operation(summary = "Delete variables", 
+  @Operation(summary = "Delete variables",
       description = "Remove multiple variables from the system with batch operation support",
       operationId = "data:variable:delete")
   @ApiResponses(value = {
@@ -140,7 +140,7 @@ public class VariableRest {
     variableFacade.delete(ids);
   }
 
-  @Operation(summary = "Get variable details", 
+  @Operation(summary = "Get variable details",
       description = "Retrieve details and configuration for a specific variable",
       operationId = "data:variable:detail")
   @ApiResponses(value = {
@@ -151,7 +151,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.detail(id));
   }
 
-  @Operation(summary = "Preview variable values", 
+  @Operation(summary = "Preview variable values",
       description = "Preview variable values with dynamic processing and validation",
       operationId = "data:variable:value:preview")
   @ApiResponses(value = {
@@ -161,7 +161,7 @@ public class VariableRest {
     return ApiLocaleResult.successData(variableFacade.valuePreview(dto));
   }
 
-  @Operation(summary = "Query variable list", 
+  @Operation(summary = "Query variable list",
       description = "Retrieve paginated list of variables with filtering and search options",
       operationId = "data:variable:list")
   @ApiResponses(value = {
@@ -171,7 +171,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.list(dto));
   }
 
-  @Operation(summary = "Export variables", 
+  @Operation(summary = "Export variables",
       description = "Export variables to external files with format support and configuration options",
       operationId = "data:variable:export")
   @ApiResponses(value = {

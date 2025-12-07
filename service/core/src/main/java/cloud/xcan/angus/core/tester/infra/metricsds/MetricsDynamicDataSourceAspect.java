@@ -31,8 +31,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 /**
- * Shard DB with tenant ID, Shard table with
- * {@link Sharding#tableField}.
+ * Shard DB with tenant ID, Shard table with {@link Sharding#tableField}.
  */
 @Slf4j
 @Aspect
@@ -45,18 +44,19 @@ public class MetricsDynamicDataSourceAspect {
   public final static String DEFAULT_SHARDING_KEY = "tenantId";
 
   // Cut sample db
-  @Pointcut("execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.usage.NodeUsageRepo.*(..)) "
-      + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.usage.disk.DiskUsageRepo.*(..)) "
-      + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.usage.network.NetUsageRepo.*(..)) "
-      + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleRepo.*(..)) "
-      + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleSummaryRepo.*(..)) "
-      + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleThreadRepo.*(..)) "
-      + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleThroughputRepo.*(..)) "
-      + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleScoreRepo.*(..)) "
-      + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleErrorRepo.*(..)) "
-      + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleErrorCauseRepo.*(..)) "
-      + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContentRepo.*(..)) "
-      + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.jvmservice.JvmServiceUsageRepo.*(..)) "
+  @Pointcut(
+      "execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.usage.NodeUsageRepo.*(..)) "
+          + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.usage.disk.DiskUsageRepo.*(..)) "
+          + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.usage.network.NetUsageRepo.*(..)) "
+          + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleRepo.*(..)) "
+          + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleSummaryRepo.*(..)) "
+          + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleThreadRepo.*(..)) "
+          + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleThroughputRepo.*(..)) "
+          + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleScoreRepo.*(..)) "
+          + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleErrorRepo.*(..)) "
+          + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleErrorCauseRepo.*(..)) "
+          + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContentRepo.*(..)) "
+          + "|| execution(* cloud.xcan.angus.core.tester.infra.metricsds.domain.jvmservice.JvmServiceUsageRepo.*(..)) "
   )
   private void aspect() {
   }

@@ -34,10 +34,11 @@ public class ApisTrashRest {
   @Resource
   private ApisTrashFacade apisTrashFacade;
 
-  @Operation(summary = "Clear API trash", 
+  @Operation(summary = "Clear API trash",
       description = "Permanently remove specific API or service from trash with comprehensive cleanup",
       operationId = "apis:trash:clear")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "API trash cleared successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "API trash cleared successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
   public void clear(
@@ -45,10 +46,11 @@ public class ApisTrashRest {
     apisTrashFacade.clear(id);
   }
 
-  @Operation(summary = "Clear all API trash", 
+  @Operation(summary = "Clear all API trash",
       description = "Permanently remove all API and service trash for specific project with comprehensive cleanup",
       operationId = "apis:trash:clear:all")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "All API trash cleared successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "All API trash cleared successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping()
   public void clearAll(
@@ -56,10 +58,11 @@ public class ApisTrashRest {
     apisTrashFacade.clearAll(projectId);
   }
 
-  @Operation(summary = "Restore API from trash", 
+  @Operation(summary = "Restore API from trash",
       description = "Restore specific API or service from trash with comprehensive validation and lifecycle management",
       operationId = "apis:trash:back")
-  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "API restored from trash successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "API restored from trash successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/back")
   public ApiLocaleResult<?> back(
@@ -68,10 +71,11 @@ public class ApisTrashRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Restore all APIs from trash", 
+  @Operation(summary = "Restore all APIs from trash",
       description = "Restore all APIs and services from trash for specific project with comprehensive validation",
       operationId = "apis:trash:back:all")
-  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "All APIs restored from trash successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "All APIs restored from trash successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/back")
   public ApiLocaleResult<?> backAll(
@@ -80,7 +84,7 @@ public class ApisTrashRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Get API trash count", 
+  @Operation(summary = "Get API trash count",
       description = "Retrieve total count of API and service trash for specific project with comprehensive statistics",
       operationId = "apis:trash:count")
   @ApiResponses(value = {
@@ -92,7 +96,7 @@ public class ApisTrashRest {
     return ApiLocaleResult.success(apisTrashFacade.count(projectId));
   }
 
-  @Operation(summary = "Search API trash", 
+  @Operation(summary = "Search API trash",
       description = "Full-text search API and service trash with comprehensive filtering and search options",
       operationId = "apis:trash:list")
   @ApiResponses(value = {

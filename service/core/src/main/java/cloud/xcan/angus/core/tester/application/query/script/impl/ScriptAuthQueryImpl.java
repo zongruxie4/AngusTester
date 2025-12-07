@@ -50,7 +50,8 @@ import org.springframework.data.jpa.domain.Specification;
  * Implementation of ScriptAuthQuery for script authorization management and validation.
  * </p>
  * <p>
- * Provides methods for checking script permissions, managing user authorizations, and validating access rights.
+ * Provides methods for checking script permissions, managing user authorizations, and validating
+ * access rights.
  * </p>
  */
 @Biz
@@ -71,6 +72,7 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Get the authorization status of a script.
    * </p>
+   *
    * @param scriptId Script ID
    * @return Authorization status
    */
@@ -97,11 +99,13 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * Get user permissions for a specific script.
    * </p>
    * <p>
-   * Returns all permissions for admins and creators. For regular users, returns permissions based on their authorization records.
+   * Returns all permissions for admins and creators. For regular users, returns permissions based
+   * on their authorization records.
    * </p>
+   *
    * @param scriptId Script ID
-   * @param userId User ID
-   * @param admin Whether to check admin permissions
+   * @param userId   User ID
+   * @param admin    Whether to check admin permissions
    * @return List of script permissions
    */
   @Override
@@ -146,8 +150,9 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Returns authorization status and permissions for the current user.
    * </p>
+   *
    * @param scriptId Script ID
-   * @param admin Whether to check admin permissions
+   * @param admin    Whether to check admin permissions
    * @return Current user's authorization information
    */
   @Override
@@ -197,8 +202,9 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Batch retrieves authorization information for multiple scripts to avoid N+1 query problems.
    * </p>
+   *
    * @param scriptIds Set of script IDs
-   * @param admin Whether to check admin permissions
+   * @param admin     Whether to check admin permissions
    * @return Map of script ID to authorization information
    */
   @Override
@@ -273,9 +279,10 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Check if a user has a specific permission for a script.
    * </p>
-   * @param scriptId Script ID
+   *
+   * @param scriptId   Script ID
    * @param permission Required permission
-   * @param userId User ID
+   * @param userId     User ID
    */
   @Override
   public void check(Long scriptId, ScriptPermission permission, Long userId) {
@@ -293,9 +300,10 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Find script authorizations with pagination and permission validation.
    * </p>
-   * @param spec Search specification
+   *
+   * @param spec      Search specification
    * @param scriptIds List of script IDs
-   * @param pageable Pagination information
+   * @param pageable  Pagination information
    * @return Page of script authorizations
    */
   @Override
@@ -321,6 +329,7 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Check and find a script authorization by ID.
    * </p>
+   *
    * @param id Authorization ID
    * @return Script authorization entity
    */
@@ -334,7 +343,8 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Check if a user has view permission for a script.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId   User ID
    * @param scriptId Script ID
    */
   @Override
@@ -346,7 +356,8 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Check if a user has modify permission for a script.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId   User ID
    * @param scriptId Script ID
    */
   @Override
@@ -358,7 +369,8 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Check if a user has delete permission for a script.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId   User ID
    * @param scriptId Script ID
    */
   @Override
@@ -370,7 +382,8 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Check if a user has test permission for a script.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId   User ID
    * @param scriptId Script ID
    */
   @Override
@@ -382,7 +395,8 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Check if a user has grant permission for a script.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId   User ID
    * @param scriptId Script ID
    */
   @Override
@@ -394,7 +408,8 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Check if a user has export permission for a script.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId   User ID
    * @param scriptId Script ID
    */
   @Override
@@ -406,8 +421,9 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Check if a user has a specific permission for a script.
    * </p>
-   * @param userId User ID
-   * @param scriptId Script ID
+   *
+   * @param userId     User ID
+   * @param scriptId   Script ID
    * @param permission Required permission
    */
   @Override
@@ -420,14 +436,15 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * Check if a user has a specific permission for a script with additional control options.
    * </p>
    * <p>
-   * Admins bypass permission checks unless explicitly ignored. Public access is allowed for non-grant permissions
-   * when authorization is not controlled.
+   * Admins bypass permission checks unless explicitly ignored. Public access is allowed for
+   * non-grant permissions when authorization is not controlled.
    * </p>
-   * @param userId User ID
-   * @param scriptId Script ID
-   * @param permission Required permission
+   *
+   * @param userId                User ID
+   * @param scriptId              Script ID
+   * @param permission            Required permission
    * @param ignoreAdminPermission Whether to ignore admin permissions
-   * @param ignorePublicAccess Whether to ignore public access
+   * @param ignorePublicAccess    Whether to ignore public access
    */
   @Override
   public void checkAuth(Long userId, Long scriptId, ScriptPermission permission,
@@ -462,10 +479,11 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * Verify the operation permissions of the apis for multiple scripts.
    * </p>
    * <p>
-   * Performs batch permission checking for a collection of scripts. Admins bypass this check.
-   * Only scripts with authorization enabled are checked for non-grant permissions.
+   * Performs batch permission checking for a collection of scripts. Admins bypass this check. Only
+   * scripts with authorization enabled are checked for non-grant permissions.
    * </p>
-   * @param scriptIds Collection of script IDs
+   *
+   * @param scriptIds  Collection of script IDs
    * @param permission Required permission
    */
   @Override
@@ -510,8 +528,9 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Check if an authorization already exists for the specified script and auth object.
    * </p>
-   * @param scriptId Script ID
-   * @param authObjectId Authorization object ID
+   *
+   * @param scriptId       Script ID
+   * @param authObjectId   Authorization object ID
    * @param authObjectType Authorization object type
    */
   @Override
@@ -526,7 +545,8 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Find script IDs where a user has a specific permission through their organization memberships.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId     User ID
    * @param permission Required permission
    * @return List of script IDs
    */
@@ -543,7 +563,8 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Find authorization records for a user and a specific script.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId   User ID
    * @param scriptId Script ID
    * @return List of script authorizations
    */
@@ -558,7 +579,8 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Find authorization records for a user and multiple scripts.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId    User ID
    * @param scriptIds Collection of script IDs
    * @return List of script authorizations
    */
@@ -575,10 +597,12 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * Get user permissions for a specific script.
    * </p>
    * <p>
-   * Returns all permissions for admins and creators. For regular users, returns their specific permissions.
+   * Returns all permissions for admins and creators. For regular users, returns their specific
+   * permissions.
    * </p>
+   *
    * @param scriptId Script ID
-   * @param userId User ID
+   * @param userId   User ID
    * @return List of user permissions, or null if no permissions found
    */
   @Override
@@ -605,8 +629,9 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Returns a map of script ID to permission sets for efficient batch permission checking.
    * </p>
+   *
    * @param scriptIds Collection of script IDs
-   * @param userId User ID
+   * @param userId    User ID
    * @return Map of script ID to permission sets
    */
   @Override
@@ -641,7 +666,8 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Check if a user is the creator of a script.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId   User ID
    * @param scriptId Script ID
    * @return true if the user is the creator, false otherwise
    */
@@ -655,6 +681,7 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Check if any of the authorization records indicates the user is a creator.
    * </p>
+   *
    * @param auths List of script authorizations
    * @return true if the user is a creator, false otherwise
    */
@@ -674,6 +701,7 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
    * <p>
    * Flatten all permissions from a list of authorization records into a single set.
    * </p>
+   *
    * @param auths List of script authorizations
    * @return Set of all permissions
    */

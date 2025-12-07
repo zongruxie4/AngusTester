@@ -32,15 +32,17 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command implementation for functional test case scenario association operations.
  * <p>
- * Provides operations for associating and canceling scenario associations with functional test cases.
+ * Provides operations for associating and canceling scenario associations with functional test
+ * cases.
  * <p>
- * Implements business logic validation, permission checks, activity logging,
- * and transaction management for all scenario association operations.
+ * Implements business logic validation, permission checks, activity logging, and transaction
+ * management for all scenario association operations.
  * <p>
  * Supports batch operations and enforces maximum association limits (20 scenarios per case).
  */
 @Biz
-public class FuncCaseScenarioCmdImpl extends CommCmd<FuncCaseScenario, Long> implements FuncCaseScenarioCmd {
+public class FuncCaseScenarioCmdImpl extends CommCmd<FuncCaseScenario, Long> implements
+    FuncCaseScenarioCmd {
 
   private static final int MAX_SCENARIO_ASSOCIATIONS = 20;
 
@@ -101,7 +103,8 @@ public class FuncCaseScenarioCmdImpl extends CommCmd<FuncCaseScenario, Long> imp
         int totalAfterAdd = existingScenarioIds.size() + newScenarioIds.size();
         if (totalAfterAdd > MAX_SCENARIO_ASSOCIATIONS) {
           throw QuotaException.of(
-              String.format("用例最多只能关联 %d 个场景，当前已有 %d 个，尝试添加 %d 个，总计将超过限制",
+              String.format(
+                  "用例最多只能关联 %d 个场景，当前已有 %d 个，尝试添加 %d 个，总计将超过限制",
                   MAX_SCENARIO_ASSOCIATIONS, existingScenarioIds.size(), newScenarioIds.size()));
         }
       }
@@ -145,7 +148,8 @@ public class FuncCaseScenarioCmdImpl extends CommCmd<FuncCaseScenario, Long> imp
   /**
    * Cancel associated scenarios from a functional test case.
    * <p>
-   * Checks permission and existence before removing scenario associations and logging the activity.
+   * Checks permission and existence before removing scenario associations and logging the
+   * activity.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override

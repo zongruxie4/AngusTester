@@ -22,8 +22,9 @@ public interface TaskRepo extends BaseRepository<Task, Long> {
 
   long countBySprintId(Long springId);
 
-  @Query(value = "SELECT count(id) FROM task WHERE sprint_id = ?1 AND status NOT IN ('COMPLETED','CANCELED')"
-      + " AND deleted = 0 AND sprint_deleted =0", nativeQuery = true)
+  @Query(value =
+      "SELECT count(id) FROM task WHERE sprint_id = ?1 AND status NOT IN ('COMPLETED','CANCELED')"
+          + " AND deleted = 0 AND sprint_deleted =0", nativeQuery = true)
   long countNotCompletedBySprintId(Long id);
 
   @Modifying
@@ -74,7 +75,8 @@ public interface TaskRepo extends BaseRepository<Task, Long> {
 
   @Modifying
   @Query(value = "UPDATE task SET software_version = ?3 WHERE project_id = ?1 AND software_version = ?2", nativeQuery = true)
-  void updateVersionByProjectIdAndSoftwareVersion(Long projectId, String fromVersion, String toVersion);
+  void updateVersionByProjectIdAndSoftwareVersion(Long projectId, String fromVersion,
+      String toVersion);
 
   @Modifying
   @Query(value = "UPDATE task SET parent_task_id = null WHERE parent_task_id = ?1 AND id IN ?2", nativeQuery = true)

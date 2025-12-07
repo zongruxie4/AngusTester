@@ -29,7 +29,8 @@ public interface ExecSampleThroughputRepo extends BaseRepository<ExecSampleThrou
           + "AND CASE WHEN ?6 IS NOT NULL THEN ep.node_id IN ?6 ELSE 1=1 END "
           + "ORDER BY ep.timestamp ASC",
       nativeQuery = true)
-  List<ExecSampleThroughput> findAllByTenantIdAndExecIdAndTimestampAndNameInAndNodeIdIn(long tenantId,
+  List<ExecSampleThroughput> findAllByTenantIdAndExecIdAndTimestampAndNameInAndNodeIdIn(
+      long tenantId,
       long execId, String startTime, String endTime, Collection<String> names,
       Collection<Long> nodeIds);
 
@@ -43,7 +44,8 @@ public interface ExecSampleThroughputRepo extends BaseRepository<ExecSampleThrou
           + "AND CASE WHEN ?6 IS NOT NULL THEN ep.node_id IN ?6 ELSE 1=1 END "
           + "ORDER BY ep.timestamp ASC",
       nativeQuery = true)
-  List<ExecSampleThroughput> findAllByTenantIdAndExecIdAndTimestampAndNameNotAndNodeIdIn(long tenantId,
+  List<ExecSampleThroughput> findAllByTenantIdAndExecIdAndTimestampAndNameNotAndNodeIdIn(
+      long tenantId,
       long execId, String startTime, String endTime, String name, Collection<Long> nodeIds);
 
   @Override

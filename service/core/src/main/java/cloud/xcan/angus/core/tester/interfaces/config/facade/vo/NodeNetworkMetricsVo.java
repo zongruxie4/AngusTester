@@ -31,7 +31,7 @@ public class NodeNetworkMetricsVo {
     /**
      * @see Network#toString()
      */
-    @Schema(description="Comma-separated network sample value, format: rxBytes,rxBytesRate,rxErrors,txBytes,txBytesRate")
+    @Schema(description = "Comma-separated network sample value, format: rxBytes,rxBytesRate,rxErrors,txBytes,txBytesRate")
     private String cvsValue;
 
     public Date getTimestamp() {

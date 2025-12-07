@@ -31,7 +31,7 @@ public class ExecResultInnerRest {
   @Resource
   private ExecResultFacade execResultFacade;
 
-  @Operation(summary = "Get execution test result details", 
+  @Operation(summary = "Get execution test result details",
       description = "Retrieve comprehensive execution test result details for internal service integration",
       operationId = "exec:result:detail:inner")
   @ApiResponses(value = {
@@ -43,7 +43,7 @@ public class ExecResultInnerRest {
     return ApiLocaleResult.success(execResultFacade.execResult(execId));
   }
 
-  @Operation(summary = "Get API execution test result by script type", 
+  @Operation(summary = "Get API execution test result by script type",
       description = "Retrieve API execution test result filtered by specific script type for internal service integration",
       operationId = "exec:apis:result:byScriptType:inner")
   @ApiResponses(value = {
@@ -56,7 +56,7 @@ public class ExecResultInnerRest {
     return ApiLocaleResult.success(execResultFacade.apisResultByScriptType(apiId, scriptType));
   }
 
-  @Operation(summary = "Get all API execution test results", 
+  @Operation(summary = "Get all API execution test results",
       description = "Retrieve comprehensive API execution test results summary for internal service integration",
       operationId = "exec:apis:result:all:inner")
   @ApiResponses(value = {
@@ -67,7 +67,7 @@ public class ExecResultInnerRest {
     return ApiLocaleResult.success(execResultFacade.apisResult(apiId));
   }
 
-  @Operation(summary = "Get service API execution test results", 
+  @Operation(summary = "Get service API execution test results",
       description = "Retrieve service-level API execution test results with organizational and date filtering",
       operationId = "exec:service:result:info:inner")
   @ApiResponses(value = {
@@ -79,7 +79,7 @@ public class ExecResultInnerRest {
     return ApiLocaleResult.success(execResultFacade.serviceApisResult(serviceId, dto));
   }
 
-  @Operation(summary = "Get project API execution test results", 
+  @Operation(summary = "Get project API execution test results",
       description = "Retrieve project-level API execution test results with organizational and date filtering",
       operationId = "exec:project:apis:result:info:inner")
   @ApiResponses(value = {
@@ -91,7 +91,7 @@ public class ExecResultInnerRest {
     return ApiLocaleResult.success(execResultFacade.projectApisResult(projectId, dto));
   }
 
-  @Operation(summary = "Get scenario execution test result by script type", 
+  @Operation(summary = "Get scenario execution test result by script type",
       description = "Retrieve scenario execution test result filtered by specific script type for internal service integration",
       operationId = "exec:scenario:result:byScriptType:inner")
   @ApiResponses(value = {
@@ -105,7 +105,7 @@ public class ExecResultInnerRest {
         execResultFacade.scenarioResultByScriptType(scenarioId, scriptType));
   }
 
-  @Operation(summary = "Get all scenario execution test results", 
+  @Operation(summary = "Get all scenario execution test results",
       description = "Retrieve comprehensive scenario execution test results summary for internal service integration",
       operationId = "exec:scenario:result:all:inner")
   @ApiResponses(value = {
@@ -116,7 +116,7 @@ public class ExecResultInnerRest {
     return ApiLocaleResult.success(execResultFacade.scenarioResult(scenarioId));
   }
 
-  @Operation(summary = "Get project scenario execution test results", 
+  @Operation(summary = "Get project scenario execution test results",
       description = "Retrieve project-level scenario execution test results with organizational and date filtering",
       operationId = "exec:project:scenario:result:info:inner")
   @ApiResponses(value = {
@@ -128,7 +128,7 @@ public class ExecResultInnerRest {
     return ApiLocaleResult.success(execResultFacade.projectScenarioResult(projectId, dto));
   }
 
-  @Operation(summary = "Get test case execution result details", 
+  @Operation(summary = "Get test case execution result details",
       description = "Retrieve comprehensive test case execution result details for internal service integration",
       operationId = "exec:case:result:detail:inner")
   @ApiResponses(value = {

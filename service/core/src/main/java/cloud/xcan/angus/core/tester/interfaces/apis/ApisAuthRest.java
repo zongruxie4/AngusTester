@@ -44,7 +44,7 @@ public class ApisAuthRest {
   @Resource
   private ApisAuthFacade apisAuthFacade;
 
-  @Operation(summary = "Create API authorization", 
+  @Operation(summary = "Create API authorization",
       description = "Create new authorization rules for API access control with comprehensive permission settings",
       operationId = "apis:auth:add")
   @ApiResponses(value = {
@@ -57,7 +57,7 @@ public class ApisAuthRest {
     return ApiLocaleResult.success(apisAuthFacade.add(apiId, dto));
   }
 
-  @Operation(summary = "Replace API authorization", 
+  @Operation(summary = "Replace API authorization",
       description = "Update existing API authorization rules with complete new configuration and permission settings",
       operationId = "apis:auth:replace")
   @ApiResponses(value = {
@@ -72,7 +72,7 @@ public class ApisAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Enable or disable API authorization", 
+  @Operation(summary = "Enable or disable API authorization",
       description = "Toggle API authorization status with comprehensive access control management",
       operationId = "apis:auth:enabled")
   @ApiResponses(value = {
@@ -87,7 +87,7 @@ public class ApisAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Get API authorization status", 
+  @Operation(summary = "Get API authorization status",
       description = "Retrieve current authorization status for specific API with comprehensive access control information",
       operationId = "apis:auth:status")
   @ApiResponses(value = {
@@ -100,7 +100,7 @@ public class ApisAuthRest {
     return ApiLocaleResult.success(apisAuthFacade.status(apiId));
   }
 
-  @Operation(summary = "Delete API authorization", 
+  @Operation(summary = "Delete API authorization",
       description = "Remove API authorization rules with proper cleanup and access control validation",
       operationId = "apis:auth:delete")
   @ApiResponses(value = {
@@ -112,7 +112,7 @@ public class ApisAuthRest {
     apisAuthFacade.delete(id);
   }
 
-  @Operation(summary = "Get user API permissions", 
+  @Operation(summary = "Get user API permissions",
       description = "Retrieve comprehensive user permissions for specific API with administrator privilege support",
       operationId = "apis:user:auth")
   @ApiResponses(value = {
@@ -127,7 +127,7 @@ public class ApisAuthRest {
     return ApiLocaleResult.success(apisAuthFacade.userAuth(apiId, userId, admin));
   }
 
-  @Operation(summary = "Get current user API permissions", 
+  @Operation(summary = "Get current user API permissions",
       description = "Retrieve current user permissions for specific API with administrator privilege support",
       operationId = "apis:user:auth:current")
   @ApiResponses(value = {
@@ -141,7 +141,7 @@ public class ApisAuthRest {
     return ApiLocaleResult.success(apisAuthFacade.currentUserAuth(apiId, admin));
   }
 
-  @Operation(summary = "Check user API authorization", 
+  @Operation(summary = "Check user API authorization",
       description = "Validate user authorization or administrator permission for specific API with comprehensive access control",
       operationId = "apis:auth:check")
   @ApiResponses(value = {
@@ -156,7 +156,7 @@ public class ApisAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query API authorization list", 
+  @Operation(summary = "Query API authorization list",
       description = "Retrieve paginated list of API authorizations with comprehensive filtering and search options",
       operationId = "apis:auth:list")
   @ApiResponses(value = {

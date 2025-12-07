@@ -1,1 +1,13 @@
-{"threads":5000,"rampUpThreads":100,"rampUpInterval":"1min","duration":"50min","art":"500","percentile":{"value":"P90","message":"P90"},"tps":500,"errorRate":0.01}
+{
+  "threads": 5000,
+  "rampUpThreads": 100,
+  "rampUpInterval": "1min",
+  "duration": "50min",
+  "art": "500",
+  "percentile": {
+    "value": "P90",
+    "message": "P90"
+  },
+  "tps": 500,
+  "errorRate": 0.01
+}

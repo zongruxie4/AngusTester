@@ -106,10 +106,10 @@ public class ApisShareQueryImpl implements ApisShareQuery {
    * <p>The method automatically enriches share data with user information
    * for enhanced display.</p>
    *
-   * @param spec the specification for filtering API shares
-   * @param pageable the pagination and sorting parameters
+   * @param spec           the specification for filtering API shares
+   * @param pageable       the pagination and sorting parameters
    * @param fullTextSearch whether to use full-text search
-   * @param match the full-text search match fields
+   * @param match          the full-text search match fields
    * @return a page of API shares with enriched data
    */
   @Override
@@ -141,10 +141,10 @@ public class ApisShareQueryImpl implements ApisShareQuery {
    * <p>The method includes expiration checking and API proxy information
    * for cross-tenant access.</p>
    *
-   * @param id the API share ID to view
+   * @param id  the API share ID to view
    * @param pat the public access token for validation
    * @return the API share information with OpenAPI content
-   * @throws UnauthorizedException if token validation fails
+   * @throws UnauthorizedException    if token validation fails
    * @throws IllegalArgumentException if share is expired
    */
   @Override

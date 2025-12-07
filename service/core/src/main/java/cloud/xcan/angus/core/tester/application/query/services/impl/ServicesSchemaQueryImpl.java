@@ -74,7 +74,8 @@ import org.springframework.cache.annotation.Cacheable;
  * Implementation of ServicesSchemaQuery for services schema management and query operations.
  * </p>
  * <p>
- * Provides methods for OpenAPI schema handling, server management, component resolution, and API parsing.
+ * Provides methods for OpenAPI schema handling, server management, component resolution, and API
+ * parsing.
  * </p>
  */
 @Biz
@@ -100,6 +101,7 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * Retrieves service schema details with Spring cache support for performance optimization.
    * Requires view permission for the service.
    * </p>
+   *
    * @param serviceId Service ID
    * @return Service schema entity
    */
@@ -125,13 +127,14 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * Get OpenAPI specification in specified format with optional compression.
    * </p>
    * <p>
-   * Generates OpenAPI specification for selected APIs with optional gzip compression.
-   * Supports JSON and YAML output formats.
+   * Generates OpenAPI specification for selected APIs with optional gzip compression. Supports JSON
+   * and YAML output formats.
    * </p>
-   * @param serviceId Service ID
-   * @param apisIds Set of API IDs to include
-   * @param format Output format (JSON or YAML)
-   * @param gzipCompression Whether to apply gzip compression
+   *
+   * @param serviceId          Service ID
+   * @param apisIds            Set of API IDs to include
+   * @param format             Output format (JSON or YAML)
+   * @param gzipCompression    Whether to apply gzip compression
    * @param onlyApisComponents Whether to include only API-related components
    * @return OpenAPI specification as string
    */
@@ -173,8 +176,9 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * Assembles complete OpenAPI specification by merging service schema, API paths, and components.
    * Handles server merging, security requirements, and component filtering.
    * </p>
-   * @param serviceId Service ID
-   * @param apisIds Set of API IDs to include
+   *
+   * @param serviceId          Service ID
+   * @param apisIds            Set of API IDs to include
    * @param onlyApisComponents Whether to include only API-related components
    * @return OpenAPI specification object
    */
@@ -256,8 +260,10 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * Get server list for all services in a project.
    * </p>
    * <p>
-   * Retrieves all servers from all services in a project and associates them with their service IDs.
+   * Retrieves all servers from all services in a project and associates them with their service
+   * IDs.
    * </p>
+   *
    * @param projectId Project ID
    * @return List of service servers
    */
@@ -287,8 +293,9 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * <p>
    * Get detailed information of a specific server.
    * </p>
+   *
    * @param serviceId Service ID
-   * @param serverId Server ID
+   * @param serverId  Server ID
    * @return Server entity
    */
   @Override
@@ -317,10 +324,11 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * Merge servers from APIs and service schema.
    * </p>
    * <p>
-   * Combines servers from individual APIs with servers from the service schema,
-   * removing duplicates based on URL.
+   * Combines servers from individual APIs with servers from the service schema, removing duplicates
+   * based on URL.
    * </p>
-   * @param apis List of APIs
+   *
+   * @param apis    List of APIs
    * @param servers List of servers from service schema
    * @return Merged list of unique servers
    */
@@ -348,6 +356,7 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * <p>
    * Find servers for multiple services.
    * </p>
+   *
    * @param serviceIds Collection of service IDs
    * @return List of servers from all services
    */
@@ -367,6 +376,7 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * <p>
    * Find servers for a specific service.
    * </p>
+   *
    * @param serviceId Service ID
    * @return List of servers for the service
    */
@@ -384,6 +394,7 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * <p>
    * Find service schema by service ID with caching.
    * </p>
+   *
    * @param serviceId Service ID
    * @return Service schema entity or null if not found
    */
@@ -397,6 +408,7 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * <p>
    * Check and find service schema by service ID with caching.
    * </p>
+   *
    * @param serviceId Service ID
    * @return Service schema entity
    */
@@ -411,6 +423,7 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * <p>
    * Check and find service schema by service ID without caching.
    * </p>
+   *
    * @param serviceId Service ID
    * @return Service schema entity
    */
@@ -425,6 +438,7 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * <p>
    * Check if a service schema exists.
    * </p>
+   *
    * @param serviceId Service ID
    */
   @Override
@@ -438,8 +452,10 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * Validate server configuration.
    * </p>
    * <p>
-   * Ensures server URLs are not empty and that environment variables have corresponding variable definitions.
+   * Ensures server URLs are not empty and that environment variables have corresponding variable
+   * definitions.
    * </p>
+   *
    * @param servers List of servers to validate
    */
   @Override
@@ -458,9 +474,10 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * Check and get API parser for a specific import source.
    * </p>
    * <p>
-   * Dynamically finds and returns the appropriate API parser based on the import source.
-   * Uses Spring context to discover available parsers.
+   * Dynamically finds and returns the appropriate API parser based on the import source. Uses
+   * Spring context to discover available parsers.
    * </p>
+   *
    * @param importSource API import source
    * @return API parser for the specified source
    */
@@ -495,9 +512,10 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * Check and get translation service for a specific provider.
    * </p>
    * <p>
-   * Dynamically finds and returns the appropriate translation service based on the provider.
-   * Uses Spring context to discover available translation services.
+   * Dynamically finds and returns the appropriate translation service based on the provider. Uses
+   * Spring context to discover available translation services.
    * </p>
+   *
    * @param provider Translation service provider
    * @return Translation service for the specified provider
    */
@@ -535,6 +553,7 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * Imports OpenAPI format data (including Postman format) and converts operations to API entities.
    * Uses fully resolved parsing options for complete schema resolution.
    * </p>
+   *
    * @param content OpenAPI content to parse
    * @return List of parsed API entities
    */
@@ -557,11 +576,12 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
    * Find components used by specific APIs in a service.
    * </p>
    * <p>
-   * Filters service components to include only those referenced by the specified APIs.
-   * Includes security schemes and referenced components used by the APIs.
+   * Filters service components to include only those referenced by the specified APIs. Includes
+   * security schemes and referenced components used by the APIs.
    * </p>
+   *
    * @param serviceId Service ID
-   * @param apis List of APIs to find components for
+   * @param apis      List of APIs to find components for
    * @return List of components used by the APIs
    */
   private List<ServicesComp> findProjectApisComps(Long serviceId, List<Apis> apis) {

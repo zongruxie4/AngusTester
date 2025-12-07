@@ -28,7 +28,7 @@ public class ApisTestDoorRest {
   @Resource
   private ApisTestFacade apisTestFacade;
 
-  @Operation(summary = "Get enabled API test types", 
+  @Operation(summary = "Get enabled API test types",
       description = "Retrieve enabled testing types for specific API with comprehensive test configuration information",
       operationId = "apis:test:enabled:find:inner")
   @ApiResponses(value = {

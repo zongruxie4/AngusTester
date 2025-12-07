@@ -42,7 +42,8 @@ public class TaskRemarkQueryImpl implements TaskRemarkQuery {
    * <p>
    * Retrieves paginated task remarks based on generic specification criteria.
    * </p>
-   * @param spec Generic specification for filtering
+   *
+   * @param spec     Generic specification for filtering
    * @param pageable Pagination information
    * @return Page of task remarks
    */
@@ -63,11 +64,12 @@ public class TaskRemarkQueryImpl implements TaskRemarkQuery {
    * Check and validate remark quota for a task.
    * </p>
    * <p>
-   * Validates that adding the specified number of remarks does not exceed quota limits.
-   * Throws an exception if quota would be exceeded.
+   * Validates that adding the specified number of remarks does not exceed quota limits. Throws an
+   * exception if quota would be exceeded.
    * </p>
+   *
    * @param taskId Task ID
-   * @param inc Number of remarks to add
+   * @param inc    Number of remarks to add
    */
   @Override
   public void checkAddQuota(Long taskId, int inc) {
@@ -84,6 +86,7 @@ public class TaskRemarkQueryImpl implements TaskRemarkQuery {
    * <p>
    * Validates the existence of a task remark and throws ResourceNotFound if not found.
    * </p>
+   *
    * @param id Task remark ID
    * @return Task remark if found
    * @throws ResourceNotFound if task remark not found
@@ -100,6 +103,7 @@ public class TaskRemarkQueryImpl implements TaskRemarkQuery {
    * <p>
    * Retrieves aggregated remark information for a specific task.
    * </p>
+   *
    * @param taskId Task ID
    * @return List of remark summaries
    */
@@ -118,6 +122,7 @@ public class TaskRemarkQueryImpl implements TaskRemarkQuery {
    * <p>
    * Returns the total count of remarks associated with a specific task.
    * </p>
+   *
    * @param taskId Task ID
    * @return Number of remarks
    */

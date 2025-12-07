@@ -35,7 +35,7 @@ public class ApisFavouriteRest {
   @Resource
   private ApisFavouriteFacade apisFavouriteFacade;
 
-  @Operation(summary = "Add API to favorites", 
+  @Operation(summary = "Add API to favorites",
       description = "Add specific API to user favorites for quick access and personal organization",
       operationId = "apis:favourite:add")
   @ApiResponses(value = {
@@ -47,7 +47,7 @@ public class ApisFavouriteRest {
     return ApiLocaleResult.success(apisFavouriteFacade.add(apiId));
   }
 
-  @Operation(summary = "Remove API from favorites", 
+  @Operation(summary = "Remove API from favorites",
       description = "Remove specific API from user favorites with proper cleanup and validation",
       operationId = "apis:favourite:cancel")
   @ApiResponses(value = {
@@ -61,7 +61,7 @@ public class ApisFavouriteRest {
     apisFavouriteFacade.cancel(apiId);
   }
 
-  @Operation(summary = "Remove all API favorites", 
+  @Operation(summary = "Remove all API favorites",
       description = "Remove all API favorites for specific project with comprehensive cleanup",
       operationId = "apis:favourite:cancel:all")
   @ApiResponses(value = {
@@ -73,7 +73,7 @@ public class ApisFavouriteRest {
     apisFavouriteFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Query API favorites list", 
+  @Operation(summary = "Query API favorites list",
       description = "Retrieve paginated list of user API favorites with comprehensive filtering and search options",
       operationId = "apis:favourite:list")
   @ApiResponses(value = {
@@ -84,7 +84,7 @@ public class ApisFavouriteRest {
     return ApiLocaleResult.success(apisFavouriteFacade.list(dto));
   }
 
-  @Operation(summary = "Get API favorites count", 
+  @Operation(summary = "Get API favorites count",
       description = "Retrieve total count of API favorites for specific project with comprehensive statistics",
       operationId = "apis:favourite:count")
   @ApiResponses(value = {

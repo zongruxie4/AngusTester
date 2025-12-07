@@ -34,7 +34,8 @@ public class ServicesFileUtils {
    * <p>
    * Validates file formats and ensures proper extraction of specification files.
    * <p>
-   * @param tmpPath the temporary directory for file processing
+   *
+   * @param tmpPath    the temporary directory for file processing
    * @param importFile the file to process (single file or ZIP archive)
    * @return list of extracted API specification files
    * @throws RuntimeException if file processing fails or invalid format detected
@@ -42,19 +43,19 @@ public class ServicesFileUtils {
   @SneakyThrows
   public static List<File> getImportApiFiles(File tmpPath, File importFile) {
     List<File> importFiles = new ArrayList<>();
-    
+
     // Check if the import file is a ZIP archive
     if (FileUtils.isZipFile(importFile.toPath())) {
       try {
         // Extract ZIP file contents to temporary directory
         FileUtils.extract(importFile.getPath(), tmpPath.getPath());
-        
+
         // Search for API specification files in extracted contents
         importFiles = FileSearchUtils.newBuilder()
             .filter(pathname -> pathname.getName().endsWith(".json")
                 || pathname.getName().endsWith(".yaml") || pathname.getName().endsWith(".txt"))
             .build().search();
-        
+
         // Validate that specification files were found
         assertNotEmpty(importFiles,
             "Api specification file not found, it must be in JSON, YAML, or txt format");
@@ -77,14 +78,15 @@ public class ServicesFileUtils {
    * <p>
    * Supports OpenAPI and Postman import sources with separate directory structures.
    * <p>
+   *
    * @param sourceType the type of API import source (OPENAPI or POSTMAN)
-   * @param fileName optional file name to include in the path
+   * @param fileName   optional file name to include in the path
    * @return the created temporary directory for import operations
    */
   public static File getImportTmpPath(ApiImportSource sourceType, String fileName) {
     String tmpPath;
     SpringAppDirUtils utils = new SpringAppDirUtils();
-    
+
     // Build path based on import source type
     if (sourceType.equals(ApiImportSource.OPENAPI)) {
       // Create OpenAPI-specific import directory
@@ -95,7 +97,7 @@ public class ServicesFileUtils {
       tmpPath = utils.getTmpDir() + TesterConstant.IMPORT_POSTMAN_DIR + getTenantId()
           + File.separator + randomUUID() + File.separator + nullSafe(fileName, "");
     }
-    
+
     // Create directory and return file object
     File file = new File(tmpPath);
     file.mkdirs();
@@ -109,16 +111,17 @@ public class ServicesFileUtils {
    * <p>
    * Handles both directory and file path creation based on the provided file name.
    * <p>
+   *
    * @param fileName optional file name to include in the path
    * @return the created temporary path for export operations
    */
   public static File getExportTmpPath(String fileName) {
     SpringAppDirUtils utils = new SpringAppDirUtils();
-    
+
     // Build export path with tenant isolation and unique identifier
-    String tmpPath = utils.getTmpDir() + TesterConstant.EXPORT_OPENAPI_DIR + getTenantId() 
-    + File.separator + randomUUID() + File.separator + nullSafe(fileName, "");
-    
+    String tmpPath = utils.getTmpDir() + TesterConstant.EXPORT_OPENAPI_DIR + getTenantId()
+        + File.separator + randomUUID() + File.separator + nullSafe(fileName, "");
+
     // Create file object and ensure parent directory exists
     File file = new File(tmpPath);
     if (file.isDirectory()) {

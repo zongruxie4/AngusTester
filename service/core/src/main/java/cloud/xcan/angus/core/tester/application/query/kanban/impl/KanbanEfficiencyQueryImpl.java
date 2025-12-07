@@ -59,9 +59,9 @@ import java.util.stream.Collectors;
 /**
  * Implementation of KanbanEfficiencyQuery for managing efficiency dashboard queries.
  * <p>
- * This class provides comprehensive functionality for querying and managing efficiency
- * dashboard data, including task and case efficiency metrics, burn-down charts, and
- * performance rankings. It handles comprehensive efficiency analysis and reporting.
+ * This class provides comprehensive functionality for querying and managing efficiency dashboard
+ * data, including task and case efficiency metrics, burn-down charts, and performance rankings. It
+ * handles comprehensive efficiency analysis and reporting.
  * <p>
  * Key features include:
  * <ul>
@@ -108,22 +108,22 @@ public class KanbanEfficiencyQueryImpl implements KanbanEfficiencyQuery {
   /**
    * Generates comprehensive task efficiency overview with detailed metrics.
    * <p>
-   * Provides detailed task efficiency analysis including assignee performance, rankings,
-   * burn-down charts, and optional detailed task lists. Integrates multiple data sources
-   * for complete efficiency visibility.
+   * Provides detailed task efficiency analysis including assignee performance, rankings, burn-down
+   * charts, and optional detailed task lists. Integrates multiple data sources for complete
+   * efficiency visibility.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param creatorObjectType the creator organization type for filtering
-   * @param creatorObjectId the creator organization ID for filtering
-   * @param projectId the project ID for filtering tasks (required)
-   * @param planId optional plan ID for plan-specific filtering
-   * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
-   * @param joinTaskList whether to include detailed task list
+   * @param creatorObjectType    the creator organization type for filtering
+   * @param creatorObjectId      the creator organization ID for filtering
+   * @param projectId            the project ID for filtering tasks (required)
+   * @param planId               optional plan ID for plan-specific filtering
+   * @param createdDateStart     start date for filtering
+   * @param createdDateEnd       end date for filtering
+   * @param joinTaskList         whether to include detailed task list
    * @param joinAssigneeOverview whether to include assignee overview details
-   * @param joinRanking whether to include assignee ranking analysis
-   * @param joinBurnDownChar whether to include burn-down chart analysis
+   * @param joinRanking          whether to include assignee ranking analysis
+   * @param joinBurnDownChar     whether to include burn-down chart analysis
    * @return EfficiencyTaskOverview object with comprehensive task efficiency metrics
    */
   @Override
@@ -198,23 +198,23 @@ public class KanbanEfficiencyQueryImpl implements KanbanEfficiencyQuery {
   /**
    * Generates comprehensive case efficiency overview with detailed metrics.
    * <p>
-   * Provides detailed case efficiency analysis including tester performance, rankings,
-   * burn-down charts, test hit analysis, and optional detailed case lists. Integrates
-   * multiple data sources for complete efficiency visibility.
+   * Provides detailed case efficiency analysis including tester performance, rankings, burn-down
+   * charts, test hit analysis, and optional detailed case lists. Integrates multiple data sources
+   * for complete efficiency visibility.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param creatorObjectType the creator organization type for filtering
-   * @param creatorObjectId the creator organization ID for filtering
-   * @param projectId the project ID for filtering cases (required)
-   * @param planId optional plan ID for plan-specific filtering
-   * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
-   * @param joinTestHit whether to include test hit and bug analysis
-   * @param joinCaseList whether to include detailed case list
+   * @param creatorObjectType  the creator organization type for filtering
+   * @param creatorObjectId    the creator organization ID for filtering
+   * @param projectId          the project ID for filtering cases (required)
+   * @param planId             optional plan ID for plan-specific filtering
+   * @param createdDateStart   start date for filtering
+   * @param createdDateEnd     end date for filtering
+   * @param joinTestHit        whether to include test hit and bug analysis
+   * @param joinCaseList       whether to include detailed case list
    * @param joinTesterOverview whether to include tester overview details
-   * @param joinRanking whether to include tester ranking analysis
-   * @param joinBurnDownChar whether to include burn-down chart analysis
+   * @param joinRanking        whether to include tester ranking analysis
+   * @param joinBurnDownChar   whether to include burn-down chart analysis
    * @return EfficiencyCaseOverview object with comprehensive case efficiency metrics
    */
   @Override
@@ -297,16 +297,16 @@ public class KanbanEfficiencyQueryImpl implements KanbanEfficiencyQuery {
   /**
    * Assembles burn-down chart data for task efficiency overview.
    * <p>
-   * Generates comprehensive burn-down chart analysis for task overview including
-   * total burn-down charts and individual assignee burn-down charts when appropriate.
+   * Generates comprehensive burn-down chart analysis for task overview including total burn-down
+   * charts and individual assignee burn-down charts when appropriate.
    *
-   * @param overview the task efficiency overview to populate with burn-down data
-   * @param projectId the project ID for burn-down analysis
-   * @param planId optional plan ID for plan-specific analysis
+   * @param overview          the task efficiency overview to populate with burn-down data
+   * @param projectId         the project ID for burn-down analysis
+   * @param planId            optional plan ID for plan-specific analysis
    * @param creatorObjectType the creator organization type for filtering
-   * @param creatorObjectId the creator organization ID for filtering
-   * @param createdDateStart start date for analysis
-   * @param createdDateEnd end date for analysis
+   * @param creatorObjectId   the creator organization ID for filtering
+   * @param createdDateStart  start date for analysis
+   * @param createdDateEnd    end date for analysis
    */
   private void assembleBurnDownChart(EfficiencyTaskOverview overview, Long projectId, Long planId,
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
@@ -341,16 +341,16 @@ public class KanbanEfficiencyQueryImpl implements KanbanEfficiencyQuery {
   /**
    * Assembles burn-down chart data for case efficiency overview.
    * <p>
-   * Generates comprehensive burn-down chart analysis for case overview including
-   * total burn-down charts and individual tester burn-down charts when appropriate.
+   * Generates comprehensive burn-down chart analysis for case overview including total burn-down
+   * charts and individual tester burn-down charts when appropriate.
    *
-   * @param overview the case efficiency overview to populate with burn-down data
-   * @param projectId the project ID for burn-down analysis
-   * @param planId optional plan ID for plan-specific analysis
+   * @param overview          the case efficiency overview to populate with burn-down data
+   * @param projectId         the project ID for burn-down analysis
+   * @param planId            optional plan ID for plan-specific analysis
    * @param creatorObjectType the creator organization type for filtering
-   * @param creatorObjectId the creator organization ID for filtering
-   * @param createdDateStart start date for analysis
-   * @param createdDateEnd end date for analysis
+   * @param creatorObjectId   the creator organization ID for filtering
+   * @param createdDateStart  start date for analysis
+   * @param createdDateEnd    end date for analysis
    */
   private void assembleBurnDownChart(EfficiencyCaseOverview overview, Long projectId, Long planId,
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,

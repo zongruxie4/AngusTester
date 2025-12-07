@@ -264,7 +264,7 @@ public class ApisConverter {
         .setCurrentServer(currentServer)
         .setTags(operation.getTags())
         .setSummary(lengthSafe(nullSafe(operation.getSummary(),
-                stringSafe(operation.getDescription())), MAX_OPENAPI_SUMMARY_LENGTH))
+            stringSafe(operation.getDescription())), MAX_OPENAPI_SUMMARY_LENGTH))
         .setDescription(lengthSafe(operation.getDescription(), MAX_OPENAPI_DOC_DESC_LENGTH))
         .setExternalDocs(operation.getExternalDocs())
         .setOperationId(operation.getOperationId())

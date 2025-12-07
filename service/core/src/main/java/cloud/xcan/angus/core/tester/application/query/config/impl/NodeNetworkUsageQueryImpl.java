@@ -28,26 +28,24 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 /**
- * Implementation of NodeNetworkUsageQuery that provides network usage metrics
- * for nodes in the AngusTester system.
+ * Implementation of NodeNetworkUsageQuery that provides network usage metrics for nodes in the
+ * AngusTester system.
  *
  * <p>
- * This class handles network device usage queries, supporting both single device
- * and multi-device network monitoring. It provides current network information
- * and historical usage data for performance analysis.
+ * This class handles network device usage queries, supporting both single device and multi-device
+ * network monitoring. It provides current network information and historical usage data for
+ * performance analysis.
  * </p>
  *
  * <p>
- * Key features include:
- * - Network device discovery and monitoring
- * - Current network usage information retrieval
- * - Historical network usage data with pagination
- * - Support for free node metrics access
+ * Key features include: - Network device discovery and monitoring - Current network usage
+ * information retrieval - Historical network usage data with pagination - Support for free node
+ * metrics access
  * </p>
  *
  * <p>
- * The implementation automatically handles tenant context switching for free nodes
- * and provides comprehensive network metrics for performance monitoring.
+ * The implementation automatically handles tenant context switching for free nodes and provides
+ * comprehensive network metrics for performance monitoring.
  * </p>
  */
 @Biz
@@ -62,14 +60,14 @@ public class NodeNetworkUsageQueryImpl implements NodeNetworkUsageQuery {
    * Retrieves current network information for all devices on a specific node.
    *
    * <p>
-   * This method fetches the latest network usage data for all network devices
-   * that have been active on the node within the last hour. It automatically
-   * switches to owner tenant context for free nodes.
+   * This method fetches the latest network usage data for all network devices that have been active
+   * on the node within the last hour. It automatically switches to owner tenant context for free
+   * nodes.
    * </p>
    *
    * <p>
-   * The method discovers available network devices and retrieves their current
-   * usage metrics, returning them as a map keyed by device name.
+   * The method discovers available network devices and retrieves their current usage metrics,
+   * returning them as a map keyed by device name.
    * </p>
    *
    * @param nodeId the ID of the node to get network information for
@@ -111,18 +109,18 @@ public class NodeNetworkUsageQueryImpl implements NodeNetworkUsageQuery {
    * Retrieves historical network usage data for devices on a specific node.
    *
    * <p>
-   * This method provides paginated access to historical network usage data,
-   * supporting both single device queries and multi-device batch queries.
-   * It automatically handles tenant context for free nodes.
+   * This method provides paginated access to historical network usage data, supporting both single
+   * device queries and multi-device batch queries. It automatically handles tenant context for free
+   * nodes.
    * </p>
    *
    * <p>
-   * When a specific device name is provided, it returns data for that device only.
-   * Otherwise, it returns data for all devices active within the last hour.
+   * When a specific device name is provided, it returns data for that device only. Otherwise, it
+   * returns data for all devices active within the last hour.
    * </p>
    *
-   * @param nodeId the ID of the node to get network usage data for
-   * @param spec specification for filtering network usage data
+   * @param nodeId   the ID of the node to get network usage data for
+   * @param spec     specification for filtering network usage data
    * @param pageable pagination parameters
    * @return List of NetDeviceUsage objects containing device-specific usage data
    */

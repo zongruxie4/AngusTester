@@ -145,9 +145,9 @@ import org.springframework.transaction.annotation.Transactional;
  * script execution with trial mode capabilities.
  * </p>
  * <p>
- * Key features include distributed execution across multiple nodes, script sharding for
- * performance optimization, remote controller communication, and comprehensive error handling
- * with detailed status reporting.
+ * Key features include distributed execution across multiple nodes, script sharding for performance
+ * optimization, remote controller communication, and comprehensive error handling with detailed
+ * status reporting.
  * </p>
  */
 @Slf4j
@@ -193,10 +193,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * Parses script content, creates script, and adds execution with optional trial configuration.
    * Handles YAML parsing and script creation before execution setup.
    * </p>
+   *
    * @param projectId Project ID
-   * @param name Execution name (auto-generated if null)
-   * @param content Script content in YAML format
-   * @param trial Whether this is a trial execution
+   * @param name      Execution name (auto-generated if null)
+   * @param content   Script content in YAML format
+   * @param trial     Whether this is a trial execution
    * @return Execution ID and name
    */
   @Transactional(rollbackFor = Exception.class)
@@ -229,16 +230,17 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * Add a new execution by local script arguments.
    * </p>
    * <p>
-   * Builds script from arguments, creates script, and adds execution with optional trial configuration.
-   * Constructs AngusScript from individual components and converts to YAML content.
+   * Builds script from arguments, creates script, and adds execution with optional trial
+   * configuration. Constructs AngusScript from individual components and converts to YAML content.
    * </p>
-   * @param projectId Project ID
-   * @param name Execution name (auto-generated if null)
-   * @param scriptType Type of script
-   * @param plugin Plugin identifier
+   *
+   * @param projectId     Project ID
+   * @param name          Execution name (auto-generated if null)
+   * @param scriptType    Type of script
+   * @param plugin        Plugin identifier
    * @param configuration Script configuration
-   * @param task Script task definition
-   * @param trial Whether this is a trial execution
+   * @param task          Script task definition
+   * @param trial         Whether this is a trial execution
    * @return Execution ID and name
    */
   @Transactional(rollbackFor = Exception.class)
@@ -275,15 +277,16 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * Add a new execution by local script reference.
    * </p>
    * <p>
-   * Checks quotas, prepares configuration, and inserts execution. Validates execution
-   * quotas and thread/node quotas before creating the execution.
+   * Checks quotas, prepares configuration, and inserts execution. Validates execution quotas and
+   * thread/node quotas before creating the execution.
    * </p>
-   * @param projectId Project ID
-   * @param name Execution name
-   * @param scriptId Script ID
-   * @param script Script content
+   *
+   * @param projectId   Project ID
+   * @param name        Execution name
+   * @param scriptId    Script ID
+   * @param script      Script content
    * @param angusScript Parsed script object
-   * @param trial Whether this is a trial execution
+   * @param trial       Whether this is a trial execution
    * @return Execution ID and name
    */
   @Override
@@ -320,14 +323,16 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * </p>
    * <p>
    * Checks script existence, permission, quotas, parses content, and inserts or updates execution.
-   * Handles both new execution creation and existing execution updates with configuration overrides.
+   * Handles both new execution creation and existing execution updates with configuration
+   * overrides.
    * </p>
-   * @param name Execution name
-   * @param scriptId Remote script ID
-   * @param scriptType Script type (optional override)
+   *
+   * @param name          Execution name
+   * @param scriptId      Remote script ID
+   * @param scriptType    Script type (optional override)
    * @param configuration Configuration (optional override)
-   * @param arguments Arguments (optional override)
-   * @param trial Whether this is a trial execution
+   * @param arguments     Arguments (optional override)
+   * @param trial         Whether this is a trial execution
    * @return Execution ID and name
    */
   @Transactional(rollbackFor = Exception.class)
@@ -434,20 +439,21 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * Replace execution configuration.
    * </p>
    * <p>
-   * Updates execution configuration, script, and test result update flag.
-   * Validates permissions and applies configuration changes to both execution and script content.
+   * Updates execution configuration, script, and test result update flag. Validates permissions and
+   * applies configuration changes to both execution and script content.
    * </p>
-   * @param id Execution ID
-   * @param name Execution name
-   * @param iterations Number of iterations
-   * @param duration Execution duration
-   * @param thread Number of threads
-   * @param priority Execution priority
+   *
+   * @param id               Execution ID
+   * @param name             Execution name
+   * @param iterations       Number of iterations
+   * @param duration         Execution duration
+   * @param thread           Number of threads
+   * @param priority         Execution priority
    * @param ignoreAssertions Whether to ignore assertions
    * @param updateTestResult Whether to update test results
-   * @param startMode Start mode
-   * @param startAtDate Scheduled start date
-   * @param reportInterval Report interval
+   * @param startMode        Start mode
+   * @param startAtDate      Scheduled start date
+   * @param reportInterval   Report interval
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -494,14 +500,15 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
   /**
    * Replace script configuration for an execution.
    * <p>
-   * Updates script type, configuration, arguments, and saves changes.
-   * Validates permissions and node availability before applying script changes.
+   * Updates script type, configuration, arguments, and saves changes. Validates permissions and
+   * node availability before applying script changes.
    * </p>
-   * @param id Execution ID
-   * @param name Execution name
-   * @param scriptType New script type
+   *
+   * @param id            Execution ID
+   * @param name          Execution name
+   * @param scriptType    New script type
    * @param configuration New configuration
-   * @param arguments New arguments
+   * @param arguments     New arguments
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -556,9 +563,10 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * Insert execution entity directly.
    * </p>
    * <p>
-   * Used for internal logic, no additional checks. Directly inserts the execution
-   * entity without validation or quota checks.
+   * Used for internal logic, no additional checks. Directly inserts the execution entity without
+   * validation or quota checks.
    * </p>
+   *
    * @param exec Execution entity to insert
    * @return Execution ID and name
    */
@@ -574,9 +582,10 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * Start execution by DTO.
    * </p>
    * <p>
-   * Checks existence, permission, and starts execution on selected nodes.
-   * Handles both broadcast and targeted node execution modes.
+   * Checks existence, permission, and starts execution on selected nodes. Handles both broadcast
+   * and targeted node execution modes.
    * </p>
+   *
    * @param dto Execution start DTO containing execution ID and node selection
    * @return List of execution results from all nodes
    */
@@ -629,15 +638,13 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * distributed locking, node selection, script sharding, and multi-controller coordination.
    * </p>
    * <p>
-   * Key features:
-   * - Distributed locking to prevent concurrent execution
-   * - Node selection based on strategy and availability
-   * - Script sharding for multi-node execution
-   * - Remote controller communication for distributed execution
-   * - Comprehensive error handling and status management
+   * Key features: - Distributed locking to prevent concurrent execution - Node selection based on
+   * strategy and availability - Script sharding for multi-node execution - Remote controller
+   * communication for distributed execution - Comprehensive error handling and status management
    * </p>
+   *
    * @param execDb Execution entity
-   * @param dto Execution start DTO
+   * @param dto    Execution start DTO
    * @return List of execution results from all nodes
    */
   @SneakyThrows
@@ -650,7 +657,8 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
     // Acquire distributed lock to prevent concurrent execution (main controller only)
     if (dto.isBroadcast()) {
-      boolean locked = distributedLock.tryLock(format(EXEC_LOCK_KEY_FMT, execId), execId, 2, TimeUnit.MINUTES);
+      boolean locked = distributedLock.tryLock(format(EXEC_LOCK_KEY_FMT, execId), execId, 2,
+          TimeUnit.MINUTES);
       if (!locked) {
         // Execution is triggered by other threads during scheduling
         String message = message(EXEC_START_IS_IGNORED);
@@ -672,9 +680,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     // Parse and overwrite script configuration with execution parameters
     String script;
     try {
-      script = overwriteConfigScript(execDb, execDb.getThread(), null, null, execDb.getIterations());
+      script = overwriteConfigScript(execDb, execDb.getThread(), null, null,
+          execDb.getIterations());
     } catch (Exception e) {
-      updateSchedulingFailed(execId, results, message(EXEC_START_IGNORED_WITH_PARSE_ERROR_T, new Object[]{e.getMessage()}));
+      updateSchedulingFailed(execId, results,
+          message(EXEC_START_IGNORED_WITH_PARSE_ERROR_T, new Object[]{e.getMessage()}));
       return results;
     }
 
@@ -687,7 +697,8 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     try {
       if (dto.isBroadcast()) {
         // Validate pipeline configuration for broadcast mode
-        if (isNotEmpty(execDb.getTask().getPipelines()) && execDb.getTask().getPipelines().size() > 1) {
+        if (isNotEmpty(execDb.getTask().getPipelines())
+            && execDb.getTask().getPipelines().size() > 1) {
           try {
             PipelineBuilder.of(execDb.getTask().getPipelines());
           } catch (Exception e) {
@@ -717,7 +728,8 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
             } else {
               try {
                 // For system actions: select idle shared nodes for trial execution
-                nodeIds.addAll(nodeInfoQuery.selectValidFreeNodeIds(1, execDb.getAvailableNodeIds()));
+                nodeIds.addAll(
+                    nodeInfoQuery.selectValidFreeNodeIds(1, execDb.getAvailableNodeIds()));
               } catch (Exception e) {
                 // Fallback to tenant's own nodes if no public trial nodes available
                 if (nodeIds.isEmpty()) {
@@ -734,7 +746,8 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
           log.error("No execution nodes that meet the policy", e);
           if (e instanceof BizException || execDb.getTrial()) {
             // Terminate execution for BizException or trial mode
-            updateSchedulingFailed(execId, results, nullSafe(selectFailMessage, message(EXEC_NOT_MEET_CONDITIONS_NODES)));
+            updateSchedulingFailed(execId, results,
+                nullSafe(selectFailMessage, message(EXEC_NOT_MEET_CONDITIONS_NODES)));
             return results;
           }
         }
@@ -745,7 +758,8 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
       // Validate that nodes were selected
       if (isEmpty(nodeIds)) {
-        updateSchedulingFailedInPending(execId, results, nullSafe(selectFailMessage, message(EXEC_NOT_MEET_CONDITIONS_NODES)));
+        updateSchedulingFailedInPending(execId, results,
+            nullSafe(selectFailMessage, message(EXEC_NOT_MEET_CONDITIONS_NODES)));
         return results;
       }
 
@@ -766,7 +780,8 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
       if (nodeIds.size() == 1) {
         Long nodeId = nodeIds.stream().findFirst().get();
-        startSingleNodeTask(null, execDb, execId, results, script, nodeId, remoteNodeIds, successNodeIds);
+        startSingleNodeTask(null, execDb, execId, results, script, nodeId, remoteNodeIds,
+            successNodeIds);
       } else {
         ExecutorService executorService = Executors.newFixedThreadPool(nodeIds.size());
         CountDownLatch latch = new CountDownLatch(nodeIds.size());
@@ -782,7 +797,8 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
           script = shardingScript(execDb, nodeIds.size(), i == 0);
           String finalScript = script;
           executorService.submit(() -> {
-            startSingleNodeTask(latch, execDb, execId, results, finalScript, nodeId, remoteNodeIds, successNodeIds);
+            startSingleNodeTask(latch, execDb, execId, results, finalScript, nodeId, remoteNodeIds,
+                successNodeIds);
           });
         }
         latch.await();
@@ -818,7 +834,8 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
               }
 
               String remoteStartUrl = "http://" + inst.getInstanceId() + EXEC_START_ENDPOINT;
-              List<RunnerRunVo> remoteResults = broadcastRun2RemoteCtrl(remoteRunCmd, remoteStartUrl);
+              List<RunnerRunVo> remoteResults = broadcastRun2RemoteCtrl(remoteRunCmd,
+                  remoteStartUrl);
               if (isNotEmpty(remoteResults)) {
                 results.addAll(remoteResults);
                 for (RunnerRunVo result0 : remoteResults) {
@@ -829,15 +846,19 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
               }
             }
             if (isEmpty(successNodeIds)) {
-              results.addAll(remoteNodeIds.stream().map(x -> RunnerRunVo.fail(execId, x, message(EXEC_AGENT_ROUTER_NOT_FOUND))).toList());
+              results.addAll(remoteNodeIds.stream()
+                  .map(x -> RunnerRunVo.fail(execId, x, message(EXEC_AGENT_ROUTER_NOT_FOUND)))
+                  .toList());
             }
           } else {
-            String message = message(EXEC_CONTROLLER_INSTANCE_NOT_FOUND_T, new Object[]{getStringJoiner(remoteNodeIds).toString()});
+            String message = message(EXEC_CONTROLLER_INSTANCE_NOT_FOUND_T,
+                new Object[]{getStringJoiner(remoteNodeIds).toString()});
             log.error(message);
             results.add(RunnerRunVo.fail(execId, message));
           }
         } else {
-          String message = message(EXEC_REMOTE_CONTROLLER_IGNORED_T, new Object[]{getStringJoiner(remoteNodeIds).toString()});
+          String message = message(EXEC_REMOTE_CONTROLLER_IGNORED_T,
+              new Object[]{getStringJoiner(remoteNodeIds).toString()});
           log.error(message);
           results.add(RunnerRunVo.fail(execId, message));
         }
@@ -859,9 +880,10 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * Stop execution by DTO.
    * </p>
    * <p>
-   * Checks existence, permission, and stops execution on selected nodes.
-   * Handles both broadcast and targeted node stopping modes.
+   * Checks existence, permission, and stops execution on selected nodes. Handles both broadcast and
+   * targeted node stopping modes.
    * </p>
+   *
    * @param dto Execution stop DTO containing execution ID and node selection
    * @return List of stop results from all nodes
    */
@@ -925,7 +947,8 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     // Select and check available nodes, Note:
     LinkedHashSet<Long> nodeIds = new LinkedHashSet<>();
     if (dto.isBroadcast()) {
-      Set<Long> execNodeIds = execNodeRepo.findByExecId(execDb.getId()).stream().map(ExecNode::getNodeId).collect(Collectors.toSet());
+      Set<Long> execNodeIds = execNodeRepo.findByExecId(execDb.getId()).stream()
+          .map(ExecNode::getNodeId).collect(Collectors.toSet());
       if (isNotEmpty(execNodeIds)) {
         nodeIds.addAll(execNodeIds);
       } else {
@@ -958,11 +981,13 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
           results.add(result0);
           if (result0.isSuccess()) {
             if (!Objects.equals(nodeId, result0.getDeviceId())) {
-              log.error("The scheduling node `{}` and execution node `{}` are inconsistent", nodeId, result0.getDeviceId());
+              log.error("The scheduling node `{}` and execution node `{}` are inconsistent", nodeId,
+                  result0.getDeviceId());
             }
           }
         } catch (Exception e) {
-          String message = message(EXEC_CONTROLLER_STOP_EXCEPTION, new Object[]{isLocalRouter, getMessage(e)});
+          String message = message(EXEC_CONTROLLER_STOP_EXCEPTION,
+              new Object[]{isLocalRouter, getMessage(e)});
           log.error(message);
           results.add(RunnerStopVo.fail(execId, nodeId, message));
         }
@@ -996,7 +1021,8 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
               continue;
             }
             String remoteStartUrl = "http://" + inst.getInstanceId() + EXEC_STOP_ENDPOINT;
-            List<RunnerStopVo> remoteResults = broadcastStop2RemoteCtrl(remoteRunCmd, remoteStartUrl);
+            List<RunnerStopVo> remoteResults = broadcastStop2RemoteCtrl(remoteRunCmd,
+                remoteStartUrl);
             if (isNotEmpty(remoteResults)) {
               results.addAll(remoteResults);
               for (RunnerStopVo result0 : remoteResults) {
@@ -1007,15 +1033,19 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
             }
           }
           if (isEmpty(successNodeIds)) {
-            results.addAll(remoteNodeIds.stream().map(x -> RunnerStopVo.fail(execId, x, message(EXEC_AGENT_ROUTER_NOT_FOUND))).toList());
+            results.addAll(remoteNodeIds.stream()
+                .map(x -> RunnerStopVo.fail(execId, x, message(EXEC_AGENT_ROUTER_NOT_FOUND)))
+                .toList());
           }
         } else {
-          String message = message(EXEC_CONTROLLER_INSTANCE_NOT_FOUND_T, new Object[]{getStringJoiner(remoteNodeIds).toString()});
+          String message = message(EXEC_CONTROLLER_INSTANCE_NOT_FOUND_T,
+              new Object[]{getStringJoiner(remoteNodeIds).toString()});
           log.error(message);
           results.add(RunnerStopVo.fail(execId, message));
         }
       } else {
-        String message = message(EXEC_REMOTE_CONTROLLER_IGNORED_T, new Object[]{getStringJoiner(remoteNodeIds).toString()});
+        String message = message(EXEC_REMOTE_CONTROLLER_IGNORED_T,
+            new Object[]{getStringJoiner(remoteNodeIds).toString()});
         log.error(message);
         results.add(RunnerStopVo.fail(execId, message));
       }
@@ -1028,7 +1058,8 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       if (allSuccess) {
         execRepo.updateStoppedStatusById(execDb.getId(), now(), getUserId());
       } else {
-        execRepo.updateStatusById(execDb.getId(), ExecStatus.RUNNING.getValue(), getUserId(), now());
+        execRepo.updateStatusById(execDb.getId(), ExecStatus.RUNNING.getValue(), getUserId(),
+            now());
       }
     }
 
@@ -1044,9 +1075,10 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * Delete executions by IDs.
    * </p>
    * <p>
-   * Checks existence, permission, stops running executions, and deletes records.
-   * Handles distributed locking to prevent deletion of actively running executions.
+   * Checks existence, permission, stops running executions, and deletes records. Handles
+   * distributed locking to prevent deletion of actively running executions.
    * </p>
+   *
    * @param ids Set of execution IDs to delete
    */
   @Override
@@ -1107,16 +1139,17 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * Start execution on a single node.
    * </p>
    * <p>
-   * Handles local and remote node communication, sends execution commands to agents,
-   * and manages execution results collection.
+   * Handles local and remote node communication, sends execution commands to agents, and manages
+   * execution results collection.
    * </p>
-   * @param latch CountDownLatch for synchronization (null for single node)
-   * @param execDb Execution entity
-   * @param execId Execution ID as string
-   * @param results List to collect execution results
-   * @param script Script content to execute
-   * @param nodeId Target node ID
-   * @param remoteNodeIds Set to collect remote node IDs
+   *
+   * @param latch          CountDownLatch for synchronization (null for single node)
+   * @param execDb         Execution entity
+   * @param execId         Execution ID as string
+   * @param results        List to collect execution results
+   * @param script         Script content to execute
+   * @param nodeId         Target node ID
+   * @param remoteNodeIds  Set to collect remote node IDs
    * @param successNodeIds Set to collect successful node IDs
    */
   private void startSingleNodeTask(CountDownLatch latch, Exec execDb, String execId,
@@ -1330,9 +1363,10 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * Select nodes based on execution strategy.
    * </p>
    * <p>
-   * Applies node selection strategy, validates node availability, and ensures
-   * selected nodes are live and accessible.
+   * Applies node selection strategy, validates node availability, and ensures selected nodes are
+   * live and accessible.
    * </p>
+   *
    * @param execDb Execution entity containing node selection configuration
    * @return List of selected node IDs
    */
@@ -1372,12 +1406,13 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * Create sharded script for multi-node execution.
    * </p>
    * <p>
-   * Distributes thread count and iterations across multiple nodes for load balancing.
-   * The first node receives any remainder to ensure complete distribution.
+   * Distributes thread count and iterations across multiple nodes for load balancing. The first
+   * node receives any remainder to ensure complete distribution.
    * </p>
-   * @param execDb Execution entity
+   *
+   * @param execDb   Execution entity
    * @param nodeSize Total number of nodes
-   * @param isFirst Whether this is the first node
+   * @param isFirst  Whether this is the first node
    * @return Sharded script content
    */
   private String shardingScript(Exec execDb, int nodeSize, boolean isFirst) {
@@ -1414,6 +1449,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
   /**
    * Get the repository for Exec entity.
    * <p>
+   *
    * @return the ExecRepo instance
    */
   @Override

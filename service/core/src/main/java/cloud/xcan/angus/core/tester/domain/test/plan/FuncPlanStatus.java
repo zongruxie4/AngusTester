@@ -36,11 +36,11 @@ public enum FuncPlanStatus implements EnumMessage<String> {
     return this.equals(COMPLETED);
   }
 
-  public boolean isStarted(){
+  public boolean isStarted() {
     return !this.equals(PENDING);
   }
 
-  public boolean isSupportInReview(){
+  public boolean isSupportInReview() {
     return this.equals(PENDING) || this.equals(COMPLETED) || this.equals(IN_PROGRESS);
   }
 }

@@ -24,7 +24,8 @@ import org.springframework.data.domain.PageRequest;
  * Implementation of ScenarioFollowQuery for scenario follow management and query operations.
  * </p>
  * <p>
- * Provides methods for listing user's followed scenarios, counting follows, and setting scenario information.
+ * Provides methods for listing user's followed scenarios, counting follows, and setting scenario
+ * information.
  * </p>
  */
 @Biz
@@ -42,9 +43,10 @@ public class ScenarioFollowQueryImpl implements ScenarioFollowQuery {
    * <p>
    * Sets scenario name and plugin information for each followed item.
    * </p>
+   *
    * @param projectId Project ID for filtering
-   * @param name Optional scenario name filter
-   * @param pageable Pagination information
+   * @param name      Optional scenario name filter
+   * @param pageable  Pagination information
    * @return Page of followed scenarios
    */
   @Override
@@ -67,9 +69,10 @@ public class ScenarioFollowQueryImpl implements ScenarioFollowQuery {
    * Count the number of followed scenarios for the current user.
    * </p>
    * <p>
-   * If projectId is provided, counts follows within that project only.
-   * Otherwise, counts all follows for the user.
+   * If projectId is provided, counts follows within that project only. Otherwise, counts all
+   * follows for the user.
    * </p>
+   *
    * @param projectId Optional project ID for filtering
    * @return Number of followed scenarios
    */
@@ -92,6 +95,7 @@ public class ScenarioFollowQueryImpl implements ScenarioFollowQuery {
    * <p>
    * Batch retrieves scenario information to avoid N+1 query problems.
    * </p>
+   *
    * @param follows List of followed scenarios to update
    */
   public void setScenarioInfo(List<ScenarioFollow> follows) {

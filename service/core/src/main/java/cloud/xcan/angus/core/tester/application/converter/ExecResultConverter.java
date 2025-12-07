@@ -42,16 +42,16 @@ public class ExecResultConverter {
   public static List<TestCaseResultInfo> assembleCaseResultInfo(
       Exec execDb, List<ExecTestCaseResult> caseResults) {
     return isEmpty(caseResults) ? null : caseResults.stream().map(
-        x -> new TestCaseResultInfo()
-            .setCaseId(x.getCaseId())
-            .setPassed(x.getPassed())
-            .setFailureMessage(x.getFailureMessage())
-            .setTestNum(x.getTestNum())
-            .setTestFailureNum(x.getTestFailureNum())
-            .setExecId(execDb.getId())
-            .setExecName(execDb.getName())
-            .setLastExecDate(execDb.getEndDate())
-            .setExecBy(x.getExecBy()))
+            x -> new TestCaseResultInfo()
+                .setCaseId(x.getCaseId())
+                .setPassed(x.getPassed())
+                .setFailureMessage(x.getFailureMessage())
+                .setTestNum(x.getTestNum())
+                .setTestFailureNum(x.getTestFailureNum())
+                .setExecId(execDb.getId())
+                .setExecName(execDb.getName())
+                .setLastExecDate(execDb.getEndDate())
+                .setExecBy(x.getExecBy()))
         .toList();
   }
 

@@ -107,7 +107,7 @@ public class NodeMetricsFacadeImpl implements NodeMetricsFacade {
   @Override
   public List<NodeDiskInfoVo> diskInfo(Long id) {
     Map<String, DiskUsage> diskUsageMap = diskUsageQuery.diskInfo(id);
-    return isEmpty(diskUsageMap) ? null: diskUsageMap.entrySet().stream()
+    return isEmpty(diskUsageMap) ? null : diskUsageMap.entrySet().stream()
         .map(o -> new NodeDiskInfoVo().setDeviceName(o.getKey())
             .setDiskUsage(nonNull(o.getValue()) ? toDiskValue(o.getValue()) : null))
         .toList();
@@ -137,7 +137,7 @@ public class NodeMetricsFacadeImpl implements NodeMetricsFacade {
   @Override
   public List<ModeNetworkInfoVo> networkInfo(Long id) {
     Map<String, NetUsage> netUsageMap = networkUsageQuery.networkInfo(id);
-    return isEmpty(netUsageMap) ? null: netUsageMap.entrySet().stream()
+    return isEmpty(netUsageMap) ? null : netUsageMap.entrySet().stream()
         .map(o -> new ModeNetworkInfoVo().setDeviceName(o.getKey())
             .setNetworkUsage(nonNull(o.getValue()) ? toNetworkValue(o.getValue()) : null)
         ).toList();

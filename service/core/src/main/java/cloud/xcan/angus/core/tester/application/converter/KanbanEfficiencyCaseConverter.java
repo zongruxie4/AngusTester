@@ -210,7 +210,8 @@ public class KanbanEfficiencyCaseConverter {
     return count;
   }
 
-  private static void assembleReviewEfficiencyOverview0(List<? extends FuncCaseEfficiencySummary> cases,
+  private static void assembleReviewEfficiencyOverview0(
+      List<? extends FuncCaseEfficiencySummary> cases,
       ReviewEfficiencyCountBase totalOverview) {
     totalOverview.setPassedReviewNum(
         cases.stream().filter(x -> nonNull(x.getReviewStatus()) && x.getReviewStatus().isPassed())

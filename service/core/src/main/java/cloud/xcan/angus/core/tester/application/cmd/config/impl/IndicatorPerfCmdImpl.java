@@ -104,7 +104,7 @@ public class IndicatorPerfCmdImpl extends CommCmd<IndicatorPerf, Long> implement
         perfDb = indicatorPerfQuery.find0(perf.getTargetId(), perf.getTargetType());
         // TODO 验证最大并发数是否满足授权限制(云服务版本查询购买商品并发配额，私有化读取许可文件)
 
-        if (nonNull(perfDb)){
+        if (nonNull(perfDb)) {
           target = (ActivityResource) commonQuery.checkAndGetIndicatorTarget(
               perfDb.getTargetType(), perfDb.getTargetId());
         }

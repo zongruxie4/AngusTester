@@ -75,7 +75,8 @@ public class TagRest {
 
   @Operation(summary = "Delete tags", operationId = "tag:delete", description = "Permanently remove multiple tags from the project classification system")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Tags deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Tags deleted successfully")})
   @DeleteMapping
   public void delete(
       @Parameter(name = "ids", description = "Tag identifiers for deletion", required = true)

@@ -40,9 +40,9 @@ import org.springframework.data.jpa.domain.JpaSort;
 /**
  * Implementation of ModuleQuery for managing module operations and data retrieval.
  * <p>
- * This class provides comprehensive functionality for querying and managing modules,
- * which represent organizational units within projects for test case and task management.
- * It handles module retrieval, validation, hierarchy management, and permission checking.
+ * This class provides comprehensive functionality for querying and managing modules, which
+ * represent organizational units within projects for test case and task management. It handles
+ * module retrieval, validation, hierarchy management, and permission checking.
  * <p>
  * Key features include:
  * <ul>
@@ -76,8 +76,8 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Retrieves detailed information for a specific module with permission validation.
    * <p>
-   * Fetches complete module details and validates edit permissions for the current user
-   * based on project membership and role assignments.
+   * Fetches complete module details and validates edit permissions for the current user based on
+   * project membership and role assignments.
    *
    * @param id the module ID to retrieve details for
    * @return Module object with complete details and permission flags
@@ -99,14 +99,14 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Retrieves a list of modules with comprehensive filtering and permission handling.
    * <p>
-   * Supports both regular search and full-text search with project member validation.
-   * Retrieves all parent modules for complete hierarchy context and sets edit permissions.
+   * Supports both regular search and full-text search with project member validation. Retrieves all
+   * parent modules for complete hierarchy context and sets edit permissions.
    * <p>
    * Note: The method currently returns an empty list due to incomplete implementation.
    *
-   * @param spec the search specification with criteria and filters
+   * @param spec           the search specification with criteria and filters
    * @param fullTextSearch whether to use full-text search capabilities
-   * @param match array of field names to include in full-text search
+   * @param match          array of field names to include in full-text search
    * @return List of Module objects with complete hierarchy and permission information
    */
   @Override
@@ -143,8 +143,8 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Validates that modules exist within a specific project and retrieves them.
    * <p>
-   * Performs existence validation for modules within the project scope and
-   * throws ResourceNotFound if any module is not found or belongs to a different project.
+   * Performs existence validation for modules within the project scope and throws ResourceNotFound
+   * if any module is not found or belongs to a different project.
    *
    * @param projectId the project ID for scope validation
    * @param moduleIds collection of module IDs to validate and retrieve
@@ -169,8 +169,8 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Validates that a module exists and retrieves it.
    * <p>
-   * Performs existence validation and throws ResourceNotFound if the module
-   * is not found in the system.
+   * Performs existence validation and throws ResourceNotFound if the module is not found in the
+   * system.
    *
    * @param id the module ID to validate and retrieve
    * @return Module object if found
@@ -184,8 +184,8 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Validates that multiple modules exist and retrieves them.
    * <p>
-   * Performs batch existence validation and throws ResourceNotFound if any module
-   * is not found in the system.
+   * Performs batch existence validation and throws ResourceNotFound if any module is not found in
+   * the system.
    *
    * @param ids collection of module IDs to validate and retrieve
    * @return List of Module objects for all found modules
@@ -209,8 +209,8 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Finds module IDs and all their sub-module IDs within a project.
    * <p>
-   * Retrieves the specified modules and all their descendants in the hierarchy,
-   * returning only the IDs for efficient processing.
+   * Retrieves the specified modules and all their descendants in the hierarchy, returning only the
+   * IDs for efficient processing.
    *
    * @param projectId the project ID for scope validation
    * @param moduleIds collection of module IDs to find sub-modules for
@@ -225,8 +225,8 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Finds modules and all their sub-modules within a project.
    * <p>
-   * Retrieves the specified modules and all their descendants in the hierarchy,
-   * traversing the complete module tree structure recursively.
+   * Retrieves the specified modules and all their descendants in the hierarchy, traversing the
+   * complete module tree structure recursively.
    *
    * @param projectId the project ID for scope validation
    * @param moduleIds collection of module IDs to find sub-modules for
@@ -259,8 +259,8 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Finds modules and all their parent modules in the hierarchy.
    * <p>
-   * Retrieves the specified modules and all their ancestors in the hierarchy,
-   * traversing up the module tree structure to build complete context.
+   * Retrieves the specified modules and all their ancestors in the hierarchy, traversing up the
+   * module tree structure to build complete context.
    *
    * @param modules collection of modules to find parents for
    * @return List of Module objects including the specified modules and all their parents
@@ -295,8 +295,8 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Finds all sub-modules of the specified modules within a project.
    * <p>
-   * Retrieves all descendants of the specified modules in the hierarchy,
-   * traversing down the module tree structure recursively.
+   * Retrieves all descendants of the specified modules in the hierarchy, traversing down the module
+   * tree structure recursively.
    *
    * @param projectId the project ID for scope validation
    * @param moduleIds collection of module IDs to find sub-modules for
@@ -324,8 +324,8 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Finds all sub-module IDs of the specified modules within a project.
    * <p>
-   * Retrieves all descendant IDs of the specified modules in the hierarchy,
-   * returning only the IDs for efficient processing.
+   * Retrieves all descendant IDs of the specified modules in the hierarchy, returning only the IDs
+   * for efficient processing.
    *
    * @param projectId the project ID for scope validation
    * @param moduleIds collection of module IDs to find sub-module IDs for
@@ -339,11 +339,11 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Validates that modules exist by name within a project and retrieves them.
    * <p>
-   * Performs existence validation for modules by name within the project scope and
-   * throws ResourceNotFound if any module name is not found.
+   * Performs existence validation for modules by name within the project scope and throws
+   * ResourceNotFound if any module name is not found.
    *
    * @param projectId the project ID for scope validation
-   * @param names set of module names to validate and retrieve
+   * @param names     set of module names to validate and retrieve
    * @return Map of module names to Module objects if all modules exist
    * @throws ResourceNotFound if any module name is not found
    */
@@ -373,11 +373,11 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Validates that module names do not already exist within a project.
    * <p>
-   * Checks for name uniqueness within the specified project to prevent
-   * duplicate module names during creation operations.
+   * Checks for name uniqueness within the specified project to prevent duplicate module names
+   * during creation operations.
    *
    * @param projectId the project ID for scope validation
-   * @param names set of module names to validate
+   * @param names     set of module names to validate
    * @throws ResourceExisted if any module name already exists
    */
   @Override
@@ -391,11 +391,11 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Validates that module names do not conflict during update operations.
    * <p>
-   * Checks for name uniqueness within the specified project, excluding
-   * the current modules being updated to allow name preservation.
+   * Checks for name uniqueness within the specified project, excluding the current modules being
+   * updated to allow name preservation.
    *
    * @param projectId the project ID for scope validation
-   * @param modules collection of modules to validate names for
+   * @param modules   collection of modules to validate names for
    * @throws ResourceExisted if any module name conflicts with existing modules
    */
   @Override
@@ -418,11 +418,11 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Validates that module parent-child relationships do not create circular references.
    * <p>
-   * Ensures that setting a module's parent ID does not create a circular dependency
-   * where a module would become its own ancestor in the hierarchy.
+   * Ensures that setting a module's parent ID does not create a circular dependency where a module
+   * would become its own ancestor in the hierarchy.
    *
    * @param projectId the project ID for scope validation
-   * @param modules list of modules to validate parent-child relationships for
+   * @param modules   list of modules to validate parent-child relationships for
    * @throws ProtocolAssert.ProtocolException if a circular reference is detected
    */
   @Override
@@ -441,8 +441,8 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Validates that the module quota has not been exceeded.
    * <p>
-   * Checks the current module count against the tenant quota and validates
-   * that adding the specified number of modules would not exceed the limit.
+   * Checks the current module count against the tenant quota and validates that adding the
+   * specified number of modules would not exceed the limit.
    *
    * @param incr the number of modules to be added
    * @throws QuotaExceeded if the quota limit would be exceeded
@@ -456,10 +456,10 @@ public class ModuleQueryImpl implements ModuleQuery {
   /**
    * Sets edit permissions for modules based on project-level permissions.
    * <p>
-   * Assigns edit permission flags to all modules based on the current user's
-   * edit permissions for the project, ensuring consistent permission handling.
+   * Assigns edit permission flags to all modules based on the current user's edit permissions for
+   * the project, ensuring consistent permission handling.
    *
-   * @param criteria search criteria containing project information
+   * @param criteria   search criteria containing project information
    * @param allModules list of modules to set edit permissions for
    */
   @Override

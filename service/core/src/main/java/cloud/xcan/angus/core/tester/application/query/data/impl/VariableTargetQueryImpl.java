@@ -85,7 +85,7 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
    * <p>This method retrieves all variables that are associated with the
    * specified target ID and type.</p>
    *
-   * @param targetId the target entity ID
+   * @param targetId   the target entity ID
    * @param targetType the target entity type
    * @return list of variables associated with the target
    */
@@ -109,7 +109,7 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
    * <p>This method retrieves variables for multiple targets, with special handling
    * for API cases that inherit variables from their associated APIs.</p>
    *
-   * @param targetIds collection of target IDs
+   * @param targetIds  collection of target IDs
    * @param targetType the target entity type
    * @param caseApiMap mapping of case IDs to API IDs for inheritance
    * @return map of target IDs to their associated variables
@@ -139,12 +139,12 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
                 List<VariableTarget> targets = apisVariableTargetMap.get(caseApiMap.get(caseId));
                 if (isNotEmpty(targets)) {
                   variableTargets.addAll(targets.stream().map(x -> {
-                        VariableTarget target = new VariableTarget();
-                        target.setTargetId(caseId);
-                        target.setTargetType(API_CASE);
-                        target.setVariableId(x.getVariableId());
-                        return target;
-                      }).toList());
+                    VariableTarget target = new VariableTarget();
+                    target.setTargetId(caseId);
+                    target.setTargetType(API_CASE);
+                    target.setVariableId(x.getVariableId());
+                    return target;
+                  }).toList());
                 }
               }
             }
@@ -211,7 +211,7 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
    * <p>This method retrieves variables associated with a target and generates
    * a preview of their values for validation and testing purposes.</p>
    *
-   * @param targetId the target entity ID
+   * @param targetId   the target entity ID
    * @param targetType the target entity type
    * @return map of variable names to preview values
    */
@@ -254,7 +254,7 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
    * <p>This method checks if the current user has modification permissions
    * for the specified target based on its type.</p>
    *
-   * @param targetId the target ID
+   * @param targetId   the target ID
    * @param targetType the target type
    * @throws BizException if the user lacks modification permissions
    */
@@ -274,8 +274,8 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
    * <p>This method checks if the target has sufficient quota to create
    * additional variable associations.</p>
    *
-   * @param inc the increment amount to check
-   * @param targetId the target ID
+   * @param inc        the increment amount to check
+   * @param targetId   the target ID
    * @param targetType the target type
    * @throws QuotaException if the quota limit would be exceeded
    */

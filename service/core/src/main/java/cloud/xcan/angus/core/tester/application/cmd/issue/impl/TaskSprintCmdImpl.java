@@ -310,8 +310,8 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
    * Ends a sprint with comprehensive validation.
    *
    * <p>This method changes a sprint status to COMPLETED after verifying
-   * the current status allows ending, user has modification permissions,
-   * and all tasks are completed.</p>
+   * the current status allows ending, user has modification permissions, and all tasks are
+   * completed.</p>
    *
    * <p>The method logs sprint status update activities for audit purposes.</p>
    *
@@ -438,7 +438,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
    * <p>The method updates project associations and logs sprint movement
    * activities for audit purposes.</p>
    *
-   * @param id the sprint ID to move
+   * @param id              the sprint ID to move
    * @param targetProjectId the target project ID
    * @throws IllegalArgumentException if validation fails
    */
@@ -497,8 +497,8 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
    * Restarts tasks within sprints with comprehensive cleanup and status reset.
    *
    * <p>This method restarts all tasks within the specified sprints, clearing
-   * historical test statistics and status. It also restarts completed sprints
-   * to pending status.</p>
+   * historical test statistics and status. It also restarts completed sprints to pending
+   * status.</p>
    *
    * <p>The method logs task restart activities for audit purposes.</p>
    *
@@ -536,8 +536,8 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
    * Reopens tasks within sprints without clearing historical data.
    *
    * <p>This method reopens all tasks within the specified sprints without
-   * clearing historical test statistics and status. It also reopens completed
-   * sprints to pending status.</p>
+   * clearing historical test statistics and status. It also reopens completed sprints to pending
+   * status.</p>
    *
    * <p>The method logs task reopen activities for audit purposes.</p>
    *
@@ -575,8 +575,8 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
    * Deletes a sprint with logical deletion and cleanup.
    *
    * <p>This method performs logical deletion of a sprint after verifying
-   * user has deletion permissions. It moves the sprint to trash and
-   * updates associated task deletion status.</p>
+   * user has deletion permissions. It moves the sprint to trash and updates associated task
+   * deletion status.</p>
    *
    * <p>The method logs sprint deletion activities for audit purposes.</p>
    *

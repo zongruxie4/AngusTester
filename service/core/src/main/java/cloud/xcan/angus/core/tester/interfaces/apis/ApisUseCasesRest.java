@@ -51,7 +51,7 @@ public class ApisUseCasesRest {
   @Resource
   private ApisCaseFacade apisCaseFacade;
 
-  @Operation(summary = "Create API functional test cases", 
+  @Operation(summary = "Create API functional test cases",
       description = "Create new API functional test cases with comprehensive configuration and validation",
       operationId = "apis:case:add")
   @ApiResponses(value = {
@@ -63,7 +63,7 @@ public class ApisUseCasesRest {
     return ApiLocaleResult.success(apisCaseFacade.add(dto));
   }
 
-  @Operation(summary = "Update API functional test cases", 
+  @Operation(summary = "Update API functional test cases",
       description = "Update existing API functional test cases with comprehensive configuration and validation",
       operationId = "apis:case:update")
   @ApiResponses(value = {
@@ -77,7 +77,7 @@ public class ApisUseCasesRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace API functional test cases", 
+  @Operation(summary = "Replace API functional test cases",
       description = "Replace existing API functional test cases with complete new configuration and validation",
       operationId = "apis:case:replace")
   @ApiResponses(value = {
@@ -89,7 +89,7 @@ public class ApisUseCasesRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Rename API functional test case", 
+  @Operation(summary = "Rename API functional test case",
       description = "Update API functional test case name with comprehensive validation and metadata management",
       operationId = "apis:case:name:replace")
   @ApiResponses(value = {
@@ -104,7 +104,7 @@ public class ApisUseCasesRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Enable or disable functional test cases", 
+  @Operation(summary = "Enable or disable functional test cases",
       description = "Toggle functional test case status with comprehensive lifecycle management and validation",
       operationId = "func:case:enabled")
   @ApiResponses(value = {
@@ -119,7 +119,7 @@ public class ApisUseCasesRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Sync functional test cases to script", 
+  @Operation(summary = "Sync functional test cases to script",
       description = "Force synchronize functional test cases to script with comprehensive validation and automation",
       operationId = "func:case:script:sync")
   @ApiResponses(value = {
@@ -133,7 +133,7 @@ public class ApisUseCasesRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Clone API functional test cases", 
+  @Operation(summary = "Clone API functional test cases",
       description = "Create copies of API functional test cases with all configuration and metadata",
       operationId = "apis:case:clone")
   @ApiResponses(value = {
@@ -146,7 +146,7 @@ public class ApisUseCasesRest {
     return ApiLocaleResult.success(apisCaseFacade.clone(ids));
   }
 
-  @Operation(summary = "Delete API functional test cases", 
+  @Operation(summary = "Delete API functional test cases",
       description = "Remove API functional test cases from the system with batch operation support and comprehensive cleanup",
       operationId = "apis:case:delete")
   @ApiResponses(value = {
@@ -158,7 +158,7 @@ public class ApisUseCasesRest {
     apisCaseFacade.delete(ids);
   }
 
-  @Operation(summary = "Get API functional test case details", 
+  @Operation(summary = "Get API functional test case details",
       description = "Retrieve comprehensive API functional test case details including configuration and metadata",
       operationId = "apis:case:detail")
   @ApiResponses(value = {
@@ -170,7 +170,7 @@ public class ApisUseCasesRest {
     return ApiLocaleResult.success(apisCaseFacade.detail(id));
   }
 
-  @Operation(summary = "Query API functional test cases list", 
+  @Operation(summary = "Query API functional test cases list",
       description = "Retrieve paginated list of API functional test cases with comprehensive filtering and search options",
       operationId = "apis:case:list")
   @ApiResponses(value = {

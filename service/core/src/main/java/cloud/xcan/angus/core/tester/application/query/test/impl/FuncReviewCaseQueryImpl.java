@@ -30,9 +30,9 @@ import org.springframework.data.domain.PageRequest;
 /**
  * Implementation of FuncReviewCaseQuery for managing functional test case review queries.
  * <p>
- * This class provides comprehensive functionality for querying, validating, and managing
- * functional test case reviews. It handles review case retrieval, validation, and
- * case information enrichment.
+ * This class provides comprehensive functionality for querying, validating, and managing functional
+ * test case reviews. It handles review case retrieval, validation, and case information
+ * enrichment.
  * <p>
  * Key features include:
  * <ul>
@@ -64,8 +64,8 @@ public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
    * <p>
    * Fetches the review case by ID and validates its existence.
    * <p>
-   * Uses BizTemplate pattern for consistent business logic execution with
-   * parameter validation and error handling.
+   * Uses BizTemplate pattern for consistent business logic execution with parameter validation and
+   * error handling.
    *
    * @param id the review case ID to retrieve details for
    * @return FuncReviewCase object with complete details
@@ -91,15 +91,15 @@ public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
   /**
    * Retrieves a paginated list of functional test case reviews.
    * <p>
-   * Supports both regular search and full-text search with comprehensive filtering.
-   * Enriches results with case information and filters for latest reviews only.
+   * Supports both regular search and full-text search with comprehensive filtering. Enriches
+   * results with case information and filters for latest reviews only.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param spec the search specification with criteria and filters
-   * @param pageable pagination parameters (page, size, sort)
+   * @param spec           the search specification with criteria and filters
+   * @param pageable       pagination parameters (page, size, sort)
    * @param fullTextSearch whether to use full-text search capabilities
-   * @param match full-text search match parameters
+   * @param match          full-text search match parameters
    * @return Page of FuncReviewCase objects with enriched case information
    */
   @Override
@@ -128,12 +128,12 @@ public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
   /**
    * Validates that cases can be added to a functional test review.
    * <p>
-   * Performs comprehensive validation including case review status, duplicate prevention,
-   * and case eligibility checks. Ensures data integrity and prevents review conflicts.
+   * Performs comprehensive validation including case review status, duplicate prevention, and case
+   * eligibility checks. Ensures data integrity and prevents review conflicts.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param reviewDb the review object to validate cases for
+   * @param reviewDb    the review object to validate cases for
    * @param funcCasesDb list of cases to validate for review inclusion
    * @throws ProtocolException if cases are not eligible for review or have duplicate reviews
    */

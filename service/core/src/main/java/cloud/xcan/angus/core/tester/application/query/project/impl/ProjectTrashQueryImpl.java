@@ -27,7 +27,8 @@ import org.springframework.data.domain.PageRequest;
  * Implementation of ProjectTrashQuery for project trash management and query operations.
  * </p>
  * <p>
- * Provides methods for listing deleted projects, counting trash items, and validating trash operation permissions.
+ * Provides methods for listing deleted projects, counting trash items, and validating trash
+ * operation permissions.
  * </p>
  */
 @Biz
@@ -44,6 +45,7 @@ public class ProjectTrashQueryImpl implements ProjectTrashQuery {
    * <p>
    * Count the total number of projects in trash.
    * </p>
+   *
    * @return Number of projects in trash
    */
   @Override
@@ -64,10 +66,11 @@ public class ProjectTrashQueryImpl implements ProjectTrashQuery {
    * <p>
    * Sets user name and avatar information for both created by and deleted by users.
    * </p>
-   * @param spec Project trash search specification
-   * @param pageable Pagination information
+   *
+   * @param spec           Project trash search specification
+   * @param pageable       Pagination information
    * @param fullTextSearch Whether to use full-text search
-   * @param match Full-text search keywords
+   * @param match          Full-text search keywords
    * @return Page of project trash items
    */
   @Override
@@ -98,9 +101,11 @@ public class ProjectTrashQueryImpl implements ProjectTrashQuery {
    * Find a project trash item for business operations with permission validation.
    * </p>
    * <p>
-   * Admins can perform any operation. Regular users can only perform operations on items they deleted.
+   * Admins can perform any operation. Regular users can only perform operations on items they
+   * deleted.
    * </p>
-   * @param id Project trash ID
+   *
+   * @param id  Project trash ID
    * @param biz Business operation type ("BACK" or "CLEAR")
    * @return Project trash entity
    */

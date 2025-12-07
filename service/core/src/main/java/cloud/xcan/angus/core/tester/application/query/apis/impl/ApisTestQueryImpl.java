@@ -28,13 +28,13 @@ import org.springframework.data.domain.Sort.Order;
 
 /**
  * Implementation of API test query operations for testing statistics and management.
- * 
+ *
  * <p>This class provides comprehensive functionality for querying and analyzing
  * API testing data, including test type validation, test statistics, and result counting.</p>
- * 
+ *
  * <p>It handles test type management, service and project test statistics,
  * and comprehensive test result analysis with proper data aggregation.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>Enabled test type discovery for APIs</li>
@@ -56,10 +56,10 @@ public class ApisTestQueryImpl implements ApisTestQuery {
 
   /**
    * Finds enabled test types for an API.
-   * 
+   *
    * <p>This method determines which test types are enabled for a specific API
    * based on the API's test configuration flags.</p>
-   * 
+   *
    * @param apisId the API ID to find enabled test types for
    * @return list of enabled test types for the API
    */
@@ -94,15 +94,15 @@ public class ApisTestQueryImpl implements ApisTestQuery {
 
   /**
    * Counts test APIs for a specific service with filtering criteria.
-   * 
+   *
    * <p>This method calculates test API statistics for a service based on
    * creator type, creator ID, and date range filters.</p>
-   * 
-   * @param serviceId the service ID to count test APIs for
+   *
+   * @param serviceId         the service ID to count test APIs for
    * @param creatorObjectType the type of creator object for filtering
-   * @param creatorObjectId the creator object ID for filtering
-   * @param createdDateStart the start date for filtering
-   * @param createdDateEnd the end date for filtering
+   * @param creatorObjectId   the creator object ID for filtering
+   * @param createdDateStart  the start date for filtering
+   * @param createdDateEnd    the end date for filtering
    * @return comprehensive test API count statistics for the service
    */
   @Override
@@ -129,15 +129,15 @@ public class ApisTestQueryImpl implements ApisTestQuery {
 
   /**
    * Counts test APIs for a specific project with filtering criteria.
-   * 
+   *
    * <p>This method calculates test API statistics for a project based on
    * creator type, creator ID, and date range filters.</p>
-   * 
-   * @param projectId the project ID to count test APIs for
+   *
+   * @param projectId         the project ID to count test APIs for
    * @param creatorObjectType the type of creator object for filtering
-   * @param creatorObjectId the creator object ID for filtering
-   * @param createdDateStart the start date for filtering
-   * @param createdDateEnd the end date for filtering
+   * @param creatorObjectId   the creator object ID for filtering
+   * @param createdDateStart  the start date for filtering
+   * @param createdDateEnd    the end date for filtering
    * @return comprehensive test API count statistics for the project
    */
   @Override
@@ -161,15 +161,15 @@ public class ApisTestQueryImpl implements ApisTestQuery {
 
   /**
    * Counts test results for APIs in a project with filtering criteria.
-   * 
+   *
    * <p>This method calculates test result statistics for APIs in a project based on
    * creator type, creator ID, and date range filters.</p>
-   * 
-   * @param projectId the project ID to count test results for
+   *
+   * @param projectId         the project ID to count test results for
    * @param creatorObjectType the type of creator object for filtering
-   * @param creatorObjectId the creator object ID for filtering
-   * @param createdDateStart the start date for filtering
-   * @param createdDateEnd the end date for filtering
+   * @param creatorObjectId   the creator object ID for filtering
+   * @param createdDateStart  the start date for filtering
+   * @param createdDateEnd    the end date for filtering
    * @return comprehensive test result count statistics for the project
    */
   @Override
@@ -193,15 +193,15 @@ public class ApisTestQueryImpl implements ApisTestQuery {
 
   /**
    * Retrieves API base information for a service with filtering criteria.
-   * 
+   *
    * <p>This method fetches API base information for a specific service
    * with optional filtering by creator and date range.</p>
-   * 
-   * @param serviceId the service ID to get APIs for
+   *
+   * @param serviceId         the service ID to get APIs for
    * @param creatorObjectType the type of creator object for filtering
-   * @param creatorObjectId the creator object ID for filtering
-   * @param createdDateStart the start date for filtering
-   * @param createdDateEnd the end date for filtering
+   * @param creatorObjectId   the creator object ID for filtering
+   * @param createdDateStart  the start date for filtering
+   * @param createdDateEnd    the end date for filtering
    * @return list of API base information for the service
    */
   private List<ApisBaseInfo> getServiceApisBaseInfos(Long serviceId,
@@ -221,15 +221,15 @@ public class ApisTestQueryImpl implements ApisTestQuery {
 
   /**
    * Retrieves API base information for a project with filtering criteria.
-   * 
+   *
    * <p>This method fetches API base information for a specific project
    * with optional filtering by creator and date range.</p>
-   * 
-   * @param projectId the project ID to get APIs for
+   *
+   * @param projectId         the project ID to get APIs for
    * @param creatorObjectType the type of creator object for filtering
-   * @param creatorObjectId the creator object ID for filtering
-   * @param createdDateStart the start date for filtering
-   * @param createdDateEnd the end date for filtering
+   * @param creatorObjectId   the creator object ID for filtering
+   * @param createdDateStart  the start date for filtering
+   * @param createdDateEnd    the end date for filtering
    * @return list of API base information for the project
    */
   private List<ApisBaseInfo> getProjectApisBaseInfos(Long projectId,

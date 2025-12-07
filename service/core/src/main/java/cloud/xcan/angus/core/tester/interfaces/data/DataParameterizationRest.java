@@ -32,7 +32,8 @@ public class DataParameterizationRest {
   public ApiLocaleResult<Map<String, String>> valuePreview(
       @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId,
       @Parameter(name = "targetType", description = "Target type, allowable values: API, API_CASE, SCENARIO ", required = true) @PathVariable("targetType") String targetType) {
-    return ApiLocaleResult.successData(dataParameterizationFacade.valuePreview(targetId, targetType));
+    return ApiLocaleResult.successData(
+        dataParameterizationFacade.valuePreview(targetId, targetType));
   }
 
 }

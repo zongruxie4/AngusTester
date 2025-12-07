@@ -41,8 +41,8 @@ import org.springframework.transaction.annotation.Transactional;
  * Handles permission checks, authorization validation, and activity logging.
  * </p>
  * <p>
- * Key features include authorization management, creator permission setup,
- * owner and tester authorization, and comprehensive activity tracking.
+ * Key features include authorization management, creator permission setup, owner and tester
+ * authorization, and comprehensive activity tracking.
  * </p>
  */
 @Biz
@@ -254,13 +254,13 @@ public class FuncPlanAuthCmdImpl extends CommCmd<FuncPlanAuth, Long> implements 
   @Override
   public void addOwnerAndTesterAuth(Long planId, Long ownerId, Set<Long> testerIds) {
     // Add owner auths
-    if (nonNull(ownerId)){
+    if (nonNull(ownerId)) {
       batchInsert(toFuncPlanAuths(Set.of(ownerId), planId, FuncPlanPermission.ALL, false));
     }
     // Add tester auths
     testerIds.remove(getUserId());
     testerIds.remove(ownerId);
-    if (isNotEmpty(testerIds)){
+    if (isNotEmpty(testerIds)) {
       batchInsert(toFuncPlanAuths(testerIds, planId, FuncPlanPermission.TESTER, false));
     }
   }

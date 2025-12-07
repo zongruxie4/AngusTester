@@ -161,11 +161,13 @@ public class ExecSampleFacadeImpl implements ExecSampleFacade {
 
   @Override
   public PageResult<ExecSampleContent> extContentList(Long id, ExecSampleExtcFindDto dto) {
-    GenericSpecification<cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContent> spec = getSampleExtcSpecification(dto);
+    GenericSpecification<cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContent> spec = getSampleExtcSpecification(
+        dto);
     SearchCriteria criteria = findFirst(spec.getCriteria(), "extField");
     boolean isSampleResultQuery = nonNull(criteria)
         && EXT_KEY_SAMPLE_RESULT_CONTENT.equals(criteria.getValue().toString());
-    Page<cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContent> page = execSampleExtcQuery.list(id, spec, dto.tranPage());
+    Page<cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContent> page = execSampleExtcQuery.list(
+        id, spec, dto.tranPage());
     return buildVoPageResult(page, isSampleResultQuery
         ? ExecSampleConverter::toExecSampleContentInfo : ExecSampleAssembler::toExecSampleExtcVo);
   }

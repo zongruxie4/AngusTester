@@ -11,8 +11,7 @@ import lombok.experimental.Accessors;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * DTO for template import operation.
- * Supports single template import in Excel, CSV or JSON format.
+ * DTO for template import operation. Supports single template import in Excel, CSV or JSON format.
  */
 @Getter
 @Setter

@@ -84,9 +84,9 @@ import java.util.stream.Collectors;
 /**
  * Implementation of KanbanDataAssetsQuery for managing data assets dashboard queries.
  * <p>
- * This class provides comprehensive functionality for querying and managing data assets
- * dashboard information, including growth trends, resource rankings, and time series analysis.
- * It handles multiple resource types and provides comprehensive statistical analysis.
+ * This class provides comprehensive functionality for querying and managing data assets dashboard
+ * information, including growth trends, resource rankings, and time series analysis. It handles
+ * multiple resource types and provides comprehensive statistical analysis.
  * <p>
  * Key features include:
  * <ul>
@@ -143,9 +143,9 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
   /**
    * Generates growth trend analysis for data assets across multiple categories.
    * <p>
-   * Provides comprehensive growth trend analysis for various resource types including
-   * functional resources, APIs, tasks, scenarios, scripts, mock services, and data assets.
-   * Supports time-based analysis with flexible date formatting based on project age.
+   * Provides comprehensive growth trend analysis for various resource types including functional
+   * resources, APIs, tasks, scenarios, scripts, mock services, and data assets. Supports time-based
+   * analysis with flexible date formatting based on project age.
    * <p>
    * Growth trend resource and label categories:
    * <ul>
@@ -161,11 +161,11 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
    * Uses BizTemplate pattern for consistent business logic execution.
    *
    * @param creatorObjectType the creator organization type for filtering
-   * @param creatorObjectId the creator organization ID for filtering
-   * @param projectId the project ID for filtering resources
-   * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
-   * @param category the data assets category to analyze
+   * @param creatorObjectId   the creator organization ID for filtering
+   * @param projectId         the project ID for filtering resources
+   * @param createdDateStart  start date for filtering
+   * @param createdDateEnd    end date for filtering
+   * @param category          the data assets category to analyze
    * @return Map of DataAssetsLabel to time series data for growth trend analysis
    */
   @Override
@@ -253,17 +253,17 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
   /**
    * Generates comprehensive resource ranking analysis for data assets.
    * <p>
-   * Provides detailed ranking analysis across multiple resource types including tasks,
-   * cases, APIs, scenarios, scripts, mock APIs, variables, and datasets. Calculates
-   * total contribution rankings and user information enrichment.
+   * Provides detailed ranking analysis across multiple resource types including tasks, cases, APIs,
+   * scenarios, scripts, mock APIs, variables, and datasets. Calculates total contribution rankings
+   * and user information enrichment.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
    * @param creatorObjectType the creator organization type for filtering
-   * @param creatorObjectId the creator organization ID for filtering
-   * @param projectId the project ID for filtering resources
-   * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
+   * @param creatorObjectId   the creator organization ID for filtering
+   * @param projectId         the project ID for filtering resources
+   * @param createdDateStart  start date for filtering
+   * @param createdDateEnd    end date for filtering
    * @return DataAssetsRanking object with comprehensive ranking analysis and user information
    */
   @Override
@@ -393,11 +393,11 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
    * <p>
    * Processes functional plans and cases to generate time series data for growth trend analysis.
    *
-   * @param createdDateStart start date for time series generation
-   * @param createdDateEnd end date for time series generation
-   * @param caseFilters filter criteria for case queries
-   * @param commonDeletedFilters filter criteria for deleted resources
-   * @param gt the growth trend map to populate
+   * @param createdDateStart       start date for time series generation
+   * @param createdDateEnd         end date for time series generation
+   * @param caseFilters            filter criteria for case queries
+   * @param commonDeletedFilters   filter criteria for deleted resources
+   * @param gt                     the growth trend map to populate
    * @param createLessThanOneMonth whether project is less than one month old
    */
   private void assembleFuncTimeSeries(LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
@@ -423,11 +423,11 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
    * <p>
    * Processes services and APIs to generate time series data for growth trend analysis.
    *
-   * @param createdDateStart start date for time series generation
-   * @param createdDateEnd end date for time series generation
-   * @param apisFilters filter criteria for API queries
-   * @param commonDeletedFilters filter criteria for deleted resources
-   * @param gt the growth trend map to populate
+   * @param createdDateStart       start date for time series generation
+   * @param createdDateEnd         end date for time series generation
+   * @param apisFilters            filter criteria for API queries
+   * @param commonDeletedFilters   filter criteria for deleted resources
+   * @param gt                     the growth trend map to populate
    * @param createLessThanOneMonth whether project is less than one month old
    */
   private void assembleApisTimeSeries(LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
@@ -454,11 +454,11 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
    * <p>
    * Processes sprints and tasks to generate time series data for growth trend analysis.
    *
-   * @param createdDateStart start date for time series generation
-   * @param createdDateEnd end date for time series generation
-   * @param taskFilters filter criteria for task queries
-   * @param commonDeletedFilters filter criteria for deleted resources
-   * @param gt the growth trend map to populate
+   * @param createdDateStart       start date for time series generation
+   * @param createdDateEnd         end date for time series generation
+   * @param taskFilters            filter criteria for task queries
+   * @param commonDeletedFilters   filter criteria for deleted resources
+   * @param gt                     the growth trend map to populate
    * @param createLessThanOneMonth whether project is less than one month old
    */
   private void assembleTaskTimeSeries(LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
@@ -484,10 +484,10 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
    * <p>
    * Processes scenarios by type to generate time series data for growth trend analysis.
    *
-   * @param createdDateStart start date for time series generation
-   * @param createdDateEnd end date for time series generation
-   * @param filters filter criteria for scenario queries
-   * @param gt the growth trend map to populate
+   * @param createdDateStart       start date for time series generation
+   * @param createdDateEnd         end date for time series generation
+   * @param filters                filter criteria for scenario queries
+   * @param gt                     the growth trend map to populate
    * @param createLessThanOneMonth whether project is less than one month old
    */
   private void assembleScenarioTimeSeries(LocalDateTime createdDateStart,
@@ -522,10 +522,10 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
    * <p>
    * Processes scripts by type to generate time series data for growth trend analysis.
    *
-   * @param createdDateStart start date for time series generation
-   * @param createdDateEnd end date for time series generation
-   * @param filters filter criteria for script queries
-   * @param gt the growth trend map to populate
+   * @param createdDateStart       start date for time series generation
+   * @param createdDateEnd         end date for time series generation
+   * @param filters                filter criteria for script queries
+   * @param gt                     the growth trend map to populate
    * @param createLessThanOneMonth whether project is less than one month old
    */
   private void assembleScriptTimeSeries(LocalDateTime createdDateStart,
@@ -560,10 +560,10 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
    * <p>
    * Processes mock services, APIs, responses, and pushback data to generate time series.
    *
-   * @param createdDateStart start date for time series generation
-   * @param createdDateEnd end date for time series generation
-   * @param filters filter criteria for mock queries
-   * @param gt the growth trend map to populate
+   * @param createdDateStart       start date for time series generation
+   * @param createdDateEnd         end date for time series generation
+   * @param filters                filter criteria for mock queries
+   * @param gt                     the growth trend map to populate
    * @param createLessThanOneMonth whether project is less than one month old
    */
   private void assembleMockTimeSeries(LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
@@ -602,10 +602,10 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
    * <p>
    * Processes variables, datasets, and datasources to generate time series data.
    *
-   * @param createdDateStart start date for time series generation
-   * @param createdDateEnd end date for time series generation
-   * @param filters filter criteria for data queries
-   * @param gt the growth trend map to populate
+   * @param createdDateStart       start date for time series generation
+   * @param createdDateEnd         end date for time series generation
+   * @param filters                filter criteria for data queries
+   * @param gt                     the growth trend map to populate
    * @param createLessThanOneMonth whether project is less than one month old
    */
   private void assembleDataTimeSeries(LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
@@ -633,17 +633,18 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
   /**
    * Generates time series data with appropriate date formatting.
    * <p>
-   * Determines the appropriate date format based on project age and time range,
-   * then generates time series data with proper grouping and counting.
+   * Determines the appropriate date format based on project age and time range, then generates time
+   * series data with proper grouping and counting.
    *
-   * @param startDate start date for time series generation
-   * @param endDate end date for time series generation
-   * @param timeSeries list of time series data points
+   * @param startDate              start date for time series generation
+   * @param endDate                end date for time series generation
+   * @param timeSeries             list of time series data points
    * @param createLessThanOneMonth whether project is less than one month old
    * @return List of DataAssetsTimeSeries objects with formatted time data
    */
   public static List<DataAssetsTimeSeries> getTimeSeries(LocalDateTime startDate,
-      LocalDateTime endDate, List<? extends IdAndCreatedDate> timeSeries, boolean createLessThanOneMonth) {
+      LocalDateTime endDate, List<? extends IdAndCreatedDate> timeSeries,
+      boolean createLessThanOneMonth) {
     LocalDateTime safeEndDate = nullSafe(endDate, now());
 
     // Determine date format based on project age and time range
@@ -664,11 +665,11 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
    * Groups time series data by formatted date and counts occurrences for each time period.
    *
    * @param timeSeries list of time series data points
-   * @param format date format string for grouping
+   * @param format     date format string for grouping
    * @return List of DataAssetsTimeSeries objects with grouped and counted data
    */
   public static List<DataAssetsTimeSeries> getTimeSeriesByFormat
-      (List<? extends IdAndCreatedDateBase<?>> timeSeries, String format) {
+  (List<? extends IdAndCreatedDateBase<?>> timeSeries, String format) {
     // Group time series data by formatted date
     Map<Object, ? extends List<? extends IdAndCreatedDateBase<?>>> timeGroup = timeSeries.stream()
         .collect(groupingBy(x -> format(asDate(x.getCreatedDate()), format),
@@ -689,17 +690,17 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
   /**
    * Retrieves user information for all users across multiple resource types.
    * <p>
-   * Collects user IDs from all resource count maps and retrieves user information
-   * with privacy protection (mobile and email removed).
+   * Collects user IDs from all resource count maps and retrieves user information with privacy
+   * protection (mobile and email removed).
    *
-   * @param taskCountMap task count map by user
-   * @param caseCountMap case count map by user
-   * @param apisCountMap API count map by user
-   * @param sceCountMap scenario count map by user
-   * @param scriptCountMap script count map by user
-   * @param mockApiCountMap mock API count map by user
+   * @param taskCountMap     task count map by user
+   * @param caseCountMap     case count map by user
+   * @param apisCountMap     API count map by user
+   * @param sceCountMap      scenario count map by user
+   * @param scriptCountMap   script count map by user
+   * @param mockApiCountMap  mock API count map by user
    * @param variableCountMap variable count map by user
-   * @param datasetCountMap dataset count map by user
+   * @param datasetCountMap  dataset count map by user
    * @return Map of user ID to UserInfo with privacy protection
    */
   private Map<Long, UserInfo> getAllUserBaseMap(Map<Long, Long> taskCountMap,

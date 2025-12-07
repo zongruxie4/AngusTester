@@ -125,7 +125,7 @@ public class ExecConverter {
       exec.setSingleTargetPipeline(isEmpty(pipelines) /* Single task pipeline name can be empty*/
           || pipelines.size() == 1);
     }
-    if (!isUserAction()){
+    if (!isUserAction()) {
       exec.setTenantId(script.getTenantId())
           .setCreatedBy(-1L).setCreatedDate(LocalDateTime.now())
           .setLastModifiedBy(-1L).setLastModifiedDate(LocalDateTime.now());
@@ -298,7 +298,7 @@ public class ExecConverter {
       if (needUpdateTestResult) {
         execDb.setUpdateTestResult(updateTestResult);
         // Update the test results again
-        if (updateTestResult && execDb.isSyncTestResult()){
+        if (updateTestResult && execDb.isSyncTestResult()) {
           execDb.setSyncTestResult(false);
         }
       } else {

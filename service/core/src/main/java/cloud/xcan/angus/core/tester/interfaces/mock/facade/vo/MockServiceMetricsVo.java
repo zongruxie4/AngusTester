@@ -20,13 +20,13 @@ public class MockServiceMetricsVo {
   /**
    * @see JvmMemory#toString()
    */
-  @Schema(description="Comma-separated mock service JVM sample value, format: bufferCount,bufferMemoryUsed,bufferTotalCapacity,memoryUsed,memoryCommitted,memoryMax")
+  @Schema(description = "Comma-separated mock service JVM sample value, format: bufferCount,bufferMemoryUsed,bufferTotalCapacity,memoryUsed,memoryCommitted,memoryMax")
   private String cvsJvm;
 
   /**
    * @see JvmProcessor#toString()
    */
-  @Schema(description="Comma-separated mock service processor sample value, format: cpuCount,sysUsage,processUsage")
+  @Schema(description = "Comma-separated mock service processor sample value, format: cpuCount,sysUsage,processUsage")
   private String cvsProcessor;
 
   public Date getTimestamp() {

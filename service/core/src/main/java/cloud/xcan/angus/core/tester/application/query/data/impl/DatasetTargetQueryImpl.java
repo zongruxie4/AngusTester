@@ -65,7 +65,7 @@ public class DatasetTargetQueryImpl implements DatasetTargetQuery {
    * <p>This method retrieves all datasets that are associated with the
    * specified target ID and type.</p>
    *
-   * @param targetId the target entity ID
+   * @param targetId   the target entity ID
    * @param targetType the target entity type
    * @return list of datasets associated with the target
    */
@@ -89,7 +89,7 @@ public class DatasetTargetQueryImpl implements DatasetTargetQuery {
    * <p>This method retrieves datasets for multiple targets, with special handling
    * for API cases that inherit datasets from their associated APIs.</p>
    *
-   * @param targetIds collection of target IDs
+   * @param targetIds  collection of target IDs
    * @param targetType the target entity type
    * @param caseApiMap mapping of case IDs to API IDs for inheritance
    * @return map of target IDs to their associated datasets
@@ -189,7 +189,7 @@ public class DatasetTargetQueryImpl implements DatasetTargetQuery {
    * <p>This method retrieves datasets associated with a target and generates
    * a preview of their values for validation and testing purposes.</p>
    *
-   * @param targetId the target entity ID
+   * @param targetId   the target entity ID
    * @param targetType the target entity type
    * @return map of parameter names to preview values
    */
@@ -213,8 +213,8 @@ public class DatasetTargetQueryImpl implements DatasetTargetQuery {
    * <p>This method checks if the target has sufficient quota to create
    * additional dataset associations.</p>
    *
-   * @param inc the increment amount to check
-   * @param targetId the target ID
+   * @param inc        the increment amount to check
+   * @param targetId   the target ID
    * @param targetType the target type
    * @throws QuotaException if the quota limit would be exceeded
    */

@@ -49,7 +49,8 @@ import org.springframework.transaction.annotation.Transactional;
  * </ul></p>
  */
 @Biz
-public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> implements TaskSprintAuthCmd {
+public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> implements
+    TaskSprintAuthCmd {
 
   @Resource
   private TaskRepo taskRepo;
@@ -172,7 +173,7 @@ public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> impleme
    * <p>The method logs authorization enable/disable activities for audit purposes.</p>
    *
    * @param sprintId the sprint ID to control authorization for
-   * @param enabled whether to enable authorization control
+   * @param enabled  whether to enable authorization control
    * @throws IllegalArgumentException if validation fails
    */
   @Transactional(rollbackFor = Exception.class)
@@ -260,7 +261,7 @@ public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> impleme
    * <p>This method creates creator-level permissions for specified users
    * on a sprint, enabling them to manage the sprint and its tasks.</p>
    *
-   * @param sprintId the sprint ID to add creator authorization for
+   * @param sprintId   the sprint ID to add creator authorization for
    * @param creatorIds the set of user IDs to grant creator permissions to
    */
   @Override

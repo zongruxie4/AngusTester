@@ -50,8 +50,8 @@ public class CommentCmdImpl extends CommCmd<Comment, Long> implements CommentCmd
   /**
    * Add a new comment to a task or functional case.
    * <p>
-   * Validates quota, target existence, and comment hierarchy. Inserts the comment, updates comment count,
-   * logs activity, and sends notification events.
+   * Validates quota, target existence, and comment hierarchy. Inserts the comment, updates comment
+   * count, logs activity, and sends notification events.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -103,7 +103,8 @@ public class CommentCmdImpl extends CommCmd<Comment, Long> implements CommentCmd
   /**
    * Delete a comment and all its sub-comments recursively.
    * <p>
-   * Validates permission, deletes the comment and its sub-comments, logs activity, and sends notification events.
+   * Validates permission, deletes the comment and its sub-comments, logs activity, and sends
+   * notification events.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -166,6 +167,7 @@ public class CommentCmdImpl extends CommCmd<Comment, Long> implements CommentCmd
   /**
    * Get the repository for Comment entity.
    * <p>
+   *
    * @return the CommentRepo instance
    */
   @Override

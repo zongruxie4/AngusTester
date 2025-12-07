@@ -18,7 +18,6 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.Type;
 
 
-
 @Entity
 @Table(name = "data_datasource")
 @Setter

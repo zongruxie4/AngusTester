@@ -21,7 +21,7 @@ import org.hibernate.validator.constraints.Length;
 public class DatasourceReplaceDto {
 
   //@NotNull
-  @Schema(description="Modify database id. Create a new database when the value is null")
+  @Schema(description = "Modify database id. Create a new database when the value is null")
   private Long id;
 
   @Schema(description = "Project id, required when creating a new dataset")

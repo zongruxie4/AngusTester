@@ -56,16 +56,16 @@ public class ScenarioMonitorHistoryCmdImpl extends CommCmd<ScenarioMonitorHistor
     ScenarioMonitorHistory history = new ScenarioMonitorHistory();
     history.setProjectId(monitor.getProjectId())
         .setMonitorId(monitor.getId()).setCreatedBy(getUserId());
-    
+
     try {
       // Execute the monitoring scenario using debug execution
       ExecDebug result = execDebugCmd.startByMonitor(true, null, monitor.getId(),
           monitor.getScenarioId(), monitor.getScriptId(), ScriptType.TEST_FUNCTIONALITY,
           null, new Arguments(), monitor.getServerSetting());
-      
+
       // Assemble execution results into history record
       assembleScenarioMonitorResultInfo(history, result);
-      
+
       try {
         // Retrieve execution logs from remote system
         readExecutionLogFromRemote(result, history);
@@ -79,7 +79,7 @@ public class ScenarioMonitorHistoryCmdImpl extends CommCmd<ScenarioMonitorHistor
       history.setStatus(ScenarioMonitorStatus.FAILURE)
           .setFailureMessage("Execution scenario monitoring exception: " + e.getMessage());
     }
-    
+
     // Save history record to database
     insert0(history);
 

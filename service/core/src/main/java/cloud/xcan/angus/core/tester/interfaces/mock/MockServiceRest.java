@@ -216,7 +216,8 @@ public class MockServiceRest {
   @Operation(summary = "Delete mock service association",
       description = "Remove association between mock service and API service for relationship management",
       operationId = "mock:service:association:delete")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Mock service association deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Mock service association deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}/association")
   public void assocDelete(
@@ -227,7 +228,8 @@ public class MockServiceRest {
   @Operation(summary = "Delete mock services",
       description = "Remove mock service definitions from system with cleanup and optional force deletion",
       operationId = "mock:service:delete")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Mock services deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Mock services deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void delete(

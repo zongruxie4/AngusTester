@@ -214,7 +214,7 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
    *
    * <p>The method logs version status update activities for audit purposes.</p>
    *
-   * @param id the version ID to update status for
+   * @param id     the version ID to update status for
    * @param status the new status to set
    * @throws IllegalArgumentException if validation fails
    */
@@ -262,7 +262,7 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
    * activities for audit purposes.</p>
    *
    * @param formId the source version ID to merge from
-   * @param toId the target version ID to merge into
+   * @param toId   the target version ID to merge into
    * @throws IllegalArgumentException if validation fails
    */
   @Transactional(rollbackOn = Exception.class)

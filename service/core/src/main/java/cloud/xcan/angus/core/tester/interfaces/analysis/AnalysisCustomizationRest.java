@@ -22,11 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Customized analysis definition and statistical implementation APIs.
  * <p>
- * Provides comprehensive support for querying analysis resource definitions and retrieving customized statistical information.
+ * Provides comprehensive support for querying analysis resource definitions and retrieving
+ * customized statistical information.
  * <p>
  * This component will be automatically deprecated after consolidation into other packages.
  */
-@Tag(name = "Analysis Customization", description = 
+@Tag(name = "Analysis Customization", description =
     "Customized Analysis Framework - Advanced analytics implementation APIs for querying supported analysis resource definitions and retrieving customized statistical information with flexible configuration options")
 @Validated
 @RestController
@@ -36,7 +37,7 @@ public class AnalysisCustomizationRest {
   @Resource
   private AnalysisCustomizationFacade analysisCustomizationFacade;
 
-  @Operation(summary = "Customized analysis definition query", 
+  @Operation(summary = "Customized analysis definition query",
       description = "Retrieve comprehensive definition information for supported analysis resources and query configurations",
       operationId = "analysis:customization:summary:definition")
   @ApiResponses(value = {
@@ -46,7 +47,7 @@ public class AnalysisCustomizationRest {
     return ApiLocaleResult.success(analysisCustomizationFacade.definitions());
   }
 
-  @Operation(summary = "Customized resource analysis", 
+  @Operation(summary = "Customized resource analysis",
       description = "Perform customized analysis on specific resources with flexible query parameters and statistical aggregation",
       operationId = "analysis:customization:summary")
   @ApiResponses(value = {
@@ -57,7 +58,7 @@ public class AnalysisCustomizationRest {
     return ApiLocaleResult.success(analysisCustomizationFacade.summary(dto));
   }
 
-  @Operation(summary = "Batch customized resource analysis", 
+  @Operation(summary = "Batch customized resource analysis",
       description = "Perform batch analysis on multiple resources with comprehensive statistical aggregation and result consolidation",
       operationId = "analysis:customization:summary:batch")
   @ApiResponses(value = {

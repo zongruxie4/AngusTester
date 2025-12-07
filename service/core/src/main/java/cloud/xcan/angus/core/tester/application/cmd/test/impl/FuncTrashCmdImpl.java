@@ -37,12 +37,12 @@ import org.springframework.transaction.annotation.Transactional;
  * Command implementation for managing functional trash operations.
  * </p>
  * <p>
- * Provides methods for adding, clearing, and restoring items from trash.
- * Handles trash lifecycle management, association cleanup, and activity logging.
+ * Provides methods for adding, clearing, and restoring items from trash. Handles trash lifecycle
+ * management, association cleanup, and activity logging.
  * </p>
  * <p>
- * Key features include trash management, item restoration, association cleanup,
- * and comprehensive activity tracking for audit purposes.
+ * Key features include trash management, item restoration, association cleanup, and comprehensive
+ * activity tracking for audit purposes.
  * </p>
  */
 @Biz
@@ -85,6 +85,7 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
    * Checks trash existence and permission. Permanently deletes the item and its associations.
    * Handles both case and plan trash items with appropriate cleanup.
    * </p>
+   *
    * @param id the trash item ID to clear
    */
   @Transactional(rollbackFor = Exception.class)

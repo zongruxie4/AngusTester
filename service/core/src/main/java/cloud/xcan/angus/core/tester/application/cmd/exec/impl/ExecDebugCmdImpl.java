@@ -89,14 +89,14 @@ import org.springframework.transaction.annotation.Transactional;
  * Command implementation for managing debug executions of test scripts.
  * </p>
  * <p>
- * Provides comprehensive debug execution management services including starting, monitoring,
- * and deleting debug executions. Handles permission checks, node selection, distributed
- * execution, and result aggregation. Supports debug execution from scripts, scenarios,
- * and monitors with server configuration overrides.
+ * Provides comprehensive debug execution management services including starting, monitoring, and
+ * deleting debug executions. Handles permission checks, node selection, distributed execution, and
+ * result aggregation. Supports debug execution from scripts, scenarios, and monitors with server
+ * configuration overrides.
  * </p>
  * <p>
- * Key features include single-node debug execution, remote controller communication,
- * script parsing and assembly, and comprehensive error handling with detailed status reporting.
+ * Key features include single-node debug execution, remote controller communication, script parsing
+ * and assembly, and comprehensive error handling with detailed status reporting.
  * </p>
  */
 @Slf4j
@@ -133,11 +133,12 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
    * Start a debug execution, either broadcast or targeted.
    * </p>
    * <p>
-   * Validates quotas, parses script, selects node, and manages execution lifecycle.
-   * Handles both local and remote node execution with comprehensive error handling.
+   * Validates quotas, parses script, selects node, and manages execution lifecycle. Handles both
+   * local and remote node execution with comprehensive error handling.
    * </p>
+   *
    * @param broadcast Whether to broadcast execution or target specific node
-   * @param debug Debug execution entity
+   * @param debug     Debug execution entity
    * @return Updated debug execution entity with results
    */
   @Override
@@ -209,7 +210,8 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
           }
 
           // Determine tenant ID for node communication
-          Long nodeTenantId = nodeQuery.isTrailNode(nodeId) ? OWNER_TENANT_ID : debugDb.getTenantId();
+          Long nodeTenantId =
+              nodeQuery.isTrailNode(nodeId) ? OWNER_TENANT_ID : debugDb.getTenantId();
 
           // Get local channel router for node communication
           ChannelRouter router = nodeInfoQuery.getLocalChannelRouter(nodeId, nodeTenantId);
@@ -247,7 +249,8 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
               }
 
               // Get service instances for remote communication
-              List<ServiceInstance> instances = discoveryClient.getInstances(appInfo.getArtifactId());
+              List<ServiceInstance> instances = discoveryClient.getInstances(
+                  appInfo.getArtifactId());
               if (isNotEmpty(instances)) {
                 String currentInstanceIp = appInfo.getInstanceId().split(":")[0];
 
@@ -272,7 +275,8 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
                   RunnerRunVo result0 = broadcastRun2RemoteCtrl(runCmd, remoteUrl);
                   if (nonNull(result0)) {
                     // Update execution status based on remote result
-                    debugDb.setStatus(result0.isSuccess() ? ExecStatus.COMPLETED : ExecStatus.FAILED)
+                    debugDb.setStatus(
+                            result0.isSuccess() ? ExecStatus.COMPLETED : ExecStatus.FAILED)
                         .setMessage(result0.getMessage())
                         .setSchedulingResult(result0);
                     debugDb.setSchedulingResult(result0);
@@ -284,21 +288,27 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
                 // Handle broadcast failure
                 if (!broadcastSuccess) {
                   String message = message(EXEC_AGENT_ROUTER_NOT_FOUND_T, new Object[]{nodeId});
-                  RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()), nodeId, message);
-                  debugDb.setStatus(ExecStatus.FAILED).setMessage(message).setSchedulingResult(result0);
+                  RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()), nodeId,
+                      message);
+                  debugDb.setStatus(ExecStatus.FAILED).setMessage(message)
+                      .setSchedulingResult(result0);
                 }
               } else {
                 // Handle no service instances available
-                String message = message(EXEC_CONTROLLER_INSTANCE_NOT_FOUND_T, new Object[]{nodeId});
+                String message = message(EXEC_CONTROLLER_INSTANCE_NOT_FOUND_T,
+                    new Object[]{nodeId});
                 log.error(message);
-                RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()), nodeId, message);
-                debugDb.setStatus(ExecStatus.FAILED).setMessage(message).setSchedulingResult(result0);
+                RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()), nodeId,
+                    message);
+                debugDb.setStatus(ExecStatus.FAILED).setMessage(message)
+                    .setSchedulingResult(result0);
               }
             } else {
               // Handle remote controller ignored for targeted mode
               String message = message(EXEC_REMOTE_CONTROLLER_IGNORED_T, new Object[]{nodeId});
               log.error(message);
-              RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()), nodeId, message);
+              RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()), nodeId,
+                  message);
               debugDb.setStatus(ExecStatus.FAILED).setMessage(message).setSchedulingResult(result0);
             }
           }
@@ -328,15 +338,16 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
    * Start a debug execution by script.
    * </p>
    * <p>
-   * Validates script existence, clears historical results, and delegates to start(boolean, ExecDebug).
-   * Handles script parsing and debug execution setup for script-based debugging.
+   * Validates script existence, clears historical results, and delegates to start(boolean,
+   * ExecDebug). Handles script parsing and debug execution setup for script-based debugging.
    * </p>
-   * @param broadcast Whether to broadcast execution or target specific node
-   * @param id Debug execution ID
-   * @param scriptId Script ID to debug
-   * @param scriptType Script type (optional override)
+   *
+   * @param broadcast     Whether to broadcast execution or target specific node
+   * @param id            Debug execution ID
+   * @param scriptId      Script ID to debug
+   * @param scriptType    Script type (optional override)
    * @param configuration Configuration (optional override)
-   * @param arguments Arguments (optional override)
+   * @param arguments     Arguments (optional override)
    * @return Debug execution entity with results
    */
   @Override
@@ -376,16 +387,17 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
    * Start a debug execution by scenario.
    * </p>
    * <p>
-   * Validates script existence, clears historical results, and delegates to start(boolean, ExecDebug).
-   * Handles script parsing and debug execution setup for scenario-based debugging.
+   * Validates script existence, clears historical results, and delegates to start(boolean,
+   * ExecDebug). Handles script parsing and debug execution setup for scenario-based debugging.
    * </p>
-   * @param broadcast Whether to broadcast execution or target specific node
-   * @param id Debug execution ID
-   * @param scenarioId Scenario ID
-   * @param scriptId Script ID to debug
-   * @param scriptType Script type (optional override)
+   *
+   * @param broadcast     Whether to broadcast execution or target specific node
+   * @param id            Debug execution ID
+   * @param scenarioId    Scenario ID
+   * @param scriptId      Script ID to debug
+   * @param scriptType    Script type (optional override)
    * @param configuration Configuration (optional override)
-   * @param arguments Arguments (optional override)
+   * @param arguments     Arguments (optional override)
    * @return Debug execution entity with results
    */
   @Override
@@ -425,18 +437,20 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
    * Start a debug execution by monitor.
    * </p>
    * <p>
-   * Validates script existence, clears historical results, and delegates to start(boolean, ExecDebug).
-   * Handles script parsing, server configuration overrides, and debug execution setup for monitor-based debugging.
+   * Validates script existence, clears historical results, and delegates to start(boolean,
+   * ExecDebug). Handles script parsing, server configuration overrides, and debug execution setup
+   * for monitor-based debugging.
    * </p>
-   * @param broadcast Whether to broadcast execution or target specific node
-   * @param id Debug execution ID
-   * @param monitorId Monitor ID
-   * @param scenarioId Scenario ID
-   * @param scriptId Script ID to debug
-   * @param scriptType Script type (optional override)
+   *
+   * @param broadcast     Whether to broadcast execution or target specific node
+   * @param id            Debug execution ID
+   * @param monitorId     Monitor ID
+   * @param scenarioId    Scenario ID
+   * @param scriptId      Script ID to debug
+   * @param scriptType    Script type (optional override)
    * @param configuration Configuration (optional override)
-   * @param arguments Arguments (optional override)
-   * @param servers Server configurations for HTTP overrides
+   * @param arguments     Arguments (optional override)
+   * @param servers       Server configurations for HTTP overrides
    * @return Debug execution entity with results
    */
   @Override
@@ -498,6 +512,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
    * <p>
    * Sets tenant and user information for non-user actions and inserts the debug execution.
    * </p>
+   *
    * @param debug Debug execution entity to add
    */
   @Transactional(rollbackFor = Exception.class)
@@ -517,7 +532,8 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
    * <p>
    * Removes debug executions and associated sample data for the specified script and source.
    * </p>
-   * @param source Debug execution source (SCRIPT, SCENARIO, MONITOR)
+   *
+   * @param source   Debug execution source (SCRIPT, SCENARIO, MONITOR)
    * @param scriptId Script ID
    */
   @Transactional(rollbackFor = Exception.class)
@@ -538,6 +554,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
    * <p>
    * Removes all sample data associated with the specified execution IDs.
    * </p>
+   *
    * @param execIds Collection of execution IDs
    */
   @Transactional(rollbackFor = Exception.class)
@@ -555,7 +572,8 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
    * <p>
    * Retrieves and sets node details for the debug execution.
    * </p>
-   * @param nodeId Node ID
+   *
+   * @param nodeId  Node ID
    * @param debugDb Debug execution entity
    */
   private void setExecNodeInfo(Long nodeId, ExecDebug debugDb) {
@@ -574,6 +592,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
    * <p>
    * Sends execution command to node agent and handles response.
    * </p>
+   *
    * @param runCmd Run command DTO
    * @param router Channel router for communication
    * @return Execution result from agent
@@ -602,7 +621,8 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
    * <p>
    * Sends debug start command to remote controller via HTTP and handles response.
    * </p>
-   * @param dto Debug start DTO
+   *
+   * @param dto       Debug start DTO
    * @param remoteUrl Remote controller URL
    * @return Execution result from remote controller
    */
@@ -639,8 +659,9 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
    * <p>
    * Applies node selection strategy to choose an appropriate node for execution.
    * </p>
+   *
    * @param nodeSelector Node selector configuration
-   * @param nodeNum Number of nodes to select
+   * @param nodeNum      Number of nodes to select
    * @return Selected node information
    */
   private NodeInfo selectNodeByStrategy(NodeSelector nodeSelector, int nodeNum) {
@@ -664,6 +685,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
    * <p>
    * Creates AngusScript object from debug execution configuration and task, then converts to YAML.
    * </p>
+   *
    * @param debug Debug execution entity
    * @return Assembled AngusScript object
    */
@@ -688,6 +710,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
    * <p>
    * Converts YAML string to AngusScript object with error handling.
    * </p>
+   *
    * @param content YAML script content
    * @return Parsed AngusScript object
    */

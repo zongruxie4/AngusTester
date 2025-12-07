@@ -110,22 +110,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 /**
- * Implementation of NodeInfoQuery interface providing comprehensive node information query services.
+ * Implementation of NodeInfoQuery interface providing comprehensive node information query
+ * services.
  *
  * <p>
- * This class handles node information retrieval, agent status checking, port validation,
- * and node selection strategies for execution tasks. It supports both local and remote
- * node operations through controller-agent communication.
+ * This class handles node information retrieval, agent status checking, port validation, and node
+ * selection strategies for execution tasks. It supports both local and remote node operations
+ * through controller-agent communication.
  * </p>
  *
  * <p>
- * Key features include:
- * - Node detail and list queries with online status detection
- * - Agent status monitoring and health checks
- * - Port availability validation for mock services
- * - Intelligent node selection based on various strategies
- * - Multi-tenant support with proper isolation
- * - Remote controller communication for distributed deployments
+ * Key features include: - Node detail and list queries with online status detection - Agent status
+ * monitoring and health checks - Port availability validation for mock services - Intelligent node
+ * selection based on various strategies - Multi-tenant support with proper isolation - Remote
+ * controller communication for distributed deployments
  * </p>
  */
 @Slf4j
@@ -153,16 +151,16 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Retrieves detailed information for a specific node by ID.
    *
    * <p>
-   * This method fetches the complete node information from the database and
-   * determines the agent online status based on recent usage metrics.
+   * This method fetches the complete node information from the database and determines the agent
+   * online status based on recent usage metrics.
    * </p>
    *
    * <p>
-   * For free nodes, it sets the tenant context to the owner tenant to ensure
-   * proper access control and data isolation.
+   * For free nodes, it sets the tenant context to the owner tenant to ensure proper access control
+   * and data isolation.
    * </p>
    *
-   * @param id the unique identifier of the node
+   * @param id         the unique identifier of the node
    * @param isFreeNode flag indicating if this is a free/trial node
    * @return NodeInfo object containing complete node details and online status
    * @throws ResourceNotFound if the node with specified ID does not exist
@@ -189,17 +187,16 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Retrieves a paginated list of nodes based on search criteria.
    *
    * <p>
-   * This method supports filtering nodes by various criteria and automatically
-   * sets the agent online status for all returned nodes based on recent
-   * usage metrics.
+   * This method supports filtering nodes by various criteria and automatically sets the agent
+   * online status for all returned nodes based on recent usage metrics.
    * </p>
    *
    * <p>
-   * The method handles free node queries by setting appropriate tenant context
-   * and removes the isFreeNode criteria from the specification after processing.
+   * The method handles free node queries by setting appropriate tenant context and removes the
+   * isFreeNode criteria from the specification after processing.
    * </p>
    *
-   * @param spec the search specification containing filter criteria
+   * @param spec     the search specification containing filter criteria
    * @param pageable pagination parameters
    * @return Page containing NodeInfo objects with online status
    */
@@ -232,19 +229,19 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Checks the status of agents on specified nodes.
    *
    * <p>
-   * This method performs agent status checks on multiple nodes, supporting both
-   * local and remote controller communication. It first attempts to check local
-   * nodes directly through agent connections, then optionally broadcasts to
-   * remote controllers if the broadcast flag is enabled.
+   * This method performs agent status checks on multiple nodes, supporting both local and remote
+   * controller communication. It first attempts to check local nodes directly through agent
+   * connections, then optionally broadcasts to remote controllers if the broadcast flag is
+   * enabled.
    * </p>
    *
    * <p>
-   * The method handles distributed deployments by discovering other controller
-   * instances and forwarding requests to them when nodes are not locally managed.
+   * The method handles distributed deployments by discovering other controller instances and
+   * forwarding requests to them when nodes are not locally managed.
    * </p>
    *
    * @param broadcast whether to broadcast requests to remote controllers
-   * @param nodeIds list of node IDs to check agent status for
+   * @param nodeIds   list of node IDs to check agent status for
    * @return Map of node ID to command result indicating agent status
    */
   @Override
@@ -322,14 +319,14 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Checks port availability on specified nodes for mock service configuration.
    *
    * <p>
-   * This method validates port availability across multiple nodes, supporting
-   * both local agent communication and remote controller broadcasting.
-   * It groups commands by device ID and processes them efficiently.
+   * This method validates port availability across multiple nodes, supporting both local agent
+   * communication and remote controller broadcasting. It groups commands by device ID and processes
+   * them efficiently.
    * </p>
    *
    * <p>
-   * The method handles distributed deployments by forwarding port check requests
-   * to remote controllers when nodes are not locally managed.
+   * The method handles distributed deployments by forwarding port check requests to remote
+   * controllers when nodes are not locally managed.
    * </p>
    *
    * @param dto the port check request containing device and port information
@@ -411,14 +408,14 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Queries runner process information on a specific node.
    *
    * <p>
-   * This method retrieves detailed information about runner processes running
-   * on the specified node. It supports both local agent communication and
-   * remote controller broadcasting for distributed deployments.
+   * This method retrieves detailed information about runner processes running on the specified
+   * node. It supports both local agent communication and remote controller broadcasting for
+   * distributed deployments.
    * </p>
    *
    * <p>
-   * For free nodes, it disables multi-tenant control to ensure proper access.
-   * The method validates node existence before attempting to query process information.
+   * For free nodes, it disables multi-tenant control to ensure proper access. The method validates
+   * node existence before attempting to query process information.
    * </p>
    *
    * @param dto the runner query request containing node information
@@ -480,8 +477,8 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Finds nodes that have online agents from the provided set of node IDs.
    *
    * <p>
-   * This method determines which nodes have active agents by checking recent
-   * usage metrics against the configured live node interval.
+   * This method determines which nodes have active agents by checking recent usage metrics against
+   * the configured live node interval.
    * </p>
    *
    * @param ids set of node IDs to check for online agents
@@ -502,12 +499,12 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Finds a node by tenant ID and IP address.
    *
    * <p>
-   * This method searches for a specific node within a tenant's scope using
-   * the combination of tenant ID and IP address as unique identifiers.
+   * This method searches for a specific node within a tenant's scope using the combination of
+   * tenant ID and IP address as unique identifiers.
    * </p>
    *
    * @param tenantId the tenant ID to search within
-   * @param ip the IP address of the node
+   * @param ip       the IP address of the node
    * @return NodeInfo object if found, null otherwise
    */
   @Override
@@ -519,16 +516,16 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Selects valid free node IDs for execution tasks.
    *
    * <p>
-   * This method identifies available free nodes that meet the specified criteria
-   * and returns their IDs. It ensures nodes are both available and have online agents.
+   * This method identifies available free nodes that meet the specified criteria and returns their
+   * IDs. It ensures nodes are both available and have online agents.
    * </p>
    *
    * <p>
-   * The selection process filters out nodes that are currently in use and
-   * validates agent availability before returning the results.
+   * The selection process filters out nodes that are currently in use and validates agent
+   * availability before returning the results.
    * </p>
    *
-   * @param nodeNum the number of nodes required
+   * @param nodeNum          the number of nodes required
    * @param availableNodeIds optional set of node IDs to restrict selection to
    * @return List of selected node IDs
    * @throws ProtocolException if insufficient nodes are available
@@ -554,17 +551,16 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Selects valid free nodes for execution tasks.
    *
    * <p>
-   * This method identifies available free nodes that meet the specified criteria
-   * and returns their complete information. It ensures nodes are both available
-   * and have online agents.
+   * This method identifies available free nodes that meet the specified criteria and returns their
+   * complete information. It ensures nodes are both available and have online agents.
    * </p>
    *
    * <p>
-   * The selection process filters out nodes that are currently in use and
-   * validates agent availability before returning the results.
+   * The selection process filters out nodes that are currently in use and validates agent
+   * availability before returning the results.
    * </p>
    *
-   * @param nodeNum the number of nodes required
+   * @param nodeNum          the number of nodes required
    * @param availableNodeIds optional set of node IDs to restrict selection to
    * @return List of selected NodeInfo objects
    * @throws ProtocolException if insufficient nodes are available
@@ -590,20 +586,17 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Selects free nodes without node selection strategy support.
    *
    * <p>
-   * This method provides basic free node selection functionality without
-   * advanced strategy-based filtering. It is specifically designed for
-   * free experience execution scenarios.
+   * This method provides basic free node selection functionality without advanced strategy-based
+   * filtering. It is specifically designed for free experience execution scenarios.
    * </p>
    *
    * <p>
-   * The selection process:
-   * 1. Retrieves available execution nodes with free flag enabled
-   * 2. Filters out nodes currently in use by other executions
-   * 3. Applies optional available node ID restrictions
-   * 4. Returns the requested number of nodes
+   * The selection process: 1. Retrieves available execution nodes with free flag enabled 2. Filters
+   * out nodes currently in use by other executions 3. Applies optional available node ID
+   * restrictions 4. Returns the requested number of nodes
    * </p>
    *
-   * @param num the number of nodes required (defaults to 1 if null)
+   * @param num              the number of nodes required (defaults to 1 if null)
    * @param availableNodeIds optional set of node IDs to restrict selection to
    * @return List of selected NodeInfo objects
    * @throws ProtocolException if insufficient free nodes are available
@@ -636,32 +629,28 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Selects nodes based on specified strategy and criteria.
    *
    * <p>
-   * This method implements intelligent node selection using various strategies
-   * including last executed nodes, resource specifications, and idle rate criteria.
-   * It supports both strategy-based and default selection modes.
+   * This method implements intelligent node selection using various strategies including last
+   * executed nodes, resource specifications, and idle rate criteria. It supports both
+   * strategy-based and default selection modes.
    * </p>
    *
    * <p>
-   * The selection process includes:
-   * 1. Validation of available node count against required number
-   * 2. Strategy-based node filtering (last executed, specifications, idle rates)
-   * 3. Agent availability verification
-   * 4. Resource requirement validation
-   * 5. Fallback to trial nodes if allowed and no other nodes available
+   * The selection process includes: 1. Validation of available node count against required number
+   * 2. Strategy-based node filtering (last executed, specifications, idle rates) 3. Agent
+   * availability verification 4. Resource requirement validation 5. Fallback to trial nodes if
+   * allowed and no other nodes available
    * </p>
    *
    * <p>
-   * Important notes:
-   * 1. PrincipalContext must be maintained when calling Job
-   * 2. Agent status must be checked
-   * 3. BizException will terminate and continue scheduling
+   * Important notes: 1. PrincipalContext must be maintained when calling Job 2. Agent status must
+   * be checked 3. BizException will terminate and continue scheduling
    * </p>
    *
-   * @param num the number of nodes required (defaults to 1 if null)
+   * @param num              the number of nodes required (defaults to 1 if null)
    * @param availableNodeIds optional set of node IDs to restrict selection to
-   * @param lastExecNodeIds set of node IDs from last execution for strategy-based selection
-   * @param strategy the node selection strategy configuration
-   * @param allowTrialNode whether to allow selection of trial nodes as fallback
+   * @param lastExecNodeIds  set of node IDs from last execution for strategy-based selection
+   * @param strategy         the node selection strategy configuration
+   * @param allowTrialNode   whether to allow selection of trial nodes as fallback
    * @return List of selected NodeInfo objects
    * @throws ProtocolException if no nodes meet the selection criteria
    */
@@ -769,8 +758,8 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Checks if the current tenant has any nodes.
    *
    * <p>
-   * This method queries the database to determine if the current tenant
-   * has any registered nodes in the system.
+   * This method queries the database to determine if the current tenant has any registered nodes in
+   * the system.
    * </p>
    *
    * @return true if the tenant has nodes, false otherwise
@@ -784,8 +773,8 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Gets the IDs of nodes that have been active within the configured live interval.
    *
    * <p>
-   * This method identifies nodes that have reported usage metrics within
-   * the LATEST_LIVE_NODE_INTERVAL timeframe, indicating they have active agents.
+   * This method identifies nodes that have reported usage metrics within the
+   * LATEST_LIVE_NODE_INTERVAL timeframe, indicating they have active agents.
    * </p>
    *
    * @param nodeIds collection of node IDs to check
@@ -801,12 +790,11 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Gets the IDs of nodes that have been active within a custom live interval.
    *
    * <p>
-   * This method identifies nodes that have reported usage metrics within
-   * the specified timeframe, providing flexibility for different live node
-   * detection requirements.
+   * This method identifies nodes that have reported usage metrics within the specified timeframe,
+   * providing flexibility for different live node detection requirements.
    * </p>
    *
-   * @param nodeIds collection of node IDs to check
+   * @param nodeIds                collection of node IDs to check
    * @param latestLiveNodeInterval custom interval in milliseconds
    * @return Set of node IDs that are currently live/online
    */
@@ -820,9 +808,8 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Retrieves a map of nodes by their IDs.
    *
    * <p>
-   * This method fetches node information for the specified IDs and returns
-   * them as a map for efficient lookup. It uses tenant-aware processing
-   * to ensure proper data isolation.
+   * This method fetches node information for the specified IDs and returns them as a map for
+   * efficient lookup. It uses tenant-aware processing to ensure proper data isolation.
    * </p>
    *
    * @param nodeIds set of node IDs to retrieve
@@ -840,12 +827,12 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Gets valid execution nodes that are online and available.
    *
    * <p>
-   * This method retrieves execution nodes that meet the specified criteria
-   * and filters them to only include nodes with online agents.
+   * This method retrieves execution nodes that meet the specified criteria and filters them to only
+   * include nodes with online agents.
    * </p>
    *
-   * @param nodeIds set of node IDs to check
-   * @param size maximum number of nodes to return
+   * @param nodeIds  set of node IDs to check
+   * @param size     maximum number of nodes to return
    * @param tenantId tenant ID for filtering (can be null for system-wide search)
    * @return List of valid execution nodes, or null if none found
    */
@@ -865,8 +852,8 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Gets valid controller nodes grouped by IP address.
    *
    * <p>
-   * This method retrieves controller role nodes and groups them by IP address.
-   * Controller nodes belong only to the deployment tenant in datacenter editions.
+   * This method retrieves controller role nodes and groups them by IP address. Controller nodes
+   * belong only to the deployment tenant in datacenter editions.
    * </p>
    *
    * @return Map of IP address to list of controller nodes, or null if none found

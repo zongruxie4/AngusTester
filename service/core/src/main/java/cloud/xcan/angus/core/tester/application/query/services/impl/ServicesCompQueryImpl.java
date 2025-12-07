@@ -37,7 +37,8 @@ import org.springframework.cache.annotation.Cacheable;
  * Implementation of ServicesCompQuery for services component management and query operations.
  * </p>
  * <p>
- * Provides methods for services component CRUD operations, reference resolution, and OpenAPI component handling.
+ * Provides methods for services component CRUD operations, reference resolution, and OpenAPI
+ * component handling.
  * </p>
  */
 @Biz
@@ -58,8 +59,9 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
    * Retrieves component details and resolves nested references to build a complete component model.
    * Supports recursive reference resolution for complex component structures.
    * </p>
+   *
    * @param serviceId Service ID
-   * @param ref Component reference
+   * @param ref       Component reference
    * @return Services component with resolved references
    */
   @Override
@@ -106,12 +108,13 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
    * List services components by type with optional key filtering.
    * </p>
    * <p>
-   * Retrieves components filtered by type and optionally by specific keys.
-   * Requires view permission for the service.
+   * Retrieves components filtered by type and optionally by specific keys. Requires view permission
+   * for the service.
    * </p>
+   *
    * @param serviceId Service ID
-   * @param types Set of component types to filter by
-   * @param keys Optional set of component keys to filter by
+   * @param types     Set of component types to filter by
+   * @param keys      Optional set of component keys to filter by
    * @return List of filtered services components
    */
   @Override
@@ -139,11 +142,12 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
    * List services components by reference.
    * </p>
    * <p>
-   * Retrieves components filtered by specific references. Validates reference format before processing.
-   * Requires view permission for the service.
+   * Retrieves components filtered by specific references. Validates reference format before
+   * processing. Requires view permission for the service.
    * </p>
+   *
    * @param serviceId Service ID
-   * @param refs Set of component references to filter by
+   * @param refs      Set of component references to filter by
    * @return List of filtered services components
    */
   @Override
@@ -170,6 +174,7 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
    * <p>
    * Retrieves all components associated with a service. Requires view permission for the service.
    * </p>
+   *
    * @param serviceId Service ID
    * @return List of all services components
    */
@@ -195,6 +200,7 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
    * <p>
    * Retrieves all components for a service with Spring cache support for performance optimization.
    * </p>
+   *
    * @param serviceId Service ID
    * @return List of services components
    */
@@ -212,6 +218,7 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
    * Converts services components to OpenAPI Components format. This method is deprecated due to
    * potential ClassCastException issues with Gson serialization.
    * </p>
+   *
    * @param serviceId Service ID
    * @return OpenAPI Components object
    * @deprecated Due to ClassCastException issues with Gson serialization
@@ -234,8 +241,10 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
    * Check if a reference format is valid.
    * </p>
    * <p>
-   * Validates that the reference is a local reference to components and follows the correct format.
+   * Validates that the reference is a local reference to components and follows the correct
+   * format.
    * </p>
+   *
    * @param ref Reference string to validate
    */
   @Override
@@ -253,6 +262,7 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
    * <p>
    * Validates each reference in the collection using the single reference validation method.
    * </p>
+   *
    * @param refs Collection of reference strings to validate
    */
   @Override
@@ -270,9 +280,10 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
    * Deserializes a JSON model string into the specified component class using OpenAPI mapper.
    * Validates that the resulting object is not null.
    * </p>
-   * @param clz Target component class
+   *
+   * @param clz   Target component class
    * @param model JSON model string
-   * @param <T> Component type
+   * @param <T>   Component type
    * @return Deserialized component object
    */
   @SneakyThrows

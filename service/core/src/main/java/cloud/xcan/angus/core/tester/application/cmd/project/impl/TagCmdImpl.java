@@ -42,8 +42,8 @@ import org.springframework.transaction.annotation.Transactional;
  * including creation, updates, deletion, and example import operations.</p>
  *
  * <p>It handles the complete lifecycle of tag management from creation
- * to deletion, including permission validation, quota management,
- * and activity logging for audit purposes.</p>
+ * to deletion, including permission validation, quota management, and activity logging for audit
+ * purposes.</p>
  *
  * <p>Key features include:
  * <ul>
@@ -77,7 +77,7 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
    * <p>The method logs tag creation activities for audit purposes.</p>
    *
    * @param projectId the ID of the project to add tags to
-   * @param names the set of tag names to create
+   * @param names     the set of tag names to create
    * @return list of ID keys for the created tags
    * @throws IllegalArgumentException if validation fails
    */

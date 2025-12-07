@@ -68,6 +68,7 @@ public class ApisShareCmdImpl extends CommCmd<ApisShare, Long> implements ApisSh
    * <p>
    * Validates permission, inserts share, and logs the creation activity.
    * </p>
+   *
    * @param share Share to add
    * @return Created share entity
    */
@@ -82,12 +83,12 @@ public class ApisShareCmdImpl extends CommCmd<ApisShare, Long> implements ApisSh
       protected void checkParams() {
         // Validate service exists
         servicesDb = servicesQuery.checkAndFind(share.getServicesId());
-        
+
         // Ensure API IDs are provided for non-service shares
         if (!share.getShareScope().isService()) {
           assertNotEmpty(share.getApisIds(), "Share apis id must not be empty");
         }
-        
+
         // Validate share permissions based on scope
         if (share.getShareScope().isSingleApi()) {
           // Check API share permission for single API share
@@ -224,6 +225,7 @@ public class ApisShareCmdImpl extends CommCmd<ApisShare, Long> implements ApisSh
   /**
    * Get the repository for ApisShare entity.
    * <p>
+   *
    * @return the ApisShareRepo instance
    */
   @Override

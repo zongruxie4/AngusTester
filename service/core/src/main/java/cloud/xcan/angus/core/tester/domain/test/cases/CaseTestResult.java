@@ -22,11 +22,11 @@ public enum CaseTestResult implements EnumMessage<String> {
     return this.equals(PASSED);
   }
 
-  public boolean isFinished(){
+  public boolean isFinished() {
     return this.equals(PASSED) || this.equals(NOT_PASSED);
   }
 
-  public boolean isWideFinished(){
+  public boolean isWideFinished() {
     return this.equals(PASSED) || this.equals(NOT_PASSED) || this.equals(CANCELED);
   }
 

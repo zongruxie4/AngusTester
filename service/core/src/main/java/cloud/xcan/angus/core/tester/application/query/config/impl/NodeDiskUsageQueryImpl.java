@@ -55,7 +55,7 @@ public class NodeDiskUsageQueryImpl implements NodeDiskUsageQuery {
    *
    * @param nodeId the unique identifier of the node
    * @return a map containing disk device names as keys and their corresponding DiskUsage objects,
-   *         or null if no disk devices are found for the node
+   * or null if no disk devices are found for the node
    */
   @Override
   public Map<String, DiskUsage> diskInfo(Long nodeId) {
@@ -91,13 +91,14 @@ public class NodeDiskUsageQueryImpl implements NodeDiskUsageQuery {
    * Retrieves detailed disk device usage information with pagination support.
    *
    * <p>This method supports querying disk usage data for either a specific device or all devices
-   * associated with a node. It applies search criteria and pagination to filter and limit results.</p>
+   * associated with a node. It applies search criteria and pagination to filter and limit
+   * results.</p>
    *
    * <p>The method handles tenant access control and provides comprehensive disk usage statistics
    * including device-specific metrics and historical data.</p>
    *
-   * @param nodeId the unique identifier of the node
-   * @param spec the search specification for filtering disk usage data
+   * @param nodeId   the unique identifier of the node
+   * @param spec     the search specification for filtering disk usage data
    * @param pageable pagination parameters for result limiting
    * @return a list of DiskDeviceUsage objects containing device-specific usage information
    */

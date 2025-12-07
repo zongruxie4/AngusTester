@@ -78,7 +78,8 @@ public class ScenarioMonitorRest {
       @ApiResponse(responseCode = "404", description = "Scenario monitor not found")})
   @ResponseStatus(HttpStatus.OK)
   @PutMapping
-  public ApiLocaleResult<IdKey<Long, Object>> replace(@Valid @RequestBody ScenarioMonitorReplaceDto dto) {
+  public ApiLocaleResult<IdKey<Long, Object>> replace(
+      @Valid @RequestBody ScenarioMonitorReplaceDto dto) {
     return ApiLocaleResult.success(scenarioMonitorFacade.replace(dto));
   }
 

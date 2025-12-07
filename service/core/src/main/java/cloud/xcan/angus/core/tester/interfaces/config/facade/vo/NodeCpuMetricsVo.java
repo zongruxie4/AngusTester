@@ -21,7 +21,7 @@ public class NodeCpuMetricsVo {
   /**
    * @see Cpu#toString()
    */
-  @Schema(description="Comma-separated cpu sample value, format: idle,sys,user,wait,other,total")
+  @Schema(description = "Comma-separated cpu sample value, format: idle,sys,user,wait,other,total")
   private String cvsCpu;
 
   public Date getTimestamp() {

@@ -146,7 +146,7 @@ public class FuncBaselineCaseQueryImpl implements FuncBaselineCaseQuery {
         if (isNotEmpty(tagIds)) {
           Set<Long> caseIds = tagQuery.getTargetIdsById(
               tagIds.stream().map(Long::parseLong).collect(Collectors.toSet()));
-          if (isNotEmpty(caseIds)){
+          if (isNotEmpty(caseIds)) {
             spec.getCriteria().add(SearchCriteria.in("caseId", caseIds));
           }
         }

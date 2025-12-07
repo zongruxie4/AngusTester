@@ -53,7 +53,7 @@ public class ExecRest {
   @Resource
   private ExecFacade execFacade;
 
-  @Operation(summary = "Create execution by script content", 
+  @Operation(summary = "Create execution by script content",
       description = "Create a new test execution using script content with configuration options",
       operationId = "exec:byContent:add")
   @ApiResponses(value = {
@@ -65,7 +65,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.addByScriptContent(dto));
   }
 
-  @Operation(summary = "Create execution by script arguments", 
+  @Operation(summary = "Create execution by script arguments",
       description = "Create a new test execution using script arguments with dynamic parameter configuration",
       operationId = "exec:byArgs:add")
   @ApiResponses(value = {
@@ -77,7 +77,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.addByScriptArgs(dto));
   }
 
-  @Operation(summary = "Create execution by script identifier", 
+  @Operation(summary = "Create execution by script identifier",
       description = "Create a new test execution using existing script identifier with reference configuration",
       operationId = "exec:byScript:add")
   @ApiResponses(value = {
@@ -89,7 +89,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.addByScript(dto));
   }
 
-  @Operation(summary = "Replace execution configuration", 
+  @Operation(summary = "Replace execution configuration",
       description = "Update execution configuration with parameter and setting modifications",
       operationId = "exec:config:replace")
   @ApiResponses(value = {
@@ -103,7 +103,7 @@ public class ExecRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace execution script configuration", 
+  @Operation(summary = "Replace execution script configuration",
       description = "Update execution script configuration with script parameter modifications",
       operationId = "exec:script:config:replace")
   @ApiResponses(value = {
@@ -117,7 +117,7 @@ public class ExecRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Start execution", 
+  @Operation(summary = "Start execution",
       description = "Initiate test execution with runner management and real-time monitoring",
       operationId = "exec:start")
   @ApiResponses(value = {
@@ -128,7 +128,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.start(dto));
   }
 
-  @Operation(summary = "Stop execution", 
+  @Operation(summary = "Stop execution",
       description = "Terminate test execution with graceful shutdown and cleanup procedures",
       operationId = "exec:stop")
   @ApiResponses(value = {
@@ -139,10 +139,11 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.stop(dto));
   }
 
-  @Operation(summary = "Delete executions", 
+  @Operation(summary = "Delete executions",
       description = "Remove multiple executions from the system with batch operation support",
       operationId = "exec:delete")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Executions deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Executions deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void delete(
@@ -150,7 +151,7 @@ public class ExecRest {
     execFacade.delete(ids);
   }
 
-  @Operation(summary = "Get execution details", 
+  @Operation(summary = "Get execution details",
       description = "Retrieve execution details including configuration, status, and metadata",
       operationId = "exec:detail")
   @ApiResponses(value = {
@@ -162,7 +163,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.detail(id));
   }
 
-  @Operation(summary = "Get execution basic information", 
+  @Operation(summary = "Get execution basic information",
       description = "Retrieve basic execution information including status, metadata, and summary details",
       operationId = "exec:info")
   @ApiResponses(value = {
@@ -174,7 +175,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.info(id, true));
   }
 
-  @Operation(summary = "Get execution script content", 
+  @Operation(summary = "Get execution script content",
       description = "Retrieve the actual script content used for execution with formatting and syntax highlighting",
       operationId = "exec:script")
   @ApiResponses(value = {
@@ -186,7 +187,7 @@ public class ExecRest {
     return ApiLocaleResult.successData(execFacade.script(id));
   }
 
-  @Operation(summary = "Get execution server configurations", 
+  @Operation(summary = "Get execution server configurations",
       description = "Retrieve all testing server configurations for the execution with HTTP plugin support",
       operationId = "exec:server:all")
   @ApiResponses(value = {
@@ -199,7 +200,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.serverList(id));
   }
 
-  @Operation(summary = "Query execution list", 
+  @Operation(summary = "Query execution list",
       description = "Retrieve paginated list of executions with filtering and search options",
       operationId = "exec:list")
   @ApiResponses(value = {

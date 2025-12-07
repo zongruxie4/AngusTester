@@ -38,7 +38,9 @@ public class ServicesSyncRest {
   private ServicesSyncFacade servicesSyncFacade;
 
   @Operation(summary = "Replace service synchronization configuration",
-      description = "Configure synchronization settings for service with OpenAPI documentation integration. Allow up to " + MAX_SYNC_OPENAPI_NUM + " configurations to be added.",
+      description =
+          "Configure synchronization settings for service with OpenAPI documentation integration. Allow up to "
+              + MAX_SYNC_OPENAPI_NUM + " configurations to be added.",
       operationId = "services:sync:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service synchronization configuration replaced successfully"),
@@ -53,7 +55,9 @@ public class ServicesSyncRest {
   }
 
   @Operation(summary = "Replace all service synchronization configurations",
-      description = "Configure all synchronization settings for service with OpenAPI documentation integration. Allow up to " + MAX_SYNC_OPENAPI_NUM + " configurations to be added.",
+      description =
+          "Configure all synchronization settings for service with OpenAPI documentation integration. Allow up to "
+              + MAX_SYNC_OPENAPI_NUM + " configurations to be added.",
       operationId = "services:sync:all:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "All service synchronization configurations replaced successfully"),

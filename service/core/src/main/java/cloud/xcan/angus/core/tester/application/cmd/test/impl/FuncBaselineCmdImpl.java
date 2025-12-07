@@ -45,12 +45,13 @@ import org.springframework.transaction.annotation.Transactional;
  * Command implementation for managing functional baselines.
  * </p>
  * <p>
- * Provides methods for adding, updating, replacing, establishing, and deleting baselines for functional testing.
- * Handles permission checks, baseline status validation, activity logging, and batch operations.
+ * Provides methods for adding, updating, replacing, establishing, and deleting baselines for
+ * functional testing. Handles permission checks, baseline status validation, activity logging, and
+ * batch operations.
  * </p>
  * <p>
- * Key features include baseline lifecycle management, case association, establishment workflow,
- * and comprehensive activity tracking for audit purposes.
+ * Key features include baseline lifecycle management, case association, establishment workflow, and
+ * comprehensive activity tracking for audit purposes.
  * </p>
  */
 @Biz
@@ -78,9 +79,11 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
    * Add a new functional baseline.
    * </p>
    * <p>
-   * Checks plan existence, permission, and case consistency. Inserts the baseline and logs the creation activity.
-   * Validates that the plan exists and user has proper authorization to establish baselines.
+   * Checks plan existence, permission, and case consistency. Inserts the baseline and logs the
+   * creation activity. Validates that the plan exists and user has proper authorization to
+   * establish baselines.
    * </p>
+   *
    * @param baseline the baseline entity to add
    * @return ID and name of the created baseline
    */
@@ -124,6 +127,7 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
    * Checks baseline existence and permission. Updates the baseline and logs the update activity.
    * Validates that the baseline exists and user has proper authorization.
    * </p>
+   *
    * @param baseline the baseline entity with updated values
    */
   @Transactional(rollbackFor = Exception.class)
@@ -168,9 +172,10 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
    * Replace (add or update) a functional baseline.
    * </p>
    * <p>
-   * Adds a new baseline if ID is null, otherwise updates the existing baseline.
-   * Handles both creation and update scenarios with appropriate validation.
+   * Adds a new baseline if ID is null, otherwise updates the existing baseline. Handles both
+   * creation and update scenarios with appropriate validation.
    * </p>
+   *
    * @param baseline the baseline entity to add or update
    * @return ID and name of the baseline
    */
@@ -214,9 +219,11 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
    * Establish a functional baseline.
    * </p>
    * <p>
-   * Checks baseline existence, status, case non-emptiness, and permission. Inserts baseline cases, marks as established, and logs activities.
-   * Converts draft baseline to established state with case version tracking.
+   * Checks baseline existence, status, case non-emptiness, and permission. Inserts baseline cases,
+   * marks as established, and logs activities. Converts draft baseline to established state with
+   * case version tracking.
    * </p>
+   *
    * @param id the baseline ID to establish
    */
   @Transactional(rollbackFor = Exception.class)
@@ -268,9 +275,10 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
    * Delete a batch of functional baselines.
    * </p>
    * <p>
-   * Checks baseline existence and permission. Deletes baselines and their cases, and logs delete activities.
-   * Performs batch deletion with proper authorization validation.
+   * Checks baseline existence and permission. Deletes baselines and their cases, and logs delete
+   * activities. Performs batch deletion with proper authorization validation.
    * </p>
+   *
    * @param ids collection of baseline IDs to delete
    */
   @Transactional(rollbackFor = Exception.class)
@@ -305,6 +313,7 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
   /**
    * Get the repository for FuncBaseline entity.
    * <p>
+   *
    * @return the FuncBaselineRepo instance
    */
   @Override

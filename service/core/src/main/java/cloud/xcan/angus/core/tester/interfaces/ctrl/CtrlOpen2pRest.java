@@ -34,7 +34,7 @@ public class CtrlOpen2pRest {
   @Resource
   private CtrlFacade ctrlFacade;
 
-  @Operation(summary = "Private controller health check ping", 
+  @Operation(summary = "Private controller health check ping",
       description = "Perform health check ping to validate private environment controller availability and binding status",
       operationId = "ctrl:ping:open2p")
   @ApiResponses(value = {
@@ -45,18 +45,19 @@ public class CtrlOpen2pRest {
     return PrincipalContext.get();
   }
 
-  @Operation(summary = "Private controller discovery and election", 
+  @Operation(summary = "Private controller discovery and election",
       description = "Query available private environment controllers and perform leadership election based on resource utilization and task load",
       operationId = "ctrl:discovery:open2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Private controller discovery and election completed successfully")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping(DISCOVERY_ENDPOINT_SUFFIX)
-  public /*ApiLocaleResult<DiscoveryNodeVo>*/ DiscoveryNodeVo discovery(@ParameterObject DiscoveryNodeDto dto) {
+  public /*ApiLocaleResult<DiscoveryNodeVo>*/ DiscoveryNodeVo discovery(
+      @ParameterObject DiscoveryNodeDto dto) {
     return ctrlFacade.discovery(dto);
   }
 
-  @Operation(summary = "Private controller connection information", 
+  @Operation(summary = "Private controller connection information",
       description = "Retrieve comprehensive connection information for all private environment controller agents and routing channels",
       operationId = "ctrl:connections:info:open2p")
   @ApiResponses(value = {

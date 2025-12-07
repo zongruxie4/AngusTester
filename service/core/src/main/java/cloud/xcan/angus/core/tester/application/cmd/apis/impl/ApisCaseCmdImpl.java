@@ -77,9 +77,10 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
    * Add a batch of API cases for a single API.
    * </p>
    * <p>
-   * Validates API existence, permission, case type uniqueness, name duplication, and quota.
-   * Inserts cases, synchronizes with scripts, and logs creation activities.
+   * Validates API existence, permission, case type uniqueness, name duplication, and quota. Inserts
+   * cases, synchronizes with scripts, and logs creation activities.
    * </p>
+   *
    * @param cases List of API cases to add
    * @return List of ID keys for created cases
    */
@@ -149,9 +150,10 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
    * Update a batch of API cases.
    * </p>
    * <p>
-   * Validates case existence, API, permission, and name duplication.
-   * Updates cases, synchronizes with scripts, and logs update activities.
+   * Validates case existence, API, permission, and name duplication. Updates cases, synchronizes
+   * with scripts, and logs update activities.
    * </p>
+   *
    * @param cases List of API cases to update
    */
   @Transactional(rollbackFor = Exception.class)
@@ -266,7 +268,8 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
   /**
    * Rename an API case.
    * <p>
-   * Validates name uniqueness and permission, updates the case, synchronizes with scripts, and logs the activity.
+   * Validates name uniqueness and permission, updates the case, synchronizes with scripts, and logs
+   * the activity.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -430,7 +433,8 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
   /**
    * Delete a batch of API cases.
    * <p>
-   * Validates permission, updates delete status, synchronizes with scripts, and logs delete activities.
+   * Validates permission, updates delete status, synchronizes with scripts, and logs delete
+   * activities.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -489,6 +493,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
   /**
    * Get the repository for ApisCase entity.
    * <p>
+   *
    * @return the ApisCaseRepo instance
    */
   @Override

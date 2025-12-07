@@ -82,7 +82,8 @@ public class OpenApiExampleGenerator {
       return null;
 
     } else {
-      throw new IllegalStateException("Invalid composed schema; missing or empty [allOf, oneOf, anyOf]");
+      throw new IllegalStateException(
+          "Invalid composed schema; missing or empty [allOf, oneOf, anyOf]");
     }
   }
 
@@ -102,7 +103,8 @@ public class OpenApiExampleGenerator {
       String schemaName = referrer.get$ref().substring(REF_PREFIX_SCHEMAS.length());
       Schema<?> schema = spec.getComponents().getSchemas().get(schemaName);
       if (schema == null) {
-        throw new IllegalStateException("Referenced schema not found in components section: " + schemaName);
+        throw new IllegalStateException(
+            "Referenced schema not found in components section: " + schemaName);
       }
       return schema;
     } else {

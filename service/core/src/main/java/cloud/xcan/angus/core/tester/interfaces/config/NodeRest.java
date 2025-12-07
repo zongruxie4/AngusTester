@@ -142,7 +142,8 @@ public class NodeRest {
   @Operation(summary = "Delete nodes",
       description = "Permanently remove nodes from the system to free up resources and clean up infrastructure",
       operationId = "node:delete")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Nodes deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Nodes deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void delete(

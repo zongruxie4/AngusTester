@@ -1,9 +1,9 @@
 - name: Csv文件数据集
   extracted: true
   parameters:
-  - name: name
-  - name: age
-  - name: hobby
+    - name: name
+    - name: age
+    - name: hobby
   extraction:
     source: FILE
     name: EXACT_VALUE-Extraction
@@ -19,8 +19,8 @@
 - name: Jdbc数据集示例
   extracted: true
   parameters:
-  - name: 姓名
-  - name: 年龄
+    - name: 姓名
+    - name: 年龄
   extraction:
     source: JDBC
     name: EXACT_VALUE-Extraction
@@ -36,16 +36,16 @@
 - name: MockData数据集
   extracted: false
   parameters:
-  - name: 姓名
-    value: '@Name()'
-  - name: 年龄
-    value: '@Age()'
-  - name: 爱好
-    value: 热爱一切
+    - name: 姓名
+      value: '@Name()'
+    - name: 年龄
+      value: '@Age()'
+    - name: 爱好
+      value: 热爱一切
 - name: 添加用户数据集
   extracted: false
   parameters:
-  - name: name
-    value: '@Name()'
-  - name: age
-    value: "@Age(30,40)"
+    - name: name
+      value: '@Name()'
+    - name: age
+      value: "@Age(30,40)"

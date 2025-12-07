@@ -205,9 +205,8 @@ public class TestEvaluationConverter {
   }
 
   /**
-   * Calculate overall score as weighted average of all metrics
-   * Uses weight from each MetricResult if available and greater than 0,
-   * otherwise falls back to simple average
+   * Calculate overall score as weighted average of all metrics Uses weight from each MetricResult
+   * if available and greater than 0, otherwise falls back to simple average
    */
   public static Double calculateOverallScore(
       LinkedHashMap<EvaluationPurpose, MetricResult> metrics) {

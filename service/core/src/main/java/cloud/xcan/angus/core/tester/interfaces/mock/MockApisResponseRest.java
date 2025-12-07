@@ -71,7 +71,8 @@ public class MockApisResponseRest {
   @Operation(summary = "Delete mock API response definitions",
       description = "Remove specific mock response definitions from mock API configuration",
       operationId = "mock:apis:response:delete")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Mock API response definitions deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Mock API response definitions deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{apisId}/response")
   public void delete(

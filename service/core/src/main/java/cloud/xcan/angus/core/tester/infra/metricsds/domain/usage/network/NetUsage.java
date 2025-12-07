@@ -58,7 +58,7 @@ public class NetUsage extends EntitySupport<NetUsage, Long> {
     public String toHumanString() {
       DecimalFormat toKBFormat = new DecimalFormat("0.000");
       return rxBytes + ","
-          + toKBFormat.format(rxBytesRate / 1024 / 1024 ) + ","  // Read MB/s
+          + toKBFormat.format(rxBytesRate / 1024 / 1024) + ","  // Read MB/s
           + rxErrors + ","
           + txBytes + ","
           + toKBFormat.format(txBytesRate / 1024 / 1024); // Write MB/s

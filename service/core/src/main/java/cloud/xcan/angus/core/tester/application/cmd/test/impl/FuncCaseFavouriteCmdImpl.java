@@ -27,12 +27,12 @@ import org.springframework.transaction.annotation.Transactional;
  * Command implementation for managing functional case favorites.
  * </p>
  * <p>
- * Provides methods for adding and canceling favorite cases for functional testing.
- * Handles permission checks, case existence validation, and activity logging.
+ * Provides methods for adding and canceling favorite cases for functional testing. Handles
+ * permission checks, case existence validation, and activity logging.
  * </p>
  * <p>
- * Key features include favorite case management, user preference tracking,
- * and comprehensive activity logging for audit purposes.
+ * Key features include favorite case management, user preference tracking, and comprehensive
+ * activity logging for audit purposes.
  * </p>
  */
 @Biz
@@ -51,9 +51,10 @@ public class FuncCaseFavouriteCmdImpl extends CommCmd<FuncCaseFavourite, Long> i
    * Add a functional case to favorites.
    * </p>
    * <p>
-   * Checks case existence and prevents duplicate favorites. Adds the case to user's favorites
-   * and logs the activity. Validates that the case exists and is not already favourited.
+   * Checks case existence and prevents duplicate favorites. Adds the case to user's favorites and
+   * logs the activity. Validates that the case exists and is not already favourited.
    * </p>
+   *
    * @param favourite the favorite case entity to add
    * @return ID and name of the created favorite
    */

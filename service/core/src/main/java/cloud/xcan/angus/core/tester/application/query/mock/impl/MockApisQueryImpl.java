@@ -53,9 +53,9 @@ import org.springframework.data.domain.PageRequest;
 /**
  * Implementation of MockApisQuery for managing Mock API operations and data retrieval.
  * <p>
- * This class provides comprehensive functionality for querying and managing Mock APIs,
- * which simulate real API endpoints for testing and development purposes.
- * It handles API retrieval, validation, quota management, and comprehensive data enrichment.
+ * This class provides comprehensive functionality for querying and managing Mock APIs, which
+ * simulate real API endpoints for testing and development purposes. It handles API retrieval,
+ * validation, quota management, and comprehensive data enrichment.
  * <p>
  * Key features include:
  * <ul>
@@ -98,11 +98,11 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Retrieves detailed information for a specific Mock API with comprehensive data enrichment.
    * <p>
-   * Fetches complete API details including associated service information, response data,
-   * and consistency validation with the original API definition.
+   * Fetches complete API details including associated service information, response data, and
+   * consistency validation with the original API definition.
    * <p>
-   * The method performs authorization validation and enriches the API data with
-   * service information, response configurations, and consistency checks.
+   * The method performs authorization validation and enriches the API data with service
+   * information, response configurations, and consistency checks.
    *
    * @param id the Mock API ID to retrieve details for
    * @return MockApis object with complete enriched details
@@ -155,16 +155,15 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Retrieves Mock API information for OpenAPI integration with flexible filtering.
    * <p>
-   * Supports both comprehensive API retrieval and specific API matching based on
-   * HTTP method and endpoint patterns. Used primarily for OpenAPI integration
-   * and external service consumption.
+   * Supports both comprehensive API retrieval and specific API matching based on HTTP method and
+   * endpoint patterns. Used primarily for OpenAPI integration and external service consumption.
    * <p>
-   * The method handles path matching using pattern matchers and enriches
-   * API data with response configurations for complete API representation.
+   * The method handles path matching using pattern matchers and enriches API data with response
+   * configurations for complete API representation.
    *
    * @param mockServiceId the mock service ID for filtering APIs
-   * @param method the HTTP method to filter by (optional)
-   * @param endpoint the endpoint path to filter by (optional)
+   * @param method        the HTTP method to filter by (optional)
+   * @param endpoint      the endpoint path to filter by (optional)
    * @return List of MockApis objects with response configurations, or null if not found
    */
   @Override
@@ -219,16 +218,16 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Retrieves a paginated list of Mock APIs with comprehensive filtering and enrichment.
    * <p>
-   * Supports both regular search and full-text search with service-specific filtering.
-   * Provides enriched API information including service details for comprehensive analysis.
+   * Supports both regular search and full-text search with service-specific filtering. Provides
+   * enriched API information including service details for comprehensive analysis.
    * <p>
-   * The method performs authorization validation to ensure the current user has
-   * permission to view APIs for the specified mock service.
+   * The method performs authorization validation to ensure the current user has permission to view
+   * APIs for the specified mock service.
    *
-   * @param spec the search specification with criteria and filters
-   * @param pageable pagination parameters (page, size, sort)
+   * @param spec           the search specification with criteria and filters
+   * @param pageable       pagination parameters (page, size, sort)
    * @param fullTextSearch whether to use full-text search capabilities
-   * @param match array of field names to include in full-text search
+   * @param match          array of field names to include in full-text search
    * @return Page of MockApis objects with enriched service information
    */
   @Override
@@ -269,8 +268,8 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Validates that a Mock API exists and retrieves it.
    * <p>
-   * Performs existence validation and throws ResourceNotFound if the API is not found.
-   * Used as a helper method for other operations that require API validation.
+   * Performs existence validation and throws ResourceNotFound if the API is not found. Used as a
+   * helper method for other operations that require API validation.
    *
    * @param id the Mock API ID to validate and retrieve
    * @return MockApis object if found
@@ -284,8 +283,8 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Validates that multiple Mock APIs exist and retrieves them.
    * <p>
-   * Performs batch existence validation and throws ResourceNotFound if any API is not found.
-   * Used for bulk operations that require multiple API validations.
+   * Performs batch existence validation and throws ResourceNotFound if any API is not found. Used
+   * for bulk operations that require multiple API validations.
    *
    * @param reqApisIds collection of Mock API IDs to validate and retrieve
    * @return List of MockApis objects for all found APIs
@@ -303,11 +302,11 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Validates that Mock API names do not already exist within a service.
    * <p>
-   * Checks for name uniqueness within the specified mock service to prevent
-   * duplicate API names during creation operations.
+   * Checks for name uniqueness within the specified mock service to prevent duplicate API names
+   * during creation operations.
    *
    * @param serviceId the mock service ID for scope validation
-   * @param apis list of Mock APIs to validate names for
+   * @param apis      list of Mock APIs to validate names for
    * @throws ResourceExisted if any API name already exists
    */
   @Override
@@ -320,11 +319,11 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Validates that Mock API names do not conflict during update operations.
    * <p>
-   * Checks for name uniqueness within the specified mock service, excluding
-   * the current API being updated to allow name preservation.
+   * Checks for name uniqueness within the specified mock service, excluding the current API being
+   * updated to allow name preservation.
    *
    * @param serviceId the mock service ID for scope validation
-   * @param apis list of Mock APIs to validate names for
+   * @param apis      list of Mock APIs to validate names for
    * @throws ResourceExisted if any API name conflicts with existing APIs
    */
   @Override
@@ -350,11 +349,11 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Validates that Mock API operations (method + endpoint) do not already exist.
    * <p>
-   * Checks for operation uniqueness within the specified mock service to prevent
-   * duplicate API operations during creation operations.
+   * Checks for operation uniqueness within the specified mock service to prevent duplicate API
+   * operations during creation operations.
    *
    * @param serviceId the mock service ID for scope validation
-   * @param apis list of Mock APIs to validate operations for
+   * @param apis      list of Mock APIs to validate operations for
    * @throws ResourceExisted if any API operation already exists
    */
   @Override
@@ -375,11 +374,11 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Validates that Mock API operations do not conflict during update operations.
    * <p>
-   * Checks for operation uniqueness within the specified mock service, excluding
-   * the current API being updated to allow operation preservation.
+   * Checks for operation uniqueness within the specified mock service, excluding the current API
+   * being updated to allow operation preservation.
    *
    * @param serviceId the mock service ID for scope validation
-   * @param apis list of Mock APIs to validate operations for
+   * @param apis      list of Mock APIs to validate operations for
    * @throws ResourceExisted if any API operation conflicts with existing APIs
    */
   @Override
@@ -400,11 +399,11 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Validates that the mock service has sufficient quota for additional APIs.
    * <p>
-   * Checks the current API count against the service quota and validates
-   * that adding the specified number of APIs would not exceed the limit.
+   * Checks the current API count against the service quota and validates that adding the specified
+   * number of APIs would not exceed the limit.
    *
    * @param mockServiceDb the mock service to check quota for
-   * @param incr the number of APIs to be added
+   * @param incr          the number of APIs to be added
    * @throws QuotaExceeded if the quota limit would be exceeded
    */
   @Override
@@ -417,8 +416,8 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Validates that an API is not already associated with another Mock API.
    * <p>
-   * Ensures that APIs can only be associated with one Mock API to prevent
-   * conflicts and maintain data integrity.
+   * Ensures that APIs can only be associated with one Mock API to prevent conflicts and maintain
+   * data integrity.
    *
    * @param apisDb the API to validate association for
    * @throws ResourceExisted if the API is already associated with another Mock API
@@ -432,8 +431,8 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Validates that an API base info is not already associated with another Mock API.
    * <p>
-   * Ensures that APIs can only be associated with one Mock API to prevent
-   * conflicts and maintain data integrity.
+   * Ensures that APIs can only be associated with one Mock API to prevent conflicts and maintain
+   * data integrity.
    *
    * @param apisDb the API base info to validate association for
    * @throws ResourceExisted if the API is already associated with another Mock API
@@ -447,11 +446,11 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Validates that multiple APIs are not already associated with other Mock APIs.
    * <p>
-   * Performs batch validation to ensure that all specified APIs can be associated
-   * with Mock APIs without conflicts.
+   * Performs batch validation to ensure that all specified APIs can be associated with Mock APIs
+   * without conflicts.
    *
    * @param mockApis list of Mock APIs to validate associations for
-   * @throws ResourceExisted if any API is already associated with another Mock API
+   * @throws ResourceExisted  if any API is already associated with another Mock API
    * @throws ResourceNotFound if any specified API does not exist
    */
   @Override
@@ -474,11 +473,10 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Generates a safe clone name for Mock API duplication.
    * <p>
-   * Creates a unique name for cloned APIs by appending "-Copy" and ensuring
-   * the name does not exceed maximum length constraints while maintaining uniqueness.
+   * Creates a unique name for cloned APIs by appending "-Copy" and ensuring the name does not
+   * exceed maximum length constraints while maintaining uniqueness.
    * <p>
-   * The method also generates a unique endpoint for the cloned API to prevent
-   * operation conflicts.
+   * The method also generates a unique endpoint for the cloned API to prevent operation conflicts.
    *
    * @param apis the Mock API to generate a clone name for
    */
@@ -496,10 +494,10 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Enriches Mock API with service information for display and analysis.
    * <p>
-   * Sets service-related fields including name, domain URL, and host URL
-   * to provide complete context for the Mock API.
+   * Sets service-related fields including name, domain URL, and host URL to provide complete
+   * context for the Mock API.
    *
-   * @param mockApisDb the Mock API to enrich with service information
+   * @param mockApisDb    the Mock API to enrich with service information
    * @param mockServiceDb the service information to apply
    */
   @Override
@@ -512,11 +510,11 @@ public class MockApisQueryImpl implements MockApisQuery {
   /**
    * Checks and sets inconsistent operation information between Mock API and associated API.
    * <p>
-   * Compares the Mock API's method and endpoint with the associated API's definition
-   * and flags inconsistencies for UI display and user awareness.
+   * Compares the Mock API's method and endpoint with the associated API's definition and flags
+   * inconsistencies for UI display and user awareness.
    *
    * @param mockApisDb the Mock API to check for inconsistencies
-   * @param apisDb the associated API to compare against
+   * @param apisDb     the associated API to compare against
    */
   private void setInconsistentOperationInfo(MockApis mockApisDb, ApisBaseInfo apisDb) {
     if (!Objects.equals(apisDb.getEndpoint(), mockApisDb.getEndpoint()) ||

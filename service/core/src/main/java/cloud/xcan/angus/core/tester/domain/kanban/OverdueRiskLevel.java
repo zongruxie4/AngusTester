@@ -26,11 +26,11 @@ public enum OverdueRiskLevel implements EnumMessage<String> {
     return this.name();
   }
 
-  public static OverdueRiskLevel calcLevel(double overdueDays){
-    if (overdueDays <= 0){
+  public static OverdueRiskLevel calcLevel(double overdueDays) {
+    if (overdueDays <= 0) {
       return NONE;
     }
-    if (overdueDays < HIGH_OVERDUE_DAYS){
+    if (overdueDays < HIGH_OVERDUE_DAYS) {
       return LOW;
     }
     return HIGH;

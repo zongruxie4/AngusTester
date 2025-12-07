@@ -62,13 +62,12 @@ import org.springframework.data.domain.PageRequest;
 /**
  * Implementation of ExecSampleQuery for managing execution sample queries and data merging.
  * <p>
- * This class provides comprehensive functionality for querying and processing execution
- * sample data including summaries, scores, throughput, threads, and errors. It handles
- * complex data merging operations for multi-node and multi-name scenarios.
+ * This class provides comprehensive functionality for querying and processing execution sample data
+ * including summaries, scores, throughput, threads, and errors. It handles complex data merging
+ * operations for multi-node and multi-name scenarios.
  * <p>
- * Supports various sample types and implements sophisticated merging algorithms to
- * combine data from different nodes and pipeline names while maintaining data integrity
- * and temporal accuracy.
+ * Supports various sample types and implements sophisticated merging algorithms to combine data
+ * from different nodes and pipeline names while maintaining data integrity and temporal accuracy.
  */
 @Slf4j
 @Biz
@@ -92,9 +91,9 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Retrieves the total summary for an execution.
    * <p>
-   * Gets the latest total merge sample for the execution and sets progress parameters
-   * including duration and iterations. This method provides the overall execution
-   * summary for reporting and analysis purposes.
+   * Gets the latest total merge sample for the execution and sets progress parameters including
+   * duration and iterations. This method provides the overall execution summary for reporting and
+   * analysis purposes.
    *
    * @param execId the execution ID to get summary for
    * @return ExecSample with total summary data, or null if not found
@@ -125,15 +124,15 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Lists summary samples with pagination and complex merging logic.
    * <p>
-   * Retrieves paginated summary samples and applies sophisticated merging algorithms
-   * for multi-node and multi-name scenarios. The method handles different merging
-   * strategies based on the query parameters and execution configuration.
+   * Retrieves paginated summary samples and applies sophisticated merging algorithms for multi-node
+   * and multi-name scenarios. The method handles different merging strategies based on the query
+   * parameters and execution configuration.
    * <p>
-   * Supports merging of single node/multi-name, multi-node/single name, and
-   * multi-node/multi-name data combinations.
+   * Supports merging of single node/multi-name, multi-node/single name, and multi-node/multi-name
+   * data combinations.
    *
-   * @param execId the execution ID
-   * @param spec the search specification
+   * @param execId   the execution ID
+   * @param spec     the search specification
    * @param pageable pagination parameters
    * @return Page of ExecSampleSummary objects
    */
@@ -231,11 +230,11 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Gets the latest total merge sample for an execution info object.
    * <p>
-   * Retrieves the most recent sample data for the execution, either directly
-   * for single-node tasks or by merging data from multiple nodes for multi-node tasks.
+   * Retrieves the most recent sample data for the execution, either directly for single-node tasks
+   * or by merging data from multiple nodes for multi-node tasks.
    * <p>
-   * For multi-node tasks, merges samples from all nodes based on the latest timestamp
-   * to provide a comprehensive view of the execution results.
+   * For multi-node tasks, merges samples from all nodes based on the latest timestamp to provide a
+   * comprehensive view of the execution results.
    *
    * @param execInfo the execution info object
    * @return ExecSample with merged data, or null if not found
@@ -259,8 +258,8 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Sets the latest total merge sample for a list of execution info objects.
    * <p>
-   * Iterates through the list and sets the finish sample for each execution info
-   * by calling the individual setter method.
+   * Iterates through the list and sets the finish sample for each execution info by calling the
+   * individual setter method.
    *
    * @param execs the list of execution info objects to update
    */
@@ -274,8 +273,8 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Sets the latest total merge sample for a list of executions.
    * <p>
-   * Iterates through the list and sets the finish sample result for each execution
-   * by calling the individual setter method.
+   * Iterates through the list and sets the finish sample result for each execution by calling the
+   * individual setter method.
    *
    * @param execs the list of executions to update
    */
@@ -289,8 +288,8 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Sets the latest total merge sample for an execution info object.
    * <p>
-   * Retrieves the latest total merge sample and sets it as the finish sample
-   * for the execution info object.
+   * Retrieves the latest total merge sample and sets it as the finish sample for the execution info
+   * object.
    *
    * @param execInfo the execution info object to update
    */
@@ -303,8 +302,8 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Sets the latest total merge sample for an execution.
    * <p>
-   * Retrieves the latest total merge sample and sets it as the finish sample result
-   * for the execution object.
+   * Retrieves the latest total merge sample and sets it as the finish sample result for the
+   * execution object.
    *
    * @param exec the execution object to update
    */
@@ -330,8 +329,8 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Gets the latest merge sample for an execution and specific name.
    * <p>
-   * Retrieves the most recent sample data for the execution and name combination,
-   * either directly for single-node tasks or by merging data from multiple nodes.
+   * Retrieves the most recent sample data for the execution and name combination, either directly
+   * for single-node tasks or by merging data from multiple nodes.
    *
    * @param exec the execution object
    * @param name the sample name to retrieve
@@ -354,11 +353,11 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Gets the latest merge sample for an execution, name, and ramp number.
    * <p>
-   * Retrieves the most recent sample data for the execution, name, and ramp number
-   * combination, either directly for single-node tasks or by merging data from multiple nodes.
+   * Retrieves the most recent sample data for the execution, name, and ramp number combination,
+   * either directly for single-node tasks or by merging data from multiple nodes.
    *
-   * @param exec the execution object
-   * @param name the sample name to retrieve
+   * @param exec    the execution object
+   * @param name    the sample name to retrieve
    * @param rampNum the ramp number
    * @return ExecSample with merged data, or null if not found
    */
@@ -393,8 +392,8 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Gets the latest merge samples by ramp number for an execution and name.
    * <p>
-   * Retrieves all ramp numbers for the execution and gets the latest merge sample
-   * for each ramp number. If only one ramp number exists, returns a single sample.
+   * Retrieves all ramp numbers for the execution and gets the latest merge sample for each ramp
+   * number. If only one ramp number exists, returns a single sample.
    *
    * @param exec the execution object
    * @param name the sample name to retrieve
@@ -421,18 +420,18 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Sets sharing and grouping base conditions for sample queries.
    * <p>
-   * Configures the search criteria with execution ID, name filtering, node filtering,
-   * and time range constraints. This method establishes the base conditions for
-   * all sample queries to ensure proper data isolation and filtering.
+   * Configures the search criteria with execution ID, name filtering, node filtering, and time
+   * range constraints. This method establishes the base conditions for all sample queries to ensure
+   * proper data isolation and filtering.
    * <p>
    * Handles both explicit filters and default values based on execution configuration.
    *
-   * @param nameFilter the name filter parameter
+   * @param nameFilter      the name filter parameter
    * @param finalNameFilter the final name filter to use
-   * @param nodeFilter the node filter parameter
+   * @param nodeFilter      the node filter parameter
    * @param firstSampleNode the first sample node ID
-   * @param spec the search specification to configure
-   * @param exec the execution info object
+   * @param spec            the search specification to configure
+   * @param exec            the execution info object
    */
   public void setSharingAndGroupBaseCondition(String nameFilter, String finalNameFilter,
       String nodeFilter, Long firstSampleNode, GenericSpecification<?> spec, ExecInfo exec) {
@@ -480,14 +479,14 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Gets merge search criteria for combining sample data.
    * <p>
-   * Creates search criteria for merging sample data from different nodes or names
-   * within a specified time range. The criteria include execution ID and timestamp
-   * range with offset intervals to ensure proper data alignment.
+   * Creates search criteria for merging sample data from different nodes or names within a
+   * specified time range. The criteria include execution ID and timestamp range with offset
+   * intervals to ensure proper data alignment.
    *
-   * @param exec the execution info object
-   * @param firstTimeFilter the first timestamp filter
+   * @param exec             the execution info object
+   * @param firstTimeFilter  the first timestamp filter
    * @param secondTimeFilter the second timestamp filter
-   * @param offsetInterval the offset interval in milliseconds
+   * @param offsetInterval   the offset interval in milliseconds
    * @return Set of SearchCriteria for merging
    */
   private Set<SearchCriteria> getMergeSearchCriteria(
@@ -506,12 +505,12 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Adds node and name filters for non-total samples.
    * <p>
-   * Configures filters to exclude total samples and focus on specific node data.
-   * This is used when merging data from multiple names within a single node.
+   * Configures filters to exclude total samples and focus on specific node data. This is used when
+   * merging data from multiple names within a single node.
    *
-   * @param nodeFilter the node filter parameter
+   * @param nodeFilter      the node filter parameter
    * @param firstSampleNode the first sample node ID
-   * @param filters the search criteria set to modify
+   * @param filters         the search criteria set to modify
    */
   private void addNodeAndNameNotTotalFilters(String nodeFilter, Long firstSampleNode,
       Set<SearchCriteria> filters) {
@@ -525,13 +524,13 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Adds name and node filters for multi-node scenarios.
    * <p>
-   * Configures filters to include specific names and exclude the first node.
-   * This is used when merging data from multiple nodes for a specific name.
+   * Configures filters to include specific names and exclude the first node. This is used when
+   * merging data from multiple nodes for a specific name.
    *
-   * @param execDb the execution info object
+   * @param execDb          the execution info object
    * @param finalNameFilter the final name filter to use
    * @param firstSampleNode the first sample node ID
-   * @param filters the search criteria set to modify
+   * @param filters         the search criteria set to modify
    */
   private void addNameAndNodeFilters(ExecInfo execDb, String finalNameFilter, Long firstSampleNode,
       Set<SearchCriteria> filters) {
@@ -546,12 +545,12 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Merges multi-name and single-node samples.
    * <p>
-   * Combines sample data from multiple names within a single node by grouping
-   * the data by name and adding all samples to the result list.
+   * Combines sample data from multiple names within a single node by grouping the data by name and
+   * adding all samples to the result list.
    *
    * @param firstNameSamples the first name samples
    * @param otherNameSamples the other name samples
-   * @param <T> the sample type extending ExecSampleMergeBase
+   * @param <T>              the sample type extending ExecSampleMergeBase
    * @return List of merged samples
    */
   private <T extends ExecSampleMergeBase> List<T> mergeMultiNameAndSingleNodeSamples(
@@ -571,13 +570,13 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Merges multi-name and multi-node samples.
    * <p>
-   * Combines sample data from multiple names and multiple nodes by processing
-   * each name group separately and merging the results.
+   * Combines sample data from multiple names and multiple nodes by processing each name group
+   * separately and merging the results.
    *
-   * @param offsetInterval the offset interval for time alignment
+   * @param offsetInterval       the offset interval for time alignment
    * @param firstNodeNameSampMap the first node name sample map
-   * @param otherNodeSamp the other node samples
-   * @param <T> the sample type extending ExecSampleMergeBase
+   * @param otherNodeSamp        the other node samples
+   * @param <T>                  the sample type extending ExecSampleMergeBase
    * @return List of merged samples
    */
   private <T extends ExecSampleMergeBase> List<T> mergeMultiNameAndNodeSamples(long offsetInterval,
@@ -608,16 +607,15 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
   /**
    * Merges single name and multi-node samples with time alignment.
    * <p>
-   * Combines sample data from multiple nodes for a single name by aligning
-   * timestamps and merging corresponding samples within the offset interval.
+   * Combines sample data from multiple nodes for a single name by aligning timestamps and merging
+   * corresponding samples within the offset interval.
    * <p>
-   * Handles timing deviations between nodes and logs warnings for significant
-   * timing differences.
+   * Handles timing deviations between nodes and logs warnings for significant timing differences.
    *
    * @param offsetInterval the offset interval for time alignment
-   * @param firstNodeSamp the first node samples
-   * @param otherNodeSamp the other node samples
-   * @param <T> the sample type extending ExecSampleMergeBase
+   * @param firstNodeSamp  the first node samples
+   * @param otherNodeSamp  the other node samples
+   * @param <T>            the sample type extending ExecSampleMergeBase
    * @return List of merged samples
    */
   private <T extends ExecSampleMergeBase> List<T> mergeSingleNameAndMultiNodeSamples(

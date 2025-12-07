@@ -132,9 +132,9 @@ public class TaskListExportVo {
   //  private Long targetParentId;
   //  private String targetParentName;
 
-  @Schema(description="The total number of tasks processed")
+  @Schema(description = "The total number of tasks processed")
   private Integer totalNum;
-  @Schema(description="The number of task processing failures")
+  @Schema(description = "The number of task processing failures")
   private Integer failNum;
 
   //@ExcelIgnore

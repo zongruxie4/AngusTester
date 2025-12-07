@@ -32,7 +32,7 @@ public class ExecDebugRest {
   @Resource
   private ExecDebugFacade execDebugFacade;
 
-  @Operation(summary = "Start execution debug session", 
+  @Operation(summary = "Start execution debug session",
       description = "Initiate a new execution debug session with debugging configuration and real-time monitoring",
       operationId = "exec:debug:start")
   @ApiResponses(value = {
@@ -43,7 +43,7 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.start(dto));
   }
 
-  @Operation(summary = "Start debug execution by script", 
+  @Operation(summary = "Start debug execution by script",
       description = "Initiate script-based debug execution with script analysis and debugging capabilities",
       operationId = "exec:debug:script:start")
   @ApiResponses(value = {
@@ -55,7 +55,7 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.startByScript(dto));
   }
 
-  @Operation(summary = "Start debug execution by scenario", 
+  @Operation(summary = "Start debug execution by scenario",
       description = "Initiate scenario-based debug execution with scenario analysis and debugging capabilities",
       operationId = "exec:debug:scenario:start")
   @ApiResponses(value = {
@@ -67,7 +67,7 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.startByScenario(dto));
   }
 
-  @Operation(summary = "Start debug execution by monitor", 
+  @Operation(summary = "Start debug execution by monitor",
       description = "Initiate monitor-based debug execution with monitoring analysis and debugging capabilities",
       operationId = "exec:debug:monitor:start")
   @ApiResponses(value = {
@@ -79,7 +79,7 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.startByMonitor(dto));
   }
 
-  @Operation(summary = "Get script debug execution details", 
+  @Operation(summary = "Get script debug execution details",
       description = "Retrieve script debug execution details including step-by-step analysis and debugging information",
       operationId = "exec:debug:script:detail")
   @ApiResponses(value = {
@@ -91,7 +91,7 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.scriptDetail(id));
   }
 
-  @Operation(summary = "Get scenario debug execution details", 
+  @Operation(summary = "Get scenario debug execution details",
       description = "Retrieve scenario debug execution details including step-by-step analysis and debugging information",
       operationId = "exec:debug:scenario:detail")
   @ApiResponses(value = {
@@ -103,7 +103,7 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.scenarioDetail(id));
   }
 
-  @Operation(summary = "Get monitor debug execution details", 
+  @Operation(summary = "Get monitor debug execution details",
       description = "Retrieve monitor debug execution details including step-by-step analysis and debugging information",
       operationId = "exec:debug:monitor:detail")
   @ApiResponses(value = {

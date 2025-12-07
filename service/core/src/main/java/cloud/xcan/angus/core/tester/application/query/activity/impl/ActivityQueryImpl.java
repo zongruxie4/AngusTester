@@ -74,10 +74,10 @@ public class ActivityQueryImpl implements ActivityQuery {
    * <p>The method automatically enriches activity data with project names and
    * user information for enhanced display.</p>
    *
-   * @param spec the specification for filtering activities
-   * @param pageable the pagination and sorting parameters
+   * @param spec           the specification for filtering activities
+   * @param pageable       the pagination and sorting parameters
    * @param fullTextSearch whether to use full-text search
-   * @param match the full-text search match fields
+   * @param match          the full-text search match fields
    * @return a page of activities with enriched data
    */
   @Override
@@ -106,8 +106,8 @@ public class ActivityQueryImpl implements ActivityQuery {
    * Enriches activities with project names for enhanced display.
    *
    * <p>This method retrieves project information for all activities in the page
-   * and sets the project name for each activity. Activities without associated
-   * projects are marked with "--".</p>
+   * and sets the project name for each activity. Activities without associated projects are marked
+   * with "--".</p>
    *
    * @param page the page of activities to enrich with project names
    */
@@ -137,7 +137,7 @@ public class ActivityQueryImpl implements ActivityQuery {
    * <p>The method returns null if no activities are found for the target.</p>
    *
    * @param targetType the type of target to search for
-   * @param targetId the ID of the target
+   * @param targetId   the ID of the target
    * @return list of activity summaries or null if no activities found
    */
   @Override

@@ -45,14 +45,14 @@ import java.util.List;
 /**
  * Command implementation for scenario monitoring management operations.
  * <p>
- * Provides comprehensive CRUD operations for scenario monitors including creation, 
- * modification, execution, and lifecycle management.
+ * Provides comprehensive CRUD operations for scenario monitors including creation, modification,
+ * execution, and lifecycle management.
  * <p>
- * Implements business logic validation, permission checks, activity logging, 
- * and transaction management for all monitoring operations.
+ * Implements business logic validation, permission checks, activity logging, and transaction
+ * management for all monitoring operations.
  * <p>
- * Supports scheduled execution, failure notification, history tracking, 
- * and comprehensive activity monitoring.
+ * Supports scheduled execution, failure notification, history tracking, and comprehensive activity
+ * monitoring.
  */
 @Biz
 public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
@@ -78,8 +78,8 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
   /**
    * Adds a new scenario monitor to the system.
    * <p>
-   * Performs comprehensive validation including scenario existence, user permissions, 
-   * monitor name uniqueness, and notification settings.
+   * Performs comprehensive validation including scenario existence, user permissions, monitor name
+   * uniqueness, and notification settings.
    * <p>
    * Initializes monitor with pending status and calculates next execution date.
    * <p>
@@ -95,16 +95,16 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
       protected void checkParams() {
         // Ensure scenario ID is provided
         assertNotNull(monitor.getScenarioId(), "scenarioId is required");
-        
+
         // Ensure the scenario exists in database
         scenarioDb = scenarioQuery.checkAndFind(monitor.getScenarioId());
-        
+
         // Check user permission to view the scenario
         scenarioAuthQuery.checkViewAuth(getUserId(), scenarioDb.getId());
-        
+
         // Validate monitor name is unique within the project
         scenarioMonitorQuery.checkExits(monitor.getProjectId(), monitor.getName());
-        
+
         // Validate notification settings if enabled
         NoticeSetting setting = monitor.getNoticeSetting();
         assertTrue(!setting.getEnabled()
@@ -147,7 +147,7 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
       protected void checkParams() {
         // Ensure the monitor exists in database
         monitorDb = scenarioMonitorQuery.checkAndFind(monitor.getId());
-        
+
         // Validate monitor name is unique if changed
         if (isNotEmpty(monitor.getName()) && !monitorDb.getName().equals(monitor.getName())) {
           scenarioMonitorQuery.checkExits(monitorDb.getProjectId(), monitor.getName());
@@ -161,10 +161,10 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
           monitor.setNextExecDate(monitor.getTimeSetting()
               .getNextDate(nullSafe(monitorDb.getLastMonitorDate(), LocalDateTime.now())));
         }
-        
+
         // Update monitor information in database
         scenarioMonitorRepo.save(copyPropertiesIgnoreNull(monitor, monitorDb));
-        
+
         // Log monitor update activity for audit
         activityCmd.add(toActivity(SCENARIO_MONITOR, monitorDb, ActivityType.UPDATED));
         return null;
@@ -238,13 +238,13 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
           // Execute the monitoring scenario and record results
           LocalDateTime now = LocalDateTime.now();
           ScenarioMonitorHistory history = scenarioMonitorHistoryCmd.run(monitorDb);
-          
+
           // Update monitor status and execution information
           monitorDb.setStatus(history.getStatus())
               .setFailureMessage(lengthSafe(history.getFailureMessage(), 400))
               .setLastMonitorHistoryId(history.getId())
               .setLastMonitorDate(history.getCreatedDate());
-          
+
           // Calculate next execution date for recurring monitors
           if (nonNull(monitorDb.getTimeSetting()) && !monitorDb.getTimeSetting().isOnetime()) {
             monitorDb.setNextExecDate(monitorDb.getTimeSetting().getNextDate(now));
@@ -291,7 +291,7 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
       protected Void process() {
         // Delete all monitoring history records first
         scenarioMonitorHistoryRepo.deleteByMonitorIdIn(ids);
-        
+
         // Delete all monitors
         scenarioMonitorRepo.deleteByIdIn(ids);
 

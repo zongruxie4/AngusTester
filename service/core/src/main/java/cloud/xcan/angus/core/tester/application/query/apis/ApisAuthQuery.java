@@ -43,7 +43,8 @@ public interface ApisAuthQuery {
    *
    * @param userId grant user id
    * @param apisId grant project id
-   * @throws cloud.xcan.angus.core.biz.exception.BizException If not grant {@link ApiPermission#TEST}
+   * @throws cloud.xcan.angus.core.biz.exception.BizException If not grant
+   *                                                          {@link ApiPermission#TEST}
    */
   void checkTestAuth(Long userId, Long apisId);
 
@@ -52,7 +53,8 @@ public interface ApisAuthQuery {
    *
    * @param userId grant user id
    * @param apisId grant api id
-   * @throws cloud.xcan.angus.core.biz.exception.BizException If not grant {@link ApiPermission#GRANT}
+   * @throws cloud.xcan.angus.core.biz.exception.BizException If not grant
+   *                                                          {@link ApiPermission#GRANT}
    */
   void checkGrantAuth(Long userId, Long apisId);
 
@@ -61,7 +63,8 @@ public interface ApisAuthQuery {
    *
    * @param userId grant user id
    * @param apisId grant api id
-   * @throws cloud.xcan.angus.core.biz.exception.BizException If not grant {@link ApiPermission#SHARE}
+   * @throws cloud.xcan.angus.core.biz.exception.BizException If not grant
+   *                                                          {@link ApiPermission#SHARE}
    */
   void checkShareAuth(Long userId, Long apisId);
 

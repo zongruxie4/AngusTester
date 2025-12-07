@@ -121,10 +121,10 @@ public class TaskListVo {
 
   private BigDecimal actualWorkload;
 
-  @Schema(description="The number of task processing failures")
+  @Schema(description = "The number of task processing failures")
   private Integer failNum;
 
-  @Schema(description="The total number of tasks processed")
+  @Schema(description = "The total number of tasks processed")
   private Integer totalNum;
 
   private String description;

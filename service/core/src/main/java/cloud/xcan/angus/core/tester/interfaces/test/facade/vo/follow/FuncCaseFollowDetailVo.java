@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.test.facade.vo.follow;
 
 
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;

@@ -47,9 +47,9 @@ public class TaskFuncCaseCmdImpl extends CommCmd<TaskFuncCase, Long> implements 
    * tasks/cases, avoiding duplicate associations.</p>
    *
    * @param targetType the type of the target entity
-   * @param targetId the ID of the target entity
-   * @param taskIds the set of task IDs to associate
-   * @param caseIds the set of case IDs to associate
+   * @param targetId   the ID of the target entity
+   * @param taskIds    the set of task IDs to associate
+   * @param caseIds    the set of case IDs to associate
    */
   @Override
   public void addAssoc(CombinedTargetType targetType, Long targetId,
@@ -91,9 +91,9 @@ public class TaskFuncCaseCmdImpl extends CommCmd<TaskFuncCase, Long> implements 
    * removing old associations and creating new ones as needed.</p>
    *
    * @param targetType the type of the target entity
-   * @param targetId the ID of the target entity
-   * @param taskIds the set of task IDs to associate
-   * @param caseIds the set of case IDs to associate
+   * @param targetId   the ID of the target entity
+   * @param taskIds    the set of task IDs to associate
+   * @param caseIds    the set of case IDs to associate
    */
   @Override
   public void replaceAssoc(CombinedTargetType targetType, Long targetId,
@@ -109,9 +109,9 @@ public class TaskFuncCaseCmdImpl extends CommCmd<TaskFuncCase, Long> implements 
    * leaving other associations unchanged.</p>
    *
    * @param targetType the type of the target entity
-   * @param targetId the ID of the target entity
-   * @param taskIds the set of task IDs to associate (null to skip)
-   * @param caseIds the set of case IDs to associate (null to skip)
+   * @param targetId   the ID of the target entity
+   * @param taskIds    the set of task IDs to associate (null to skip)
+   * @param caseIds    the set of case IDs to associate (null to skip)
    */
   @Override
   public void updateAssoc(CombinedTargetType targetType, Long targetId,
@@ -132,13 +132,13 @@ public class TaskFuncCaseCmdImpl extends CommCmd<TaskFuncCase, Long> implements 
    * and specified tasks/cases.</p>
    *
    * @param targetType the type of the target entity
-   * @param targetId the ID of the target entity
-   * @param taskIds the set of task IDs to disassociate
-   * @param caseIds the set of case IDs to disassociate
+   * @param targetId   the ID of the target entity
+   * @param taskIds    the set of task IDs to disassociate
+   * @param caseIds    the set of case IDs to disassociate
    */
   @Override
   public void deleteAssoc(CombinedTargetType targetType, Long targetId,
-      Set<Long> taskIds, Set<Long> caseIds){
+      Set<Long> taskIds, Set<Long> caseIds) {
     if (isNotEmpty(taskIds)) {
       taskFuncCaseRepo.deleteByTargetIdAndAssocTargetIdIn(targetId, taskIds);
       taskFuncCaseRepo.deleteByTargetIdInAndAssocTargetId(taskIds, targetId);
@@ -157,8 +157,8 @@ public class TaskFuncCaseCmdImpl extends CommCmd<TaskFuncCase, Long> implements 
    * removing old associations and creating new ones as needed.</p>
    *
    * @param targetType the type of the target entity
-   * @param targetId the ID of the target entity
-   * @param taskIds the set of task IDs to associate
+   * @param targetId   the ID of the target entity
+   * @param taskIds    the set of task IDs to associate
    */
   @Override
   public void replaceAssocTask0(CombinedTargetType targetType, Long targetId, Set<Long> taskIds) {
@@ -196,8 +196,8 @@ public class TaskFuncCaseCmdImpl extends CommCmd<TaskFuncCase, Long> implements 
    * removing old associations and creating new ones as needed.</p>
    *
    * @param targetType the type of the target entity
-   * @param targetId the ID of the target entity
-   * @param caseIds the set of case IDs to associate
+   * @param targetId   the ID of the target entity
+   * @param caseIds    the set of case IDs to associate
    */
   @Override
   public void replaceAssocCase0(CombinedTargetType targetType, Long targetId, Set<Long> caseIds) {

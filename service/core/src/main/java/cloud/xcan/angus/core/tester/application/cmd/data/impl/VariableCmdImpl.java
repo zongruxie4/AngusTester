@@ -66,7 +66,8 @@ import org.springframework.web.multipart.MultipartFile;
  * Command implementation for managing variables.
  * <p>
  * Provides methods for adding, updating, replacing, cloning, importing, and deleting variables.
- * Handles permission checks, name uniqueness, quota validation, activity logging, and batch operations.
+ * Handles permission checks, name uniqueness, quota validation, activity logging, and batch
+ * operations.
  */
 @Slf4j
 @Biz
@@ -86,8 +87,8 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
   /**
    * Add a new variable.
    * <p>
-   * Validates project membership, required parameters, name uniqueness, and tenant quota.
-   * Inserts the variable and logs the creation activity.
+   * Validates project membership, required parameters, name uniqueness, and tenant quota. Inserts
+   * the variable and logs the creation activity.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -120,7 +121,8 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
   /**
    * Update an existing variable.
    * <p>
-   * Validates variable existence, project ID, and name uniqueness. Updates the variable and logs the update activity.
+   * Validates variable existence, project ID, and name uniqueness. Updates the variable and logs
+   * the update activity.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -183,7 +185,8 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
   /**
    * Clone a batch of variables.
    * <p>
-   * Validates variable existence, clones variables with unique names, inserts them, and logs clone activities.
+   * Validates variable existence, clones variables with unique names, inserts them, and logs clone
+   * activities.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -220,7 +223,8 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
   /**
    * Import variables from content or file.
    * <p>
-   * Validates project membership and file presence, parses content, inserts variables, and logs import activities.
+   * Validates project membership and file presence, parses content, inserts variables, and logs
+   * import activities.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -321,7 +325,8 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
   /**
    * Parse variables from script content.
    * <p>
-   * Parses JSON or YAML content, validates variable structure, handles duplicates according to strategy, and returns valid variables.
+   * Parses JSON or YAML content, validates variable structure, handles duplicates according to
+   * strategy, and returns valid variables.
    */
   private @NotNull List<Variable> parseVariablesFromScript(Long projectId,
       StrategyWhenDuplicated strategyWhenDuplicated, String finalContent) {
@@ -363,6 +368,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
   /**
    * Get the repository for Variable entity.
    * <p>
+   *
    * @return the VariableRepo instance
    */
   @Override

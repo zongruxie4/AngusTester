@@ -30,9 +30,9 @@ import org.springframework.data.domain.PageRequest;
 /**
  * Implementation of IndicatorStabilityQuery for managing stability test indicator queries.
  * <p>
- * This class provides comprehensive functionality for querying and managing stability
- * test indicators, which define stability metrics and thresholds for stability testing.
- * It handles indicator retrieval, default value fallback, and target information enrichment.
+ * This class provides comprehensive functionality for querying and managing stability test
+ * indicators, which define stability metrics and thresholds for stability testing. It handles
+ * indicator retrieval, default value fallback, and target information enrichment.
  * <p>
  * Key features include:
  * <ul>
@@ -67,12 +67,12 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
   /**
    * Finds a stability indicator by target ID and type with validation.
    * <p>
-   * Retrieves a stability indicator for the specified target and validates its existence.
-   * Enriches the indicator with target name information for complete context.
+   * Retrieves a stability indicator for the specified target and validates its existence. Enriches
+   * the indicator with target name information for complete context.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param targetId the target ID to find the indicator for
+   * @param targetId   the target ID to find the indicator for
    * @param targetType the target type (e.g., PROJECT, PLAN, CASE)
    * @return IndicatorStability object with enriched target information
    * @throws ResourceNotFound if the indicator is not found
@@ -100,14 +100,14 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
   /**
    * Retrieves stability indicator details or falls back to platform defaults.
    * <p>
-   * First attempts to find user-configured indicators, then falls back to platform
-   * default indicators if none are found. Handles tenant-specific configuration
-   * and target information enrichment.
+   * First attempts to find user-configured indicators, then falls back to platform default
+   * indicators if none are found. Handles tenant-specific configuration and target information
+   * enrichment.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
    * @param targetType the target type for the indicator
-   * @param targetId the target ID for the indicator
+   * @param targetId   the target ID for the indicator
    * @return IndicatorStability object with either user or platform default configuration
    * @throws SysException if platform configuration retrieval fails
    */
@@ -148,16 +148,15 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
   /**
    * Retrieves a paginated list of stability indicators with search capabilities.
    * <p>
-   * Supports both regular search and full-text search with comprehensive filtering.
-   * Applies authorization-based access control and converts database results to
-   * indicator objects.
+   * Supports both regular search and full-text search with comprehensive filtering. Applies
+   * authorization-based access control and converts database results to indicator objects.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param spec the search specification with criteria and filters
-   * @param pageable pagination parameters (page, size, sort)
+   * @param spec           the search specification with criteria and filters
+   * @param pageable       pagination parameters (page, size, sort)
    * @param fullTextSearch whether to use full-text search capabilities
-   * @param match full-text search match parameters
+   * @param match          full-text search match parameters
    * @return Page of IndicatorStability objects with converted data
    */
   @Override
@@ -183,10 +182,10 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
   /**
    * Finds a stability indicator by target ID and type without validation.
    * <p>
-   * Retrieves a stability indicator without existence validation or target enrichment.
-   * Used for internal operations where validation is handled separately.
+   * Retrieves a stability indicator without existence validation or target enrichment. Used for
+   * internal operations where validation is handled separately.
    *
-   * @param targetId the target ID to find the indicator for
+   * @param targetId   the target ID to find the indicator for
    * @param targetType the target type for the indicator
    * @return IndicatorStability object or null if not found
    */
@@ -198,12 +197,12 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
   /**
    * Enriches indicator with target name information.
    * <p>
-   * Retrieves and associates target name with the indicator for complete data context.
-   * Uses common query service for target information retrieval.
+   * Retrieves and associates target name with the indicator for complete data context. Uses common
+   * query service for target information retrieval.
    *
-   * @param stability the indicator to enrich with target name
+   * @param stability  the indicator to enrich with target name
    * @param targetType the target type for name retrieval
-   * @param targetId the target ID for name retrieval
+   * @param targetId   the target ID for name retrieval
    */
   private void assembleTargetName(IndicatorStability stability,
       CombinedTargetType targetType, Long targetId) {

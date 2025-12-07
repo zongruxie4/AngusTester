@@ -60,7 +60,7 @@ public class ApisRest {
   @Resource
   private ApisFacade apisFacade;
 
-  @Operation(summary = "Archive unarchived APIs", 
+  @Operation(summary = "Archive unarchived APIs",
       description = "Move unarchived APIs to archive with version control and lifecycle management",
       operationId = "apis:archive")
   @ApiResponses(value = {
@@ -74,7 +74,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.archive(dto));
   }
 
-  @Operation(summary = "Update APIs", 
+  @Operation(summary = "Update APIs",
       description = "Update multiple APIs with configuration and validation",
       operationId = "apis:update")
   @ApiResponses(value = {
@@ -88,7 +88,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace APIs", 
+  @Operation(summary = "Replace APIs",
       description = "Replace multiple APIs with new configuration and validation",
       operationId = "apis:replace")
   @ApiResponses(value = {
@@ -99,7 +99,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.replace(dto));
   }
 
-  @Operation(summary = "Rename API", 
+  @Operation(summary = "Rename API",
       description = "Update API name with validation and metadata management",
       operationId = "apis:replace:name")
   @ApiResponses(value = {
@@ -113,7 +113,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Move API to another service", 
+  @Operation(summary = "Move API to another service",
       description = "Relocate API to different service with validation and relationship management",
       operationId = "apis:move")
   @ApiResponses(value = {
@@ -126,7 +126,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Clone API", 
+  @Operation(summary = "Clone API",
       description = "Create copy of API with all configuration, schema definitions, and metadata",
       operationId = "apis:clone")
   @ApiResponses(value = {
@@ -140,7 +140,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.clone(id));
   }
 
-  @Operation(summary = "Delete APIs", 
+  @Operation(summary = "Delete APIs",
       description = "Remove multiple APIs from the system with batch operation support and cleanup",
       operationId = "apis:delete")
   @ApiResponses(value = {
@@ -153,7 +153,7 @@ public class ApisRest {
     apisFacade.delete(ids);
   }
 
-  @Operation(summary = "Update API status", 
+  @Operation(summary = "Update API status",
       description = "Modify API status with lifecycle management and validation",
       operationId = "apis:status:update")
   @ApiResponses(value = {
@@ -168,7 +168,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace API server configuration", 
+  @Operation(summary = "Replace API server configuration",
       description = "Update API server configuration with validation and deployment settings",
       operationId = "apis:schema:server:replace")
   @ApiResponses(value = {
@@ -183,7 +183,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace all API server configurations", 
+  @Operation(summary = "Replace all API server configurations",
       description = "Update all API server configurations with validation and deployment settings",
       operationId = "apis:schema:server:all:replace")
   @ApiResponses(value = {
@@ -198,7 +198,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete API servers", 
+  @Operation(summary = "Delete API servers",
       description = "Remove specific servers from API configuration with cleanup",
       operationId = "apis:schema:server:delete")
   @ApiResponses(value = {
@@ -213,7 +213,7 @@ public class ApisRest {
     apisFacade.serverDelete(id, urls);
   }
 
-  @Operation(summary = "Get API server configuration", 
+  @Operation(summary = "Get API server configuration",
       description = "Retrieve server configuration including current API request server, servers configuration, and parent services servers configuration",
       operationId = "apis:schema:server:all")
   @ApiResponses(value = {
@@ -226,7 +226,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.serverList(id));
   }
 
-  @Operation(summary = "Add mock API association", 
+  @Operation(summary = "Add mock API association",
       description = "Establish association between API and mock APIs with configuration",
       operationId = "apis:association:mock:apis:add")
   @ApiResponses(value = {
@@ -239,7 +239,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.assocMockApisAdd(id, dto));
   }
 
-  @Operation(summary = "Get mock API associations", 
+  @Operation(summary = "Get mock API associations",
       description = "Retrieve mock API associations for specific API with detailed information",
       operationId = "apis:association:mock:apis:all")
   @ApiResponses(value = {
@@ -251,7 +251,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.assocMockApis(id));
   }
 
-  @Operation(summary = "Get API details", 
+  @Operation(summary = "Get API details",
       description = "Retrieve API details including schema definitions, metadata, and configuration",
       operationId = "apis:detail")
   @ApiResponses(value = {
@@ -265,7 +265,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.detail(id, resolveRef));
   }
 
-  @Operation(summary = "Get API OpenAPI document", 
+  @Operation(summary = "Get API OpenAPI document",
       description = "Retrieve OpenAPI specification document for specific API with format support",
       operationId = "apis:openapi:detail")
   @ApiResponses(value = {
@@ -279,7 +279,7 @@ public class ApisRest {
     return ApiLocaleResult.successData(apisFacade.openapiDetail(id, dto));
   }
 
-  @Operation(summary = "Check API existence", 
+  @Operation(summary = "Check API existence",
       description = "Validate API existence with resource validation",
       operationId = "apis:check")
   @ApiResponses(value = {
@@ -293,7 +293,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Get API details list", 
+  @Operation(summary = "Get API details list",
       description = "Retrieve details for multiple APIs with batch operation support",
       operationId = "apis:list:detail")
   @ApiResponses(value = {
@@ -308,7 +308,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.listDetail(ids, resolveRef));
   }
 
-  @Operation(summary = "Query API list", 
+  @Operation(summary = "Query API list",
       description = "Retrieve paginated list of APIs with filtering, search options, and basic information",
       operationId = "apis:list")
   @ApiResponses(value = {
@@ -319,7 +319,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.list(dto));
   }
 
-  @Operation(summary = "Export API OpenAPI specification", 
+  @Operation(summary = "Export API OpenAPI specification",
       description = "Export API to OpenAPI specification format with configuration options and format support",
       operationId = "apis:openapi:export")
   @ApiResponses(value = {

@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.domain.comment.summary;
 
 
-
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;

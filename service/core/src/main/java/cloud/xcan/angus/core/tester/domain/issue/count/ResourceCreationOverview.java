@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ResourceCreationOverview extends AbstractOverview{
+public class ResourceCreationOverview extends AbstractOverview {
 
   private Map<Long, UserInfo> creators = new HashMap<>();
 

@@ -6,7 +6,6 @@ import static cloud.xcan.angus.api.commonlink.TesterConstant.CONFIG_FUNCTION_IND
 import static cloud.xcan.angus.api.commonlink.TesterConstant.CONFIG_PREF_INDICATOR;
 import static cloud.xcan.angus.api.commonlink.TesterConstant.CONFIG_STABILITY_INDICATOR;
 import static cloud.xcan.angus.core.tester.infra.util.AngusTesterUtils.parseSample;
-import static cloud.xcan.angus.spec.principal.PrincipalContext.getDefaultLanguage;
 import static java.util.Objects.requireNonNull;
 
 import cloud.xcan.angus.core.tester.domain.config.indicator.FuncData;

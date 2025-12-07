@@ -15,12 +15,12 @@ import java.util.List;
  * Command implementation for managing functional review case records.
  * </p>
  * <p>
- * Provides methods for adding and deleting review case records.
- * Handles record management for review case tracking and audit purposes.
+ * Provides methods for adding and deleting review case records. Handles record management for
+ * review case tracking and audit purposes.
  * </p>
  * <p>
- * Key features include review record management, batch operations,
- * and record cleanup for review case lifecycle.
+ * Key features include review record management, batch operations, and record cleanup for review
+ * case lifecycle.
  * </p>
  */
 @Biz

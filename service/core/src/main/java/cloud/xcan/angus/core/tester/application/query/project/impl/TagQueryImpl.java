@@ -64,6 +64,7 @@ public class TagQueryImpl implements TagQuery {
    * <p>
    * Get detailed information of a tag.
    * </p>
+   *
    * @param id Tag ID
    * @return Tag entity with edit permission information
    */
@@ -85,13 +86,14 @@ public class TagQueryImpl implements TagQuery {
    * List tags with pagination and optional full-text search.
    * </p>
    * <p>
-   * Supports both regular database queries and full-text search operations.
-   * Sets edit permissions for all returned tags based on project permissions.
+   * Supports both regular database queries and full-text search operations. Sets edit permissions
+   * for all returned tags based on project permissions.
    * </p>
-   * @param spec Search specification
-   * @param pageable Pagination information
+   *
+   * @param spec           Search specification
+   * @param pageable       Pagination information
    * @param fullTextSearch Whether to use full-text search
-   * @param match Search match parameters
+   * @param match          Search match parameters
    * @return Page of tags
    */
   @Override
@@ -114,9 +116,10 @@ public class TagQueryImpl implements TagQuery {
    * Check if all specified tag targets exist in the database.
    * </p>
    * <p>
-   * Validates that all tag IDs in the tag targets correspond to existing tags.
-   * Throws ResourceNotFound if any tag does not exist.
+   * Validates that all tag IDs in the tag targets correspond to existing tags. Throws
+   * ResourceNotFound if any tag does not exist.
    * </p>
+   *
    * @param tags List of tag targets to validate
    */
   @Override
@@ -142,6 +145,7 @@ public class TagQueryImpl implements TagQuery {
    * <p>
    * Check and find a tag by ID.
    * </p>
+   *
    * @param tagId Tag ID
    * @return Tag entity
    */
@@ -157,6 +161,7 @@ public class TagQueryImpl implements TagQuery {
    * <p>
    * Validates that all specified tag IDs exist. Throws ResourceNotFound if any tag is missing.
    * </p>
+   *
    * @param tagIds Collection of tag IDs
    * @return List of tag entities
    */
@@ -183,8 +188,9 @@ public class TagQueryImpl implements TagQuery {
    * Validates that all specified tag names exist in the project. Returns a map grouped by tag name.
    * Throws ResourceNotFound if any tag name is missing.
    * </p>
+   *
    * @param projectId Project ID
-   * @param names Set of tag names
+   * @param names     Set of tag names
    * @return Map of tag name to list of tags
    */
   @Override
@@ -220,8 +226,9 @@ public class TagQueryImpl implements TagQuery {
    * <p>
    * Check if tag names already exist in a project when adding new tags.
    * </p>
+   *
    * @param projectId Project ID
-   * @param names Set of tag names to check
+   * @param names     Set of tag names to check
    */
   @Override
   public void checkAddNameExist(Long projectId, Set<String> names) {
@@ -238,8 +245,9 @@ public class TagQueryImpl implements TagQuery {
    * <p>
    * Validates that updated tag names do not conflict with existing tags in the same project.
    * </p>
+   *
    * @param projectId Project ID
-   * @param tags Collection of tags to update
+   * @param tags      Collection of tags to update
    */
   @Override
   public void checkUpdateNameExists(Long projectId, Collection<Tag> tags) {
@@ -261,6 +269,7 @@ public class TagQueryImpl implements TagQuery {
    * <p>
    * Check tenant quota for tag creation.
    * </p>
+   *
    * @param incr Number of tags to be added
    */
   @Override
@@ -273,6 +282,7 @@ public class TagQueryImpl implements TagQuery {
    * <p>
    * Check if a resource has any tags associated with it.
    * </p>
+   *
    * @param caseId Resource ID
    * @return true if the resource has tags, false otherwise
    */
@@ -286,10 +296,11 @@ public class TagQueryImpl implements TagQuery {
    * Check if tag modifications are needed for a resource.
    * </p>
    * <p>
-   * Compares existing tags with new tag targets to determine if modifications are required.
-   * Returns true if tags need to be modified, false if no changes are needed.
+   * Compares existing tags with new tag targets to determine if modifications are required. Returns
+   * true if tags need to be modified, false if no changes are needed.
    * </p>
-   * @param id Resource ID
+   *
+   * @param id         Resource ID
    * @param tagTargets New tag targets to compare
    * @return true if modifications are needed, false otherwise
    */
@@ -317,11 +328,12 @@ public class TagQueryImpl implements TagQuery {
    * Set edit permissions for tags based on project permissions.
    * </p>
    * <p>
-   * Extracts project ID from search criteria and sets edit permission for all tags
-   * based on whether the user has edit permission for the project.
+   * Extracts project ID from search criteria and sets edit permission for all tags based on whether
+   * the user has edit permission for the project.
    * </p>
+   *
    * @param criteria Search criteria containing project ID
-   * @param tags List of tags to set permissions for
+   * @param tags     List of tags to set permissions for
    */
   @Override
   public void setEditPermission(Set<SearchCriteria> criteria, List<Tag> tags) {
@@ -342,6 +354,7 @@ public class TagQueryImpl implements TagQuery {
    * Efficiently loads and sets tag information for multiple resources to avoid N+1 query problems.
    * Groups tag targets by resource ID and sets tag names for each target.
    * </p>
+   *
    * @param ress List of resources that can be associated with tags
    */
   @Override

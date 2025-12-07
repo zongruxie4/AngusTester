@@ -68,7 +68,8 @@ public class NodeDomainRest {
   @Operation(summary = "Delete subdomain for cloud service node",
       description = "Remove subdomain registration to disable domain-based service routing.",
       operationId = "node:domain:delete")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Subdomain deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Subdomain deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("{id}")
   public void delete(

@@ -31,7 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
  * <p>
  * Provides methods for adding, clearing, restoring, and deleting project trash records.
  * <p>
- * Ensures permission checks, cascading operations, and batch processing with transaction management.
+ * Ensures permission checks, cascading operations, and batch processing with transaction
+ * management.
  */
 @Biz
 public class ProjectTrashCmdImpl extends CommCmd<ProjectTrash, Long> implements ProjectTrashCmd {

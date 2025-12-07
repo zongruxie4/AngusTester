@@ -10,11 +10,11 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Utility class for OpenAPI specification processing and schema management.
  * <p>
- * Provides methods for handling OpenAPI schema references, property extraction,
- * and schema resolution from OpenAPI documents.
+ * Provides methods for handling OpenAPI schema references, property extraction, and schema
+ * resolution from OpenAPI documents.
  * <p>
- * Implements reference resolution, schema navigation, and property lookup
- * functionality for OpenAPI 3.x specifications.
+ * Implements reference resolution, schema navigation, and property lookup functionality for OpenAPI
+ * 3.x specifications.
  * <p>
  * Supports complex schema structures including allOf, refs, and nested properties.
  */
@@ -27,8 +27,10 @@ public class OpenApiUtil {
    * <p>
    * Handles component references and returns the last segment of the reference path.
    * <p>
+   *
    * @param ref the full reference string (e.g., "#/components/schemas/User")
-   * @return the simple reference name (e.g., "User") or the original string if not a component reference
+   * @return the simple reference name (e.g., "User") or the original string if not a component
+   * reference
    */
   public static String getSimpleRef(String ref) {
     // Validate input parameter
@@ -50,7 +52,8 @@ public class OpenApiUtil {
    * <p>
    * Handles null checks for OpenAPI object, components, and schemas map.
    * <p>
-   * @param name the name of the schema to retrieve
+   *
+   * @param name    the name of the schema to retrieve
    * @param openAPI the OpenAPI specification object
    * @return the schema if found, null otherwise
    */
@@ -82,8 +85,9 @@ public class OpenApiUtil {
    * <p>
    * Handles null reference checks and delegates to getSchemaFromName for resolution.
    * <p>
+   *
    * @param refSchema the schema containing a reference
-   * @param openAPI the OpenAPI specification object
+   * @param openAPI   the OpenAPI specification object
    * @return the resolved schema if reference is valid, null otherwise
    */
   public static Schema getSchemaFromRefSchema(Schema refSchema, OpenAPI openAPI) {
@@ -100,14 +104,15 @@ public class OpenApiUtil {
   /**
    * Searches for a property across multiple schemas in an allOf structure.
    * <p>
-   * Iterates through all schemas in the allOf list, resolving references and
-   * checking for the specified property.
+   * Iterates through all schemas in the allOf list, resolving references and checking for the
+   * specified property.
    * <p>
    * Supports nested schema references and complex allOf structures.
    * <p>
+   *
    * @param propertyName the name of the property to search for
-   * @param schemas the list of schemas to search through
-   * @param openAPI the OpenAPI specification object for reference resolution
+   * @param schemas      the list of schemas to search through
+   * @param openAPI      the OpenAPI specification object for reference resolution
    * @return the property schema if found, null otherwise
    */
   public static Schema getPropertyFromAllOfSchema(String propertyName, List<Schema> schemas,

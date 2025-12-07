@@ -159,7 +159,7 @@ public class ExecInfo extends TenantAuditingEntity<ExecInfo, Long> {
   @Transient
   private boolean hasOperationPermission;
 
-  public boolean canUpdateTestResult(){
+  public boolean canUpdateTestResult() {
     return PLUGIN_HTTP_NAME.equals(plugin) && nonNull(scriptSource)
         && nonNull(scriptSourceId) && scriptSource.needTestResult();
   }

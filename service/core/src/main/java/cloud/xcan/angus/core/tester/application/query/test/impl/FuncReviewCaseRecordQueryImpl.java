@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * Implementation of FuncReviewCaseRecordQuery for managing functional test case review records.
  * <p>
- * This class provides functionality for querying and managing review case records, which track
- * the history and audit trail of case review operations. It handles record retrieval and
- * user information enrichment.
+ * This class provides functionality for querying and managing review case records, which track the
+ * history and audit trail of case review operations. It handles record retrieval and user
+ * information enrichment.
  * <p>
  * Key features include:
  * <ul>
@@ -45,8 +45,8 @@ public class FuncReviewCaseRecordQueryImpl implements FuncReviewCaseRecordQuery 
   /**
    * Retrieves review case records for a specific functional test case.
    * <p>
-   * Provides comprehensive review history for a case including all review operations,
-   * timestamps, and user information. Enriches results with user details for audit purposes.
+   * Provides comprehensive review history for a case including all review operations, timestamps,
+   * and user information. Enriches results with user details for audit purposes.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *

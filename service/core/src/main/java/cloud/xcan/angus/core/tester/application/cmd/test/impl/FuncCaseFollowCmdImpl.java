@@ -27,12 +27,12 @@ import org.springframework.transaction.annotation.Transactional;
  * Command implementation for managing functional case follows.
  * </p>
  * <p>
- * Provides methods for adding and canceling case follows for functional testing.
- * Handles permission checks, case existence validation, and activity logging.
+ * Provides methods for adding and canceling case follows for functional testing. Handles permission
+ * checks, case existence validation, and activity logging.
  * </p>
  * <p>
- * Key features include follow case management, user tracking preferences,
- * and comprehensive activity logging for audit purposes.
+ * Key features include follow case management, user tracking preferences, and comprehensive
+ * activity logging for audit purposes.
  * </p>
  */
 @Biz

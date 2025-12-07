@@ -378,11 +378,11 @@ public class Apis extends TenantAuditingEntity<Apis, Long> implements ActivityRe
     return needTested;
   }
 
-  public boolean isAuthSchemaRef(){
+  public boolean isAuthSchemaRef() {
     return nonNull(authentication) && isNotEmpty(authentication.get$ref());
   }
 
-  public boolean includeSchemaRef(String refKey){
+  public boolean includeSchemaRef(String refKey) {
     return isNotEmpty(resolvedRefModels) && resolvedRefModels.containsKey(refKey);
   }
 

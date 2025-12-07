@@ -20,7 +20,7 @@ import java.util.Set;
 public class FuncBaselineCaseAssembler {
 
   public static FuncBaselineCaseDetailVo toDetailVo(FuncBaselineCase case0) {
-    return isNull(case0) ? null: new FuncBaselineCaseDetailVo()
+    return isNull(case0) ? null : new FuncBaselineCaseDetailVo()
         .setBaselineId(case0.getBaselineId())
         .setId(case0.getCaseId())
         .setName(case0.getName())

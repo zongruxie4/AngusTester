@@ -107,7 +107,7 @@ public class IndicatorStabilityCmdImpl extends CommCmd<IndicatorStability, Long>
         stabilityDb = indicatorStabilityQuery.find0(stability.getTargetId(),
             stability.getTargetType());
 
-        if (nonNull(stabilityDb)){
+        if (nonNull(stabilityDb)) {
           target = (ActivityResource) commonQuery.checkAndGetIndicatorTarget(
               stabilityDb.getTargetType(), stabilityDb.getTargetId());
         }

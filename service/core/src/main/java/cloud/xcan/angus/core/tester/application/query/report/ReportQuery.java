@@ -62,7 +62,8 @@ public interface ReportQuery {
 
   ApisTestingContent assembleApisTestingContent(ContentFilterSetting filter);
 
-  ServicesTestingContent assembleServicesTestingContent(ContentFilterSetting filter, Long projectId);
+  ServicesTestingContent assembleServicesTestingContent(ContentFilterSetting filter,
+      Long projectId);
 
   FuncCaseContent assembleFuncCaseContent(ContentFilterSetting filter);
 
@@ -72,7 +73,8 @@ public interface ReportQuery {
 
   TaskSprintContent assembleTaskSprintContent(ContentFilterSetting filter, Long projectId);
 
-  ProjectProgressContent assembleProjectProgressContent(ContentFilterSetting filter, Long projectId);
+  ProjectProgressContent assembleProjectProgressContent(ContentFilterSetting filter,
+      Long projectId);
 
   TestEvaluationResult assembleTestEvaluationContent(ContentFilterSetting filter, Long projectId);
 

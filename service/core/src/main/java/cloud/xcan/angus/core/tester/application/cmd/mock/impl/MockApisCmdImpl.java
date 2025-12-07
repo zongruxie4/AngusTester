@@ -63,7 +63,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command implementation for mock API management.
  * <p>
- * Provides methods for adding, updating, replacing, cloning, moving, associating, and deleting mock APIs.
+ * Provides methods for adding, updating, replacing, cloning, moving, associating, and deleting mock
+ * APIs.
  * <p>
  * Ensures permission checks, activity logging, and batch operations with transaction management.
  */
@@ -517,7 +518,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
    * Checks existence, permission, and updates association.
    * <p>
    * Logs association activity.
-   *
+   * <p>
    * Note: Each mock API can only be associated with one apis.
    */
   @Transactional(rollbackFor = Exception.class)

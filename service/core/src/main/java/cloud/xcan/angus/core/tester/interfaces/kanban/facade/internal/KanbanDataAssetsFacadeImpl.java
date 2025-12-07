@@ -72,7 +72,8 @@ public class KanbanDataAssetsFacadeImpl implements KanbanDataAssetsFacade {
 
   @Override
   public ResourcesFuncCount funcResourcesStatistics(KanbanDataAssetsCountDto dto) {
-    FuncLastResourceCreationCount count = funcCaseQuery.creationResourcesStatistics(dto.getProjectId(),
+    FuncLastResourceCreationCount count = funcCaseQuery.creationResourcesStatistics(
+        dto.getProjectId(),
         null, dto.getCreatorObjectType(), dto.getCreatorObjectId(), dto.getCreatedDateStart(),
         dto.getCreatedDateEnd(), true, true, true);
     return toCount(count);

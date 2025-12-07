@@ -199,7 +199,8 @@ public class OpenAPITranslator {
         value -> operation.setTags(List.of(value.split(","))));
 
     translateField(httpMethod + ".summary", operation::getSummary, operation::setSummary);
-    translateField(httpMethod + ".description", operation::getDescription, operation::setDescription);
+    translateField(httpMethod + ".description", operation::getDescription,
+        operation::setDescription);
 
     translateExternalDocs(operation.getExternalDocs());
 

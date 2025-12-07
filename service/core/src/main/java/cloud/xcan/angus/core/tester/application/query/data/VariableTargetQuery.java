@@ -13,7 +13,8 @@ public interface VariableTargetQuery {
 
   List<Variable> findVariables(Long targetId, String targetType);
 
-  Map<Long, List<Variable>> findVariables(Collection<Long> targetId, String targetType, Map<Long, Long> caseApiMap);
+  Map<Long, List<Variable>> findVariables(Collection<Long> targetId, String targetType,
+      Map<Long, Long> caseApiMap);
 
   List<VariableTarget> findTargets(Long variableId);
 

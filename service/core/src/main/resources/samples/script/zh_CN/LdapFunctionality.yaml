@@ -55,7 +55,7 @@ task:
       testType: MODIFY
     - target: LDAP
       name: 修改自定义条目
-      beforeName:  修改条目
+      beforeName: 修改条目
       description: 修改自定义人员条目
       enabled: false
       server:

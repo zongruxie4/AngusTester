@@ -31,7 +31,8 @@ import java.util.Set;
  * Implementation of ProjectMemberQuery for project member management and validation.
  * </p>
  * <p>
- * Provides methods for finding project members, checking membership permissions, and setting member information.
+ * Provides methods for finding project members, checking membership permissions, and setting member
+ * information.
  * </p>
  */
 @Biz
@@ -48,6 +49,7 @@ public class ProjectMemberQueryImpl implements ProjectMemberQuery {
    * <p>
    * Find all user IDs who are members of the specified project.
    * </p>
+   *
    * @param projectId Project ID
    * @return Set of user IDs
    */
@@ -65,9 +67,10 @@ public class ProjectMemberQueryImpl implements ProjectMemberQuery {
    * If creator object type and ID are provided, returns users associated with that creator object.
    * Otherwise, returns all project member user IDs.
    * </p>
+   *
    * @param creatorObjectType Type of creator object
-   * @param creatorObjectId Creator object ID
-   * @param projectId Project ID
+   * @param creatorObjectId   Creator object ID
+   * @param projectId         Project ID
    * @return Set of member IDs
    */
   @Override
@@ -86,6 +89,7 @@ public class ProjectMemberQueryImpl implements ProjectMemberQuery {
    * <p>
    * Check if the current user is a member of the project specified in the search criteria.
    * </p>
+   *
    * @param criteria Search criteria containing project ID
    */
   @Override
@@ -100,10 +104,11 @@ public class ProjectMemberQueryImpl implements ProjectMemberQuery {
    * Check if a user is a member of the specified project.
    * </p>
    * <p>
-   * Admins bypass this check. For regular users, validates that the user's organization IDs
-   * overlap with the project's member organization IDs.
+   * Admins bypass this check. For regular users, validates that the user's organization IDs overlap
+   * with the project's member organization IDs.
    * </p>
-   * @param userId User ID to check
+   *
+   * @param userId    User ID to check
    * @param projectId Project ID
    */
   @Override
@@ -122,6 +127,7 @@ public class ProjectMemberQueryImpl implements ProjectMemberQuery {
    * <p>
    * Set member information for a project by grouping members by organization target type.
    * </p>
+   *
    * @param project Project to set members for
    */
   @Override
@@ -145,6 +151,7 @@ public class ProjectMemberQueryImpl implements ProjectMemberQuery {
    * <p>
    * Set member information for a list of projects.
    * </p>
+   *
    * @param projects List of projects to set members for
    */
   @Override

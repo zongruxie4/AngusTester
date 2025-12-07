@@ -143,7 +143,7 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
 
   @Override
   public void replaceSoftwareVersion(Long id, SoftwareVersionRefReplaceDto dto) {
-    funcCaseCmd.replaceSoftwareVersion(id,  Objects.isNull(dto) ? null : dto.getSoftwareVersion());
+    funcCaseCmd.replaceSoftwareVersion(id, Objects.isNull(dto) ? null : dto.getSoftwareVersion());
   }
 
   @Override

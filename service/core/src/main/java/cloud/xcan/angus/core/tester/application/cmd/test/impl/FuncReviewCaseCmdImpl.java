@@ -50,12 +50,12 @@ import java.util.stream.Collectors;
  * Command implementation for managing functional review cases.
  * </p>
  * <p>
- * Provides methods for adding, reviewing, resetting, and deleting review cases.
- * Handles permission checks, review workflow management, and activity logging.
+ * Provides methods for adding, reviewing, resetting, and deleting review cases. Handles permission
+ * checks, review workflow management, and activity logging.
  * </p>
  * <p>
- * Key features include review case management, review workflow processing,
- * record tracking, and comprehensive activity logging for audit purposes.
+ * Key features include review case management, review workflow processing, record tracking, and
+ * comprehensive activity logging for audit purposes.
  * </p>
  */
 @Biz
@@ -151,10 +151,10 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
         // Check the review and cases is consistent
         Set<Long> planIds = reviewCasesDb.stream().map(FuncReviewCase::getPlanId)
             .collect(Collectors.toSet());
-        assertTrue(planIds.size() == 1,"Only supports review one plan result");
+        assertTrue(planIds.size() == 1, "Only supports review one plan result");
         Set<Long> reviewIds = reviewCasesDb.stream().map(FuncReviewCase::getReviewId)
             .collect(Collectors.toSet());
-        assertTrue(reviewIds.size() == 1,"Only supports modification one case review result");
+        assertTrue(reviewIds.size() == 1, "Only supports modification one case review result");
         // Check the review exists
         reviewDb = funcReviewQuery.checkAndFind(reviewIds.iterator().next());
         // Check the review permission

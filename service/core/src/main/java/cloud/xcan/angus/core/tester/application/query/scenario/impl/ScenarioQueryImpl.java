@@ -76,7 +76,8 @@ import org.springframework.data.domain.PageRequest;
  * Implementation of ScenarioQuery for scenario management and query operations.
  * </p>
  * <p>
- * Provides methods for scenario CRUD operations, execution tracking, statistics, and notification handling.
+ * Provides methods for scenario CRUD operations, execution tracking, statistics, and notification
+ * handling.
  * </p>
  */
 @Biz
@@ -112,8 +113,10 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * Get detailed information of a scenario including script content and user interaction states.
    * </p>
    * <p>
-   * Checks view permissions, sets favorite and follow states for user actions, and loads associated script information.
+   * Checks view permissions, sets favorite and follow states for user actions, and loads associated
+   * script information.
    * </p>
+   *
    * @param id Scenario ID
    * @return Scenario with complete information
    */
@@ -156,6 +159,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Check if a scenario exists by ID.
    * </p>
+   *
    * @param id Scenario ID
    */
   @Override
@@ -176,6 +180,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Find scenarios by a set of IDs.
    * </p>
+   *
    * @param ids Set of scenario IDs
    * @return List of scenarios
    */
@@ -195,13 +200,14 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * List scenarios with optional full-text search and comprehensive data assembly.
    * </p>
    * <p>
-   * Checks project member permissions, applies authorization filters, and assembles execution information,
-   * user interaction states, and user details for all scenarios in the result.
+   * Checks project member permissions, applies authorization filters, and assembles execution
+   * information, user interaction states, and user details for all scenarios in the result.
    * </p>
-   * @param spec Scenario search specification
-   * @param pageable Pagination information
+   *
+   * @param spec           Scenario search specification
+   * @param pageable       Pagination information
    * @param fullTextSearch Whether to use full-text search
-   * @param match Full-text search keywords
+   * @param match          Full-text search keywords
    * @return Page of scenarios
    */
   @Override
@@ -249,13 +255,15 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * Get scenario creation statistics for a project within a specified time range.
    * </p>
    * <p>
-   * Supports filtering by creator object type and provides comprehensive creation count statistics.
+   * Supports filtering by creator object type and provides comprehensive creation count
+   * statistics.
    * </p>
-   * @param projectId Project ID
+   *
+   * @param projectId         Project ID
    * @param creatorObjectType Type of creator object
-   * @param creatorObjectId Creator object ID
-   * @param createdDateStart Start date for filtering
-   * @param createdDateEnd End date for filtering
+   * @param creatorObjectId   Creator object ID
+   * @param createdDateStart  Start date for filtering
+   * @param createdDateEnd    End date for filtering
    * @return Scenario creation statistics
    */
   @Override
@@ -287,6 +295,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Convert a scenario to a detail summary format.
    * </p>
+   *
    * @param scenario Scenario entity
    * @return Scenario detail summary
    */
@@ -299,6 +308,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Check and find a scenario by ID.
    * </p>
+   *
    * @param id Scenario ID
    * @return Scenario entity
    */
@@ -311,6 +321,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Check and find a scenario by ID using optimized query.
    * </p>
+   *
    * @param id Scenario ID
    * @return Scenario entity
    */
@@ -323,6 +334,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Check and find the script associated with a scenario.
    * </p>
+   *
    * @param id Scenario ID
    * @return Script entity
    */
@@ -337,6 +349,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Check and find the script information associated with a scenario.
    * </p>
+   *
    * @param id Scenario ID
    * @return Script information entity
    */
@@ -351,6 +364,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Check if the scenario quota is exceeded after increment.
    * </p>
+   *
    * @param inc Number of scenarios to add
    */
   @Override
@@ -363,6 +377,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Find a scenario by ID using optimized query, returns null if not found.
    * </p>
+   *
    * @param id Scenario ID
    * @return Scenario entity or null
    */
@@ -375,6 +390,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Find scenarios by a collection of IDs using optimized query.
    * </p>
+   *
    * @param ids Collection of scenario IDs
    * @return List of scenarios
    */
@@ -387,8 +403,9 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Find the least recently used scenario by project, plugin, and script types.
    * </p>
-   * @param projectId Project ID
-   * @param plugin Plugin name
+   *
+   * @param projectId   Project ID
+   * @param plugin      Plugin name
    * @param scriptTypes List of script types
    * @return Scenario entity
    */
@@ -402,8 +419,9 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Check if a scenario name already exists in the project when adding a new scenario.
    * </p>
+   *
    * @param projectId Project ID
-   * @param name Scenario name
+   * @param name      Scenario name
    */
   @Override
   public void checkNameExists(long projectId, String name) {
@@ -413,10 +431,12 @@ public class ScenarioQueryImpl implements ScenarioQuery {
 
   /**
    * <p>
-   * Check if a scenario name already exists when updating a scenario, excluding the current scenario.
+   * Check if a scenario name already exists when updating a scenario, excluding the current
+   * scenario.
    * </p>
-   * @param projectId Project ID
-   * @param name Scenario name
+   *
+   * @param projectId  Project ID
+   * @param name       Scenario name
    * @param scenarioId Current scenario ID
    */
   @Override
@@ -429,6 +449,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Check if authorization control is enabled for a scenario.
    * </p>
+   *
    * @param id Scenario ID
    * @return true if authorization control is enabled, false otherwise
    */
@@ -445,6 +466,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Batch retrieves favorite information to avoid N+1 query problems.
    * </p>
+   *
    * @param scenarios List of scenarios to update
    */
   @Override
@@ -468,6 +490,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * <p>
    * Batch retrieves follow information to avoid N+1 query problems.
    * </p>
+   *
    * @param scenarios List of scenarios to update
    */
   @Override
@@ -489,8 +512,10 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * Set execution information for a list of scenarios.
    * </p>
    * <p>
-   * Retrieves the latest execution information for each scenario and sets failure messages for failed executions.
+   * Retrieves the latest execution information for each scenario and sets failure messages for
+   * failed executions.
    * </p>
+   *
    * @param scenarios List of scenarios to update
    */
   @Override
@@ -534,8 +559,10 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * Set a safe clone name for a scenario to avoid naming conflicts.
    * </p>
    * <p>
-   * Generates a unique name by appending "-Copy" and random suffix if necessary, ensuring the name length is within limits.
+   * Generates a unique name by appending "-Copy" and random suffix if necessary, ensuring the name
+   * length is within limits.
    * </p>
+   *
    * @param scenario Scenario to set clone name for
    */
   @Override
@@ -554,11 +581,12 @@ public class ScenarioQueryImpl implements ScenarioQuery {
    * Assemble and send modification notification events for scenario changes.
    * </p>
    * <p>
-   * Sends notifications to scenario creators and followers when scenarios are modified.
-   * Supports multiple notification types based on tenant settings.
+   * Sends notifications to scenario creators and followers when scenarios are modified. Supports
+   * multiple notification types based on tenant settings.
    * </p>
+   *
    * @param scenarioDb Scenario entity
-   * @param activity Activity information
+   * @param activity   Activity information
    */
   @Override
   public void assembleAndSendModifyNoticeEvent(Scenario scenarioDb, Activity activity) {

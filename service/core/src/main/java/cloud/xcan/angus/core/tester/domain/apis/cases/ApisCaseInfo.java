@@ -43,7 +43,8 @@ import org.hibernate.annotations.Type;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class ApisCaseInfo extends TenantAuditingEntity<ApisCaseInfo, Long> implements ActivityResource {
+public class ApisCaseInfo extends TenantAuditingEntity<ApisCaseInfo, Long> implements
+    ActivityResource {
 
   @Id
   private Long id;

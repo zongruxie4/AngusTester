@@ -26,7 +26,7 @@ public class ApisSharePubRest {
   @Resource
   private ApisShareFacade apisShareFacade;
 
-  @Operation(summary = "Get shared API details", 
+  @Operation(summary = "Get shared API details",
       description = "Retrieve comprehensive shared API details with public access and comprehensive resource information",
       operationId = "apis:share:view:pub")
   @ApiResponses(value = {

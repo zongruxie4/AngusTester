@@ -61,7 +61,8 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 /**
  * Command implementation for mock service instance management.
  * <p>
- * Provides methods for starting, stopping, querying status, synchronizing, and deleting mock service instances.
+ * Provides methods for starting, stopping, querying status, synchronizing, and deleting mock
+ * service instances.
  * <p>
  * Ensures distributed coordination, error handling, and integration with agent nodes.
  */

@@ -47,7 +47,8 @@ public class ExecResultSummaryConverter {
         .setCaseSummary(testResultDb.getCaseSummary())
         .setNodeUsageSummary(testResultDb.getNodeUsageSummary())
         .setCaseResults(
-            toTestCaseResultDetailSummaries(testResultDb.getCaseResults(), testResultDb.getExecName()))
+            toTestCaseResultDetailSummaries(testResultDb.getCaseResults(),
+                testResultDb.getExecName()))
         .setSampleContent(testResultDb.getSampleContent())
         .setExecBy(testResultDb.getExecBy())
         .setExecByName(testResultDb.getExecByName())

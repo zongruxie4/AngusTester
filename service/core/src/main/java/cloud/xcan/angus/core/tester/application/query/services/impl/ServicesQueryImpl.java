@@ -63,7 +63,8 @@ import org.springframework.data.domain.PageRequest;
  * Implementation of ServicesQuery for services management and query operations.
  * </p>
  * <p>
- * Provides methods for services CRUD operations, API association management, test statistics, and quota validation.
+ * Provides methods for services CRUD operations, API association management, test statistics, and
+ * quota validation.
  * </p>
  */
 @Biz
@@ -99,10 +100,11 @@ public class ServicesQueryImpl implements ServicesQuery {
    * Get detailed information of a service including API counts and optional schema information.
    * </p>
    * <p>
-   * Retrieves service details, sets API and API case counts, and optionally joins schema information.
-   * Requires view permission for the service.
+   * Retrieves service details, sets API and API case counts, and optionally joins schema
+   * information. Requires view permission for the service.
    * </p>
-   * @param id Service ID
+   *
+   * @param id         Service ID
    * @param joinSchema Whether to include schema information
    * @return Service with detailed information
    */
@@ -137,10 +139,11 @@ public class ServicesQueryImpl implements ServicesQuery {
    * Retrieves paginated services with authorization filtering and sets API counts for each service.
    * Supports both regular database queries and full-text search operations.
    * </p>
-   * @param spec Search specification
-   * @param pageable Pagination information
+   *
+   * @param spec           Search specification
+   * @param pageable       Pagination information
    * @param fullTextSearch Whether to use full-text search
-   * @param match Search match parameters
+   * @param match          Search match parameters
    * @return Page of services
    */
   @Override
@@ -165,6 +168,7 @@ public class ServicesQueryImpl implements ServicesQuery {
    * <p>
    * Get the associated mock service for a service.
    * </p>
+   *
    * @param id Service ID
    * @return Associated mock service
    */
@@ -185,13 +189,15 @@ public class ServicesQueryImpl implements ServicesQuery {
    * Count API tests for a specific service within a time range.
    * </p>
    * <p>
-   * Provides test statistics for APIs belonging to a service, with optional filtering by creator and time range.
+   * Provides test statistics for APIs belonging to a service, with optional filtering by creator
+   * and time range.
    * </p>
-   * @param serviceId Service ID
+   *
+   * @param serviceId         Service ID
    * @param creatorObjectType Creator object type
-   * @param creatorObjectId Creator object ID
-   * @param createdDateStart Start date for filtering
-   * @param createdDateEnd End date for filtering
+   * @param creatorObjectId   Creator object ID
+   * @param createdDateStart  Start date for filtering
+   * @param createdDateEnd    End date for filtering
    * @return API test count statistics
    */
   @Override
@@ -212,13 +218,15 @@ public class ServicesQueryImpl implements ServicesQuery {
    * Count API tests for a project within a time range.
    * </p>
    * <p>
-   * Provides test statistics for all APIs in a project, with optional filtering by creator and time range.
+   * Provides test statistics for all APIs in a project, with optional filtering by creator and time
+   * range.
    * </p>
-   * @param projectId Project ID
+   *
+   * @param projectId         Project ID
    * @param creatorObjectType Creator object type
-   * @param creatorObjectId Creator object ID
-   * @param createdDateStart Start date for filtering
-   * @param createdDateEnd End date for filtering
+   * @param creatorObjectId   Creator object ID
+   * @param createdDateStart  Start date for filtering
+   * @param createdDateEnd    End date for filtering
    * @return API test count statistics
    */
   @Override
@@ -241,6 +249,7 @@ public class ServicesQueryImpl implements ServicesQuery {
    * <p>
    * Used by the summary query system to convert service entities to summary format.
    * </p>
+   *
    * @param services Service entity
    * @return Service summary
    */
@@ -253,6 +262,7 @@ public class ServicesQueryImpl implements ServicesQuery {
    * <p>
    * Find a service by ID without throwing exceptions.
    * </p>
+   *
    * @param id Service ID
    * @return Service entity or null if not found
    */
@@ -265,6 +275,7 @@ public class ServicesQueryImpl implements ServicesQuery {
    * <p>
    * Find multiple services by IDs without throwing exceptions.
    * </p>
+   *
    * @param ids Collection of service IDs
    * @return List of service entities
    */
@@ -277,6 +288,7 @@ public class ServicesQueryImpl implements ServicesQuery {
    * <p>
    * Find service IDs that have associated APIs.
    * </p>
+   *
    * @param serviceIds Collection of service IDs to check
    * @return List of service IDs that have APIs
    */
@@ -289,6 +301,7 @@ public class ServicesQueryImpl implements ServicesQuery {
    * <p>
    * Check and find a service by ID.
    * </p>
+   *
    * @param id Service ID
    * @return Service entity
    */
@@ -303,8 +316,10 @@ public class ServicesQueryImpl implements ServicesQuery {
    * Check and find multiple services by IDs.
    * </p>
    * <p>
-   * Validates that all specified service IDs exist. Throws ResourceNotFound if any service is missing.
+   * Validates that all specified service IDs exist. Throws ResourceNotFound if any service is
+   * missing.
    * </p>
+   *
    * @param serviceIds Set of service IDs
    * @return List of service entities
    */
@@ -325,8 +340,10 @@ public class ServicesQueryImpl implements ServicesQuery {
    * Check if authorization control is enabled for a service.
    * </p>
    * <p>
-   * Returns true if authorization is enabled or null (default enabled), false if explicitly disabled.
+   * Returns true if authorization is enabled or null (default enabled), false if explicitly
+   * disabled.
    * </p>
+   *
    * @param id Service ID
    * @return true if authorization control is enabled, false otherwise
    */
@@ -340,6 +357,7 @@ public class ServicesQueryImpl implements ServicesQuery {
    * <p>
    * Check if a service exists by ID.
    * </p>
+   *
    * @param id Service ID
    */
   @Override
@@ -353,6 +371,7 @@ public class ServicesQueryImpl implements ServicesQuery {
    * <p>
    * Check tenant quota for service creation.
    * </p>
+   *
    * @param incr Number of services to be added
    */
   @Override
@@ -366,10 +385,11 @@ public class ServicesQueryImpl implements ServicesQuery {
    * Check if APIs belong to a specific service.
    * </p>
    * <p>
-   * Validates that all specified API IDs belong to the given service.
-   * Throws an exception if any API does not belong to the service.
+   * Validates that all specified API IDs belong to the given service. Throws an exception if any
+   * API does not belong to the service.
    * </p>
-   * @param apiIds Collection of API IDs to validate
+   *
+   * @param apiIds    Collection of API IDs to validate
    * @param serviceId Service ID
    * @return List of validated API entities
    */
@@ -393,8 +413,9 @@ public class ServicesQueryImpl implements ServicesQuery {
    * Validates that a service with the specified name does not already exist in the project.
    * Includes logic for handling deleted services.
    * </p>
+   *
    * @param projectId Project ID
-   * @param name Service name to check
+   * @param name      Service name to check
    */
   @Override
   public void checkNameExists(long projectId, String name) {
@@ -410,6 +431,7 @@ public class ServicesQueryImpl implements ServicesQuery {
    * <p>
    * Prevents modification of released services. Throws an exception if the service is released.
    * </p>
+   *
    * @param serviceDb Service entity to check
    */
   @Override
@@ -424,9 +446,10 @@ public class ServicesQueryImpl implements ServicesQuery {
    * Set API counts for a list of services.
    * </p>
    * <p>
-   * Efficiently loads and sets API counts for multiple services to avoid N+1 query problems.
-   * Uses aggregation queries to get counts grouped by service ID.
+   * Efficiently loads and sets API counts for multiple services to avoid N+1 query problems. Uses
+   * aggregation queries to get counts grouped by service ID.
    * </p>
+   *
    * @param services List of services to set API counts for
    * @param criteria Search criteria containing project ID
    */
@@ -456,6 +479,7 @@ public class ServicesQueryImpl implements ServicesQuery {
    * Generates a unique name for service cloning by appending "-Copy" and a random salt if needed.
    * Ensures the name length does not exceed the maximum allowed length.
    * </p>
+   *
    * @param service Service entity to set the clone name for
    */
   @Override

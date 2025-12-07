@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class VariableReplaceDto {
 
-  @Schema(description="Modify variable id. Create a new variable when the value is null")
+  @Schema(description = "Modify variable id. Create a new variable when the value is null")
   private Long id;
 
   @Schema(description = "Project id, required when creating a new dataset")

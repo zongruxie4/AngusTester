@@ -23,7 +23,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CtoTaskAssigneeOverview extends CtoTaskOverview{
+public class CtoTaskAssigneeOverview extends CtoTaskOverview {
 
   private Long assigneeId;
 

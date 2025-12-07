@@ -43,7 +43,8 @@ public class ProjectMemberCmdImpl extends CommCmd<ProjectMember, Long> implement
   /**
    * Replace project members for a project.
    * <p>
-   * Deletes existing members and batch inserts new members for the specified project and member types.
+   * Deletes existing members and batch inserts new members for the specified project and member
+   * types.
    */
   @Override
   public void replace0(Long projectId,

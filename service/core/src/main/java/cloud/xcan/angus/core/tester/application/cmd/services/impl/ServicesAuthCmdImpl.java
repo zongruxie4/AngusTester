@@ -66,8 +66,8 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
    * Adds a new service authorization for a user or group.
    *
    * <p>This method performs comprehensive validation including checking service existence,
-   * preventing creator self-authorization, verifying user permissions, and ensuring
-   * no duplicate authorizations exist.</p>
+   * preventing creator self-authorization, verifying user permissions, and ensuring no duplicate
+   * authorizations exist.</p>
    *
    * <p>For non-creator authorizations, it also logs the authorization activity
    * for audit purposes.</p>
@@ -119,9 +119,9 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
    * Replaces the permissions of an existing service authorization.
    *
    * <p>This method updates the authorization permissions while maintaining the same
-   * authorization object and service relationship. It validates that the authorization
-   * exists, is not a creator authorization, and that the current user has proper
-   * permissions to modify it.</p>
+   * authorization object and service relationship. It validates that the authorization exists, is
+   * not a creator authorization, and that the current user has proper permissions to modify
+   * it.</p>
    *
    * <p>The method logs the modification activity for audit tracking.</p>
    *
@@ -176,8 +176,8 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
    * Deletes a service authorization by its ID.
    *
    * <p>This method removes an authorization while performing proper validation
-   * and logging. It handles cases where the authorization object may have been
-   * deleted, ensuring graceful degradation.</p>
+   * and logging. It handles cases where the authorization object may have been deleted, ensuring
+   * graceful degradation.</p>
    *
    * <p>The method logs the cancellation activity before deletion to maintain
    * audit trail integrity.</p>
@@ -242,7 +242,7 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
    * and logs the enable/disable activity for audit purposes.</p>
    *
    * @param serviceId the ID of the service to modify authorization control
-   * @param enabled true to enable authorization control, false to disable
+   * @param enabled   true to enable authorization control, false to disable
    * @throws IllegalArgumentException if service not found or user lacks permissions
    */
   @Transactional(rollbackFor = Exception.class)
@@ -285,7 +285,7 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
    * <p>The method logs the API authorization control change activity for audit purposes.</p>
    *
    * @param serviceId the ID of the service whose APIs should be modified
-   * @param enabled true to enable API authorization control, false to disable
+   * @param enabled   true to enable API authorization control, false to disable
    * @throws IllegalArgumentException if service not found or user lacks permissions
    */
   @Transactional(rollbackFor = Exception.class)
@@ -320,10 +320,10 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
    * Adds creator authorizations for multiple users to a service.
    *
    * <p>This method replaces any existing creator authorizations with the new set
-   * of creator IDs. It first removes all existing creator authorizations for the
-   * service, then adds the new ones.</p>
+   * of creator IDs. It first removes all existing creator authorizations for the service, then adds
+   * the new ones.</p>
    *
-   * @param serviceId the ID of the service to modify
+   * @param serviceId  the ID of the service to modify
    * @param creatorIds set of user IDs to grant creator permissions
    */
   @Override
@@ -342,8 +342,8 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
    * Moves creator authorization for a specific user to a service.
    *
    * <p>This method is used when services are moved between projects or when
-   * creator permissions need to be transferred. It removes the creator authorization
-   * for the specified user from the current service and adds it to the target service.</p>
+   * creator permissions need to be transferred. It removes the creator authorization for the
+   * specified user from the current service and adds it to the target service.</p>
    *
    * @param serviceId the ID of the target service
    * @param creatorId the ID of the user whose creator permissions should be moved

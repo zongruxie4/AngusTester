@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class TesterSubmittedBugOverview extends AbstractOverview{
+public class TesterSubmittedBugOverview extends AbstractOverview {
 
   private Map<Long, UserInfo> testers = new HashMap<>();
 

@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class DatasetImportDto{
+public class DatasetImportDto {
 
   @NotNull
   @Schema(description = "Project identifier for dataset import destination", requiredMode = RequiredMode.REQUIRED)

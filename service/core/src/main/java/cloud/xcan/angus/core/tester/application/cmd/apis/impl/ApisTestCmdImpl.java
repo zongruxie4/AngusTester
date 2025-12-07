@@ -67,10 +67,10 @@ import org.springframework.transaction.annotation.Transactional;
  * Implementation of ApisTestCmd for API test execution and script management.
  * </p>
  * <p>
- * Provides comprehensive API testing services including enabling/disabling tests, generating scripts,
- * managing test tasks, and synchronizing cases. Handles permission checks, activity logging, and
- * integration with related modules. Supports functional, performance, and stability testing with
- * script generation and execution management.
+ * Provides comprehensive API testing services including enabling/disabling tests, generating
+ * scripts, managing test tasks, and synchronizing cases. Handles permission checks, activity
+ * logging, and integration with related modules. Supports functional, performance, and stability
+ * testing with script generation and execution management.
  * </p>
  */
 @Biz
@@ -114,9 +114,10 @@ public class ApisTestCmdImpl implements ApisTestCmd {
    * <p>
    * Validates permission, updates test flags, and logs activities.
    * </p>
-   * @param apisId API ID
+   *
+   * @param apisId    API ID
    * @param testTypes Set of test types to enable/disable
-   * @param enabled Whether to enable or disable the test types
+   * @param enabled   Whether to enable or disable the test types
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -168,10 +169,11 @@ public class ApisTestCmdImpl implements ApisTestCmd {
    * Generate test scripts for an API if not already present.
    * </p>
    * <p>
-   * Validates permission and generates scripts if needed. Checks existing scripts
-   * to avoid duplicate generation.
+   * Validates permission and generates scripts if needed. Checks existing scripts to avoid
+   * duplicate generation.
    * </p>
-   * @param apisId API ID
+   *
+   * @param apisId  API ID
    * @param scripts List of scripts to generate
    */
   //@Transactional(rollbackFor = Exception.class)
@@ -212,9 +214,10 @@ public class ApisTestCmdImpl implements ApisTestCmd {
    * <p>
    * Validates permission, prepares environment, and generates scripts.
    * </p>
-   * @param apisDb API entity
+   *
+   * @param apisDb    API entity
    * @param serverMap Map of server configurations
-   * @param scripts List of scripts to generate
+   * @param scripts   List of scripts to generate
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -259,7 +262,8 @@ public class ApisTestCmdImpl implements ApisTestCmd {
    * <p>
    * Validates permission, deletes scripts, and logs the activity.
    * </p>
-   * @param apisId API ID
+   *
+   * @param apisId    API ID
    * @param testTypes Set of test types whose scripts should be deleted
    */
   @Transactional(rollbackFor = Exception.class)
@@ -295,10 +299,11 @@ public class ApisTestCmdImpl implements ApisTestCmd {
    * Delete test scripts for an API and test types without permission check.
    * </p>
    * <p>
-   * Directly deletes scripts for the specified test types. This method is used
-   * internally when permission checks have already been performed.
+   * Directly deletes scripts for the specified test types. This method is used internally when
+   * permission checks have already been performed.
    * </p>
-   * @param apisId API ID
+   *
+   * @param apisId    API ID
    * @param testTypes Set of test types whose scripts should be deleted
    */
   @Override
@@ -315,9 +320,10 @@ public class ApisTestCmdImpl implements ApisTestCmd {
    * <p>
    * Validates permission, prepares environment, and triggers execution.
    * </p>
-   * @param apisId API ID
+   *
+   * @param apisId    API ID
    * @param testTypes Set of test types to execute
-   * @param servers Optional server configurations to override
+   * @param servers   Optional server configurations to override
    */
   @Override
   public void testExecAdd(Long apisId, Set<TestType> testTypes, @Nullable List<Server> servers) {
@@ -349,12 +355,14 @@ public class ApisTestCmdImpl implements ApisTestCmd {
    * <p>
    * Triggers execution for each API and test type in sequence.
    * </p>
-   * @param apisIds Set of API IDs
+   *
+   * @param apisIds   Set of API IDs
    * @param testTypes Set of test types to execute
-   * @param servers Optional server configurations to override
+   * @param servers   Optional server configurations to override
    */
   @Override
-  public void testExecAdd(HashSet<Long> apisIds, HashSet<TestType> testTypes, @Nullable List<Server> servers) {
+  public void testExecAdd(HashSet<Long> apisIds, HashSet<TestType> testTypes,
+      @Nullable List<Server> servers) {
     new BizTemplate<Void>() {
 
       @Override
@@ -375,7 +383,8 @@ public class ApisTestCmdImpl implements ApisTestCmd {
    * <p>
    * Validates permission, updates case status, synchronizes with scripts, and triggers execution.
    * </p>
-   * @param apisId API ID
+   *
+   * @param apisId  API ID
    * @param caseIds Set of case IDs to enable/disable
    */
   @Override
@@ -419,12 +428,13 @@ public class ApisTestCmdImpl implements ApisTestCmd {
    * Add test execution for an API and test types with prepared scripts.
    * </p>
    * <p>
-   * Prepares scripts, overrides server configuration, and triggers execution.
-   * Handles script generation for missing test types and server parameter overrides.
+   * Prepares scripts, overrides server configuration, and triggers execution. Handles script
+   * generation for missing test types and server parameter overrides.
    * </p>
-   * @param apisDb API entity with dereferenced content
+   *
+   * @param apisDb    API entity with dereferenced content
    * @param testTypes Set of test types to execute
-   * @param servers Optional server configurations to override
+   * @param servers   Optional server configurations to override
    */
   @Override
   public void testExecAdd0(Apis apisDb, Set<TestType> testTypes, List<Server> servers) {
@@ -500,18 +510,19 @@ public class ApisTestCmdImpl implements ApisTestCmd {
    * Initialize script and cases for an API.
    * </p>
    * <p>
-   * Prepares script content, synchronizes cases, and saves scripts.
-   * Handles different test types (functional, performance, stability) with
-   * appropriate indicators and case management.
+   * Prepares script content, synchronizes cases, and saves scripts. Handles different test types
+   * (functional, performance, stability) with appropriate indicators and case management.
    * </p>
-   * @param apisDb API entity
+   *
+   * @param apisDb    API entity
    * @param serverMap Map of server configurations
-   * @param script Script to initialize
+   * @param script    Script to initialize
    * @param variables Associated variables
-   * @param datasets Associated datasets
+   * @param datasets  Associated datasets
    */
   @Transactional(rollbackFor = Exception.class)
-  public void initScriptAndCases(Apis apisDb, Map<String, Server> serverMap, Script script, List<Variable> variables, List<Dataset> datasets) {
+  public void initScriptAndCases(Apis apisDb, Map<String, Server> serverMap, Script script,
+      List<Variable> variables, List<Dataset> datasets) {
     // Set basic script properties
     script.setProjectId(apisDb.getProjectId());
     script.setSourceId(apisDb.getId());

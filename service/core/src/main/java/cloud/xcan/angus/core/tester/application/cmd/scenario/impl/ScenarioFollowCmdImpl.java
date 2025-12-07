@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
  * <p>
  * Provides methods for adding, canceling, and batch canceling scenario follows.
  * <p>
-   * Ensures permission checks, duplicate prevention, and activity logging.
+ * Ensures permission checks, duplicate prevention, and activity logging.
  */
 @Biz
 public class ScenarioFollowCmdImpl extends CommCmd<ScenarioFollow, Long> implements

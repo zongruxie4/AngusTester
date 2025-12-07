@@ -47,7 +47,7 @@ public class ApisDesignInfo extends TenantAuditingEntity<Apis, Long> implements 
   @Transient
   private String avatar;
 
-  public boolean hasLatestContent(){
+  public boolean hasLatestContent() {
     return released && nonNull(designSourceId);
   }
 

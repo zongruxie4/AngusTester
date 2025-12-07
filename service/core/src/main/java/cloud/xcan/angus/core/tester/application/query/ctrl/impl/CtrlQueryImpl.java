@@ -84,8 +84,8 @@ public class CtrlQueryImpl implements CtrlQuery {
    * Discovers available controller nodes for load balancing.
    *
    * <p>This method performs comprehensive node discovery by querying available
-   * controller nodes, validating their health status, and calculating connection
-   * weights for load balancing purposes.</p>
+   * controller nodes, validating their health status, and calculating connection weights for load
+   * balancing purposes.</p>
    *
    * <p>The discovery process includes:
    * <ul>
@@ -250,8 +250,8 @@ public class CtrlQueryImpl implements CtrlQuery {
    * Performs HTTP GET request to remote endpoints with authentication.
    *
    * <p>This method creates an HTTP sender with configured timeouts and sends
-   * GET requests to remote URLs, optionally including bearer token authentication
-   * for door API invocations.</p>
+   * GET requests to remote URLs, optionally including bearer token authentication for door API
+   * invocations.</p>
    *
    * @param remoteUrl the target URL for the HTTP request
    * @return HTTP response from the remote endpoint

@@ -33,7 +33,8 @@ import org.hibernate.annotations.Type;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class ExecTestResult extends TenantEntity<ExecTestResult, Long> implements ExecTestResultBase {
+public class ExecTestResult extends TenantEntity<ExecTestResult, Long> implements
+    ExecTestResultBase {
 
   @Id
   @Column(name = "id")

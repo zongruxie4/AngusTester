@@ -12,9 +12,9 @@ import java.util.List;
 /**
  * Implementation of MockDataQuery for managing Mock function operations and data retrieval.
  * <p>
- * This class provides functionality for querying and managing Mock functions,
- * which define data generation and manipulation capabilities for mock services.
- * It handles function loading, reloading, and language-specific function retrieval.
+ * This class provides functionality for querying and managing Mock functions, which define data
+ * generation and manipulation capabilities for mock services. It handles function loading,
+ * reloading, and language-specific function retrieval.
  * <p>
  * Key features include:
  * <ul>
@@ -37,11 +37,11 @@ public class MockDataQueryImpl implements MockDataQuery {
    * Retrieves all available Mock functions for the current user's default language.
    * <p>
    * Loads Mock functions from the documentation parser using the user's preferred language.
-   * Functions are cached for performance and include data generation capabilities,
-   * validation rules, and transformation logic for mock service responses.
+   * Functions are cached for performance and include data generation capabilities, validation
+   * rules, and transformation logic for mock service responses.
    * <p>
-   * The method uses the default language setting from the principal context
-   * to ensure localized function documentation and behavior.
+   * The method uses the default language setting from the principal context to ensure localized
+   * function documentation and behavior.
    *
    * @return List of MockFunction objects with complete function definitions
    */
@@ -60,12 +60,12 @@ public class MockDataQueryImpl implements MockDataQuery {
   /**
    * Reloads all Mock functions from the documentation parser, refreshing the cache.
    * <p>
-   * Forces a complete reload of Mock functions, clearing any cached data and
-   * re-parsing function documentation. This is useful when function definitions
-   * have been updated and the cache needs to be refreshed.
+   * Forces a complete reload of Mock functions, clearing any cached data and re-parsing function
+   * documentation. This is useful when function definitions have been updated and the cache needs
+   * to be refreshed.
    * <p>
-   * The method uses the default language setting from the principal context
-   * to ensure consistent language-specific function loading.
+   * The method uses the default language setting from the principal context to ensure consistent
+   * language-specific function loading.
    *
    * @return List of MockFunction objects with refreshed function definitions
    */

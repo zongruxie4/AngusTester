@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.trash;
 
 
-
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;

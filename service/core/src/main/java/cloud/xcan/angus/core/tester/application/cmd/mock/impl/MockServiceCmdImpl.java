@@ -117,9 +117,11 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * Command implementation for mock service management.
  * <p>
- * Provides methods for adding, updating, replacing, importing, associating, starting, stopping, and deleting mock services.
+ * Provides methods for adding, updating, replacing, importing, associating, starting, stopping, and
+ * deleting mock services.
  * <p>
- * Ensures permission checks, activity logging, distributed coordination, and batch operations with transaction management.
+ * Ensures permission checks, activity logging, distributed coordination, and batch operations with
+ * transaction management.
  */
 @Slf4j
 @Biz
@@ -179,7 +181,8 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
   /**
    * Add a new mock service.
    * <p>
-   * Checks member permissions, name uniqueness, node and domain validity, agent status, port availability, and quota.
+   * Checks member permissions, name uniqueness, node and domain validity, agent status, port
+   * availability, and quota.
    * <p>
    * Adds DNS if cloud edition, sets default permissions, and logs creation activity.
    */
@@ -438,7 +441,8 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
   /**
    * Associate a mock service with a project/service.
    * <p>
-   * Checks existence, permission, and association validity before associating and adding APIs/responses.
+   * Checks existence, permission, and association validity before associating and adding
+   * APIs/responses.
    * <p>
    * Logs association activity.
    */

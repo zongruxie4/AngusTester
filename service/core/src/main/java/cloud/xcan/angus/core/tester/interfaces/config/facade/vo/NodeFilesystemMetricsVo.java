@@ -21,7 +21,7 @@ public class NodeFilesystemMetricsVo {
   /**
    * @see FileSystem#toString()
    */
-  @Schema(description="Comma-separated filesystem sample value, format: free,used,avail,usePercent;")
+  @Schema(description = "Comma-separated filesystem sample value, format: free,used,avail,usePercent;")
   private String cvsFilesystem;
 
   public Date getTimestamp() {

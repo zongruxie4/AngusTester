@@ -16,7 +16,8 @@ public class AgentInstallCmd {
   private String linuxInstallScriptName;
 
   /**
-   * curl -s http://192.168.0.102:1805/filepxy/pubapi/v1/object/download/install-agent.sh?id=96204965327929444
+   * curl -s
+   * http://192.168.0.102:1805/filepxy/pubapi/v1/object/download/install-agent.sh?id=96204965327929444
    * -o install-agent.sh --retry 3 -m 120
    */
   private String linuxDownloadInstallScriptCmd;
@@ -56,8 +57,9 @@ public class AgentInstallCmd {
   private String windowsInstallScriptName;
 
   /**
-   * $p = New-Object System.Net.WebClient $p.DownloadFile("https://www.xcan.cloud/angus/install-agent.bat"
-   * "C:\Program Files\AngusAgent\")
+   * $p = New-Object System.Net.WebClient
+   * $p.DownloadFile("https://www.xcan.cloud/angus/install-agent.bat" "C:\Program
+   * Files\AngusAgent\")
    */
   private String windowsDownloadInstallScriptCmd;
 

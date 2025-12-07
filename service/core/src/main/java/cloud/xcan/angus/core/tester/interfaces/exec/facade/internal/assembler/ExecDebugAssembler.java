@@ -88,7 +88,7 @@ public class ExecDebugAssembler {
         SampleResult<?> result = debug.getSampleContents().stream()
             .filter(x -> nonNull(x.getSampleResult()) && !x.getSampleResult().isSuccess())
             .map(ExecSampleContent::getSampleResult).findFirst().orElse(null);
-        if (nonNull(result)){
+        if (nonNull(result)) {
           testSucceed = false;
           testFailureMessage = nullSafe(result.getFailMessage(), testFailureMessage);
         }

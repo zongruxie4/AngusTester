@@ -27,7 +27,7 @@ public class ActivityRest {
   @Resource
   private ActivityFacade activityFacade;
 
-  @Operation(summary = "Query activity logs", 
+  @Operation(summary = "Query activity logs",
       description = "Retrieve paginated list of user activity logs with filtering and search capabilities",
       operationId = "activity:list")
   @ApiResponses(value = {

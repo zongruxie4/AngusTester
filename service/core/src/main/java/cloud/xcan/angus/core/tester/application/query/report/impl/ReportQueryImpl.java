@@ -383,9 +383,9 @@ public class ReportQueryImpl implements ReportQuery {
   @Override
   public ActivityResource checkAndFindResource(ReportTemplate template, Long projectId,
       CombinedTargetType targetType, Long targetId) {
-      //    long count = reportRepo.countByTemplateAndProjectIdAndTargetTypeAndTargetId(
-      //        template, projectId, targetType, targetId);
-      //    assertResourceExisted(count <= 0, REPORT_REPEATED_T, new Object[]{targetType, targetId});
+    //    long count = reportRepo.countByTemplateAndProjectIdAndTargetTypeAndTargetId(
+    //        template, projectId, targetType, targetId);
+    //    assertResourceExisted(count <= 0, REPORT_REPEATED_T, new Object[]{targetType, targetId});
     ActivityResource resource = commonQuery.checkAndFindActivityResource(targetType, targetId);
     assertTrue(projectId.equals(resource.getProjectId()),
         String.format("Report project ID [%s] and resource project ID [%s] are inconsistent",

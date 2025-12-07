@@ -42,18 +42,19 @@ public class ExecInnerRest {
   @Resource
   private ExecFacade execFacade;
 
-  @Operation(summary = "Create execution by script identifier", 
+  @Operation(summary = "Create execution by script identifier",
       description = "Create a new test execution using existing script identifier with internal service integration",
       operationId = "exec:byScript:add:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Execution created successfully by script identifier")
   })
   @PostMapping(value = EXEC_ADD_BY_SCRIPT_ENDPOINT)
-  public ApiLocaleResult<IdKey<Long, Object>> addByScript(@Valid @RequestBody ExecAddByScriptDto dto) {
+  public ApiLocaleResult<IdKey<Long, Object>> addByScript(
+      @Valid @RequestBody ExecAddByScriptDto dto) {
     return ApiLocaleResult.success(execFacade.addByScript(dto));
   }
 
-  @Operation(summary = "Start execution", 
+  @Operation(summary = "Start execution",
       description = "Initiate test execution with internal service integration and runner management",
       operationId = "exec:start:inner")
   @ApiResponses(value = {
@@ -64,7 +65,7 @@ public class ExecInnerRest {
     return ApiLocaleResult.success(execFacade.start(dto));
   }
 
-  @Operation(summary = "Stop execution", 
+  @Operation(summary = "Stop execution",
       description = "Terminate test execution with graceful shutdown and internal service cleanup",
       operationId = "exec:stop:inner")
   @ApiResponses(value = {
@@ -75,7 +76,7 @@ public class ExecInnerRest {
     return ApiLocaleResult.success(execFacade.stop(dto));
   }
 
-  @Operation(summary = "Get execution details", 
+  @Operation(summary = "Get execution details",
       description = "Retrieve comprehensive execution details for internal service integration",
       operationId = "exec:detail:inner")
   @ApiResponses(value = {
@@ -87,7 +88,7 @@ public class ExecInnerRest {
     return ApiLocaleResult.success(execFacade.detail(id));
   }
 
-  @Operation(summary = "Get execution basic information", 
+  @Operation(summary = "Get execution basic information",
       description = "Retrieve basic execution information with optional sample summary integration",
       operationId = "exec:info")
   @ApiResponses(value = {
@@ -99,7 +100,7 @@ public class ExecInnerRest {
     return ApiLocaleResult.success(execFacade.info(id, joinSampleSummary));
   }
 
-  @Operation(summary = "Get multiple executions basic information", 
+  @Operation(summary = "Get multiple executions basic information",
       description = "Retrieve basic information for multiple executions with optional sample summary integration",
       operationId = "exec:list:info")
   @ApiResponses(value = {
@@ -111,7 +112,7 @@ public class ExecInnerRest {
     return ApiLocaleResult.success(execFacade.listInfo(ids, joinSampleSummary));
   }
 
-  @Operation(summary = "Get executions basic information by source", 
+  @Operation(summary = "Get executions basic information by source",
       description = "Retrieve basic information for executions filtered by resource type and identifiers",
       operationId = "exec:list:info:bySource")
   @ApiResponses(value = {

@@ -69,7 +69,7 @@ public class NodeDomainQueryImpl implements NodeDomainQuery {
    * <p>This method supports complex queries using JPA specifications and automatically
    * populates DNS record counts for all returned domains.</p>
    *
-   * @param spec the JPA specification for filtering domains
+   * @param spec     the JPA specification for filtering domains
    * @param pageable pagination parameters for result limiting
    * @return a paginated result containing matching domains with DNS counts populated
    */
@@ -106,7 +106,8 @@ public class NodeDomainQueryImpl implements NodeDomainQuery {
   /**
    * Checks for the existence of a node domain by name and returns it if found.
    *
-   * <p>This method performs a direct database query using the domain name as the search criteria.</p>
+   * <p>This method performs a direct database query using the domain name as the search
+   * criteria.</p>
    *
    * @param name the name of the node domain
    * @return the NodeDomain object if found
@@ -114,7 +115,8 @@ public class NodeDomainQueryImpl implements NodeDomainQuery {
    */
   @Override
   public NodeDomain checkAndFind(String name) {
-    return nodeDomainRepo.findByName(name).orElseThrow(() -> ResourceNotFound.of(name, "NodeDomain"));
+    return nodeDomainRepo.findByName(name)
+        .orElseThrow(() -> ResourceNotFound.of(name, "NodeDomain"));
   }
 
   /**
@@ -138,7 +140,7 @@ public class NodeDomainQueryImpl implements NodeDomainQuery {
    * <p>This method checks for name uniqueness when updating a domain, excluding
    * the current domain from the validation check.</p>
    *
-   * @param id the unique identifier of the domain being updated
+   * @param id   the unique identifier of the domain being updated
    * @param name the domain name to validate
    * @throws IllegalArgumentException if the name already exists (excluding current domain)
    */
@@ -152,8 +154,8 @@ public class NodeDomainQueryImpl implements NodeDomainQuery {
    * Populates DNS record counts for a list of node domains.
    *
    * <p>This method efficiently calculates and sets the number of DNS records
-   * associated with each domain in the provided list. It uses batch querying
-   * to minimize database calls for better performance.</p>
+   * associated with each domain in the provided list. It uses batch querying to minimize database
+   * calls for better performance.</p>
    *
    * @param domains the list of NodeDomain objects to populate with DNS counts
    */

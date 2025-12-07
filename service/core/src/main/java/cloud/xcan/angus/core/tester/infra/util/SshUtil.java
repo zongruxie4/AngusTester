@@ -20,9 +20,11 @@ import org.vngx.jsch.exception.JSchException;
 /**
  * Utility class for SSH connection management and remote command execution.
  * <p>
- * Provides secure SSH connectivity to remote servers for command execution and availability testing.
+ * Provides secure SSH connectivity to remote servers for command execution and availability
+ * testing.
  * <p>
- * Implements session management, command execution, and connection pooling with proper resource cleanup.
+ * Implements session management, command execution, and connection pooling with proper resource
+ * cleanup.
  * <p>
  * Supports both password and key-based authentication with configurable timeouts.
  */
@@ -46,8 +48,9 @@ public class SshUtil {
    * <p>
    * Supports both default port (22) and custom port configurations.
    * <p>
-   * @param ip the IP address or hostname of the remote server
-   * @param port the SSH port (null for default port 22)
+   *
+   * @param ip       the IP address or hostname of the remote server
+   * @param port     the SSH port (null for default port 22)
    * @param userName the username for SSH authentication
    * @param password the password for SSH authentication
    */
@@ -84,6 +87,7 @@ public class SshUtil {
    * <p>
    * Supports both password and key-based authentication methods.
    * <p>
+   *
    * @return the configured SSH session ready for use
    * @throws JSchException if session creation or connection fails
    */
@@ -119,6 +123,7 @@ public class SshUtil {
    * <p>
    * Implements the try-with-resources pattern for SSH session management.
    * <p>
+   *
    * @param func the function to execute with the SSH session
    * @return the result of the function execution
    * @throws JSchException if session creation or operation fails
@@ -145,6 +150,7 @@ public class SshUtil {
    * <p>
    * Returns true if connection is successful, false otherwise.
    * <p>
+   *
    * @return true if SSH connection can be established, false otherwise
    */
   public boolean isAvailable() {
@@ -166,6 +172,7 @@ public class SshUtil {
    * <p>
    * Captures command output but only returns success/failure status.
    * <p>
+   *
    * @param command the command to execute on the remote server
    * @return true if command execution was successful, false otherwise
    */
@@ -212,6 +219,7 @@ public class SshUtil {
    * <p>
    * Throws exception if command execution fails or connection cannot be established.
    * <p>
+   *
    * @param command the command to execute on the remote server
    * @return the command output as a string
    * @throws Exception if command execution or connection fails
@@ -260,6 +268,7 @@ public class SshUtil {
    * <p>
    * Handles empty input streams and ensures proper encoding.
    * <p>
+   *
    * @param in the input stream to read from
    * @return the content as a string, empty string if stream is empty
    * @throws IOException if reading from the stream fails

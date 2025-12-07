@@ -43,7 +43,8 @@ import org.springframework.data.domain.PageRequest;
  * Implementation of ProjectQuery for project management and query operations.
  * </p>
  * <p>
- * Provides methods for project listing, detail retrieval, permission checking, and quota validation.
+ * Provides methods for project listing, detail retrieval, permission checking, and quota
+ * validation.
  * </p>
  */
 @Biz
@@ -66,8 +67,9 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Get projects that the user has joined, optionally filtered by name.
    * </p>
+   *
    * @param userId User ID
-   * @param name Optional project name filter
+   * @param name   Optional project name filter
    * @return List of projects
    */
   @Override
@@ -88,6 +90,7 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Get user base information for all members of a project.
    * </p>
+   *
    * @param id Project ID
    * @return List of user base information
    */
@@ -107,6 +110,7 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Get detailed project information including members and owner details.
    * </p>
+   *
    * @param id Project ID
    * @return Project with complete information
    */
@@ -138,10 +142,11 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Only returns non-deleted projects. Applies authorization conditions for non-admin users.
    * </p>
-   * @param spec Project search specification
-   * @param pageable Pagination information
+   *
+   * @param spec           Project search specification
+   * @param pageable       Pagination information
    * @param fullTextSearch Whether to use full-text search
-   * @param match Full-text search keywords
+   * @param match          Full-text search keywords
    * @return Page of projects
    */
   @Override
@@ -171,6 +176,7 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Check if a project is an agile project.
    * </p>
+   *
    * @param id Project ID
    * @return true if the project is agile, false otherwise
    */
@@ -183,6 +189,7 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Check and find a project by ID, throw exception if not found.
    * </p>
+   *
    * @param id Project ID
    * @return Project entity
    */
@@ -195,6 +202,7 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Find projects by a set of IDs.
    * </p>
+   *
    * @param ids Set of project IDs
    * @return List of projects
    */
@@ -207,6 +215,7 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Check if the project quota is exceeded after increment.
    * </p>
+   *
    * @param inc Number of projects to add
    */
   @Override
@@ -219,6 +228,7 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Check if a project name already exists when adding a new project.
    * </p>
+   *
    * @param name Project name
    */
   @Override
@@ -233,7 +243,8 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Check if a project name already exists when updating a project, excluding the current project.
    * </p>
-   * @param id Project ID
+   *
+   * @param id   Project ID
    * @param name Project name
    */
   @Override
@@ -248,7 +259,8 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Check if a project with the same name and version already exists when adding a new project.
    * </p>
-   * @param name Project name
+   *
+   * @param name    Project name
    * @param version Project version (defaults to "V1.0" if null)
    */
   @Override
@@ -256,16 +268,19 @@ public class ProjectQueryImpl implements ProjectQuery {
     String finalVersion = isEmpty(version) ? "V1.0" : version;
     long count = projectRepo.countAll0ByNameAndVersion(name, finalVersion);
     if (count > 0) {
-      throw ResourceExisted.of(PROJECT_NAME_REPEATED_T, new Object[]{name + " (版本: " + finalVersion + ")"});
+      throw ResourceExisted.of(PROJECT_NAME_REPEATED_T,
+          new Object[]{name + " (版本: " + finalVersion + ")"});
     }
   }
 
   /**
    * <p>
-   * Check if a project with the same name and version already exists when updating a project, excluding the current project.
+   * Check if a project with the same name and version already exists when updating a project,
+   * excluding the current project.
    * </p>
-   * @param id Project ID
-   * @param name Project name
+   *
+   * @param id      Project ID
+   * @param name    Project name
    * @param version Project version (defaults to "V1.0" if null)
    */
   @Override
@@ -273,7 +288,8 @@ public class ProjectQueryImpl implements ProjectQuery {
     String finalVersion = isEmpty(version) ? "V1.0" : version;
     long count = projectRepo.countAll0ByNameAndVersionAndIdNot(name, finalVersion, id);
     if (count > 0) {
-      throw ResourceExisted.of(PROJECT_NAME_REPEATED_T, new Object[]{name + " (版本: " + finalVersion + ")"});
+      throw ResourceExisted.of(PROJECT_NAME_REPEATED_T,
+          new Object[]{name + " (版本: " + finalVersion + ")"});
     }
   }
 
@@ -284,6 +300,7 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Admins, project creators, and project owners have modification permissions.
    * </p>
+   *
    * @param projectDb Project entity
    */
   @Override
@@ -300,6 +317,7 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Admins, project creators, and project owners have deletion permissions.
    * </p>
+   *
    * @param projectDb Project entity
    */
   @Override
@@ -313,6 +331,7 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Check if the current user has permission to edit project tags.
    * </p>
+   *
    * @param projectDb Project entity
    */
   @Override
@@ -325,6 +344,7 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Check if the current user has permission to edit project modules.
    * </p>
+   *
    * @param projectDb Project entity
    */
   @Override
@@ -337,6 +357,7 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Check if the current user has edit permission for a project by ID.
    * </p>
+   *
    * @param projectId Project ID
    * @return true if the user has edit permission, false otherwise
    */
@@ -353,6 +374,7 @@ public class ProjectQueryImpl implements ProjectQuery {
    * <p>
    * Admins, project creators, project owners, and project members have edit permissions.
    * </p>
+   *
    * @param projectDb Project entity
    * @return true if the user has edit permission, false otherwise
    */

@@ -37,7 +37,7 @@ public class CommentRest {
   @Resource
   private CommentFacade commentFacade;
 
-  @Operation(summary = "Add comment to resource", 
+  @Operation(summary = "Add comment to resource",
       description = "Create a new comment on a specific resource with hierarchical support for threaded discussions",
       operationId = "comment:add")
   @ApiResponses(value = {
@@ -48,7 +48,7 @@ public class CommentRest {
     return ApiLocaleResult.success(commentFacade.add(dto));
   }
 
-  @Operation(summary = "Delete comment", 
+  @Operation(summary = "Delete comment",
       description = "Remove a specific comment from the system with proper validation and cleanup",
       operationId = "comment:delete")
   @ApiResponses(value = {
@@ -60,13 +60,14 @@ public class CommentRest {
     commentFacade.delete(id);
   }
 
-  @Operation(summary = "Query comment tree", 
+  @Operation(summary = "Query comment tree",
       description = "Retrieve hierarchical comment tree for a specific resource with threaded discussion support",
       operationId = "comment:tree")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Comment tree retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<List<AngusCommentTreeVo>> tree(@Valid @ParameterObject AngusCommentFindDto dto) {
+  public ApiLocaleResult<List<AngusCommentTreeVo>> tree(
+      @Valid @ParameterObject AngusCommentFindDto dto) {
     return ApiLocaleResult.success(commentFacade.tree(dto));
   }
 }

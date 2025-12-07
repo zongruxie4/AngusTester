@@ -31,7 +31,7 @@ public class NodeDiskMetricsVo {
     /**
      * @see Disk#toString()
      */
-    @Schema(description="Comma-separated disk sample value, format: total,free,used,avail,usePercent,readsRate,writesRate,readBytesRate,writeBytesRate")
+    @Schema(description = "Comma-separated disk sample value, format: total,free,used,avail,usePercent,readsRate,writesRate,readBytesRate,writeBytesRate")
     private String cvsValue;
 
     public Date getTimestamp() {

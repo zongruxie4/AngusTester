@@ -154,12 +154,12 @@ import org.springframework.web.multipart.MultipartFile;
  * Implementation of task command operations for comprehensive task management.
  *
  * <p>This class provides extensive functionality for managing tasks throughout
- * their complete lifecycle, including creation, modification, status management,
- * and various task operations.</p>
+ * their complete lifecycle, including creation, modification, status management, and various task
+ * operations.</p>
  *
  * <p>It handles the complete task lifecycle from creation to completion,
- * including sprint management, assignment, confirmation, workload tracking,
- * and activity logging for audit purposes.</p>
+ * including sprint management, assignment, confirmation, workload tracking, and activity logging
+ * for audit purposes.</p>
  *
  * <p>Key features include:
  * <ul>
@@ -220,8 +220,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * Adds a new task with comprehensive validation and setup.
    *
    * <p>This method creates a new task with extensive validation including
-   * parent task relationships, sprint assignment, project membership,
-   * and permission checks.</p>
+   * parent task relationships, sprint assignment, project membership, and permission checks.</p>
    *
    * <p>The method automatically handles parent-child task relationships,
    * sprint inheritance, and backlog management.</p>
@@ -326,8 +325,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * Updates a task with comprehensive validation and change tracking.
    *
    * <p>This method updates a task with extensive validation including
-   * permission checks, user verification, and change detection for
-   * activity logging.</p>
+   * permission checks, user verification, and change detection for activity logging.</p>
    *
    * <p>The method tracks various changes including assignments, confirmations,
    * descriptions, and other task properties for audit purposes.</p>
@@ -444,8 +442,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * Replaces a task with comprehensive validation and change tracking.
    *
    * <p>This method performs a complete replacement of a task with extensive
-   * validation including permission checks, user verification, and change
-   * detection for activity logging.</p>
+   * validation including permission checks, user verification, and change detection for activity
+   * logging.</p>
    *
    * <p>The method tracks various changes including assignments, confirmations,
    * descriptions, and other task properties for audit purposes.</p>
@@ -557,7 +555,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    *
    * <p>The method logs name update activities for audit purposes.</p>
    *
-   * @param id the task ID to rename
+   * @param id   the task ID to rename
    * @param name the new name for the task
    * @throws IllegalArgumentException if validation fails
    */
@@ -609,7 +607,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * <p>The method logs task movement activities and sends modification
    * notification events.</p>
    *
-   * @param taskIds the list of task IDs to move
+   * @param taskIds        the list of task IDs to move
    * @param targetSprintId the target sprint ID (null to move to backlog)
    * @throws IllegalArgumentException if validation fails
    */
@@ -673,12 +671,12 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * Replaces task type with validation and activity logging.
    *
    * <p>This method changes the type of a task after verifying
-   * user permissions. For bug type tasks, it automatically sets
-   * default bug level and missing bug status.</p>
+   * user permissions. For bug type tasks, it automatically sets default bug level and missing bug
+   * status.</p>
    *
    * <p>The method logs type update activities for audit purposes.</p>
    *
-   * @param id the task ID to change type for
+   * @param id   the task ID to change type for
    * @param type the new task type
    * @throws IllegalArgumentException if validation fails
    */
@@ -729,7 +727,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    *
    * <p>The method logs bug level update activities for audit purposes.</p>
    *
-   * @param id the task ID to change bug level for
+   * @param id       the task ID to change bug level for
    * @param bugLevel the new bug level
    * @throws IllegalArgumentException if validation fails
    */
@@ -776,7 +774,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    *
    * <p>The method logs missing bug status update activities for audit purposes.</p>
    *
-   * @param id the task ID to change missing bug status for
+   * @param id         the task ID to change missing bug status for
    * @param missingBug the new missing bug status
    * @throws IllegalArgumentException if validation fails
    */
@@ -823,7 +821,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * <p>The method logs assignee update activities and sends
    * modification notification events.</p>
    *
-   * @param id the task ID to change assignee for
+   * @param id         the task ID to change assignee for
    * @param assigneeId the new assignee ID (null to clear assignee)
    * @throws IllegalArgumentException if validation fails
    */
@@ -875,7 +873,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * <p>The method logs confirmer update activities and sends
    * modification notification events.</p>
    *
-   * @param id the task ID to change confirmer for
+   * @param id          the task ID to change confirmer for
    * @param confirmerId the new confirmer ID (null to clear confirmer)
    * @throws IllegalArgumentException if validation fails
    */
@@ -921,13 +919,12 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * Replaces task deadline with validation and activity logging.
    *
    * <p>This method changes the deadline of a task after verifying
-   * user permissions. It automatically calculates overdue status
-   * based on the current time.</p>
+   * user permissions. It automatically calculates overdue status based on the current time.</p>
    *
    * <p>The method logs deadline update activities and sends
    * modification notification events.</p>
    *
-   * @param id the task ID to change deadline for
+   * @param id       the task ID to change deadline for
    * @param deadline the new deadline (null to clear deadline)
    * @throws IllegalArgumentException if validation fails
    */
@@ -973,7 +970,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * <p>The method logs priority update activities and sends
    * modification notification events.</p>
    *
-   * @param id the task ID to change priority for
+   * @param id       the task ID to change priority for
    * @param priority the new priority
    * @throws IllegalArgumentException if validation fails
    */
@@ -1017,7 +1014,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    *
    * <p>The method logs software version update activities for audit purposes.</p>
    *
-   * @param id the task ID to change software version for
+   * @param id      the task ID to change software version for
    * @param version the new software version (null to clear version)
    * @throws IllegalArgumentException if validation fails
    */
@@ -1078,7 +1075,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    *
    * <p>The method logs workload update activities for audit purposes.</p>
    *
-   * @param id the task ID to change evaluated workload for
+   * @param id           the task ID to change evaluated workload for
    * @param evalWorkload the new evaluated workload (null to clear)
    * @throws IllegalArgumentException if validation fails
    */
@@ -1143,7 +1140,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    *
    * <p>The method logs workload update activities for audit purposes.</p>
    *
-   * @param id the task ID to change actual workload for
+   * @param id             the task ID to change actual workload for
    * @param actualWorkload the new actual workload (null to clear)
    * @throws IllegalArgumentException if validation fails
    */
@@ -1217,7 +1214,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * <p>The method logs description update activities and sends
    * modification notification events.</p>
    *
-   * @param id the task ID to change description for
+   * @param id          the task ID to change description for
    * @param description the new description (null to clear)
    * @throws IllegalArgumentException if validation fails
    */
@@ -1281,7 +1278,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * <p>The method logs attachment update activities and sends
    * modification notification events.</p>
    *
-   * @param id the task ID to change attachments for
+   * @param id          the task ID to change attachments for
    * @param attachments the new attachments list (null to clear)
    * @throws IllegalArgumentException if validation fails
    */
@@ -1513,9 +1510,9 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * <p>The method handles success and failure scenarios with appropriate
    * status transitions and failure count management.</p>
    *
-   * @param id the task ID to confirm
-   * @param result the confirmation result (success/failure)
-   * @param evalWorkload the evaluated workload value
+   * @param id             the task ID to confirm
+   * @param result         the confirmation result (success/failure)
+   * @param evalWorkload   the evaluated workload value
    * @param actualWorkload the actual workload value
    * @throws IllegalArgumentException if validation fails
    */
@@ -1538,7 +1535,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
             || nonNull(evalWorkload), TASK_EVAL_WORKLOAD_NOT_SET);
 
         // Verify subtasks are completed for successful results
-        if (result.isSuccess()){
+        if (result.isSuccess()) {
           taskQuery.checkSubTasksIsCompleted(taskDb.getProjectId(), id);
         }
 
@@ -1684,7 +1681,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    *
    * <p>The method logs subtask association activities for audit purposes.</p>
    *
-   * @param id the parent task ID
+   * @param id         the parent task ID
    * @param subTaskIds the set of subtask IDs to associate
    * @throws IllegalArgumentException if validation fails
    */
@@ -1727,7 +1724,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    *
    * <p>The method logs subtask disassociation activities for audit purposes.</p>
    *
-   * @param id the parent task ID
+   * @param id         the parent task ID
    * @param subTaskIds the set of subtask IDs to disassociate
    * @throws IllegalArgumentException if validation fails
    */
@@ -1770,7 +1767,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    *
    * <p>The method logs task association activities for audit purposes.</p>
    *
-   * @param id the task ID to add associations for
+   * @param id           the task ID to add associations for
    * @param assocTaskIds the set of associated task IDs to add
    * @throws IllegalArgumentException if validation fails
    */
@@ -1811,7 +1808,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    *
    * <p>The method logs task disassociation activities for audit purposes.</p>
    *
-   * @param id the task ID to remove associations for
+   * @param id           the task ID to remove associations for
    * @param assocTaskIds the set of associated task IDs to remove
    * @throws IllegalArgumentException if validation fails
    */
@@ -1852,7 +1849,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    *
    * <p>The method logs case association activities for audit purposes.</p>
    *
-   * @param id the task ID to add case associations for
+   * @param id           the task ID to add case associations for
    * @param assocCaseIds the set of associated case IDs to add
    * @throws IllegalArgumentException if validation fails
    */
@@ -1893,7 +1890,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    *
    * <p>The method logs case disassociation activities for audit purposes.</p>
    *
-   * @param id the task ID to remove case associations for
+   * @param id           the task ID to remove case associations for
    * @param assocCaseIds the set of associated case IDs to remove
    * @throws IllegalArgumentException if validation fails
    */
@@ -1935,10 +1932,10 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * <p>The method supports different import strategies and handles
    * both agile and general project management scenarios.</p>
    *
-   * @param projectId the project ID to import tasks into
-   * @param sprintId the sprint ID to assign tasks to (can be null for backlog)
+   * @param projectId              the project ID to import tasks into
+   * @param sprintId               the sprint ID to assign tasks to (can be null for backlog)
    * @param strategyWhenDuplicated the strategy for handling duplicate tasks
-   * @param file the Excel file containing task data
+   * @param file                   the Excel file containing task data
    * @return the list of created task ID keys
    * @throws IllegalArgumentException if validation fails
    */
@@ -2196,8 +2193,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * Deletes tasks with logical deletion and cleanup.
    *
    * <p>This method performs logical deletion of tasks after verifying
-   * user has deletion permissions. It moves tasks to trash and
-   * updates deletion status.</p>
+   * user has deletion permissions. It moves tasks to trash and updates deletion status.</p>
    *
    * <p>The method logs deletion activities and sends modification
    * notification events.</p>
@@ -2253,8 +2249,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * Retests tasks by target with optional restart functionality.
    *
    * <p>This method updates test tasks to pending status based on existing
-   * test records, with optional clearing of historical test statistics
-   * and status depending on the restart parameter.</p>
+   * test records, with optional clearing of historical test statistics and status depending on the
+   * restart parameter.</p>
    *
    * @param restart whether to restart (clear history) or reopen (preserve history)
    * @param tasksDb the list of tasks to retest

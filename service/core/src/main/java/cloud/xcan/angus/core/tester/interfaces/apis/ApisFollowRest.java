@@ -35,7 +35,7 @@ public class ApisFollowRest {
   @Resource
   private ApisFollowFacade apisFollowFacade;
 
-  @Operation(summary = "Follow API for monitoring", 
+  @Operation(summary = "Follow API for monitoring",
       description = "Establish API follow relationship for event management system integration and change tracking",
       operationId = "apis:follow:add")
   @ApiResponses(value = {
@@ -47,7 +47,7 @@ public class ApisFollowRest {
     return ApiLocaleResult.success(apisFollowFacade.add(apiId));
   }
 
-  @Operation(summary = "Unfollow API monitoring", 
+  @Operation(summary = "Unfollow API monitoring",
       description = "Remove API follow relationship with proper cleanup and event system coordination",
       operationId = "apis:follow:cancel")
   @ApiResponses(value = {
@@ -59,7 +59,7 @@ public class ApisFollowRest {
     apisFollowFacade.cancel(apiId);
   }
 
-  @Operation(summary = "Unfollow all API monitoring", 
+  @Operation(summary = "Unfollow all API monitoring",
       description = "Remove all API follow relationships for specific project with comprehensive cleanup",
       operationId = "apis:follow:cancel:All")
   @ApiResponses(value = {
@@ -71,7 +71,7 @@ public class ApisFollowRest {
     apisFollowFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Query API follow list", 
+  @Operation(summary = "Query API follow list",
       description = "Retrieve paginated list of API follow relationships with comprehensive filtering and search options",
       operationId = "apis:follow:list")
   @ApiResponses(value = {
@@ -82,7 +82,7 @@ public class ApisFollowRest {
     return ApiLocaleResult.success(apisFollowFacade.list(dto));
   }
 
-  @Operation(summary = "Get API follow count", 
+  @Operation(summary = "Get API follow count",
       description = "Retrieve total count of API follow relationships for specific project with comprehensive statistics",
       operationId = "apis:follow:count")
   @ApiResponses(value = {

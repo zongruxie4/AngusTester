@@ -125,8 +125,8 @@ import org.springframework.data.domain.PageRequest;
  * Implementation of API query operations for comprehensive API management and reporting.
  *
  * <p>This class provides extensive functionality for querying and retrieving
- * API data, including detailed information, pagination, search, and various
- * enrichment operations.</p>
+ * API data, including detailed information, pagination, search, and various enrichment
+ * operations.</p>
  *
  * <p>It handles API lifecycle management, mock service integration, server
  * configuration, reference resolution, and comprehensive data enrichment.</p>
@@ -195,13 +195,13 @@ public class ApisQueryImpl implements ApisQuery {
    * Retrieves detailed API information with comprehensive enrichment.
    *
    * <p>This method fetches complete API details with extensive enrichment including
-   * favourite/follow status, mock service associations, available servers,
-   * tag schemas, and optional reference resolution.</p>
+   * favourite/follow status, mock service associations, available servers, tag schemas, and
+   * optional reference resolution.</p>
    *
    * <p>The method validates user permissions and handles deleted API access
    * with appropriate authorization checks.</p>
    *
-   * @param id the API ID to retrieve details for
+   * @param id         the API ID to retrieve details for
    * @param resolveRef whether to resolve OpenAPI references
    * @return the detailed API information with all enrichments
    * @throws IllegalArgumentException if validation fails
@@ -219,7 +219,7 @@ public class ApisQueryImpl implements ApisQuery {
         // Verify API exists and retrieve API info
         apisDb = checkAndFind(id);
 
-       // Verify user can access deleted API (only if they deleted it)
+        // Verify user can access deleted API (only if they deleted it)
         BizAssert.assertTrue(!apisDb.getDeleted() || apisDb.getDeletedBy().equals(getUserId()),
             TRASH_NO_VIEW_PERMISSION_CODE, TRASH_NO_VIEW_PERMISSION);
       }
@@ -317,10 +317,10 @@ public class ApisQueryImpl implements ApisQuery {
    * <p>The method validates export permissions and handles schema generation
    * with proper error handling.</p>
    *
-   * @param id the API ID to generate OpenAPI specification for
-   * @param format the schema format (JSON or YAML)
+   * @param id              the API ID to generate OpenAPI specification for
+   * @param format          the schema format (JSON or YAML)
    * @param gzipCompression whether to apply gzip compression
-   * @param checkExport whether to check export permissions
+   * @param checkExport     whether to check export permissions
    * @return the OpenAPI specification as a string
    * @throws IllegalArgumentException if validation fails
    */
@@ -384,7 +384,7 @@ public class ApisQueryImpl implements ApisQuery {
    * <p>The method validates user permissions for all APIs and enriches data with
    * tag schemas and reference models when requested.</p>
    *
-   * @param ids the set of API IDs to retrieve details for
+   * @param ids        the set of API IDs to retrieve details for
    * @param resolveRef whether to resolve OpenAPI references
    * @return list of detailed API information
    * @throws IllegalArgumentException if APIs belong to different services
@@ -430,11 +430,11 @@ public class ApisQueryImpl implements ApisQuery {
    * <p>The method validates service view permissions and automatically filters
    * out deleted APIs and services.</p>
    *
-   * @param serviceId the service ID to find APIs for
-   * @param spec the specification for filtering APIs
-   * @param pageable the pagination and sorting parameters
+   * @param serviceId      the service ID to find APIs for
+   * @param spec           the specification for filtering APIs
+   * @param pageable       the pagination and sorting parameters
    * @param fullTextSearch whether to use full-text search
-   * @param match the full-text search match fields
+   * @param match          the full-text search match fields
    * @return a page of APIs for the specified service
    */
   @Override
@@ -470,10 +470,10 @@ public class ApisQueryImpl implements ApisQuery {
    * <p>The method automatically enriches API data with mock associations
    * for enhanced display.</p>
    *
-   * @param spec the specification for filtering APIs
-   * @param pageable the pagination and sorting parameters
+   * @param spec           the specification for filtering APIs
+   * @param pageable       the pagination and sorting parameters
    * @param fullTextSearch whether to use full-text search
-   * @param match the full-text search match fields
+   * @param match          the full-text search match fields
    * @return a page of APIs with enriched data
    */
   @Override
@@ -504,10 +504,10 @@ public class ApisQueryImpl implements ApisQuery {
    * <p>This method handles the core listing logic with authorization filtering,
    * search execution, and comprehensive data enrichment.</p>
    *
-   * @param criteria the search criteria for filtering APIs
-   * @param pageable the pagination and sorting parameters
+   * @param criteria       the search criteria for filtering APIs
+   * @param pageable       the pagination and sorting parameters
    * @param fullTextSearch whether to use full-text search
-   * @param match the full-text search match fields
+   * @param match          the full-text search match fields
    * @return a page of APIs with enriched data
    */
   private Page<ApisBasicInfo> list0(Set<SearchCriteria> criteria, PageRequest pageable,
@@ -566,17 +566,17 @@ public class ApisQueryImpl implements ApisQuery {
    * Generates API creation statistics for reporting and analysis.
    *
    * <p>This method calculates comprehensive creation statistics including
-   * API counts, service counts, and unarchived API counts within specified
-   * date ranges and creator criteria.</p>
+   * API counts, service counts, and unarchived API counts within specified date ranges and creator
+   * criteria.</p>
    *
    * <p>The method supports filtering by project, creator type, and date
    * ranges for detailed analytics.</p>
    *
-   * @param projectId the project ID to filter statistics
+   * @param projectId         the project ID to filter statistics
    * @param creatorObjectType the type of creator object
-   * @param creatorObjectId the creator object ID
-   * @param createdDateStart the start date for statistics
-   * @param createdDateEnd the end date for statistics
+   * @param creatorObjectId   the creator object ID
+   * @param createdDateStart  the start date for statistics
+   * @param createdDateEnd    the end date for statistics
    * @return comprehensive API creation statistics
    */
   @Override
@@ -767,12 +767,12 @@ public class ApisQueryImpl implements ApisQuery {
    * <p>The method supports filtering by endpoint regex, HTTP method, and tags
    * for match-based scoping.</p>
    *
-   * @param serviceId the service ID to find APIs for
-   * @param modifyScope the scope for API selection (all, selected, or matched)
+   * @param serviceId          the service ID to find APIs for
+   * @param modifyScope        the scope for API selection (all, selected, or matched)
    * @param matchEndpointRegex the endpoint regex pattern for matching
-   * @param matchMethod the HTTP method for matching
-   * @param selectedApisIds the set of selected API IDs
-   * @param filterTags the set of tags for filtering
+   * @param matchMethod        the HTTP method for matching
+   * @param selectedApisIds    the set of selected API IDs
+   * @param filterTags         the set of tags for filtering
    * @return list of APIs matching the specified criteria
    * @throws IllegalArgumentException if required parameters are missing for the scope
    */
@@ -863,10 +863,10 @@ public class ApisQueryImpl implements ApisQuery {
     Map<Long, List<Apis>> serviceApisMap = apis.stream()
         .collect(Collectors.groupingBy(Apis::getServiceId));
     for (Long serviceId : serviceApisMap.keySet()) {
-              // Note: URI cannot be null, must be safely converted to empty string
-        List<ApisBaseInfo> servicesApisDb = apisBaseInfoRepo.findAllByServiceIdAndEndpointIn(
-            serviceId, serviceApisMap.get(serviceId).stream().map(Apis::getEndpoint)
-                .toList());
+      // Note: URI cannot be null, must be safely converted to empty string
+      List<ApisBaseInfo> servicesApisDb = apisBaseInfoRepo.findAllByServiceIdAndEndpointIn(
+          serviceId, serviceApisMap.get(serviceId).stream().map(Apis::getEndpoint)
+              .toList());
       if (isNotEmpty(servicesApisDb)) {
         for (ApisBaseInfo apiDb : servicesApisDb) {
           for (Apis api : serviceApisMap.get(serviceId)) {
@@ -885,10 +885,10 @@ public class ApisQueryImpl implements ApisQuery {
    * <p>This method checks for duplicate API operations when updating APIs,
    * handling method and endpoint updates with proper conflict detection.</p>
    *
-   * @param apis the collection of APIs being updated
-   * @param apisDb the collection of existing APIs in the database
+   * @param apis      the collection of APIs being updated
+   * @param apisDb    the collection of existing APIs in the database
    * @param serviceId the service ID for the APIs
-   * @param replace whether this is a replace operation
+   * @param replace   whether this is a replace operation
    * @throws ResourceExisted if any API operation conflicts with existing ones
    */
   @Override
@@ -998,10 +998,10 @@ public class ApisQueryImpl implements ApisQuery {
    */
   @Override
   public void checkReleasedStatus(Collection<Apis> apisDbs) {
-          for (Apis apiDb : apisDbs) {
-        // Verify that released APIs are not allowed to be modified
-        checkReleasedStatus(apiDb);
-      }
+    for (Apis apiDb : apisDbs) {
+      // Verify that released APIs are not allowed to be modified
+      checkReleasedStatus(apiDb);
+    }
   }
 
   @Override
@@ -1158,7 +1158,7 @@ public class ApisQueryImpl implements ApisQuery {
    * <p>This method sets available servers for an API using provided parent servers
    * instead of automatically retrieving them.</p>
    *
-   * @param apis the API to set servers for
+   * @param apis          the API to set servers for
    * @param parentServers the custom parent servers to include
    */
   @Override
@@ -1202,7 +1202,7 @@ public class ApisQueryImpl implements ApisQuery {
    * <p>This method filters and sets tag schemas that match the API's tags,
    * providing complete tag information for display and validation.</p>
    *
-   * @param apisDb the API to set tag schemas for
+   * @param apisDb     the API to set tag schemas for
    * @param tagSchemas the list of available tag schemas
    */
   @Override
@@ -1245,7 +1245,7 @@ public class ApisQueryImpl implements ApisQuery {
    * <p>This method processes multiple API modifications and sends appropriate
    * notification events to relevant users.</p>
    *
-   * @param apisDb the list of APIs that were modified
+   * @param apisDb     the list of APIs that were modified
    * @param activities the list of activities corresponding to the modifications
    */
   @Override
@@ -1264,7 +1264,7 @@ public class ApisQueryImpl implements ApisQuery {
    * <p>This method creates and sends notification events for API modifications
    * to the API creator and followers.</p>
    *
-   * @param apisDb the API that was modified
+   * @param apisDb   the API that was modified
    * @param activity the activity corresponding to the modification
    */
   @Override
@@ -1314,7 +1314,7 @@ public class ApisQueryImpl implements ApisQuery {
    * to the server list with source extensions for identification.</p>
    *
    * @param servers the list to add parent service servers to
-   * @param apiId the API ID to get parent service servers for
+   * @param apiId   the API ID to get parent service servers for
    */
   private void assembleParentServiceServers(List<Server> servers, Long apiId) {
     Set<Long> parentIds = findParentIds(Collections.singletonList(apiId));
@@ -1339,25 +1339,25 @@ public class ApisQueryImpl implements ApisQuery {
    * mock service servers to the server list with source extensions.</p>
    *
    * @param servers the list to add mock service servers to
-   * @param apiId the API ID to get mock service servers for
+   * @param apiId   the API ID to get mock service servers for
    */
   private void assembleMockServiceServers(List<Server> servers, Long apiId) {
     MockServiceInfo serviceInfo = mockServiceInfoRepo.findByApisId(apiId);
     if (nonNull(serviceInfo)) {
-              if (isNotEmpty(serviceInfo.getServiceDomainUrl())) {
-          // Create mock service domain server
-          Server server = new Server();
-          server.setUrl(serviceInfo.getServiceDomainUrl());
-          server.addExtension(SERVER_SOURCE_KEY, MOCK_SERVICE.getValue());
-          servers.add(server);
-        }
-        if (isNotEmpty(serviceInfo.getServiceHostUrl())) {
-          // Create mock service host server
-          Server server = new Server();
-          server.setUrl(serviceInfo.getServiceHostUrl());
-          server.addExtension(SERVER_SOURCE_KEY, MOCK_SERVICE.getValue());
-          servers.add(server);
-        }
+      if (isNotEmpty(serviceInfo.getServiceDomainUrl())) {
+        // Create mock service domain server
+        Server server = new Server();
+        server.setUrl(serviceInfo.getServiceDomainUrl());
+        server.addExtension(SERVER_SOURCE_KEY, MOCK_SERVICE.getValue());
+        servers.add(server);
+      }
+      if (isNotEmpty(serviceInfo.getServiceHostUrl())) {
+        // Create mock service host server
+        Server server = new Server();
+        server.setUrl(serviceInfo.getServiceHostUrl());
+        server.addExtension(SERVER_SOURCE_KEY, MOCK_SERVICE.getValue());
+        servers.add(server);
+      }
     }
   }
 
@@ -1367,7 +1367,7 @@ public class ApisQueryImpl implements ApisQuery {
    * <p>This method adds API-specific servers including current request server
    * and configured API servers to the server list.</p>
    *
-   * @param apis the API to get servers from
+   * @param apis    the API to get servers from
    * @param servers the list to add API servers to
    */
   private void assembleApiServers(Apis apis, List<Server> servers) {

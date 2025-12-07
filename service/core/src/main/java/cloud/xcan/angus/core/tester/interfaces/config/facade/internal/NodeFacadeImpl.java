@@ -190,7 +190,8 @@ public class NodeFacadeImpl implements NodeFacade {
       if (isFreeNodes) {
         infoFindDto.setIsFreeNode(isFreeNodes);
       }
-      Page<NodeInfo> infoPage = nodeInfoQuery.list(getSpecification(infoFindDto), infoFindDto.tranPage());
+      Page<NodeInfo> infoPage = nodeInfoQuery.list(getSpecification(infoFindDto),
+          infoFindDto.tranPage());
       for (NodeDetailVo detailVo : nodeDetailVos.getList()) {
         for (NodeInfo info : infoPage.getContent()) {
           if (info.getId().equals(detailVo.getId())) {

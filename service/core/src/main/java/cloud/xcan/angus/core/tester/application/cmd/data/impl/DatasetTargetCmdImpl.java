@@ -33,7 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command implementation for managing dataset associations with APIs and scenarios.
  * <p>
- * Provides methods for adding and deleting dataset associations, including activity logging and permission checks.
+ * Provides methods for adding and deleting dataset associations, including activity logging and
+ * permission checks.
  */
 @Biz
 public class DatasetTargetCmdImpl extends CommCmd<DatasetTarget, Long> implements DatasetTargetCmd {
@@ -52,11 +53,13 @@ public class DatasetTargetCmdImpl extends CommCmd<DatasetTarget, Long> implement
   /**
    * Add dataset associations to a target (API or scenario).
    * <p>
-   * Validates project, permission, and quota. Inserts associations and logs activities if required.
+   * Validates project, permission, and quota. Inserts associations and logs activities if
+   * required.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> add(Long targetId, String targetType, Set<Long> datasetIds, boolean saveActivity) {
+  public List<IdKey<Long, Object>> add(Long targetId, String targetType, Set<Long> datasetIds,
+      boolean saveActivity) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       final CombinedTargetType type = CombinedTargetType.valueOf(targetType);
       Long projectId;
@@ -135,6 +138,7 @@ public class DatasetTargetCmdImpl extends CommCmd<DatasetTarget, Long> implement
   /**
    * Get the repository for DatasetTarget entity.
    * <p>
+   *
    * @return the DatasetTargetRepo instance
    */
   @Override

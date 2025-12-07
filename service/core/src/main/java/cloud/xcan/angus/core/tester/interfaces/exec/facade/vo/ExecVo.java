@@ -159,7 +159,7 @@ public class ExecVo {
 
   public Long getIterations() {
     return nonNull(iterations) ? iterations : (scriptType.isFunctionalTesting()
-        && nonNull(sampleSummaryInfo)? sampleSummaryInfo.getIterations() : null);
+        && nonNull(sampleSummaryInfo) ? sampleSummaryInfo.getIterations() : null);
   }
 
   public boolean isDurationProgress() {

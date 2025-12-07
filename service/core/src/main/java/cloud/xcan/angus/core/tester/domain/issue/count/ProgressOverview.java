@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ProgressOverview extends AbstractOverview{
+public class ProgressOverview extends AbstractOverview {
 
   private Map<Long, UserInfo> assignees = new HashMap<>();
 

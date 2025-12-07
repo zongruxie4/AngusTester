@@ -15,7 +15,8 @@ public interface FuncPlanAuthRepo extends BaseRepository<FuncPlanAuth, Long> {
 
   List<FuncPlanAuth> findAllByAuthObjectIdIn(List<Long> orgIds);
 
-  List<FuncPlanAuth> findAllByPlanIdInAndAuthObjectIdIn(Collection<Long> planIds, List<Long> orgIds);
+  List<FuncPlanAuth> findAllByPlanIdInAndAuthObjectIdIn(Collection<Long> planIds,
+      List<Long> orgIds);
 
   List<FuncPlanAuth> findAllByPlanIdAndAuthObjectIdIn(Long planId, List<Long> orgIds);
 

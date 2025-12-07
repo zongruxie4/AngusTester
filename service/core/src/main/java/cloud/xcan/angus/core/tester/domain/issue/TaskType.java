@@ -21,7 +21,7 @@ public enum TaskType implements ValueObject<TaskType>, EnumMessage<String> {
     return this.name();
   }
 
-  public boolean isBug(){
+  public boolean isBug() {
     return this.equals(BUG);
   }
 

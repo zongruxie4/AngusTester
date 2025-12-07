@@ -21,7 +21,8 @@ public class Info {
   private long maxOpenFiles;
   private long openedFiles;
   // Unsupported in oshi
-  @Deprecated private long stackSize;
+  @Deprecated
+  private long stackSize;
 
   @Override
   public boolean equals(Object o) {

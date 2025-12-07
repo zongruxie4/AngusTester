@@ -32,7 +32,8 @@ public interface TaskFavouriteRepo extends BaseRepository<TaskFavourite, Long> {
   /**
    * Note: Overwritten in implementation.
    */
-  Page<TaskFavouriteP> searchByMatch(Long projectId, Long userId, String taskName, Pageable pageable);
+  Page<TaskFavouriteP> searchByMatch(Long projectId, Long userId, String taskName,
+      Pageable pageable);
 
   @Query(value = "select count(sf.id) FROM task_favourite sf, task s WHERE s.id = sf.task_id "
       + "AND sf.created_by = ?1 AND s.sprint_deleted = 0 AND s.deleted = 0", nativeQuery = true)

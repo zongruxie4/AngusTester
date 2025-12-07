@@ -62,16 +62,17 @@ public class TemplateFacadeImpl implements TemplateFacade {
     // Query single template by ID
     Template template = templateQuery.checkAndFind(id);
     TemplateContent templateContent = template.getTemplateContent();
-    
+
     if (templateContent == null) {
       throw new IllegalArgumentException("模版内容为空，无法导出");
     }
-    
+
     // Generate file name based on template name
-    String templateName = template.getName() != null ? template.getName().replaceAll("[^a-zA-Z0-9\\u4e00-\\u9fa5]", "_") : "Template";
+    String templateName = template.getName() != null ? template.getName()
+        .replaceAll("[^a-zA-Z0-9\\u4e00-\\u9fa5]", "_") : "Template";
     String fileName = templateName + "-" + System.currentTimeMillis();
     String fileExtension = format.toLowerCase();
-    
+
     switch (fileExtension) {
       case "excel":
       case "xlsx":
@@ -87,7 +88,7 @@ public class TemplateFacadeImpl implements TemplateFacade {
         fileName += ".xlsx"; // Default to Excel
         fileExtension = "xlsx";
     }
-    
+
     // Export template content only
     org.springframework.core.io.InputStreamResource resource = toTemplateContentExportResource(
         templateContent, template.getTemplateType(), fileName, fileExtension);

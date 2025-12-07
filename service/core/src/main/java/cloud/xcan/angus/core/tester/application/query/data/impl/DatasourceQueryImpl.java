@@ -80,13 +80,13 @@ public class DatasourceQueryImpl implements DatasourceQuery {
    * Lists datasources with optional search and pagination.
    *
    * <p>This method retrieves datasources based on specification criteria,
-   * supporting both full-text search and standard filtering, with user
-   * information enrichment for the results.</p>
+   * supporting both full-text search and standard filtering, with user information enrichment for
+   * the results.</p>
    *
-   * @param spec the specification for filtering datasources
-   * @param pageable the pagination parameters
+   * @param spec           the specification for filtering datasources
+   * @param pageable       the pagination parameters
    * @param fullTextSearch whether to use full-text search
-   * @param match the match fields for full-text search
+   * @param match          the match fields for full-text search
    * @return paginated list of datasources with enriched user information
    */
   @Override
@@ -99,7 +99,7 @@ public class DatasourceQueryImpl implements DatasourceQuery {
         Page<Datasource> page = fullTextSearch
             ? mockDatasourceSearchRepo.find(spec.getCriteria(), pageable, Datasource.class, match)
             : mockDatasourceRepo.findAll(spec, pageable);
-        
+
         // Enrich results with user information if content exists
         if (page.hasContent()) {
           userManager.setUserNameAndAvatar(page.getContent(), "lastModifiedBy",
@@ -147,12 +147,12 @@ public class DatasourceQueryImpl implements DatasourceQuery {
    * Tests database connection for a datasource.
    *
    * <p>This method validates the database connection by checking the driver
-   * class existence and attempting to establish a connection using the
-   * provided datasource configuration.</p>
+   * class existence and attempting to establish a connection using the provided datasource
+   * configuration.</p>
    *
    * @param datasource the datasource configuration to test
    * @throws ClassNotFoundException if the driver class is not found
-   * @throws SQLException if the connection fails or driver is invalid
+   * @throws SQLException           if the connection fails or driver is invalid
    */
   @Override
   public void connDatabase(Datasource datasource) throws ClassNotFoundException, SQLException {
@@ -164,7 +164,7 @@ public class DatasourceQueryImpl implements DatasourceQuery {
         throw new SQLException("Driver class not found: " + e.getMessage());
       }
     }
-    
+
     // Attempt to establish connection and immediately close it
     Connection conn = SimpleConnectionPool.create(datasource.getJdbcUrl(), datasource.getUsername(),
         datasource.getDecryptPassword());

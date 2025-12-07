@@ -116,10 +116,10 @@ public class ApisUnarchivedQueryImpl implements ApisUnarchivedQuery {
    * <p>The method validates project member permissions and automatically filters
    * results to show only APIs owned by the current user.</p>
    *
-   * @param spec the specification for filtering unarchived APIs
-   * @param pageable the pagination and sorting parameters
+   * @param spec           the specification for filtering unarchived APIs
+   * @param pageable       the pagination and sorting parameters
    * @param fullTextSearch whether to use full-text search
-   * @param match the full-text search match fields
+   * @param match          the full-text search match fields
    * @return a page of unarchived APIs owned by the current user
    */
   @Override

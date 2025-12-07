@@ -89,7 +89,7 @@ public class ExecSampleContent extends EntitySupport<ExecSampleContent, Long> {
   @SneakyThrows
   @JsonIgnore
   public SampleResult getSampleResult() {
-    if (nonNull(sampleResult)){ // Cache
+    if (nonNull(sampleResult)) { // Cache
       return sampleResult;
     }
     sampleResult = isNotEmpty(content) ? JsonUtils.convert(content, SampleResult.class) : null;

@@ -31,7 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
  * <p>
  * Provides methods for adding, clearing, restoring, and deleting scenario trash records.
  * <p>
- * Ensures permission checks, cascading operations, and batch processing with transaction management.
+ * Ensures permission checks, cascading operations, and batch processing with transaction
+ * management.
  */
 @Biz
 public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implements ScenarioTrashCmd {

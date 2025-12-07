@@ -39,7 +39,8 @@ public class NodeInfoInnerRest {
   @Operation(summary = "Delete node information records",
       description = "Batch delete node information records by their identifiers for internal service operations.",
       operationId = "node:info:delete:inner")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Node information deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Node information deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping(value = NODE_INFO_DELETE_DOOR_ENDPOINT)
   public void delete(

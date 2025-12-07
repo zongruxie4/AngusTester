@@ -8,7 +8,8 @@ import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 @Converter
-public class JvmMemoryUsageConverter implements AttributeConverter<CsvConverter<JvmMemory>, String>{
+public class JvmMemoryUsageConverter implements
+    AttributeConverter<CsvConverter<JvmMemory>, String> {
 
   @Override
   public String convertToDatabaseColumn(CsvConverter usage) {

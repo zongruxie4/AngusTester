@@ -33,7 +33,8 @@ import org.springframework.data.domain.PageRequest;
  * Implementation of SoftwareVersionQuery for software version management and query operations.
  * </p>
  * <p>
- * Provides methods for software version CRUD operations, progress tracking, and task association management.
+ * Provides methods for software version CRUD operations, progress tracking, and task association
+ * management.
  * </p>
  */
 @Biz
@@ -53,9 +54,10 @@ public class SoftwareVersionQueryImpl implements SoftwareVersionQuery {
    * Get detailed information of a software version including progress and task statistics.
    * </p>
    * <p>
-   * Retrieves the version details and assembles progress information from associated tasks.
-   * Groups tasks by status for efficient data organization.
+   * Retrieves the version details and assembles progress information from associated tasks. Groups
+   * tasks by status for efficient data organization.
    * </p>
+   *
    * @param id Software version ID
    * @return Software version with progress and task information
    */
@@ -92,10 +94,11 @@ public class SoftwareVersionQueryImpl implements SoftwareVersionQuery {
    * <p>
    * Retrieves paginated versions and sets progress information for each version.
    * </p>
-   * @param spec Search specification
-   * @param pageable Pagination information
+   *
+   * @param spec           Search specification
+   * @param pageable       Pagination information
    * @param fullTextSearch Whether to use full-text search
-   * @param match Search match parameters
+   * @param match          Search match parameters
    * @return Page of software versions
    */
   @Override
@@ -116,6 +119,7 @@ public class SoftwareVersionQueryImpl implements SoftwareVersionQuery {
    * <p>
    * Check and find a software version by ID.
    * </p>
+   *
    * @param id Software version ID
    * @return Software version entity
    */
@@ -130,8 +134,10 @@ public class SoftwareVersionQueryImpl implements SoftwareVersionQuery {
    * Check and find multiple software versions by IDs.
    * </p>
    * <p>
-   * Validates that all specified version IDs exist. Throws ResourceNotFound if any version is missing.
+   * Validates that all specified version IDs exist. Throws ResourceNotFound if any version is
+   * missing.
    * </p>
+   *
    * @param ids Collection of software version IDs
    * @return List of software version entities
    */
@@ -152,11 +158,12 @@ public class SoftwareVersionQueryImpl implements SoftwareVersionQuery {
    * Check if a software version already exists in a project.
    * </p>
    * <p>
-   * Validates that a version with the specified name does not already exist in the project.
-   * Throws ResourceExisted if the version name is already taken.
+   * Validates that a version with the specified name does not already exist in the project. Throws
+   * ResourceExisted if the version name is already taken.
    * </p>
+   *
    * @param projectId Project ID
-   * @param name Software version name
+   * @param name      Software version name
    */
   @Override
   public void checkExits(Long projectId, String name) {
@@ -171,11 +178,12 @@ public class SoftwareVersionQueryImpl implements SoftwareVersionQuery {
    * Check if a software version does not exist in a project.
    * </p>
    * <p>
-   * Validates that a version with the specified name exists in the project.
-   * Throws ResourceNotFound if the version name does not exist.
+   * Validates that a version with the specified name exists in the project. Throws ResourceNotFound
+   * if the version name does not exist.
    * </p>
+   *
    * @param projectId Project ID
-   * @param name Software version name
+   * @param name      Software version name
    */
   @Override
   public void checkNotExits(Long projectId, String name) {
@@ -190,9 +198,11 @@ public class SoftwareVersionQueryImpl implements SoftwareVersionQuery {
    * Set progress information for a list of software versions.
    * </p>
    * <p>
-   * Efficiently loads and sets progress information for multiple versions to avoid N+1 query problems.
-   * Groups tasks by software version name and assembles progress counts for each version.
+   * Efficiently loads and sets progress information for multiple versions to avoid N+1 query
+   * problems. Groups tasks by software version name and assembles progress counts for each
+   * version.
    * </p>
+   *
    * @param versionsDb List of software versions to set progress for
    */
   @Override

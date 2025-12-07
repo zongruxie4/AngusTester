@@ -36,7 +36,8 @@ public class ProjectTrashRest {
   @Operation(summary = "Permanently delete project from trash",
       description = "Permanently remove a specific project from the recycle bin with no recovery option",
       operationId = "project:trash:clear")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Project permanently deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Project permanently deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
   public void clear(
@@ -47,7 +48,8 @@ public class ProjectTrashRest {
   @Operation(summary = "Clear all projects from trash",
       description = "Permanently remove all projects from the recycle bin with no recovery option",
       operationId = "project:trash:clear:all")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "All projects permanently deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "All projects permanently deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping()
   public void clearAll() {
@@ -57,7 +59,8 @@ public class ProjectTrashRest {
   @Operation(summary = "Restore project from trash",
       description = "Recover a specific project from the recycle bin and restore it to active status",
       operationId = "project:trash:back")
-  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Project restored successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Project restored successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/back")
   public ApiLocaleResult<?> back(
@@ -69,7 +72,8 @@ public class ProjectTrashRest {
   @Operation(summary = "Restore all projects from trash",
       description = "Recover all projects from the recycle bin and restore them to active status",
       operationId = "project:trash:back:all")
-  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "All projects restored successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "All projects restored successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/back")
   public ApiLocaleResult<?> backAll() {
@@ -80,7 +84,8 @@ public class ProjectTrashRest {
   @Operation(summary = "Query trash count",
       description = "Get the total count of projects currently in the recycle bin",
       operationId = "project:trash:count")
-  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Trash count retrieved successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Trash count retrieved successfully")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/count")
   public ApiLocaleResult<Long> count() {

@@ -56,7 +56,7 @@ public class DatasetRest {
   @Resource
   private DatasetFacade datasetFacade;
 
-  @Operation(summary = "Create new dataset", 
+  @Operation(summary = "Create new dataset",
       description = "Create a new test dataset with configuration and parameter settings",
       operationId = "data:dataset:add")
   @ApiResponses(value = {
@@ -67,7 +67,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.add(dto));
   }
 
-  @Operation(summary = "Update dataset", 
+  @Operation(summary = "Update dataset",
       description = "Update existing dataset configuration and parameters with partial modification support",
       operationId = "data:dataset:update")
   @ApiResponses(value = {
@@ -80,7 +80,7 @@ public class DatasetRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace dataset", 
+  @Operation(summary = "Replace dataset",
       description = "Replace existing dataset with new configuration and parameter settings",
       operationId = "data:dataset:replace")
   @ApiResponses(value = {
@@ -92,7 +92,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.replace(dto));
   }
 
-  @Operation(summary = "Clone datasets", 
+  @Operation(summary = "Clone datasets",
       description = "Create copies of multiple datasets with all configuration and parameter settings",
       operationId = "data:dataset:clone")
   @ApiResponses(value = {
@@ -105,7 +105,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.clone(ids));
   }
 
-  @Operation(summary = "Import datasets", 
+  @Operation(summary = "Import datasets",
       description = "Import datasets from external files with format support and validation",
       operationId = "data:dataset:import")
   @ApiResponses(value = {
@@ -117,7 +117,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.imports(dto));
   }
 
-  @Operation(summary = "Import dataset examples", 
+  @Operation(summary = "Import dataset examples",
       description = "Import predefined dataset examples with sample data and configuration templates",
       operationId = "data:dataset:example:import")
   @ApiResponses(value = {
@@ -129,7 +129,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.importExample(projectId));
   }
 
-  @Operation(summary = "Delete datasets", 
+  @Operation(summary = "Delete datasets",
       description = "Remove multiple datasets from the system with batch operation support",
       operationId = "data:dataset:delete")
   @ApiResponses(value = {
@@ -142,7 +142,7 @@ public class DatasetRest {
     datasetFacade.delete(ids);
   }
 
-  @Operation(summary = "Get dataset details", 
+  @Operation(summary = "Get dataset details",
       description = "Retrieve details and configuration for a specific dataset",
       operationId = "data:dataset:detail")
   @ApiResponses(value = {
@@ -153,7 +153,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.detail(id));
   }
 
-  @Operation(summary = "Preview dataset values", 
+  @Operation(summary = "Preview dataset values",
       description = "Preview dataset parameter values and data content with validation and formatting",
       operationId = "data:dataset:value:preview")
   @ApiResponses(value = {
@@ -164,7 +164,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.valuePreview(dto));
   }
 
-  @Operation(summary = "Query dataset list", 
+  @Operation(summary = "Query dataset list",
       description = "Retrieve paginated list of datasets with filtering and search options",
       operationId = "data:dataset:list")
   @ApiResponses(value = {
@@ -175,7 +175,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.list(dto));
   }
 
-  @Operation(summary = "Export datasets", 
+  @Operation(summary = "Export datasets",
       description = "Export datasets to external files with format support and configuration options",
       operationId = "data:dataset:export")
   @ApiResponses(value = {

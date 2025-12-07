@@ -35,7 +35,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command implementation for mock service authorization management.
  * <p>
- * Provides methods for adding, replacing, enabling/disabling, and deleting mock service authorizations.
+ * Provides methods for adding, replacing, enabling/disabling, and deleting mock service
+ * authorizations.
  * <p>
  * Ensures permission checks, duplicate prevention, and activity logging.
  */

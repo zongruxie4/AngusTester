@@ -7,11 +7,11 @@ import cloud.xcan.angus.spec.locale.EnumMessage;
 public enum ScenarioMonitorStatus implements EnumMessage<String> {
   PENDING, SUCCESS, FAILURE;
 
-  public boolean isSuccess(){
+  public boolean isSuccess() {
     return this.equals(SUCCESS);
   }
 
-  public boolean isFailure(){
+  public boolean isFailure() {
     return this.equals(FAILURE);
   }
 

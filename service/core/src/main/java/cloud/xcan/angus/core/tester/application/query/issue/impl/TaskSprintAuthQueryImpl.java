@@ -45,9 +45,9 @@ import org.springframework.data.domain.Pageable;
  * Implementation of TaskSprintAuthQuery for task sprint authorization management and validation.
  * </p>
  * <p>
- * Provides comprehensive authorization services for task sprints including permission checks,
- * user authentication, admin validation, and batch permission verification. Supports both
- * individual and batch authorization operations with proper error handling and resource validation.
+ * Provides comprehensive authorization services for task sprints including permission checks, user
+ * authentication, admin validation, and batch permission verification. Supports both individual and
+ * batch authorization operations with proper error handling and resource validation.
  * </p>
  */
 @Biz
@@ -69,9 +69,10 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Get the authorization status of a task sprint.
    * </p>
    * <p>
-   * Retrieves whether authorization control is enabled for the specified sprint.
-   * Validates that the sprint exists before returning its authorization status.
+   * Retrieves whether authorization control is enabled for the specified sprint. Validates that the
+   * sprint exists before returning its authorization status.
    * </p>
+   *
    * @param sprintId Sprint ID
    * @return Boolean indicating if authorization is enabled for the sprint
    */
@@ -101,9 +102,10 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Retrieves all permissions granted to a specific user for the sprint. Includes admin bypass
    * logic and creator privilege checks. Returns all permissions for admin users or creators.
    * </p>
+   *
    * @param sprintId Sprint ID
-   * @param userId User ID to check permissions for
-   * @param admin Whether to check admin privileges
+   * @param userId   User ID to check permissions for
+   * @param admin    Whether to check admin privileges
    * @return List of permissions granted to the user
    */
   @Override
@@ -138,11 +140,12 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Get current user's authorization status and permissions for a task sprint.
    * </p>
    * <p>
-   * Retrieves the current user's authorization information including sprint auth status
-   * and granted permissions. Handles admin privileges and creator status automatically.
+   * Retrieves the current user's authorization information including sprint auth status and granted
+   * permissions. Handles admin privileges and creator status automatically.
    * </p>
+   *
    * @param sprintId Sprint ID
-   * @param admin Whether to check admin privileges
+   * @param admin    Whether to check admin privileges
    * @return Current user's authorization information
    */
   @Override
@@ -185,11 +188,12 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Check if a user has a specific permission for a sprint.
    * </p>
    * <p>
-   * Core authorization validation method that checks user permissions for a sprint.
-   * Handles admin bypass, public access, and creator privileges automatically.
+   * Core authorization validation method that checks user permissions for a sprint. Handles admin
+   * bypass, public access, and creator privileges automatically.
    * </p>
-   * @param userId User ID to check permission for
-   * @param sprintId Sprint ID
+   *
+   * @param userId     User ID to check permission for
+   * @param sprintId   Sprint ID
    * @param permission Required permission to check
    */
   @Override
@@ -202,14 +206,15 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Check if a user has a specific permission for a sprint with advanced options.
    * </p>
    * <p>
-   * Extended authorization validation method with options to ignore admin permissions
-   * and public access controls. Used for special authorization scenarios.
+   * Extended authorization validation method with options to ignore admin permissions and public
+   * access controls. Used for special authorization scenarios.
    * </p>
-   * @param userId User ID to check permission for
-   * @param sprintId Sprint ID (nullable for backlog scenarios)
-   * @param permission Required permission to check
+   *
+   * @param userId                User ID to check permission for
+   * @param sprintId              Sprint ID (nullable for backlog scenarios)
+   * @param permission            Required permission to check
    * @param ignoreAdminPermission Whether to ignore admin user privileges
-   * @param ignorePublicAccess Whether to ignore public access controls
+   * @param ignorePublicAccess    Whether to ignore public access controls
    */
   @Override
   public void checkAuth(Long userId, @Nullable Long sprintId, TaskSprintPermission permission,
@@ -238,12 +243,13 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Check if a user has a specific permission for a task sprint.
    * </p>
    * <p>
-   * Validates that the specified user has the required permission for the sprint.
-   * Throws authorization exception if the user lacks the required permission.
+   * Validates that the specified user has the required permission for the sprint. Throws
+   * authorization exception if the user lacks the required permission.
    * </p>
-   * @param sprintId Sprint ID
+   *
+   * @param sprintId   Sprint ID
    * @param permission Required permission to check
-   * @param userId User ID to check permission for
+   * @param userId     User ID to check permission for
    */
   @Override
   public void check(Long sprintId, TaskSprintPermission permission, Long userId) {
@@ -262,16 +268,18 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Find task sprint authorizations with pagination support.
    * </p>
    * <p>
-   * Searches for sprint authorizations based on specification criteria and sprint IDs.
-   * Supports pagination and filtering with proper parameter validation.
+   * Searches for sprint authorizations based on specification criteria and sprint IDs. Supports
+   * pagination and filtering with proper parameter validation.
    * </p>
-   * @param spec Generic specification for filtering
+   *
+   * @param spec      Generic specification for filtering
    * @param sprintIds List of sprint IDs to search within
-   * @param pageable Pagination parameters
+   * @param pageable  Pagination parameters
    * @return Paginated results of sprint authorizations
    */
   @Override
-  public Page<TaskSprintAuth> find(GenericSpecification<TaskSprintAuth> spec, List<String> sprintIds,
+  public Page<TaskSprintAuth> find(GenericSpecification<TaskSprintAuth> spec,
+      List<String> sprintIds,
       Pageable pageable) {
     return new BizTemplate<Page<TaskSprintAuth>>() {
       @Override
@@ -295,6 +303,7 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Retrieves a sprint authorization entity by its ID and throws ResourceNotFound if not found.
    * Used for validation before operations that require an existing authorization record.
    * </p>
+   *
    * @param id Sprint authorization ID
    * @return TaskSprintAuth entity if found
    * @throws ResourceNotFound if the authorization is not found
@@ -310,10 +319,11 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Check if a user has permission to modify a task sprint.
    * </p>
    * <p>
-   * Validates that the specified user has MODIFY_SPRINT permission for the sprint.
-   * Throws authorization exception if the user lacks the required permission.
+   * Validates that the specified user has MODIFY_SPRINT permission for the sprint. Throws
+   * authorization exception if the user lacks the required permission.
    * </p>
-   * @param userId User ID to check permission for
+   *
+   * @param userId   User ID to check permission for
    * @param sprintId Sprint ID
    */
   @Override
@@ -326,10 +336,11 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Check if a user has permission to delete a task sprint.
    * </p>
    * <p>
-   * Validates that the specified user has DELETE_SPRINT permission for the sprint.
-   * Throws authorization exception if the user lacks the required permission.
+   * Validates that the specified user has DELETE_SPRINT permission for the sprint. Throws
+   * authorization exception if the user lacks the required permission.
    * </p>
-   * @param userId User ID to check permission for
+   *
+   * @param userId   User ID to check permission for
    * @param sprintId Sprint ID
    */
   @Override
@@ -342,10 +353,11 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Check if a user has permission to add tasks to a sprint.
    * </p>
    * <p>
-   * Validates that the specified user has ADD_TASK permission for the sprint.
-   * Throws authorization exception if the user lacks the required permission.
+   * Validates that the specified user has ADD_TASK permission for the sprint. Throws authorization
+   * exception if the user lacks the required permission.
    * </p>
-   * @param userId User ID to check permission for
+   *
+   * @param userId   User ID to check permission for
    * @param sprintId Sprint ID
    */
   @Override
@@ -358,10 +370,11 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Check if a user has permission to modify tasks in a sprint.
    * </p>
    * <p>
-   * Validates that the specified user has MODIFY_TASK permission for the sprint.
-   * Throws authorization exception if the user lacks the required permission.
+   * Validates that the specified user has MODIFY_TASK permission for the sprint. Throws
+   * authorization exception if the user lacks the required permission.
    * </p>
-   * @param userId User ID to check permission for
+   *
+   * @param userId   User ID to check permission for
    * @param sprintId Sprint ID
    */
   @Override
@@ -374,10 +387,11 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Check if a user has permission to grant authorization for a sprint.
    * </p>
    * <p>
-   * Validates that the specified user has GRANT permission for the sprint.
-   * This permission allows users to grant authorization to other users.
+   * Validates that the specified user has GRANT permission for the sprint. This permission allows
+   * users to grant authorization to other users.
    * </p>
-   * @param userId User ID to check permission for
+   *
+   * @param userId   User ID to check permission for
    * @param sprintId Sprint ID
    */
   @Override
@@ -390,10 +404,11 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Batch check permissions for multiple sprints.
    * </p>
    * <p>
-   * Efficiently validates permissions across multiple sprints for the current user.
-   * Optimizes database queries by filtering sprints that require authorization control.
+   * Efficiently validates permissions across multiple sprints for the current user. Optimizes
+   * database queries by filtering sprints that require authorization control.
    * </p>
-   * @param sprintIds Collection of sprint IDs to check
+   *
+   * @param sprintIds  Collection of sprint IDs to check
    * @param permission Required permission to check
    */
   @Override
@@ -450,11 +465,12 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Check for duplicate authorization entries.
    * </p>
    * <p>
-   * Validates that no duplicate authorization exists for the same auth object
-   * in the specified sprint. Prevents duplicate authorization assignments.
+   * Validates that no duplicate authorization exists for the same auth object in the specified
+   * sprint. Prevents duplicate authorization assignments.
    * </p>
-   * @param sprintId Sprint ID
-   * @param authObjectId Auth object ID
+   *
+   * @param sprintId       Sprint ID
+   * @param authObjectId   Auth object ID
    * @param authObjectType Auth object type
    * @throws ResourceExisted if duplicate authorization exists
    */
@@ -471,10 +487,11 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Find sprint IDs where a user has a specific permission.
    * </p>
    * <p>
-   * Retrieves all sprint IDs where the specified user (including their organizations)
-   * has the given permission. Includes both direct user permissions and organization-based permissions.
+   * Retrieves all sprint IDs where the specified user (including their organizations) has the given
+   * permission. Includes both direct user permissions and organization-based permissions.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId     User ID
    * @param permission Required permission
    * @return List of sprint IDs where the user has the permission
    */
@@ -497,10 +514,11 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Find authorization records for a user in a specific sprint.
    * </p>
    * <p>
-   * Retrieves all authorization records for the user (including their organizations)
-   * in the specified sprint. Includes both direct user permissions and organization-based permissions.
+   * Retrieves all authorization records for the user (including their organizations) in the
+   * specified sprint. Includes both direct user permissions and organization-based permissions.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId   User ID
    * @param sprintId Sprint ID
    * @return List of authorization records
    */
@@ -517,10 +535,11 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Find authorization records for a user across multiple sprints.
    * </p>
    * <p>
-   * Retrieves all authorization records for the user (including their organizations)
-   * across the specified sprints. If no sprint IDs provided, returns all user authorizations.
+   * Retrieves all authorization records for the user (including their organizations) across the
+   * specified sprints. If no sprint IDs provided, returns all user authorizations.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId     User ID
    * @param projectIds Collection of sprint IDs (optional)
    * @return List of authorization records
    */
@@ -541,11 +560,12 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Get all permissions for a user in a specific sprint.
    * </p>
    * <p>
-   * Retrieves all permissions granted to the user for the sprint, including admin privileges
-   * and creator status. Returns null if no permissions are found.
+   * Retrieves all permissions granted to the user for the sprint, including admin privileges and
+   * creator status. Returns null if no permissions are found.
    * </p>
+   *
    * @param sprintId Sprint ID
-   * @param userId User ID
+   * @param userId   User ID
    * @return List of permissions, or null if none found
    */
   @Override
@@ -570,10 +590,11 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Check if a user is the creator of a sprint.
    * </p>
    * <p>
-   * Determines whether the specified user is the creator of the sprint
-   * by checking their authorization records.
+   * Determines whether the specified user is the creator of the sprint by checking their
+   * authorization records.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId   User ID
    * @param sprintId Sprint ID
    * @return true if the user is the creator, false otherwise
    */
@@ -589,6 +610,7 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * <p>
    * Delegates to CommonQuery to determine if the current user has admin privileges.
    * </p>
+   *
    * @return true if the current user is an admin, false otherwise
    */
   @Override
@@ -603,6 +625,7 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * <p>
    * Helper method to determine if the user is a creator based on their authorization records.
    * </p>
+   *
    * @param auths List of authorization records
    * @return true if any record indicates creator status, false otherwise
    */
@@ -618,6 +641,7 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
    * Helper method to extract and combine all permissions from multiple authorization records,
    * removing duplicates.
    * </p>
+   *
    * @param auths List of authorization records
    * @return Set of all unique permissions
    */

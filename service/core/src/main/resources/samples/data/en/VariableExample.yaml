@@ -63,7 +63,7 @@
           enabled: true
           type: string
           value: ACCOUNT_PASSWORD
-      body: {}
+      body: { }
       x-validSecurity: false
 - name: AutoUpdatedSnowIdInIteration
   extracted: false

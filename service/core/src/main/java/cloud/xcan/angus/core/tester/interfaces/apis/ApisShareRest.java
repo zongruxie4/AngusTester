@@ -44,7 +44,7 @@ public class ApisShareRest {
   @Resource
   private ApisShareFacade apisShareFacade;
 
-  @Operation(summary = "Create API sharing", 
+  @Operation(summary = "Create API sharing",
       description = "Create new API sharing with comprehensive access control and collaboration settings",
       operationId = "apis:share:add")
   @ApiResponses(value = {
@@ -55,7 +55,7 @@ public class ApisShareRest {
     return ApiLocaleResult.success(apisShareFacade.add(dto));
   }
 
-  @Operation(summary = "Update API sharing", 
+  @Operation(summary = "Update API sharing",
       description = "Update existing API sharing with comprehensive configuration and access control",
       operationId = "apis:share:update")
   @ApiResponses(value = {
@@ -67,7 +67,7 @@ public class ApisShareRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete API sharing", 
+  @Operation(summary = "Delete API sharing",
       description = "Remove API sharing from the system with proper cleanup and access control validation",
       operationId = "apis:share:delete")
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -81,7 +81,7 @@ public class ApisShareRest {
     apisShareFacade.delete(ids);
   }
 
-  @Operation(summary = "Get API sharing details", 
+  @Operation(summary = "Get API sharing details",
       description = "Retrieve comprehensive API sharing details including access control and collaboration settings",
       operationId = "space:share:detail")
   @ApiResponses(value = {
@@ -93,7 +93,7 @@ public class ApisShareRest {
     return ApiLocaleResult.success(apisShareFacade.detail(id));
   }
 
-  @Operation(summary = "Query API sharing list", 
+  @Operation(summary = "Query API sharing list",
       description = "Retrieve paginated list of API sharing with comprehensive filtering and search options",
       operationId = "apis:share:list")
   @ApiResponses(value = {

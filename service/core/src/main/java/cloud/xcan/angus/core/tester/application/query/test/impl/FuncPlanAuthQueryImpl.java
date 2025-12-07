@@ -109,14 +109,14 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
   /**
    * Retrieves user permissions for a specific functional test plan.
    * <p>
-   * Provides comprehensive permission analysis including admin privileges, creator rights,
-   * and assigned permissions. Supports admin override functionality.
+   * Provides comprehensive permission analysis including admin privileges, creator rights, and
+   * assigned permissions. Supports admin override functionality.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
    * @param planId the plan ID to check permissions for
    * @param userId the user ID to retrieve permissions for
-   * @param admin whether to include admin privileges in the check
+   * @param admin  whether to include admin privileges in the check
    * @return List of FuncPlanPermission objects representing user permissions
    * @throws ResourceNotFound if the plan is not found
    */
@@ -155,13 +155,13 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
   /**
    * Retrieves current user's authorization status and permissions for a functional test plan.
    * <p>
-   * Provides comprehensive authorization information including plan authorization status,
-   * user permissions, and admin/creator privileges for the current authenticated user.
+   * Provides comprehensive authorization information including plan authorization status, user
+   * permissions, and admin/creator privileges for the current authenticated user.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
    * @param planId the plan ID to check current user permissions for
-   * @param admin whether to include admin privileges in the check
+   * @param admin  whether to include admin privileges in the check
    * @return FuncPlanAuthCurrent object with authorization status and permissions
    * @throws ResourceNotFound if the plan is not found
    */
@@ -207,7 +207,8 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
   }
 
   /**
-   * Retrieves current user's authorization status and permissions for multiple functional test plans.
+   * Retrieves current user's authorization status and permissions for multiple functional test
+   * plans.
    * <p>
    * Provides batch authorization information for multiple plans with optimized database queries.
    * Handles admin privileges, creator rights, and assigned permissions efficiently.
@@ -215,7 +216,7 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
    * Uses BizTemplate pattern for consistent business logic execution.
    *
    * @param planIds set of plan IDs to check current user permissions for
-   * @param admin whether to include admin privileges in the check
+   * @param admin   whether to include admin privileges in the check
    * @return Map of plan ID to FuncPlanAuthCurrent objects with authorization status and permissions
    * @throws ResourceNotFound if any plan is not found
    */
@@ -299,9 +300,9 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param planId the plan ID to check permission for
+   * @param planId     the plan ID to check permission for
    * @param permission the permission to validate
-   * @param userId the user ID to check permission for
+   * @param userId     the user ID to check permission for
    * @throws BizException if user lacks the required permission
    */
   @Override
@@ -324,8 +325,8 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param spec the specification for filtering authorization records
-   * @param planIds list of plan IDs to filter by (required)
+   * @param spec     the specification for filtering authorization records
+   * @param planIds  list of plan IDs to filter by (required)
    * @param pageable pagination parameters
    * @return Page of FuncPlanAuth objects
    * @throws ProtocolException if planIds parameter is missing
@@ -497,11 +498,11 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
   /**
    * Validates user permission for a functional test plan with default settings.
    * <p>
-   * Checks if the specified user has the required permission for the plan using
-   * default admin and public access handling.
+   * Checks if the specified user has the required permission for the plan using default admin and
+   * public access handling.
    *
-   * @param userId the user ID to check permission for
-   * @param planId the plan ID to check permission for
+   * @param userId     the user ID to check permission for
+   * @param planId     the plan ID to check permission for
    * @param permission the permission to validate
    * @throws BizException if user lacks the required permission
    */
@@ -513,14 +514,14 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
   /**
    * Validates user permission for a functional test plan with custom settings.
    * <p>
-   * Provides comprehensive permission validation with configurable admin and public access handling.
-   * Supports special cases for grant permissions and authorization control bypass.
+   * Provides comprehensive permission validation with configurable admin and public access
+   * handling. Supports special cases for grant permissions and authorization control bypass.
    *
-   * @param userId the user ID to check permission for
-   * @param planId the plan ID to check permission for
-   * @param permission the permission to validate
+   * @param userId                the user ID to check permission for
+   * @param planId                the plan ID to check permission for
+   * @param permission            the permission to validate
    * @param ignoreAdminPermission whether to ignore admin privilege checks
-   * @param ignorePublicAccess whether to ignore public access checks
+   * @param ignorePublicAccess    whether to ignore public access checks
    * @throws BizException if user lacks the required permission
    */
   @Override
@@ -555,12 +556,12 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
   /**
    * Validates operation permissions for multiple functional test plans in batch.
    * <p>
-   * Provides efficient batch permission checking for multiple plans with optimized
-   * database queries and comprehensive error reporting.
+   * Provides efficient batch permission checking for multiple plans with optimized database queries
+   * and comprehensive error reporting.
    * <p>
    * Supports grant permission special handling and authorization control filtering.
    *
-   * @param planIds collection of plan IDs to check permissions for
+   * @param planIds    collection of plan IDs to check permissions for
    * @param permission the permission to validate across all plans
    * @throws BizException if user lacks the required permission for any plan
    */
@@ -613,11 +614,11 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
   /**
    * Validates that authorization record does not already exist for the specified parameters.
    * <p>
-   * Prevents duplicate authorization records by checking for existing entries with
-   * the same plan, object, and type combination.
+   * Prevents duplicate authorization records by checking for existing entries with the same plan,
+   * object, and type combination.
    *
-   * @param planId the plan ID
-   * @param authObjectId the authorization object ID
+   * @param planId         the plan ID
+   * @param authObjectId   the authorization object ID
    * @param authObjectType the authorization object type
    * @throws ResourceExisted if authorization record already exists
    */
@@ -632,10 +633,10 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
   /**
    * Finds plan IDs where user has the specified permission.
    * <p>
-   * Searches for plans where the user or their organizations have the required permission.
-   * Includes both direct user permissions and organizational permissions.
+   * Searches for plans where the user or their organizations have the required permission. Includes
+   * both direct user permissions and organizational permissions.
    *
-   * @param userId the user ID to search permissions for
+   * @param userId     the user ID to search permissions for
    * @param permission the permission to search for
    * @return List of plan IDs where user has the specified permission
    */
@@ -651,8 +652,8 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
   /**
    * Finds authorization records for a specific user and plan.
    * <p>
-   * Retrieves all authorization records for the user and their organizations
-   * for the specified plan.
+   * Retrieves all authorization records for the user and their organizations for the specified
+   * plan.
    *
    * @param userId the user ID
    * @param planId the plan ID
@@ -668,10 +669,10 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
   /**
    * Finds authorization records for a specific user and multiple plans.
    * <p>
-   * Retrieves all authorization records for the user and their organizations
-   * for the specified plans. Optimized for bulk operations.
+   * Retrieves all authorization records for the user and their organizations for the specified
+   * plans. Optimized for bulk operations.
    *
-   * @param userId the user ID
+   * @param userId  the user ID
    * @param planIds collection of plan IDs
    * @return List of FuncPlanAuth objects
    */

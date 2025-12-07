@@ -58,7 +58,8 @@ public interface ApisFacade {
 
   void deleteParameters(Long serviceId, ServiceApisScopeDto dto, List<String> names);
 
-  void enableParameters(Long serviceId, ServiceApisScopeDto dto, List<String> names, Boolean enabled);
+  void enableParameters(Long serviceId, ServiceApisScopeDto dto, List<String> names,
+      Boolean enabled);
 
   void updateAuth(Long serviceId, ServiceApisScopeDto dto, SecurityScheme authentication);
 

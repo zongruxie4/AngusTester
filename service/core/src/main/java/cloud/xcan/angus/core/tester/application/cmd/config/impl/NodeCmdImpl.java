@@ -72,9 +72,11 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command implementation for node management.
  * <p>
- * Provides methods for adding, updating, deleting, purchasing, renewing, enabling, stopping, restarting, and managing agent installation for nodes.
+ * Provides methods for adding, updating, deleting, purchasing, renewing, enabling, stopping,
+ * restarting, and managing agent installation for nodes.
  * <p>
- * Ensures permission checks, cloud resource management, distributed coordination, and batch operations with transaction management.
+ * Ensures permission checks, cloud resource management, distributed coordination, and batch
+ * operations with transaction management.
  */
 @Slf4j
 @Biz
@@ -364,7 +366,8 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
   /**
    * Purchase nodes by order ID and tenant ID.
    * <p>
-   * Checks order existence, cloud edition, and resource availability before purchasing and adding nodes.
+   * Checks order existence, cloud edition, and resource availability before purchasing and adding
+   * nodes.
    */
   @DoInFuture("Move purchase logic to IAAS proxy service(Multi-cloud management)")
   @Override
@@ -418,7 +421,8 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
   /**
    * Purchase nodes by node specification and number.
    * <p>
-   * Checks order existence, cloud edition, and resource availability before purchasing and adding nodes.
+   * Checks order existence, cloud edition, and resource availability before purchasing and adding
+   * nodes.
    */
   @Override
   public void purchase(Node node, Long nodeNum) {
@@ -700,6 +704,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
   }
 
   // TODO Test ...
+
   /**
    * Automatically install agent on all uninstalled nodes.
    * <p>

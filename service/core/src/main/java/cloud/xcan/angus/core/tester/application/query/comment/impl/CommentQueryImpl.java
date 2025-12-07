@@ -33,8 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Implementation of comment query operations for functional and general plugin use.
  *
  * <p>This class provides comprehensive functionality for querying and managing
- * comments, including detail retrieval, listing, tree summary, quota checking,
- * and permission validation.</p>
+ * comments, including detail retrieval, listing, tree summary, quota checking, and permission
+ * validation.</p>
  *
  * <p>Key features include:
  * <ul>
@@ -84,7 +84,7 @@ public class CommentQueryImpl implements CommentQuery {
    * <p>This method retrieves all comments associated with a specific target ID and type,
    * ordered from newest to oldest.</p>
    *
-   * @param targetId the target entity ID
+   * @param targetId   the target entity ID
    * @param targetType the target entity type
    * @return list of comments for the target
    */
@@ -106,7 +106,7 @@ public class CommentQueryImpl implements CommentQuery {
    * enriching each comment with user information.</p>
    *
    * @param targetType the combined target type
-   * @param targetId the target entity ID
+   * @param targetId   the target entity ID
    * @return list of comment tree summaries, or null if no comments exist
    */
   @Override
@@ -131,7 +131,7 @@ public class CommentQueryImpl implements CommentQuery {
    * <p>This method returns the total number of comments associated with a specific
    * target ID and type.</p>
    *
-   * @param targetId the target entity ID
+   * @param targetId   the target entity ID
    * @param targetType the target entity type
    * @return the number of comments for the target
    */

@@ -53,7 +53,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command implementation for node information management.
  * <p>
- * Provides methods for updating, deleting, initializing, and managing agent authentication and runner processes for node information.
+ * Provides methods for updating, deleting, initializing, and managing agent authentication and
+ * runner processes for node information.
  * <p>
  * Ensures distributed coordination, agent installation, and integration with external services.
  */
@@ -87,7 +88,7 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void update0(NodeInfo nodeInfo){
+  public void update0(NodeInfo nodeInfo) {
     nodeInfoRepo.save(nodeInfo);
   }
 
@@ -250,7 +251,6 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
       }
     }.execute();
   }
-
 
 
   /**
@@ -420,7 +420,8 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
         .setTenantId(tenantId)
         .setTenantName(getTenantName())
         .setResourceId(nodeId);
-    AuthClientSignupVo signupVo = clientSignInnerRemote.signupByDoor(signupDto).orElseContentThrow();
+    AuthClientSignupVo signupVo = clientSignInnerRemote.signupByDoor(signupDto)
+        .orElseContentThrow();
 
     AuthClientSignInDto signInDto = new AuthClientSignInDto()
         .setClientId(signupVo.getClientId())

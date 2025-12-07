@@ -60,8 +60,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class TemplateConverter {
 
   /**
-   * Parses import file based on file extension (Excel, CSV, or JSON) and template type.
-   * Returns TemplateContent based on the template type.
+   * Parses import file based on file extension (Excel, CSV, or JSON) and template type. Returns
+   * TemplateContent based on the template type.
    */
   public static TemplateContent parseImportFile(MultipartFile file, String fileName,
       TemplateType templateType) {
@@ -211,7 +211,8 @@ public class TemplateConverter {
   /**
    * Parses IssueTemplateContent from row data.
    */
-  public static IssueTemplateContent parseIssueTemplateContent(List<String> titles, String[] dataRow,
+  public static IssueTemplateContent parseIssueTemplateContent(List<String> titles,
+      String[] dataRow,
       Locale locale) {
     IssueTemplateContent content = new IssueTemplateContent();
 
@@ -269,7 +270,8 @@ public class TemplateConverter {
   /**
    * Parses PlanTemplateContent from row data.
    */
-  public static PlanTemplateContent parsePlanTemplateContent(List<String> titles, String[] dataRow) {
+  public static PlanTemplateContent parsePlanTemplateContent(List<String> titles,
+      String[] dataRow) {
     PlanTemplateContent content = new PlanTemplateContent();
 
     int idx = getColumnIndex(titles, "测试范围");
@@ -564,15 +566,15 @@ public class TemplateConverter {
   }
 
   /**
-   * Converts template content to export resource (Excel, CSV, or JSON format).
-   * Only exports template content, not template metadata.
+   * Converts template content to export resource (Excel, CSV, or JSON format). Only exports
+   * template content, not template metadata.
    */
   @SneakyThrows
   @NotNull
   public static InputStreamResource toTemplateContentExportResource(TemplateContent templateContent,
       TemplateType templateType, String fileName, String format) {
     String fileExtension = format.toLowerCase();
-    
+
     if ("json".equals(fileExtension)) {
       return toTemplateContentJsonExportResource(templateContent);
     } else if ("csv".equals(fileExtension)) {
@@ -594,24 +596,24 @@ public class TemplateConverter {
         + getTenantId() + File.separator + fileName;
     File file = new File(filePath);
     FileUtils.forceMkdirParent(file);
-    
+
     // Get headers and data based on template type
     List<String> headers = getTemplateContentHeaders(templateType);
     List<String> data = getTemplateContentData(templateContent, templateType);
-    
+
     // Convert headers to List<List<String>> format for EasyExcel
     List<List<String>> headerList = headers.stream()
         .map(List::of)
         .collect(Collectors.toList());
-    
+
     // Convert data to List<List<String>> format for EasyExcel
     List<List<String>> dataList = List.of(data);
-    
+
     EasyExcel.write(file)
         .head(headerList).sheet()
         .registerWriteHandler(new SimpleColumnWidthStyleStrategy(25))
         .doWrite(dataList);
-    
+
     return new InputStreamResource(new FileInputStream(filePath));
   }
 
@@ -626,19 +628,21 @@ public class TemplateConverter {
         + getTenantId() + File.separator + fileName;
     File file = new File(filePath);
     FileUtils.forceMkdirParent(file);
-    
+
     // Get headers and data based on template type
     List<String> headers = getTemplateContentHeaders(templateType);
     List<String> data = getTemplateContentData(templateContent, templateType);
-    
+
     try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
       // Write header
-      writer.write(String.join(",", headers.stream().map(TemplateConverter::escapeCsv).toList()) + "\n");
-      
+      writer.write(
+          String.join(",", headers.stream().map(TemplateConverter::escapeCsv).toList()) + "\n");
+
       // Write data
-      writer.write(String.join(",", data.stream().map(TemplateConverter::escapeCsv).toList()) + "\n");
+      writer.write(
+          String.join(",", data.stream().map(TemplateConverter::escapeCsv).toList()) + "\n");
     }
-    
+
     return new InputStreamResource(new FileInputStream(filePath));
   }
 
@@ -647,7 +651,8 @@ public class TemplateConverter {
    */
   @SneakyThrows
   @NotNull
-  private static InputStreamResource toTemplateContentJsonExportResource(TemplateContent templateContent) {
+  private static InputStreamResource toTemplateContentJsonExportResource(
+      TemplateContent templateContent) {
     String jsonContent = JsonUtils.toJson(templateContent);
     byte[] contentBytes = jsonContent.getBytes(StandardCharsets.UTF_8);
     return new InputStreamResource(new ByteArrayInputStream(contentBytes));
@@ -659,7 +664,8 @@ public class TemplateConverter {
   public static List<String> getTemplateContentHeaders(TemplateType templateType) {
     switch (templateType) {
       case ISSUE:
-        return List.of("任务类型", "缺陷等级", "优先级", "是否漏测缺陷", "评估工作量方法", "评估工作量", "实际工作量", "描述");
+        return List.of("任务类型", "缺陷等级", "优先级", "是否漏测缺陷", "评估工作量方法",
+            "评估工作量", "实际工作量", "描述");
       case TEST_PLAN:
         return List.of("测试范围", "测试目标", "验收标准", "其他信息");
       case TEST_CASE:
@@ -672,28 +678,39 @@ public class TemplateConverter {
   /**
    * Gets data row for template content export based on template type.
    */
-  public static List<String> getTemplateContentData(TemplateContent templateContent, TemplateType templateType) {
+  public static List<String> getTemplateContentData(TemplateContent templateContent,
+      TemplateType templateType) {
     List<String> data = new ArrayList<>();
-    
+
     switch (templateType) {
       case ISSUE:
         if (templateContent instanceof IssueTemplateContent issueContent) {
           data.add(issueContent.getTaskType() != null ? issueContent.getTaskType().name() : "");
           data.add(issueContent.getBugLevel() != null ? issueContent.getBugLevel().name() : "");
           data.add(issueContent.getPriority() != null ? issueContent.getPriority().name() : "");
-          data.add(issueContent.getMissingBug() != null && issueContent.getMissingBug() ? "是" : "否");
-          data.add(issueContent.getEvalWorkloadMethod() != null ? issueContent.getEvalWorkloadMethod().name() : "");
-          data.add(issueContent.getEvalWorkload() != null ? issueContent.getEvalWorkload().toString() : "");
-          data.add(issueContent.getActualWorkload() != null ? issueContent.getActualWorkload().toString() : "");
+          data.add(
+              issueContent.getMissingBug() != null && issueContent.getMissingBug() ? "是" : "否");
+          data.add(
+              issueContent.getEvalWorkloadMethod() != null ? issueContent.getEvalWorkloadMethod()
+                  .name() : "");
+          data.add(
+              issueContent.getEvalWorkload() != null ? issueContent.getEvalWorkload().toString()
+                  : "");
+          data.add(
+              issueContent.getActualWorkload() != null ? issueContent.getActualWorkload().toString()
+                  : "");
           data.add(issueContent.getDescription() != null ? issueContent.getDescription() : "");
         }
         break;
       case TEST_PLAN:
         if (templateContent instanceof PlanTemplateContent planContent) {
           data.add(planContent.getTestingScope() != null ? planContent.getTestingScope() : "");
-          data.add(planContent.getTestingObjectives() != null ? planContent.getTestingObjectives() : "");
-          data.add(planContent.getAcceptanceCriteria() != null ? planContent.getAcceptanceCriteria() : "");
-          data.add(planContent.getOtherInformation() != null ? planContent.getOtherInformation() : "");
+          data.add(
+              planContent.getTestingObjectives() != null ? planContent.getTestingObjectives() : "");
+          data.add(planContent.getAcceptanceCriteria() != null ? planContent.getAcceptanceCriteria()
+              : "");
+          data.add(
+              planContent.getOtherInformation() != null ? planContent.getOtherInformation() : "");
         }
         break;
       case TEST_CASE:
@@ -706,7 +723,8 @@ public class TemplateConverter {
           String stepsStr = "";
           if (caseContent.getSteps() != null && !caseContent.getSteps().isEmpty()) {
             stepsStr = caseContent.getSteps().stream()
-                .map(step -> step.getStep() + "##" + (step.getExpectedResult() != null ? step.getExpectedResult() : ""))
+                .map(step -> step.getStep() + "##" + (step.getExpectedResult() != null
+                    ? step.getExpectedResult() : ""))
                 .collect(Collectors.joining("@@"));
           }
           data.add(stepsStr);
@@ -714,7 +732,7 @@ public class TemplateConverter {
         }
         break;
     }
-    
+
     return data;
   }
 

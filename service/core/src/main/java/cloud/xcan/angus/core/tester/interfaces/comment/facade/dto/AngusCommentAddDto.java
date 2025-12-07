@@ -31,7 +31,8 @@ public class AngusCommentAddDto {
   private Long targetId;
 
   @NotNull
-  @EnumPart(enumClass = CombinedTargetType.class, allowableValues = { "TASK", "SCRIPT", "FUNC_CASE", "SCENARIO" })
+  @EnumPart(enumClass = CombinedTargetType.class, allowableValues = {"TASK", "SCRIPT", "FUNC_CASE",
+      "SCENARIO"})
   @Schema(description = "Target resource type for comment categorization", example = "TASK", requiredMode = RequiredMode.REQUIRED)
   private CombinedTargetType targetType;
 

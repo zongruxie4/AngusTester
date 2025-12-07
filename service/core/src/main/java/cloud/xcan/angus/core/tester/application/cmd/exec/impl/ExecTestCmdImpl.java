@@ -36,13 +36,13 @@ import org.springframework.transaction.annotation.Transactional;
  * Command implementation for managing test result updates and example imports for executions.
  * </p>
  * <p>
- * Provides methods for updating test results and importing example executions.
- * Handles result aggregation, status updates, and related entity updates for tasks,
- * APIs, scenarios, and cases based on execution outcomes.
+ * Provides methods for updating test results and importing example executions. Handles result
+ * aggregation, status updates, and related entity updates for tasks, APIs, scenarios, and cases
+ * based on execution outcomes.
  * </p>
  * <p>
- * Key features include comprehensive test result synchronization across multiple
- * entity types and example execution import functionality.
+ * Key features include comprehensive test result synchronization across multiple entity types and
+ * example execution import functionality.
  * </p>
  */
 @Biz
@@ -68,11 +68,12 @@ public class ExecTestCmdImpl implements ExecTestCmd {
    * Update test results for execution.
    * </p>
    * <p>
-   * Note: A scenario or APIs may have multiple testing tasks.
-   * Updates test results for tasks, APIs, scenarios, and cases based on execution outcome.
-   * Handles result aggregation and status synchronization across related entities.
+   * Note: A scenario or APIs may have multiple testing tasks. Updates test results for tasks, APIs,
+   * scenarios, and cases based on execution outcome. Handles result aggregation and status
+   * synchronization across related entities.
    * </p>
-   * @param testResult Test result information
+   *
+   * @param testResult  Test result information
    * @param caseResults List of test case results
    */
   @Transactional(rollbackFor = Exception.class)
@@ -106,6 +107,7 @@ public class ExecTestCmdImpl implements ExecTestCmd {
    * Note: When API calls that are not user-action, tenant and user information must be injected
    * into the PrincipalContext. Finds performance test script and creates example execution.
    * </p>
+   *
    * @param projectId Project ID
    * @return Execution ID and name, or null if no suitable script found
    */
@@ -137,10 +139,10 @@ public class ExecTestCmdImpl implements ExecTestCmd {
    * Update test results for APIs.
    * </p>
    * <p>
-   * Updates the test result for an API based on the execution outcome.
-   * Handles different test types (functional, performance, stability) and updates
-   * corresponding fields in the API entity.
+   * Updates the test result for an API based on the execution outcome. Handles different test types
+   * (functional, performance, stability) and updates corresponding fields in the API entity.
    * </p>
+   *
    * @param testResult Test result information
    */
   private void updateApisTestResult(TestResultInfo testResult) {
@@ -176,10 +178,11 @@ public class ExecTestCmdImpl implements ExecTestCmd {
    * Update test results for scenarios.
    * </p>
    * <p>
-   * Updates the test result for a scenario based on the execution outcome.
-   * Handles different test types (functional, performance, stability) and updates
-   * corresponding fields in the scenario entity.
+   * Updates the test result for a scenario based on the execution outcome. Handles different test
+   * types (functional, performance, stability) and updates corresponding fields in the scenario
+   * entity.
    * </p>
+   *
    * @param testResult Test result information
    */
   private void updateScenarioTestResult(TestResultInfo testResult) {
@@ -200,11 +203,11 @@ public class ExecTestCmdImpl implements ExecTestCmd {
           scenarioDb.setTestStabilityPassed(testResult.isPassed())
               .setTestStabilityFailureMessage(testResult.getFailureMessage());
           break;
-          case TEST_CUSTOMIZATION:
-          case MOCK_APIS:
-          case MOCK_DATA:
-            // No action required for MOCK_DATA
-            break;
+        case TEST_CUSTOMIZATION:
+        case MOCK_APIS:
+        case MOCK_DATA:
+          // No action required for MOCK_DATA
+          break;
       }
       scenarioRepo.save(scenarioDb);
     }
@@ -215,10 +218,11 @@ public class ExecTestCmdImpl implements ExecTestCmd {
    * Set test results for API cases.
    * </p>
    * <p>
-   * Updates the test result for each API case based on the execution outcome.
-   * Filters out cases with null passed status (not executed, disabled) and updates
-   * execution details for enabled cases.
+   * Updates the test result for each API case based on the execution outcome. Filters out cases
+   * with null passed status (not executed, disabled) and updates execution details for enabled
+   * cases.
    * </p>
+   *
    * @param caseResults List of test case results
    */
   private void setApisCaseTestResult(List<TestCaseResultInfo> caseResults) {
@@ -242,9 +246,10 @@ public class ExecTestCmdImpl implements ExecTestCmd {
    * Set test result for an API case.
    * </p>
    * <p>
-   * Updates the execution result, failure message, test numbers, and execution details of an
-   * API case based on the test result.
+   * Updates the execution result, failure message, test numbers, and execution details of an API
+   * case based on the test result.
    * </p>
+   *
    * @param apisCaseDb API case entity to update
    * @param caseResult Test case result information
    */

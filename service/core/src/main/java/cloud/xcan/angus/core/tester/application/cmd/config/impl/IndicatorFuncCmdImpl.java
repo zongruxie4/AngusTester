@@ -104,7 +104,7 @@ public class IndicatorFuncCmdImpl extends CommCmd<IndicatorFunc, Long> implement
         funcDb = indicatorFuncQuery.find0(func.getTargetId(), func.getTargetType());
         // TODO 验证最大并发数是否满足授权限制(云服务版本查询购买商品并发配额，私有化读取许可文件)
 
-        if (nonNull(funcDb)){
+        if (nonNull(funcDb)) {
           target = (ActivityResource) commonQuery.checkAndGetIndicatorTarget(
               funcDb.getTargetType(), funcDb.getTargetId());
         }

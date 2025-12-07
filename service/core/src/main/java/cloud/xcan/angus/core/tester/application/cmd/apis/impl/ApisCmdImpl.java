@@ -121,9 +121,10 @@ import org.springframework.transaction.annotation.Transactional;
  * </p>
  * <p>
  * Provides comprehensive API management services including adding, updating, replacing, renaming,
- * archiving, moving, status updating, and deleting APIs. Handles permission checks, quota validation,
- * activity logging, script synchronization, and related resource management. Supports parameter
- * management, authentication configuration, server management, and variable/dataset associations.
+ * archiving, moving, status updating, and deleting APIs. Handles permission checks, quota
+ * validation, activity logging, script synchronization, and related resource management. Supports
+ * parameter management, authentication configuration, server management, and variable/dataset
+ * associations.
  * </p>
  */
 @Biz
@@ -190,8 +191,9 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    * owner. Inserts APIs, initializes creator permissions, and logs creation activities if
    * required.
    * </p>
-   * @param apis List of APIs to add
-   * @param servicesDb Service entity
+   *
+   * @param apis         List of APIs to add
+   * @param servicesDb   Service entity
    * @param saveActivity Whether to save creation activities
    * @return List of ID keys for created APIs
    */
@@ -202,7 +204,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
       protected void checkParams() {
         // Ensure all APIs belong to the same service (single service constraint)
         Set<Long> serviceIds = apis.stream().map(Apis::getServiceId).collect(Collectors.toSet());
-        assertSingleService(serviceIds,"Only batch adding apis with one service is allowed");
+        assertSingleService(serviceIds, "Only batch adding apis with one service is allowed");
 
         // Verify current user has permission to add APIs to the service
         servicesAuthQuery.checkAddAuth(getUserId(), serviceIds.iterator().next());
@@ -277,6 +279,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    * <p>
    * Validates service, archives APIs, logs activities, and deletes unarchived records.
    * </p>
+   *
    * @param apis List of APIs to archive
    * @return List of ID keys for archived APIs
    */
@@ -319,7 +322,8 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    * Validates APIs, service, owner, duplication, permission, and status. Updates APIs and logs
    * activities if required.
    * </p>
-   * @param apis List of APIs to update
+   *
+   * @param apis         List of APIs to update
    * @param saveActivity Whether to save update activities
    */
   @Transactional(rollbackFor = Exception.class)
@@ -336,7 +340,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
         // Ensure all APIs belong to the same service (single service constraint)
         Set<Long> serviceIds = apisDbs.stream().map(Apis::getServiceId).collect(Collectors.toSet());
-        assertSingleService(serviceIds,"Only batch updating apis with one service is allowed");
+        assertSingleService(serviceIds, "Only batch updating apis with one service is allowed");
 
         // Ensure API owners exist (prevent issues after user deletion)
         apisQuery.checkOwnerExist(apis);
@@ -389,6 +393,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    * Handles both new and existing APIs, validates all constraints, archives new APIs, updates
    * existing ones, and logs activities.
    * </p>
+   *
    * @param apis List of APIs to replace
    * @return List of ID keys for newly added APIs
    */
@@ -408,7 +413,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
           // Ensure all new APIs belong to the same service
           Set<Long> serviceIds = addApis.stream().map(Apis::getServiceId)
               .collect(Collectors.toSet());
-          assertSingleService(serviceIds,"Only batch adding apis with one service is allowed");
+          assertSingleService(serviceIds, "Only batch adding apis with one service is allowed");
         }
 
         // Separate existing APIs (with ID) for update
@@ -456,7 +461,8 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
           batchUpdate0(updateApisDbs);
 
           // Log update activities
-          List<Activity> activities = toActivities(API, updateApisDbs, UPDATED, activityParams(apis));
+          List<Activity> activities = toActivities(API, updateApisDbs, UPDATED,
+              activityParams(apis));
           activityCmd.addAll(activities);
 
           // Send modification notification events
@@ -560,7 +566,8 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    * Validates service, APIs, permission, and quota. Updates service ID, manages creator
    * permissions, and logs activities. After moving, permissions and references are re-initialized.
    * </p>
-   * @param apiIds List of API IDs to move
+   *
+   * @param apiIds          List of API IDs to move
    * @param targetServiceId Target service ID
    */
   @Transactional(rollbackFor = Exception.class)
@@ -792,13 +799,14 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    * <p>
    * Validates service and permission, adds parameters, and logs activities.
    * </p>
-   * @param serviceId Service ID
-   * @param modifyScope Scope of APIs to modify
+   *
+   * @param serviceId          Service ID
+   * @param modifyScope        Scope of APIs to modify
    * @param matchEndpointRegex Endpoint regex pattern to match
-   * @param matchMethod HTTP method to match
-   * @param selectedApisIds Selected API IDs
-   * @param filterTags Filter tags
-   * @param parameters Parameters to add
+   * @param matchMethod        HTTP method to match
+   * @param selectedApisIds    Selected API IDs
+   * @param filterTags         Filter tags
+   * @param parameters         Parameters to add
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -953,14 +961,15 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    * <p>
    * Validates service and permission, updates parameter status, and logs activities.
    * </p>
-   * @param serviceId Service ID
-   * @param modifyScope Scope of APIs to modify
+   *
+   * @param serviceId          Service ID
+   * @param modifyScope        Scope of APIs to modify
    * @param matchEndpointRegex Endpoint regex pattern to match
-   * @param matchMethod HTTP method to match
-   * @param selectedApisIds Selected API IDs
-   * @param filterTags Filter tags
-   * @param names Parameter names to enable/disable
-   * @param enabled Whether to enable or disable the parameters
+   * @param matchMethod        HTTP method to match
+   * @param selectedApisIds    Selected API IDs
+   * @param filterTags         Filter tags
+   * @param names              Parameter names to enable/disable
+   * @param enabled            Whether to enable or disable the parameters
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -1237,9 +1246,10 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    * <p>
    * Validates permission, generates mock API and responses, and logs the association activity.
    * </p>
-   * @param id API ID to associate with mock
+   *
+   * @param id            API ID to associate with mock
    * @param mockServiceId Mock service ID
-   * @param summary Mock API summary
+   * @param summary       Mock API summary
    * @return ID key of the created mock API
    */
   @Transactional(rollbackFor = Exception.class)
@@ -1289,8 +1299,9 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    * <p>
    * Supports multiple formats and logs the export activity.
    * </p>
-   * @param id API ID to export
-   * @param format Export format (JSON/YAML)
+   *
+   * @param id       API ID to export
+   * @param format   Export format (JSON/YAML)
    * @param response HTTP response object
    * @return ResponseEntity containing the exported document
    */
@@ -1329,9 +1340,11 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    * </p>
    * <p>
    * Validates permission and status, updates delete status, logs activities, and adds to trash.
-   * This is a soft delete operation that marks APIs as deleted without removing them from the database.
+   * This is a soft delete operation that marks APIs as deleted without removing them from the
+   * database.
    * </p>
-   * @param apiIds Collection of API IDs to delete
+   *
+   * @param apiIds          Collection of API IDs to delete
    * @param checkPermission Whether to check permissions (legacy parameter)
    */
   @Transactional(rollbackFor = Exception.class)
@@ -1396,9 +1409,10 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    * </p>
    * <p>
    * Completely removes APIs and all associated data from the database. This is a destructive
-   * operation that cannot be undone. External calling business logic must ensure data is
-   * properly authorized and secured before calling this method.
+   * operation that cannot be undone. External calling business logic must ensure data is properly
+   * authorized and secured before calling this method.
    * </p>
+   *
    * @param apiIds List of API IDs to physically delete
    */
   //@Transactional(rollbackFor = Exception.class)
@@ -1466,7 +1480,8 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    * <p>
    * Processes unarchived API data, merges missing parameters, and sets project ID for all APIs.
    * </p>
-   * @param apis List of APIs to process
+   *
+   * @param apis       List of APIs to process
    * @param servicesDb Service entity
    * @return Set of unarchived API IDs
    */
@@ -1508,6 +1523,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    * <p>
    * Validates that all requested unarchived APIs exist and belong to the current user.
    * </p>
+   *
    * @param unarchivedIds Set of unarchived API IDs to retrieve
    * @return List of unarchived APIs
    */
@@ -1544,14 +1560,15 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    * Assert that all APIs belong to a single service.
    * </p>
    * <p>
-   * Throws an exception if the set size is not 1, ensuring batch operations
-   * are performed on APIs from the same service.
+   * Throws an exception if the set size is not 1, ensuring batch operations are performed on APIs
+   * from the same service.
    * </p>
+   *
    * @param serviceIds Set of service IDs to validate
-   * @param message Error message to display if validation fails
+   * @param message    Error message to display if validation fails
    */
   private void assertSingleService(Set<Long> serviceIds, String message) {
-      assertTrue(serviceIds.size() == 1, message);
+    assertTrue(serviceIds.size() == 1, message);
   }
 
   /**

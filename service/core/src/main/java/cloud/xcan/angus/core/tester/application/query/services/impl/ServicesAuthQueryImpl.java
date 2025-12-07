@@ -48,7 +48,8 @@ import org.springframework.data.jpa.domain.Specification;
  * Implementation of ServicesAuthQuery for services authorization management and validation.
  * </p>
  * <p>
- * Provides methods for checking services permissions, managing user authorizations, and validating access rights.
+ * Provides methods for checking services permissions, managing user authorizations, and validating
+ * access rights.
  * </p>
  */
 @Biz
@@ -69,6 +70,7 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Get the authorization status of a service.
    * </p>
+   *
    * @param serviceId Service ID
    * @return Authorization status
    */
@@ -95,11 +97,13 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * Get user permissions for a specific service.
    * </p>
    * <p>
-   * Returns all permissions for admins and creators. For regular users, returns permissions based on their authorization records.
+   * Returns all permissions for admins and creators. For regular users, returns permissions based
+   * on their authorization records.
    * </p>
+   *
    * @param serviceId Service ID
-   * @param userId User ID
-   * @param admin Whether to check admin permissions
+   * @param userId    User ID
+   * @param admin     Whether to check admin permissions
    * @return List of services permissions
    */
   @Override
@@ -145,8 +149,9 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Returns authorization status and permissions for the current user.
    * </p>
+   *
    * @param serviceId Service ID
-   * @param admin Whether to check admin permissions
+   * @param admin     Whether to check admin permissions
    * @return Current user's authorization information
    */
   @Override
@@ -195,9 +200,10 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Check if a user has a specific permission for a service.
    * </p>
-   * @param serviceId Service ID
+   *
+   * @param serviceId  Service ID
    * @param permission Required permission
-   * @param userId User ID
+   * @param userId     User ID
    */
   @Override
   public void check(Long serviceId, ServicesPermission permission, Long userId) {
@@ -215,9 +221,10 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Find service authorizations with pagination and permission validation.
    * </p>
-   * @param spec Search specification
+   *
+   * @param spec       Search specification
    * @param serviceIds List of service IDs
-   * @param pageable Pagination information
+   * @param pageable   Pagination information
    * @return Page of service authorizations
    */
   @Override
@@ -243,6 +250,7 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Check and find a service authorization by ID.
    * </p>
+   *
    * @param id Authorization ID
    * @return Service authorization entity
    */
@@ -255,7 +263,8 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Check if a user has add permission for a service.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId    User ID
    * @param serviceId Service ID
    */
   @Override
@@ -267,7 +276,8 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Check if a user has view permission for a service.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId    User ID
    * @param serviceId Service ID
    */
   @Override
@@ -279,7 +289,8 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Check if a user has modify permission for a service.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId    User ID
    * @param serviceId Service ID
    */
   @Override
@@ -291,7 +302,8 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Check if a user has delete permission for a service.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId    User ID
    * @param serviceId Service ID
    */
   @Override
@@ -303,7 +315,8 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Check if a user has test permission for a service.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId    User ID
    * @param serviceId Service ID
    */
   @Override
@@ -318,7 +331,8 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Fix: Public service can be modified and authorized by anyone.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId    User ID
    * @param serviceId Service ID
    */
   @Override
@@ -331,7 +345,8 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Check if a user has share permission for a service.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId    User ID
    * @param serviceId Service ID
    */
   @Override
@@ -346,7 +361,8 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Fix: Release permission is also required for modifying the released status of public projects.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId    User ID
    * @param serviceId Service ID
    */
   @Override
@@ -359,8 +375,9 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Check if a user has a specific permission for a service.
    * </p>
-   * @param userId User ID
-   * @param serviceId Service ID
+   *
+   * @param userId     User ID
+   * @param serviceId  Service ID
    * @param permission Required permission
    */
   @Override
@@ -374,14 +391,15 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * Check if a user has a specific permission for a service with additional control options.
    * </p>
    * <p>
-   * Admins bypass permission checks unless explicitly ignored. Public access is allowed for non-grant and non-release permissions
-   * when authorization is not controlled.
+   * Admins bypass permission checks unless explicitly ignored. Public access is allowed for
+   * non-grant and non-release permissions when authorization is not controlled.
    * </p>
-   * @param userId User ID
-   * @param serviceId Service ID
-   * @param permission Required permission
+   *
+   * @param userId                User ID
+   * @param serviceId             Service ID
+   * @param permission            Required permission
    * @param ignoreAdminPermission Whether to ignore admin permissions
-   * @param ignorePublicAccess Whether to ignore public access
+   * @param ignorePublicAccess    Whether to ignore public access
    */
   @Override
   public void checkAuth(Long userId, Long serviceId, ServicesPermission permission,
@@ -418,9 +436,10 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * Verify the operation permissions of the service for multiple services.
    * </p>
    * <p>
-   * Performs batch permission checking for a collection of services. Admins bypass this check.
-   * Only services with authorization enabled are checked for non-grant permissions.
+   * Performs batch permission checking for a collection of services. Admins bypass this check. Only
+   * services with authorization enabled are checked for non-grant permissions.
    * </p>
+   *
    * @param serviceIds Collection of service IDs
    * @param permission Required permission
    */
@@ -466,10 +485,11 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Check if an authorization already exists for the specified service and auth object.
    * </p>
-   * @param serviceId Service ID
-   * @param authObjectId Authorization object ID
+   *
+   * @param serviceId      Service ID
+   * @param authObjectId   Authorization object ID
    * @param authObjectType Authorization object type
-   * @param creator Whether the auth object is a creator
+   * @param creator        Whether the auth object is a creator
    */
   @Override
   public void checkRepeatAuth(Long serviceId, Long authObjectId, AuthObjectType authObjectType,
@@ -482,9 +502,11 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
 
   /**
    * <p>
-   * Find service IDs where a user has a specific permission through their organization memberships.
+   * Find service IDs where a user has a specific permission through their organization
+   * memberships.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId     User ID
    * @param permission Required permission
    * @return List of service IDs
    */
@@ -501,7 +523,8 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Find authorization records for a user and a specific service.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId    User ID
    * @param serviceId Service ID
    * @return List of service authorizations
    */
@@ -516,7 +539,8 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Find authorization records for a user and multiple services.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId     User ID
    * @param serviceIds Collection of service IDs
    * @return List of service authorizations
    */
@@ -533,10 +557,12 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * Get user permissions for a specific service.
    * </p>
    * <p>
-   * Returns all permissions for admins and creators. For regular users, returns their specific permissions.
+   * Returns all permissions for admins and creators. For regular users, returns their specific
+   * permissions.
    * </p>
+   *
    * @param serviceId Service ID
-   * @param userId User ID
+   * @param userId    User ID
    * @return List of user permissions, or null if no permissions found
    */
   @Override
@@ -561,7 +587,8 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Check if a user is the creator of a service.
    * </p>
-   * @param userId User ID
+   *
+   * @param userId    User ID
    * @param serviceId Service ID
    * @return true if the user is the creator, false otherwise
    */
@@ -575,6 +602,7 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Check if any of the authorization records indicates the user is a creator.
    * </p>
+   *
    * @param auths List of service authorizations
    * @return true if the user is a creator, false otherwise
    */
@@ -594,6 +622,7 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
    * <p>
    * Flatten all permissions from a list of authorization records into a single set.
    * </p>
+   *
    * @param auths List of service authorizations
    * @return Set of all permissions
    */

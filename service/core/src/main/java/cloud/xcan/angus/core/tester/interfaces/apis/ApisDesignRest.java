@@ -52,7 +52,7 @@ public class ApisDesignRest {
   @Resource
   private ApisDesignFacade apisDesignFacade;
 
-  @Operation(summary = "Create API design", 
+  @Operation(summary = "Create API design",
       description = "Create new API design specification with OpenAPI configuration and version control",
       operationId = "apis:design:add")
   @ApiResponses(value = {
@@ -63,7 +63,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success(apisDesignFacade.add(dto));
   }
 
-  @Operation(summary = "Update API design name", 
+  @Operation(summary = "Update API design name",
       description = "Update API design name with version control and metadata management",
       operationId = "apis:design:name:replace")
   @ApiResponses(value = {
@@ -75,7 +75,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace API design content", 
+  @Operation(summary = "Replace API design content",
       description = "Replace API design content with new OpenAPI specification and version control",
       operationId = "apis:design:content:replace")
   @ApiResponses(value = {
@@ -87,7 +87,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Release API design", 
+  @Operation(summary = "Release API design",
       description = "Release API design specification with version control and service generation",
       operationId = "apis:design:release")
   @ApiResponses(value = {
@@ -100,7 +100,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Clone API design", 
+  @Operation(summary = "Clone API design",
       description = "Create copy of API design with all configuration and version control settings",
       operationId = "apis:design:clone")
   @ApiResponses(value = {
@@ -112,7 +112,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success(apisDesignFacade.clone(id));
   }
 
-  @Operation(summary = "Associate API design with service", 
+  @Operation(summary = "Associate API design with service",
       description = "Establish association between API design and existing service with integration",
       operationId = "apis:design:services:associate")
   @ApiResponses(value = {
@@ -125,7 +125,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Generate services from API design", 
+  @Operation(summary = "Generate services from API design",
       description = "Generate API services from design specification with service creation and configuration",
       operationId = "apis:design:services:generate")
   @ApiResponses(value = {
@@ -138,7 +138,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Import API design", 
+  @Operation(summary = "Import API design",
       description = "Import API design from external files with format support and validation",
       operationId = "apis:design:import")
   @ApiResponses(value = {
@@ -150,7 +150,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success(apisDesignFacade.imports(dto));
   }
 
-  @Operation(summary = "Delete API designs", 
+  @Operation(summary = "Delete API designs",
       description = "Remove multiple API designs from the system with batch operation support",
       operationId = "apis:design:delete")
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -164,7 +164,7 @@ public class ApisDesignRest {
     apisDesignFacade.delete(ids);
   }
 
-  @Operation(summary = "Get API design details", 
+  @Operation(summary = "Get API design details",
       description = "Retrieve API design details including specification, version control, and metadata",
       operationId = "space:design:detail")
   @ApiResponses(value = {
@@ -176,7 +176,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success(apisDesignFacade.detail(id));
   }
 
-  @Operation(summary = "Query API design list", 
+  @Operation(summary = "Query API design list",
       description = "Retrieve paginated list of API designs with filtering and search options",
       operationId = "apis:design:list")
   @ApiResponses(value = {
@@ -187,7 +187,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success(apisDesignFacade.list(dto));
   }
 
-  @Operation(summary = "Export API design specification", 
+  @Operation(summary = "Export API design specification",
       description = "Export API design to OpenAPI specification format with configuration options",
       operationId = "apis:design:export")
   @ApiResponses(value = {

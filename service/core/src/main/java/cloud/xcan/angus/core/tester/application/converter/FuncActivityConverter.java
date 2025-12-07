@@ -180,7 +180,8 @@ public class FuncActivityConverter extends ActivityConverter {
     if (isNotEmpty(case0.getSoftwareVersion())
         && !case0.getSoftwareVersion().equals(caseDb.getSoftwareVersion())) {
       activity.append("<br/>").append(message(
-          ActivityType.SOFTWARE_VERSION_UPDATE.getDescMessageKey(), new Object[]{"", case0.getSoftwareVersion()}));
+          ActivityType.SOFTWARE_VERSION_UPDATE.getDescMessageKey(),
+          new Object[]{"", case0.getSoftwareVersion()}));
       hasChanged = true;
       if (activity.length() < MAX_ACTIVITY_LENGTH) {
         safeActivity = activity;

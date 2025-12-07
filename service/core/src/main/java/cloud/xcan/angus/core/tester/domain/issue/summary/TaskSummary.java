@@ -20,7 +20,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class TaskSummary  {
+public class TaskSummary {
 
   private Long id;
 
@@ -98,10 +98,10 @@ public class TaskSummary  {
 
   private TaskStatus status;
 
-  @Schema(description="The number of task processing failures")
+  @Schema(description = "The number of task processing failures")
   private int failNum;
 
-  @Schema(description="The total number of tasks processed")
+  @Schema(description = "The total number of tasks processed")
   private int totalNum;
 
   private String description;

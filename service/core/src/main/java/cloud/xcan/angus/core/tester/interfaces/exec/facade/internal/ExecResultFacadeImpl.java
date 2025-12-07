@@ -46,15 +46,18 @@ public class ExecResultFacadeImpl implements ExecResultFacade {
   public ExecTestResultDetailSummary execResult(Long execId) {
     ExecTestResult testResult = execTestResultQuery.execTestResult(execId);
     return isNull(testResult) ? null : toTestResultDetailSummary(testResult,
-        scriptQuery.getScriptInfoMap(Set.of(testResult.getScriptId())).get(testResult.getScriptId()));
+        scriptQuery.getScriptInfoMap(Set.of(testResult.getScriptId()))
+            .get(testResult.getScriptId()));
   }
 
   @Override
-  public ExecTestResultDetailSummary apisResultByScriptType(Long scriptSourceId, String scriptType) {
+  public ExecTestResultDetailSummary apisResultByScriptType(Long scriptSourceId,
+      String scriptType) {
     ExecTestResult testResult = execTestResultQuery.resultByScriptType(scriptSourceId,
         ScriptType.valueOf(scriptType));
     return isNull(testResult) ? null : toTestResultDetailSummary(testResult,
-        scriptQuery.getScriptInfoMap(Set.of(testResult.getScriptId())).get(testResult.getScriptId()));
+        scriptQuery.getScriptInfoMap(Set.of(testResult.getScriptId()))
+            .get(testResult.getScriptId()));
   }
 
   @Override
@@ -76,7 +79,8 @@ public class ExecResultFacadeImpl implements ExecResultFacade {
   }
 
   @Override
-  public ExecTestResultDetailSummary scenarioResultByScriptType(Long scriptSourceId, String scriptType) {
+  public ExecTestResultDetailSummary scenarioResultByScriptType(Long scriptSourceId,
+      String scriptType) {
     return apisResultByScriptType(scriptSourceId, scriptType);
   }
 

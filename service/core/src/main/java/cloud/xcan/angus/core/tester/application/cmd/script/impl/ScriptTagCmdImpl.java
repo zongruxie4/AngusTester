@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 
 /**
  * Implementation of script tag command operations.
- * 
+ *
  * <p>This class provides functionality for managing script tags, including adding,
  * replacing, cloning, and deleting tags associated with scripts.</p>
- * 
+ *
  * <p>It handles tag operations in a batch manner for better performance and
  * maintains consistency with the script lifecycle management.</p>
  */
@@ -32,13 +32,12 @@ public class ScriptTagCmdImpl extends CommCmd<ScriptTag, Long> implements
 
   /**
    * Adds multiple tags to a script.
-   * 
+   *
    * <p>This method creates new tag associations for the specified script.
-   * If the tags collection is empty, the method returns without performing
-   * any operations.</p>
-   * 
+   * If the tags collection is empty, the method returns without performing any operations.</p>
+   *
    * @param scriptId the ID of the script to add tags to
-   * @param tags collection of tag names to add
+   * @param tags     collection of tag names to add
    */
   @Override
   public void add(Long scriptId, Collection<String> tags) {
@@ -54,12 +53,12 @@ public class ScriptTagCmdImpl extends CommCmd<ScriptTag, Long> implements
 
   /**
    * Replaces all existing tags for a script with new ones.
-   * 
+   *
    * <p>This method first removes all existing tags for the script, then adds
    * the new tags. This ensures a clean replacement without duplicate tags.</p>
-   * 
+   *
    * @param scriptId the ID of the script to replace tags for
-   * @param tags collection of new tag names to replace existing tags
+   * @param tags     collection of new tag names to replace existing tags
    */
   @Override
   public void replace(Long scriptId, Collection<String> tags) {
@@ -69,10 +68,10 @@ public class ScriptTagCmdImpl extends CommCmd<ScriptTag, Long> implements
 
   /**
    * Clones tags from one script to another.
-   * 
+   *
    * <p>This method copies all tags from the source script to the target script.
    * It's typically used during script cloning operations to maintain tag consistency.</p>
-   * 
+   *
    * @param sourceScriptId the ID of the source script to copy tags from
    * @param targetScriptId the ID of the target script to copy tags to
    */
@@ -86,10 +85,10 @@ public class ScriptTagCmdImpl extends CommCmd<ScriptTag, Long> implements
 
   /**
    * Deletes all tags for multiple scripts.
-   * 
+   *
    * <p>This method is typically used during bulk operations such as script deletion
    * or cleanup to remove all associated tags efficiently.</p>
-   * 
+   *
    * @param scriptIds collection of script IDs whose tags should be deleted
    */
   @Override
@@ -99,7 +98,7 @@ public class ScriptTagCmdImpl extends CommCmd<ScriptTag, Long> implements
 
   /**
    * Returns the repository instance for this command.
-   * 
+   *
    * @return the script tag repository
    */
   @Override

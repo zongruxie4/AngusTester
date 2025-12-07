@@ -35,14 +35,14 @@ public class ExecDebugConverter {
         .setMonitorId(monitorId)
         .setStatus(ExecStatus.CREATED);
     Configuration config = nullSafe(configuration, angusScript.getConfiguration());
-    if (debug.isMonitor()){
+    if (debug.isMonitor()) {
       config.setIterations(1L); // Force to iterate only once
     }
     debug.setAvailableNodeIds(nonNull(config.getNodeSelectors())
-        ? config.getNodeSelectors().getAvailableNodeIds() : null)
+            ? config.getNodeSelectors().getAvailableNodeIds() : null)
         .setConfiguration(config)
         .setTask(angusScript.getTask());
-    if (isNotEmpty(arguments)){
+    if (isNotEmpty(arguments)) {
       debug.getTask().setArguments(arguments);
     }
     PipelineBuilder builder = PipelineBuilder.of(angusScript.getTask().getPipelines());
@@ -54,7 +54,7 @@ public class ExecDebugConverter {
     return debug;
   }
 
-  public static NodeInfo toExecNodeInfo(Node node){
+  public static NodeInfo toExecNodeInfo(Node node) {
     return new NodeInfo().setId(node.getId())
         .setName(node.getName())
         .setIp(node.getIp())

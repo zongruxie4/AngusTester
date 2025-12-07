@@ -64,14 +64,14 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * Utility class for Angus Tester core functionality and common operations.
  * <p>
- * Provides file handling utilities, SQL assembly helpers, assertion builders,
- * and sample data processing functions.
+ * Provides file handling utilities, SQL assembly helpers, assertion builders, and sample data
+ * processing functions.
  * <p>
- * Implements import/export file operations, authorization query building,
- * and test case assertion generation.
+ * Implements import/export file operations, authorization query building, and test case assertion
+ * generation.
  * <p>
- * Supports multiple target types (API, Service, Scenario, Script) and
- * various data formats (JSON, YAML).
+ * Supports multiple target types (API, Service, Scenario, Script) and various data formats (JSON,
+ * YAML).
  */
 public class AngusTesterUtils {
 
@@ -82,6 +82,7 @@ public class AngusTesterUtils {
    * <p>
    * Ensures proper file handling and error management during transfer.
    * <p>
+   *
    * @param file the multipart file to convert
    * @return the temporary file created for import processing
    * @throws SysException if file transfer fails
@@ -110,7 +111,8 @@ public class AngusTesterUtils {
    * <p>
    * Ensures proper file encoding and error handling during write operations.
    * <p>
-   * @param name the name of the export file
+   *
+   * @param name    the name of the export file
    * @param content the content to write to the file
    * @return the temporary file created for export
    * @throws SysException if file write operation fails
@@ -139,8 +141,9 @@ public class AngusTesterUtils {
    * <p>
    * Supports different target types: API, Project/Service, and Scenario.
    * <p>
+   *
    * @param targetType the type of target entity (API, PROJECT, SERVICE, SCENARIO)
-   * @param sql the StringBuilder to append the JOIN clause to
+   * @param sql        the StringBuilder to append the JOIN clause to
    */
   public static void assembleIndicatorJoinTargetSql(String targetType, StringBuilder sql) {
     // Get current tenant ID for data isolation
@@ -170,9 +173,10 @@ public class AngusTesterUtils {
    * <p>
    * Supports different target types and handles both VIEW and GRANT permission scenarios.
    * <p>
+   *
    * @param targetType the type of target entity
-   * @param sql the StringBuilder to append the condition to
-   * @param criteria the search criteria containing authorization filters
+   * @param sql        the StringBuilder to append the condition to
+   * @param criteria   the search criteria containing authorization filters
    */
   public static void assembleAuthJoinTargetCondition(String targetType, StringBuilder sql,
       Set<SearchCriteria> criteria) {
@@ -208,33 +212,41 @@ public class AngusTesterUtils {
    * <p>
    * Creates UNION query to include both public resources and user-authorized resources.
    * <p>
-   * @param targetType the type of target entity
-   * @param sql the StringBuilder to append the condition to
+   *
+   * @param targetType           the type of target entity
+   * @param sql                  the StringBuilder to append the condition to
    * @param authObjectIdsInValue the authorization object IDs for IN clause
-   * @param tenantId the current tenant ID
+   * @param tenantId             the current tenant ID
    */
   private static void buildViewPermissionCondition(String targetType, StringBuilder sql,
       String authObjectIdsInValue, long tenantId) {
     if (targetType.equals(CombinedTargetType.API.getValue())) {
       sql.append(
-          " AND a.id IN (SELECT a1.id FROM apis a1 WHERE a1.tenant_id=" + tenantId + " AND (a1.auth = 0 OR a1.service_auth = 0) "
+          " AND a.id IN (SELECT a1.id FROM apis a1 WHERE a1.tenant_id=" + tenantId
+              + " AND (a1.auth = 0 OR a1.service_auth = 0) "
               + " UNION SELECT a2.id FROM apis a2 INNER JOIN apis_auth a3 ON a2.id = a3.apis_id "
-              +     " AND a3.auth_object_id IN ").append(authObjectIdsInValue).append(")");
+              + " AND a3.auth_object_id IN ").append(authObjectIdsInValue).append(")");
     } else if (targetType.equals(CombinedTargetType.SERVICE.getValue())) {
       sql.append(
-          " AND a.id IN (SELECT a1.id FROM services a1 WHERE a1.tenant_id=" + tenantId + " AND a1.auth = 0 "
-              + " UNION SELECT a2.id FROM services a2 INNER JOIN services_auth a3 ON a2.id = a3.service_id "
-              +     " AND a2.auth = 1 AND a3.auth_object_id IN ").append(authObjectIdsInValue).append(")");
+              " AND a.id IN (SELECT a1.id FROM services a1 WHERE a1.tenant_id=" + tenantId
+                  + " AND a1.auth = 0 "
+                  + " UNION SELECT a2.id FROM services a2 INNER JOIN services_auth a3 ON a2.id = a3.service_id "
+                  + " AND a2.auth = 1 AND a3.auth_object_id IN ").append(authObjectIdsInValue)
+          .append(")");
     } else if (targetType.equals(CombinedTargetType.SCENARIO.getValue())) {
       sql.append(
-          " AND a.id IN (SELECT a1.id FROM scenario a1 WHERE a1.tenant_id=" + tenantId + " AND a1.auth = 0 "
-              + " UNION SELECT a2.id FROM scenario a2 INNER JOIN scenario_auth a3 ON a2.id = a3.scenario_id "
-              +     " AND a2.auth = 1 AND a3.auth_object_id IN ").append(authObjectIdsInValue).append(")");
+              " AND a.id IN (SELECT a1.id FROM scenario a1 WHERE a1.tenant_id=" + tenantId
+                  + " AND a1.auth = 0 "
+                  + " UNION SELECT a2.id FROM scenario a2 INNER JOIN scenario_auth a3 ON a2.id = a3.scenario_id "
+                  + " AND a2.auth = 1 AND a3.auth_object_id IN ").append(authObjectIdsInValue)
+          .append(")");
     } else if (targetType.equals(CombinedTargetType.SCRIPT.getValue())) {
       sql.append(
-          " AND a.id IN (SELECT a1.id FROM script a1 WHERE a1.tenant_id=" + tenantId + " AND a1.auth = 0 "
-              + " UNION SELECT a2.id FROM script a2 INNER JOIN script_auth a3 ON a2.id = a3.script_id "
-              +     " AND a2.auth = 1 AND a3.auth_object_id IN ").append(authObjectIdsInValue).append(")");
+              " AND a.id IN (SELECT a1.id FROM script a1 WHERE a1.tenant_id=" + tenantId
+                  + " AND a1.auth = 0 "
+                  + " UNION SELECT a2.id FROM script a2 INNER JOIN script_auth a3 ON a2.id = a3.script_id "
+                  + " AND a2.auth = 1 AND a3.auth_object_id IN ").append(authObjectIdsInValue)
+          .append(")");
     }
   }
 
@@ -243,10 +255,11 @@ public class AngusTesterUtils {
    * <p>
    * Creates query to include only resources where user has GRANT permission.
    * <p>
-   * @param targetType the type of target entity
-   * @param sql the StringBuilder to append the condition to
+   *
+   * @param targetType           the type of target entity
+   * @param sql                  the StringBuilder to append the condition to
    * @param authObjectIdsInValue the authorization object IDs for IN clause
-   * @param grantFilter the grant permission filter condition
+   * @param grantFilter          the grant permission filter condition
    */
   private static void buildGrantPermissionCondition(String targetType, StringBuilder sql,
       String authObjectIdsInValue, String grantFilter) {
@@ -280,9 +293,10 @@ public class AngusTesterUtils {
    * <p>
    * Supports different search fields based on target type for optimized search results.
    * <p>
-   * @param criteria the search criteria containing target name filter
+   *
+   * @param criteria        the search criteria containing target name filter
    * @param targetTypeValue the type of target entity for field selection
-   * @param sql the StringBuilder to append the condition to
+   * @param sql             the StringBuilder to append the condition to
    */
   public static void assembleTargetNameMatchCondition(Set<SearchCriteria> criteria,
       String targetTypeValue, StringBuilder sql) {
@@ -312,8 +326,9 @@ public class AngusTesterUtils {
    * <p>
    * Used when full-text search is not available or for simple pattern matching.
    * <p>
+   *
    * @param criteria the search criteria containing target name filter
-   * @param sql the StringBuilder to append the condition to
+   * @param sql      the StringBuilder to append the condition to
    */
   public static void assembleTargetNameLikeCondition(Set<SearchCriteria> criteria,
       StringBuilder sql) {
@@ -332,7 +347,8 @@ public class AngusTesterUtils {
    * <p>
    * Supports service availability, API availability, and custom user-defined assertions.
    * <p>
-   * @param smokeCheckSetting the smoke check configuration
+   *
+   * @param smokeCheckSetting         the smoke check configuration
    * @param userDefinedSmokeAssertion optional user-defined assertion
    * @return list of assembled assertions for smoke testing
    */
@@ -398,7 +414,8 @@ public class AngusTesterUtils {
    * <p>
    * Supports checking for security codes (401/403) and custom user-defined assertions.
    * <p>
-   * @param securityCheckSetting the security check configuration
+   *
+   * @param securityCheckSetting         the security check configuration
    * @param userDefinedSecurityAssertion optional user-defined assertion
    * @return list of assembled assertions for security testing
    */
@@ -457,9 +474,10 @@ public class AngusTesterUtils {
    * <p>
    * Supports different script formats and provides proper content type headers.
    * <p>
+   *
    * @param fileName the base name for the downloaded file
-   * @param format the script format (JSON or YAML) for content serialization
-   * @param obj the object to serialize and download
+   * @param format   the script format (JSON or YAML) for content serialization
+   * @param obj      the object to serialize and download
    * @return ResponseEntity containing the downloadable resource
    */
   @SneakyThrows
@@ -486,8 +504,9 @@ public class AngusTesterUtils {
    * <p>
    * Provides proper error handling for file reading and parsing operations.
    * <p>
+   *
    * @param resourceUrl the URL of the resource file to parse
-   * @param type the TypeReference for deserialization
+   * @param type        the TypeReference for deserialization
    * @param exampleFile the name of the example file for error reporting
    * @return the parsed object of the specified type
    * @throws SysException if file reading or parsing fails
@@ -511,6 +530,7 @@ public class AngusTesterUtils {
    * <p>
    * Provides proper error handling for file reading operations.
    * <p>
+   *
    * @param resourceUrl the URL of the resource file to read
    * @param exampleFile the name of the example file for error reporting
    * @return the content of the file as a string
@@ -533,7 +553,8 @@ public class AngusTesterUtils {
    * <p>
    * Provides proper error handling for file reading operations.
    * <p>
-   * @param resClz the class for resource loading
+   *
+   * @param resClz       the class for resource loading
    * @param servicesFile the name of the services file to read
    * @return the content of the example services file
    * @throws SysException if file reading fails
@@ -560,7 +581,8 @@ public class AngusTesterUtils {
    * <p>
    * Provides proper error handling and resource validation.
    * <p>
-   * @param resClz the class for resource loading
+   *
+   * @param resClz     the class for resource loading
    * @param scriptFile the name of the script file to read
    * @return the content of the example script file
    * @throws SysException if file reading fails
@@ -588,7 +610,8 @@ public class AngusTesterUtils {
    * <p>
    * Uses predefined mock APIs file constant for consistent file naming.
    * <p>
-   * @param resClz the class for resource loading
+   *
+   * @param resClz     the class for resource loading
    * @param scriptFile the name parameter (not used, kept for compatibility)
    * @return the content of the example mock APIs file
    * @throws SysException if file reading fails

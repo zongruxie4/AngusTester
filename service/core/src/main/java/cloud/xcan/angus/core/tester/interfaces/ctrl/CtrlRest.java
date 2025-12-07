@@ -33,7 +33,7 @@ public class CtrlRest {
   @Resource
   private CtrlFacade ctrlFacade;
 
-  @Operation(summary = "Controller health check ping", 
+  @Operation(summary = "Controller health check ping",
       description = "Perform health check ping to validate controller availability and binding status",
       operationId = "ctrl:ping")
   @ApiResponses(value = {
@@ -44,18 +44,19 @@ public class CtrlRest {
     return PrincipalContext.get();
   }
 
-  @Operation(summary = "Controller discovery and election", 
+  @Operation(summary = "Controller discovery and election",
       description = "Query available controllers and perform leadership election based on resource utilization and task load",
       operationId = "ctrl:discovery")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Controller discovery and election completed successfully")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping(DISCOVERY_ENDPOINT_SUFFIX)
-  public /*ApiLocaleResult<DiscoveryNodeVo>*/ DiscoveryNodeVo discovery(@ParameterObject DiscoveryNodeDto dto) {
+  public /*ApiLocaleResult<DiscoveryNodeVo>*/ DiscoveryNodeVo discovery(
+      @ParameterObject DiscoveryNodeDto dto) {
     return ctrlFacade.discovery(dto);
   }
 
-  @Operation(summary = "Controller connection information", 
+  @Operation(summary = "Controller connection information",
       description = "Retrieve comprehensive connection information for all controller agents and routing channels",
       operationId = "ctrl:connections:info")
   @ApiResponses(value = {

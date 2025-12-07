@@ -52,8 +52,8 @@ import org.springframework.transaction.annotation.Transactional;
  * Implementation of service testing command operations.
  *
  * <p>This class provides comprehensive functionality for managing service-level
- * testing operations, including test configuration, script generation,
- * task management, and execution control.</p>
+ * testing operations, including test configuration, script generation, task management, and
+ * execution control.</p>
  *
  * <p>It handles various test types including functional, performance, stability,
  * smoke, and security testing with proper authorization and activity logging.</p>
@@ -105,7 +105,7 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
    *
    * @param serviceId the ID of the service
    * @param testTypes the set of test types to configure
-   * @param enabled whether to enable or disable the test types
+   * @param enabled   whether to enable or disable the test types
    * @throws IllegalArgumentException if validation fails
    */
   @Override
@@ -148,13 +148,13 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
    * Generates test scripts for all APIs in a service.
    *
    * <p>This method creates test scripts for all APIs within a service
-   * based on the specified script types. It only generates scripts
-   * that don't already exist for each API.</p>
+   * based on the specified script types. It only generates scripts that don't already exist for
+   * each API.</p>
    *
    * <p>The method logs script generation activity for audit purposes.</p>
    *
    * @param serviceId the ID of the service
-   * @param scripts the list of script configurations to generate
+   * @param scripts   the list of script configurations to generate
    * @throws IllegalArgumentException if validation fails
    */
   @Override
@@ -238,12 +238,12 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
    * Adds test executions for all APIs in a service.
    *
    * <p>This method creates test executions for all APIs within a service
-   * based on the specified test types and server configurations.
-   * Only enabled test types are considered for execution.</p>
+   * based on the specified test types and server configurations. Only enabled test types are
+   * considered for execution.</p>
    *
    * @param servicesId the ID of the service
-   * @param testTypes the set of test types to execute
-   * @param servers the list of server configurations for testing
+   * @param testTypes  the set of test types to execute
+   * @param servers    the list of server configurations for testing
    * @throws IllegalArgumentException if validation fails
    */
   //@Transactional(rollbackFor = Exception.class)
@@ -284,11 +284,11 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
    * Adds smoke test execution for a service.
    *
    * <p>This method creates smoke test execution for a service by
-   * synchronizing smoke test cases to scripts and creating execution
-   * tasks. It validates that smoke test cases exist before execution.</p>
+   * synchronizing smoke test cases to scripts and creating execution tasks. It validates that smoke
+   * test cases exist before execution.</p>
    *
    * @param servicesId the ID of the service
-   * @param servers the list of server configurations for testing (optional)
+   * @param servers    the list of server configurations for testing (optional)
    * @throws IllegalArgumentException if validation fails or smoke cases not found
    */
   @Override
@@ -325,11 +325,11 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
    * Adds security test execution for a service.
    *
    * <p>This method creates security test execution for a service by
-   * synchronizing security test cases to scripts and creating execution
-   * tasks. It validates that security test cases exist before execution.</p>
+   * synchronizing security test cases to scripts and creating execution tasks. It validates that
+   * security test cases exist before execution.</p>
    *
    * @param servicesId the ID of the service
-   * @param servers the list of server configurations for testing (optional)
+   * @param servers    the list of server configurations for testing (optional)
    * @throws IllegalArgumentException if validation fails or security cases not found
    */
   @Override

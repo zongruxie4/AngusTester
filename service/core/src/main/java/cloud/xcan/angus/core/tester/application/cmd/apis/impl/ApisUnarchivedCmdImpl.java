@@ -46,6 +46,7 @@ public class ApisUnarchivedCmdImpl extends CommCmd<ApisUnarchived, Long> impleme
    * <p>
    * Inserts unarchived APIs, does not support related projects and API owner.
    * </p>
+   *
    * @param apis List of unarchived APIs to add
    * @return List of ID keys for created APIs
    */
@@ -72,6 +73,7 @@ public class ApisUnarchivedCmdImpl extends CommCmd<ApisUnarchived, Long> impleme
    * <p>
    * Validates permission and updates unarchived APIs.
    * </p>
+   *
    * @param apis List of unarchived APIs to update
    */
   @Transactional(rollbackFor = Exception.class)
@@ -143,6 +145,7 @@ public class ApisUnarchivedCmdImpl extends CommCmd<ApisUnarchived, Long> impleme
   /**
    * Get the repository for ApisUnarchived entity.
    * <p>
+   *
    * @return the ApisUnarchivedRepo instance
    */
   @Override

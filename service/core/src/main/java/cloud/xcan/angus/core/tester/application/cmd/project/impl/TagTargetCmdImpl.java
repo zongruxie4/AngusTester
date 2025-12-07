@@ -48,8 +48,8 @@ import org.springframework.transaction.annotation.Transactional;
  * with various targets including tasks, functional cases, and other entities.</p>
  *
  * <p>It handles the complete lifecycle of tag associations from creation
- * to deletion, including bulk operations, relationship management,
- * and activity logging for audit purposes.</p>
+ * to deletion, including bulk operations, relationship management, and activity logging for audit
+ * purposes.</p>
  *
  * <p>Key features include:
  * <ul>
@@ -224,7 +224,7 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
    * <p>Important: Update operations should not call this method.
    * External calling business logic must ensure data authorization and security.</p>
    *
-   * @param taskDb the task entity
+   * @param taskDb     the task entity
    * @param tagTargets the list of tag targets to associate
    * @throws IllegalArgumentException if validation fails
    */
@@ -299,8 +299,7 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
    * Replaces tag associations for functional cases.
    *
    * <p>This method completely replaces tag associations for multiple
-   * functional cases by first deleting existing associations
-   * and then adding new ones.</p>
+   * functional cases by first deleting existing associations and then adding new ones.</p>
    *
    * @param cases the list of functional cases to replace tags for
    */
@@ -486,10 +485,10 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
    * Identifies tag targets to be deleted based on unspecified tags.
    *
    * <p>This method compares existing tag targets with new tag targets
-   * and identifies which existing targets should be deleted because
-   * their tags are not included in the new specification.</p>
+   * and identifies which existing targets should be deleted because their tags are not included in
+   * the new specification.</p>
    *
-   * @param tags the new tag targets specification
+   * @param tags   the new tag targets specification
    * @param tagDbs the existing tag targets in database
    * @return list of tag targets to be deleted
    */

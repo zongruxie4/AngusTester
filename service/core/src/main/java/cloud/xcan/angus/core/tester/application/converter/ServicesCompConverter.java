@@ -170,7 +170,7 @@ public class ServicesCompConverter {
           break;
         }
         case headers: {
-          components.headers(toOasComp(Header.class,comps));
+          components.headers(toOasComp(Header.class, comps));
           break;
         }
         case securitySchemes: {
@@ -197,7 +197,7 @@ public class ServicesCompConverter {
     Map<String, T> oasComps = new HashMap<>();
     for (ServicesComp comp : comps) {
       T schema = comp.toComponent(clz);
-      if (nonNull(schema)){
+      if (nonNull(schema)) {
         oasComps.put(comp.getRef(), schema);
       }
     }
@@ -208,7 +208,7 @@ public class ServicesCompConverter {
     Map<String, Object> oasComps = new HashMap<>();
     for (ServicesComp comp : comps) {
       Object schema = comp.toComponent(Map.class);
-      if (nonNull(schema)){
+      if (nonNull(schema)) {
         oasComps.put(comp.getRef(), schema);
       }
     }

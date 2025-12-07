@@ -98,9 +98,10 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Get detailed information of a task sprint by ID.
    * </p>
    * <p>
-   * Retrieves sprint details and assembles all related information including task counts,
-   * progress metrics, member information, and associated meetings. Sets user names and avatars.
+   * Retrieves sprint details and assembles all related information including task counts, progress
+   * metrics, member information, and associated meetings. Sets user names and avatars.
    * </p>
+   *
    * @param id Sprint ID
    * @return Complete sprint details with all associated information
    */
@@ -132,13 +133,14 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Get paginated list of task sprints with filtering and search capabilities.
    * </p>
    * <p>
-   * Retrieves sprints based on specification criteria with support for full-text search.
-   * Includes project member permission checks and assembles task counts, progress, and member information.
+   * Retrieves sprints based on specification criteria with support for full-text search. Includes
+   * project member permission checks and assembles task counts, progress, and member information.
    * </p>
-   * @param spec Generic specification for filtering
-   * @param pageable Pagination parameters
+   *
+   * @param spec           Generic specification for filtering
+   * @param pageable       Pagination parameters
    * @param fullTextSearch Whether to use full-text search
-   * @param match Search match patterns
+   * @param match          Search match patterns
    * @return Paginated results of sprints with assembled data
    */
   @Override
@@ -182,8 +184,10 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Find the sprint with the earliest creation date in a project.
    * </p>
    * <p>
-   * Retrieves the sprint entity with the minimum (earliest) creation date for the specified project.
+   * Retrieves the sprint entity with the minimum (earliest) creation date for the specified
+   * project.
    * </p>
+   *
    * @param projectId Project ID
    * @return Sprint with the earliest creation date, or null if none exists
    */
@@ -197,9 +201,10 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Check and find a task sprint by ID.
    * </p>
    * <p>
-   * Retrieves a sprint entity by its ID and throws ResourceNotFound if not found.
-   * Used for validation before operations that require an existing sprint.
+   * Retrieves a sprint entity by its ID and throws ResourceNotFound if not found. Used for
+   * validation before operations that require an existing sprint.
    * </p>
+   *
    * @param id Sprint ID
    * @return Sprint entity if found
    * @throws ResourceNotFound if the sprint is not found
@@ -217,6 +222,7 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Retrieves all sprint entities for the given IDs and validates that all requested IDs exist.
    * Throws ResourceNotFound if any are missing.
    * </p>
+   *
    * @param ids Collection of sprint IDs
    * @return List of sprint entities if all found
    * @throws ResourceNotFound if any sprint is not found
@@ -248,9 +254,10 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Check if authorization control is enabled for a sprint.
    * </p>
    * <p>
-   * Determines whether the specified sprint has authorization control enabled.
-   * Returns false if the sprint does not exist.
+   * Determines whether the specified sprint has authorization control enabled. Returns false if the
+   * sprint does not exist.
    * </p>
+   *
    * @param id Sprint ID
    * @return true if authorization control is enabled, false otherwise
    */
@@ -265,11 +272,12 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Check if a sprint name already exists in a project.
    * </p>
    * <p>
-   * Validates that no sprint with the same name exists in the specified project.
-   * Throws ResourceExisted if a duplicate name is found.
+   * Validates that no sprint with the same name exists in the specified project. Throws
+   * ResourceExisted if a duplicate name is found.
    * </p>
+   *
    * @param projectId Project ID
-   * @param name Sprint name to check
+   * @param name      Sprint name to check
    * @throws ResourceExisted if the name already exists
    */
   @Override
@@ -285,10 +293,11 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Validate sprint date range constraints.
    * </p>
    * <p>
-   * Ensures that the start date is before the deadline date and that the start date
-   * is at least 10 minutes in the future from the current time.
+   * Ensures that the start date is before the deadline date and that the start date is at least 10
+   * minutes in the future from the current time.
    * </p>
-   * @param startDate Sprint start date
+   *
+   * @param startDate    Sprint start date
    * @param deadlineDate Sprint deadline date
    * @throws ProtocolException if date range constraints are violated
    */
@@ -307,9 +316,10 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Check if a sprint has started.
    * </p>
    * <p>
-   * Validates that the sprint status indicates it is in process.
-   * Throws BizException if the sprint has not started.
+   * Validates that the sprint status indicates it is in process. Throws BizException if the sprint
+   * has not started.
    * </p>
+   *
    * @param sprint Sprint to check
    * @throws BizException if the sprint has not started
    */
@@ -325,9 +335,10 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Check if all tasks in a sprint are completed.
    * </p>
    * <p>
-   * Validates that all tasks within the specified sprint have been completed.
-   * Throws ProtocolException if any tasks remain incomplete.
+   * Validates that all tasks within the specified sprint have been completed. Throws
+   * ProtocolException if any tasks remain incomplete.
    * </p>
+   *
    * @param id Sprint ID
    * @throws ProtocolException if any tasks are not completed
    */
@@ -344,9 +355,10 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Check and validate sprint quota for the current tenant.
    * </p>
    * <p>
-   * Validates that creating a new sprint would not exceed the tenant's quota limits.
-   * Returns the current sprint count for reference.
+   * Validates that creating a new sprint would not exceed the tenant's quota limits. Returns the
+   * current sprint count for reference.
    * </p>
+   *
    * @return Current number of sprints for the tenant
    */
   @Override
@@ -361,10 +373,11 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Set task numbers for a list of sprints.
    * </p>
    * <p>
-   * Efficiently retrieves and sets both total task counts and valid task counts for multiple sprints.
-   * Uses batch database queries to avoid N+1 query problems.
+   * Efficiently retrieves and sets both total task counts and valid task counts for multiple
+   * sprints. Uses batch database queries to avoid N+1 query problems.
    * </p>
-   * @param sprints List of sprints to update
+   *
+   * @param sprints   List of sprints to update
    * @param sprintIds Set of sprint IDs for batch querying
    */
   @Override
@@ -376,7 +389,8 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
           .collect(Collectors.toMap(SprintTaskNum::getSprintId, SprintTaskNum::getTaskNum));
 
       // Batch retrieve valid task counts for all sprints
-      Map<Long, Long> validTaskNumsMap = taskInfoRepo.findValidSprintTaskNumsGroupBySprintId(sprintIds)
+      Map<Long, Long> validTaskNumsMap = taskInfoRepo.findValidSprintTaskNumsGroupBySprintId(
+              sprintIds)
           .stream()
           .collect(Collectors.toMap(SprintTaskNum::getSprintId, SprintTaskNum::getTaskNum));
 
@@ -394,18 +408,20 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Set progress information for a list of sprints.
    * </p>
    * <p>
-   * Calculates and sets progress metrics including total tasks, completed tasks, and completion rate.
-   * Must be executed after setTaskNum() to ensure valid task counts are available.
-   * Uses batch database queries for efficiency.
+   * Calculates and sets progress metrics including total tasks, completed tasks, and completion
+   * rate. Must be executed after setTaskNum() to ensure valid task counts are available. Uses batch
+   * database queries for efficiency.
    * </p>
-   * @param sprints List of sprints to update
+   *
+   * @param sprints   List of sprints to update
    * @param sprintIds Set of sprint IDs for batch querying
    */
   @Override
   public void setProgress(List<TaskSprint> sprints, Set<Long> sprintIds) {
     if (isNotEmpty(sprints)) {
       // Batch retrieve passed task counts for all sprints
-      Map<Long, Long> sprintPassedNumsMap = taskInfoRepo.findSprintPassedTaskNumsGroupBySprintId(sprintIds)
+      Map<Long, Long> sprintPassedNumsMap = taskInfoRepo.findSprintPassedTaskNumsGroupBySprintId(
+              sprintIds)
           .stream()
           .collect(Collectors.toMap(SprintTaskNum::getSprintId, SprintTaskNum::getTaskNum));
 
@@ -418,8 +434,8 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
         // Calculate completion rate with proper decimal precision
         BigDecimal completedRate = validTaskNum > 0
             ? BigDecimal.valueOf(passedTaskNum)
-                .divide(BigDecimal.valueOf(validTaskNum), 4, RoundingMode.HALF_UP)
-                .multiply(BigDecimal.valueOf(100)) // Convert to percentage
+            .divide(BigDecimal.valueOf(validTaskNum), 4, RoundingMode.HALF_UP)
+            .multiply(BigDecimal.valueOf(100)) // Convert to percentage
             : BigDecimal.ZERO;
 
         sprint.setProgress(new Progress()
@@ -435,10 +451,11 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Set member information for a list of sprints.
    * </p>
    * <p>
-   * Retrieves and sets member information for each sprint based on associated users.
-   * Includes user details such as names and avatars for display purposes.
+   * Retrieves and sets member information for each sprint based on associated users. Includes user
+   * details such as names and avatars for display purposes.
    * </p>
-   * @param sprints List of sprints to update
+   *
+   * @param sprints   List of sprints to update
    * @param sprintIds Set of sprint IDs for batch querying
    */
   @Override
@@ -471,9 +488,10 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Generate a safe clone name for a sprint.
    * </p>
    * <p>
-   * Creates a unique clone name by appending "-Copy" and optionally a random suffix.
-   * Ensures the name does not exceed maximum length constraints while maintaining uniqueness.
+   * Creates a unique clone name by appending "-Copy" and optionally a random suffix. Ensures the
+   * name does not exceed maximum length constraints while maintaining uniqueness.
    * </p>
+   *
    * @param sprint Sprint to generate clone name for
    */
   @Override
@@ -483,9 +501,10 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
     String saltName = randomAlphanumeric(3);
 
     // Check if base clone name already exists
-    String clonedName = taskSprintRepo.existsByProjectIdAndName(sprint.getProjectId(), baseCloneName)
-        ? baseCloneName + "." + saltName
-        : baseCloneName;
+    String clonedName =
+        taskSprintRepo.existsByProjectIdAndName(sprint.getProjectId(), baseCloneName)
+            ? baseCloneName + "." + saltName
+            : baseCloneName;
 
     // Ensure name length constraints are met
     if (clonedName.length() > MAX_NAME_LENGTH) {
@@ -500,9 +519,10 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Check and set authorization object ID criteria for sprint queries.
    * </p>
    * <p>
-   * Adds authorization filtering criteria when the user is not an administrator or when
-   * querying only user-specific data. Ensures proper access control for sprint queries.
+   * Adds authorization filtering criteria when the user is not an administrator or when querying
+   * only user-specific data. Ensures proper access control for sprint queries.
    * </p>
+   *
    * @param criteria Search criteria to modify
    * @return Always returns false (legacy return value)
    */
@@ -530,16 +550,17 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Get sprint creation summaries with filtering capabilities.
    * </p>
    * <p>
-   * Retrieves sprint summaries based on various filtering criteria including project,
-   * sprint, date range, and creator information. Supports comprehensive filtering
-   * for reporting and analysis purposes.
+   * Retrieves sprint summaries based on various filtering criteria including project, sprint, date
+   * range, and creator information. Supports comprehensive filtering for reporting and analysis
+   * purposes.
    * </p>
-   * @param projectId Project ID for filtering
-   * @param sprintId Optional sprint ID for filtering
+   *
+   * @param projectId        Project ID for filtering
+   * @param sprintId         Optional sprint ID for filtering
    * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
-   * @param creatorOrgType Creator organization type
-   * @param creatorOrgId Creator organization ID
+   * @param createdDateEnd   End date for creation time filter
+   * @param creatorOrgType   Creator organization type
+   * @param creatorOrgId     Creator organization ID
    * @return List of sprint summaries matching the criteria
    */
   @Override

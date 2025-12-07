@@ -20,7 +20,7 @@ import org.hibernate.annotations.Type;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class Template extends TenantAuditingEntity<Template, Long>  {
+public class Template extends TenantAuditingEntity<Template, Long> {
 
   @Id
   private Long id;

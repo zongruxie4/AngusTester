@@ -52,8 +52,8 @@ import org.springframework.transaction.annotation.Transactional;
  * Implementation of service synchronization command operations.
  *
  * <p>This class provides comprehensive functionality for managing service
- * synchronization with external API documentation sources, including
- * configuration management, synchronization execution, and testing.</p>
+ * synchronization with external API documentation sources, including configuration management,
+ * synchronization execution, and testing.</p>
  *
  * <p>It handles the complete lifecycle of synchronization from configuration
  * to execution, including quota management, activity logging, and error handling.</p>
@@ -88,11 +88,11 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
    * Replaces or creates a synchronization configuration.
    *
    * <p>This method handles both creation and updates of synchronization
-   * configurations. It performs quota validation and logs appropriate
-   * activities for audit tracking.</p>
+   * configurations. It performs quota validation and logs appropriate activities for audit
+   * tracking.</p>
    *
    * @param serviceId the ID of the service
-   * @param sync the synchronization configuration
+   * @param sync      the synchronization configuration
    * @throws IllegalArgumentException if validation fails
    */
   @Transactional(rollbackFor = Exception.class)
@@ -137,11 +137,11 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
    * Replaces all synchronization configurations for a service.
    *
    * <p>This method handles bulk replacement of synchronization configurations,
-   * including creation, updates, and deletions. It performs comprehensive
-   * validation and quota management.</p>
+   * including creation, updates, and deletions. It performs comprehensive validation and quota
+   * management.</p>
    *
    * @param serviceId the ID of the service
-   * @param syncs the list of synchronization configurations
+   * @param syncs     the list of synchronization configurations
    * @throws IllegalArgumentException if validation fails
    */
   @Transactional(rollbackFor = Exception.class)
@@ -223,11 +223,11 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
    * Executes synchronization for a specific configuration.
    *
    * <p>This method performs the actual synchronization operation using
-   * the specified configuration. It handles error reporting and
-   * validates synchronization results.</p>
+   * the specified configuration. It handles error reporting and validates synchronization
+   * results.</p>
    *
    * @param serviceId the ID of the service
-   * @param name the name of the synchronization configuration
+   * @param name      the name of the synchronization configuration
    * @throws ProtocolException if synchronization fails
    */
   //@Transactional(rollbackFor = Exception.class)
@@ -269,11 +269,11 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
    * Tests synchronization configuration by validating OpenAPI content.
    *
    * <p>This method validates the synchronization URL and connectivity,
-   * then parses and validates the OpenAPI content to ensure it can be
-   * successfully synchronized.</p>
+   * then parses and validates the OpenAPI content to ensure it can be successfully
+   * synchronized.</p>
    *
    * @param syncUrl the synchronization URL to test
-   * @param auths the authentication configuration for the URL
+   * @param auths   the authentication configuration for the URL
    * @return the parsed OpenAPI object
    * @throws IllegalArgumentException if validation fails
    */
@@ -307,7 +307,7 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
    * and logs the deletion activity for audit purposes.</p>
    *
    * @param serviceId the ID of the service
-   * @param names the set of configuration names to delete
+   * @param names     the set of configuration names to delete
    * @throws IllegalArgumentException if validation fails
    */
   @Transactional(rollbackFor = Exception.class)
@@ -346,11 +346,11 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
    * Performs the actual synchronization operation.
    *
    * <p>This method executes the synchronization process, including URL validation,
-   * content retrieval, and schema updates. It handles success and failure states
-   * and updates the synchronization record accordingly.</p>
+   * content retrieval, and schema updates. It handles success and failure states and updates the
+   * synchronization record accordingly.</p>
    *
    * @param projectSync the synchronization configuration to execute
-   * @param serviceId the ID of the service to synchronize
+   * @param serviceId   the ID of the service to synchronize
    */
   public void sync0(ServicesSync projectSync, Long serviceId) {
     try {

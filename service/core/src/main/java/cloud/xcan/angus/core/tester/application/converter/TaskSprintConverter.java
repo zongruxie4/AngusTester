@@ -91,7 +91,7 @@ public class TaskSprintConverter {
       Long sprintId, LocalDateTime startDate, LocalDateTime endDate, Set<Long> createdIds) {
     Set<SearchCriteria> filters = getSprintResourcesFilter(projectId,
         sprintId, startDate, endDate);
-    if(isNotEmpty(createdIds)){
+    if (isNotEmpty(createdIds)) {
       filters.add(in("createdBy", createdIds));
     }
     return filters;

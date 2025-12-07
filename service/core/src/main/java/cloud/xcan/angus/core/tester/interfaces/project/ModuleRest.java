@@ -97,7 +97,8 @@ public class ModuleRest {
       description = "Batch delete software modules by their identifiers.",
       operationId = "module:delete")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Modules deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Modules deleted successfully")})
   @DeleteMapping
   public void delete(
       @Parameter(name = "ids", description = "Module identifiers for batch deletion", required = true)

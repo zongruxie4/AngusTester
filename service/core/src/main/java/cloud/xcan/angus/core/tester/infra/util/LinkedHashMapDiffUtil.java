@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.infra.util;
 
 import cloud.xcan.angus.core.tester.domain.project.evaluation.EvaluationPurpose;
 import java.util.LinkedHashMap;
-import java.util.stream.Collectors;
 
 /**
  * LinkedHashMap比较工具类（遍历枚举方式）

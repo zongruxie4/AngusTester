@@ -154,7 +154,7 @@ public class TaskFacadeImpl implements TaskFacade {
 
   @Override
   public void replaceSoftwareVersion(Long id, SoftwareVersionRefReplaceDto dto) {
-    taskCmd.replaceSoftwareVersion(id,  Objects.isNull(dto) ? null : dto.getSoftwareVersion());
+    taskCmd.replaceSoftwareVersion(id, Objects.isNull(dto) ? null : dto.getSoftwareVersion());
   }
 
   @Override

@@ -171,18 +171,21 @@ public class MockApisRest {
   @Operation(summary = "Delete mock API associations",
       description = "Remove associations between mock APIs and service APIs for relationship management",
       operationId = "mock:apis:association:delete")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Mock API associations deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Mock API associations deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/association")
-  public void assocDelete(@Parameter(name = "ids", description = "Mock API identifiers for association deletion", required = true)
-  @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
+  public void assocDelete(
+      @Parameter(name = "ids", description = "Mock API identifiers for association deletion", required = true)
+      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     mockApisFacade.assocDelete(ids);
   }
 
   @Operation(summary = "Delete mock APIs",
       description = "Remove mock API definitions from system with cleanup",
       operationId = "mock:apis:delete")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Mock APIs deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Mock APIs deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void delete(

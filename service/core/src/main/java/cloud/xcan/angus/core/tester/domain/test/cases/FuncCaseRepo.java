@@ -52,8 +52,9 @@ public interface FuncCaseRepo extends BaseRepository<FuncCase, Long> {
 
   long countByPlanIdAndNameAndIdNot(Long planId, String name, Long id);
 
-  @Query(value = "SELECT count(id) FROM func_case WHERE plan_id = ?1 AND test_result NOT IN ('PASSED','CANCELED')"
-      + " AND deleted = 0 AND plan_deleted =0", nativeQuery = true)
+  @Query(value =
+      "SELECT count(id) FROM func_case WHERE plan_id = ?1 AND test_result NOT IN ('PASSED','CANCELED')"
+          + " AND deleted = 0 AND plan_deleted =0", nativeQuery = true)
   long countNotPassedByPlanId(Long id);
 
   @Modifying
@@ -135,7 +136,8 @@ public interface FuncCaseRepo extends BaseRepository<FuncCase, Long> {
 
   @Modifying
   @Query(value = "UPDATE func_case SET software_version = ?3 WHERE project_id = ?1 AND software_version = ?2", nativeQuery = true)
-  void updateVersionByProjectIdAndSoftwareVersion(Long projectId, String fromVersion, String toVersion);
+  void updateVersionByProjectIdAndSoftwareVersion(Long projectId, String fromVersion,
+      String toVersion);
 
   @Transactional
   @Modifying

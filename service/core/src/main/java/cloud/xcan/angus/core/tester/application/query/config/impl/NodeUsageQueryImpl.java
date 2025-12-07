@@ -38,7 +38,8 @@ import org.springframework.data.domain.Sort.Direction;
  * Implementation of NodeUsageQuery for querying node usage metrics and summaries.
  * </p>
  * <p>
- * Provides methods for retrieving node usage data, latest metrics, and usage summaries over a time range.
+ * Provides methods for retrieving node usage data, latest metrics, and usage summaries over a time
+ * range.
  * </p>
  */
 @Slf4j
@@ -59,8 +60,9 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
    * <p>
    * If the tenant does not own nodes, forcibly queries metrics for free nodes.
    * </p>
-   * @param id Node ID
-   * @param spec Node usage search specification
+   *
+   * @param id       Node ID
+   * @param spec     Node usage search specification
    * @param pageable Pagination information
    * @return Page of NodeUsage
    */
@@ -75,7 +77,7 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
         spec.getCriteria().add(equal("nodeId", id));
         try {
           // Force to query free node metrics
-          if (!nodeInfoQuery.hasOwnNodes()){
+          if (!nodeInfoQuery.hasOwnNodes()) {
             PrincipalContext.get().setOptTenantId(OWNER_TENANT_ID);
           }
           return nodeUsageRepo.findAll(spec, pageable);
@@ -95,6 +97,7 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
    * <p>
    * If the tenant does not own nodes, forcibly queries metrics for free nodes.
    * </p>
+   *
    * @param id Node ID
    * @return Latest NodeUsage
    */
@@ -106,7 +109,7 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
       protected NodeUsage process() {
         try {
           // Force to query free node metrics
-          if (!nodeInfoQuery.hasOwnNodes()){
+          if (!nodeInfoQuery.hasOwnNodes()) {
             PrincipalContext.get().setOptTenantId(OWNER_TENANT_ID);
           }
           return nodeUsageRepo.findFirstByNodeIdOrderByTimestampDesc(id);
@@ -123,9 +126,10 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
    * <p>
    * Get usage summaries for a collection of nodes within a time range.
    * </p>
+   *
    * @param nodeIds Collection of node IDs
-   * @param from Start time
-   * @param to End time
+   * @param from    Start time
+   * @param to      End time
    * @return Map of node ID to NodeUsageSummary
    */
   public Map<Long, NodeUsageSummary> getUsageSummaries(Collection<Long> nodeIds,
@@ -138,11 +142,13 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
    * Get usage summary for a node within a time range.
    * </p>
    * <p>
-   * Calculates mean and max CPU, memory, and filesystem usage, as well as network usage if available.
+   * Calculates mean and max CPU, memory, and filesystem usage, as well as network usage if
+   * available.
    * </p>
+   *
    * @param nodeId Node ID
-   * @param from Start time
-   * @param to End time
+   * @param from   Start time
+   * @param to     End time
    * @return NodeUsageSummary
    */
   @Override
@@ -195,9 +201,10 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
    * <p>
    * Find all node usage records for a node within a time range, paginated.
    * </p>
+   *
    * @param nodeId Node ID
-   * @param from Start time
-   * @param to End time
+   * @param from   Start time
+   * @param to     End time
    * @return List of NodeUsage
    */
   private List<NodeUsage> findAllNodeUsages(Long nodeId, LocalDateTime from, LocalDateTime to) {
@@ -221,9 +228,10 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
    * <p>
    * Find all network usage records for a node within a time range, grouped by device name.
    * </p>
+   *
    * @param nodeId Node ID
-   * @param from Start time
-   * @param to End time
+   * @param from   Start time
+   * @param to     End time
    * @return Map of device name to list of NetUsage
    */
   private Map<String, List<NetUsage>> findAllMetUsages(Long nodeId, LocalDateTime from,

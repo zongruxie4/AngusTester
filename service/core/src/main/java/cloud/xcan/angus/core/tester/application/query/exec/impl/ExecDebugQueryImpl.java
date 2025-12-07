@@ -38,12 +38,12 @@ import java.util.List;
 /**
  * Implementation of ExecDebugQuery interface for managing debug execution queries.
  * <p>
- * This class provides functionality to query and retrieve debug execution information
- * for scripts, scenarios, and monitors. It handles quota checking, script parsing,
- * and result evaluation for debug executions.
+ * This class provides functionality to query and retrieve debug execution information for scripts,
+ * scenarios, and monitors. It handles quota checking, script parsing, and result evaluation for
+ * debug executions.
  * <p>
- * The implementation includes methods for finding debug executions by different sources,
- * checking quotas, and setting debug results with parsed script content and sample data.
+ * The implementation includes methods for finding debug executions by different sources, checking
+ * quotas, and setting debug results with parsed script content and sample data.
  */
 @Biz
 public class ExecDebugQueryImpl implements ExecDebugQuery {
@@ -63,8 +63,8 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
   /**
    * Retrieves detailed debug information for a script execution.
    * <p>
-   * Finds the debug execution by script ID and sets the complete debug result
-   * including parsed script content, sample contents, and execution success status.
+   * Finds the debug execution by script ID and sets the complete debug result including parsed
+   * script content, sample contents, and execution success status.
    * <p>
    * Uses SneakyThrow0 annotation to handle quota checking errors gracefully.
    *
@@ -91,8 +91,8 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
   /**
    * Retrieves detailed debug information for a scenario execution.
    * <p>
-   * Finds the debug execution by scenario ID and sets the complete debug result
-   * including parsed script content, sample contents, and execution success status.
+   * Finds the debug execution by scenario ID and sets the complete debug result including parsed
+   * script content, sample contents, and execution success status.
    * <p>
    * Uses SneakyThrow0 annotation to handle quota checking errors gracefully.
    *
@@ -119,8 +119,8 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
   /**
    * Retrieves detailed debug information for a monitor execution.
    * <p>
-   * Finds the debug execution by monitor ID and sets the complete debug result
-   * including parsed script content, sample contents, and execution success status.
+   * Finds the debug execution by monitor ID and sets the complete debug result including parsed
+   * script content, sample contents, and execution success status.
    * <p>
    * Uses SneakyThrow0 annotation to handle quota checking errors gracefully.
    *
@@ -194,8 +194,8 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
    * <p>
    * Only performs the check if the increment is greater than 0.
    * <p>
-   * Queries the current count of debug executions for the tenant and validates
-   * against the configured quota limits.
+   * Queries the current count of debug executions for the tenant and validates against the
+   * configured quota limits.
    *
    * @param incr the increment to check against the quota
    */
@@ -213,8 +213,8 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
    * <p>
    * Only performs the check if the increment is greater than 0.
    * <p>
-   * Queries the current count of running debug executions for the tenant and validates
-   * against the configured concurrent task quota limits.
+   * Queries the current count of running debug executions for the tenant and validates against the
+   * configured concurrent task quota limits.
    *
    * @param incr the increment to check against the concurrent task quota
    */
@@ -231,14 +231,12 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
   /**
    * Sets the complete debug result for an ExecDebug object.
    * <p>
-   * This method populates the debug object with parsed script content, sample contents,
-   * finish sample result, and determines the execution success status.
+   * This method populates the debug object with parsed script content, sample contents, finish
+   * sample result, and determines the execution success status.
    * <p>
-   * The method performs the following operations:
-   * - Parses and sets the script content configuration and task
-   * - Retrieves and sets sample contents for the execution
-   * - Gets the final sample result for the execution
-   * - Judges and sets the execution success status
+   * The method performs the following operations: - Parses and sets the script content
+   * configuration and task - Retrieves and sets sample contents for the execution - Gets the final
+   * sample result for the execution - Judges and sets the execution success status
    *
    * @param debugDb the ExecDebug object to populate with result data
    */
@@ -264,10 +262,8 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
   /**
    * Judges the execution success status based on multiple criteria.
    * <p>
-   * Evaluates the execution success by checking:
-   * - Whether the execution status is completed
-   * - Meter status success (if available)
-   * - Sample result success for all sample contents
+   * Evaluates the execution success by checking: - Whether the execution status is completed -
+   * Meter status success (if available) - Sample result success for all sample contents
    * <p>
    * Sets the succeed flag and failure message accordingly.
    *
@@ -298,9 +294,8 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
   /**
    * Parses and sets the script content for an ExecDebug object.
    * <p>
-   * Deserializes the script content from YAML format and sets the configuration,
-   * task, and pipeline target mappings. Handles cases where pipeline names
-   * might be empty for single task executions.
+   * Deserializes the script content from YAML format and sets the configuration, task, and pipeline
+   * target mappings. Handles cases where pipeline names might be empty for single task executions.
    * <p>
    * If parsing fails, throws a SysException with the error details.
    *

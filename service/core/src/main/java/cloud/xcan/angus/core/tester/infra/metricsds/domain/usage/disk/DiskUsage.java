@@ -47,10 +47,14 @@ public class DiskUsage extends EntitySupport<DiskUsage, Long> {
     private long total;
 
     // Unsupported in oshi
-    @Deprecated private long free;
-    @Deprecated private long used;
-    @Deprecated private long avail;
-    @Deprecated private double usePercent;
+    @Deprecated
+    private long free;
+    @Deprecated
+    private long used;
+    @Deprecated
+    private long avail;
+    @Deprecated
+    private double usePercent;
 
     private double readsRate;
     private double writesRate;

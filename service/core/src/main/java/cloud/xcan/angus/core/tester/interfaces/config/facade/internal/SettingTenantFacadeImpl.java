@@ -41,7 +41,8 @@ public class SettingTenantFacadeImpl implements SettingTenantFacade {
 
   @Override
   public TenantServerApiProxyTo proxyDetail() {
-    return toServerApiProxyTo(settingTenantQuery.findAndInit(getOptTenantId()).getServerApiProxyData());
+    return toServerApiProxyTo(
+        settingTenantQuery.findAndInit(getOptTenantId()).getServerApiProxyData());
   }
 
   @Override

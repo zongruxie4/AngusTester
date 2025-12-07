@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class WorkloadCount implements WorkloadCountBase{
+public class WorkloadCount implements WorkloadCountBase {
 
   @Schema(description = "Evaluate workload")
   protected double evalWorkload = 0d;

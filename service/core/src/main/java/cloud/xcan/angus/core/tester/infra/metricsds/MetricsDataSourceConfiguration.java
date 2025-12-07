@@ -46,16 +46,26 @@ public class MetricsDataSourceConfiguration {
   public final static String MASTER_DATASOURCE_KEY = "dataSource";
   public final static String METRICS_DATASOURCE_PREFIX = "metrics";
   public final static String METRICS_DATASOURCE_SUFFIX = "DataSource";
-  public final static String METRICS0_DATASOURCE_KEY = METRICS_DATASOURCE_PREFIX + "0" + METRICS_DATASOURCE_SUFFIX;
-  public final static String METRICS1_DATASOURCE_KEY = METRICS_DATASOURCE_PREFIX + "1" + METRICS_DATASOURCE_SUFFIX;
-  public final static String METRICS2_DATASOURCE_KEY = METRICS_DATASOURCE_PREFIX + "2" + METRICS_DATASOURCE_SUFFIX;
-  public final static String METRICS3_DATASOURCE_KEY = METRICS_DATASOURCE_PREFIX + "3" + METRICS_DATASOURCE_SUFFIX;
-  public final static String METRICS4_DATASOURCE_KEY = METRICS_DATASOURCE_PREFIX + "4" + METRICS_DATASOURCE_SUFFIX;
-  public final static String METRICS5_DATASOURCE_KEY = METRICS_DATASOURCE_PREFIX + "5" + METRICS_DATASOURCE_SUFFIX;
-  public final static String METRICS6_DATASOURCE_KEY = METRICS_DATASOURCE_PREFIX + "6" + METRICS_DATASOURCE_SUFFIX;
-  public final static String METRICS7_DATASOURCE_KEY = METRICS_DATASOURCE_PREFIX + "7" + METRICS_DATASOURCE_SUFFIX;
-  public final static String METRICS8_DATASOURCE_KEY = METRICS_DATASOURCE_PREFIX + "8" + METRICS_DATASOURCE_SUFFIX;
-  public final static String METRICS9_DATASOURCE_KEY = METRICS_DATASOURCE_PREFIX + "9" + METRICS_DATASOURCE_SUFFIX;
+  public final static String METRICS0_DATASOURCE_KEY =
+      METRICS_DATASOURCE_PREFIX + "0" + METRICS_DATASOURCE_SUFFIX;
+  public final static String METRICS1_DATASOURCE_KEY =
+      METRICS_DATASOURCE_PREFIX + "1" + METRICS_DATASOURCE_SUFFIX;
+  public final static String METRICS2_DATASOURCE_KEY =
+      METRICS_DATASOURCE_PREFIX + "2" + METRICS_DATASOURCE_SUFFIX;
+  public final static String METRICS3_DATASOURCE_KEY =
+      METRICS_DATASOURCE_PREFIX + "3" + METRICS_DATASOURCE_SUFFIX;
+  public final static String METRICS4_DATASOURCE_KEY =
+      METRICS_DATASOURCE_PREFIX + "4" + METRICS_DATASOURCE_SUFFIX;
+  public final static String METRICS5_DATASOURCE_KEY =
+      METRICS_DATASOURCE_PREFIX + "5" + METRICS_DATASOURCE_SUFFIX;
+  public final static String METRICS6_DATASOURCE_KEY =
+      METRICS_DATASOURCE_PREFIX + "6" + METRICS_DATASOURCE_SUFFIX;
+  public final static String METRICS7_DATASOURCE_KEY =
+      METRICS_DATASOURCE_PREFIX + "7" + METRICS_DATASOURCE_SUFFIX;
+  public final static String METRICS8_DATASOURCE_KEY =
+      METRICS_DATASOURCE_PREFIX + "8" + METRICS_DATASOURCE_SUFFIX;
+  public final static String METRICS9_DATASOURCE_KEY =
+      METRICS_DATASOURCE_PREFIX + "9" + METRICS_DATASOURCE_SUFFIX;
 
   public final static String METRICS_ENTITY_MANAGER_FACTORY_NAMETRICS_ENTITY = "metricsEntityManagerFactory";
 
@@ -286,7 +296,7 @@ public class MetricsDataSourceConfiguration {
     return builder
         .dataSource(routingDataSource)
         .properties(properties)
-          //.persistenceUnit("sample")
+        //.persistenceUnit("sample")
         .packages(metricsDataSourceProperties.getEntityPackages())
         .build();
   }

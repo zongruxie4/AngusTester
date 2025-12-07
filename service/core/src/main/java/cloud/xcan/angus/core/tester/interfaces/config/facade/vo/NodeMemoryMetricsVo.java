@@ -21,7 +21,7 @@ public class NodeMemoryMetricsVo {
   /**
    * @see Memory#toString()
    */
-  @Schema(description="Comma-separated memory sample value, format: free,used,freePercent,usedPercent,actualFree,actualUsed,actualFreePercent,actualUsedPercent,swapFree,swapUsed")
+  @Schema(description = "Comma-separated memory sample value, format: free,used,freePercent,usedPercent,actualFree,actualUsed,actualFreePercent,actualUsedPercent,swapFree,swapUsed")
   private String cvsMemory;
 
   public Date getTimestamp() {

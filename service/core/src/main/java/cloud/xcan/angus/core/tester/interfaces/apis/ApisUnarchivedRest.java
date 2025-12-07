@@ -47,7 +47,7 @@ public class ApisUnarchivedRest {
   @Resource
   private ApisUnarchivedFacade apisUnarchivedFacade;
 
-  @Operation(summary = "Create unarchived API", 
+  @Operation(summary = "Create unarchived API",
       description = "Create new unarchived API in personal workspace with comprehensive configuration and validation",
       operationId = "apis:unarchived:add")
   @ApiResponses(value = {
@@ -59,7 +59,7 @@ public class ApisUnarchivedRest {
     return ApiLocaleResult.success(apisUnarchivedFacade.add(dto));
   }
 
-  @Operation(summary = "Update unarchived API", 
+  @Operation(summary = "Update unarchived API",
       description = "Update existing unarchived API with comprehensive configuration and validation",
       operationId = "apis:unarchived:update")
   @ApiResponses(value = {
@@ -73,7 +73,7 @@ public class ApisUnarchivedRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Rename unarchived API", 
+  @Operation(summary = "Rename unarchived API",
       description = "Update unarchived API name with comprehensive validation and metadata management",
       operationId = "apis:unarchived:name:replace")
   @ApiResponses(value = {
@@ -87,7 +87,7 @@ public class ApisUnarchivedRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete unarchived API", 
+  @Operation(summary = "Delete unarchived API",
       description = "Remove specific unarchived API from personal workspace with comprehensive cleanup",
       operationId = "apis:unarchived:delete")
   @ApiResponses(value = {
@@ -99,7 +99,7 @@ public class ApisUnarchivedRest {
     apisUnarchivedFacade.delete(id);
   }
 
-  @Operation(summary = "Delete all unarchived APIs", 
+  @Operation(summary = "Delete all unarchived APIs",
       description = "Remove all unarchived APIs from personal workspace with comprehensive cleanup",
       operationId = "apis:unarchived:delete:all")
   @ApiResponses(value = {
@@ -110,7 +110,7 @@ public class ApisUnarchivedRest {
     apisUnarchivedFacade.deleteAll();
   }
 
-  @Operation(summary = "Get unarchived API details", 
+  @Operation(summary = "Get unarchived API details",
       description = "Retrieve comprehensive unarchived API details including configuration and metadata",
       operationId = "apis:unarchived:detail")
   @ApiResponses(value = {
@@ -122,7 +122,7 @@ public class ApisUnarchivedRest {
     return ApiLocaleResult.success(apisUnarchivedFacade.detail(id));
   }
 
-  @Operation(summary = "Get unarchived API count", 
+  @Operation(summary = "Get unarchived API count",
       description = "Retrieve total count of unarchived APIs for specific project with comprehensive statistics",
       operationId = "apis:unarchived:count")
   @ApiResponses(value = {
@@ -133,7 +133,7 @@ public class ApisUnarchivedRest {
     return ApiLocaleResult.success(apisUnarchivedFacade.count(projectId));
   }
 
-  @Operation(summary = "Query unarchived API list", 
+  @Operation(summary = "Query unarchived API list",
       description = "Retrieve paginated list of unarchived APIs with comprehensive filtering and search options",
       operationId = "apis:unarchived:list")
   @ApiResponses(value = {

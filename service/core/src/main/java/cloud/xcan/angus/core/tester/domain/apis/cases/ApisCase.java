@@ -185,11 +185,11 @@ public class ApisCase extends TenantAuditingEntity<ApisCase, Long> implements Ac
   @Transient
   private String avatar;
 
-  public boolean isAuthSchemaRef(){
+  public boolean isAuthSchemaRef() {
     return nonNull(authentication) && isNotEmpty(authentication.get$ref());
   }
 
-  public boolean includeSchemaRef(String refKey){
+  public boolean includeSchemaRef(String refKey) {
     return isNotEmpty(resolvedRefModels) && resolvedRefModels.containsKey(refKey);
   }
 

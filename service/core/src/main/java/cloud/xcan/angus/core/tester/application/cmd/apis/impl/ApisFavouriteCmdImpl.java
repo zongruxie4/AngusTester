@@ -52,6 +52,7 @@ public class ApisFavouriteCmdImpl extends CommCmd<ApisFavourite, Long> implement
    * <p>
    * Validates API existence, permission, and duplicate, inserts favorite, and logs the activity.
    * </p>
+   *
    * @param favourite API favorite to add
    * @return ID key of the created favorite
    */
@@ -79,7 +80,7 @@ public class ApisFavouriteCmdImpl extends CommCmd<ApisFavourite, Long> implement
       protected IdKey<Long, Object> process() {
         // Set project ID from API information
         favourite.setProjectId(apisDb.getProjectId());
-        
+
         // Insert the favorite record
         IdKey<Long, Object> idKey = insert(favourite);
 
@@ -143,6 +144,7 @@ public class ApisFavouriteCmdImpl extends CommCmd<ApisFavourite, Long> implement
   /**
    * Get the repository for ApisFavourite entity.
    * <p>
+   *
    * @return the ApisFavouriteRepo instance
    */
   @Override

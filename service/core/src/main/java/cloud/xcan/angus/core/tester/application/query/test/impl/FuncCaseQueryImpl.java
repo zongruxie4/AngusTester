@@ -215,9 +215,9 @@ import org.springframework.data.domain.Sort.Direction;
 /**
  * Implementation of FuncCaseQuery for managing functional test case queries and statistics.
  * <p>
- * This class provides comprehensive functionality for querying, analyzing, and managing functional test cases.
- * It handles case retrieval, validation, progress tracking, and various statistical analyses including
- * workload, efficiency, and trend analysis.
+ * This class provides comprehensive functionality for querying, analyzing, and managing functional
+ * test cases. It handles case retrieval, validation, progress tracking, and various statistical
+ * analyses including workload, efficiency, and trend analysis.
  * <p>
  * Key features include:
  * <ul>
@@ -288,12 +288,12 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Retrieves detailed information for a specific functional test case.
    * <p>
-   * Fetches the case by ID and enriches it with additional information including
-   * favourite/follow status, tags, associated tasks/cases, user information,
-   * comment count, activity count, and progress information.
+   * Fetches the case by ID and enriches it with additional information including favourite/follow
+   * status, tags, associated tasks/cases, user information, comment count, activity count, and
+   * progress information.
    * <p>
-   * Uses BizTemplate pattern for consistent business logic execution with
-   * parameter validation and error handling.
+   * Uses BizTemplate pattern for consistent business logic execution with parameter validation and
+   * error handling.
    *
    * @param id the case ID to retrieve details for
    * @return FuncCase object with complete details and enriched information
@@ -340,18 +340,19 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Retrieves a paginated list of functional test case information.
    * <p>
-   * Supports both regular search and full-text search with comprehensive filtering.
-   * Enriches results with user information, tags, progress, and export data when needed.
+   * Supports both regular search and full-text search with comprehensive filtering. Enriches
+   * results with user information, tags, progress, and export data when needed.
    * <p>
    * Includes permission checking and authorization filtering for security.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param export whether to include export-specific data (precondition, steps, associations)
-   * @param spec the search specification with criteria and filters
-   * @param pageable pagination parameters (page, size, sort)
+   * @param export         whether to include export-specific data (precondition, steps,
+   *                       associations)
+   * @param spec           the search specification with criteria and filters
+   * @param pageable       pagination parameters (page, size, sort)
    * @param fullTextSearch whether to use full-text search capabilities
-   * @param match full-text search match parameters
+   * @param match          full-text search match parameters
    * @return Page of FuncCaseInfo objects with enriched information
    * @throws BizException if permission validation fails
    */
@@ -419,13 +420,13 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Retrieves cases that are not associated with a specific task.
    * <p>
-   * Finds cases within the same project as the task that are not currently
-   * associated with the specified task. Optionally filters by module ID.
+   * Finds cases within the same project as the task that are not currently associated with the
+   * specified task. Optionally filters by module ID.
    * <p>
-   * Uses BizTemplate pattern for consistent business logic execution.
-   * Results are sorted by creation date in descending order.
+   * Uses BizTemplate pattern for consistent business logic execution. Results are sorted by
+   * creation date in descending order.
    *
-   * @param taskId the task ID to find unassociated cases for
+   * @param taskId   the task ID to find unassociated cases for
    * @param moduleId optional module ID to filter cases by module
    * @return List of FuncCaseInfo objects not associated with the task
    * @throws ResourceNotFound if the task is not found
@@ -466,13 +467,13 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Retrieves cases that are not associated with a specific case.
    * <p>
-   * Finds cases within the same project as the reference case that are not
-   * currently associated with the specified case. Optionally filters by module ID.
+   * Finds cases within the same project as the reference case that are not currently associated
+   * with the specified case. Optionally filters by module ID.
    * <p>
-   * Uses BizTemplate pattern for consistent business logic execution.
-   * Results are sorted by creation date in descending order.
+   * Uses BizTemplate pattern for consistent business logic execution. Results are sorted by
+   * creation date in descending order.
    *
-   * @param caseId the case ID to find unassociated cases for
+   * @param caseId   the case ID to find unassociated cases for
    * @param moduleId optional module ID to filter cases by module
    * @return List of FuncCaseInfo objects not associated with the case
    * @throws ResourceNotFound if the case is not found
@@ -513,24 +514,24 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Generates comprehensive resource creation statistics for a project or plan.
    * <p>
-   * Provides detailed statistics on resource creation including cases, plans, reviews, and baselines.
-   * Supports filtering by creator organization type and date range with optional inclusion of
-   * different resource types based on boolean flags.
+   * Provides detailed statistics on resource creation including cases, plans, reviews, and
+   * baselines. Supports filtering by creator organization type and date range with optional
+   * inclusion of different resource types based on boolean flags.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    * <p>
-   * The method aggregates creation counts and categorizes them by various criteria such as
-   * test results, review status, and priority levels for comprehensive analysis.
+   * The method aggregates creation counts and categorizes them by various criteria such as test
+   * results, review status, and priority levels for comprehensive analysis.
    *
-   * @param projectId the project ID for filtering resources
-   * @param planId optional plan ID for plan-specific filtering
+   * @param projectId         the project ID for filtering resources
+   * @param planId            optional plan ID for plan-specific filtering
    * @param creatorObjectType the creator organization type for filtering
-   * @param creatorObjectId the creator organization ID for filtering
-   * @param createdDateStart start date for filtering resource creation
-   * @param createdDateEnd end date for filtering resource creation
-   * @param joinPlan whether to include plan creation statistics
-   * @param joinReview whether to include review creation statistics
-   * @param joinBaseline whether to include baseline creation statistics
+   * @param creatorObjectId   the creator organization ID for filtering
+   * @param createdDateStart  start date for filtering resource creation
+   * @param createdDateEnd    end date for filtering resource creation
+   * @param joinPlan          whether to include plan creation statistics
+   * @param joinReview        whether to include review creation statistics
+   * @param joinBaseline      whether to include baseline creation statistics
    * @return FuncLastResourceCreationCount object with comprehensive creation statistics
    */
   @Override
@@ -582,8 +583,8 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Counts functional test cases based on specified search criteria.
    * <p>
-   * Provides case count statistics with automatic filtering for deleted cases
-   * and deleted plans. Requires projectId parameter for validation.
+   * Provides case count statistics with automatic filtering for deleted cases and deleted plans.
+   * Requires projectId parameter for validation.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
@@ -614,13 +615,13 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Generates summary statistics for testers in a project or plan.
    * <p>
-   * Provides comprehensive tester statistics including case counts, progress metrics,
-   * and user information. Groups cases by tester and enriches with user details.
+   * Provides comprehensive tester statistics including case counts, progress metrics, and user
+   * information. Groups cases by tester and enriches with user details.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
    * @param projectId the project ID for filtering cases
-   * @param planId optional plan ID for plan-specific statistics
+   * @param planId    optional plan ID for plan-specific statistics
    * @return List of FuncTesterCount objects with tester statistics
    */
   @Override
@@ -655,14 +656,14 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Generates progress statistics for testers in a project or plan.
    * <p>
-   * Provides detailed progress metrics for each tester including completion rates,
-   * workload distribution, and progress trends. Groups cases by tester and
-   * calculates progress-based statistics.
+   * Provides detailed progress metrics for each tester including completion rates, workload
+   * distribution, and progress trends. Groups cases by tester and calculates progress-based
+   * statistics.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
    * @param projectId the project ID for filtering cases
-   * @param planId optional plan ID for plan-specific statistics
+   * @param planId    optional plan ID for plan-specific statistics
    * @return List of FuncTesterProgressCount objects with tester progress statistics
    */
   @Override
@@ -698,9 +699,9 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Generates comprehensive work statistics for a project.
    * <p>
-   * Provides detailed project-level statistics including case counts, resource creation
-   * statistics, plan summaries, and various categorization metrics. Aggregates data
-   * from all plans within the project.
+   * Provides detailed project-level statistics including case counts, resource creation statistics,
+   * plan summaries, and various categorization metrics. Aggregates data from all plans within the
+   * project.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
@@ -745,9 +746,9 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Generates comprehensive work statistics for a plan.
    * <p>
-   * Provides detailed plan-level statistics including case counts, tester summaries,
-   * progress metrics, and various categorization statistics. Groups cases by tester
-   * and provides daily workload distribution.
+   * Provides detailed plan-level statistics including case counts, tester summaries, progress
+   * metrics, and various categorization statistics. Groups cases by tester and provides daily
+   * workload distribution.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
@@ -822,15 +823,14 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Generates work statistics for a specific tester.
    * <p>
-   * Provides detailed statistics for a single tester including case counts,
-   * daily workload distribution, and progress metrics. Groups cases by creation date
-   * to show daily work patterns.
+   * Provides detailed statistics for a single tester including case counts, daily workload
+   * distribution, and progress metrics. Groups cases by creation date to show daily work patterns.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
    * @param projectId the project ID for filtering cases
-   * @param planId optional plan ID for plan-specific filtering
-   * @param userId the user ID to generate statistics for
+   * @param planId    optional plan ID for plan-specific filtering
+   * @param userId    the user ID to generate statistics for
    * @return FuncTesterWorkSummary object with tester-specific statistics
    */
   @Override
@@ -876,20 +876,20 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Generates progress overview for functional test cases.
    * <p>
-   * Provides comprehensive progress analysis including total overview and
-   * individual tester progress details. Supports filtering by tester organization
-   * and date range with optional detailed breakdowns.
+   * Provides comprehensive progress analysis including total overview and individual tester
+   * progress details. Supports filtering by tester organization and date range with optional
+   * detailed breakdowns.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param projectId the project ID for filtering cases
-   * @param planId optional plan ID for plan-specific filtering
-   * @param testerOrgType the tester organization type for filtering
-   * @param testerOrgId the tester organization ID for filtering
+   * @param projectId        the project ID for filtering cases
+   * @param planId           optional plan ID for plan-specific filtering
+   * @param testerOrgType    the tester organization type for filtering
+   * @param testerOrgId      the tester organization ID for filtering
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
+   * @param createdDateEnd   end date for filtering
    * @param joinTesterDetail whether to include individual tester details
-   * @param joinDataDetail whether to include detailed data breakdowns
+   * @param joinDataDetail   whether to include detailed data breakdowns
    * @return ProgressOverview object with comprehensive progress statistics
    */
   @Override
@@ -957,18 +957,18 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    * <p>
-   * The method automatically determines safe date ranges based on plan or project boundaries
-   * and excludes canceled cases from the analysis. Provides both numeric and workload-based
-   * burndown charts.
+   * The method automatically determines safe date ranges based on plan or project boundaries and
+   * excludes canceled cases from the analysis. Provides both numeric and workload-based burndown
+   * charts.
    *
-   * @param projectId the project ID for filtering cases
-   * @param planId optional plan ID for plan-specific filtering
-   * @param testerOrgType the tester organization type for filtering
-   * @param testerOrgId the tester organization ID for filtering
+   * @param projectId        the project ID for filtering cases
+   * @param planId           optional plan ID for plan-specific filtering
+   * @param testerOrgType    the tester organization type for filtering
+   * @param testerOrgId      the tester organization ID for filtering
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
+   * @param createdDateEnd   end date for filtering
    * @param joinTesterDetail whether to include individual tester details
-   * @param joinDataDetail whether to include detailed data breakdowns
+   * @param joinDataDetail   whether to include detailed data breakdowns
    * @return BurnDownChartOverview object with comprehensive burndown statistics
    */
   @Override
@@ -1071,17 +1071,17 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    * <p>
-   * The method analyzes case workload distribution across testers and provides metrics
-   * for workload planning and resource allocation.
+   * The method analyzes case workload distribution across testers and provides metrics for workload
+   * planning and resource allocation.
    *
-   * @param projectId the project ID for filtering cases
-   * @param planId optional plan ID for plan-specific filtering
-   * @param testerOrgType the tester organization type for filtering
-   * @param testerOrgId the tester organization ID for filtering
+   * @param projectId        the project ID for filtering cases
+   * @param planId           optional plan ID for plan-specific filtering
+   * @param testerOrgType    the tester organization type for filtering
+   * @param testerOrgId      the tester organization ID for filtering
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
+   * @param createdDateEnd   end date for filtering
    * @param joinTesterDetail whether to include individual tester details
-   * @param joinDataDetail whether to include detailed data breakdowns
+   * @param joinDataDetail   whether to include detailed data breakdowns
    * @return WorkloadOverview object with comprehensive workload statistics
    */
   @Override
@@ -1144,23 +1144,23 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Generates overdue assessment overview for functional test cases.
    * <p>
-   * Provides comprehensive overdue analysis including total overview and individual tester
-   * overdue details. Supports filtering by tester organization and date range with optional
-   * detailed breakdowns.
+   * Provides comprehensive overdue analysis including total overview and individual tester overdue
+   * details. Supports filtering by tester organization and date range with optional detailed
+   * breakdowns.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    * <p>
    * The method calculates overdue assessments based on daily processed workload and provides
    * metrics for identifying potential delays and resource constraints.
    *
-   * @param projectId the project ID for filtering cases (required)
-   * @param planId optional plan ID for plan-specific filtering
-   * @param testerOrgType the tester organization type for filtering
-   * @param testerOrgId the tester organization ID for filtering
+   * @param projectId        the project ID for filtering cases (required)
+   * @param planId           optional plan ID for plan-specific filtering
+   * @param testerOrgType    the tester organization type for filtering
+   * @param testerOrgId      the tester organization ID for filtering
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
+   * @param createdDateEnd   end date for filtering
    * @param joinTesterDetail whether to include individual tester details
-   * @param joinDataDetail whether to include detailed data breakdowns
+   * @param joinDataDetail   whether to include detailed data breakdowns
    * @return OverdueAssessmentOverview object with comprehensive overdue statistics
    */
   @Override
@@ -1239,14 +1239,14 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * The method analyzes testing efficiency metrics including completion rates, time utilization,
    * and productivity indicators for performance optimization.
    *
-   * @param projectId the project ID for filtering cases
-   * @param planId optional plan ID for plan-specific filtering
-   * @param testerOrgType the tester organization type for filtering
-   * @param testerOrgId the tester organization ID for filtering
+   * @param projectId        the project ID for filtering cases
+   * @param planId           optional plan ID for plan-specific filtering
+   * @param testerOrgType    the tester organization type for filtering
+   * @param testerOrgId      the tester organization ID for filtering
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
+   * @param createdDateEnd   end date for filtering
    * @param joinTesterDetail whether to include individual tester details
-   * @param joinDataDetail whether to include detailed data breakdowns
+   * @param joinDataDetail   whether to include detailed data breakdowns
    * @return TestingEfficiencyOverview object with comprehensive efficiency statistics
    */
   @Override
@@ -1308,23 +1308,22 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Generates core KPI overview for functional test cases.
    * <p>
-   * Provides comprehensive KPI analysis including total overview and individual tester
-   * KPI details. Supports filtering by tester organization and date range with optional
-   * detailed breakdowns.
+   * Provides comprehensive KPI analysis including total overview and individual tester KPI details.
+   * Supports filtering by tester organization and date range with optional detailed breakdowns.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    * <p>
-   * The method analyzes core key performance indicators including quality metrics,
-   * productivity measures, and delivery performance for strategic decision making.
+   * The method analyzes core key performance indicators including quality metrics, productivity
+   * measures, and delivery performance for strategic decision making.
    *
-   * @param projectId the project ID for filtering cases
-   * @param planId optional plan ID for plan-specific filtering
-   * @param testerOrgType the tester organization type for filtering
-   * @param testerOrgId the tester organization ID for filtering
+   * @param projectId        the project ID for filtering cases
+   * @param planId           optional plan ID for plan-specific filtering
+   * @param testerOrgType    the tester organization type for filtering
+   * @param testerOrgId      the tester organization ID for filtering
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
+   * @param createdDateEnd   end date for filtering
    * @param joinTesterDetail whether to include individual tester details
-   * @param joinDataDetail whether to include detailed data breakdowns
+   * @param joinDataDetail   whether to include detailed data breakdowns
    * @return CoreKpiOverview object with comprehensive KPI statistics
    */
   @Override
@@ -1386,23 +1385,23 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Generates review efficiency overview for functional test cases.
    * <p>
-   * Provides comprehensive review efficiency analysis including total overview and individual tester
-   * review details. Supports filtering by tester organization and date range with optional
+   * Provides comprehensive review efficiency analysis including total overview and individual
+   * tester review details. Supports filtering by tester organization and date range with optional
    * detailed breakdowns.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    * <p>
-   * The method analyzes review efficiency metrics including review completion rates,
-   * review cycle times, and quality gate performance for process optimization.
+   * The method analyzes review efficiency metrics including review completion rates, review cycle
+   * times, and quality gate performance for process optimization.
    *
-   * @param projectId the project ID for filtering cases
-   * @param planId optional plan ID for plan-specific filtering
-   * @param testerOrgType the tester organization type for filtering
-   * @param testerOrgId the tester organization ID for filtering
+   * @param projectId        the project ID for filtering cases
+   * @param planId           optional plan ID for plan-specific filtering
+   * @param testerOrgType    the tester organization type for filtering
+   * @param testerOrgId      the tester organization ID for filtering
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
+   * @param createdDateEnd   end date for filtering
    * @param joinTesterDetail whether to include individual tester details
-   * @param joinDataDetail whether to include detailed data breakdowns
+   * @param joinDataDetail   whether to include detailed data breakdowns
    * @return ReviewEfficiencyOverview object with comprehensive review efficiency statistics
    */
   @Override
@@ -1464,23 +1463,23 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Generates backlogged work overview for functional test cases.
    * <p>
-   * Provides comprehensive backlog analysis including total overview and individual tester
-   * backlog details. Supports filtering by tester organization and date range with optional
-   * detailed breakdowns.
+   * Provides comprehensive backlog analysis including total overview and individual tester backlog
+   * details. Supports filtering by tester organization and date range with optional detailed
+   * breakdowns.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    * <p>
-   * The method analyzes backlogged work metrics including outstanding cases, overdue items,
-   * and workload distribution for process improvement and resource planning.
+   * The method analyzes backlogged work metrics including outstanding cases, overdue items, and
+   * workload distribution for process improvement and resource planning.
    *
-   * @param projectId the project ID for filtering cases (required)
-   * @param planId optional plan ID for plan-specific filtering
-   * @param testerOrgType the tester organization type for filtering
-   * @param testerOrgId the tester organization ID for filtering
+   * @param projectId        the project ID for filtering cases (required)
+   * @param planId           optional plan ID for plan-specific filtering
+   * @param testerOrgType    the tester organization type for filtering
+   * @param testerOrgId      the tester organization ID for filtering
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
+   * @param createdDateEnd   end date for filtering
    * @param joinTesterDetail whether to include individual tester details
-   * @param joinDataDetail whether to include detailed data breakdowns
+   * @param joinDataDetail   whether to include detailed data breakdowns
    * @return BackloggedOverview object with comprehensive backlog statistics
    */
   @Override
@@ -1549,17 +1548,17 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    * <p>
-   * The method analyzes recent delivery metrics including completion rates, delivery patterns,
-   * and time-based performance indicators for delivery optimization.
+   * The method analyzes recent delivery metrics including completion rates, delivery patterns, and
+   * time-based performance indicators for delivery optimization.
    *
-   * @param projectId the project ID for filtering cases (required)
-   * @param planId optional plan ID for plan-specific filtering
-   * @param testerOrgType the tester organization type for filtering
-   * @param testerOrgId the tester organization ID for filtering
+   * @param projectId        the project ID for filtering cases (required)
+   * @param planId           optional plan ID for plan-specific filtering
+   * @param testerOrgType    the tester organization type for filtering
+   * @param testerOrgId      the tester organization ID for filtering
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
+   * @param createdDateEnd   end date for filtering
    * @param joinTesterDetail whether to include individual tester details
-   * @param joinDataDetail whether to include detailed data breakdowns
+   * @param joinDataDetail   whether to include detailed data breakdowns
    * @return RecentDeliveryOverview object with comprehensive recent delivery statistics
    */
   @Override
@@ -1628,23 +1627,23 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Generates lead time overview for functional test cases.
    * <p>
-   * Provides comprehensive lead time analysis including total overview and individual tester
-   * lead time details. Supports filtering by tester organization and date range with optional
-   * detailed breakdowns.
+   * Provides comprehensive lead time analysis including total overview and individual tester lead
+   * time details. Supports filtering by tester organization and date range with optional detailed
+   * breakdowns.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    * <p>
-   * The method analyzes lead time metrics including cycle times, processing durations,
-   * and efficiency indicators for process optimization and bottleneck identification.
+   * The method analyzes lead time metrics including cycle times, processing durations, and
+   * efficiency indicators for process optimization and bottleneck identification.
    *
-   * @param projectId the project ID for filtering cases (required)
-   * @param planId optional plan ID for plan-specific filtering
-   * @param testerOrgType the tester organization type for filtering
-   * @param testerOrgId the tester organization ID for filtering
+   * @param projectId        the project ID for filtering cases (required)
+   * @param planId           optional plan ID for plan-specific filtering
+   * @param testerOrgType    the tester organization type for filtering
+   * @param testerOrgId      the tester organization ID for filtering
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
+   * @param createdDateEnd   end date for filtering
    * @param joinTesterDetail whether to include individual tester details
-   * @param joinDataDetail whether to include detailed data breakdowns
+   * @param joinDataDetail   whether to include detailed data breakdowns
    * @return LeadTimeOverview object with comprehensive lead time statistics
    */
   @Override
@@ -1713,17 +1712,17 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    * <p>
-   * The method analyzes unplanned work metrics including ad-hoc tasks, emergency cases,
-   * and workload distribution for capacity planning and resource allocation.
+   * The method analyzes unplanned work metrics including ad-hoc tasks, emergency cases, and
+   * workload distribution for capacity planning and resource allocation.
    *
-   * @param projectId the project ID for filtering cases (required)
-   * @param planId optional plan ID for plan-specific filtering
-   * @param testerOrgType the tester organization type for filtering
-   * @param testerOrgId the tester organization ID for filtering
+   * @param projectId        the project ID for filtering cases (required)
+   * @param planId           optional plan ID for plan-specific filtering
+   * @param testerOrgType    the tester organization type for filtering
+   * @param testerOrgId      the tester organization ID for filtering
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
+   * @param createdDateEnd   end date for filtering
    * @param joinTesterDetail whether to include individual tester details
-   * @param joinDataDetail whether to include detailed data breakdowns
+   * @param joinDataDetail   whether to include detailed data breakdowns
    * @return UnplannedWorkOverview object with comprehensive unplanned work statistics
    */
   @Override
@@ -1791,20 +1790,22 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Generates growth trend overview for functional test cases.
    * <p>
-   * Analyzes case efficiency summaries to provide growth trend statistics including time series data.
+   * Analyzes case efficiency summaries to provide growth trend statistics including time series
+   * data.
    * <p>
-   * Supports filtering by project, plan, tester organization, and date range, and can include detailed tester breakdowns.
+   * Supports filtering by project, plan, tester organization, and date range, and can include
+   * detailed tester breakdowns.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param projectId the project ID for filtering
-   * @param planId optional plan ID for plan-specific filtering
-   * @param testerOrgType the tester organization type for filtering
-   * @param testerOrgId the tester organization ID for filtering
+   * @param projectId        the project ID for filtering
+   * @param planId           optional plan ID for plan-specific filtering
+   * @param testerOrgType    the tester organization type for filtering
+   * @param testerOrgId      the tester organization ID for filtering
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
+   * @param createdDateEnd   end date for filtering
    * @param joinTesterDetail whether to include individual tester details
-   * @param joinDataDetail whether to include detailed data breakdowns
+   * @param joinDataDetail   whether to include detailed data breakdowns
    * @return GrowthTrendOverview object with comprehensive growth trend statistics
    */
   @Override
@@ -1867,20 +1868,22 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   /**
    * Generates resource creation overview for functional test cases.
    * <p>
-   * Provides comprehensive statistics on resource creation including plans, cases, reviews, and baselines.
+   * Provides comprehensive statistics on resource creation including plans, cases, reviews, and
+   * baselines.
    * <p>
-   * Supports filtering by project, plan, creator organization, and date range, and can include detailed creator breakdowns.
+   * Supports filtering by project, plan, creator organization, and date range, and can include
+   * detailed creator breakdowns.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param projectId the project ID for filtering
-   * @param planId optional plan ID for plan-specific filtering
-   * @param creatorOrgType the creator organization type for filtering
-   * @param creatorOrgId the creator organization ID for filtering
-   * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
+   * @param projectId         the project ID for filtering
+   * @param planId            optional plan ID for plan-specific filtering
+   * @param creatorOrgType    the creator organization type for filtering
+   * @param creatorOrgId      the creator organization ID for filtering
+   * @param createdDateStart  start date for filtering
+   * @param createdDateEnd    end date for filtering
    * @param joinCreatorDetail whether to include individual creator details
-   * @param joinDataDetail whether to include detailed data breakdowns
+   * @param joinDataDetail    whether to include detailed data breakdowns
    * @return ResourceCreationOverview object with comprehensive resource creation statistics
    */
   @Override
@@ -1973,7 +1976,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * <p>
    * Validates both global case count and plan-specific case count quotas.
    *
-   * @param inc the increment to add to current counts
+   * @param inc    the increment to add to current counts
    * @param planId the plan ID for plan-specific quota validation
    */
   @Override
@@ -2003,6 +2006,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
 
   /**
    * Finds multiple case info objects by IDs.
+   *
    * @param ids collection of case info IDs
    * @return List of FuncCaseInfo objects
    */
@@ -2019,7 +2023,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * Throws ResourceNotFound if any requested case name is not found.
    *
    * @param planId the plan ID to search within
-   * @param names set of case names to find
+   * @param names  set of case names to find
    * @return Map of case name to list of FuncCaseInfo objects
    * @throws ResourceNotFound if any case name is not found
    */
@@ -2049,7 +2053,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * Applies plan prefix to case names before checking for duplicates.
    *
    * @param planDb the plan object containing prefix and ID
-   * @param cases list of cases to validate
+   * @param cases  list of cases to validate
    * @throws ResourceExisted if any case name already exists
    */
   @Override
@@ -2070,7 +2074,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * Handles both prefix application and duplicate name detection.
    *
    * @param planDb the plan object containing prefix and ID
-   * @param cases list of cases to update
+   * @param cases  list of cases to update
    * @throws ResourceExisted if any case name conflicts with existing cases
    */
   @Override
@@ -2257,7 +2261,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * Compares current attachments with proposed changes to determine if modification is needed.
    *
    * @param attachments list of proposed attachments
-   * @param caseDb the current case object
+   * @param caseDb      the current case object
    * @return true if attachments need to be modified, false otherwise
    */
   @Override
@@ -2284,8 +2288,8 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * Ensures the new name does not conflict with existing cases in the same plan.
    *
    * @param planId the plan ID
-   * @param name the new case name
-   * @param id the current case ID (excluded from duplicate check)
+   * @param name   the new case name
+   * @param id     the current case ID (excluded from duplicate check)
    * @throws ResourceExisted if the name already exists
    */
   @Override
@@ -2348,8 +2352,8 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * <p>
    * Generates a unique name for case cloning operations with suffix and length validation.
    * <p>
-   * Ensures the generated name is unique within the plan and respects length constraints.
-   * Optimized to minimize database calls for name validation.
+   * Ensures the generated name is unique within the plan and respects length constraints. Optimized
+   * to minimize database calls for name validation.
    *
    * @param funcCase the case to set clone name for
    */
@@ -2450,7 +2454,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * <p>
    * Maps activities to cases and sends individual notifications for each case.
    *
-   * @param casesDb list of case info objects
+   * @param casesDb    list of case info objects
    * @param activities list of activities to notify about
    */
   @Override
@@ -2470,7 +2474,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * <p>
    * Sends notifications to case tester and followers about case modifications.
    *
-   * @param caseDb the case info object
+   * @param caseDb   the case info object
    * @param activity the activity to notify about
    */
   @Override
@@ -2486,7 +2490,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * <p>
    * Sends notifications to case tester and followers about case modifications.
    *
-   * @param caseDb the case object
+   * @param caseDb   the case object
    * @param activity the activity to notify about
    */
   @Override
@@ -2502,7 +2506,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * <p>
    * Handles tenant notice types, recipient collection, and event creation.
    *
-   * @param caseId the case ID
+   * @param caseId   the case ID
    * @param testerId the tester ID
    * @param tenantId the tenant ID
    * @param caseName the case name
@@ -2569,12 +2573,12 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * <p>
    * Supports filtering by tester organization and date range.
    *
-   * @param projectId the project ID
-   * @param sprintId the sprint ID
+   * @param projectId        the project ID
+   * @param sprintId         the sprint ID
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
-   * @param testerOrgType the tester organization type
-   * @param testerOrgId the tester organization ID
+   * @param createdDateEnd   end date for filtering
+   * @param testerOrgType    the tester organization type
+   * @param testerOrgId      the tester organization ID
    * @return List of FuncCaseEfficiencySummary objects
    */
   @Override
@@ -2597,12 +2601,12 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * <p>
    * Used for analyzing resource creation patterns and trends.
    *
-   * @param projectId the project ID
-   * @param planId the plan ID
+   * @param projectId        the project ID
+   * @param planId           the plan ID
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
-   * @param creatorOrgType the creator organization type
-   * @param creatorOrgId the creator organization ID
+   * @param createdDateEnd   end date for filtering
+   * @param creatorOrgType   the creator organization type
+   * @param creatorOrgId     the creator organization ID
    * @return List of FuncCaseEfficiencySummary objects
    */
   private List<FuncCaseEfficiencySummary> getCaseCreatedSummaries(
@@ -2625,12 +2629,12 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
    * <p>
    * Used for burndown charts and other progress analysis that should exclude canceled cases.
    *
-   * @param projectId the project ID
-   * @param planId the plan ID
+   * @param projectId            the project ID
+   * @param planId               the plan ID
    * @param safeCreatedDateStart start date for filtering
-   * @param safeCreatedDateEnd end date for filtering
-   * @param testerOrgType the tester organization type
-   * @param testerOrgId the tester organization ID
+   * @param safeCreatedDateEnd   end date for filtering
+   * @param testerOrgType        the tester organization type
+   * @param testerOrgId          the tester organization ID
    * @return List of FuncCaseEfficiencySummary objects
    */
   private List<FuncCaseEfficiencySummary> getCaseValidEfficiencySummaries(

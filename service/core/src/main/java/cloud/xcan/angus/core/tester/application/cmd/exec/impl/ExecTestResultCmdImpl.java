@@ -82,9 +82,9 @@ import org.jetbrains.annotations.Nullable;
  * Command implementation for generating and aggregating execution test results.
  * </p>
  * <p>
- * Provides methods for generating, assembling, and updating test results for executions, cases, and indicators.
- * Handles result aggregation, assertion summary, and status judgment for different test types including
- * functional, performance, stability, and customized testing.
+ * Provides methods for generating, assembling, and updating test results for executions, cases, and
+ * indicators. Handles result aggregation, assertion summary, and status judgment for different test
+ * types including functional, performance, stability, and customized testing.
  * </p>
  * <p>
  * Key features include comprehensive result analysis, indicator validation, node usage monitoring,
@@ -125,6 +125,7 @@ public class ExecTestResultCmdImpl implements ExecTestResultCmd {
    * Handles different test types (functional, performance, stability, customized) with specific
    * result generation logic and indicator validation.
    * </p>
+   *
    * @param execDb Execution entity
    */
   @Override
@@ -225,11 +226,12 @@ public class ExecTestResultCmdImpl implements ExecTestResultCmd {
    * Initializes or updates test result entity and assembles comprehensive test result data
    * including indicators, sample summaries, and target summaries.
    * </p>
+   *
    * @param finalTotalSampleSummary Final total sample summary
-   * @param nodeUsageSummaries Node usage summaries
-   * @param sampleContents Sample contents
-   * @param nameSampleContentsMap Sample contents grouped by name
-   * @param execDb Execution entity
+   * @param nodeUsageSummaries      Node usage summaries
+   * @param sampleContents          Sample contents
+   * @param nameSampleContentsMap   Sample contents grouped by name
+   * @param execDb                  Execution entity
    * @return Generated test result
    */
   private ExecTestResult generateTestResult(ExecSampleSummaryInfoVo finalTotalSampleSummary,
@@ -250,9 +252,10 @@ public class ExecTestResultCmdImpl implements ExecTestResultCmd {
    * Initialize test result entity.
    * </p>
    * <p>
-   * Creates new test result or updates existing one. Clears other execution test results
-   * for the same script type and source to maintain data consistency.
+   * Creates new test result or updates existing one. Clears other execution test results for the
+   * same script type and source to maintain data consistency.
    * </p>
+   *
    * @param execDb Execution entity
    * @return Initialized test result entity
    */
@@ -286,15 +289,16 @@ public class ExecTestResultCmdImpl implements ExecTestResultCmd {
    * Assemble comprehensive test result data.
    * </p>
    * <p>
-   * Sets test indicators, sample summaries, target summaries, and performs result judgment
-   * based on test type (performance, stability, functional, customized).
+   * Sets test indicators, sample summaries, target summaries, and performs result judgment based on
+   * test type (performance, stability, functional, customized).
    * </p>
+   *
    * @param finalTotalSampleSummary Final total sample summary
-   * @param nodeUsageSummaries Node usage summaries
-   * @param sampleContents Sample contents
-   * @param nameSampleContentsMap Sample contents grouped by name
-   * @param execDb Execution entity
-   * @param testResult Test result to assemble
+   * @param nodeUsageSummaries      Node usage summaries
+   * @param sampleContents          Sample contents
+   * @param nameSampleContentsMap   Sample contents grouped by name
+   * @param execDb                  Execution entity
+   * @param testResult              Test result to assemble
    */
   private void assembleTestResult(ExecSampleSummaryInfoVo finalTotalSampleSummary,
       Map<Long, NodeUsageSummary> nodeUsageSummaries, List<ExecSampleResultContent> sampleContents,
@@ -351,10 +355,11 @@ public class ExecTestResultCmdImpl implements ExecTestResultCmd {
    * Set test indicators based on script type.
    * </p>
    * <p>
-   * Retrieves and sets appropriate indicators (functional, performance, stability)
-   * based on the script type for result judgment.
+   * Retrieves and sets appropriate indicators (functional, performance, stability) based on the
+   * script type for result judgment.
    * </p>
-   * @param execDb Execution entity
+   *
+   * @param execDb     Execution entity
    * @param testResult Test result to update
    */
   private void setTestIndicator(Exec execDb, ExecTestResult testResult) {
@@ -393,11 +398,12 @@ public class ExecTestResultCmdImpl implements ExecTestResultCmd {
    * Judge performance test result.
    * </p>
    * <p>
-   * Validates performance indicators and sample summary, then performs performance-specific
-   * result judgment including TPS, response time, and error rate validation.
+   * Validates performance indicators and sample summary, then performs performance-specific result
+   * judgment including TPS, response time, and error rate validation.
    * </p>
+   *
    * @param testResult Test result to judge
-   * @param execDb Execution entity
+   * @param execDb     Execution entity
    */
   private void judgePerformanceTestResult(ExecTestResult testResult, Exec execDb) {
     if (isNull(testResult.getIndicatorPerf())) {
@@ -419,11 +425,12 @@ public class ExecTestResultCmdImpl implements ExecTestResultCmd {
    * Judge stability test result.
    * </p>
    * <p>
-   * Validates stability indicators and sample summary, then performs stability-specific
-   * result judgment including node usage monitoring.
+   * Validates stability indicators and sample summary, then performs stability-specific result
+   * judgment including node usage monitoring.
    * </p>
-   * @param testResult Test result to judge
-   * @param execDb Execution entity
+   *
+   * @param testResult         Test result to judge
+   * @param execDb             Execution entity
    * @param nodeUsageSummaries Node usage summaries
    */
   private void judgeStabilityTestResult(ExecTestResult testResult, Exec execDb,
@@ -447,11 +454,12 @@ public class ExecTestResultCmdImpl implements ExecTestResultCmd {
    * Judge functional test result.
    * </p>
    * <p>
-   * Validates that all iterations and cases pass for functional testing.
-   * Checks sample content success status and provides detailed failure information.
+   * Validates that all iterations and cases pass for functional testing. Checks sample content
+   * success status and provides detailed failure information.
    * </p>
+   *
    * @param testResult Test result to judge
-   * @param execDb Execution entity
+   * @param execDb     Execution entity
    */
   private void judgeFunctionalTestResult(ExecTestResult testResult, Exec execDb) {
     if (isNotEmpty(testResult.getSampleContent())) {
@@ -483,6 +491,7 @@ public class ExecTestResultCmdImpl implements ExecTestResultCmd {
    * <p>
    * Validates sample summary exists for customized testing and marks as passed.
    * </p>
+   *
    * @param testResult Test result to judge
    */
   private void judgeCustomizedTestResult(ExecTestResult testResult) {

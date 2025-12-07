@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class RecentDeliveryOverview extends AbstractOverview{
+public class RecentDeliveryOverview extends AbstractOverview {
 
   private Map<Long, UserInfo> assignees = new HashMap<>();
 

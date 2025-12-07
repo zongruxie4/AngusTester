@@ -49,8 +49,7 @@ import org.springframework.data.domain.PageRequest;
  * Implementation of dataset query operations for data management and validation.
  *
  * <p>This class provides comprehensive functionality for querying, validating,
- * and managing datasets including preview generation, quota checking, and
- * name validation.</p>
+ * and managing datasets including preview generation, quota checking, and name validation.</p>
  *
  * <p>Key features include:
  * <ul>
@@ -100,14 +99,14 @@ public class DatasetQueryImpl implements DatasetQuery {
    * Generates value preview for dataset parameters.
    *
    * <p>This method extracts values from a dataset using the specified parameters
-   * and extraction method, returning a preview of the data for validation
-   * and testing purposes.</p>
+   * and extraction method, returning a preview of the data for validation and testing
+   * purposes.</p>
    *
-   * @param id the dataset ID (optional if name and parameters are provided)
-   * @param name the dataset name (used if ID is not provided)
+   * @param id         the dataset ID (optional if name and parameters are provided)
+   * @param name       the dataset name (used if ID is not provided)
    * @param parameters the dataset parameters
    * @param extraction the extraction method configuration
-   * @param rowNum the number of rows to preview
+   * @param rowNum     the number of rows to preview
    * @return map of parameter names to preview values
    */
   @Override
@@ -161,8 +160,8 @@ public class DatasetQueryImpl implements DatasetQuery {
    * Generates value preview for multiple datasets.
    *
    * <p>This method reads one value from each dataset parameter for multiple
-   * datasets, providing a quick preview of available data. Note that values
-   * are read only once per parameter.</p>
+   * datasets, providing a quick preview of available data. Note that values are read only once per
+   * parameter.</p>
    *
    * @param ids list of dataset IDs to preview
    * @return map of parameter names to single preview values
@@ -212,10 +211,10 @@ public class DatasetQueryImpl implements DatasetQuery {
    * <p>This method retrieves datasets based on specification criteria,
    * supporting both full-text search and standard filtering.</p>
    *
-   * @param spec the specification for filtering datasets
-   * @param pageable the pagination parameters
+   * @param spec           the specification for filtering datasets
+   * @param pageable       the pagination parameters
    * @param fullTextSearch whether to use full-text search
-   * @param match the match fields for full-text search
+   * @param match          the match fields for full-text search
    * @return paginated list of datasets
    */
   @Override
@@ -239,7 +238,7 @@ public class DatasetQueryImpl implements DatasetQuery {
    * filtered by a set of dataset IDs.</p>
    *
    * @param projectId the project ID
-   * @param ids optional set of dataset IDs to filter by
+   * @param ids       optional set of dataset IDs to filter by
    * @return list of datasets matching the criteria
    */
   @Override
@@ -298,7 +297,7 @@ public class DatasetQueryImpl implements DatasetQuery {
    * ensuring all requested datasets exist.</p>
    *
    * @param projectId the project ID
-   * @param names list of dataset names to check and retrieve
+   * @param names     list of dataset names to check and retrieve
    * @return list of datasets if all found
    * @throws ResourceNotFound if any dataset is not found
    */

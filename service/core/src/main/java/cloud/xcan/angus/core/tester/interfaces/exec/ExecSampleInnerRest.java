@@ -35,7 +35,7 @@ public class ExecSampleInnerRest {
   @Resource
   private ExecSampleFacade execSampleFacade;
 
-  @Operation(summary = "Get total summary of last sampling execution", 
+  @Operation(summary = "Get total summary of last sampling execution",
       description = "Retrieve comprehensive total summary information of the last sampling execution for internal service integration",
       operationId = "exec:sample:summary:total:inner")
   @ApiResponses(value = {
@@ -46,7 +46,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.summaryTotal(id));
   }
 
-  @Operation(summary = "Get execution sampling summary list", 
+  @Operation(summary = "Get execution sampling summary list",
       description = "Retrieve paginated execution sampling summary list with comprehensive performance metrics including duration, errors, iterations, operations, transactions, throughput, and response time statistics",
       operationId = "exec:sample:summary:list:inner")
   @ApiResponses(value = {
@@ -58,7 +58,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.summaryList(id, dto));
   }
 
-  @Operation(summary = "Get execution sampling response time list", 
+  @Operation(summary = "Get execution sampling response time list",
       description = "Retrieve paginated execution sampling response time (RT) list for performance analysis",
       operationId = "exec:sample:score:rt:list:inner")
   @ApiResponses(value = {
@@ -70,7 +70,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.scoreList(id, dto));
   }
 
-  @Operation(summary = "Get execution sampling throughput list", 
+  @Operation(summary = "Get execution sampling throughput list",
       description = "Retrieve paginated execution sampling throughput list for performance analysis",
       operationId = "exec:sample:score:throughput:list:inner")
   @ApiResponses(value = {
@@ -82,7 +82,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.throughputList(id, dto));
   }
 
-  @Operation(summary = "Get execution sampling thread list", 
+  @Operation(summary = "Get execution sampling thread list",
       description = "Retrieve paginated execution sampling thread list for resource utilization analysis",
       operationId = "exec:sample:thread:list:inner")
   @ApiResponses(value = {
@@ -94,7 +94,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.threadList(id, dto));
   }
 
-  @Operation(summary = "Get execution sampling error list", 
+  @Operation(summary = "Get execution sampling error list",
       description = "Retrieve paginated execution sampling error list for error analysis and debugging",
       operationId = "exec:sample:error:list:inner")
   @ApiResponses(value = {
@@ -106,7 +106,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.errorList(id, dto));
   }
 
-  @Operation(summary = "Get execution sampling error content list", 
+  @Operation(summary = "Get execution sampling error content list",
       description = "Retrieve paginated execution sampling error content list for detailed error analysis",
       operationId = "exec:sample:error:content:list:inner")
   @ApiResponses(value = {
@@ -118,7 +118,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.errorContent(id, dto));
   }
 
-  @Operation(summary = "Get latest execution sampling error counters", 
+  @Operation(summary = "Get latest execution sampling error counters",
       description = "Retrieve latest execution sampling error counters for real-time error monitoring",
       operationId = "exec:sample:errors:counter:latest:inner")
   @ApiResponses(value = {
@@ -131,7 +131,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.latestErrorsCounter(id, nodeId, name));
   }
 
-  @Operation(summary = "Get latest execution sampling upload result progress", 
+  @Operation(summary = "Get latest execution sampling upload result progress",
       description = "Retrieve latest execution sampling upload result progress for progress monitoring",
       operationId = "exec:sample:uploadResultProgress:latest:inner")
   @ApiResponses(value = {
@@ -142,7 +142,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.latestUploadResultProgress(id));
   }
 
-  @Operation(summary = "Get latest execution sampling extended counter map", 
+  @Operation(summary = "Get latest execution sampling extended counter map",
       description = "Retrieve latest execution sampling extended counter map for custom metric analysis",
       operationId = "exec:sample:counter:map:latest:inner")
   @ApiResponses(value = {
@@ -155,7 +155,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.latestExtCounterMap1(id, nodeId, name));
   }
 
-  @Operation(summary = "Get execution sampling extended content list", 
+  @Operation(summary = "Get execution sampling extended content list",
       description = "Retrieve paginated execution sampling extended content list for custom data analysis",
       operationId = "exec:sample:content:list:inner")
   @ApiResponses(value = {

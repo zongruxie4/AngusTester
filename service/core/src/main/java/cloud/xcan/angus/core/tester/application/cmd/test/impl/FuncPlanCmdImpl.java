@@ -57,12 +57,13 @@ import org.springframework.transaction.annotation.Transactional;
  * Command implementation for managing functional test plans.
  * </p>
  * <p>
- * Provides methods for adding, updating, replacing, starting, ending, blocking, cloning, and deleting test plans.
- * Handles permission checks, plan lifecycle management, authorization setup, and activity logging.
+ * Provides methods for adding, updating, replacing, starting, ending, blocking, cloning, and
+ * deleting test plans. Handles permission checks, plan lifecycle management, authorization setup,
+ * and activity logging.
  * </p>
  * <p>
- * Key features include plan lifecycle management, authorization initialization,
- * result and review reset functionality, and comprehensive activity tracking.
+ * Key features include plan lifecycle management, authorization initialization, result and review
+ * reset functionality, and comprehensive activity tracking.
  * </p>
  */
 @Biz
@@ -101,6 +102,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
    * Checks project membership, plan name, date range, quota, owner, and testers before adding.
    * Initializes plan creator, owner, and tester authorizations, and logs creation activity.
    * </p>
+   *
    * @param plan the plan entity to add
    * @return ID and name of the created plan
    */
@@ -597,7 +599,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
   public void add0(List<FuncPlan> funcPlans) {
     for (FuncPlan plan : funcPlans) {
       // Insert the plan and get ID
-      if (isNull(plan.getId())){
+      if (isNull(plan.getId())) {
         plan.setId(BIDUtils.getId(BIDKey.planId));
       }
       IdKey<Long, Object> idKey = insert(plan);
@@ -633,8 +635,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
   /**
    * Replaces plan authorizations for updated testers.
    * <p>
-   * Removes existing authorizations and creates new ones for plan creator,
-   * owner, and testers.
+   * Removes existing authorizations and creates new ones for plan creator, owner, and testers.
    */
   private void replacePlanAuths(FuncPlan planDb, Set<Long> testerIds) {
     // Collect all user IDs that need authorization changes

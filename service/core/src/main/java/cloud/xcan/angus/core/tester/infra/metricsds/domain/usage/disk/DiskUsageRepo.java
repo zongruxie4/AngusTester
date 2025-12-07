@@ -13,7 +13,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @NoRepositoryBean
-public interface DiskUsageRepo extends BaseRepository<DiskUsage, Long>  {
+public interface DiskUsageRepo extends BaseRepository<DiskUsage, Long> {
 
   @Transactional
   @Override
@@ -31,13 +31,15 @@ public interface DiskUsageRepo extends BaseRepository<DiskUsage, Long>  {
       "SELECT DISTINCT device_name FROM node_disk_usage WHERE node_id= ?1 "
           + "AND CASE WHEN ?2 IS NOT NULL THEN timestamp >= ?2 ELSE 1=1 END AND CASE WHEN ?3 IS NOT NULL THEN timestamp <= ?3 ELSE 1=1 END "
           + "AND CASE WHEN ?4 IS NOT NULL THEN device_name = ?4 ELSE 1=1 END ", nativeQuery = true)
-  List<String> findDiskDeviceNames(Long nodeId, String startTime, String endTime, String deviceName);
+  List<String> findDiskDeviceNames(Long nodeId, String startTime, String endTime,
+      String deviceName);
 
   @Sharding
   DiskUsage findFirstByNodeIdAndDeviceNameOrderByTimestampDesc(Long id, String deviceName);
 
   @Override
-  @Sharding Page<DiskUsage> findAll(Specification<DiskUsage> filters, Pageable pageable);
+  @Sharding
+  Page<DiskUsage> findAll(Specification<DiskUsage> filters, Pageable pageable);
 
   @Transactional
   @Modifying

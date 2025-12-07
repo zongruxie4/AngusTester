@@ -99,7 +99,7 @@ public class TaskConverter {
 
   public static void assembleAddTaskInfo(Task task, @Nullable TaskSprint sprintDb,
       boolean isAgile) {
-    if (nonNull(task.getId())){
+    if (nonNull(task.getId())) {
       task.setId(BIDUtils.getId(BIDKey.taskId));
     }
     if (nonNull(sprintDb)) {

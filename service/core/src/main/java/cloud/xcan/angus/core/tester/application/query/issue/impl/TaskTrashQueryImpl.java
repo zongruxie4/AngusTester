@@ -29,8 +29,8 @@ import org.springframework.data.domain.PageRequest;
  * </p>
  * <p>
  * Provides comprehensive trash management services including counting, listing, and permission
- * validation for deleted tasks. Supports full-text search, pagination, and user-specific
- * access control for trash operations.
+ * validation for deleted tasks. Supports full-text search, pagination, and user-specific access
+ * control for trash operations.
  * </p>
  */
 @Biz
@@ -54,9 +54,10 @@ public class TaskTrashQueryImpl implements TaskTrashQuery {
    * Count the number of tasks in trash.
    * </p>
    * <p>
-   * Returns the total count of deleted tasks, optionally filtered by project ID.
-   * If projectId is null, returns count for all projects.
+   * Returns the total count of deleted tasks, optionally filtered by project ID. If projectId is
+   * null, returns count for all projects.
    * </p>
+   *
    * @param projectId Optional project ID to filter by
    * @return Number of tasks in trash
    */
@@ -76,13 +77,14 @@ public class TaskTrashQueryImpl implements TaskTrashQuery {
    * Get paginated list of tasks in trash with filtering and search capabilities.
    * </p>
    * <p>
-   * Retrieves deleted tasks based on specification criteria with support for full-text search.
-   * Sets user names and avatars for both creators and deleters of the tasks.
+   * Retrieves deleted tasks based on specification criteria with support for full-text search. Sets
+   * user names and avatars for both creators and deleters of the tasks.
    * </p>
-   * @param spec Generic specification for filtering
-   * @param pageable Pagination parameters
+   *
+   * @param spec           Generic specification for filtering
+   * @param pageable       Pagination parameters
    * @param fullTextSearch Whether to use full-text search
-   * @param match Search match patterns
+   * @param match          Search match patterns
    * @return Paginated results of deleted tasks with user information
    */
   @Override
@@ -116,14 +118,15 @@ public class TaskTrashQueryImpl implements TaskTrashQuery {
    * Find a specific task in trash with business operation permission validation.
    * </p>
    * <p>
-   * Retrieves a deleted task and validates user permissions for specific business operations
-   * (BACK or CLEAR). Non-admin users can only access tasks they deleted themselves.
+   * Retrieves a deleted task and validates user permissions for specific business operations (BACK
+   * or CLEAR). Non-admin users can only access tasks they deleted themselves.
    * </p>
-   * @param id Task trash ID
+   *
+   * @param id  Task trash ID
    * @param biz Business operation type ("BACK" or "CLEAR")
    * @return Task trash entity if found and user has permission
    * @throws ResourceNotFound if the task is not found
-   * @throws BizException if user lacks permission for the operation
+   * @throws BizException     if user lacks permission for the operation
    */
   @Override
   public TaskTrash findMyTrashForBiz(Long id, String biz) {

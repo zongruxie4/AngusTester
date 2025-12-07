@@ -51,8 +51,7 @@ import org.springframework.data.domain.PageRequest;
  * Implementation of variable query operations for data management and validation.
  *
  * <p>This class provides comprehensive functionality for querying, validating,
- * and managing variables including preview generation, quota checking, and
- * name validation.</p>
+ * and managing variables including preview generation, quota checking, and name validation.</p>
  *
  * <p>Key features include:
  * <ul>
@@ -109,9 +108,9 @@ public class VariableQueryImpl implements VariableQuery {
    * <p>This method extracts the actual value from a variable using either
    * static value processing or dynamic extraction methods.</p>
    *
-   * @param id the variable ID (optional if name and value are provided)
-   * @param name the variable name (used if ID is not provided)
-   * @param value the variable value (used if ID is not provided)
+   * @param id         the variable ID (optional if name and value are provided)
+   * @param name       the variable name (used if ID is not provided)
+   * @param value      the variable value (used if ID is not provided)
    * @param extraction the extraction method configuration (used if ID is not provided)
    * @return the preview value of the variable
    */
@@ -188,10 +187,10 @@ public class VariableQueryImpl implements VariableQuery {
    * <p>This method retrieves variables based on specification criteria,
    * supporting both full-text search and standard filtering.</p>
    *
-   * @param spec the specification for filtering variables
-   * @param pageable the pagination parameters
+   * @param spec           the specification for filtering variables
+   * @param pageable       the pagination parameters
    * @param fullTextSearch whether to use full-text search
-   * @param match the match fields for full-text search
+   * @param match          the match fields for full-text search
    * @return paginated list of variables
    */
   @Override
@@ -212,8 +211,7 @@ public class VariableQueryImpl implements VariableQuery {
    * Finds servers by service ID through variable associations.
    *
    * <p>This method discovers servers by finding variables associated with
-   * a service and extracting server information from HTTP extraction
-   * configurations.</p>
+   * a service and extracting server information from HTTP extraction configurations.</p>
    *
    * @param serviceId the service ID to find servers for
    * @return list of servers associated with the service
@@ -255,7 +253,7 @@ public class VariableQueryImpl implements VariableQuery {
    * filtered by a set of variable IDs.</p>
    *
    * @param projectId the project ID
-   * @param ids optional set of variable IDs to filter by
+   * @param ids       optional set of variable IDs to filter by
    * @return list of variables matching the criteria
    */
   @Override
@@ -314,7 +312,7 @@ public class VariableQueryImpl implements VariableQuery {
    * ensuring all requested variables exist.</p>
    *
    * @param projectId the project ID
-   * @param names list of variable names to check and retrieve
+   * @param names     list of variable names to check and retrieve
    * @return list of variables if all found
    * @throws ResourceNotFound if any variable is not found
    */

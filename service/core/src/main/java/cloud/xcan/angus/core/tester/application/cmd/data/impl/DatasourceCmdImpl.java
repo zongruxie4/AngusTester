@@ -26,8 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command implementation for managing datasources.
  * <p>
- * Provides methods for adding, replacing, testing, and deleting datasources.
- * Handles permission checks, name uniqueness, quota validation, and connection testing.
+ * Provides methods for adding, replacing, testing, and deleting datasources. Handles permission
+ * checks, name uniqueness, quota validation, and connection testing.
  */
 @Biz
 @Slf4j
@@ -74,8 +74,8 @@ public class DatasourceCmdImpl extends CommCmd<Datasource, Long> implements Data
   /**
    * Replace (add or update) a datasource.
    * <p>
-   * Adds a new datasource if ID is null, otherwise updates the existing datasource.
-   * Validates database immutability and name uniqueness.
+   * Adds a new datasource if ID is null, otherwise updates the existing datasource. Validates
+   * database immutability and name uniqueness.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -196,6 +196,7 @@ public class DatasourceCmdImpl extends CommCmd<Datasource, Long> implements Data
   /**
    * Get the repository for Datasource entity.
    * <p>
+   *
    * @return the DatasourceRepo instance
    */
   @Override

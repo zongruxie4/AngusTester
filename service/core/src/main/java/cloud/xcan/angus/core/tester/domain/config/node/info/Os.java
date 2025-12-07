@@ -16,7 +16,8 @@ public class Os {
   private String version;
 
   // Unsupported in oshi
-  @Deprecated private String arch;
+  @Deprecated
+  private String arch;
 
   @JsonIgnore
   private transient String machine;

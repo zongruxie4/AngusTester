@@ -32,12 +32,13 @@ public class TaskFavouriteQueryImpl implements TaskFavouriteQuery {
    * List user's favorite tasks with pagination and optional name filtering.
    * </p>
    * <p>
-   * Retrieves paginated favorite tasks for the current user within a project.
-   * Supports optional name-based filtering for search functionality.
+   * Retrieves paginated favorite tasks for the current user within a project. Supports optional
+   * name-based filtering for search functionality.
    * </p>
+   *
    * @param projectId Project ID
-   * @param name Optional name filter for search
-   * @param pageable Pagination information
+   * @param name      Optional name filter for search
+   * @param pageable  Pagination information
    * @return Page of favorite tasks
    */
   @Override
@@ -57,9 +58,10 @@ public class TaskFavouriteQueryImpl implements TaskFavouriteQuery {
    * Count user's favorite tasks.
    * </p>
    * <p>
-   * Returns the total count of favorite tasks for the current user.
-   * If projectId is provided, counts only favorites within that project.
+   * Returns the total count of favorite tasks for the current user. If projectId is provided,
+   * counts only favorites within that project.
    * </p>
+   *
    * @param projectId Optional project ID to filter by
    * @return Count of favorite tasks
    */

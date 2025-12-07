@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ProcessingEfficiencyOverview extends AbstractOverview{
+public class ProcessingEfficiencyOverview extends AbstractOverview {
 
   private Map<Long, UserInfo> assignees = new HashMap<>();
 

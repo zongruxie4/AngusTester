@@ -42,9 +42,9 @@ import java.util.stream.Collectors;
 /**
  * Implementation of KanbanCtoQuery for managing CTO-level kanban dashboard queries.
  * <p>
- * This class provides comprehensive functionality for querying and managing CTO-level
- * kanban dashboard data, including task and case overviews with efficiency metrics.
- * It handles member management, resource filtering, and comprehensive data aggregation.
+ * This class provides comprehensive functionality for querying and managing CTO-level kanban
+ * dashboard data, including task and case overviews with efficiency metrics. It handles member
+ * management, resource filtering, and comprehensive data aggregation.
  * <p>
  * Key features include:
  * <ul>
@@ -87,19 +87,19 @@ public class KanbanCtoQueryImpl implements KanbanCtoQuery {
   /**
    * Generates CTO-level task overview with comprehensive efficiency metrics.
    * <p>
-   * Provides detailed task overview including assignee efficiency, member statistics,
-   * and optional detailed task lists and assignee overviews. Integrates with API
-   * and scenario test results for complete project visibility.
+   * Provides detailed task overview including assignee efficiency, member statistics, and optional
+   * detailed task lists and assignee overviews. Integrates with API and scenario test results for
+   * complete project visibility.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param creatorObjectType the creator organization type for filtering
-   * @param creatorObjectId the creator organization ID for filtering
-   * @param projectId the project ID for filtering tasks
-   * @param planId optional plan ID for plan-specific filtering
-   * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
-   * @param joinTaskList whether to include detailed task list
+   * @param creatorObjectType    the creator organization type for filtering
+   * @param creatorObjectId      the creator organization ID for filtering
+   * @param projectId            the project ID for filtering tasks
+   * @param planId               optional plan ID for plan-specific filtering
+   * @param createdDateStart     start date for filtering
+   * @param createdDateEnd       end date for filtering
+   * @param joinTaskList         whether to include detailed task list
    * @param joinAssigneeOverview whether to include assignee overview details
    * @return CtoTaskOverview object with comprehensive task metrics and statistics
    */
@@ -159,19 +159,19 @@ public class KanbanCtoQueryImpl implements KanbanCtoQuery {
   /**
    * Generates CTO-level case overview with comprehensive efficiency metrics.
    * <p>
-   * Provides detailed case overview including tester efficiency, member statistics,
-   * API and scenario test results, and optional detailed case lists and tester overviews.
-   * Integrates multiple data sources for complete project visibility.
+   * Provides detailed case overview including tester efficiency, member statistics, API and
+   * scenario test results, and optional detailed case lists and tester overviews. Integrates
+   * multiple data sources for complete project visibility.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param creatorObjectType the creator organization type for filtering
-   * @param creatorObjectId the creator organization ID for filtering
-   * @param projectId the project ID for filtering cases
-   * @param planId optional plan ID for plan-specific filtering
-   * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
-   * @param joinCaseList whether to include detailed case list
+   * @param creatorObjectType  the creator organization type for filtering
+   * @param creatorObjectId    the creator organization ID for filtering
+   * @param projectId          the project ID for filtering cases
+   * @param planId             optional plan ID for plan-specific filtering
+   * @param createdDateStart   start date for filtering
+   * @param createdDateEnd     end date for filtering
+   * @param joinCaseList       whether to include detailed case list
    * @param joinTesterOverview whether to include tester overview details
    * @return CtoCaseOverview object with comprehensive case metrics and statistics
    */

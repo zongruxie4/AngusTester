@@ -11,8 +11,8 @@ import lombok.experimental.Accessors;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * DTO for project data import operation.
- * Supports importing project data from ZIP or TAR archive files.
+ * DTO for project data import operation. Supports importing project data from ZIP or TAR archive
+ * files.
  */
 @Getter
 @Setter

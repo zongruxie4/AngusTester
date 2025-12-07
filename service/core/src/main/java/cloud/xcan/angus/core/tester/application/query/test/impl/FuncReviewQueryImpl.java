@@ -49,9 +49,9 @@ import org.springframework.data.domain.PageRequest;
 /**
  * Implementation of FuncReviewQuery for managing functional test review queries and operations.
  * <p>
- * This class provides comprehensive functionality for querying, validating, and managing
- * functional test reviews. It handles review retrieval, validation, progress tracking,
- * participant management, and various statistical operations.
+ * This class provides comprehensive functionality for querying, validating, and managing functional
+ * test reviews. It handles review retrieval, validation, progress tracking, participant management,
+ * and various statistical operations.
  * <p>
  * Key features include:
  * <ul>
@@ -86,11 +86,11 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
   /**
    * Retrieves detailed information for a specific functional test review.
    * <p>
-   * Fetches the review by ID and enriches it with case counts, progress information,
-   * participant details, and user information.
+   * Fetches the review by ID and enriches it with case counts, progress information, participant
+   * details, and user information.
    * <p>
-   * Uses BizTemplate pattern for consistent business logic execution with
-   * parameter validation and comprehensive data enrichment.
+   * Uses BizTemplate pattern for consistent business logic execution with parameter validation and
+   * comprehensive data enrichment.
    *
    * @param id the review ID to retrieve details for
    * @return FuncReview object with complete enriched details
@@ -127,15 +127,15 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
   /**
    * Retrieves a paginated list of functional test reviews with search capabilities.
    * <p>
-   * Supports both regular search and full-text search with comprehensive filtering.
-   * Enriches results with case counts, progress, participants, and user information.
+   * Supports both regular search and full-text search with comprehensive filtering. Enriches
+   * results with case counts, progress, participants, and user information.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param spec the search specification with criteria and filters
-   * @param pageable pagination parameters (page, size, sort)
+   * @param spec           the search specification with criteria and filters
+   * @param pageable       pagination parameters (page, size, sort)
    * @param fullTextSearch whether to use full-text search capabilities
-   * @param match full-text search match parameters
+   * @param match          full-text search match parameters
    * @return Page of FuncReview objects with enriched information
    */
   @Override
@@ -247,7 +247,7 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
    * Prevents duplicate review names within the same project.
    *
    * @param projectId the project ID to check for name conflicts
-   * @param name the review name to validate
+   * @param name      the review name to validate
    * @throws ResourceExisted if a review with the same name already exists
    */
   @Override
@@ -278,7 +278,7 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
    * <p>
    * Optimized for bulk operations with efficient database queries.
    *
-   * @param reviews list of reviews to update with case counts
+   * @param reviews   list of reviews to update with case counts
    * @param reviewIds set of review IDs for efficient database querying
    */
   @Override
@@ -303,7 +303,7 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
    * <p>
    * Note: Must be executed after setCaseNum() to ensure valid case counts are available.
    *
-   * @param reviews list of reviews to update with progress information
+   * @param reviews   list of reviews to update with progress information
    * @param reviewIds set of review IDs for efficient database querying
    */
   @Override
@@ -342,7 +342,7 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
    * Retrieves and associates user information with review participants for complete data context.
    * Optimized for bulk operations with efficient database queries.
    *
-   * @param reviews list of reviews to update with participant information
+   * @param reviews   list of reviews to update with participant information
    * @param reviewIds set of review IDs for efficient database querying
    */
   @Override
@@ -383,8 +383,8 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
   /**
    * Sets a safe clone name for a review to prevent conflicts.
    * <p>
-   * Generates a unique name for cloned reviews by appending "-Copy" and handling
-   * name conflicts with random suffixes. Ensures name length compliance.
+   * Generates a unique name for cloned reviews by appending "-Copy" and handling name conflicts
+   * with random suffixes. Ensures name length compliance.
    *
    * @param review the review to set a safe clone name for
    */
@@ -404,17 +404,17 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
   /**
    * Retrieves review creation summaries with comprehensive filtering.
    * <p>
-   * Provides statistical overview of review creation patterns with support for
-   * project, plan, date range, and creator organization filtering.
+   * Provides statistical overview of review creation patterns with support for project, plan, date
+   * range, and creator organization filtering.
    * <p>
    * Optimized for bulk operations and statistical analysis.
    *
-   * @param projectId optional project ID for filtering
-   * @param planId optional plan ID for filtering
+   * @param projectId        optional project ID for filtering
+   * @param planId           optional plan ID for filtering
    * @param createdDateStart optional start date for filtering
-   * @param createdDateEnd optional end date for filtering
-   * @param creatorOrgType optional creator organization type for filtering
-   * @param creatorOrgId optional creator organization ID for filtering
+   * @param createdDateEnd   optional end date for filtering
+   * @param creatorOrgType   optional creator organization type for filtering
+   * @param creatorOrgId     optional creator organization ID for filtering
    * @return List of FuncReview objects matching the filter criteria
    */
   @Override

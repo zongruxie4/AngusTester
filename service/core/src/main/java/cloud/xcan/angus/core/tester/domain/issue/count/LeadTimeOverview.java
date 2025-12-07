@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class LeadTimeOverview extends AbstractOverview{
+public class LeadTimeOverview extends AbstractOverview {
 
   private Map<Long, UserInfo> assignees = new HashMap<>();
 

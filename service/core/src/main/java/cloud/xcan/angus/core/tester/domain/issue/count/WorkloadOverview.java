@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class WorkloadOverview extends AbstractOverview{
+public class WorkloadOverview extends AbstractOverview {
 
   private Map<Long, UserInfo> assignees = new HashMap<>();
 

@@ -21,9 +21,9 @@ import org.springframework.data.domain.PageRequest;
 /**
  * Implementation of MockApisLogQuery for managing Mock API log operations and data retrieval.
  * <p>
- * This class provides comprehensive functionality for querying and managing Mock API logs,
- * which track the execution history and performance metrics of mock API calls.
- * It handles log retrieval, filtering, authorization validation, and comprehensive log analysis.
+ * This class provides comprehensive functionality for querying and managing Mock API logs, which
+ * track the execution history and performance metrics of mock API calls. It handles log retrieval,
+ * filtering, authorization validation, and comprehensive log analysis.
  * <p>
  * Key features include:
  * <ul>
@@ -55,11 +55,11 @@ public class MockApisLogQueryImpl implements MockApisLogQuery {
   /**
    * Retrieves detailed information for a specific Mock API log entry.
    * <p>
-   * Fetches complete log details including request/response data, timing information,
-   * and execution context for comprehensive log analysis and debugging.
+   * Fetches complete log details including request/response data, timing information, and execution
+   * context for comprehensive log analysis and debugging.
    * <p>
-   * The method validates log existence and throws ResourceNotFound if the log entry
-   * is not found in the system.
+   * The method validates log existence and throws ResourceNotFound if the log entry is not found in
+   * the system.
    *
    * @param id the log entry ID to retrieve details for
    * @return MockApisLog object with complete log details
@@ -80,21 +80,21 @@ public class MockApisLogQueryImpl implements MockApisLogQuery {
   /**
    * Retrieves a paginated list of Mock API log entries with comprehensive filtering.
    * <p>
-   * Supports both regular search and full-text search with service-specific filtering.
-   * Provides enriched log information including request/response summaries and
-   * performance metrics for comprehensive log analysis.
+   * Supports both regular search and full-text search with service-specific filtering. Provides
+   * enriched log information including request/response summaries and performance metrics for
+   * comprehensive log analysis.
    * <p>
-   * The method performs authorization validation to ensure the current user has
-   * permission to view logs for the specified mock service.
+   * The method performs authorization validation to ensure the current user has permission to view
+   * logs for the specified mock service.
    * <p>
-   * The method supports flexible filtering by mock service and comprehensive
-   * search capabilities for efficient log retrieval and analysis.
+   * The method supports flexible filtering by mock service and comprehensive search capabilities
+   * for efficient log retrieval and analysis.
    *
-   * @param mockServiceId the mock service ID for filtering logs (null for all services)
-   * @param spec the search specification with criteria and filters
-   * @param pageable pagination parameters (page, size, sort)
+   * @param mockServiceId  the mock service ID for filtering logs (null for all services)
+   * @param spec           the search specification with criteria and filters
+   * @param pageable       pagination parameters (page, size, sort)
    * @param fullTextSearch whether to use full-text search capabilities
-   * @param match array of field names to include in full-text search
+   * @param match          array of field names to include in full-text search
    * @return Page of MockApisLogInfo objects with enriched log information
    */
   @Override
@@ -111,7 +111,7 @@ public class MockApisLogQueryImpl implements MockApisLogQuery {
       protected Page<MockApisLogInfo> process() {
         // Add mock service filter to search criteria for service-specific log retrieval
         spec.getCriteria().add(SearchCriteria.equal("mockServiceId", mockServiceId));
-        
+
         // Execute search based on whether full-text search is enabled
         return fullTextSearch
             ? mockApisLogSearchRepo.find(spec.getCriteria(), pageable, MockApisLogInfo.class, match)

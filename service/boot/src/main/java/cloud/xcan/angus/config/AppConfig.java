@@ -41,7 +41,7 @@ public class AppConfig {
   }
 
   @Bean("mockFunctionDocParser")
-  public MockFunctionDocParser mockFunctionDocParser(){
+  public MockFunctionDocParser mockFunctionDocParser() {
     return new MockFunctionDocParser();
   }
 

@@ -90,8 +90,8 @@ import org.springframework.data.domain.Sort.Direction;
  * Implementation of MockServiceQuery for managing Mock service operations and data retrieval.
  * <p>
  * This class provides comprehensive functionality for querying and managing Mock services,
- * including service creation, configuration, monitoring, and lifecycle management.
- * It handles service validation, authorization, status monitoring, and resource management.
+ * including service creation, configuration, monitoring, and lifecycle management. It handles
+ * service validation, authorization, status monitoring, and resource management.
  * <p>
  * Key features include:
  * <ul>
@@ -148,11 +148,11 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Retrieves detailed information for a specific Mock service with comprehensive data enrichment.
    * <p>
-   * Fetches complete service details including status information, authorization data,
-   * and node information for comprehensive service management and monitoring.
+   * Fetches complete service details including status information, authorization data, and node
+   * information for comprehensive service management and monitoring.
    * <p>
-   * The method performs authorization validation and enriches the service data with
-   * current status, user permissions, and node details.
+   * The method performs authorization validation and enriches the service data with current status,
+   * user permissions, and node details.
    *
    * @param id the Mock service ID to retrieve details for
    * @return MockService object with complete enriched details
@@ -190,8 +190,8 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Retrieves detailed information for a Mock service by associated project ID.
    * <p>
-   * Finds and retrieves Mock service details based on the associated project,
-   * performing authorization validation and data enrichment.
+   * Finds and retrieves Mock service details based on the associated project, performing
+   * authorization validation and data enrichment.
    * <p>
    * The method returns null if no Mock service is associated with the project.
    *
@@ -234,8 +234,8 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Retrieves basic information for a specific Mock service with authorization validation.
    * <p>
-   * Fetches service information with proper error handling for non-existent services.
-   * Note: Authorization validation is currently disabled for this method.
+   * Fetches service information with proper error handling for non-existent services. Note:
+   * Authorization validation is currently disabled for this method.
    *
    * @param id the Mock service ID to retrieve information for
    * @return MockService object with basic information
@@ -261,8 +261,8 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Retrieves basic information for a specific Mock service without authorization validation.
    * <p>
-   * Fetches service information and returns null if the service does not exist.
-   * Note: Authorization validation is currently disabled for this method.
+   * Fetches service information and returns null if the service does not exist. Note: Authorization
+   * validation is currently disabled for this method.
    *
    * @param id the Mock service ID to retrieve information for
    * @return MockService object with basic information, or null if not found
@@ -286,9 +286,8 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Retrieves all associated API IDs for a specific Mock service.
    * <p>
-   * Fetches the complete list of API IDs associated with the Mock service
-   * for relationship management and analysis.
-   * Note: Authorization validation is currently disabled for this method.
+   * Fetches the complete list of API IDs associated with the Mock service for relationship
+   * management and analysis. Note: Authorization validation is currently disabled for this method.
    *
    * @param id the Mock service ID to retrieve associated API IDs for
    * @return Set of API IDs associated with the Mock service
@@ -312,8 +311,8 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Validates that a Mock service exists.
    * <p>
-   * Performs existence validation and throws ResourceNotFound if the service
-   * is not found in the system.
+   * Performs existence validation and throws ResourceNotFound if the service is not found in the
+   * system.
    *
    * @param id the Mock service ID to validate
    * @throws ResourceNotFound if the Mock service is not found
@@ -335,16 +334,16 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Retrieves a paginated list of Mock services with comprehensive filtering and enrichment.
    * <p>
-   * Supports both regular search and full-text search with project member validation.
-   * Provides enriched service information including status, permissions, and node details.
+   * Supports both regular search and full-text search with project member validation. Provides
+   * enriched service information including status, permissions, and node details.
    * <p>
-   * The method performs project member validation to ensure the current user has
-   * access to the requested services.
+   * The method performs project member validation to ensure the current user has access to the
+   * requested services.
    *
-   * @param spec the search specification with criteria and filters
-   * @param pageable pagination parameters (page, size, sort)
+   * @param spec           the search specification with criteria and filters
+   * @param pageable       pagination parameters (page, size, sort)
    * @param fullTextSearch whether to use full-text search capabilities
-   * @param match array of field names to include in full-text search
+   * @param match          array of field names to include in full-text search
    * @return Page of MockServiceInfo objects with enriched service information
    */
   @Override
@@ -381,8 +380,8 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Retrieves all Mock services associated with a specific node.
    * <p>
-   * Fetches services deployed on the specified node and enriches them with
-   * current status information for comprehensive node management.
+   * Fetches services deployed on the specified node and enriches them with current status
+   * information for comprehensive node management.
    *
    * @param nodeId the node ID to retrieve services for
    * @return List of MockServiceInfo objects with status information
@@ -405,8 +404,8 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Retrieves comprehensive statistics for Mock services and their APIs.
    * <p>
-   * Collects detailed metrics including API counts, request statistics, and
-   * performance data for service analysis and monitoring.
+   * Collects detailed metrics including API counts, request statistics, and performance data for
+   * service analysis and monitoring.
    * <p>
    * The method handles both service-specific and global statistics collection.
    *
@@ -451,11 +450,11 @@ public class MockServiceQueryImpl implements MockServiceQuery {
    * <p>
    * The method supports flexible filtering for detailed resource analysis and reporting.
    *
-   * @param projectId the project ID for filtering (null for all projects)
+   * @param projectId         the project ID for filtering (null for all projects)
    * @param creatorObjectType the type of creator object for filtering
-   * @param creatorObjectId the creator object ID for filtering
-   * @param createdDateStart the start date for time range filtering
-   * @param createdDateEnd the end date for time range filtering
+   * @param creatorObjectId   the creator object ID for filtering
+   * @param createdDateStart  the start date for time range filtering
+   * @param createdDateEnd    the end date for time range filtering
    * @return MockResourcesCreationCount object with comprehensive creation statistics
    */
   @Override
@@ -493,12 +492,12 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Retrieves associated API IDs that the user has permission to access.
    * <p>
-   * Finds APIs within the specified project that are associated with the Mock service
-   * and validates user permissions for both the Mock service and the project.
+   * Finds APIs within the specified project that are associated with the Mock service and validates
+   * user permissions for both the Mock service and the project.
    * <p>
    * The method respects quota limits and authorization controls for secure API access.
    *
-   * @param id the Mock service ID to find associated APIs for
+   * @param id             the Mock service ID to find associated APIs for
    * @param angusProjectId the Angus project ID for API filtering
    * @return Set of API IDs that are accessible and associated with the Mock service
    */
@@ -547,8 +546,8 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Finds a Mock service by its associated project ID.
    * <p>
-   * Retrieves the Mock service that is associated with the specified project,
-   * returning null if no association exists.
+   * Retrieves the Mock service that is associated with the specified project, returning null if no
+   * association exists.
    *
    * @param projectId the project ID to find the associated Mock service for
    * @return MockService object if found, null otherwise
@@ -561,8 +560,8 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Validates that a Mock service exists and retrieves it.
    * <p>
-   * Performs existence validation and throws ResourceNotFound if the service is not found.
-   * Used as a helper method for other operations that require service validation.
+   * Performs existence validation and throws ResourceNotFound if the service is not found. Used as
+   * a helper method for other operations that require service validation.
    *
    * @param id the Mock service ID to validate and retrieve
    * @return MockService object if found
@@ -612,8 +611,8 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Validates that multiple Mock service infos exist and retrieves them.
    * <p>
-   * Performs batch existence validation and throws ResourceNotFound if any service info is not found.
-   * Used for bulk operations that require multiple service info validations.
+   * Performs batch existence validation and throws ResourceNotFound if any service info is not
+   * found. Used for bulk operations that require multiple service info validations.
    *
    * @param ids set of Mock service IDs to validate and retrieve info for
    * @return List of MockServiceInfo objects for all found services
@@ -645,11 +644,11 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Validates that a node has sufficient capacity for additional Mock services.
    * <p>
-   * Checks the current service count against the node's memory capacity,
-   * limiting services to approximately 1GB of memory per service while ensuring
-   * at least 2 services can be created on any node.
+   * Checks the current service count against the node's memory capacity, limiting services to
+   * approximately 1GB of memory per service while ensuring at least 2 services can be created on
+   * any node.
    *
-   * @param nodeId the node ID to check capacity for
+   * @param nodeId         the node ID to check capacity for
    * @param existedNodeNum the current number of services on the node
    * @throws ProtocolException if the node capacity limit would be exceeded
    */
@@ -668,8 +667,8 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Validates that a Mock service's domain and port configuration is valid and available.
    * <p>
-   * Performs comprehensive validation including cloud domain requirements, domain uniqueness,
-   * and port availability checks for secure service configuration.
+   * Performs comprehensive validation including cloud domain requirements, domain uniqueness, and
+   * port availability checks for secure service configuration.
    *
    * @param service the Mock service to validate domain and port for
    * @throws ProtocolException if domain or port validation fails
@@ -699,11 +698,11 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Validates that a domain update is valid and available.
    * <p>
-   * Performs domain validation for update operations, ensuring the new domain
-   * meets cloud service requirements and is not already in use.
+   * Performs domain validation for update operations, ensuring the new domain meets cloud service
+   * requirements and is not already in use.
    *
    * @param serviceDomain the new service domain to validate
-   * @param nodeId the node ID to exclude from domain uniqueness check
+   * @param nodeId        the node ID to exclude from domain uniqueness check
    * @throws ProtocolException if domain validation fails
    */
   @Override
@@ -725,11 +724,11 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Validates that a node and port combination is available for service deployment.
    * <p>
-   * Checks both database records and agent availability to ensure the port
-   * is not already in use and is available for service deployment.
+   * Checks both database records and agent availability to ensure the port is not already in use
+   * and is available for service deployment.
    *
    * @param nodeDb the node to check port availability for
-   * @param port the port to validate
+   * @param port   the port to validate
    * @throws ProtocolException if port is unavailable or already in use
    */
   @Override
@@ -750,8 +749,8 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   /**
    * Validates that a project is not already associated with another Mock service.
    * <p>
-   * Ensures that projects can only be associated with one Mock service to prevent
-   * conflicts and maintain data integrity.
+   * Ensures that projects can only be associated with one Mock service to prevent conflicts and
+   * maintain data integrity.
    *
    * @param projectDb the project to validate association for
    * @throws ResourceExisted if the project is already associated with another Mock service

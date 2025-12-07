@@ -19,6 +19,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @ToString
 public class NodeAgentStatusQueryDto {
+
   /**
    * Whether to notify other controllers to handle
    */

@@ -30,7 +30,8 @@ import org.springframework.data.domain.PageRequest;
 /**
  * Implementation of FuncBaselineQuery for managing baseline queries.
  * <p>
- * Provides methods to retrieve, list, and check baselines and their info, including permission checks and summary statistics.
+ * Provides methods to retrieve, list, and check baselines and their info, including permission
+ * checks and summary statistics.
  */
 @Biz
 public class FuncBaselineQueryImpl implements FuncBaselineQuery {
@@ -74,10 +75,10 @@ public class FuncBaselineQueryImpl implements FuncBaselineQuery {
    * <p>
    * Checks project member permission and enriches with user info.
    *
-   * @param spec search specification
-   * @param pageable pagination
+   * @param spec           search specification
+   * @param pageable       pagination
    * @param fullTextSearch whether to use full-text search
-   * @param match search match terms
+   * @param match          search match terms
    * @return paginated result of FuncBaselineInfo
    */
   @Override
@@ -154,12 +155,12 @@ public class FuncBaselineQueryImpl implements FuncBaselineQuery {
    * <p>
    * Supports filtering by project, plan, creator org, and date range.
    *
-   * @param projectId project ID
-   * @param planId plan ID
+   * @param projectId        project ID
+   * @param planId           plan ID
    * @param createdDateStart start date
-   * @param createdDateEnd end date
-   * @param creatorOrgType creator org type
-   * @param creatorOrgId creator org ID
+   * @param createdDateEnd   end date
+   * @param creatorOrgType   creator org type
+   * @param creatorOrgId     creator org ID
    * @return list of FuncBaseline
    */
   @Override

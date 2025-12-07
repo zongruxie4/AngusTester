@@ -41,7 +41,8 @@ public interface TesterConstant {
   String SAMPLE_FUNC_CASE_FILE = "FuncCaseExample.json";
   String SAMPLE_FUNC_REVIEW_FILE = "FuncReviewExample.json";
   String SAMPLE_FUNC_BASELINE_FILE = "FuncBaselineExample.json";
-  List<String> SAMPLE_SERVICES_FILES = List.of("OpenapiPetstoreExample.yaml", "AngusTesterExample.yaml");
+  List<String> SAMPLE_SERVICES_FILES = List.of("OpenapiPetstoreExample.yaml",
+      "AngusTesterExample.yaml");
   List<String> SAMPLE_SCRIPT_FILES = List.of(
       "TcpFunctionality.yaml", "TcpPerformance.yaml",
       "SmtpFunctionality.yaml", "SmtpPerformance.yaml",
@@ -49,7 +50,7 @@ public interface TesterConstant {
       "LdapFunctionality.yaml", "LdapPerformance.yaml",
       "WebSocketFunctionality.yaml", "WebSocketPerformance.yaml",
       "JdbcFunctionality.yaml", "JdbcPerformance.yaml",
-       "HttpFunctionality.yaml", "HttpPerformance.yaml", "HttpBenchmark.yaml");
+      "HttpFunctionality.yaml", "HttpPerformance.yaml", "HttpBenchmark.yaml");
   String SAMPLE_VARIABLE_FILE = "VariableExample.yaml";
   String SAMPLE_DATASET_FILE = "DatasetExample.yaml";
   String SAMPLE_MOCK_SERVICE_FILE = "MockServiceExample.json";

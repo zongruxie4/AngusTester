@@ -19,5 +19,5 @@ public interface FuncPlanAuthCmd {
 
   void addOwnerAndTesterAuth(Long planId, Long ownerId, Set<Long> testerIds);
 
-  void deleteAuthByPlanId(Long planId,  Collection<Long> testerIds);
+  void deleteAuthByPlanId(Long planId, Collection<Long> testerIds);
 }

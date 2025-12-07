@@ -34,7 +34,7 @@ public class ExecSampleVo {
 
     private String name;
 
-    @Schema(description="Comma-separated sample value")
+    @Schema(description = "Comma-separated sample value")
     private String cvsValue;
 
     public static ScoreValue of(String name, String cvsValue) {

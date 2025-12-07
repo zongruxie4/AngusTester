@@ -19,6 +19,7 @@ public interface FuncBaselineCaseFacade {
 
   PageResult<FuncCaseListVo> list(boolean export, Long baselineId, FuncCaseFindDto dto);
 
-  ResponseEntity<Resource> export(Long baselineId, FuncCaseFindDto dto, HttpServletResponse response);
+  ResponseEntity<Resource> export(Long baselineId, FuncCaseFindDto dto,
+      HttpServletResponse response);
 
 }

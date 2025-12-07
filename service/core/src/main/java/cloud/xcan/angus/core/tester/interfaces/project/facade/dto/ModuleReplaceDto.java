@@ -17,7 +17,7 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class ModuleReplaceDto {
 
-  @Schema(description="Modify module id. Create a new module when the value is null")
+  @Schema(description = "Modify module id. Create a new module when the value is null")
   private Long id;
 
   @Schema(description = "Project id, required when creating a new module")

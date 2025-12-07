@@ -69,9 +69,9 @@ import org.springframework.data.domain.PageRequest;
 /**
  * Implementation of FuncPlanQuery for managing functional test plan queries and operations.
  * <p>
- * This class provides comprehensive functionality for querying, validating, and managing
- * functional test plans. It handles plan retrieval, validation, progress tracking, and
- * various statistical operations including case counting and member management.
+ * This class provides comprehensive functionality for querying, validating, and managing functional
+ * test plans. It handles plan retrieval, validation, progress tracking, and various statistical
+ * operations including case counting and member management.
  * <p>
  * Key features include:
  * <ul>
@@ -116,11 +116,11 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
   /**
    * Retrieves detailed information for a specific functional test plan.
    * <p>
-   * Fetches the plan by ID and enriches it with additional information including
-   * case counts, progress metrics, member information, and user details.
+   * Fetches the plan by ID and enriches it with additional information including case counts,
+   * progress metrics, member information, and user details.
    * <p>
-   * Uses BizTemplate pattern for consistent business logic execution with
-   * parameter validation and error handling.
+   * Uses BizTemplate pattern for consistent business logic execution with parameter validation and
+   * error handling.
    *
    * @param id the plan ID to retrieve details for
    * @return Template object with complete details and enriched information
@@ -156,17 +156,17 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
   /**
    * Retrieves a paginated list of functional test plans.
    * <p>
-   * Supports both regular search and full-text search with comprehensive filtering.
-   * Enriches results with case counts, progress, member information, and user details.
+   * Supports both regular search and full-text search with comprehensive filtering. Enriches
+   * results with case counts, progress, member information, and user details.
    * <p>
    * Includes permission checking and authorization filtering for security.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param spec the search specification with criteria and filters
-   * @param pageable pagination parameters (page, size, sort)
+   * @param spec           the search specification with criteria and filters
+   * @param pageable       pagination parameters (page, size, sort)
    * @param fullTextSearch whether to use full-text search capabilities
-   * @param match full-text search match parameters
+   * @param match          full-text search match parameters
    * @return Page of Template objects with enriched information
    * @throws BizException if permission validation fails
    */
@@ -214,12 +214,12 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
   /**
    * Retrieves cases that have not been reviewed in a functional test plan.
    * <p>
-   * Provides filtered list of cases that are eligible for review, excluding cases
-   * that are already in review or have been reviewed. Supports module and review filtering.
+   * Provides filtered list of cases that are eligible for review, excluding cases that are already
+   * in review or have been reviewed. Supports module and review filtering.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param planId the plan ID to find unreviewed cases for
+   * @param planId   the plan ID to find unreviewed cases for
    * @param moduleId optional module ID to filter cases by module
    * @param reviewId optional review ID to exclude cases from other reviews
    * @return List of FuncCaseInfo objects that are eligible for review
@@ -279,13 +279,13 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
   /**
    * Retrieves cases that have not been established in a baseline.
    * <p>
-   * Provides filtered list of cases that are eligible for baseline establishment,
-   * excluding cases that are already included in the specified baseline.
+   * Provides filtered list of cases that are eligible for baseline establishment, excluding cases
+   * that are already included in the specified baseline.
    * <p>
    * Uses BizTemplate pattern for consistent business logic execution.
    *
-   * @param planId the plan ID to find cases for
-   * @param moduleId optional module ID to filter cases by module
+   * @param planId     the plan ID to find cases for
+   * @param moduleId   optional module ID to filter cases by module
    * @param baselineId optional baseline ID to exclude cases already in baseline
    * @return List of FuncCaseInfo objects eligible for baseline establishment
    * @throws BizException if user lacks establish baseline permission
@@ -410,7 +410,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
    * Ensures the plan name does not conflict with existing plans in the same project.
    *
    * @param projectId the project ID
-   * @param name the plan name to validate
+   * @param name      the plan name to validate
    * @throws ResourceExisted if the name already exists
    */
   @Override
@@ -472,7 +472,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
    * <p>
    * Ensures consistency between case IDs and plan ownership.
    *
-   * @param planId the plan ID
+   * @param planId  the plan ID
    * @param caseIds set of case IDs to validate
    * @throws ProtocolException if any case does not belong to the plan
    */
@@ -511,7 +511,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
    * <p>
    * Optimized for bulk operations with efficient database queries.
    *
-   * @param plans list of plans to update with case counts
+   * @param plans   list of plans to update with case counts
    * @param planIds set of plan IDs for efficient database querying
    */
   @Override
@@ -542,7 +542,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
    * <p>
    * Note: Must be executed after setCaseNum() to ensure valid case counts are available.
    *
-   * @param plans list of plans to update with progress information
+   * @param plans   list of plans to update with progress information
    * @param planIds set of plan IDs for efficient database querying
    */
   @Override
@@ -579,7 +579,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
    * <p>
    * Optimized for bulk operations with efficient user data retrieval.
    *
-   * @param plans list of plans to update with member information
+   * @param plans   list of plans to update with member information
    * @param planIds set of plan IDs for efficient processing
    */
   @Override
@@ -641,8 +641,8 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
   /**
    * Sets authorization conditions for query filtering.
    * <p>
-   * Configures search criteria to include authorization object ID filtering when
-   * the user is not an administrator or when admin override is not enabled.
+   * Configures search criteria to include authorization object ID filtering when the user is not an
+   * administrator or when admin override is not enabled.
    * <p>
    * This method ensures proper authorization filtering for plan queries.
    *
@@ -672,12 +672,12 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
    * <p>
    * Used for analyzing resource creation patterns and trends.
    *
-   * @param projectId the project ID
-   * @param planId the plan ID
+   * @param projectId        the project ID
+   * @param planId           the plan ID
    * @param createdDateStart start date for filtering
-   * @param createdDateEnd end date for filtering
-   * @param creatorOrgType the creator organization type
-   * @param creatorOrgId the creator organization ID
+   * @param createdDateEnd   end date for filtering
+   * @param creatorOrgType   the creator organization type
+   * @param creatorOrgId     the creator organization ID
    * @return List of Template objects
    */
   @Override

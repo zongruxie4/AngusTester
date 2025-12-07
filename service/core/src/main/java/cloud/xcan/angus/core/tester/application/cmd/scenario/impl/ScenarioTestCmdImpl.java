@@ -40,7 +40,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command implementation for scenario test management.
  * <p>
- * Provides methods for enabling/disabling, generating, retesting, deleting, and executing scenario test tasks.
+ * Provides methods for enabling/disabling, generating, retesting, deleting, and executing scenario
+ * test tasks.
  * <p>
  * Ensures permission checks, activity logging, and batch operations with transaction management.
  */

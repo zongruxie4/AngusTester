@@ -78,7 +78,7 @@ public class KanbanCtoTaskConverter {
   public static void assembleTotalProgressOverview(List<TaskEfficiencySummary> tasks,
       CtoTaskOverview overview) {
     TotalProgressCount progressOverview = new TotalProgressCount();
-    if (isEmpty(tasks)){ // Set Default
+    if (isEmpty(tasks)) { // Set Default
       overview.setTotalProgressOverview(progressOverview);
       return;
     }
@@ -107,7 +107,7 @@ public class KanbanCtoTaskConverter {
 
   public static ProgressCount assembleTaskProgressCount0(List<TaskEfficiencySummary> tasks) {
     ProgressCount count = new ProgressCount();
-    if (isEmpty(tasks)){ // Set Default
+    if (isEmpty(tasks)) { // Set Default
       return count;
     }
 
@@ -136,7 +136,7 @@ public class KanbanCtoTaskConverter {
   public static BackloggedCount assembleBackloggedTaskCount0(
       List<TaskEfficiencySummary> tasks) {
     BackloggedCount backloggedTaskCount = new BackloggedCount();
-    if (isEmpty(tasks)){ // Set Default
+    if (isEmpty(tasks)) { // Set Default
       return backloggedTaskCount;
     }
 
@@ -224,7 +224,7 @@ public class KanbanCtoTaskConverter {
     double processedWorkload = completedTasks.stream()
         .map(TaskEfficiencySummary::getEvalWorkload).reduce(BigDecimal.ZERO, BigDecimal::add)
         .doubleValue();
-    if (processedWorkload == 0d){
+    if (processedWorkload == 0d) {
       return DEFAULT_DAILY_WORKLOAD;
     }
     return processedWorkload / processedDays;
@@ -240,7 +240,7 @@ public class KanbanCtoTaskConverter {
   public static @NotNull OverdueAssessmentCount assembleOverdueAssessmentCount0(
       List<TaskEfficiencySummary> tasks, double dailyProcessedWorkload) {
     OverdueAssessmentCount overdueAssessmentCount = new OverdueAssessmentCount();
-    if (isEmpty(tasks)){ // Set Default
+    if (isEmpty(tasks)) { // Set Default
       return overdueAssessmentCount;
     }
 
@@ -289,7 +289,7 @@ public class KanbanCtoTaskConverter {
   public static @NotNull Map<String, RecentDeliveryCount> assembleRecentDeliveryCount0(
       List<TaskEfficiencySummary> tasks) {
     Map<String, RecentDeliveryCount> recentDeliveryCount = new HashMap<>();
-    if (isEmpty(tasks)){ // Set Default
+    if (isEmpty(tasks)) { // Set Default
       recentDeliveryCount.put("today", new RecentDeliveryCount());
       recentDeliveryCount.put("lastWeek", new RecentDeliveryCount());
       recentDeliveryCount.put("lastMonth", new RecentDeliveryCount());
@@ -320,7 +320,7 @@ public class KanbanCtoTaskConverter {
       List<TaskEfficiencySummary> tasks, double totalWorkload, long totalOverdueNum,
       Function<LocalDateTime, Boolean> isRecent) {
     RecentDeliveryCount deliveryCount = new RecentDeliveryCount();
-    if (isEmpty(tasks)){ // Set Default
+    if (isEmpty(tasks)) { // Set Default
       return deliveryCount;
     }
 
@@ -371,7 +371,7 @@ public class KanbanCtoTaskConverter {
   public static @NotNull UnplannedWorkCount assembleUnplannedWorkCount0(
       List<TaskEfficiencySummary> tasks, double dailyProcessedWorkload) {
     UnplannedWorkCount unplannedWorkCount = new UnplannedWorkCount();
-    if (isEmpty(tasks)){ // Set Default
+    if (isEmpty(tasks)) { // Set Default
       return unplannedWorkCount;
     }
     unplannedWorkCount.setTotalNum(
@@ -392,7 +392,7 @@ public class KanbanCtoTaskConverter {
   public static @NotNull FailureAssessmentCount assembleFailureAssessmentCount0(
       List<TaskEfficiencySummary> tasks) {
     FailureAssessmentCount failureAssessmentCount = new FailureAssessmentCount();
-    if (isEmpty(tasks)){ // Set Default
+    if (isEmpty(tasks)) { // Set Default
       return failureAssessmentCount;
     }
     failureAssessmentCount.setTotalNum(
@@ -413,7 +413,7 @@ public class KanbanCtoTaskConverter {
   public static @NotNull LeadTimeCount assembleLeadTimeCount0(
       List<TaskEfficiencySummary> tasks) {
     LeadTimeCount leadTimeCount = new LeadTimeCount();
-    if (isEmpty(tasks)){ // Set Default
+    if (isEmpty(tasks)) { // Set Default
       return leadTimeCount;
     }
     assembleLeadTime(tasks, leadTimeCount);

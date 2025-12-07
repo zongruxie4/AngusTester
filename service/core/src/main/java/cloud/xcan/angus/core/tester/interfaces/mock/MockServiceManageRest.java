@@ -73,7 +73,8 @@ public class MockServiceManageRest {
       @ApiResponse(responseCode = "200", description = "Mock service APIs synchronized successfully")
   })
   @PostMapping(value = "/apis/manage/sync")
-  public ApiLocaleResult<SimpleCommandResult> syncApis(@Valid @RequestBody MockServiceApisSyncDto dto) {
+  public ApiLocaleResult<SimpleCommandResult> syncApis(
+      @Valid @RequestBody MockServiceApisSyncDto dto) {
     return ApiLocaleResult.success(mockServiceMangeFacade.syncApis(dto));
   }
 
@@ -84,7 +85,8 @@ public class MockServiceManageRest {
       @ApiResponse(responseCode = "200", description = "Mock service APIs deleted successfully")
   })
   @PostMapping(value = "/apis/manage/delete")
-  public ApiLocaleResult<SimpleCommandResult> deleteApis(@Valid @RequestBody MockServiceApisDeleteDto dto) {
+  public ApiLocaleResult<SimpleCommandResult> deleteApis(
+      @Valid @RequestBody MockServiceApisDeleteDto dto) {
     return ApiLocaleResult.success(mockServiceMangeFacade.deleteApis(dto));
   }
 }

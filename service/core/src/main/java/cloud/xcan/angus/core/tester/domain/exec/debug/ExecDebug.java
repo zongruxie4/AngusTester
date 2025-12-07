@@ -136,7 +136,7 @@ public class ExecDebug extends TenantEntity<ExecDebug, Long> {
   @Transient
   private String failureMessage;
 
-  public boolean isMonitor(){
+  public boolean isMonitor() {
     return nonNull(monitorId);
   }
 

@@ -17,7 +17,8 @@ public interface ApisTestQuery {
   ApisTestCount countProjectTestApis(Long projectId, AuthObjectType creatorObjectType,
       Long creatorObjectId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd);
 
-  TestApisCount countTestResult(Long projectId, AuthObjectType creatorObjectType, Long creatorObjectId,
+  TestApisCount countTestResult(Long projectId, AuthObjectType creatorObjectType,
+      Long creatorObjectId,
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd);
 
 }

@@ -47,8 +47,8 @@ import org.springframework.data.jpa.domain.Specification;
  * Implementation of API authorization query operations for permission management.
  *
  * <p>This class provides comprehensive functionality for querying and validating
- * API permissions, including user authorization checks, permission validation,
- * and authorization status management.</p>
+ * API permissions, including user authorization checks, permission validation, and authorization
+ * status management.</p>
  *
  * <p>It handles various permission types including view, modify, delete, debug,
  * test, grant, share, release, and export permissions with proper validation.</p>
@@ -114,9 +114,9 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
    * <p>The method considers admin privileges and creator permissions when
    * determining the final permission set.</p>
    *
-   * @param apiId the API ID to check permissions for
+   * @param apiId  the API ID to check permissions for
    * @param userId the user ID to get permissions for
-   * @param admin whether to consider admin privileges
+   * @param admin  whether to consider admin privileges
    * @return list of permissions granted to the user
    */
   @Override
@@ -334,11 +334,11 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
    * <p>The method handles special cases for grant and release permissions on public APIs,
    * and validates creator permissions and flat permission sets.</p>
    *
-   * @param userId the user ID to check authorization for
-   * @param apisId the API ID to check authorization for
-   * @param permission the permission to check
+   * @param userId                the user ID to check authorization for
+   * @param apisId                the API ID to check authorization for
+   * @param permission            the permission to check
    * @param ignoreAdminPermission whether to ignore admin user privileges
-   * @param ignorePublicAccess whether to ignore public access controls
+   * @param ignorePublicAccess    whether to ignore public access controls
    * @throws BizException if user lacks the required permission
    */
   @Override
@@ -384,7 +384,7 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
    * <p>The method handles admin user privileges and filters APIs that require
    * authorization control for efficient validation.</p>
    *
-   * @param apiIds the collection of API IDs to check permissions for
+   * @param apiIds     the collection of API IDs to check permissions for
    * @param permission the permission to validate for all APIs
    * @throws BizException if user lacks permission for any API in the batch
    */

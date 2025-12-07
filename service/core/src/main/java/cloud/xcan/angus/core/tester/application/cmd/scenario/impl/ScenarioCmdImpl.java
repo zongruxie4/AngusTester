@@ -61,14 +61,14 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command implementation for scenario management operations.
  * <p>
- * Provides comprehensive CRUD operations for scenarios including creation, modification,
- * deletion, cloning, moving, and import/export functionality.
+ * Provides comprehensive CRUD operations for scenarios including creation, modification, deletion,
+ * cloning, moving, and import/export functionality.
  * <p>
- * Implements business logic validation, permission checks, activity logging,
- * and transaction management for all scenario operations.
+ * Implements business logic validation, permission checks, activity logging, and transaction
+ * management for all scenario operations.
  * <p>
- * Supports script management, authorization setup, indicator tracking,
- * and comprehensive activity tracking.
+ * Supports script management, authorization setup, indicator tracking, and comprehensive activity
+ * tracking.
  */
 @Biz
 public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements ScenarioCmd {
@@ -109,8 +109,8 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   /**
    * Adds a new scenario to the system.
    * <p>
-   * Performs comprehensive validation including project membership, quota limits,
-   * name uniqueness, and script validation.
+   * Performs comprehensive validation including project membership, quota limits, name uniqueness,
+   * and script validation.
    * <p>
    * Creates associated script if provided and initializes creator authorization.
    * <p>
@@ -138,7 +138,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
       @Override
       protected IdKey<Long, Object> process() {
         // Generate scenario ID if not provided
-        if (isNull(scenario.getId())){
+        if (isNull(scenario.getId())) {
           scenario.setId(BIDUtils.getId(BIDKey.scenarioId));
         }
 
@@ -175,8 +175,8 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   /**
    * Updates an existing scenario in the system.
    * <p>
-   * Validates scenario existence, user permissions, name uniqueness, and script changes
-   * before updating scenario details.
+   * Validates scenario existence, user permissions, name uniqueness, and script changes before
+   * updating scenario details.
    * <p>
    * Updates associated script if provided and logs modification activity.
    * <p>
@@ -231,8 +231,8 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   /**
    * Replaces (adds or updates) a scenario in the system.
    * <p>
-   * Validates scenario existence, user permissions, name uniqueness, and script changes
-   * before replacing scenario details.
+   * Validates scenario existence, user permissions, name uniqueness, and script changes before
+   * replacing scenario details.
    * <p>
    * Creates a new scenario if ID is null, otherwise updates existing scenario.
    * <p>
@@ -471,8 +471,8 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   /**
    * Permanently deletes scenarios and all related data from the system.
    * <p>
-   * Removes scenarios, scripts, authorizations, favorites, follows, indicators,
-   * and variable/dataset associations.
+   * Removes scenarios, scripts, authorizations, favorites, follows, indicators, and
+   * variable/dataset associations.
    * <p>
    * This operation is irreversible and should be used with extreme caution.
    * <p>

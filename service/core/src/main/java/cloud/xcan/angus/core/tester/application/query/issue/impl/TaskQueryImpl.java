@@ -245,9 +245,10 @@ import org.springframework.data.domain.Sort.Direction;
  * Implementation of TaskQuery for comprehensive task management and query operations.
  * </p>
  * <p>
- * Provides methods for task CRUD operations, statistics analysis, progress tracking, and various task-related queries.
- * Includes support for task associations, permissions, notifications, and comprehensive reporting capabilities.
- * Supports full-text search, pagination, and complex filtering with project member permission checks.
+ * Provides methods for task CRUD operations, statistics analysis, progress tracking, and various
+ * task-related queries. Includes support for task associations, permissions, notifications, and
+ * comprehensive reporting capabilities. Supports full-text search, pagination, and complex
+ * filtering with project member permission checks.
  * </p>
  */
 @Biz
@@ -309,8 +310,10 @@ public class TaskQueryImpl implements TaskQuery {
    * </p>
    * <p>
    * Retrieves task details and assembles all related information including tags, associations,
-   * progress, comments, remarks, and activities. Sets user-specific flags for follow and favorite status.
+   * progress, comments, remarks, and activities. Sets user-specific flags for follow and favorite
+   * status.
    * </p>
+   *
    * @param id Task ID
    * @return Complete task details with all associated information
    */
@@ -377,9 +380,10 @@ public class TaskQueryImpl implements TaskQuery {
    * Count task statistics based on search criteria.
    * </p>
    * <p>
-   * Provides aggregated task counts for reporting and analysis purposes.
-   * Automatically filters out deleted tasks and sprints.
+   * Provides aggregated task counts for reporting and analysis purposes. Automatically filters out
+   * deleted tasks and sprints.
    * </p>
+   *
    * @param criteria Search criteria for filtering tasks
    * @return Task count statistics
    */
@@ -405,14 +409,15 @@ public class TaskQueryImpl implements TaskQuery {
    * List tasks with pagination and search capabilities.
    * </p>
    * <p>
-   * Supports both full-text search and specification-based filtering with project member permission checks.
-   * Automatically sets user-specific flags and assembles related data for each task.
+   * Supports both full-text search and specification-based filtering with project member permission
+   * checks. Automatically sets user-specific flags and assembles related data for each task.
    * </p>
-   * @param export Whether this is an export operation
-   * @param spec Generic specification for filtering
-   * @param pageable Pagination information
+   *
+   * @param export         Whether this is an export operation
+   * @param spec           Generic specification for filtering
+   * @param pageable       Pagination information
    * @param fullTextSearch Whether to use full-text search
-   * @param match Fields to match in full-text search
+   * @param match          Fields to match in full-text search
    * @return Page of tasks with associated data
    */
   @Override
@@ -476,10 +481,11 @@ public class TaskQueryImpl implements TaskQuery {
    * Find subtasks that are not associated with a specific task.
    * </p>
    * <p>
-   * Retrieves available subtasks that can be associated with the given task.
-   * Filters by module if specified and excludes already associated subtasks.
+   * Retrieves available subtasks that can be associated with the given task. Filters by module if
+   * specified and excludes already associated subtasks.
    * </p>
-   * @param taskId Parent task ID
+   *
+   * @param taskId   Parent task ID
    * @param moduleId Optional module ID for filtering
    * @return List of available subtasks
    */
@@ -527,10 +533,11 @@ public class TaskQueryImpl implements TaskQuery {
    * Find tasks that are not associated with a specific functional case.
    * </p>
    * <p>
-   * Retrieves available tasks that can be associated with the given case.
-   * Supports filtering by module and task type, excluding already associated tasks.
+   * Retrieves available tasks that can be associated with the given case. Supports filtering by
+   * module and task type, excluding already associated tasks.
    * </p>
-   * @param caseId Functional case ID
+   *
+   * @param caseId   Functional case ID
    * @param moduleId Optional module ID for filtering
    * @param taskType Optional task type for filtering
    * @return List of available tasks
@@ -572,15 +579,16 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
-    /**
+  /**
    * <p>
    * Find tasks that are not associated with a specific task.
    * </p>
    * <p>
-   * Retrieves available tasks that can be associated with the given task.
-   * Supports filtering by module and task type, excluding already associated tasks.
+   * Retrieves available tasks that can be associated with the given task. Supports filtering by
+   * module and task type, excluding already associated tasks.
    * </p>
-   * @param taskId task ID
+   *
+   * @param taskId   task ID
    * @param moduleId Optional module ID for filtering
    * @param taskType Optional task type for filtering
    * @return List of available tasks
@@ -627,17 +635,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get resource creation statistics for tasks.
    * </p>
    * <p>
-   * Provides comprehensive statistics about task creation including counts for tasks, sprints, meetings, and backlogs.
-   * Supports filtering by project, sprint, creator, and date range.
+   * Provides comprehensive statistics about task creation including counts for tasks, sprints,
+   * meetings, and backlogs. Supports filtering by project, sprint, creator, and date range.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
+   *
+   * @param projectId         Project ID
+   * @param sprintId          Optional sprint ID
    * @param creatorObjectType Creator object type
-   * @param creatorObjectId Creator object ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
-   * @param joinSprint Whether to include sprint information
-   * @param joinMeeting Whether to include meeting information
+   * @param creatorObjectId   Creator object ID
+   * @param createdDateStart  Start date for creation time filter
+   * @param createdDateEnd    End date for creation time filter
+   * @param joinSprint        Whether to include sprint information
+   * @param joinMeeting       Whether to include meeting information
    * @return Resource creation statistics
    */
   @Override
@@ -693,11 +702,12 @@ public class TaskQueryImpl implements TaskQuery {
    * Get assignee summary statistics for tasks.
    * </p>
    * <p>
-   * Provides aggregated statistics about task distribution among assignees.
-   * Includes task counts, workload distribution, and performance metrics per assignee.
+   * Provides aggregated statistics about task distribution among assignees. Includes task counts,
+   * workload distribution, and performance metrics per assignee.
    * </p>
+   *
    * @param projectId Project ID
-   * @param sprintId Optional sprint ID
+   * @param sprintId  Optional sprint ID
    * @return List of assignee summary statistics
    */
   @Override
@@ -734,11 +744,12 @@ public class TaskQueryImpl implements TaskQuery {
    * Get assignee progress statistics for tasks.
    * </p>
    * <p>
-   * Provides detailed progress analysis for each assignee including completion rates,
-   * task status distribution, and time-based progress metrics.
+   * Provides detailed progress analysis for each assignee including completion rates, task status
+   * distribution, and time-based progress metrics.
    * </p>
+   *
    * @param projectId Project ID
-   * @param sprintId Optional sprint ID
+   * @param sprintId  Optional sprint ID
    * @return List of assignee progress statistics
    */
   @Override
@@ -773,9 +784,10 @@ public class TaskQueryImpl implements TaskQuery {
    * Get project work statistics summary.
    * </p>
    * <p>
-   * Provides comprehensive work statistics for a project including task distribution,
-   * progress overview, and performance metrics at the project level.
+   * Provides comprehensive work statistics for a project including task distribution, progress
+   * overview, and performance metrics at the project level.
    * </p>
+   *
    * @param projectId Project ID
    * @return Project work statistics summary
    */
@@ -817,9 +829,10 @@ public class TaskQueryImpl implements TaskQuery {
    * Get sprint work statistics summary.
    * </p>
    * <p>
-   * Provides comprehensive work statistics for a sprint including task distribution,
-   * progress tracking, and performance metrics at the sprint level.
+   * Provides comprehensive work statistics for a sprint including task distribution, progress
+   * tracking, and performance metrics at the sprint level.
    * </p>
+   *
    * @param sprintId Sprint ID
    * @return Sprint work statistics summary
    */
@@ -892,12 +905,13 @@ public class TaskQueryImpl implements TaskQuery {
    * Get assignee work statistics for a specific user.
    * </p>
    * <p>
-   * Provides detailed work statistics for a specific assignee including task distribution,
-   * workload analysis, and performance metrics over time.
+   * Provides detailed work statistics for a specific assignee including task distribution, workload
+   * analysis, and performance metrics over time.
    * </p>
+   *
    * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param userId User ID to get statistics for
+   * @param sprintId  Optional sprint ID
+   * @param userId    User ID to get statistics for
    * @return Assignee work statistics summary
    */
   @Override
@@ -944,17 +958,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get task progress overview with detailed analysis.
    * </p>
    * <p>
-   * Provides comprehensive progress analysis including task completion rates, time series data,
-   * and assignee performance metrics. Supports filtering by project, sprint, assignee, and date range.
+   * Provides comprehensive progress analysis including task completion rates, time series data, and
+   * assignee performance metrics. Supports filtering by project, sprint, assignee, and date range.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param assigneeOrgType Assignee organization type
-   * @param assigneeOrgId Assignee organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId          Project ID
+   * @param sprintId           Optional sprint ID
+   * @param assigneeOrgType    Assignee organization type
+   * @param assigneeOrgId      Assignee organization ID
+   * @param createdDateStart   Start date for creation time filter
+   * @param createdDateEnd     End date for creation time filter
    * @param joinAssigneeDetail Whether to include assignee details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail     Whether to include detailed data
    * @return Progress overview with analysis
    */
   @Override
@@ -1028,17 +1043,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get burndown chart overview for task analysis.
    * </p>
    * <p>
-   * Provides burndown chart data for tracking task completion over time.
-   * Includes ideal vs actual progress lines, remaining work analysis, and velocity metrics.
+   * Provides burndown chart data for tracking task completion over time. Includes ideal vs actual
+   * progress lines, remaining work analysis, and velocity metrics.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param assigneeOrgType Assignee organization type
-   * @param assigneeOrgId Assignee organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId          Project ID
+   * @param sprintId           Optional sprint ID
+   * @param assigneeOrgType    Assignee organization type
+   * @param assigneeOrgId      Assignee organization ID
+   * @param createdDateStart   Start date for creation time filter
+   * @param createdDateEnd     End date for creation time filter
    * @param joinAssigneeDetail Whether to include assignee details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail     Whether to include detailed data
    * @return Burndown chart overview
    */
   @Override
@@ -1136,17 +1152,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get workload overview for task analysis.
    * </p>
    * <p>
-   * Provides comprehensive workload analysis including planned vs actual workload,
-   * workload distribution among assignees, and workload trends over time.
+   * Provides comprehensive workload analysis including planned vs actual workload, workload
+   * distribution among assignees, and workload trends over time.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param assigneeOrgType Assignee organization type
-   * @param assigneeOrgId Assignee organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId          Project ID
+   * @param sprintId           Optional sprint ID
+   * @param assigneeOrgType    Assignee organization type
+   * @param assigneeOrgId      Assignee organization ID
+   * @param createdDateStart   Start date for creation time filter
+   * @param createdDateEnd     End date for creation time filter
    * @param joinAssigneeDetail Whether to include assignee details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail     Whether to include detailed data
    * @return Workload overview
    */
   @Override
@@ -1212,17 +1229,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get overdue assessment overview for task analysis.
    * </p>
    * <p>
-   * Provides comprehensive overdue assessment analysis including overdue task identification,
-   * risk assessment, and mitigation strategies based on workload and deadlines.
+   * Provides comprehensive overdue assessment analysis including overdue task identification, risk
+   * assessment, and mitigation strategies based on workload and deadlines.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param assigneeOrgType Assignee organization type
-   * @param assigneeOrgId Assignee organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId          Project ID
+   * @param sprintId           Optional sprint ID
+   * @param assigneeOrgType    Assignee organization type
+   * @param assigneeOrgId      Assignee organization ID
+   * @param createdDateStart   Start date for creation time filter
+   * @param createdDateEnd     End date for creation time filter
    * @param joinAssigneeDetail Whether to include assignee details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail     Whether to include detailed data
    * @return Overdue assessment overview
    */
   @Override
@@ -1293,17 +1311,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get bug overview for task analysis.
    * </p>
    * <p>
-   * Provides comprehensive bug analysis including bug identification, severity assessment,
-   * and bug distribution patterns among assignees and time periods.
+   * Provides comprehensive bug analysis including bug identification, severity assessment, and bug
+   * distribution patterns among assignees and time periods.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param assigneeOrgType Assignee organization type
-   * @param assigneeOrgId Assignee organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId          Project ID
+   * @param sprintId           Optional sprint ID
+   * @param assigneeOrgType    Assignee organization type
+   * @param assigneeOrgId      Assignee organization ID
+   * @param createdDateStart   Start date for creation time filter
+   * @param createdDateEnd     End date for creation time filter
    * @param joinAssigneeDetail Whether to include assignee details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail     Whether to include detailed data
    * @return Bug overview
    */
   @Override
@@ -1363,17 +1382,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get processing efficiency overview for task analysis.
    * </p>
    * <p>
-   * Provides comprehensive processing efficiency analysis including throughput metrics,
-   * processing time analysis, and efficiency trends over time.
+   * Provides comprehensive processing efficiency analysis including throughput metrics, processing
+   * time analysis, and efficiency trends over time.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param assigneeOrgType Assignee organization type
-   * @param assigneeOrgId Assignee organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId          Project ID
+   * @param sprintId           Optional sprint ID
+   * @param assigneeOrgType    Assignee organization type
+   * @param assigneeOrgId      Assignee organization ID
+   * @param createdDateStart   Start date for creation time filter
+   * @param createdDateEnd     End date for creation time filter
    * @param joinAssigneeDetail Whether to include assignee details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail     Whether to include detailed data
    * @return Processing efficiency overview
    */
   @Override
@@ -1438,17 +1458,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get core KPI overview for task analysis.
    * </p>
    * <p>
-   * Provides comprehensive core KPI analysis including key performance indicators,
-   * productivity metrics, and performance benchmarks across different dimensions.
+   * Provides comprehensive core KPI analysis including key performance indicators, productivity
+   * metrics, and performance benchmarks across different dimensions.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param assigneeOrgType Assignee organization type
-   * @param assigneeOrgId Assignee organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId          Project ID
+   * @param sprintId           Optional sprint ID
+   * @param assigneeOrgType    Assignee organization type
+   * @param assigneeOrgId      Assignee organization ID
+   * @param createdDateStart   Start date for creation time filter
+   * @param createdDateEnd     End date for creation time filter
    * @param joinAssigneeDetail Whether to include assignee details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail     Whether to include detailed data
    * @return Core KPI overview
    */
   @Override
@@ -1513,17 +1534,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get failure assessment overview for task analysis.
    * </p>
    * <p>
-   * Provides comprehensive failure assessment analysis including failure rate analysis,
-   * risk assessment, and failure pattern identification across different dimensions.
+   * Provides comprehensive failure assessment analysis including failure rate analysis, risk
+   * assessment, and failure pattern identification across different dimensions.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param assigneeOrgType Assignee organization type
-   * @param assigneeOrgId Assignee organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId          Project ID
+   * @param sprintId           Optional sprint ID
+   * @param assigneeOrgType    Assignee organization type
+   * @param assigneeOrgId      Assignee organization ID
+   * @param createdDateStart   Start date for creation time filter
+   * @param createdDateEnd     End date for creation time filter
    * @param joinAssigneeDetail Whether to include assignee details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail     Whether to include detailed data
    * @return Failure assessment overview
    */
   @Override
@@ -1586,17 +1608,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get backlogged work overview for task analysis.
    * </p>
    * <p>
-   * Provides comprehensive backlog analysis including pending task identification,
-   * backlog trends, and workload distribution analysis.
+   * Provides comprehensive backlog analysis including pending task identification, backlog trends,
+   * and workload distribution analysis.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param assigneeOrgType Assignee organization type
-   * @param assigneeOrgId Assignee organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId          Project ID
+   * @param sprintId           Optional sprint ID
+   * @param assigneeOrgType    Assignee organization type
+   * @param assigneeOrgId      Assignee organization ID
+   * @param createdDateStart   Start date for creation time filter
+   * @param createdDateEnd     End date for creation time filter
    * @param joinAssigneeDetail Whether to include assignee details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail     Whether to include detailed data
    * @return Backlogged work overview
    */
   @Override
@@ -1662,17 +1685,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get recent delivery overview for task analysis.
    * </p>
    * <p>
-   * Provides comprehensive recent delivery analysis including delivery trends,
-   * completion patterns, and delivery performance metrics.
+   * Provides comprehensive recent delivery analysis including delivery trends, completion patterns,
+   * and delivery performance metrics.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param assigneeOrgType Assignee organization type
-   * @param assigneeOrgId Assignee organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId          Project ID
+   * @param sprintId           Optional sprint ID
+   * @param assigneeOrgType    Assignee organization type
+   * @param assigneeOrgId      Assignee organization ID
+   * @param createdDateStart   Start date for creation time filter
+   * @param createdDateEnd     End date for creation time filter
    * @param joinAssigneeDetail Whether to include assignee details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail     Whether to include detailed data
    * @return Recent delivery overview
    */
   @Override
@@ -1744,17 +1768,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get lead time overview for task analysis.
    * </p>
    * <p>
-   * Provides comprehensive lead time analysis including cycle time metrics,
-   * delivery time analysis, and process efficiency measurements.
+   * Provides comprehensive lead time analysis including cycle time metrics, delivery time analysis,
+   * and process efficiency measurements.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param assigneeOrgType Assignee organization type
-   * @param assigneeOrgId Assignee organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId          Project ID
+   * @param sprintId           Optional sprint ID
+   * @param assigneeOrgType    Assignee organization type
+   * @param assigneeOrgId      Assignee organization ID
+   * @param createdDateStart   Start date for creation time filter
+   * @param createdDateEnd     End date for creation time filter
    * @param joinAssigneeDetail Whether to include assignee details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail     Whether to include detailed data
    * @return Lead time overview
    */
   @Override
@@ -1819,17 +1844,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get unplanned work overview for task analysis.
    * </p>
    * <p>
-   * Provides comprehensive unplanned work analysis including ad-hoc task identification,
-   * unplanned work trends, and impact assessment on planned work.
+   * Provides comprehensive unplanned work analysis including ad-hoc task identification, unplanned
+   * work trends, and impact assessment on planned work.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param assigneeOrgType Assignee organization type
-   * @param assigneeOrgId Assignee organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId          Project ID
+   * @param sprintId           Optional sprint ID
+   * @param assigneeOrgType    Assignee organization type
+   * @param assigneeOrgId      Assignee organization ID
+   * @param createdDateStart   Start date for creation time filter
+   * @param createdDateEnd     End date for creation time filter
    * @param joinAssigneeDetail Whether to include assignee details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail     Whether to include detailed data
    * @return Unplanned work overview
    */
   @Override
@@ -1899,17 +1925,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get tester submitted bug overview for task analysis.
    * </p>
    * <p>
-   * Provides comprehensive bug submission analysis including bug discovery patterns,
-   * tester performance metrics, and bug quality assessment.
+   * Provides comprehensive bug submission analysis including bug discovery patterns, tester
+   * performance metrics, and bug quality assessment.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param creatorOrgType Creator organization type
-   * @param creatorOrgId Creator organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId          Project ID
+   * @param sprintId           Optional sprint ID
+   * @param creatorOrgType     Creator organization type
+   * @param creatorOrgId       Creator organization ID
+   * @param createdDateStart   Start date for creation time filter
+   * @param createdDateEnd     End date for creation time filter
    * @param joinAssigneeDetail Whether to include assignee details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail     Whether to include detailed data
    * @return Tester submitted bug overview
    */
   @Override
@@ -1987,17 +2014,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get growth trend overview for task analysis.
    * </p>
    * <p>
-   * Provides comprehensive growth trend analysis including task growth patterns,
-   * productivity trends, and performance evolution over time.
+   * Provides comprehensive growth trend analysis including task growth patterns, productivity
+   * trends, and performance evolution over time.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param assigneeOrgType Assignee organization type
-   * @param assigneeOrgId Assignee organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId          Project ID
+   * @param sprintId           Optional sprint ID
+   * @param assigneeOrgType    Assignee organization type
+   * @param assigneeOrgId      Assignee organization ID
+   * @param createdDateStart   Start date for creation time filter
+   * @param createdDateEnd     End date for creation time filter
    * @param joinAssigneeDetail Whether to include assignee details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail     Whether to include detailed data
    * @return Growth trend overview
    */
   @Override
@@ -2067,17 +2095,18 @@ public class TaskQueryImpl implements TaskQuery {
    * Get resource creation overview for task analysis.
    * </p>
    * <p>
-   * Provides comprehensive resource creation analysis including task, sprint, and meeting
-   * creation patterns, creator productivity metrics, and resource utilization trends.
+   * Provides comprehensive resource creation analysis including task, sprint, and meeting creation
+   * patterns, creator productivity metrics, and resource utilization trends.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
-   * @param creatorOrgType Creator organization type
-   * @param creatorOrgId Creator organization ID
-   * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
+   *
+   * @param projectId         Project ID
+   * @param sprintId          Optional sprint ID
+   * @param creatorOrgType    Creator organization type
+   * @param creatorOrgId      Creator organization ID
+   * @param createdDateStart  Start date for creation time filter
+   * @param createdDateEnd    End date for creation time filter
    * @param joinCreatorDetail Whether to include creator details
-   * @param joinDataDetail Whether to include detailed data
+   * @param joinDataDetail    Whether to include detailed data
    * @return Resource creation overview
    */
   @Override
@@ -2161,8 +2190,10 @@ public class TaskQueryImpl implements TaskQuery {
    * Find the task with the earliest creation date in a project.
    * </p>
    * <p>
-   * Retrieves the task info entity with the minimum (earliest) creation date for the specified project.
+   * Retrieves the task info entity with the minimum (earliest) creation date for the specified
+   * project.
    * </p>
+   *
    * @param projectId Project ID
    * @return TaskInfo with the earliest creation date, or null if none exists
    */
@@ -2178,6 +2209,7 @@ public class TaskQueryImpl implements TaskQuery {
    * <p>
    * Retrieves a task info entity by its ID and throws ResourceNotFound if not found.
    * </p>
+   *
    * @param id TaskInfo ID
    * @return TaskInfo entity if found
    * @throws ResourceNotFound if the task info is not found
@@ -2195,6 +2227,7 @@ public class TaskQueryImpl implements TaskQuery {
    * Retrieves all task info entities for the given IDs and validates that all requested IDs exist.
    * Throws ResourceNotFound if any are missing.
    * </p>
+   *
    * @param ids Collection of TaskInfo IDs
    * @return List of TaskInfo entities if all found
    * @throws ResourceNotFound if any task info is not found
@@ -2219,6 +2252,7 @@ public class TaskQueryImpl implements TaskQuery {
    * Retrieves all task entities for the given IDs and validates that all requested IDs exist.
    * Throws ResourceNotFound if any are missing.
    * </p>
+   *
    * @param ids Collection of Task IDs
    * @return List of Task entities if all found
    * @throws ResourceNotFound if any task is not found
@@ -2238,11 +2272,12 @@ public class TaskQueryImpl implements TaskQuery {
    * Check and find tasks by project and a set of names.
    * </p>
    * <p>
-   * Retrieves all task info entities in the specified project with names in the given set.
-   * Throws ResourceNotFound if any name is not found.
+   * Retrieves all task info entities in the specified project with names in the given set. Throws
+   * ResourceNotFound if any name is not found.
    * </p>
+   *
    * @param projectId Project ID
-   * @param names Set of task names to find
+   * @param names     Set of task names to find
    * @return Map from task name to list of TaskInfo entities
    * @throws ResourceNotFound if any name is not found
    */
@@ -2270,11 +2305,12 @@ public class TaskQueryImpl implements TaskQuery {
    * Check and find tasks by sprint and a set of names.
    * </p>
    * <p>
-   * Retrieves all task info entities in the specified sprint with names in the given set.
-   * Throws ResourceNotFound if any name is not found.
+   * Retrieves all task info entities in the specified sprint with names in the given set. Throws
+   * ResourceNotFound if any name is not found.
    * </p>
+   *
    * @param sprintId Sprint ID
-   * @param names Set of task names to find
+   * @param names    Set of task names to find
    * @return Map from task name to list of TaskInfo entities
    * @throws ResourceNotFound if any name is not found
    */
@@ -2301,11 +2337,12 @@ public class TaskQueryImpl implements TaskQuery {
    * Check if all subtasks of a task are completed.
    * </p>
    * <p>
-   * Validates that all subtasks of the specified task have been completed.
-   * Throws an exception if any subtask is not completed, preventing parent task completion.
+   * Validates that all subtasks of the specified task have been completed. Throws an exception if
+   * any subtask is not completed, preventing parent task completion.
    * </p>
+   *
    * @param projectId Project ID
-   * @param id Task ID
+   * @param id        Task ID
    */
   @Override
   public void checkSubTasksIsCompleted(Long projectId, Long id) {
@@ -2321,11 +2358,12 @@ public class TaskQueryImpl implements TaskQuery {
    * Check that updating parent tasks does not create circular references.
    * </p>
    * <p>
-   * Validates that setting parent tasks does not create circular dependencies.
-   * Prevents infinite loops in task hierarchies by checking for circular references.
+   * Validates that setting parent tasks does not create circular dependencies. Prevents infinite
+   * loops in task hierarchies by checking for circular references.
    * </p>
+   *
    * @param projectId Project ID
-   * @param tasks List of tasks to check for circular references
+   * @param tasks     List of tasks to check for circular references
    */
   @Override
   public void checkUpdateParentNotCircular(Long projectId, List<Task> tasks) {
@@ -2344,9 +2382,10 @@ public class TaskQueryImpl implements TaskQuery {
    * Find direct subtasks of a task.
    * </p>
    * <p>
-   * Retrieves all direct subtasks of the specified task.
-   * Returns only immediate children, not nested subtasks.
+   * Retrieves all direct subtasks of the specified task. Returns only immediate children, not
+   * nested subtasks.
    * </p>
+   *
    * @param taskId Parent task ID
    * @return List of direct subtasks
    */
@@ -2371,11 +2410,12 @@ public class TaskQueryImpl implements TaskQuery {
    * Find all subtask information for multiple tasks.
    * </p>
    * <p>
-   * Efficiently retrieves all subtask information for multiple parent tasks.
-   * Uses batch processing to avoid N+1 query problems and includes nested subtasks.
+   * Efficiently retrieves all subtask information for multiple parent tasks. Uses batch processing
+   * to avoid N+1 query problems and includes nested subtasks.
    * </p>
+   *
    * @param projectId Project ID
-   * @param taskIds Collection of parent task IDs
+   * @param taskIds   Collection of parent task IDs
    * @return List of all subtask information
    */
   @Override
@@ -2515,11 +2555,12 @@ public class TaskQueryImpl implements TaskQuery {
    * Check that all requested task IDs exist in the database.
    * </p>
    * <p>
-   * Validates that all requested task IDs correspond to existing tasks.
-   * Throws an exception if any task ID does not exist, ensuring data integrity.
+   * Validates that all requested task IDs correspond to existing tasks. Throws an exception if any
+   * task ID does not exist, ensuring data integrity.
    * </p>
+   *
    * @param reqTaskIds List of requested task IDs
-   * @param taskDbs List of found tasks from database
+   * @param taskDbs    List of found tasks from database
    */
   @Override
   public void checkTaskExists(List<Long> reqTaskIds, List<Task> taskDbs) {
@@ -2536,9 +2577,10 @@ public class TaskQueryImpl implements TaskQuery {
    * Check that all tasks are in an open status.
    * </p>
    * <p>
-   * Validates that all tasks are in a modifiable state (not completed, canceled, etc.).
-   * Throws an exception if any task is not open, preventing modifications to closed tasks.
+   * Validates that all tasks are in a modifiable state (not completed, canceled, etc.). Throws an
+   * exception if any task is not open, preventing modifications to closed tasks.
    * </p>
+   *
    * @param taskDbs List of tasks to check
    */
   @Override
@@ -2554,12 +2596,13 @@ public class TaskQueryImpl implements TaskQuery {
    * Check if a task name already exists when adding a new task.
    * </p>
    * <p>
-   * Validates that the task name is unique within the project and sprint scope.
-   * Throws an exception if the name already exists, preventing duplicate task names.
+   * Validates that the task name is unique within the project and sprint scope. Throws an exception
+   * if the name already exists, preventing duplicate task names.
    * </p>
+   *
    * @param projectId Project ID
-   * @param sprintDb Sprint information
-   * @param name Task name to check
+   * @param sprintDb  Sprint information
+   * @param name      Task name to check
    */
   @Override
   public void checkAddNameExists(Long projectId, TaskSprint sprintDb, String name) {
@@ -2597,8 +2640,9 @@ public class TaskQueryImpl implements TaskQuery {
    * Validates that adding the specified number of tasks does not exceed the sprint's task quota.
    * Throws an exception if quota would be exceeded, preventing quota violations.
    * </p>
+   *
    * @param springId Sprint ID
-   * @param incr Number of tasks to add
+   * @param incr     Number of tasks to add
    */
   @Override
   public void checkQuota(Long springId, int incr) {
@@ -2616,9 +2660,10 @@ public class TaskQueryImpl implements TaskQuery {
    * Set favorite flags for a list of tasks.
    * </p>
    * <p>
-   * Efficiently loads and sets favorite status for multiple tasks to avoid N+1 query problems.
-   * Uses batch retrieval and mapping to set favorite flags for the current user.
+   * Efficiently loads and sets favorite status for multiple tasks to avoid N+1 query problems. Uses
+   * batch retrieval and mapping to set favorite flags for the current user.
    * </p>
+   *
    * @param tasks List of tasks to set favorite flags for
    */
   @Override
@@ -2648,9 +2693,10 @@ public class TaskQueryImpl implements TaskQuery {
    * Set follow flags for a list of tasks.
    * </p>
    * <p>
-   * Efficiently loads and sets follow status for multiple tasks to avoid N+1 query problems.
-   * Uses batch retrieval and mapping to set follow flags for the current user.
+   * Efficiently loads and sets follow status for multiple tasks to avoid N+1 query problems. Uses
+   * batch retrieval and mapping to set follow flags for the current user.
    * </p>
+   *
    * @param tasks List of tasks to set follow flags for
    */
   @Override
@@ -2680,9 +2726,10 @@ public class TaskQueryImpl implements TaskQuery {
    * Set current user roles for a list of tasks.
    * </p>
    * <p>
-   * Determines and sets the current user's role for each task based on project membership,
-   * task assignment, and user permissions. Includes roles like assignee, creator, and viewer.
+   * Determines and sets the current user's role for each task based on project membership, task
+   * assignment, and user permissions. Includes roles like assignee, creator, and viewer.
    * </p>
+   *
    * @param tasks List of tasks to set roles for
    */
   @Override
@@ -2739,6 +2786,7 @@ public class TaskQueryImpl implements TaskQuery {
    * Calculates and sets progress percentages for multiple tasks based on their completion status.
    * Handles various task states and calculates accurate progress metrics.
    * </p>
+   *
    * @param tasks List of tasks to set progress for
    */
   @Override
@@ -2782,9 +2830,11 @@ public class TaskQueryImpl implements TaskQuery {
    * Set progress information for a list of task info objects.
    * </p>
    * <p>
-   * Calculates and sets progress percentages for multiple task info objects based on their completion status.
-   * Handles various task states and calculates accurate progress metrics for lightweight task representations.
+   * Calculates and sets progress percentages for multiple task info objects based on their
+   * completion status. Handles various task states and calculates accurate progress metrics for
+   * lightweight task representations.
    * </p>
+   *
    * @param tasks List of task info objects to set progress for
    */
   @Override
@@ -2820,10 +2870,11 @@ public class TaskQueryImpl implements TaskQuery {
    * Assemble and send task modification notice events.
    * </p>
    * <p>
-   * Creates and sends notification events for task modifications to relevant users.
-   * Handles batch processing of multiple tasks and activities.
+   * Creates and sends notification events for task modifications to relevant users. Handles batch
+   * processing of multiple tasks and activities.
    * </p>
-   * @param tasksDb List of modified tasks
+   *
+   * @param tasksDb    List of modified tasks
    * @param activities List of related activities
    */
   @Override
@@ -2897,9 +2948,10 @@ public class TaskQueryImpl implements TaskQuery {
    * Assemble and send task assignee modification notice event.
    * </p>
    * <p>
-   * Creates and sends notification events when a task assignee is changed.
-   * Notifies both the previous and new assignees about the change.
+   * Creates and sends notification events when a task assignee is changed. Notifies both the
+   * previous and new assignees about the change.
    * </p>
+   *
    * @param taskDb Modified task
    */
   @Override
@@ -2946,15 +2998,16 @@ public class TaskQueryImpl implements TaskQuery {
    * Get task efficiency summaries for analysis.
    * </p>
    * <p>
-   * Retrieves task efficiency data for performance analysis and reporting.
-   * Supports filtering by project, sprint, assignee, and date range.
+   * Retrieves task efficiency data for performance analysis and reporting. Supports filtering by
+   * project, sprint, assignee, and date range.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
+   *
+   * @param projectId        Project ID
+   * @param sprintId         Optional sprint ID
    * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
-   * @param assigneeOrgType Assignee organization type
-   * @param assigneeOrgId Assignee organization ID
+   * @param createdDateEnd   End date for creation time filter
+   * @param assigneeOrgType  Assignee organization type
+   * @param assigneeOrgId    Assignee organization ID
    * @return List of task efficiency summaries
    */
   private List<TaskEfficiencySummary> getTaskEfficiencySummaries(Long projectId, Long sprintId,
@@ -2975,15 +3028,16 @@ public class TaskQueryImpl implements TaskQuery {
    * Get task creation summaries for analysis.
    * </p>
    * <p>
-   * Retrieves task creation data for performance analysis and reporting.
-   * Supports filtering by project, sprint, creator, and date range.
+   * Retrieves task creation data for performance analysis and reporting. Supports filtering by
+   * project, sprint, creator, and date range.
    * </p>
-   * @param projectId Project ID
-   * @param sprintId Optional sprint ID
+   *
+   * @param projectId        Project ID
+   * @param sprintId         Optional sprint ID
    * @param createdDateStart Start date for creation time filter
-   * @param createdDateEnd End date for creation time filter
-   * @param creatorOrgType Creator organization type
-   * @param creatorOrgId Creator organization ID
+   * @param createdDateEnd   End date for creation time filter
+   * @param creatorOrgType   Creator organization type
+   * @param creatorOrgId     Creator organization ID
    * @return List of task creation summaries
    */
   private List<TaskEfficiencySummary> getTaskCreatedSummaries(Long projectId, Long sprintId,
@@ -3028,6 +3082,7 @@ public class TaskQueryImpl implements TaskQuery {
    * <p>
    * Static utility method to convert a TaskSprint entity to its summary representation.
    * </p>
+   *
    * @param sprintDb TaskSprint entity
    * @return TaskSprintSummary representation
    */
@@ -3043,6 +3098,7 @@ public class TaskQueryImpl implements TaskQuery {
    * <p>
    * Static utility method to convert a list of TaskInfo entities to their summary representations.
    * </p>
+   *
    * @param tasks List of TaskInfo entities
    * @return List of TaskSummary representations
    */
@@ -3059,6 +3115,7 @@ public class TaskQueryImpl implements TaskQuery {
    * <p>
    * Static utility method to convert a Task entity to its detailed summary representation.
    * </p>
+   *
    * @param task Task entity
    * @return TaskDetailSummary representation
    */
@@ -3074,6 +3131,7 @@ public class TaskQueryImpl implements TaskQuery {
    * <p>
    * Retrieves a task entity by its ID and throws ResourceNotFound if not found.
    * </p>
+   *
    * @param id Task ID
    * @return Task entity if found
    * @throws ResourceNotFound if the task is not found

@@ -130,7 +130,8 @@ public class IndicatorStabilityRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "StabilityData test indicator list retrieved successfully")})
   @GetMapping("/stability")
-  public ApiLocaleResult<PageResult<StabilityListVo>> list(@Valid @ParameterObject StabilityFindDto dto) {
+  public ApiLocaleResult<PageResult<StabilityListVo>> list(
+      @Valid @ParameterObject StabilityFindDto dto) {
     return ApiLocaleResult.success(indicatorStabilityFacade.list(dto));
   }
 

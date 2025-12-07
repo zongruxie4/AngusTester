@@ -29,18 +29,14 @@ import static cloud.xcan.angus.spec.locale.MessageHolder.message;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
-import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.agent.message.runner.RunnerRunVo;
 import cloud.xcan.angus.api.commonlink.TesterConstant;
 import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
-import cloud.xcan.angus.api.commonlink.setting.SettingKey;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
-import cloud.xcan.angus.api.commonlink.setting.tenant.SettingTenant;
 import cloud.xcan.angus.api.enums.NodeRole;
-import cloud.xcan.angus.api.enums.NoticeType;
 import cloud.xcan.angus.api.manager.SettingManager;
 import cloud.xcan.angus.api.manager.SettingTenantManager;
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
@@ -59,7 +55,6 @@ import cloud.xcan.angus.core.tester.application.query.exec.ExecSampleExtcQuery;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecSampleQuery;
 import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
 import cloud.xcan.angus.core.tester.domain.config.node.Node;
-import cloud.xcan.angus.core.tester.domain.config.tenant.event.TesterEvent;
 import cloud.xcan.angus.core.tester.domain.exec.Exec;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfoListRepo;
@@ -100,13 +95,12 @@ import org.springframework.data.domain.PageRequest;
 /**
  * Implementation of ExecQuery interface for managing execution queries and operations.
  * <p>
- * This class provides comprehensive functionality for querying execution information,
- * managing quotas, validating permissions, and setting execution details. It handles
- * both regular executions and trial executions with different quota constraints.
+ * This class provides comprehensive functionality for querying execution information, managing
+ * quotas, validating permissions, and setting execution details. It handles both regular executions
+ * and trial executions with different quota constraints.
  * <p>
- * The implementation includes methods for finding executions by various criteria,
- * checking quotas and permissions, setting execution metadata, and managing
- * execution lifecycle operations.
+ * The implementation includes methods for finding executions by various criteria, checking quotas
+ * and permissions, setting execution metadata, and managing execution lifecycle operations.
  * <p>
  * Supports summary query registration for analytics and reporting purposes.
  */
@@ -142,12 +136,11 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Retrieves detailed execution information by ID.
    * <p>
-   * Finds the execution by ID and populates it with complete information including
-   * parsed script content, node information, sample content, script names, and
-   * operation permissions.
+   * Finds the execution by ID and populates it with complete information including parsed script
+   * content, node information, sample content, script names, and operation permissions.
    * <p>
-   * The method performs comprehensive data enrichment to provide a complete
-   * execution view for detailed analysis and management.
+   * The method performs comprehensive data enrichment to provide a complete execution view for
+   * detailed analysis and management.
    *
    * @param id the execution ID to retrieve details for
    * @return Exec object with complete execution information
@@ -180,14 +173,13 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Retrieves execution information for a collection of execution IDs.
    * <p>
-   * Finds execution information for the specified IDs and optionally joins
-   * sample summary data. This method is designed for sharding scenarios
-   * where it may be invoked by internal APIs.
+   * Finds execution information for the specified IDs and optionally joins sample summary data.
+   * This method is designed for sharding scenarios where it may be invoked by internal APIs.
    * <p>
-   * The joinSampleSummary parameter controls whether to include detailed
-   * sample summary information in the results.
+   * The joinSampleSummary parameter controls whether to include detailed sample summary information
+   * in the results.
    *
-   * @param ids collection of execution IDs to retrieve information for
+   * @param ids               collection of execution IDs to retrieve information for
    * @param joinSampleSummary whether to include sample summary data
    * @return List of ExecInfo objects with execution information
    */
@@ -209,15 +201,15 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Retrieves execution information by source type and resource IDs.
    * <p>
-   * Finds execution information for the specified resource type and IDs,
-   * optionally joining sample summary data. This method supports queries
-   * across different execution sources like scripts, scenarios, or APIs.
+   * Finds execution information for the specified resource type and IDs, optionally joining sample
+   * summary data. This method supports queries across different execution sources like scripts,
+   * scenarios, or APIs.
    * <p>
-   * The joinSampleSummary parameter controls whether to include detailed
-   * sample summary information in the results.
+   * The joinSampleSummary parameter controls whether to include detailed sample summary information
+   * in the results.
    *
-   * @param resourceType the type of resource (script, scenario, etc.)
-   * @param resourceIds set of resource IDs to find executions for
+   * @param resourceType      the type of resource (script, scenario, etc.)
+   * @param resourceIds       set of resource IDs to find executions for
    * @param joinSampleSummary whether to include sample summary data
    * @return List of ExecInfo objects with execution information
    */
@@ -239,8 +231,8 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Retrieves the raw script content for an execution.
    * <p>
-   * Finds the execution by ID and returns the unparsed script content.
-   * This method is useful for debugging or when raw script access is needed.
+   * Finds the execution by ID and returns the unparsed script content. This method is useful for
+   * debugging or when raw script access is needed.
    *
    * @param id the execution ID to retrieve script content for
    * @return the raw script content as a string
@@ -265,9 +257,8 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Finds server information from HTTP plugin executions.
    * <p>
-   * Extracts server information from HTTP plugin executions by parsing
-   * the script content and extracting server configurations from both
-   * configuration variables and pipeline elements.
+   * Extracts server information from HTTP plugin executions by parsing the script content and
+   * extracting server configurations from both configuration variables and pipeline elements.
    * <p>
    * Only supports HTTP plugin executions and returns distinct server URLs.
    *
@@ -321,18 +312,17 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Lists executions with pagination and search capabilities.
    * <p>
-   * Provides paginated execution listing with support for both regular
-   * database queries and full-text search operations. The method handles
-   * project-based filtering and enriches results with script names,
-   * operation permissions, and sample data.
+   * Provides paginated execution listing with support for both regular database queries and
+   * full-text search operations. The method handles project-based filtering and enriches results
+   * with script names, operation permissions, and sample data.
    * <p>
-   * Supports different search modes based on the fullTextSearch parameter
-   * and can apply additional matching criteria for refined results.
+   * Supports different search modes based on the fullTextSearch parameter and can apply additional
+   * matching criteria for refined results.
    *
-   * @param spec the search specification for filtering executions
-   * @param pageable pagination parameters
+   * @param spec           the search specification for filtering executions
+   * @param pageable       pagination parameters
    * @param fullTextSearch whether to use full-text search
-   * @param match additional matching criteria for search
+   * @param match          additional matching criteria for search
    * @return Page of ExecInfo objects with execution information
    */
   @SneakyThrow0(level = "WARN") // Check exec quota in running
@@ -366,8 +356,8 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Finds executions by node ID.
    * <p>
-   * Retrieves all executions associated with a specific node ID.
-   * This method is useful for node-specific execution analysis and management.
+   * Retrieves all executions associated with a specific node ID. This method is useful for
+   * node-specific execution analysis and management.
    *
    * @param nodeId the node ID to find executions for
    * @return List of ExecInfo objects for the specified node
@@ -386,12 +376,12 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Finds execution by script ID, type, and source.
    * <p>
-   * Searches for executions based on script ID and filters by script type
-   * and source. For API sources, returns the first execution found.
-   * For other sources, filters by the specified script type.
+   * Searches for executions based on script ID and filters by script type and source. For API
+   * sources, returns the first execution found. For other sources, filters by the specified script
+   * type.
    *
-   * @param scriptId the script ID to search for
-   * @param scriptType the script type to filter by
+   * @param scriptId     the script ID to search for
+   * @param scriptType   the script type to filter by
    * @param scriptSource the script source to filter by
    * @return Exec object if found, null otherwise
    */
@@ -421,7 +411,7 @@ public class ExecQueryImpl implements ExecQuery {
    * Finds execution information by source type and resource IDs.
    *
    * @param resourceType the type of resource
-   * @param resourceIds set of resource IDs to find executions for
+   * @param resourceIds  set of resource IDs to find executions for
    * @return List of ExecInfo objects for the specified resources
    */
   @Override
@@ -512,8 +502,8 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Checks if an execution is not currently running.
    * <p>
-   * Validates that the execution status is not in a running state.
-   * Throws an exception if the execution is already running.
+   * Validates that the execution status is not in a running state. Throws an exception if the
+   * execution is already running.
    *
    * @param exec the execution to check
    * @throws BizException if the execution is already running
@@ -527,8 +517,8 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Checks if an execution is not in a stopped state.
    * <p>
-   * Validates that the execution status is not in a wide stopped state.
-   * Throws an exception if the execution is already stopped.
+   * Validates that the execution status is not in a wide stopped state. Throws an exception if the
+   * execution is already stopped.
    *
    * @param exec the execution information to check
    * @throws BizException if the execution is already stopped
@@ -542,16 +532,16 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Validates node configuration and availability.
    * <p>
-   * Checks that configured nodes exist and have the correct role types.
-   * Validates both available nodes (for execution) and application nodes.
+   * Checks that configured nodes exist and have the correct role types. Validates both available
+   * nodes (for execution) and application nodes.
    * <p>
-   * For trial executions, this validation may be bypassed or modified
-   * based on trial-specific requirements.
+   * For trial executions, this validation may be bypassed or modified based on trial-specific
+   * requirements.
    *
    * @param configuration the configuration containing node selectors
-   * @param trial whether this is a trial execution
+   * @param trial         whether this is a trial execution
    * @throws ResourceNotFound if configured nodes do not exist
-   * @throws BizException if nodes do not have the required roles
+   * @throws BizException     if nodes do not have the required roles
    */
   @Override
   public void checkNodeValid(Configuration configuration, boolean trial) {
@@ -583,9 +573,8 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Checks if the current user has permission to operate on an execution.
    * <p>
-   * Validates that the current user is either an admin, the execution creator,
-   * or has been granted operation permissions. For system users or admin users,
-   * permission checks are bypassed.
+   * Validates that the current user is either an admin, the execution creator, or has been granted
+   * operation permissions. For system users or admin users, permission checks are bypassed.
    * <p>
    * Throws a BizException if the user lacks permission to operate on the execution.
    *
@@ -605,9 +594,8 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Checks if the current user has permission to operate on execution information.
    * <p>
-   * Similar to checkPermission but operates on ExecInfo objects.
-   * Validates that the current user is either an admin, the execution creator,
-   * or has been granted operation permissions.
+   * Similar to checkPermission but operates on ExecInfo objects. Validates that the current user is
+   * either an admin, the execution creator, or has been granted operation permissions.
    * <p>
    * Throws a BizException if the user lacks permission to operate on the execution.
    *
@@ -627,12 +615,12 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Checks if adding the specified increment would exceed the tenant's execution quota.
    * <p>
-   * For trial executions, checks against free execution limits.
-   * For regular executions, validates against tenant-specific quota limits.
+   * For trial executions, checks against free execution limits. For regular executions, validates
+   * against tenant-specific quota limits.
    * <p>
    * Only performs the check if the increment is greater than 0.
    *
-   * @param incr the increment to check against the quota
+   * @param incr  the increment to check against the quota
    * @param trial whether this is a trial execution
    * @throws QuotaException if the quota would be exceeded
    */
@@ -656,13 +644,12 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Checks thread and node quota limits for a configuration.
    * <p>
-   * Validates that the configuration's thread count and node count do not
-   * exceed tenant quota limits. For trial executions, this validation
-   * may be bypassed or modified.
+   * Validates that the configuration's thread count and node count do not exceed tenant quota
+   * limits. For trial executions, this validation may be bypassed or modified.
    * <p>
    * Only performs validation for non-trial executions with valid configurations.
    *
-   * @param trial whether this is a trial execution
+   * @param trial         whether this is a trial execution
    * @param configuration the configuration to validate
    * @throws QuotaException if quota limits would be exceeded
    */
@@ -685,10 +672,10 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Checks concurrent task quota with error handling.
    * <p>
-   * Wrapper method that uses SneakyThrow0 to handle quota checking errors
-   * gracefully. Delegates to the actual quota checking logic.
+   * Wrapper method that uses SneakyThrow0 to handle quota checking errors gracefully. Delegates to
+   * the actual quota checking logic.
    *
-   * @param incr the increment to check against the concurrent task quota
+   * @param incr  the increment to check against the concurrent task quota
    * @param trial whether this is a trial execution
    */
   @SneakyThrow0(level = "WARN")
@@ -702,10 +689,10 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Checks concurrent task quota without error handling.
    * <p>
-   * Direct quota checking method that performs the actual validation
-   * without additional error handling wrappers.
+   * Direct quota checking method that performs the actual validation without additional error
+   * handling wrappers.
    *
-   * @param incr the increment to check against the concurrent task quota
+   * @param incr  the increment to check against the concurrent task quota
    * @param trial whether this is a trial execution
    */
   @Override
@@ -888,7 +875,7 @@ public class ExecQueryImpl implements ExecQuery {
    * Retrieves and sets sample contents for the execution.
    *
    * @param exec the execution to update
-   * @param id the execution ID
+   * @param id   the execution ID
    */
   @Override
   public void setSampleContent(Exec exec, Long id) {
@@ -933,7 +920,7 @@ public class ExecQueryImpl implements ExecQuery {
    * <p>
    * Optionally sets the latest total merge sample for each execution info.
    *
-   * @param execs the list of execution info objects to update
+   * @param execs             the list of execution info objects to update
    * @param joinSampleSummary whether to include sample summary data
    */
   @Override
@@ -953,9 +940,8 @@ public class ExecQueryImpl implements ExecQuery {
   /**
    * Parses and sets the script content for an execution.
    * <p>
-   * Deserializes the script content from YAML format and sets the configuration,
-   * task, and pipeline target mappings. Handles cases where pipeline names
-   * might be empty for single task executions.
+   * Deserializes the script content from YAML format and sets the configuration, task, and pipeline
+   * target mappings. Handles cases where pipeline names might be empty for single task executions.
    * <p>
    * If parsing fails, throws a SysException with the error details.
    *

@@ -15,13 +15,13 @@ import org.springframework.data.domain.PageRequest;
 
 /**
  * Implementation of API favourite query operations for bookmark management.
- * 
+ *
  * <p>This class provides functionality for querying and managing
  * API favourites, including favourite listing, counting, and search.</p>
- * 
+ *
  * <p>It handles user-specific favourite management with project-based
  * filtering and name-based search capabilities.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>API favourite listing with pagination</li>
@@ -38,13 +38,13 @@ public class ApisFavouriteQueryImpl implements ApisFavouriteQuery {
 
   /**
    * Lists API favourites with optional project and name filtering.
-   * 
+   *
    * <p>This method retrieves API favourites for the current user with support
    * for project-based filtering and name-based search.</p>
-   * 
+   *
    * @param projectId the project ID to filter favourites by (can be null for all projects)
-   * @param apisName the API name to search for (can be null for all APIs)
-   * @param pageable the pagination and sorting parameters
+   * @param apisName  the API name to search for (can be null for all APIs)
+   * @param pageable  the pagination and sorting parameters
    * @return a page of API favourites for the current user
    */
   @Override
@@ -62,10 +62,10 @@ public class ApisFavouriteQueryImpl implements ApisFavouriteQuery {
 
   /**
    * Counts API favourites for the current user with optional project filtering.
-   * 
+   *
    * <p>This method returns the total number of API favourites for the current user,
    * optionally filtered by project.</p>
-   * 
+   *
    * @param projectId the project ID to filter count by (can be null for all projects)
    * @return the total number of API favourites for the current user
    */

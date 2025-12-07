@@ -32,14 +32,14 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Command implementation for scenario authorization management operations.
  * <p>
- * Provides comprehensive authorization operations for scenarios including creation, 
- * modification, deletion, and status management.
+ * Provides comprehensive authorization operations for scenarios including creation, modification,
+ * deletion, and status management.
  * <p>
- * Implements business logic validation, permission checks, duplicate prevention, 
- * and activity logging for all authorization operations.
+ * Implements business logic validation, permission checks, duplicate prevention, and activity
+ * logging for all authorization operations.
  * <p>
- * Supports creator authorization management, authorization control enablement, 
- * and comprehensive activity tracking.
+ * Supports creator authorization management, authorization control enablement, and comprehensive
+ * activity tracking.
  */
 @Biz
 public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements ScenarioAuthCmd {
@@ -60,11 +60,11 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
   /**
    * Adds a new authorization for a scenario.
    * <p>
-   * Performs comprehensive validation including scenario existence, user permissions, 
-   * creator authorization restrictions, and duplicate prevention.
+   * Performs comprehensive validation including scenario existence, user permissions, creator
+   * authorization restrictions, and duplicate prevention.
    * <p>
-   * Prevents creators from being granted additional authorizations and logs 
-   * authorization grant activity for audit trail purposes.
+   * Prevents creators from being granted additional authorizations and logs authorization grant
+   * activity for audit trail purposes.
    * <p>
    * Ensures proper authorization setup and validation.
    */
@@ -79,18 +79,18 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
       protected void checkParams() {
         // Ensure the scenario exists in database
         scenarioDb = scenarioQuery.checkAndFind0(auth.getScenarioId());
-        
+
         // Prevent creators from being granted additional authorizations
         BizAssert.assertTrue(!scenarioDb.getCreatedBy().equals(auth.getAuthObjectId()),
             FORBID_AUTH_CREATOR_CODE, FORBID_AUTH_CREATOR);
-        
+
         // Check user permission to grant scenario authorizations
         scenarioAuthQuery.checkGrantAuth(getUserId(), auth.getScenarioId());
-        
+
         // Ensure the authorization object exists and get its name
         authObjectName = commonQuery.checkAndGetAuthName(auth.getAuthObjectType(),
             auth.getAuthObjectId());
-        
+
         // Prevent duplicate authorizations for the same object
         scenarioAuthQuery.checkRepeatAuth(auth.getScenarioId(),
             auth.getAuthObjectId(), auth.getAuthObjectType());
@@ -103,7 +103,7 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
           activityCmd.add(toActivity(SCENARIO, scenarioDb,
               ActivityType.AUTH, authObjectName));
         }
-        
+
         // Save authorization to database
         return insert(auth, "authObjectId");
       }
@@ -113,11 +113,11 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
   /**
    * Replaces (updates) an existing authorization for a scenario.
    * <p>
-   * Validates authorization existence, user permissions, and creator restrictions 
-   * before updating authorization details.
+   * Validates authorization existence, user permissions, and creator restrictions before updating
+   * authorization details.
    * <p>
-   * Prevents modification of creator authorizations and logs modification activity 
-   * for audit trail purposes.
+   * Prevents modification of creator authorizations and logs modification activity for audit trail
+   * purposes.
    * <p>
    * Updates authorization permissions while maintaining audit trail.
    */
@@ -133,17 +133,17 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
       protected void checkParams() {
         // Ensure the authorization exists in database
         authDb = scenarioAuthQuery.checkAndFind(auth.getId());
-        
+
         // Ensure the scenario exists in database
         scenarioDb = scenarioQuery.checkAndFind0(authDb.getScenarioId());
-        
+
         // Prevent modification of creator authorizations
         BizAssert.assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE,
             FORBID_AUTH_CREATOR);
-        
+
         // Check user permission to modify scenario authorizations
         scenarioAuthQuery.checkGrantAuth(getUserId(), authDb.getScenarioId());
-        
+
         // Ensure the authorization object exists and get its name
         authObjectName = commonQuery.checkAndGetAuthName(authDb.getAuthObjectType(),
             authDb.getAuthObjectId());
@@ -167,11 +167,11 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
   /**
    * Deletes an authorization for a scenario.
    * <p>
-   * Validates authorization existence, user permissions, and creator restrictions 
-   * before removing the authorization.
+   * Validates authorization existence, user permissions, and creator restrictions before removing
+   * the authorization.
    * <p>
-   * Prevents deletion of creator authorizations and logs cancellation activity 
-   * for audit trail purposes.
+   * Prevents deletion of creator authorizations and logs cancellation activity for audit trail
+   * purposes.
    * <p>
    * Handles cases where authorization objects may have been deleted.
    */
@@ -186,14 +186,14 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
       protected void checkParams() {
         // Ensure the authorization exists in database
         authDb = scenarioAuthQuery.checkAndFind(scenarioId);
-        
+
         // Prevent deletion of creator authorizations
         BizAssert.assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE,
             FORBID_AUTH_CREATOR);
-        
+
         // Ensure the scenario exists in database
         scenarioDb = scenarioQuery.checkAndFind0(authDb.getScenarioId());
-        
+
         // Check user permission to delete scenario authorizations
         scenarioAuthQuery.checkGrantAuth(getUserId(), authDb.getScenarioId());
       }
@@ -223,8 +223,8 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
   /**
    * Enables or disables authorization control for a scenario.
    * <p>
-   * Validates scenario existence and user permissions before updating 
-   * authorization control status.
+   * Validates scenario existence and user permissions before updating authorization control
+   * status.
    * <p>
    * Controls whether authorization checks are enforced for the scenario.
    * <p>
@@ -240,7 +240,7 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
       protected void checkParams() {
         // Ensure the scenario exists in database
         scenarioDb = scenarioQuery.checkAndFind0(id);
-        
+
         // Check user permission to manage scenario authorizations
         scenarioAuthQuery.checkGrantAuth(getUserId(), id);
       }

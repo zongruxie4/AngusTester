@@ -87,8 +87,8 @@ public class ApisBasicInfo extends TenantAuditingEntity<ApisBasicInfo, Long>
   public HttpMethod method;
 
   /**
-   * Note: The available api servers {@link Apis#getAvailableServers()} source {@link
-   * ApiServerSource} includes the current request server, api servers, and parent services
+   * Note: The available api servers {@link Apis#getAvailableServers()} source
+   * {@link ApiServerSource} includes the current request server, api servers, and parent services
    * servers.
    *
    * @see Operation#getServers()

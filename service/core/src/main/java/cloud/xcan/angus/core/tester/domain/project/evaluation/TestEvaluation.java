@@ -25,7 +25,8 @@ import org.hibernate.annotations.Type;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class TestEvaluation extends TenantAuditingEntity<TestEvaluation, Long> implements ActivityResource {
+public class TestEvaluation extends TenantAuditingEntity<TestEvaluation, Long> implements
+    ActivityResource {
 
   @Id
   private Long id;

@@ -37,7 +37,8 @@ public class FuncTrashRest {
   @Operation(summary = "Clear functional test trash item",
       description = "Permanently remove a specific item from functional test recycle bin with no recovery option",
       operationId = "func:trash:clear")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Functional test trash item cleared successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Functional test trash item cleared successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
   public void clear(
@@ -48,7 +49,8 @@ public class FuncTrashRest {
   @Operation(summary = "Clear all functional test trash",
       description = "Permanently remove all items from functional test recycle bin for a specific project",
       operationId = "func:trash:clear:all")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "All functional test trash cleared successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "All functional test trash cleared successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void clearAll(
@@ -59,7 +61,8 @@ public class FuncTrashRest {
   @Operation(summary = "Restore functional test item from trash",
       description = "Recover a specific item from functional test recycle bin to its original location",
       operationId = "func:trash:back")
-  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Functional test item restored successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Functional test item restored successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/back")
   public ApiLocaleResult<?> back(
@@ -71,7 +74,8 @@ public class FuncTrashRest {
   @Operation(summary = "Restore all functional test items from trash",
       description = "Recover all items from functional test recycle bin for a specific project to their original locations",
       operationId = "func:trash:back:all")
-  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "All functional test items restored successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "All functional test items restored successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/back")
   public ApiLocaleResult<?> backAll(

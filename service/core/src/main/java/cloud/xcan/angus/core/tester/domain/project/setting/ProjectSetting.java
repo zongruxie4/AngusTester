@@ -20,8 +20,9 @@ public class ProjectSetting {
   @Schema(description = "Workload evaluation method, default is `STORY_POINT`", example = "STORY_POINT")
   private EvalWorkloadMethod evalWorkloadMethod = EvalWorkloadMethod.STORY_POINT;
 
-  @Schema(description = "Whether to enable data permission control, if enabled, access to the corresponding business data will only be allowed after authorization,"
-      + " default is `false`", example = "false")
+  @Schema(description =
+      "Whether to enable data permission control, if enabled, access to the corresponding business data will only be allowed after authorization,"
+          + " default is `false`", example = "false")
   private boolean enableDataAuth = false;
 
 }

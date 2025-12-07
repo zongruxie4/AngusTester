@@ -65,7 +65,8 @@ import org.springframework.web.multipart.MultipartFile;
  * Command implementation for managing datasets.
  * <p>
  * Provides methods for adding, updating, replacing, cloning, importing, and deleting datasets.
- * Handles permission checks, name uniqueness, quota validation, activity logging, and batch operations.
+ * Handles permission checks, name uniqueness, quota validation, activity logging, and batch
+ * operations.
  */
 @Slf4j
 @Biz
@@ -85,8 +86,8 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
   /**
    * Add a new dataset.
    * <p>
-   * Validates project membership, required parameters, name uniqueness, and tenant quota.
-   * Inserts the dataset and logs the creation activity.
+   * Validates project membership, required parameters, name uniqueness, and tenant quota. Inserts
+   * the dataset and logs the creation activity.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -119,7 +120,8 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
   /**
    * Update an existing dataset.
    * <p>
-   * Validates dataset existence, project ID, and name uniqueness. Updates the dataset and logs the update activity.
+   * Validates dataset existence, project ID, and name uniqueness. Updates the dataset and logs the
+   * update activity.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -175,7 +177,8 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
   /**
    * Clone a batch of datasets.
    * <p>
-   * Validates dataset existence, clones datasets with unique names, inserts them, and logs clone activities.
+   * Validates dataset existence, clones datasets with unique names, inserts them, and logs clone
+   * activities.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -212,7 +215,8 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
   /**
    * Import datasets from content or file.
    * <p>
-   * Validates project membership and file presence, parses content, inserts datasets, and logs import activities.
+   * Validates project membership and file presence, parses content, inserts datasets, and logs
+   * import activities.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -314,7 +318,8 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
   /**
    * Parse datasets from script content.
    * <p>
-   * Parses JSON or YAML content, validates dataset structure, handles duplicates according to strategy, and returns valid datasets.
+   * Parses JSON or YAML content, validates dataset structure, handles duplicates according to
+   * strategy, and returns valid datasets.
    */
   private @NotNull List<Dataset> parseVariablesFromScript(Long projectId,
       StrategyWhenDuplicated strategyWhenDuplicated, String finalContent) {
@@ -357,6 +362,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
   /**
    * Get the repository for Dataset entity.
    * <p>
+   *
    * @return the DatasetRepo instance
    */
   @Override

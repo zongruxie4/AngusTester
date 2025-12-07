@@ -35,7 +35,7 @@ public class UnplannedWorkCount implements UnplannedWorkCountBase {
 
   @Schema(description = "Daily processed average workload")
   protected double dailyProcessedWorkload;
-  @Schema(description="Unplanned workload completion time")
+  @Schema(description = "Unplanned workload completion time")
   protected double unplannedWorkloadProcessingTime;
 
   public double calcUnplannedRate() {

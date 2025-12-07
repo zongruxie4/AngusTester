@@ -52,6 +52,7 @@ public class ApisFollowCmdImpl extends CommCmd<ApisFollow, Long> implements Apis
    * <p>
    * Validates API existence, permission, and duplicate, inserts follow, and logs the activity.
    * </p>
+   *
    * @param follow API follow to add
    * @return ID key of the created follow
    */
@@ -79,7 +80,7 @@ public class ApisFollowCmdImpl extends CommCmd<ApisFollow, Long> implements Apis
       protected IdKey<Long, Object> process() {
         // Set project ID from API information
         follow.setProjectId(apisDb.getProjectId());
-        
+
         // Insert the follow record
         IdKey<Long, Object> idKey = insert(follow);
 
@@ -143,6 +144,7 @@ public class ApisFollowCmdImpl extends CommCmd<ApisFollow, Long> implements Apis
   /**
    * Get the repository for ApisFollow entity.
    * <p>
+   *
    * @return the ApisFollowRepo instance
    */
   @Override

@@ -26,13 +26,13 @@ import org.springframework.data.domain.PageRequest;
 
 /**
  * Implementation of API trash query operations for deleted API management.
- * 
+ *
  * <p>This class provides comprehensive functionality for querying and managing
  * deleted APIs in trash, including trash listing, pagination, search, and restoration.</p>
- * 
+ *
  * <p>It handles deleted API lifecycle management, permission validation,
  * and user-specific trash access with proper security controls.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>API trash listing and count queries with pagination</li>
@@ -43,7 +43,7 @@ import org.springframework.data.domain.PageRequest;
  *   <li>Business operation permission validation (back/clear)</li>
  *   <li>Admin privilege handling for trash operations</li>
  * </ul></p>
- * 
+ *
  * @author XiaoLong Liu
  */
 @Biz
@@ -60,10 +60,10 @@ public class ApisTrashQueryImpl implements ApisTrashQuery {
 
   /**
    * Counts deleted APIs in trash with optional project filtering.
-   * 
+   *
    * <p>This method returns the total number of deleted APIs in trash,
    * optionally filtered by project ID.</p>
-   * 
+   *
    * @param projectId the project ID to filter count by (can be null for all projects)
    * @return the total number of deleted APIs in trash
    */
@@ -82,17 +82,17 @@ public class ApisTrashQueryImpl implements ApisTrashQuery {
 
   /**
    * Lists deleted APIs in trash with pagination, filtering, and optional full-text search.
-   * 
+   *
    * <p>This method retrieves deleted APIs from trash based on specification criteria
    * with support for pagination and optional full-text search capabilities.</p>
-   * 
+   *
    * <p>The method validates project member permissions and enriches trash data
    * with user information for enhanced display.</p>
-   * 
-   * @param spec the specification for filtering trash items
-   * @param pageable the pagination and sorting parameters
+   *
+   * @param spec           the specification for filtering trash items
+   * @param pageable       the pagination and sorting parameters
    * @param fullTextSearch whether to use full-text search
-   * @param match the full-text search match fields
+   * @param match          the full-text search match fields
    * @return a page of deleted APIs in trash with enriched data
    */
   @Override
@@ -126,25 +126,25 @@ public class ApisTrashQueryImpl implements ApisTrashQuery {
 
   /**
    * Finds trash item for business operations with permission validation.
-   * 
+   *
    * <p>This method retrieves a trash item and validates user permissions
    * for specific business operations (BACK or CLEAR).</p>
-   * 
+   *
    * <p>The method enforces that only the user who deleted the item or
    * admin users can perform business operations on trash items.</p>
-   * 
-   * @param id the trash item ID to find
+   *
+   * @param id  the trash item ID to find
    * @param biz the business operation type (BACK or CLEAR)
    * @return the trash item if found and authorized
    * @throws ResourceNotFound if the trash item is not found
-   * @throws BizException if user lacks permission for the business operation
+   * @throws BizException     if user lacks permission for the business operation
    */
   @Override
   public ApisTrash findMyTrashForBiz(Long id, String biz) {
     // Retrieve trash item or throw not found exception
     ApisTrash trashDb = apisTrashRepo.findById(id)
         .orElseThrow(() -> ResourceNotFound.of(id, "ApisTrash"));
-    
+
     // Validate user permissions for business operations
     if (!isAdmin() && ObjectUtils.notEqual(trashDb.getDeletedBy(), getUserId())) {
       if ("BACK".equals(biz)) {

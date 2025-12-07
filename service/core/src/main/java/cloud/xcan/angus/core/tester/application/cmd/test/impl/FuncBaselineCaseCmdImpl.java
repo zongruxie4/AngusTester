@@ -31,8 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
  * Handles permission checks, baseline status validation, and version management.
  * </p>
  * <p>
- * Key features include baseline case association, establishment workflow, and version
- * increment management for functional test cases.
+ * Key features include baseline case association, establishment workflow, and version increment
+ * management for functional test cases.
  * </p>
  */
 @Biz
@@ -57,11 +57,12 @@ public class FuncBaselineCaseCmdImpl extends CommCmd<FuncBaselineCase, Long> imp
    * Add cases to a functional baseline.
    * </p>
    * <p>
-   * Checks baseline existence, status, plan consistency, and permission. Adds case IDs to the baseline.
-   * Validates that the baseline is not established and ensures proper authorization.
+   * Checks baseline existence, status, plan consistency, and permission. Adds case IDs to the
+   * baseline. Validates that the baseline is not established and ensures proper authorization.
    * </p>
+   *
    * @param baselineId the ID of the baseline
-   * @param caseIds the set of case IDs to add
+   * @param caseIds    the set of case IDs to add
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -100,10 +101,11 @@ public class FuncBaselineCaseCmdImpl extends CommCmd<FuncBaselineCase, Long> imp
    * Establish a functional baseline from given cases.
    * </p>
    * <p>
-   * Inserts baseline cases and increments version for the specified case IDs.
-   * Creates baseline case records and updates case versions for tracking.
+   * Inserts baseline cases and increments version for the specified case IDs. Creates baseline case
+   * records and updates case versions for tracking.
    * </p>
-   * @param caseIds the set of case IDs to establish as baseline
+   *
+   * @param caseIds       the set of case IDs to establish as baseline
    * @param baselineCases the list of baseline case details
    */
   @Override
@@ -119,11 +121,12 @@ public class FuncBaselineCaseCmdImpl extends CommCmd<FuncBaselineCase, Long> imp
    * Delete cases from a functional baseline.
    * </p>
    * <p>
-   * Checks baseline existence, status, plan consistency, and permission. Removes case IDs from the baseline.
-   * Validates that the baseline is not established and ensures proper authorization.
+   * Checks baseline existence, status, plan consistency, and permission. Removes case IDs from the
+   * baseline. Validates that the baseline is not established and ensures proper authorization.
    * </p>
+   *
    * @param baselineId the ID of the baseline
-   * @param caseIds the set of case IDs to delete
+   * @param caseIds    the set of case IDs to delete
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -160,6 +163,7 @@ public class FuncBaselineCaseCmdImpl extends CommCmd<FuncBaselineCase, Long> imp
   /**
    * Get the repository for FuncBaselineCase entity.
    * <p>
+   *
    * @return the FuncBaselineCaseRepo instance
    */
   @Override

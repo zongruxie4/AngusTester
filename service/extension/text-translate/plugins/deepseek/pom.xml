@@ -39,7 +39,9 @@
   <properties>
     <plugin.name>DeepSeekTextTranslatePlugin</plugin.name>
     <plugin.id>${project.artifactId}</plugin.id>
-    <plugin.class>cloud.xcan.angus.extension.angustester.deepseek.plugin.DeepSeekTextTranslatePlugin</plugin.class>
+    <plugin.class>
+      cloud.xcan.angus.extension.angustester.deepseek.plugin.DeepSeekTextTranslatePlugin
+    </plugin.class>
     <plugin.version>${project.version}</plugin.version>
     <plugin.provider>XiaoCan Technology (Beijing) Co.，Ltd</plugin.provider>
     <plugin.description>${project.name}</plugin.description>

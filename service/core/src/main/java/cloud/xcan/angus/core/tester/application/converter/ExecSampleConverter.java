@@ -95,22 +95,22 @@ public class ExecSampleConverter {
 
   public static void mergeToFirst(ExecSampleMergeBase first, ExecSampleMergeBase other) {
     if (first instanceof ExecSample) {
-      mergeToFirst((ExecSample)first, (ExecSample)other);
+      mergeToFirst((ExecSample) first, (ExecSample) other);
     }
-    if (first instanceof ExecSampleSummary){
-      mergeToFirst((ExecSampleSummary)first, (ExecSampleSummary)other);
+    if (first instanceof ExecSampleSummary) {
+      mergeToFirst((ExecSampleSummary) first, (ExecSampleSummary) other);
     }
     if (first instanceof ExecSampleScore) {
-      mergeToFirst((ExecSampleScore)first, (ExecSampleScore)other);
+      mergeToFirst((ExecSampleScore) first, (ExecSampleScore) other);
     }
     if (first instanceof ExecSampleThroughput) {
-      mergeToFirst((ExecSampleThroughput)first, (ExecSampleThroughput)other);
+      mergeToFirst((ExecSampleThroughput) first, (ExecSampleThroughput) other);
     }
     if (first instanceof ExecSampleThread) {
-      mergeToFirst((ExecSampleThread)first, (ExecSampleThread)other);
+      mergeToFirst((ExecSampleThread) first, (ExecSampleThread) other);
     }
     if (first instanceof ExecSampleError) {
-      mergeToFirst((ExecSampleError)first, (ExecSampleError)other);
+      mergeToFirst((ExecSampleError) first, (ExecSampleError) other);
     }
   }
 
@@ -182,7 +182,8 @@ public class ExecSampleConverter {
      * ========Threads=======
      */
     first.setThreadPoolSize(first.getThreadPoolSize() + other.getThreadPoolSize());
-    first.setThreadPoolActiveSize(first.getThreadPoolActiveSize() + other.getThreadPoolActiveSize());
+    first.setThreadPoolActiveSize(
+        first.getThreadPoolActiveSize() + other.getThreadPoolActiveSize());
     first.setThreadMaxPoolSize(first.getThreadMaxPoolSize() + other.getThreadMaxPoolSize());
     // private boolean threadRunning;
     // private boolean threadTerminated;
@@ -286,7 +287,8 @@ public class ExecSampleConverter {
      * ========Threads=======
      */
     first.setThreadPoolSize(first.getThreadPoolSize() + other.getThreadPoolSize());
-    first.setThreadPoolActiveSize(first.getThreadPoolActiveSize() + other.getThreadPoolActiveSize());
+    first.setThreadPoolActiveSize(
+        first.getThreadPoolActiveSize() + other.getThreadPoolActiveSize());
     first.setThreadMaxPoolSize(first.getThreadMaxPoolSize() + other.getThreadMaxPoolSize());
     // private boolean threadRunning;
     // private boolean threadTerminated;

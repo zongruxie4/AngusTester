@@ -8,7 +8,7 @@ import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 @Converter
-public class NetUsageConverter implements AttributeConverter<CsvConverter<Network>, String>{
+public class NetUsageConverter implements AttributeConverter<CsvConverter<Network>, String> {
 
   @Override
   public String convertToDatabaseColumn(CsvConverter usage) {

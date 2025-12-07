@@ -48,7 +48,8 @@ public class AliyunConfig {
 
     // Retry configuration
     this.maxRetries = setting.getInt("aliyun.max.retries", this.maxRetries);
-    this.initialRetryDelayMs = setting.getLong("aliyun.retry.initialDelayMs", this.initialRetryDelayMs);
+    this.initialRetryDelayMs = setting.getLong("aliyun.retry.initialDelayMs",
+        this.initialRetryDelayMs);
     this.backoffFactor = setting.getDouble("aliyun.retry.backoffFactor", this.backoffFactor);
     this.timeoutSeconds = setting.getInt("aliyun.timeout.seconds", this.timeoutSeconds);
     return config;

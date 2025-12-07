@@ -24,7 +24,8 @@ import org.springframework.data.domain.PageRequest;
  * Implementation of ScenarioFavouriteQuery for scenario favorite management and query operations.
  * </p>
  * <p>
- * Provides methods for listing user's favorite scenarios, counting favorites, and setting scenario information.
+ * Provides methods for listing user's favorite scenarios, counting favorites, and setting scenario
+ * information.
  * </p>
  */
 @Biz
@@ -42,9 +43,10 @@ public class ScenarioFavouriteQueryImpl implements ScenarioFavouriteQuery {
    * <p>
    * Sets scenario name and plugin information for each favorite item.
    * </p>
+   *
    * @param projectId Project ID for filtering
-   * @param name Optional scenario name filter
-   * @param pageable Pagination information
+   * @param name      Optional scenario name filter
+   * @param pageable  Pagination information
    * @return Page of favorite scenarios
    */
   @Override
@@ -67,9 +69,10 @@ public class ScenarioFavouriteQueryImpl implements ScenarioFavouriteQuery {
    * Count the number of favorite scenarios for the current user.
    * </p>
    * <p>
-   * If projectId is provided, counts favorites within that project only.
-   * Otherwise, counts all favorites for the user.
+   * If projectId is provided, counts favorites within that project only. Otherwise, counts all
+   * favorites for the user.
    * </p>
+   *
    * @param projectId Optional project ID for filtering
    * @return Number of favorite scenarios
    */
@@ -92,6 +95,7 @@ public class ScenarioFavouriteQueryImpl implements ScenarioFavouriteQuery {
    * <p>
    * Batch retrieves scenario information to avoid N+1 query problems.
    * </p>
+   *
    * @param favourites List of favorite scenarios to update
    */
   public void setScenarioInfo(List<ScenarioFavourite> favourites) {

@@ -34,11 +34,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 import java.util.Set;
+import lombok.SneakyThrows;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import lombok.SneakyThrows;
 
 @Component
 public class ProjectFacadeImpl implements ProjectFacade {
@@ -97,7 +97,7 @@ public class ProjectFacadeImpl implements ProjectFacade {
   public List<UserInfo> userMember(Long id) {
     List<UserBase> users = projectQuery.userMember(id);
     return users.stream().map(x -> new UserInfo().setId(x.getId())
-            .setFullName(x.getFullName()).setAvatar(x.getAvatar())).toList();
+        .setFullName(x.getFullName()).setAvatar(x.getAvatar())).toList();
   }
 
   @Override

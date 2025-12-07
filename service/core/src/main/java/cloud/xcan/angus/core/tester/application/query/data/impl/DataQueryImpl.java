@@ -77,14 +77,13 @@ public class DataQueryImpl implements DataQuery {
    * Generates comprehensive count statistics for data resources.
    *
    * <p>This method provides total counts for various data resources including
-   * variables, datasets, datasources, and storage files based on specified
-   * filtering criteria.</p>
+   * variables, datasets, datasources, and storage files based on specified filtering criteria.</p>
    *
-   * @param projectId the project ID for filtering
+   * @param projectId         the project ID for filtering
    * @param creatorObjectType the type of creator object (User, Group, Dept)
-   * @param creatorObjectId the ID of the creator object
-   * @param createdDateStart the start date for creation time filtering
-   * @param createdDateEnd the end date for creation time filtering
+   * @param creatorObjectId   the ID of the creator object
+   * @param createdDateStart  the start date for creation time filtering
+   * @param createdDateEnd    the end date for creation time filtering
    * @return comprehensive count statistics for all data resources
    */
   @Override
@@ -122,14 +121,14 @@ public class DataQueryImpl implements DataQuery {
    * Generates comprehensive creation statistics with time-based analysis.
    *
    * <p>This method provides detailed creation statistics including total counts,
-   * recent trends (7-day and 30-day), usage statistics, and database type
-   * distribution for data resources.</p>
+   * recent trends (7-day and 30-day), usage statistics, and database type distribution for data
+   * resources.</p>
    *
-   * @param projectId the project ID for filtering
+   * @param projectId         the project ID for filtering
    * @param creatorObjectType the type of creator object (User, Group, Dept)
-   * @param creatorObjectId the ID of the creator object
-   * @param createdDateStart the start date for creation time filtering
-   * @param createdDateEnd the end date for creation time filtering
+   * @param creatorObjectId   the ID of the creator object
+   * @param createdDateStart  the start date for creation time filtering
+   * @param createdDateEnd    the end date for creation time filtering
    * @return comprehensive creation statistics with time-based analysis
    */
   @Override
@@ -182,7 +181,7 @@ public class DataQueryImpl implements DataQuery {
   /**
    * Counts variables based on specified filters.
    *
-   * @param result the result object to store the count
+   * @param result     the result object to store the count
    * @param allFilters the search criteria filters
    */
   private void countVariable(DataResourcesCount result, Set<SearchCriteria> allFilters) {
@@ -192,7 +191,7 @@ public class DataQueryImpl implements DataQuery {
   /**
    * Counts datasets based on specified filters.
    *
-   * @param result the result object to store the count
+   * @param result     the result object to store the count
    * @param allFilters the search criteria filters
    */
   private void countDataset(DataResourcesCount result, Set<SearchCriteria> allFilters) {
@@ -202,7 +201,7 @@ public class DataQueryImpl implements DataQuery {
   /**
    * Counts datasources based on specified filters.
    *
-   * @param result the result object to store the count
+   * @param result     the result object to store the count
    * @param allFilters the search criteria filters
    */
   private void countDatasource(DataResourcesCount result, Set<SearchCriteria> allFilters) {
@@ -212,12 +211,12 @@ public class DataQueryImpl implements DataQuery {
   /**
    * Counts storage files for DataResourcesCount result.
    *
-   * @param result the result object to store the count
-   * @param projectId the project ID
+   * @param result            the result object to store the count
+   * @param projectId         the project ID
    * @param creatorObjectType the creator object type
-   * @param creatorObjectId the creator object ID
-   * @param createdDateStart the start date
-   * @param createdDateEnd the end date
+   * @param creatorObjectId   the creator object ID
+   * @param createdDateStart  the start date
+   * @param createdDateEnd    the end date
    */
   private void countSpaceFile(DataResourcesCount result, Long projectId,
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
@@ -233,12 +232,12 @@ public class DataQueryImpl implements DataQuery {
   /**
    * Counts storage files for DataResourcesCreationCount result.
    *
-   * @param result the result object to store the count
-   * @param projectId the project ID
+   * @param result            the result object to store the count
+   * @param projectId         the project ID
    * @param creatorObjectType the creator object type
-   * @param creatorObjectId the creator object ID
-   * @param createdDateStart the start date
-   * @param createdDateEnd the end date
+   * @param creatorObjectId   the creator object ID
+   * @param createdDateStart  the start date
+   * @param createdDateEnd    the end date
    */
   private void countSpaceFile(DataResourcesCreationCount result, Long projectId,
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
@@ -259,9 +258,9 @@ public class DataQueryImpl implements DataQuery {
   /**
    * Counts variables with time-based analysis for creation statistics.
    *
-   * @param result the result object to store the counts
-   * @param allFilters the common search criteria filters
-   * @param last7DayFilter the 7-day filter
+   * @param result          the result object to store the counts
+   * @param allFilters      the common search criteria filters
+   * @param last7DayFilter  the 7-day filter
    * @param last30DayFilter the 30-day filter
    */
   private void countVariable(DataResourcesCreationCount result, Set<SearchCriteria> allFilters,
@@ -274,9 +273,9 @@ public class DataQueryImpl implements DataQuery {
   /**
    * Counts datasets with time-based analysis for creation statistics.
    *
-   * @param result the result object to store the counts
-   * @param allFilters the common search criteria filters
-   * @param last7DayFilter the 7-day filter
+   * @param result          the result object to store the counts
+   * @param allFilters      the common search criteria filters
+   * @param last7DayFilter  the 7-day filter
    * @param last30DayFilter the 30-day filter
    */
   private void countDataset(DataResourcesCreationCount result, Set<SearchCriteria> allFilters,
@@ -289,9 +288,9 @@ public class DataQueryImpl implements DataQuery {
   /**
    * Counts datasources with time-based analysis for creation statistics.
    *
-   * @param result the result object to store the counts
-   * @param allFilters the common search criteria filters
-   * @param last7DayFilter the 7-day filter
+   * @param result          the result object to store the counts
+   * @param allFilters      the common search criteria filters
+   * @param last7DayFilter  the 7-day filter
    * @param last30DayFilter the 30-day filter
    */
   private void countDatasource(DataResourcesCreationCount result, Set<SearchCriteria> allFilters,
@@ -307,8 +306,8 @@ public class DataQueryImpl implements DataQuery {
    * <p>This method determines which variables are in use versus not in use
    * based on their association with targets.</p>
    *
-   * @param result the result object to store usage statistics
-   * @param projectId the project ID
+   * @param result        the result object to store usage statistics
+   * @param projectId     the project ID
    * @param commonFilters the common search criteria filters
    */
   private void setVariableByUse(DataResourcesCreationCount result, Long projectId,
@@ -332,8 +331,8 @@ public class DataQueryImpl implements DataQuery {
    * <p>This method determines which datasets are in use versus not in use
    * based on their association with targets.</p>
    *
-   * @param result the result object to store usage statistics
-   * @param projectId the project ID
+   * @param result        the result object to store usage statistics
+   * @param projectId     the project ID
    * @param commonFilters the common search criteria filters
    */
   private void setDatasetByUse(DataResourcesCreationCount result, Long projectId,
@@ -356,7 +355,7 @@ public class DataQueryImpl implements DataQuery {
    * <p>This method groups datasources by their database type and counts
    * the distribution across different database technologies.</p>
    *
-   * @param result the result object to store database distribution
+   * @param result        the result object to store database distribution
    * @param commonFilters the common search criteria filters
    */
   private void setDatasourceByDb(DataResourcesCreationCount result,

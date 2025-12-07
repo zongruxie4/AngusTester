@@ -17,8 +17,8 @@ import lombok.extern.slf4j.Slf4j;
  * Command implementation for managing execution nodes.
  * </p>
  * <p>
- * Provides methods for adding and retrieving execution nodes. Handles batch operations
- * for execution node management and provides repository access for execution node entities.
+ * Provides methods for adding and retrieving execution nodes. Handles batch operations for
+ * execution node management and provides repository access for execution node entities.
  * </p>
  */
 @Slf4j
@@ -33,9 +33,10 @@ public class ExecNodeCmdImpl extends CommCmd<ExecNode, Long> implements ExecNode
    * Add a batch of execution nodes.
    * </p>
    * <p>
-   * Inserts nodes if the list is not empty. Performs batch insertion for efficiency
-   * when adding multiple execution nodes.
+   * Inserts nodes if the list is not empty. Performs batch insertion for efficiency when adding
+   * multiple execution nodes.
    * </p>
+   *
    * @param nodes List of execution nodes to add
    */
   @Override
@@ -49,6 +50,7 @@ public class ExecNodeCmdImpl extends CommCmd<ExecNode, Long> implements ExecNode
   /**
    * Get the repository for ExecNode entity.
    * <p>
+   *
    * @return the ExecNodeRepo instance
    */
   @Override

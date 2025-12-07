@@ -16,7 +16,7 @@ public class ProjectMemberConverter {
       LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> members) {
     List<ProjectMember> members0 = new ArrayList<>();
     for (Entry<OrgTargetType, LinkedHashSet<Long>> entry : members.entrySet()) {
-      if (isEmpty(entry.getValue())){
+      if (isEmpty(entry.getValue())) {
         continue;
       }
       for (Long id : entry.getValue()) {

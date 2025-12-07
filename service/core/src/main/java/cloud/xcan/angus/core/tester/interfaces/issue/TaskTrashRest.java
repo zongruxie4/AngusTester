@@ -35,7 +35,8 @@ public class TaskTrashRest {
   private TaskTrashFacade trashTaskFacade;
 
   @Operation(summary = "Permanently delete task or sprint from trash", operationId = "task:trash:clear", description = "Permanently remove a specific task or sprint from the recycle bin, making it unrecoverable")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Task or sprint permanently deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Task or sprint permanently deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
   public void clear(
@@ -44,7 +45,8 @@ public class TaskTrashRest {
   }
 
   @Operation(summary = "Clear all project trash items", operationId = "task:trash:clear:all", description = "Permanently remove all deleted tasks and sprints from a specific project's recycle bin")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "All project trash items cleared successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "All project trash items cleared successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void clearAll(
@@ -53,7 +55,8 @@ public class TaskTrashRest {
   }
 
   @Operation(summary = "Restore task or sprint from trash", operationId = "task:trash:back", description = "Recover a deleted task or sprint from the recycle bin and restore it to its original location with all associated data")
-  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Task or sprint restored successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Task or sprint restored successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/back")
   public ApiLocaleResult<?> back(
@@ -63,7 +66,8 @@ public class TaskTrashRest {
   }
 
   @Operation(summary = "Restore all project trash items", operationId = "task:trash:back:all", description = "Recover all deleted tasks and sprints from a specific project's recycle bin to their original locations")
-  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "All project trash items restored successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "All project trash items restored successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/back")
   public ApiLocaleResult<?> backAll(

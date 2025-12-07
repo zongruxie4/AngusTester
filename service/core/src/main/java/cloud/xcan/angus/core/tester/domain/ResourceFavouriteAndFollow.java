@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.domain;
 
 import cloud.xcan.angus.spec.experimental.Entity;
 
-public interface ResourceFavouriteAndFollow<T extends Entity<T, ID>, ID>{
+public interface ResourceFavouriteAndFollow<T extends Entity<T, ID>, ID> {
 
   Long getId();
 

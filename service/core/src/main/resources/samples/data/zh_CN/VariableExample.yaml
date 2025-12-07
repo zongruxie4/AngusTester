@@ -28,42 +28,42 @@
       method: GET
       url: http://10.0.36.106:8802/pubapi/v1/auth/user/signin
       parameters:
-      - name: account
-        in: query
-        enabled: true
-        type: string
-        value: XiaoLong Liu
-      - name: clientId
-        in: query
-        enabled: true
-        type: string
-        value: xcan_tp
-      - name: clientSecret
-        in: query
-        enabled: true
-        type: string
-        value: 6917ae827c964acc8dd7638fe0581b67
-      - name: deviceId
-        in: query
-        enabled: true
-        type: string
-        value: 068dfcaaff5db4dbc4a40bfe24cfad2b
-      - name: passd
-        in: query
-        enabled: true
-        type: string
-        value: xcan@123
-      - name: scope
-        in: query
-        enabled: true
-        type: string
-        value: sign
-      - name: signinType
-        in: query
-        enabled: true
-        type: string
-        value: ACCOUNT_PASSWORD
-      body: {}
+        - name: account
+          in: query
+          enabled: true
+          type: string
+          value: XiaoLong Liu
+        - name: clientId
+          in: query
+          enabled: true
+          type: string
+          value: xcan_tp
+        - name: clientSecret
+          in: query
+          enabled: true
+          type: string
+          value: 6917ae827c964acc8dd7638fe0581b67
+        - name: deviceId
+          in: query
+          enabled: true
+          type: string
+          value: 068dfcaaff5db4dbc4a40bfe24cfad2b
+        - name: passd
+          in: query
+          enabled: true
+          type: string
+          value: xcan@123
+        - name: scope
+          in: query
+          enabled: true
+          type: string
+          value: sign
+        - name: signinType
+          in: query
+          enabled: true
+          type: string
+          value: ACCOUNT_PASSWORD
+      body: { }
       x-validSecurity: false
 - name: AutoUpdatedSnowIdInIteration
   extracted: false

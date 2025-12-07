@@ -20,7 +20,7 @@ public class CoreKpiDetail extends CoreKpiCount implements DataDetailBase {
         valueOf(overdueNum), valueOf(overdueRate),
         valueOf(completedOverdueNum), valueOf(completedOverdueRate),
         valueOf(bugNum), valueOf(bugRate),
-        valueOf(completedBugNum),valueOf(completedBugRate),
+        valueOf(completedBugNum), valueOf(completedBugRate),
     };
   }
 }

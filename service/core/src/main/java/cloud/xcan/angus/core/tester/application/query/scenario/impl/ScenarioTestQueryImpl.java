@@ -41,7 +41,8 @@ import org.springframework.data.domain.Sort.Order;
  * Implementation of ScenarioTestQuery for scenario testing management and query operations.
  * </p>
  * <p>
- * Provides methods for test type management, test statistics, server discovery, and test result counting.
+ * Provides methods for test type management, test statistics, server discovery, and test result
+ * counting.
  * </p>
  */
 @Biz
@@ -61,8 +62,10 @@ public class ScenarioTestQueryImpl implements ScenarioTestQuery {
    * Find enabled test types for a specific scenario.
    * </p>
    * <p>
-   * Returns test types based on the scenario's test function configuration (functional, performance, stability).
+   * Returns test types based on the scenario's test function configuration (functional,
+   * performance, stability).
    * </p>
+   *
    * @param scenarioId Scenario ID
    * @return List of enabled test types
    */
@@ -100,11 +103,12 @@ public class ScenarioTestQueryImpl implements ScenarioTestQuery {
    * <p>
    * Supports filtering by creator object type and provides comprehensive test scenario statistics.
    * </p>
-   * @param projectId Project ID
+   *
+   * @param projectId         Project ID
    * @param creatorObjectType Type of creator object
-   * @param creatorObjectId Creator object ID
-   * @param createdDateStart Start date for filtering
-   * @param createdDateEnd End date for filtering
+   * @param creatorObjectId   Creator object ID
+   * @param createdDateStart  Start date for filtering
+   * @param createdDateEnd    End date for filtering
    * @return Test scenario count statistics
    */
   @Override
@@ -134,11 +138,12 @@ public class ScenarioTestQueryImpl implements ScenarioTestQuery {
    * <p>
    * Provides test result statistics including success, failure, and other test outcome metrics.
    * </p>
-   * @param projectId Project ID
+   *
+   * @param projectId         Project ID
    * @param creatorObjectType Type of creator object
-   * @param creatorObjectId Creator object ID
-   * @param createdDateStart Start date for filtering
-   * @param createdDateEnd End date for filtering
+   * @param creatorObjectId   Creator object ID
+   * @param createdDateStart  Start date for filtering
+   * @param createdDateEnd    End date for filtering
    * @return Test result count statistics
    */
   @Override
@@ -168,6 +173,7 @@ public class ScenarioTestQueryImpl implements ScenarioTestQuery {
    * Extracts server information from both configuration variables and HTTP pipeline elements,
    * removing duplicates based on server URLs.
    * </p>
+   *
    * @param scenarioId Scenario ID
    * @return List of unique servers
    */
@@ -220,11 +226,12 @@ public class ScenarioTestQueryImpl implements ScenarioTestQuery {
    * <p>
    * Applies common deleted resource filters and sorts results by ID in descending order.
    * </p>
-   * @param projectId Project ID
+   *
+   * @param projectId         Project ID
    * @param creatorObjectType Type of creator object
-   * @param creatorObjectId Creator object ID
-   * @param createdDateStart Start date for filtering
-   * @param createdDateEnd End date for filtering
+   * @param creatorObjectId   Creator object ID
+   * @param createdDateStart  Start date for filtering
+   * @param createdDateEnd    End date for filtering
    * @return List of filtered scenarios
    */
   private List<Scenario> getProjectScenarios(Long projectId, AuthObjectType creatorObjectType,

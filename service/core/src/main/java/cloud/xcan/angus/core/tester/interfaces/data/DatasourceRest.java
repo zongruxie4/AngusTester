@@ -41,7 +41,7 @@ public class DatasourceRest {
   @Resource
   private DatasourceFacade datasourceFacade;
 
-  @Operation(summary = "Create new datasource", 
+  @Operation(summary = "Create new datasource",
       description = "Create a new database datasource with connection configuration and validation",
       operationId = "data:datasource:add")
   @ApiResponses(value = {
@@ -52,7 +52,7 @@ public class DatasourceRest {
     return ApiLocaleResult.success(datasourceFacade.add(dto));
   }
 
-  @Operation(summary = "Replace datasource", 
+  @Operation(summary = "Replace datasource",
       description = "Replace existing datasource with new configuration and connection settings",
       operationId = "data:datasource:replace")
   @ApiResponses(value = {
@@ -65,7 +65,7 @@ public class DatasourceRest {
     return ApiLocaleResult.success(datasourceFacade.replace(dto));
   }
 
-  @Operation(summary = "Delete datasource", 
+  @Operation(summary = "Delete datasource",
       description = "Remove datasource from the system with cleanup and validation",
       operationId = "data:datasource:delete")
   @ApiResponses(value = {
@@ -77,7 +77,7 @@ public class DatasourceRest {
     datasourceFacade.delete(id);
   }
 
-  @Operation(summary = "Test datasource connection by ID", 
+  @Operation(summary = "Test datasource connection by ID",
       description = "Test database connection for existing datasource with validation and error reporting",
       operationId = "data:datasource:sync:test:byId")
   @ApiResponses(value = {
@@ -89,7 +89,7 @@ public class DatasourceRest {
     return ApiLocaleResult.success(datasourceFacade.testById(id));
   }
 
-  @Operation(summary = "Test datasource connection by configuration", 
+  @Operation(summary = "Test datasource connection by configuration",
       description = "Test database connection using provided configuration parameters with real-time validation",
       operationId = "data:datasource:sync:test:byParam")
   @ApiResponses(value = {
@@ -101,7 +101,7 @@ public class DatasourceRest {
     return ApiLocaleResult.success(datasourceFacade.testByConfig(dto));
   }
 
-  @Operation(summary = "Get datasource details", 
+  @Operation(summary = "Get datasource details",
       description = "Retrieve datasource details including configuration, status, and metadata",
       operationId = "data:datasource:detail")
   @ApiResponses(value = {
@@ -113,7 +113,7 @@ public class DatasourceRest {
     return ApiLocaleResult.success(datasourceFacade.detail(id));
   }
 
-  @Operation(summary = "Query datasource list", 
+  @Operation(summary = "Query datasource list",
       description = "Retrieve paginated list of datasources with filtering and search options",
       operationId = "data:datasource:list")
   @ApiResponses(value = {

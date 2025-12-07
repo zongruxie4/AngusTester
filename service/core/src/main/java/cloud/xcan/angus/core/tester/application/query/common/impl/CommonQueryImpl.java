@@ -86,8 +86,8 @@ import org.jetbrains.annotations.NotNull;
  * Implementation of common query operations for AngusTester application.
  *
  * <p>This class provides centralized functionality for various common operations
- * including permission checking, target management, user information retrieval,
- * quota management, and organizational data handling.</p>
+ * including permission checking, target management, user information retrieval, quota management,
+ * and organizational data handling.</p>
  *
  * <p>Key features include:
  * <ul>
@@ -168,7 +168,7 @@ public class CommonQueryImpl implements CommonQuery {
    * (User, Group, Department) and returns their names for display purposes.</p>
    *
    * @param authObjectType the type of authorization object
-   * @param authObjectId the ID of the authorization object
+   * @param authObjectId   the ID of the authorization object
    * @return the name of the authorization object
    * @throws ResourceNotFound if the authorization object is not found
    */
@@ -200,7 +200,7 @@ public class CommonQueryImpl implements CommonQuery {
    * marked as deleted, supporting API and Scenario target types.</p>
    *
    * @param targetType the type of target to retrieve
-   * @param targetId the ID of the target
+   * @param targetId   the ID of the target
    * @return the target object or null if not supported
    */
   @Override
@@ -221,7 +221,7 @@ public class CommonQueryImpl implements CommonQuery {
    * the specified indicator target based on its type.</p>
    *
    * @param targetType the type of target to check
-   * @param targetId the ID of the target
+   * @param targetId   the ID of the target
    */
   @Override
   public void checkIndicatorTargetModifyAuth(CombinedTargetType targetType, Long targetId) {
@@ -278,11 +278,11 @@ public class CommonQueryImpl implements CommonQuery {
    * Validates and retrieves combined target information with optional parent lookup.
    *
    * <p>This method fetches comprehensive target information for various entity types,
-   * including their parent relationships when requested. Throws exceptions for
-   * non-existent targets.</p>
+   * including their parent relationships when requested. Throws exceptions for non-existent
+   * targets.</p>
    *
    * @param targetType the type of target to retrieve
-   * @param targetId the ID of the target
+   * @param targetId   the ID of the target
    * @param findParent whether to include parent information
    * @return combined target information
    */
@@ -346,11 +346,10 @@ public class CommonQueryImpl implements CommonQuery {
    * Retrieves combined target information without throwing exceptions for missing resources.
    *
    * <p>This method fetches target information but returns null values for missing
-   * resources instead of throwing exceptions, preventing query failures after
-   * data deletion.</p>
+   * resources instead of throwing exceptions, preventing query failures after data deletion.</p>
    *
    * @param targetType the type of target to retrieve
-   * @param targetId the ID of the target
+   * @param targetId   the ID of the target
    * @param findParent whether to include parent information
    * @return combined target information with null values for missing resources
    */
@@ -400,7 +399,7 @@ public class CommonQueryImpl implements CommonQuery {
    * including special handling for execution targets.</p>
    *
    * @param targetType the type of target
-   * @param targetId the ID of the target
+   * @param targetId   the ID of the target
    * @return activity resource information
    * @throws ProtocolException if the target type is not supported
    */
@@ -430,8 +429,7 @@ public class CommonQueryImpl implements CommonQuery {
    * Sets authorization conditions for non-administrator users or self-query scenarios.
    *
    * <p>This method modifies search criteria to include authorization object ID
-   * restrictions when the user is not an administrator or when querying only
-   * their own data.</p>
+   * restrictions when the user is not an administrator or when querying only their own data.</p>
    *
    * @param criteria the search criteria to modify
    * @return false (return value not used)
@@ -457,8 +455,8 @@ public class CommonQueryImpl implements CommonQuery {
    * resource objects and increment.</p>
    *
    * @param quotaObject the quota resource type
-   * @param objectIds set of object IDs to check
-   * @param incr the increment amount
+   * @param objectIds   set of object IDs to check
+   * @param incr        the increment amount
    */
   @Override
   public void checkTenantQuota(QuotaResource quotaObject, Set<Long> objectIds, Long incr) {
@@ -472,8 +470,8 @@ public class CommonQueryImpl implements CommonQuery {
    * functionality.</p>
    *
    * @param quotaObject the quota resource type
-   * @param objectIds set of object IDs to check
-   * @param incr the increment amount
+   * @param objectIds   set of object IDs to check
+   * @param incr        the increment amount
    */
   @Override
   public void checkLcsQuota(QuotaResource quotaObject, Set<Long> objectIds, Long incr) {
@@ -498,8 +496,8 @@ public class CommonQueryImpl implements CommonQuery {
    * Retrieves tenant event notification type configurations.
    *
    * <p>This method fetches the notification type mappings for various events
-   * in the specified tenant, falling back to global settings if tenant-specific
-   * settings are not available.</p>
+   * in the specified tenant, falling back to global settings if tenant-specific settings are not
+   * available.</p>
    *
    * @param tenantId the tenant ID (uses current tenant if null)
    * @return map of event codes to notification types
@@ -583,11 +581,11 @@ public class CommonQueryImpl implements CommonQuery {
    * Sets the inner principal context for remote operations.
    *
    * <p>This method establishes the principal context for internal operations,
-   * typically used for Feign request interceptor header relay in remote
-   * AngusCtrl sharding sampling scenarios.</p>
+   * typically used for Feign request interceptor header relay in remote AngusCtrl sharding sampling
+   * scenarios.</p>
    *
    * @param tenantId the tenant ID
-   * @param userId the user ID
+   * @param userId   the user ID
    */
   @Override
   public void setInnerPrincipal(Long tenantId, Long userId) {
@@ -603,8 +601,8 @@ public class CommonQueryImpl implements CommonQuery {
    * Retrieves LCS (License Control System) quota information.
    *
    * <p>This method is currently a placeholder for retrieving LCS quota data.
-   * Both cloud service and private deployment versions will write to tenant
-   * license tables in the future.</p>
+   * Both cloud service and private deployment versions will write to tenant license tables in the
+   * future.</p>
    *
    * @return LCS quota information (currently returns null)
    */

@@ -22,7 +22,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 
-
 @Entity
 @Table(name = "mock_apis")
 @Setter

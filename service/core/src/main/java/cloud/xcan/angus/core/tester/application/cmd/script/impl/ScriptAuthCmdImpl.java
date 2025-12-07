@@ -29,13 +29,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of script authorization command operations.
- * 
+ *
  * <p>This class provides comprehensive functionality for managing script authorizations,
  * including adding, replacing, deleting, and enabling/disabling authorization controls.</p>
- * 
+ *
  * <p>It handles both creator and regular user authorizations with proper permission
  * validation and activity logging for audit purposes.</p>
- * 
+ *
  * <p>The implementation uses the BizTemplate pattern to ensure consistent business
  * logic execution with proper parameter validation and transaction management.</p>
  */
@@ -57,14 +57,14 @@ public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements Scri
 
   /**
    * Adds a new script authorization for a user or group.
-   * 
+   *
    * <p>This method performs comprehensive validation including checking script existence,
-   * preventing creator self-authorization, verifying user permissions, and ensuring
-   * no duplicate authorizations exist.</p>
-   * 
+   * preventing creator self-authorization, verifying user permissions, and ensuring no duplicate
+   * authorizations exist.</p>
+   *
    * <p>For non-creator authorizations, it also logs the authorization activity
    * for audit purposes.</p>
-   * 
+   *
    * @param auth the script authorization to add
    * @return the ID key of the created authorization
    * @throws IllegalArgumentException if validation fails
@@ -80,18 +80,18 @@ public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements Scri
       protected void checkParams() {
         // Verify the script exists and retrieve its information
         scriptDb = scriptQuery.checkAndFindInfo(auth.getScriptId());
-        
+
         // Prevent creator from authorizing themselves
         BizAssert.assertTrue(!scriptDb.getCreatedBy().equals(auth.getAuthObjectId()),
             FORBID_AUTH_CREATOR_CODE, FORBID_AUTH_CREATOR);
-        
+
         // Verify current user has authorization grant permissions for this script
         scriptAuthQuery.checkGrantAuth(getUserId(), auth.getScriptId());
-        
+
         // Verify the authorization object (user/group) exists and get its name
         authObjectName = commonQuery.checkAndGetAuthName(auth.getAuthObjectType(),
             auth.getAuthObjectId());
-        
+
         // Check for duplicate authorizations to prevent conflicts
         scriptAuthQuery.checkRepeatAuth(auth.getScriptId(),
             auth.getAuthObjectId(), auth.getAuthObjectType());
@@ -111,14 +111,14 @@ public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements Scri
 
   /**
    * Replaces the permissions of an existing script authorization.
-   * 
+   *
    * <p>This method updates the authorization permissions while maintaining the same
-   * authorization object and script relationship. It validates that the authorization
-   * exists, is not a creator authorization, and that the current user has proper
-   * permissions to modify it.</p>
-   * 
+   * authorization object and script relationship. It validates that the authorization exists, is
+   * not a creator authorization, and that the current user has proper permissions to modify
+   * it.</p>
+   *
    * <p>The method logs the modification activity for audit tracking.</p>
-   * 
+   *
    * @param auth the authorization with updated permissions
    * @throws IllegalArgumentException if validation fails or authorization not found
    */
@@ -134,17 +134,17 @@ public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements Scri
       protected void checkParams() {
         // Verify the authorization exists and retrieve it
         authDb = scriptAuthQuery.checkAndFind(auth.getId());
-        
+
         // Verify the associated script exists
         scriptDb = scriptQuery.checkAndFindInfo(authDb.getScriptId());
-        
+
         // Prevent modification of creator authorizations
         BizAssert.assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE,
             FORBID_AUTH_CREATOR);
-        
+
         // Verify current user has authorization grant permissions
         scriptAuthQuery.checkGrantAuth(getUserId(), authDb.getScriptId());
-        
+
         // Get the authorization object name for activity logging
         authObjectName = commonQuery.checkAndGetAuthName(authDb.getAuthObjectType(),
             authDb.getAuthObjectId());
@@ -167,14 +167,14 @@ public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements Scri
 
   /**
    * Deletes a script authorization by its ID.
-   * 
+   *
    * <p>This method removes an authorization while performing proper validation
-   * and logging. It handles cases where the authorization object may have been
-   * deleted, ensuring graceful degradation.</p>
-   * 
+   * and logging. It handles cases where the authorization object may have been deleted, ensuring
+   * graceful degradation.</p>
+   *
    * <p>The method logs the cancellation activity before deletion to maintain
    * audit trail integrity.</p>
-   * 
+   *
    * @param authId the ID of the authorization to delete
    * @throws IllegalArgumentException if validation fails or authorization not found
    */
@@ -189,14 +189,14 @@ public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements Scri
       protected void checkParams() {
         // Verify the authorization exists
         authDb = scriptAuthQuery.checkAndFind(authId);
-        
+
         // Prevent deletion of creator authorizations
         BizAssert.assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE,
             FORBID_AUTH_CREATOR);
-        
+
         // Verify the associated script exists
         scriptDb = scriptQuery.checkAndFindInfo(authDb.getScriptId());
-        
+
         // Verify current user has authorization grant permissions
         scriptAuthQuery.checkGrantAuth(getUserId(), authDb.getScriptId());
       }
@@ -226,14 +226,14 @@ public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements Scri
 
   /**
    * Enables or disables authorization control for a script.
-   * 
+   *
    * <p>This method controls whether authorization checks are enforced for a script.
    * When disabled, the script becomes accessible without authorization validation.</p>
-   * 
+   *
    * <p>The method logs the enable/disable activity for audit purposes.</p>
-   * 
+   *
    * @param scriptId the ID of the script to modify authorization control
-   * @param enabled true to enable authorization control, false to disable
+   * @param enabled  true to enable authorization control, false to disable
    * @throws IllegalArgumentException if script not found or user lacks permissions
    */
   @Transactional(rollbackFor = Exception.class)
@@ -246,7 +246,7 @@ public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements Scri
       protected void checkParams() {
         // Verify the script exists
         scriptDb = scriptQuery.checkAndFindInfo(scriptId);
-        
+
         // Verify current user has authorization grant permissions
         scriptAuthQuery.checkGrantAuth(getUserId(), scriptId);
       }
@@ -266,13 +266,13 @@ public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements Scri
 
   /**
    * Adds creator authorizations for multiple users to a script.
-   * 
+   *
    * <p>This method replaces any existing creator authorizations with the new set
-   * of creator IDs. It first removes all existing creator authorizations for the
-   * script, then adds the new ones.</p>
-   * 
+   * of creator IDs. It first removes all existing creator authorizations for the script, then adds
+   * the new ones.</p>
+   *
    * @param creatorIds collection of user IDs to grant creator permissions
-   * @param scriptId the ID of the script to modify
+   * @param scriptId   the ID of the script to modify
    */
   @Override
   public void addCreatorAuth(Collection<Long> creatorIds, Long scriptId) {
@@ -285,13 +285,13 @@ public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements Scri
 
   /**
    * Moves creator authorizations for specific users to a script.
-   * 
+   *
    * <p>This method is used when scripts are moved between directories or projects.
-   * It removes creator authorizations for the specified users from the current script
-   * and adds them to the target script.</p>
-   * 
+   * It removes creator authorizations for the specified users from the current script and adds them
+   * to the target script.</p>
+   *
    * @param creatorIds collection of user IDs whose creator permissions should be moved
-   * @param scriptId the ID of the target script
+   * @param scriptId   the ID of the target script
    */
   @Override
   public void moveCreatorAuth(Collection<Long> creatorIds, Long scriptId) {
@@ -304,10 +304,10 @@ public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements Scri
 
   /**
    * Deletes all authorizations for multiple scripts.
-   * 
+   *
    * <p>This method is typically used during bulk operations such as script deletion
    * or project cleanup to remove all associated authorizations.</p>
-   * 
+   *
    * @param scriptIds collection of script IDs whose authorizations should be deleted
    */
   @Override
@@ -317,7 +317,7 @@ public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements Scri
 
   /**
    * Returns the repository instance for this command.
-   * 
+   *
    * @return the script authorization repository
    */
   @Override

@@ -133,7 +133,7 @@ public class ReportCmdImpl extends CommCmd<Report, Long> implements ReportCmd {
         ContentFilterSetting filter = report.getContentSetting().getFilter();
         reportQuery.checkFilters(report.getTemplate(), filter);
         // Check the report exists
-        if (report.getTemplate().isExecutionReport()){
+        if (report.getTemplate().isExecutionReport()) {
           reportQuery.checkExists(report.getProjectId(), report.getName(), report.getVersion());
         }
         // Check the report resource exists

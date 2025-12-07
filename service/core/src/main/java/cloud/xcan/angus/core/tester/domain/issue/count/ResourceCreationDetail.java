@@ -14,7 +14,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ResourceCreationDetail extends ResourceCreationCount implements DataDetailBase{
+public class ResourceCreationDetail extends ResourceCreationCount implements DataDetailBase {
 
   private String name;
 

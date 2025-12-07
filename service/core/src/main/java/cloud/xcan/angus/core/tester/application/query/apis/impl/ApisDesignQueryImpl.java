@@ -135,10 +135,10 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
    * <p>The method automatically enriches design data with service names
    * and user information for enhanced display.</p>
    *
-   * @param spec the specification for filtering API designs
-   * @param pageable the pagination and sorting parameters
+   * @param spec           the specification for filtering API designs
+   * @param pageable       the pagination and sorting parameters
    * @param fullTextSearch whether to use full-text search
-   * @param match the full-text search match fields
+   * @param match          the full-text search match fields
    * @return a page of API designs with enriched data
    */
   @Override

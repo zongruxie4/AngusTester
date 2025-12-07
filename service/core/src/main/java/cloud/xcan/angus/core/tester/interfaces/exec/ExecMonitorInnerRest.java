@@ -29,7 +29,7 @@ public class ExecMonitorInnerRest {
   @Resource
   private ExecDebugFacade execDebugFacade;
 
-  @Operation(summary = "Start monitor debug execution", 
+  @Operation(summary = "Start monitor debug execution",
       description = "Initiate monitor-based debug execution with internal service integration and comprehensive monitoring analysis",
       operationId = "exec:debug:monitor:start:inner")
   @ApiResponses(value = {
@@ -41,7 +41,7 @@ public class ExecMonitorInnerRest {
     return ApiLocaleResult.success(execDebugFacade.startByMonitor(dto));
   }
 
-  @Operation(summary = "Get monitor debug execution details", 
+  @Operation(summary = "Get monitor debug execution details",
       description = "Retrieve comprehensive monitor debug execution details for internal service integration",
       operationId = "exec:debug:monitor:detail:inner")
   @ApiResponses(value = {

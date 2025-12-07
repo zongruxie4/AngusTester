@@ -23,19 +23,19 @@ public class NodeMetricsVo {
   /**
    * @see Cpu#toString()
    */
-  @Schema(description="Comma-separated cpu sample value, format: idle,sys,user,wait,other,total")
+  @Schema(description = "Comma-separated cpu sample value, format: idle,sys,user,wait,other,total")
   private String cvsCpu;
 
   /**
    * @see Memory#toString()
    */
-  @Schema(description="Comma-separated memory sample value, format: free,used,freePercent,usedPercent,actualFree,actualUsed,actualFreePercent,actualUsedPercent,swapFree,swapUsed")
+  @Schema(description = "Comma-separated memory sample value, format: free,used,freePercent,usedPercent,actualFree,actualUsed,actualFreePercent,actualUsedPercent,swapFree,swapUsed")
   private String cvsMemory;
 
   /**
    * @see FileSystem#toString()
    */
-  @Schema(description="Comma-separate filesystem sample value, format: free,used,avail,usePercent")
+  @Schema(description = "Comma-separate filesystem sample value, format: free,used,avail,usePercent")
   private String cvsFilesystem;
 
   public Date getTimestamp() {

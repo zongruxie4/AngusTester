@@ -185,7 +185,8 @@ public class MockDataCmdImpl implements MockDataCmd {
 
       @Override
       protected IdKey<Long, Object> process() {
-        Long scriptId0 = dataScriptAdd(scriptId, projectId, plugin, configuration, mockData).getId();
+        Long scriptId0 = dataScriptAdd(scriptId, projectId, plugin, configuration,
+            mockData).getId();
 
         // Create execution
         return execCmd.addByRemoteScript(null, scriptId0, null, null, null, null);

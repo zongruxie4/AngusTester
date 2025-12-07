@@ -17,10 +17,12 @@ import org.springframework.data.domain.PageRequest;
 
 /**
  * <p>
- * Implementation of ScenarioMonitorHistoryQuery for scenario monitoring history management and query operations.
+ * Implementation of ScenarioMonitorHistoryQuery for scenario monitoring history management and
+ * query operations.
  * </p>
  * <p>
- * Provides methods for retrieving scenario monitoring history details, listing history information, and finding history by monitor IDs.
+ * Provides methods for retrieving scenario monitoring history details, listing history information,
+ * and finding history by monitor IDs.
  * </p>
  */
 @Biz
@@ -35,6 +37,7 @@ public class ScenarioMonitorHistoryQueryImpl implements ScenarioMonitorHistoryQu
    * <p>
    * Get detailed information of a scenario monitoring history record.
    * </p>
+   *
    * @param id Monitoring history ID
    * @return Scenario monitoring history entity
    */
@@ -53,7 +56,8 @@ public class ScenarioMonitorHistoryQueryImpl implements ScenarioMonitorHistoryQu
    * <p>
    * List scenario monitoring history information with pagination and search criteria.
    * </p>
-   * @param spec Search specification for filtering
+   *
+   * @param spec     Search specification for filtering
    * @param pageable Pagination information
    * @return Page of scenario monitoring history information
    */
@@ -76,6 +80,7 @@ public class ScenarioMonitorHistoryQueryImpl implements ScenarioMonitorHistoryQu
    * <p>
    * Used for batch retrieval of monitoring history information to avoid N+1 query problems.
    * </p>
+   *
    * @param monitorIds Collection of monitor IDs
    * @return List of monitoring history information
    */
@@ -91,6 +96,7 @@ public class ScenarioMonitorHistoryQueryImpl implements ScenarioMonitorHistoryQu
    * <p>
    * Throws ResourceNotFound exception if the record does not exist.
    * </p>
+   *
    * @param id Monitoring history ID
    * @return Scenario monitoring history entity
    */

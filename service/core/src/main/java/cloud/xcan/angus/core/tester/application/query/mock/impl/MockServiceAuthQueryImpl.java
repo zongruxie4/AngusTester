@@ -46,8 +46,8 @@ import org.springframework.data.domain.Pageable;
  * Implementation of MockServiceAuthQuery for managing Mock service authorization operations.
  * <p>
  * This class provides comprehensive functionality for querying and managing Mock service
- * authorization, including permission validation, user access control, and authorization
- * management for mock services and their associated resources.
+ * authorization, including permission validation, user access control, and authorization management
+ * for mock services and their associated resources.
  * <p>
  * Key features include:
  * <ul>
@@ -82,8 +82,8 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Retrieves the authorization control status for a specific Mock service.
    * <p>
-   * Determines whether the Mock service has authorization control enabled,
-   * which affects how permissions are enforced for service access and operations.
+   * Determines whether the Mock service has authorization control enabled, which affects how
+   * permissions are enforced for service access and operations.
    *
    * @param serviceId the Mock service ID to check authorization status for
    * @return Boolean indicating whether authorization control is enabled
@@ -109,16 +109,15 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Retrieves user permissions for a specific Mock service with admin override support.
    * <p>
-   * Determines the complete set of permissions available to a user for the specified
-   * Mock service, considering admin privileges, creator rights, and service-specific
-   * authorization settings.
+   * Determines the complete set of permissions available to a user for the specified Mock service,
+   * considering admin privileges, creator rights, and service-specific authorization settings.
    * <p>
-   * The method handles various permission scenarios including admin override,
-   * creator privileges, public access, and explicit authorization grants.
+   * The method handles various permission scenarios including admin override, creator privileges,
+   * public access, and explicit authorization grants.
    *
    * @param serviceId the Mock service ID to check permissions for
-   * @param userId the user ID to retrieve permissions for
-   * @param admin whether to consider admin privileges in permission calculation
+   * @param userId    the user ID to retrieve permissions for
+   * @param admin     whether to consider admin privileges in permission calculation
    * @return List of MockServicePermission objects representing user permissions
    */
   @Override
@@ -138,17 +137,17 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
         if (Objects.nonNull(admin) && admin && commonQuery.isAdminUser()) {
           return MockServicePermission.ALL;
         }
-        
+
         // Retrieve user's authorization records for the service
         List<MockServiceAuth> auths = findAuth(userId, serviceId);
-        
+
         // Grant all permissions if user is the creator of the service
         if (isCreator(auths)) {
           return MockServicePermission.ALL;
         }
 
         Set<MockServicePermission> permissions = new HashSet<>();
-        
+
         // Grant view permission if authorization control is disabled
         if (!serviceDb.isEnabledAuth()) {
           permissions.add(MockServicePermission.VIEW);
@@ -167,12 +166,12 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Validates that a user has the specified permission for a Mock service.
    * <p>
-   * Performs permission validation for a specific operation on a Mock service,
-   * throwing appropriate exceptions if the user lacks the required permission.
+   * Performs permission validation for a specific operation on a Mock service, throwing appropriate
+   * exceptions if the user lacks the required permission.
    *
-   * @param serviceId the Mock service ID to check permissions for
+   * @param serviceId  the Mock service ID to check permissions for
    * @param permission the permission to validate
-   * @param userId the user ID to validate permissions for
+   * @param userId     the user ID to validate permissions for
    * @throws BizException if the user lacks the required permission
    */
   @Override
@@ -190,12 +189,12 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Retrieves a paginated list of authorization records for a Mock service.
    * <p>
-   * Fetches authorization records with filtering and pagination support,
-   * ensuring the current user has view permission for the service.
+   * Fetches authorization records with filtering and pagination support, ensuring the current user
+   * has view permission for the service.
    *
    * @param serviceId the Mock service ID to retrieve authorizations for
-   * @param spec the search specification with criteria and filters
-   * @param pageable pagination parameters (page, size, sort)
+   * @param spec      the search specification with criteria and filters
+   * @param pageable  pagination parameters (page, size, sort)
    * @return Page of MockServiceAuth objects with authorization records
    */
   @Override
@@ -220,8 +219,8 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Validates that an authorization record exists and retrieves it.
    * <p>
-   * Performs existence validation and throws ResourceNotFound if the authorization
-   * record is not found in the system.
+   * Performs existence validation and throws ResourceNotFound if the authorization record is not
+   * found in the system.
    *
    * @param id the authorization record ID to validate and retrieve
    * @return MockServiceAuth object if found
@@ -236,10 +235,10 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Validates that a user has ADD permission for a Mock service.
    * <p>
-   * Convenience method for checking ADD permission, which allows users to
-   * create new resources within the specified Mock service.
+   * Convenience method for checking ADD permission, which allows users to create new resources
+   * within the specified Mock service.
    *
-   * @param userId the user ID to validate permissions for
+   * @param userId    the user ID to validate permissions for
    * @param serviceId the Mock service ID to check permissions for
    * @throws BizException if the user lacks ADD permission
    */
@@ -251,10 +250,10 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Validates that a user has VIEW permission for a Mock service.
    * <p>
-   * Convenience method for checking VIEW permission, which allows users to
-   * access and view resources within the specified Mock service.
+   * Convenience method for checking VIEW permission, which allows users to access and view
+   * resources within the specified Mock service.
    *
-   * @param userId the user ID to validate permissions for
+   * @param userId    the user ID to validate permissions for
    * @param serviceId the Mock service ID to check permissions for
    * @throws BizException if the user lacks VIEW permission
    */
@@ -266,10 +265,10 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Validates that a user has MODIFY permission for a Mock service.
    * <p>
-   * Convenience method for checking MODIFY permission, which allows users to
-   * update and modify resources within the specified Mock service.
+   * Convenience method for checking MODIFY permission, which allows users to update and modify
+   * resources within the specified Mock service.
    *
-   * @param userId the user ID to validate permissions for
+   * @param userId    the user ID to validate permissions for
    * @param serviceId the Mock service ID to check permissions for
    * @throws BizException if the user lacks MODIFY permission
    */
@@ -281,10 +280,10 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Validates that a user has DELETE permission for a Mock service.
    * <p>
-   * Convenience method for checking DELETE permission, which allows users to
-   * remove resources within the specified Mock service.
+   * Convenience method for checking DELETE permission, which allows users to remove resources
+   * within the specified Mock service.
    *
-   * @param userId the user ID to validate permissions for
+   * @param userId    the user ID to validate permissions for
    * @param serviceId the Mock service ID to check permissions for
    * @throws BizException if the user lacks DELETE permission
    */
@@ -296,13 +295,13 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Validates that a user has GRANT permission for a Mock service.
    * <p>
-   * Convenience method for checking GRANT permission, which allows users to
-   * manage authorization for other users on the specified Mock service.
+   * Convenience method for checking GRANT permission, which allows users to manage authorization
+   * for other users on the specified Mock service.
    * <p>
-   * Note: Public APIs can be modified and authorized by anyone when public access
-   * is enabled, bypassing normal authorization controls.
+   * Note: Public APIs can be modified and authorized by anyone when public access is enabled,
+   * bypassing normal authorization controls.
    *
-   * @param userId the user ID to validate permissions for
+   * @param userId    the user ID to validate permissions for
    * @param serviceId the Mock service ID to check permissions for
    * @throws BizException if the user lacks GRANT permission
    */
@@ -315,11 +314,11 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Validates that a user has the specified permission for a Mock service.
    * <p>
-   * Core permission validation method that checks user permissions against
-   * the specified Mock service, considering admin privileges and public access.
+   * Core permission validation method that checks user permissions against the specified Mock
+   * service, considering admin privileges and public access.
    *
-   * @param userId the user ID to validate permissions for
-   * @param apisId the Mock service ID to check permissions for
+   * @param userId     the user ID to validate permissions for
+   * @param apisId     the Mock service ID to check permissions for
    * @param permission the permission to validate
    * @throws BizException if the user lacks the required permission
    */
@@ -331,17 +330,17 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Validates that a user has the specified permission for a Mock service with advanced options.
    * <p>
-   * Advanced permission validation method that provides fine-grained control over
-   * admin privilege checking and public access handling.
+   * Advanced permission validation method that provides fine-grained control over admin privilege
+   * checking and public access handling.
    * <p>
-   * The method handles various permission scenarios including admin override,
-   * public access bypass, creator privileges, and explicit authorization grants.
+   * The method handles various permission scenarios including admin override, public access bypass,
+   * creator privileges, and explicit authorization grants.
    *
-   * @param userId the user ID to validate permissions for
-   * @param datasourceId the Mock service ID to check permissions for
-   * @param permission the permission to validate
+   * @param userId                the user ID to validate permissions for
+   * @param datasourceId          the Mock service ID to check permissions for
+   * @param permission            the permission to validate
    * @param ignoreAdminPermission whether to ignore admin privilege checking
-   * @param ignorePublicAccess whether to ignore public access bypass
+   * @param ignorePublicAccess    whether to ignore public access bypass
    * @throws BizException if the user lacks the required permission
    */
   @Override
@@ -361,7 +360,7 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
 
     // Retrieve user's authorization records for the service
     List<MockServiceAuth> auths = findAuth(userId, datasourceId);
-    
+
     // For VIEW permission, check if user has any authorization records
     if (permission.equals(MockServicePermission.VIEW)) {
       if (isEmpty(auths)) {
@@ -385,11 +384,11 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Validates permissions for multiple Mock services in a single operation.
    * <p>
-   * Performs batch permission validation across multiple services, providing
-   * efficient permission checking for bulk operations.
+   * Performs batch permission validation across multiple services, providing efficient permission
+   * checking for bulk operations.
    * <p>
-   * The method handles admin privilege checking and provides detailed error
-   * information when permission validation fails.
+   * The method handles admin privilege checking and provides detailed error information when
+   * permission validation fails.
    *
    * @param serviceIds collection of Mock service IDs to validate permissions for
    * @param permission the permission to validate across all services
@@ -422,7 +421,7 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
     Map<Long, List<MockServiceAuth>> authsMap = auths.stream()
         .filter(o -> nonNull(o.getMockServiceId()))
         .collect(Collectors.groupingBy(MockServiceAuth::getMockServiceId));
-    
+
     // Validate permissions for each service
     for (Long mockServiceId : authsMap.keySet()) {
       List<MockServiceAuth> values = authsMap.get(mockServiceId);
@@ -442,11 +441,11 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Validates that an authorization record does not already exist for the specified object.
    * <p>
-   * Prevents duplicate authorization records by checking if an authorization
-   * already exists for the specified auth object and service combination.
+   * Prevents duplicate authorization records by checking if an authorization already exists for the
+   * specified auth object and service combination.
    *
-   * @param serviceId the Mock service ID to check for existing authorization
-   * @param authObjectId the auth object ID to validate
+   * @param serviceId      the Mock service ID to check for existing authorization
+   * @param authObjectId   the auth object ID to validate
    * @param authObjectType the type of auth object (user, organization, etc.)
    * @throws ResourceExisted if an authorization record already exists
    */
@@ -461,10 +460,10 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Finds Mock service IDs where a user has the specified permission.
    * <p>
-   * Retrieves all Mock services where the specified user has the given permission,
-   * considering both direct user permissions and organization-based permissions.
+   * Retrieves all Mock services where the specified user has the given permission, considering both
+   * direct user permissions and organization-based permissions.
    *
-   * @param userId the user ID to find services for
+   * @param userId     the user ID to find services for
    * @param permission the permission to search for
    * @return List of Mock service IDs where the user has the specified permission
    */
@@ -474,7 +473,7 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
     // Retrieve user's organization IDs and include the user ID itself
     List<Long> orgIds = userRepo.findOrgIdsById(userId);
     orgIds.add(userId);
-    
+
     // Find all authorization records for the user and their organizations
     return mockServiceAuthRepo.findAllByAuthObjectIdIn(orgIds).stream()
         .filter(p -> p.getAuths().contains(permission)).map(MockServiceAuth::getMockServiceId)
@@ -484,10 +483,10 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Retrieves authorization records for a user and a specific Mock service.
    * <p>
-   * Fetches all authorization records for the specified user (including organization
-   * memberships) and the specified Mock service.
+   * Fetches all authorization records for the specified user (including organization memberships)
+   * and the specified Mock service.
    *
-   * @param userId the user ID to retrieve authorizations for
+   * @param userId    the user ID to retrieve authorizations for
    * @param serviceId the Mock service ID to retrieve authorizations for
    * @return List of MockServiceAuth objects with authorization records
    */
@@ -496,7 +495,7 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
     // Retrieve user's organization IDs and include the user ID itself
     List<Long> orgIds = userRepo.findOrgIdsById(userId);
     orgIds.add(userId);
-    
+
     // Find authorization records for the user and their organizations for the specific service
     return mockServiceAuthRepo.findAllByMockServiceIdAndAuthObjectIdIn(serviceId, orgIds);
   }
@@ -504,10 +503,10 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Retrieves authorization records for a user and multiple Mock services.
    * <p>
-   * Fetches all authorization records for the specified user (including organization
-   * memberships) and the specified Mock services, with efficient batch processing.
+   * Fetches all authorization records for the specified user (including organization memberships)
+   * and the specified Mock services, with efficient batch processing.
    *
-   * @param userId the user ID to retrieve authorizations for
+   * @param userId     the user ID to retrieve authorizations for
    * @param serviceIds collection of Mock service IDs to retrieve authorizations for
    * @return List of MockServiceAuth objects with authorization records
    */
@@ -516,7 +515,7 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
     // Retrieve user's organization IDs and include the user ID itself
     List<Long> orgIds = userRepo.findOrgIdsById(userId);
     orgIds.add(userId);
-    
+
     // Find authorization records based on whether specific services are provided
     return isEmpty(serviceIds) ? mockServiceAuthRepo.findAllByAuthObjectIdIn(orgIds)
         : mockServiceAuthRepo.findAllByMockServiceIdInAndAuthObjectIdIn(serviceIds, orgIds);
@@ -525,8 +524,8 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Determines if a user is the creator of a Mock service based on authorization records.
    * <p>
-   * Checks if any of the user's authorization records for a service have the
-   * creator flag set, indicating they created the service.
+   * Checks if any of the user's authorization records for a service have the creator flag set,
+   * indicating they created the service.
    *
    * @param auths list of authorization records to check for creator status
    * @return true if the user is the creator, false otherwise
@@ -546,8 +545,8 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   /**
    * Flattens authorization records into a set of permissions.
    * <p>
-   * Extracts all permissions from the provided authorization records and
-   * returns them as a unified set for efficient permission checking.
+   * Extracts all permissions from the provided authorization records and returns them as a unified
+   * set for efficient permission checking.
    *
    * @param auths list of authorization records to extract permissions from
    * @return Set of MockServicePermission objects representing all granted permissions

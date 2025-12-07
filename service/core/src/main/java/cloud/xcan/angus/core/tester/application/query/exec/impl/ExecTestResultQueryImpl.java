@@ -51,12 +51,12 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Implementation of ExecTestResultQuery for managing test result queries and analysis.
  * <p>
- * This class provides comprehensive functionality for querying and analyzing test results
- * from various sources including APIs, scenarios, and individual test cases. It handles
- * result aggregation, progress tracking, and detailed result analysis.
+ * This class provides comprehensive functionality for querying and analyzing test results from
+ * various sources including APIs, scenarios, and individual test cases. It handles result
+ * aggregation, progress tracking, and detailed result analysis.
  * <p>
- * Supports different test types (functional, performance, stability) and provides
- * methods for assembling result summaries and progress information for reporting purposes.
+ * Supports different test types (functional, performance, stability) and provides methods for
+ * assembling result summaries and progress information for reporting purposes.
  */
 @Slf4j
 @Biz
@@ -82,8 +82,8 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Retrieves test result for a specific execution.
    * <p>
-   * Finds the test result by execution ID and populates it with execution name
-   * and executor information. For API functional testing, also includes case results.
+   * Finds the test result by execution ID and populates it with execution name and executor
+   * information. For API functional testing, also includes case results.
    *
    * @param execId the execution ID to get test result for
    * @return ExecTestResult object with complete test information
@@ -106,10 +106,10 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Retrieves test result by script source ID and script type.
    * <p>
-   * Finds the test result for a specific source and script type combination.
-   * This method is useful for getting results for specific test configurations.
+   * Finds the test result for a specific source and script type combination. This method is useful
+   * for getting results for specific test configurations.
    *
-   * @param sourceId the script source ID
+   * @param sourceId   the script source ID
    * @param scriptType the script type to filter by
    * @return ExecTestResult object if found, null otherwise
    */
@@ -132,9 +132,9 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Retrieves all test results for a specific source ID.
    * <p>
-   * Finds all test results associated with the source ID and populates them with
-   * execution names and executor information. For API functional testing,
-   * includes case results for the first matching result.
+   * Finds all test results associated with the source ID and populates them with execution names
+   * and executor information. For API functional testing, includes case results for the first
+   * matching result.
    *
    * @param sourceId the script source ID to get results for
    * @return List of ExecTestResult objects
@@ -166,16 +166,16 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Retrieves service APIs test result information.
    * <p>
-   * Assembles comprehensive test result information for APIs within a service,
-   * including test counts, progress tracking, and detailed result analysis.
+   * Assembles comprehensive test result information for APIs within a service, including test
+   * counts, progress tracking, and detailed result analysis.
    * <p>
    * Filters results based on creator object type and time range for targeted analysis.
    *
-   * @param serviceId the service ID to analyze
+   * @param serviceId         the service ID to analyze
    * @param creatorObjectType the creator object type for filtering
-   * @param creatorObjectId the creator object ID for filtering
-   * @param createdDateStart the start date for filtering
-   * @param createdDateEnd the end date for filtering
+   * @param creatorObjectId   the creator object ID for filtering
+   * @param createdDateStart  the start date for filtering
+   * @param createdDateEnd    the end date for filtering
    * @return ExecApisResultInfo with comprehensive test analysis
    */
   @Override
@@ -203,16 +203,16 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Retrieves project APIs test result information.
    * <p>
-   * Assembles comprehensive test result information for APIs within a project,
-   * including test counts, progress tracking, and detailed result analysis.
+   * Assembles comprehensive test result information for APIs within a project, including test
+   * counts, progress tracking, and detailed result analysis.
    * <p>
    * Similar to serviceApisResult but operates at the project level for broader analysis.
    *
-   * @param projectId the project ID to analyze
+   * @param projectId         the project ID to analyze
    * @param creatorObjectType the creator object type for filtering
-   * @param creatorObjectId the creator object ID for filtering
-   * @param createdDateStart the start date for filtering
-   * @param createdDateEnd the end date for filtering
+   * @param creatorObjectId   the creator object ID for filtering
+   * @param createdDateStart  the start date for filtering
+   * @param createdDateEnd    the end date for filtering
    * @return ExecApisResultInfo with comprehensive test analysis
    */
   @Override
@@ -240,16 +240,16 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Retrieves project scenario test result information.
    * <p>
-   * Assembles comprehensive test result information for scenarios within a project,
-   * including test counts, progress tracking, and detailed result analysis.
+   * Assembles comprehensive test result information for scenarios within a project, including test
+   * counts, progress tracking, and detailed result analysis.
    * <p>
    * Provides scenario-level analysis similar to API analysis but for scenario-based testing.
    *
-   * @param projectId the project ID to analyze
+   * @param projectId         the project ID to analyze
    * @param creatorObjectType the creator object type for filtering
-   * @param creatorObjectId the creator object ID for filtering
-   * @param createdDateStart the start date for filtering
-   * @param createdDateEnd the end date for filtering
+   * @param creatorObjectId   the creator object ID for filtering
+   * @param createdDateStart  the start date for filtering
+   * @param createdDateEnd    the end date for filtering
    * @return ExecScenarioResultInfo with comprehensive test analysis
    */
   @Override
@@ -277,8 +277,8 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Retrieves test case result for a specific case ID.
    * <p>
-   * Finds the test case result and populates it with execution name and executor information.
-   * This method provides detailed information about individual test case execution.
+   * Finds the test case result and populates it with execution name and executor information. This
+   * method provides detailed information about individual test case execution.
    *
    * @param caseId the case ID to get result for
    * @return ExecTestCaseResult object with complete case information
@@ -302,12 +302,12 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Assembles execution test result summary for enabled test types.
    * <p>
-   * Creates a comprehensive summary of test results for a script source ID,
-   * filtering by enabled test types and including script information.
+   * Creates a comprehensive summary of test results for a script source ID, filtering by enabled
+   * test types and including script information.
    * <p>
    * This method is used for generating high-level test result reports and dashboards.
    *
-   * @param scriptSourceId the script source ID to summarize
+   * @param scriptSourceId   the script source ID to summarize
    * @param enabledTestTypes the list of enabled test types to include
    * @return ExecTestResultSummary with comprehensive result summary
    */
@@ -325,13 +325,13 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Assembles execution APIs result information from test data.
    * <p>
-   * Processes test APIs data and creates comprehensive result information including
-   * test counts, progress tracking, and detailed result analysis for each API.
+   * Processes test APIs data and creates comprehensive result information including test counts,
+   * progress tracking, and detailed result analysis for each API.
    * <p>
-   * Handles different test types (functional, performance, stability) and provides
-   * aggregated statistics for reporting purposes.
+   * Handles different test types (functional, performance, stability) and provides aggregated
+   * statistics for reporting purposes.
    *
-   * @param result the result object to populate
+   * @param result   the result object to populate
    * @param testApis the test APIs count data
    */
   private void assembleExecApisResultInfo(ExecApisResultInfo result, ApisTestCount testApis) {
@@ -372,10 +372,10 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Assembles APIs test result information from raw data.
    * <p>
-   * Processes raw APIs information and test result data to create comprehensive
-   * result summaries for each API. Handles different test types and their results.
+   * Processes raw APIs information and test result data to create comprehensive result summaries
+   * for each API. Handles different test types and their results.
    *
-   * @param allApisInfos the list of all APIs information
+   * @param allApisInfos      the list of all APIs information
    * @param enabledTestApiIds the list of enabled test API IDs
    * @param apisTestResultMap the map of API test results
    * @return List of ExecResultSummary objects
@@ -413,12 +413,12 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Assembles execution scenario result information from test data.
    * <p>
-   * Processes test scenarios data and creates comprehensive result information including
-   * test counts, progress tracking, and detailed result analysis for each scenario.
+   * Processes test scenarios data and creates comprehensive result information including test
+   * counts, progress tracking, and detailed result analysis for each scenario.
    * <p>
    * Similar to assembleExecApisResultInfo but operates on scenario data instead of API data.
    *
-   * @param result the result object to populate
+   * @param result       the result object to populate
    * @param testScenario the test scenario count data
    */
   private void assembleExecScenarioResultInfo(ExecScenarioResultInfo result,
@@ -461,12 +461,12 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Assembles scenario test result information from raw data.
    * <p>
-   * Processes raw scenario information and test result data to create comprehensive
-   * result summaries for each scenario. Handles different test types and their results.
+   * Processes raw scenario information and test result data to create comprehensive result
+   * summaries for each scenario. Handles different test types and their results.
    *
-   * @param allScenarioInfos the list of all scenarios information
+   * @param allScenarioInfos       the list of all scenarios information
    * @param enabledTestScenarioIds the list of enabled test scenario IDs
-   * @param scenarioTestResultMap the map of scenario test results
+   * @param scenarioTestResultMap  the map of scenario test results
    * @return List of ExecResultSummary objects
    */
   private static List<ExecResultSummary> assembleScenarioTestResultInfos(
@@ -500,8 +500,8 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Sets execution names for a collection of test results.
    * <p>
-   * Looks up execution information and populates the execution name field
-   * for each test result in the collection.
+   * Looks up execution information and populates the execution name field for each test result in
+   * the collection.
    *
    * @param results the collection of test results to update
    */
@@ -519,8 +519,8 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Sets execution names for a collection of test case results.
    * <p>
-   * Looks up execution information and populates the execution name field
-   * for each test case result in the collection.
+   * Looks up execution information and populates the execution name field for each test case result
+   * in the collection.
    *
    * @param results the collection of test case results to update
    */
@@ -538,8 +538,8 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Sets execution by names for a collection of test results.
    * <p>
-   * Looks up user information and populates the execution by name field
-   * for each test result in the collection.
+   * Looks up user information and populates the execution by name field for each test result in the
+   * collection.
    *
    * @param results the collection of test results to update
    */
@@ -557,8 +557,8 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Sets execution by names for a collection of test case results.
    * <p>
-   * Looks up user information and populates the execution by name field
-   * for each test case result in the collection.
+   * Looks up user information and populates the execution by name field for each test case result
+   * in the collection.
    *
    * @param results the collection of test case results to update
    */
@@ -576,8 +576,8 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
   /**
    * Sets test result and name information for a single test result.
    * <p>
-   * Populates execution name, executor name, and case results for API functional testing.
-   * This method provides complete information enrichment for a single test result.
+   * Populates execution name, executor name, and case results for API functional testing. This
+   * method provides complete information enrichment for a single test result.
    *
    * @param result the test result to update
    */

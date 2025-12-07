@@ -69,14 +69,14 @@ public class ServicesCompCmdImpl extends CommCmd<ServicesComp, Long> implements 
    * Replaces or creates a service component with caching support.
    *
    * <p>This method handles both creation and updates of service components.
-   * It performs permission validation and automatically manages cache eviction
-   * to ensure data consistency.</p>
+   * It performs permission validation and automatically manages cache eviction to ensure data
+   * consistency.</p>
    *
    * <p>The method logs component update activities for audit tracking.</p>
    *
    * @param serviceId the ID of the service
-   * @param type the type of component
-   * @param key the component key
+   * @param type      the type of component
+   * @param key       the component key
    * @param component the component content
    * @return the ID key of the created or updated component
    * @throws IllegalArgumentException if validation fails
@@ -128,8 +128,8 @@ public class ServicesCompCmdImpl extends CommCmd<ServicesComp, Long> implements 
    * by type. It automatically manages cache eviction and logs deletion activities.</p>
    *
    * @param serviceId the ID of the service
-   * @param type the type of components to delete
-   * @param keys optional set of specific keys to delete, null for all components of the type
+   * @param type      the type of components to delete
+   * @param keys      optional set of specific keys to delete, null for all components of the type
    * @throws IllegalArgumentException if validation fails
    */
   @CacheEvict(key = "'servicesId_' + #serviceId", value = "servicesComps")
@@ -173,7 +173,7 @@ public class ServicesCompCmdImpl extends CommCmd<ServicesComp, Long> implements 
    * typically used when components are no longer referenced in the schema.</p>
    *
    * @param serviceId the ID of the service
-   * @param refs set of component references to delete
+   * @param refs      set of component references to delete
    * @throws IllegalArgumentException if validation fails
    */
   @CacheEvict(key = "'servicesId_' + #serviceId", value = "servicesComps")
@@ -246,17 +246,17 @@ public class ServicesCompCmdImpl extends CommCmd<ServicesComp, Long> implements 
    * Replaces service components using OpenAPI Components specification.
    *
    * <p>This method synchronizes service components with OpenAPI Components,
-   * supporting different strategies for handling duplicates and optional
-   * cleanup of unreferenced components.</p>
+   * supporting different strategies for handling duplicates and optional cleanup of unreferenced
+   * components.</p>
    *
    * <p>The method performs intelligent synchronization by comparing existing
-   * components with the new OpenAPI specification and applying the specified
-   * strategy for handling conflicts.</p>
+   * components with the new OpenAPI specification and applying the specified strategy for handling
+   * conflicts.</p>
    *
-   * @param serviceId the ID of the service
-   * @param components the OpenAPI Components specification
+   * @param serviceId              the ID of the service
+   * @param components             the OpenAPI Components specification
    * @param strategyWhenDuplicated strategy for handling duplicate components
-   * @param deleteWhenNotExisted whether to delete components not in the new specification
+   * @param deleteWhenNotExisted   whether to delete components not in the new specification
    */
   @Override
   public void replaceByOpenApi(Long serviceId, Components components,
@@ -319,7 +319,7 @@ public class ServicesCompCmdImpl extends CommCmd<ServicesComp, Long> implements 
    * automatic cache eviction for data consistency.</p>
    *
    * @param serviceId the ID of the service
-   * @param newComps collection of new components to insert
+   * @param newComps  collection of new components to insert
    */
   @DoInFuture("Add quota restrictions")
   @CacheEvict(key = "'servicesId_' + #serviceId", value = "servicesComps")
@@ -334,7 +334,7 @@ public class ServicesCompCmdImpl extends CommCmd<ServicesComp, Long> implements 
    * <p>This method provides efficient bulk updates of components with
    * automatic cache eviction for data consistency.</p>
    *
-   * @param serviceId the ID of the service
+   * @param serviceId    the ID of the service
    * @param updatedComps collection of components to update
    */
   @CacheEvict(key = "'servicesId_' + #serviceId", value = "servicesComps")
@@ -350,7 +350,7 @@ public class ServicesCompCmdImpl extends CommCmd<ServicesComp, Long> implements 
    * automatically manages cache eviction for consistency.</p>
    *
    * @param serviceId the ID of the service
-   * @param refs collection of component references to delete, null for all components
+   * @param refs      collection of component references to delete, null for all components
    */
   @CacheEvict(key = "'servicesId_' + #serviceId", value = "servicesComps")
   @Override
@@ -376,7 +376,7 @@ public class ServicesCompCmdImpl extends CommCmd<ServicesComp, Long> implements 
 
     // Evict cache for all affected services
     ((RedisCaffeineCacheManager) cacheManager).evict("servicesComps", serviceIds.stream()
-        .map(id -> (Object)("serviceId_" + id)).toList());
+        .map(id -> (Object) ("serviceId_" + id)).toList());
   }
 
   /**
@@ -386,7 +386,7 @@ public class ServicesCompCmdImpl extends CommCmd<ServicesComp, Long> implements 
    * typically used during service cloning operations.</p>
    *
    * @param clonedServiceId the ID of the source service to copy from
-   * @param serviceId the ID of the target service to copy to
+   * @param serviceId       the ID of the target service to copy to
    */
   @Override
   public void clone(Long clonedServiceId, Long serviceId) {

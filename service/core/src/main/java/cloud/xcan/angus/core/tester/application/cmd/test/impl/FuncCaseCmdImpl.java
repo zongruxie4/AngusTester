@@ -131,11 +131,11 @@ import org.springframework.web.multipart.MultipartFile;
  * Provides comprehensive CRUD operations for functional test cases including creation,
  * modification, deletion, import/export, and lifecycle management.
  * <p>
- * Implements business logic validation, permission checks, activity logging,
- * and transaction management for all case operations.
+ * Implements business logic validation, permission checks, activity logging, and transaction
+ * management for all case operations.
  * <p>
- * Supports batch operations, association management, test result tracking,
- * and review workflow integration.
+ * Supports batch operations, association management, test result tracking, and review workflow
+ * integration.
  */
 @Biz
 public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCaseCmd {
@@ -190,11 +190,11 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Adds a batch of functional test cases to the system.
    * <p>
-   * Performs comprehensive validation including plan existence, module validation,
-   * user permissions, duplicate name checks, and quota limitations.
+   * Performs comprehensive validation including plan existence, module validation, user
+   * permissions, duplicate name checks, and quota limitations.
    * <p>
-   * Creates associated tags, task relationships, and logs creation activities
-   * for audit trail purposes.
+   * Creates associated tags, task relationships, and logs creation activities for audit trail
+   * purposes.
    * <p>
    * All cases must belong to the same test plan for batch processing.
    */
@@ -250,11 +250,11 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Updates a batch of functional test cases in the system.
    * <p>
-   * Validates case existence, plan association, module references, user permissions,
-   * and prevents duplicate names within the same plan.
+   * Validates case existence, plan association, module references, user permissions, and prevents
+   * duplicate names within the same plan.
    * <p>
-   * Updates associated tags, task relationships, and logs modification activities
-   * for audit trail and notification purposes.
+   * Updates associated tags, task relationships, and logs modification activities for audit trail
+   * and notification purposes.
    * <p>
    * Supports partial updates while maintaining data integrity and business rules.
    */
@@ -309,11 +309,11 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Replaces functional test cases by adding new ones and updating existing ones.
    * <p>
-   * Handles both creation and modification in a single operation, managing tags,
-   * task associations, and related data appropriately.
+   * Handles both creation and modification in a single operation, managing tags, task associations,
+   * and related data appropriately.
    * <p>
-   * Logs comprehensive modification activities and sends notification events
-   * for all affected cases.
+   * Logs comprehensive modification activities and sends notification events for all affected
+   * cases.
    * <p>
    * Provides atomic operation ensuring data consistency across all related entities.
    */
@@ -399,11 +399,11 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Renames a functional test case with validation and audit trail.
    * <p>
-   * Validates user permissions and ensures the new name is unique within the plan
-   * before performing the rename operation.
+   * Validates user permissions and ensures the new name is unique within the plan before performing
+   * the rename operation.
    * <p>
-   * Updates related review case names and logs the rename activity
-   * for audit and notification purposes.
+   * Updates related review case names and logs the rename activity for audit and notification
+   * purposes.
    * <p>
    * Only performs the operation if the name has actually changed.
    */
@@ -454,11 +454,11 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Clones a batch of functional test cases to create new instances.
    * <p>
-   * Validates case existence and user permissions before creating duplicates
-   * with unique names and preserved relationships.
+   * Validates case existence and user permissions before creating duplicates with unique names and
+   * preserved relationships.
    * <p>
-   * Generates new case codes and ensures no naming conflicts while maintaining
-   * all original case properties and associations.
+   * Generates new case codes and ensures no naming conflicts while maintaining all original case
+   * properties and associations.
    * <p>
    * Logs clone activities for audit trail and tracking purposes.
    */
@@ -505,11 +505,11 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Moves functional test cases from one plan to another plan.
    * <p>
-   * Validates case existence, target plan validity, and user permissions
-   * before performing the move operation.
+   * Validates case existence, target plan validity, and user permissions before performing the move
+   * operation.
    * <p>
-   * Updates project and plan associations, handles unplanned status,
-   * and maintains data integrity across the move operation.
+   * Updates project and plan associations, handles unplanned status, and maintains data integrity
+   * across the move operation.
    * <p>
    * Logs move activities and sends notification events for affected cases.
    * <p>
@@ -537,7 +537,8 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         assertTrue(dirIds.size() == 1, "Only batch move cases with one dir is allowed");
 
         // Ensure the move is actually to a different plan
-        assertTrue(!casesDb.get(0).getPlanId().equals(targetPlanId), "The moving position has not changed");
+        assertTrue(!casesDb.get(0).getPlanId().equals(targetPlanId),
+            "The moving position has not changed");
 
         // Check user permission to modify cases in the original plan
         funcPlanAuthQuery.batchCheckPermission(dirIds, FuncPlanPermission.MODIFY_CASE);
@@ -568,14 +569,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Replaces the assigned tester for a functional test case.
    * <p>
-   * Validates case existence, user permissions, and new tester validity
-   * before updating the assignment.
+   * Validates case existence, user permissions, and new tester validity before updating the
+   * assignment.
    * <p>
-   * Only performs the update if the tester has actually changed,
-   * and logs the activity for audit trail purposes.
+   * Only performs the update if the tester has actually changed, and logs the activity for audit
+   * trail purposes.
    * <p>
-   * Sends notification events to inform relevant stakeholders
-   * about the tester change.
+   * Sends notification events to inform relevant stakeholders about the tester change.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -618,14 +618,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Updates the priority level of a functional test case.
    * <p>
-   * Validates case existence, user permissions, and priority value
-   * before updating the case priority.
+   * Validates case existence, user permissions, and priority value before updating the case
+   * priority.
    * <p>
-   * Only performs the update if the priority has actually changed,
-   * and logs the activity for audit trail purposes.
+   * Only performs the update if the priority has actually changed, and logs the activity for audit
+   * trail purposes.
    * <p>
-   * Sends notification events to inform relevant stakeholders
-   * about the priority change.
+   * Sends notification events to inform relevant stakeholders about the priority change.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -716,7 +715,8 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Replace the evaluation workload of a functional test case.
    * <p>
-   * Checks permission and updates the evaluation workload, logging the activity and sending notification event.
+   * Checks permission and updates the evaluation workload, logging the activity and sending
+   * notification event.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -771,7 +771,8 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Replace the actual workload of a functional test case.
    * <p>
-   * Checks permission and updates the actual workload, logging the activity and sending notification event.
+   * Checks permission and updates the actual workload, logging the activity and sending
+   * notification event.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -830,7 +831,8 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Replace the attachments of a functional test case.
    * <p>
-   * Checks permission and updates attachments, logging the activity and sending notification event.
+   * Checks permission and updates attachments, logging the activity and sending notification
+   * event.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -969,8 +971,9 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Reset the test result of a batch of functional test cases.
    * <p>
-   * Checks permission before resetting test results, logs activities, and sends notification events.
-   *
+   * Checks permission before resetting test results, logs activities, and sends notification
+   * events.
+   * <p>
    * Note: Manually modifying the results of API testing cases is also permitted.
    */
   @Transactional(rollbackFor = Exception.class)
@@ -1124,7 +1127,8 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Reset the review result of a batch of functional test cases.
    * <p>
-   * Checks permission before resetting review results, logs activities, and sends notification events.
+   * Checks permission before resetting review results, logs activities, and sends notification
+   * events.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -1673,6 +1677,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       }
     }
   }
+
   /**
    * Add modification activities and send notification events for updated cases.
    * <p>

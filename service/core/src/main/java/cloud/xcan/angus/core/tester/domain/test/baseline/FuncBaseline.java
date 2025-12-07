@@ -48,7 +48,7 @@ public class FuncBaseline extends TenantAuditingEntity<FuncBaseline, Long> imple
     if (isNull(caseIds)) {
       caseIds = new LinkedHashSet<>();
     }
-     return caseIds;
+    return caseIds;
   }
 
   @Override

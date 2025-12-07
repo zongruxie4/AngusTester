@@ -68,7 +68,8 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
   /**
    * Add a batch of mock API responses for a given API.
    * <p>
-   * Checks API and service existence, permission, response ID consistency, name uniqueness, and quota.
+   * Checks API and service existence, permission, response ID consistency, name uniqueness, and
+   * quota.
    * <p>
    * Logs activity and synchronizes responses to service instance.
    */

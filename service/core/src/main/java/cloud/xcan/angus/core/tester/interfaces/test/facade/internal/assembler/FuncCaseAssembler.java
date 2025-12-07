@@ -428,10 +428,12 @@ public class FuncCaseAssembler {
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("deadlineDate", "createdDate", "lastModifiedDate", "reviewDate",
             "testResultHandleDate", "reviewNum", "testNum", "testFailNum")
-        .inAndNotFields("id", "tagId", "testResult", "testerId", "developerId", "testLayer", "EvaluationPurpose")
+        .inAndNotFields("id", "tagId", "testResult", "testerId", "developerId", "testLayer",
+            "EvaluationPurpose")
         .orderByFields("id", "createdDate", "lastModifiedDate", "priority",
             "deadlineDate", "reviewStatus", "reviewNum", "testerId", "developerId", "reviewerId",
-            "testNum", "testFailNum", "testResult", "reviewDate", "testResultHandleDate", "testLayer", "EvaluationPurpose")
+            "testNum", "testFailNum", "testResult", "reviewDate", "testResultHandleDate",
+            "testLayer", "EvaluationPurpose")
         .matchSearchFields("name", "description", "code")
         .build();
     return new GenericSpecification<>(filters);

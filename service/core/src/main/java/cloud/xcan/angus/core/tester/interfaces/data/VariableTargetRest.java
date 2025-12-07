@@ -41,7 +41,7 @@ public class VariableTargetRest {
   @Resource
   private VariableTargetFacade variableTargetFacade;
 
-  @Operation(summary = "Associate variables with target", 
+  @Operation(summary = "Associate variables with target",
       description = "Establish associations between test variables and specific test resources with batch operation support",
       operationId = "data:target:variable:add")
   @ApiResponses(value = {
@@ -50,12 +50,12 @@ public class VariableTargetRest {
   @PostMapping(value = "/target/{targetId}/{targetType}/variable")
   public ApiLocaleResult<List<IdKey<Long, Object>>> add(
       @Parameter(name = "targetId", description = "Target resource identifier for variable association", required = true) @PathVariable("targetId") Long targetId,
-      @Parameter(name = "targetType", description = "Target resource type for variable categorization, allowable values: API, API_CASE, SCENARIO",  required = true) @PathVariable("targetType") String targetType,
+      @Parameter(name = "targetType", description = "Target resource type for variable categorization, allowable values: API, API_CASE, SCENARIO", required = true) @PathVariable("targetType") String targetType,
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody LinkedHashSet<Long> variableIds) {
     return ApiLocaleResult.success(variableTargetFacade.add(targetId, targetType, variableIds));
   }
 
-  @Operation(summary = "Remove variable associations", 
+  @Operation(summary = "Remove variable associations",
       description = "Remove associations between test variables and specific test resources with batch operation support",
       operationId = "data:target:variable:delete")
   @ApiResponses(value = {
@@ -69,7 +69,7 @@ public class VariableTargetRest {
     variableTargetFacade.delete(targetId, targetType, variableIds);
   }
 
-  @Operation(summary = "Get target variable associations", 
+  @Operation(summary = "Get target variable associations",
       description = "Retrieve all variable associations for a specific test resource with comprehensive details",
       operationId = "data:target:variable:list")
   @ApiResponses(value = {
@@ -81,7 +81,7 @@ public class VariableTargetRest {
     return ApiLocaleResult.success(variableTargetFacade.list(targetId, targetType));
   }
 
-  @Operation(summary = "Get variable target associations", 
+  @Operation(summary = "Get variable target associations",
       description = "Retrieve all target associations for a specific variable with comprehensive resource mapping",
       operationId = "data:variable:target:list")
   @ApiResponses(value = {
@@ -92,7 +92,7 @@ public class VariableTargetRest {
     return ApiLocaleResult.success(variableTargetFacade.listTarget(variableId));
   }
 
-  @Operation(summary = "Preview target variable values", 
+  @Operation(summary = "Preview target variable values",
       description = "Preview variable values for a specific test resource with dynamic processing and validation",
       operationId = "data:target:variable:value:preview")
   @ApiResponses(value = {

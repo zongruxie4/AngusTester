@@ -11,7 +11,8 @@ import java.util.List;
 public enum ScriptPermission implements EnumMessage<String> {
   VIEW, MODIFY, DELETE, TEST, GRANT, EXPORT;
 
-  public static final List<ScriptPermission> ALL = List.of(VIEW, MODIFY, DELETE, TEST, GRANT, EXPORT);
+  public static final List<ScriptPermission> ALL = List.of(VIEW, MODIFY, DELETE, TEST, GRANT,
+      EXPORT);
 
   @Override
   public String getValue() {

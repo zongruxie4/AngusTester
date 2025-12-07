@@ -57,7 +57,7 @@ public class NodeDomainDnsQueryImpl implements NodeDomainDnsQuery {
    * <p>This method supports complex queries using JPA specifications and provides
    * paginated results for efficient data retrieval.</p>
    *
-   * @param spec the JPA specification for filtering records
+   * @param spec     the JPA specification for filtering records
    * @param pageable pagination parameters for result limiting
    * @return a paginated result containing matching domain DNS records
    */
@@ -95,7 +95,7 @@ public class NodeDomainDnsQueryImpl implements NodeDomainDnsQuery {
    * It includes logic to handle soft-deleted records in the validation process.</p>
    *
    * @param domainId the unique identifier of the domain
-   * @param name the DNS name to validate
+   * @param name     the DNS name to validate
    * @throws IllegalArgumentException if the name already exists in the domain
    */
   @Override
@@ -111,10 +111,11 @@ public class NodeDomainDnsQueryImpl implements NodeDomainDnsQuery {
    * <p>This method checks for name uniqueness when updating an existing DNS record,
    * excluding the current record from the validation check.</p>
    *
-   * @param id the unique identifier of the DNS record being updated
+   * @param id       the unique identifier of the DNS record being updated
    * @param domainId the unique identifier of the domain
-   * @param name the DNS name to validate
-   * @throws IllegalArgumentException if the name already exists in the domain (excluding current record)
+   * @param name     the DNS name to validate
+   * @throws IllegalArgumentException if the name already exists in the domain (excluding current
+   *                                  record)
    */
   @Override
   public void checkUpdateNameExists(Long id, Long domainId, String name) {

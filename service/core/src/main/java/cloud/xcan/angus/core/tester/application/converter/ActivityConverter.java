@@ -15,12 +15,12 @@ import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.api.commonlink.user.UserBase;
+import cloud.xcan.angus.core.tester.domain.GlobalResourceType;
 import cloud.xcan.angus.core.tester.domain.activity.Activity;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.activity.MainTargetActivityResource;
 import cloud.xcan.angus.core.tester.domain.activity.summary.ActivitySummary;
-import cloud.xcan.angus.core.tester.domain.GlobalResourceType;
 import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.project.tag.Tag;

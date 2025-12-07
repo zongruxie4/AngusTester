@@ -21,7 +21,8 @@ public class ExecInfoSearchRepoMysql extends SimpleSearchRepository<ExecInfo>
   public StringBuilder getSqlTemplate(Set<SearchCriteria> criteria, Class<ExecInfo> mainClz,
       Object[] params, String... matches) {
     return scriptInfoListRepo.getSqlTemplate0(getSearchMode(), mainClz, criteria,
-        "exec", matches);  }
+        "exec", matches);
+  }
 
   @Override
   public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {

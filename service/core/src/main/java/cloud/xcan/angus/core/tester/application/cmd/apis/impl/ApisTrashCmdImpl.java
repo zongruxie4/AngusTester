@@ -71,6 +71,7 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
   private ActivityCmd activityCmd;
 
   //@Transactional(rollbackFor = Exception.class)
+
   /**
    * Add trash records in batch.
    * <p>
@@ -88,6 +89,7 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
    * <p>
    * Validates permission, deletes trash, cleans up associations, and skips activity logging.
    * </p>
+   *
    * @param id Trash record ID to clear
    */
   @Transactional(rollbackFor = Exception.class)
@@ -155,6 +157,7 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
    * <p>
    * Validates permission, restores APIs or services, and logs the restore activity.
    * </p>
+   *
    * @param id Trash record ID to restore
    */
   @Transactional(rollbackFor = Exception.class)
@@ -175,13 +178,13 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
         if (trashDb.getTargetType().isService()) {
           // Restore service and its associated APIs
           backServices(Collections.singletonList(trashDb));
-          
+
           // Log service restore activity
           activityCmd.add(toActivity(SERVICE, trashDb, ActivityType.BACK, trashDb.getName()));
         } else if (trashDb.getTargetType().isApi()) {
           // Restore API and its parent service
           backApisAndServices(Collections.singletonList(trashDb));
-          
+
           // Log API restore activity
           activityCmd.add(toActivity(API, trashDb, ActivityType.BACK, trashDb.getName()));
         }
@@ -320,6 +323,7 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
   /**
    * Get the repository for ApisTrash entity.
    * <p>
+   *
    * @return the ApisTrashRepo instance
    */
   @Override

@@ -30,8 +30,8 @@ public class FuncCaseFollowQueryImpl implements FuncCaseFollowQuery {
    * Supports pagination and fuzzy search by name.
    *
    * @param projectId project ID
-   * @param name case name filter
-   * @param pageable pagination
+   * @param name      case name filter
+   * @param pageable  pagination
    * @return paginated result of FuncCaseFollowP
    */
   @Override

@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
  * Implementation of MockApisResponseQuery for managing Mock API response operations.
  * <p>
  * This class provides comprehensive functionality for querying and managing Mock API responses,
- * which define the response configurations and data for mock API endpoints.
- * It handles response retrieval, validation, and uniqueness checking.
+ * which define the response configurations and data for mock API endpoints. It handles response
+ * retrieval, validation, and uniqueness checking.
  * <p>
  * Key features include:
  * <ul>
@@ -52,11 +52,11 @@ public class MockApisResponseQueryImpl implements MockApisResponseQuery {
   /**
    * Retrieves all response configurations for a specific Mock API.
    * <p>
-   * Fetches complete response configurations including response data, headers,
-   * and status codes for comprehensive API response management.
+   * Fetches complete response configurations including response data, headers, and status codes for
+   * comprehensive API response management.
    * <p>
-   * The method performs authorization validation to ensure the current user has
-   * permission to view responses for the specified Mock API.
+   * The method performs authorization validation to ensure the current user has permission to view
+   * responses for the specified Mock API.
    *
    * @param apisId the Mock API ID to retrieve responses for
    * @return List of MockApisResponse objects with complete response configurations
@@ -85,11 +85,11 @@ public class MockApisResponseQueryImpl implements MockApisResponseQuery {
   /**
    * Validates that Mock API response names do not already exist within their respective APIs.
    * <p>
-   * Performs comprehensive validation to ensure response name uniqueness both within
-   * the provided response list and against existing responses in the database.
+   * Performs comprehensive validation to ensure response name uniqueness both within the provided
+   * response list and against existing responses in the database.
    * <p>
-   * The method handles batch validation efficiently by grouping responses by API
-   * and performing duplicate detection at multiple levels.
+   * The method handles batch validation efficiently by grouping responses by API and performing
+   * duplicate detection at multiple levels.
    *
    * @param apisResponses0 list of Mock API responses to validate names for
    * @throws ResourceExisted if any response name already exists or conflicts

@@ -30,7 +30,7 @@ public class ExecResultRest {
   @Resource
   private ExecResultFacade execResultFacade;
 
-  @Operation(summary = "Get execution test result details", 
+  @Operation(summary = "Get execution test result details",
       description = "Retrieve comprehensive execution test result details for end-user analysis and reporting",
       operationId = "exec:result:detail")
   @ApiResponses(value = {
@@ -42,7 +42,7 @@ public class ExecResultRest {
     return ApiLocaleResult.success(execResultFacade.execResult(execId));
   }
 
-  @Operation(summary = "Get API execution test result by script type", 
+  @Operation(summary = "Get API execution test result by script type",
       description = "Retrieve API execution test result filtered by specific script type for detailed analysis",
       operationId = "exec:apis:result:byScriptType")
   @ApiResponses(value = {
@@ -55,7 +55,7 @@ public class ExecResultRest {
     return ApiLocaleResult.success(execResultFacade.apisResultByScriptType(apiId, scriptType));
   }
 
-  @Operation(summary = "Get all API execution test results", 
+  @Operation(summary = "Get all API execution test results",
       description = "Retrieve comprehensive API execution test results summary for end-user analysis",
       operationId = "exec:apis:result:all")
   @ApiResponses(value = {
@@ -66,7 +66,7 @@ public class ExecResultRest {
     return ApiLocaleResult.success(execResultFacade.apisResult(apiId));
   }
 
-  @Operation(summary = "Get service API execution test results", 
+  @Operation(summary = "Get service API execution test results",
       description = "Retrieve service-level API execution test results with organizational and date filtering for comprehensive reporting",
       operationId = "exec:service:result:info")
   @ApiResponses(value = {
@@ -78,7 +78,7 @@ public class ExecResultRest {
     return ApiLocaleResult.success(execResultFacade.serviceApisResult(serviceId, dto));
   }
 
-  @Operation(summary = "Get project API execution test results", 
+  @Operation(summary = "Get project API execution test results",
       description = "Retrieve project-level API execution test results with organizational and date filtering for comprehensive reporting",
       operationId = "exec:project:apis:result:info")
   @ApiResponses(value = {
@@ -90,7 +90,7 @@ public class ExecResultRest {
     return ApiLocaleResult.success(execResultFacade.projectApisResult(projectId, dto));
   }
 
-  @Operation(summary = "Get scenario execution test result by script type", 
+  @Operation(summary = "Get scenario execution test result by script type",
       description = "Retrieve scenario execution test result filtered by specific script type for detailed analysis",
       operationId = "exec:scenario:result:byScriptType")
   @ApiResponses(value = {
@@ -104,7 +104,7 @@ public class ExecResultRest {
         execResultFacade.scenarioResultByScriptType(scenarioId, scriptType));
   }
 
-  @Operation(summary = "Get all scenario execution test results", 
+  @Operation(summary = "Get all scenario execution test results",
       description = "Retrieve comprehensive scenario execution test results summary for end-user analysis",
       operationId = "exec:scenario:result:all")
   @ApiResponses(value = {
@@ -115,7 +115,7 @@ public class ExecResultRest {
     return ApiLocaleResult.success(execResultFacade.scenarioResult(scenarioId));
   }
 
-  @Operation(summary = "Get project scenario execution test results", 
+  @Operation(summary = "Get project scenario execution test results",
       description = "Retrieve project-level scenario execution test results with organizational and date filtering for comprehensive reporting",
       operationId = "exec:project:scenario:result:info")
   @ApiResponses(value = {
@@ -127,7 +127,7 @@ public class ExecResultRest {
     return ApiLocaleResult.success(execResultFacade.projectScenarioResult(projectId, dto));
   }
 
-  @Operation(summary = "Get test case execution result details", 
+  @Operation(summary = "Get test case execution result details",
       description = "Retrieve comprehensive test case execution result details for end-user analysis",
       operationId = "exec:case:result:detail")
   @ApiResponses(value = {

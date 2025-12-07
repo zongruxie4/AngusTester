@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class BugCount implements BugCountBase{
+public class BugCount implements BugCountBase {
 
   @Schema(description = "Total number of tasks, Ignoring cancel status tasks")
   protected long totalNum;

@@ -119,7 +119,7 @@ public class HostMetricsMessageHandler implements CustomMessageHandler {
   public static <T> List<T> checkAndParse(BusinessMessage message, TypeReference<List<T>> type) {
     String customType = message.getCustomType();
     MessageService sendService = message.getSendService();
-    if (isEmpty(customType) ||  isNull(sendService)) {
+    if (isEmpty(customType) || isNull(sendService)) {
       log.error("Metrics message parameter error, customType: {}, service: {}",
           customType, sendService);
       return null;

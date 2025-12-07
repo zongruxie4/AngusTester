@@ -21,8 +21,8 @@ public class ServicesSyncTestDto {
 
   @NotEmpty
   @Length(max = MAX_URL_LENGTH_X2)
-  @Schema(description = "OpenAPI documentation URL for synchronization testing", 
-  example = "http://192.168.0.101:1807/v2/api-docs?group=Api", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "OpenAPI documentation URL for synchronization testing",
+      example = "http://192.168.0.101:1807/v2/api-docs?group=Api", requiredMode = RequiredMode.REQUIRED)
   private String apiDocsUrl;
 
   @Valid

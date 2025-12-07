@@ -177,7 +177,8 @@ public class TemplateCmdImpl extends CommCmd<Template, Long> implements Template
         assertNotEmpty(fileName, "File name is required");
 
         // Parse template content from file based on template type
-        TemplateContent templateContent = TemplateConverter.parseImportFile(file, fileName, templateType);
+        TemplateContent templateContent = TemplateConverter.parseImportFile(file, fileName,
+            templateType);
 
         // Create template
         Template template = new Template()

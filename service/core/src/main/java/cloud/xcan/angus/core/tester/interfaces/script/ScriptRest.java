@@ -135,7 +135,8 @@ public class ScriptRest {
   @Operation(summary = "Delete scripts",
       description = "Remove multiple scripts and their associated configurations",
       operationId = "script:delete")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Scripts deleted successfully")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Scripts deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void delete(

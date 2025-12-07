@@ -152,7 +152,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
    * <p>Note: Scenarios and scripts have a one-to-one relationship, while APIs
    * (different test types) and scripts have a one-to-many relationship.</p>
    *
-   * @param script the script to add
+   * @param script       the script to add
    * @param saveActivity whether to save the creation activity
    * @return the ID key of the created script
    * @throws IllegalArgumentException if validation fails
@@ -222,8 +222,8 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
    * <p>The method handles script serialization if content is empty and ensures
    * proper type determination and plugin assignment.</p>
    *
-   * @param script the script to add
-   * @param angusScript the pre-validated AngusScript object
+   * @param script         the script to add
+   * @param angusScript    the pre-validated AngusScript object
    * @param validateScript whether to perform additional script validation
    * @return the ID key of the created script
    * @throws IllegalArgumentException if validation fails
@@ -284,10 +284,10 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
    * Adds a script by scenario with minimal validation.
    *
    * <p>This method is specifically designed for scenario-based script creation
-   * with reduced validation requirements. It's typically used during scenario
-   * setup and initialization.</p>
+   * with reduced validation requirements. It's typically used during scenario setup and
+   * initialization.</p>
    *
-   * @param script the script to add
+   * @param script      the script to add
    * @param angusScript the pre-validated AngusScript object
    * @return the ID key of the created script
    * @throws IllegalArgumentException if validation fails
@@ -340,8 +340,8 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
    * <p>This method creates a script from an AngusScript object, providing
    * a convenient way to add scripts with minimal setup requirements.</p>
    *
-   * @param projectId the project ID to associate the script with
-   * @param angusScript the AngusScript object to convert
+   * @param projectId      the project ID to associate the script with
+   * @param angusScript    the AngusScript object to convert
    * @param validateScript whether to perform script validation
    * @return the ID key of the created script
    * @throws IllegalArgumentException if projectId is null or validation fails
@@ -489,9 +489,9 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
    * <p>The method allows selective tag replacement and activity logging based on
    * the provided parameters.</p>
    *
-   * @param scriptDb the script to update
-   * @param angusScript the pre-validated AngusScript object
-   * @param replaceTag whether to replace existing tags
+   * @param scriptDb       the script to update
+   * @param angusScript    the pre-validated AngusScript object
+   * @param replaceTag     whether to replace existing tags
    * @param validateScript whether to perform script validation
    */
   @Override
@@ -805,7 +805,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
    * <p>If the script has no explicit type, it uses the type from the parsed
    * AngusScript. Otherwise, it updates the AngusScript with the script's type.</p>
    *
-   * @param script the script entity to determine type for
+   * @param script      the script entity to determine type for
    * @param angusScript the parsed AngusScript object
    */
   private void judgeScriptType(Script script, AngusScript angusScript) {
@@ -1086,7 +1086,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
    * the calling code to handle the absence of datasets gracefully.</p>
    *
    * @param caseDatasetMap map of case IDs to their associated datasets
-   * @param case0 the API case to get datasets for
+   * @param case0          the API case to get datasets for
    * @return list of Angus datasets for the case, or null if no datasets exist
    */
   @Nullable
