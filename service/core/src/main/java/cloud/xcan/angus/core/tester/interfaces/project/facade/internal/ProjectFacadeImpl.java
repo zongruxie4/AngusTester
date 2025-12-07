@@ -7,6 +7,8 @@ import static cloud.xcan.angus.core.tester.interfaces.project.facade.internal.as
 import static cloud.xcan.angus.core.tester.interfaces.project.facade.internal.assembler.ProjectAssembler.toDetailVo;
 import static cloud.xcan.angus.core.tester.interfaces.project.facade.internal.assembler.ProjectAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
+import static cloud.xcan.angus.core.utils.ServletUtils.buildDownloadResourceResponseEntity;
+import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 
 import cloud.xcan.angus.api.commonlink.user.UserBase;
 import cloud.xcan.angus.api.commonlink.user.UserInfo;
@@ -27,10 +29,16 @@ import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.ProjectDetailVo
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Set;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import lombok.SneakyThrows;
 
 @Component
 public class ProjectFacadeImpl implements ProjectFacade {
@@ -98,6 +106,17 @@ public class ProjectFacadeImpl implements ProjectFacade {
     Page<Project> page = projectQuery.list(getSpecification(dto), dto.tranPage(),
         dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, ProjectAssembler::toDetailVo);
+  }
+
+  @Override
+  @SneakyThrows
+  public ResponseEntity<org.springframework.core.io.Resource> export(Long projectId, String format,
+      HttpServletResponse response) {
+    File archiveFile = projectCmd.export(projectId, format);
+    String fileName = archiveFile.getName();
+    InputStreamResource resource = new InputStreamResource(new FileInputStream(archiveFile));
+    return buildDownloadResourceResponseEntity(-1, APPLICATION_OCTET_STREAM,
+        fileName, (int) archiveFile.length(), resource);
   }
 
 }

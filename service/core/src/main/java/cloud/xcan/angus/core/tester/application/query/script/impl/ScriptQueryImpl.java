@@ -78,7 +78,8 @@ import org.springframework.data.domain.PageRequest;
  * Implementation of ScriptQuery for script management and query operations.
  * </p>
  * <p>
- * Provides methods for script CRUD operations, parsing, validation, statistics, and comprehensive data assembly.
+ * Provides methods for script CRUD operations, parsing, validation, statistics, and comprehensive
+ * data assembly.
  * </p>
  */
 @Slf4j
@@ -133,6 +134,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Checks view permissions and sets comprehensive script information for user interaction.
    * </p>
+   *
    * @param id Script ID
    * @return Script with complete information
    */
@@ -163,6 +165,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Find a script by ID with optional permission checking for user actions.
    * </p>
+   *
    * @param id Script ID
    * @return Script entity
    */
@@ -187,6 +190,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Get script information for a set of IDs with source names.
    * </p>
+   *
    * @param ids Set of script IDs
    * @return List of script information
    */
@@ -210,6 +214,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Checks view permissions and parses the script content into AngusScript format.
    * </p>
+   *
    * @param id Script ID
    * @return Script with parsed content
    */
@@ -239,6 +244,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Get script count statistics with authorization filtering.
    * </p>
+   *
    * @param criteria Search criteria
    * @return Script count statistics
    */
@@ -265,13 +271,15 @@ public class ScriptQueryImpl implements ScriptQuery {
    * Get script creation statistics for a project within a specified time range.
    * </p>
    * <p>
-   * Supports filtering by creator object type and provides comprehensive creation count statistics.
+   * Supports filtering by creator object type and provides comprehensive creation count
+   * statistics.
    * </p>
-   * @param projectId Project ID
+   *
+   * @param projectId         Project ID
    * @param creatorObjectType Type of creator object
-   * @param creatorObjectId Creator object ID
-   * @param createdDateStart Start date for filtering
-   * @param createdDateEnd End date for filtering
+   * @param creatorObjectId   Creator object ID
+   * @param createdDateStart  Start date for filtering
+   * @param createdDateEnd    End date for filtering
    * @return Script creation statistics
    */
   @Override
@@ -304,13 +312,14 @@ public class ScriptQueryImpl implements ScriptQuery {
    * List scripts with optional full-text search and comprehensive data assembly.
    * </p>
    * <p>
-   * Checks project member permissions, applies authorization filters, and assembles tags and source names
-   * based on the requested information scope.
+   * Checks project member permissions, applies authorization filters, and assembles tags and source
+   * names based on the requested information scope.
    * </p>
-   * @param spec Script search specification
-   * @param pageable Pagination information
+   *
+   * @param spec           Script search specification
+   * @param pageable       Pagination information
    * @param fullTextSearch Whether to use full-text search
-   * @param match Full-text search keywords
+   * @param match          Full-text search keywords
    * @return Page of scripts
    */
   @Override
@@ -357,10 +366,11 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Applies authorization filters only for user actions and sets source names accordingly.
    * </p>
-   * @param spec Script search specification
-   * @param pageable Pagination information
+   *
+   * @param spec           Script search specification
+   * @param pageable       Pagination information
    * @param fullTextSearch Whether to use full-text search
-   * @param match Full-text search keywords
+   * @param match          Full-text search keywords
    * @return Page of script information
    */
   @Override
@@ -402,6 +412,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Converts sourceTargetId to scenarioId when the source is SCENARIO.
    * </p>
+   *
    * @param criteria Search criteria to modify
    */
   @Override
@@ -420,7 +431,8 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Find script information by source and source target ID.
    * </p>
-   * @param source Script source
+   *
+   * @param source         Script source
    * @param sourceTargetId Source target ID
    * @return List of script information
    */
@@ -433,7 +445,8 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Find scripts by source and source target ID.
    * </p>
-   * @param source Script source
+   *
+   * @param source         Script source
    * @param sourceTargetId Source target ID
    * @return List of scripts
    */
@@ -446,7 +459,8 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Find script IDs by source and source target IDs.
    * </p>
-   * @param source Script source
+   *
+   * @param source          Script source
    * @param sourceTargetIds Collection of source target IDs
    * @return Set of script IDs
    */
@@ -459,9 +473,10 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Find script IDs by source, source target IDs, and test types.
    * </p>
-   * @param source Script source
+   *
+   * @param source          Script source
    * @param sourceTargetIds Collection of source target IDs
-   * @param testTypes Collection of test types
+   * @param testTypes       Collection of test types
    * @return Set of script IDs
    */
   @Override
@@ -475,6 +490,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Find script by scenario ID, ensuring one-to-one relationship.
    * </p>
+   *
    * @param scenarioId Scenario ID
    * @return Script entity or null
    */
@@ -491,6 +507,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Find script information by scenario ID, ensuring one-to-one relationship.
    * </p>
+   *
    * @param scenarioId Scenario ID
    * @return Script information entity or null
    */
@@ -508,9 +525,10 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Find script by source, source target ID, and script type.
    * </p>
-   * @param source Script source
+   *
+   * @param source         Script source
    * @param sourceTargetId Source target ID
-   * @param scriptType Script type
+   * @param scriptType     Script type
    * @return Script entity
    */
   @Override
@@ -523,6 +541,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Check and find a script by ID.
    * </p>
+   *
    * @param id Script ID
    * @return Script entity
    */
@@ -535,6 +554,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Check and find script information by ID.
    * </p>
+   *
    * @param id Script ID
    * @return Script information entity
    */
@@ -548,8 +568,10 @@ public class ScriptQueryImpl implements ScriptQuery {
    * Check and find multiple script information by IDs.
    * </p>
    * <p>
-   * Validates that all requested scripts exist and throws appropriate exceptions if any are missing.
+   * Validates that all requested scripts exist and throws appropriate exceptions if any are
+   * missing.
    * </p>
+   *
    * @param ids Collection of script IDs
    * @return List of script information
    */
@@ -563,6 +585,21 @@ public class ScriptQueryImpl implements ScriptQuery {
     return scriptDbs;
   }
 
+  @Override
+  public List<Script> findByProjectId(Long projectId) {
+    return scriptRepo.findByProjectId(projectId);
+  }
+
+  @Override
+  public List<Script> findByProjectIdAndIdNot(Long projectId, List<Long> scriptIds) {
+    return scriptRepo.findByProjectIdAndIdNotIn(projectId, scriptIds);
+  }
+
+  @Override
+  public List<Script> findAllById(Collection<Long> ids) {
+    return scriptRepo.findAllById(ids);
+  }
+
   /**
    * <p>
    * Get a map of script information by script IDs.
@@ -570,6 +607,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Handles exceptions gracefully when scripts are deleted and returns partial results.
    * </p>
+   *
    * @param scriptIds Set of script IDs
    * @return Map of script ID to script information
    */
@@ -596,7 +634,8 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Validates parsing results and optionally performs additional script validation.
    * </p>
-   * @param content Script content
+   *
+   * @param content    Script content
    * @param validation Whether to perform additional validation
    * @return Parsed AngusScript or null
    */
@@ -628,7 +667,8 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Validates script content and checks length constraints.
    * </p>
-   * @param script AngusScript to serialize
+   *
+   * @param script     AngusScript to serialize
    * @param validation Whether to perform validation
    * @return Serialized script content
    */
@@ -657,6 +697,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Validate AngusScript using Bean Validation constraints.
    * </p>
+   *
    * @param script AngusScript to validate
    */
   @Override
@@ -675,6 +716,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Check if the script quota is exceeded after increment.
    * </p>
+   *
    * @param incr Number of scripts to add
    */
   @Override
@@ -687,6 +729,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Check if script content length exceeds the maximum allowed length.
    * </p>
+   *
    * @param script Script content
    */
   @Override
@@ -705,6 +748,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Validates that APIs or scenarios referenced by the script actually exist.
    * </p>
+   *
    * @param script Script to validate
    */
   @Override
@@ -724,6 +768,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Check if a script already exists when adding a new script.
    * </p>
+   *
    * @param script Script to check
    */
   @Override
@@ -743,6 +788,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Check if a script already exists when updating a script, excluding the current script.
    * </p>
+   *
    * @param script Script to check
    */
   @Override
@@ -762,6 +808,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Check if authorization control is enabled for a script.
    * </p>
+   *
    * @param scriptId Script ID
    * @return true if authorization control is enabled, false otherwise
    */
@@ -775,6 +822,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Set tags for a script.
    * </p>
+   *
    * @param script Script to set tags for
    */
   @Override
@@ -791,6 +839,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Batch retrieves tag information to avoid N+1 query problems.
    * </p>
+   *
    * @param scriptInfos List of script information to update
    */
   @Override
@@ -813,6 +862,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Set the source name for a script.
    * </p>
+   *
    * @param script Script to set source name for
    */
   @Override
@@ -836,6 +886,7 @@ public class ScriptQueryImpl implements ScriptQuery {
    * <p>
    * Set the source name for a list of script information.
    * </p>
+   *
    * @param scriptInfos List of script information to set source name for
    */
   @Override

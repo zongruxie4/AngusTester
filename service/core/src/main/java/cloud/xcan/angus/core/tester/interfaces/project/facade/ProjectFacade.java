@@ -11,8 +11,10 @@ import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectUpdateD
 import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.ProjectDetailVo;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Set;
+import org.springframework.http.ResponseEntity;
 
 public interface ProjectFacade {
 
@@ -36,4 +38,6 @@ public interface ProjectFacade {
 
   PageResult<ProjectDetailVo> list(ProjectFindDto dto);
 
+  ResponseEntity<org.springframework.core.io.Resource> export(Long projectId, String format,
+      jakarta.servlet.http.HttpServletResponse response);
 }

@@ -2186,6 +2186,11 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     return cases;
   }
 
+  @Override
+  public List<FuncCase> findAllByProjectId(Long projectId) {
+    return funcCaseRepo.findAllByProjectId(projectId);
+  }
+
   /**
    * Validates that all cases have passed review.
    * <p>

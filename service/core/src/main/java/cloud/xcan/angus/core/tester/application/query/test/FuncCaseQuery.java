@@ -155,6 +155,8 @@ public interface FuncCaseQuery {
 
   List<FuncCaseInfo> checkAndFindInfo(Collection<Long> ids);
 
+  List<FuncCase> findAllByProjectId(Long projectId);
+
   void checkReviewPassed(List<FuncCase> cases);
 
   void checkCanReview(List<FuncCase> casesDb);

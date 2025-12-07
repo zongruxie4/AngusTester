@@ -16,16 +16,20 @@ import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Set;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -106,7 +110,8 @@ public class ProjectRest {
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ApiLocaleResult<IdKey<Long, Object>> imports(
-      @Parameter(content = @io.swagger.v3.oas.annotations.media.Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE), schema = @io.swagger.v3.oas.annotations.media.Schema(type = "object")) @Valid ProjectImportDto dto) {
+      @Parameter(content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE), schema = @Schema(type = "object"))
+      @Valid ProjectImportDto dto) {
     return ApiLocaleResult.success(projectFacade.imports(dto));
   }
 
@@ -168,6 +173,20 @@ public class ProjectRest {
   public ApiLocaleResult<PageResult<ProjectDetailVo>> list(
       @Valid @ParameterObject ProjectFindDto dto) {
     return ApiLocaleResult.success(projectFacade.list(dto));
+  }
+
+  @Operation(summary = "Export project data",
+      description = "Export project data to ZIP (default) or TAR archive file containing JSON business data and YAML script files",
+      operationId = "project:export")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Project data exported successfully"),
+      @ApiResponse(responseCode = "404", description = "Project not found")})
+  @GetMapping(value = "/{id}/export")
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      @Parameter(name = "id", description = "Project identifier to export", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "format", description = "Export format: zip (default), tar, or tar.gz", example = "zip") @RequestParam(value = "format", defaultValue = "zip") String format,
+      HttpServletResponse response) {
+    return projectFacade.export(id, format, response);
   }
 
 }

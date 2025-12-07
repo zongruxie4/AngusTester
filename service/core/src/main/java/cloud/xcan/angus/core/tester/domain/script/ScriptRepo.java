@@ -14,6 +14,10 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface ScriptRepo extends BaseRepository<Script, Long> {
 
+  List<Script> findByProjectId(Long projectId);
+
+  List<Script> findByProjectIdAndIdNotIn(Long projectId, List<Long> scriptIds);
+
   List<Script> findBySourceIdAndSource(Long sourceId, ScriptSource source);
 
   Script findBySourceIdAndSourceAndType(Long sourceTargetId, ScriptSource source,

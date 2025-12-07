@@ -63,6 +63,12 @@ public interface ScriptQuery {
 
   List<ScriptInfo> checkAndFindInfos(Collection<Long> ids);
 
+  List<Script> findByProjectId(Long projectId);
+
+  List<Script> findByProjectIdAndIdNot(Long projectId, List<Long> scriptIds);
+
+  List<Script> findAllById(Collection<Long> ids);
+
   Map<Long, ScriptInfo> getScriptInfoMap(Set<Long> scriptIds);
 
   AngusScript checkAndParse(String content, boolean validation);

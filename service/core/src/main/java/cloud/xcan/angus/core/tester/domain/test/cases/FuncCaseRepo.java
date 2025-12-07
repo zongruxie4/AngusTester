@@ -44,6 +44,8 @@ public interface FuncCaseRepo extends BaseRepository<FuncCase, Long> {
   @Query(value = "SELECT * FROM func_case t WHERE t.id IN ?1", nativeQuery = true)
   List<FuncCase> findAllByIdIn(Collection<Long> caseIds);
 
+  List<FuncCase> findAllByProjectId(Long projectId);
+
   boolean existsByPlanIdAndName(Long planId, String name);
 
   long countByPlanId(Long planId);
@@ -147,5 +149,6 @@ public interface FuncCaseRepo extends BaseRepository<FuncCase, Long> {
   @Modifying
   @Query(value = "DELETE FROM func_case WHERE plan_id = ?1 AND name IN ?2", nativeQuery = true)
   void deleteByPlanIdAndNameIn(Long planId, Collection<String> names);
+
 
 }

@@ -125,6 +125,8 @@ public class Scenario extends TenantAuditingEntity<Scenario, Long> implements Ac
   @Transient
   private String scriptName;
   @Transient
+  private String scriptContent;
+  @Transient
   private AngusScript angusScript;
   @Transient
   private Boolean favourite;
