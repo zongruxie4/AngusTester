@@ -29,4 +29,6 @@ public interface FuncPlanCmd {
 
   void delete0(List<Long> planIds);
 
+  void add0(List<FuncPlan> funcPlans);
+
 }

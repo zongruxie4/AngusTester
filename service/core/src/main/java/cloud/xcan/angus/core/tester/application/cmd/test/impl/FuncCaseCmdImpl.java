@@ -117,6 +117,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -1655,6 +1656,23 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }
   }
 
+  @Override
+  public void add0(List<FuncCase> cases, List<FuncPlan> plans) {
+    if (isNotEmpty(cases)) {
+      Map<Long, List<FuncCase>> planCasesMap = cases.stream()
+          .collect(Collectors.groupingBy(FuncCase::getPlanId));
+      Map<Long, FuncPlan> planMap = plans.stream()
+          .collect(Collectors.toMap(FuncPlan::getId, x -> x));
+      for (Entry<Long, List<FuncCase>> entry : planCasesMap.entrySet()) {
+        if (planMap.containsKey(entry.getKey())) {
+          FuncPlan planDb = planMap.get(entry.getKey());
+          // Fill creation info for each case
+          FuncCaseConverter.assembleAddInfo(entry.getValue(), planDb);
+          batchInsert(cases, "name");
+        }
+      }
+    }
+  }
   /**
    * Add modification activities and send notification events for updated cases.
    * <p>

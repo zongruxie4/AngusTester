@@ -366,7 +366,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
    */
   @Override
   public FuncPlan checkAndFind(Long id) {
-    return funcPlanRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Template"));
+    return funcPlanRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "FuncPlan"));
   }
 
   /**
@@ -397,6 +397,11 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
   @Override
   public List<FuncPlan> find0ById(Collection<Long> ids) {
     return funcPlanRepo.findAll0ByIdIn(ids);
+  }
+
+  @Override
+  public List<FuncPlan> findAllByProjectId(Long projectId) {
+    return funcPlanRepo.findByProjectId(projectId);
   }
 
   /**

@@ -1,11 +1,22 @@
 package cloud.xcan.angus.core.tester.application.cmd.project.impl;
 
+import static cloud.xcan.angus.api.commonlink.CombinedTargetType.DATASET;
+import static cloud.xcan.angus.api.commonlink.CombinedTargetType.FUNC_CASE;
+import static cloud.xcan.angus.api.commonlink.CombinedTargetType.FUNC_PLAN;
+import static cloud.xcan.angus.api.commonlink.CombinedTargetType.MODULE;
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.PROJECT;
+import static cloud.xcan.angus.api.commonlink.CombinedTargetType.SCENARIO;
+import static cloud.xcan.angus.api.commonlink.CombinedTargetType.SERVICE;
+import static cloud.xcan.angus.api.commonlink.CombinedTargetType.TAG;
+import static cloud.xcan.angus.api.commonlink.CombinedTargetType.TASK;
+import static cloud.xcan.angus.api.commonlink.CombinedTargetType.VARIABLE;
 import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_AFTER_HOURS;
 import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_BEFORE_HOURS;
 import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_PROJECT_FILE;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
+import static cloud.xcan.angus.core.tester.application.cmd.issue.impl.TaskCmdImpl.getTaskCode;
+import static cloud.xcan.angus.core.tester.application.cmd.test.impl.FuncCaseCmdImpl.getCaseCode;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.angus.core.tester.application.converter.ProjectConverter.getSafeExampleDataTypes;
 import static cloud.xcan.angus.core.tester.application.converter.ProjectConverter.toTaskTrash;
@@ -46,11 +57,11 @@ import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioCmd;
 import cloud.xcan.angus.core.tester.application.cmd.script.ScriptCmd;
 import cloud.xcan.angus.core.tester.application.cmd.services.ServicesCmd;
 import cloud.xcan.angus.core.tester.application.cmd.test.FuncCaseCmd;
+import cloud.xcan.angus.core.tester.application.cmd.test.FuncPlanCmd;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.data.DatasetQuery;
 import cloud.xcan.angus.core.tester.application.query.data.VariableQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskQuery;
-import cloud.xcan.angus.core.tester.application.query.mock.MockServiceQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ModuleQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.application.query.project.TagQuery;
@@ -58,6 +69,7 @@ import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioQuery;
 import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncCaseQuery;
+import cloud.xcan.angus.core.tester.application.query.test.FuncPlanQuery;
 import cloud.xcan.angus.core.tester.domain.ExampleDataType;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.data.dataset.Dataset;
@@ -73,11 +85,14 @@ import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
 import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCase;
+import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlan;
 import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
 import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.core.tester.infra.util.ProjectExportFileUtils;
 import cloud.xcan.angus.core.tester.infra.util.ProjectImportFileUtils;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
+import cloud.xcan.angus.model.script.ScriptSource;
+import cloud.xcan.angus.parser.AngusParser;
 import cloud.xcan.angus.remote.message.ProtocolException;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.experimental.Assert;
@@ -101,9 +116,11 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -139,6 +156,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   private ModuleCmd moduleCmd;
   @Resource
   private TaskCmd taskCmd;
+  @Resource
+  private FuncPlanCmd funcPlanCmd;
   @Resource
   private FuncCaseCmd funcCaseCmd;
   @Resource
@@ -180,7 +199,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   @Resource
   private DatasetQuery datasetQuery;
   @Resource
-  private MockServiceQuery mockServiceQuery;
+  private FuncPlanQuery funcPlanQuery;
 
   /**
    * Adds a new project to the system.
@@ -523,7 +542,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     }
 
     // Import functional test cases if requested
-    if (finalDataTypes.contains(ExampleDataType.FUNC)) {
+    if (finalDataTypes.contains(ExampleDataType.FUNC_CASE)) {
       funcCaseCmd.importExample(project.getId());
     }
 
@@ -655,6 +674,9 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
           project.setType(projectType);
           project.setName(name);
           project.setOwnerId(getUserId());
+          LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> memberTypeIds = new LinkedHashMap<>();
+          memberTypeIds.put(OrgTargetType.USER, new LinkedHashSet<>(List.of(getUserId())));
+          project.setMemberTypeIds(memberTypeIds);
           project.setStartDate(LocalDateTime.now());
           project.setDeadlineDate(LocalDateTime.now().plusHours(SAMPLE_AFTER_HOURS));
           if (isEmpty(project.getVersion())) {
@@ -689,6 +711,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   @SneakyThrows
   private void importBusinessData(Long projectId,
       Map<ExampleDataType, List<File>> classifiedFiles) {
+    Long idSalt = Long.valueOf(RandomStringUtils.randomNumeric(6));
+
     // Import tags
     if (classifiedFiles.containsKey(ExampleDataType.TAG)) {
       File tagFile = classifiedFiles.get(ExampleDataType.TAG).get(0);
@@ -706,6 +730,10 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
       List<Module> modules = JsonUtils.convert(moduleJson, new TypeReference<List<Module>>() {
       });
       for (Module module : modules) {
+        // Maintain the tree structure of IDs
+        module.setId(module.getId() + idSalt);
+        module.setPid(nonNull(module.getPid()) && module.getPid() != -1L
+            ? module.getPid() + idSalt : -1L);
         module.setProjectId(projectId);
         // Reset audit fields to null
         module.setTenantId(null);
@@ -714,7 +742,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         module.setLastModifiedBy(null);
         module.setLastModifiedDate(null);
       }
-      moduleCmd.add(projectId, modules);
+      moduleCmd.add0(modules);
     }
 
     // Import tasks
@@ -726,9 +754,14 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
       for (Task task : tasks) {
         task.setProjectId(projectId);
         // Clear ID to create new task
-        task.setId(null);
-        task.setParentTaskId(null);
+        // Maintain the tree structure of IDs
+        idSalt = Long.valueOf(RandomStringUtils.randomNumeric(12));
+        task.setId(task.getId() + idSalt);
+        task.setParentTaskId(nonNull(task.getParentTaskId()) && task.getParentTaskId() != -1L
+            ? task.getParentTaskId() + idSalt : -1L);
+        task.setCode(getTaskCode());
         task.setSprintId(null);
+        task.setBacklog(nullSafe(task.getBacklog(), false));
         // Reset audit fields to null
         task.setTenantId(null);
         task.setCreatedBy(null);
@@ -736,15 +769,37 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         task.setLastModifiedBy(null);
         task.setLastModifiedDate(null);
         // Reset count fields to 0
-        task.setFailNum(0);
-        task.setTotalNum(0);
-        taskCmd.add(task);
+        //        task.setFailNum(0);
+        //        task.setTotalNum(0);
+        taskCmd.add0(task);
       }
     }
 
+    // Import functional test plans
+    List<FuncPlan> funcPlans = null;
+    if (classifiedFiles.containsKey(ExampleDataType.FUNC_PLAN)) {
+      File funcCaseFile = classifiedFiles.get(ExampleDataType.FUNC_PLAN).get(0);
+      String funcCaseJson = FileUtils.readFileToString(funcCaseFile, StandardCharsets.UTF_8);
+      funcPlans = JsonUtils.convert(funcCaseJson,
+          new TypeReference<List<FuncPlan>>() {
+          });
+      for (FuncPlan funcPlan : funcPlans) {
+        funcPlan.setProjectId(projectId);
+        // Clear ID to create new case
+        funcPlan.setId(funcPlan.getId() + idSalt);
+        // Reset audit fields to null
+        funcPlan.setTenantId(null);
+        funcPlan.setCreatedBy(null);
+        funcPlan.setCreatedDate(null);
+        funcPlan.setLastModifiedBy(null);
+        funcPlan.setLastModifiedDate(null);
+      }
+      funcPlanCmd.add0(funcPlans);
+    }
+
     // Import functional test cases
-    if (classifiedFiles.containsKey(ExampleDataType.FUNC)) {
-      File funcCaseFile = classifiedFiles.get(ExampleDataType.FUNC).get(0);
+    if (nonNull(funcPlans) && classifiedFiles.containsKey(ExampleDataType.FUNC_CASE)) {
+      File funcCaseFile = classifiedFiles.get(ExampleDataType.FUNC_CASE).get(0);
       String funcCaseJson = FileUtils.readFileToString(funcCaseFile, StandardCharsets.UTF_8);
       List<FuncCase> funcCases = JsonUtils.convert(funcCaseJson,
           new TypeReference<List<FuncCase>>() {
@@ -752,21 +807,24 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
       for (FuncCase funcCase : funcCases) {
         funcCase.setProjectId(projectId);
         // Clear ID to create new case
-        funcCase.setId(null);
-        funcCase.setPlanId(null);
+        idSalt = Long.valueOf(RandomStringUtils.randomNumeric(12));
+        funcCase.setId(funcCase.getId() + idSalt);
+        funcCase.setPlanId(nonNull(funcCase.getPlanId()) && funcCase.getPlanId() != -1L
+            ? funcCase.getPlanId() + idSalt : -1L);
+        funcCase.setCode(getCaseCode());
         // Reset audit fields to null
         funcCase.setTenantId(null);
-        funcCase.setCreatedBy(null);
-        funcCase.setCreatedDate(null);
+        funcCase.setCreatedBy(getUserId());
+        funcCase.setCreatedDate(LocalDateTime.now());
         funcCase.setLastModifiedBy(null);
         funcCase.setLastModifiedDate(null);
         // Reset count fields to 0
-        funcCase.setReviewNum(0);
-        funcCase.setReviewFailNum(0);
-        funcCase.setTestNum(0);
-        funcCase.setTestFailNum(0);
+        //        funcCase.setReviewNum(0);
+        //        funcCase.setReviewFailNum(0);
+        //        funcCase.setTestNum(0);
+        //        funcCase.setTestFailNum(0);
       }
-      funcCaseCmd.add(funcCases);
+      funcCaseCmd.add0(funcCases, funcPlans);
     }
 
     // Import services
@@ -798,8 +856,11 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         Script script = null;
         if (isNotEmpty(scenario.getScriptContent())) {
           script = new Script()
+              .setId(null)
               .setProjectId(projectId)
               .setName(scenario.getName() + "_script")
+              .setSource(ScriptSource.IMPORTED)
+              .setAuth(false)
               .setContent(scenario.getScriptContent());
           scriptCmd.imports(script);
         }
@@ -807,8 +868,12 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         scenario.setProjectId(projectId);
         scenario.setScriptId(script != null ? script.getId() : null);
         // Clear ID to create new scenario
-        scenario.setId(null);
+        scenario.setId(scenario.getId() + idSalt)
+            .setTestFunc(false)
+            .setTestPerf(false)
+            .setTestStability(false);
         // Reset audit fields to null
+        scenario.setDeleted(false);
         scenario.setCreatedBy(null);
         scenario.setCreatedDate(null);
         scenario.setLastModifiedBy(null);
@@ -827,6 +892,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
           Script script = new Script()
               .setProjectId(projectId)
               .setName(scriptName)
+              .setSource(ScriptSource.IMPORTED)
+              .setAuth(false)
               .setContent(scriptContent);
           scriptCmd.imports(script);
         } catch (Exception e) {
@@ -927,7 +994,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         try {
           // Export project information
           String projectJson = JsonUtils.toJson(project);
-          ProjectExportFileUtils.writeJsonFile(exportDir, "Project", projectJson);
+          ProjectExportFileUtils.writeJsonFile(exportDir, PROJECT.getMessage(), projectJson);
 
           // Export tags
           exportTags(projectId, exportDir);
@@ -937,6 +1004,9 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
 
           // Export tasks
           exportTasks(projectId, exportDir);
+
+          // Export functional test cases
+          exportFuncPlans(projectId, exportDir);
 
           // Export functional test cases
           exportFuncCases(projectId, exportDir);
@@ -957,7 +1027,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
           exportDatasets(projectId, exportDir);
 
           // Create archive file
-          String archiveFileName = projectName + "-" + System.currentTimeMillis();
+          String archiveFileName = projectName + System.currentTimeMillis();
           String lowerFormat = format != null ? format.toLowerCase() : "zip";
           boolean gzip = lowerFormat.equals("tar.gz") || lowerFormat.equals("tgz");
 
@@ -1000,7 +1070,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
       Page<Tag> page = tagQuery.list(spec, pageable, false, null);
       if (page.hasContent()) {
         String tagsJson = JsonUtils.toJson(page.getContent());
-        ProjectExportFileUtils.writeJsonFile(exportDir, "Tag", tagsJson);
+        ProjectExportFileUtils.writeJsonFile(exportDir, TAG.getMessage(), tagsJson);
       }
     } catch (Exception e) {
       log.warn("Failed to export tags for project: " + projectId, e);
@@ -1018,7 +1088,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
       List<Module> modules = moduleQuery.find(spec, false, null);
       if (isNotEmpty(modules)) {
         String modulesJson = JsonUtils.toJson(modules);
-        ProjectExportFileUtils.writeJsonFile(exportDir, "Module", modulesJson);
+        ProjectExportFileUtils.writeJsonFile(exportDir, MODULE.getMessage(), modulesJson);
       }
     } catch (Exception e) {
       log.warn("Failed to export modules for project: " + projectId, e);
@@ -1033,14 +1103,31 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     try {
       Set<SearchCriteria> criteria = Set.of(SearchCriteria.equal("projectId", projectId));
       GenericSpecification<Task> spec = new GenericSpecification<>(criteria);
-      PageRequest pageable = PageRequest.of(0, 10000);
+      PageRequest pageable = PageRequest.of(0, 10000,
+          Sort.by(Sort.Direction.ASC, "id"));
       Page<Task> page = taskQuery.list(false, spec, pageable, false, null);
       if (page.hasContent()) {
         String tasksJson = JsonUtils.toJson(page.getContent());
-        ProjectExportFileUtils.writeJsonFile(exportDir, "Task", tasksJson);
+        ProjectExportFileUtils.writeJsonFile(exportDir, TASK.getMessage(), tasksJson);
       }
     } catch (Exception e) {
       log.warn("Failed to export tasks for project: " + projectId, e);
+    }
+  }
+
+  /**
+   * Exports functional test cases for a project.
+   */
+  @SneakyThrows
+  private void exportFuncPlans(Long projectId, File exportDir) {
+    try {
+      List<FuncPlan> funcCases = funcPlanQuery.findAllByProjectId(projectId);
+      if (!funcCases.isEmpty()) {
+        String plansJson = JsonUtils.toJson(funcCases);
+        ProjectExportFileUtils.writeJsonFile(exportDir, FUNC_PLAN.getMessage(), plansJson);
+      }
+    } catch (Exception e) {
+      log.warn("Failed to export functional test plans for project: " + projectId, e);
     }
   }
 
@@ -1052,8 +1139,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     try {
       List<FuncCase> funcCases = funcCaseQuery.findAllByProjectId(projectId);
       if (!funcCases.isEmpty()) {
-        String tasksJson = JsonUtils.toJson(funcCases);
-        ProjectExportFileUtils.writeJsonFile(exportDir, "FuncCase", tasksJson);
+        String casesJson = JsonUtils.toJson(funcCases);
+        ProjectExportFileUtils.writeJsonFile(exportDir, FUNC_CASE.getMessage(), casesJson);
       }
     } catch (Exception e) {
       log.warn("Failed to export functional test cases for project: " + projectId, e);
@@ -1074,7 +1161,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         // Export services using ServicesCmd.exportProject method
         // For now, export basic service information as JSON
         String servicesJson = JsonUtils.toJson(page.getContent());
-        ProjectExportFileUtils.writeJsonFile(exportDir, "Service", servicesJson);
+        ProjectExportFileUtils.writeJsonFile(exportDir, SERVICE.getMessage(), servicesJson);
       }
     } catch (Exception e) {
       log.warn("Failed to export services for project: " + projectId, e);
@@ -1090,21 +1177,24 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     try {
       Set<SearchCriteria> criteria = Set.of(SearchCriteria.equal("projectId", projectId));
       GenericSpecification<Scenario> spec = new GenericSpecification<>(criteria);
-      PageRequest pageable = PageRequest.of(0, 10000);
+      PageRequest pageable = PageRequest.of(0, 10000,
+          Sort.by(Sort.Direction.ASC, "id"));
       Page<Scenario> page = scenarioQuery.list(spec, pageable, false, null);
       if (page.hasContent()) {
         List<Script> scripts = scriptQuery.findAllById(page.getContent().stream()
             .map(Scenario::getScriptId).filter(Objects::nonNull).collect(Collectors.toSet()));
         Map<Long, Script> scriptMap = scripts.stream()
             .collect(Collectors.toMap(Script::getId, x -> x));
+        List<Scenario> scenarios = new ArrayList<>();
         for (Scenario scenario : page.getContent()) {
           if (scenario.getScriptId() != null && scriptMap.containsKey(scenario.getScriptId())) {
             scriptIds.add(scenario.getScriptId());
             scenario.setScriptContent(scriptMap.get(scenario.getScriptId()).getContent());
+            scenarios.add(scenario);
           }
         }
-        String scenariosJson = JsonUtils.toJson(page.getContent());
-        ProjectExportFileUtils.writeJsonFile(exportDir, "Scenario", scenariosJson);
+        String scenariosJson = JsonUtils.toJson(scenarios);
+        ProjectExportFileUtils.writeJsonFile(exportDir, SCENARIO.getMessage(), scenariosJson);
       }
     } catch (Exception e) {
       log.warn("Failed to export scenarios for project: " + projectId, e);
@@ -1126,7 +1216,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         return;
       }
       for (Script script : scripts) {
-        ProjectExportFileUtils.writeYamlFile(scriptsDir, script.getName(), script.getContent());
+        ProjectExportFileUtils.writeYamlFile(scriptsDir,
+            script.getName().replaceAll("[^a-zA-Z0-9\\u4e00-\\u9fa5]", "_"), script.getContent());
       }
     } catch (Exception e) {
       log.warn("Failed to export scripts for project: " + projectId, e);
@@ -1145,8 +1236,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
       org.springframework.data.domain.Page<Variable> page =
           variableQuery.list(spec, pageable, false, null);
       if (page.hasContent()) {
-        String variablesJson = JsonUtils.toJson(page.getContent());
-        ProjectExportFileUtils.writeJsonFile(exportDir, "Variable", variablesJson);
+        String variablesJson = AngusParser.JSON_MAPPER.writeValueAsString(page.getContent());
+        ProjectExportFileUtils.writeJsonFile(exportDir, VARIABLE.getMessage(), variablesJson);
       }
     } catch (Exception e) {
       log.warn("Failed to export variables for project: " + projectId, e);
@@ -1164,8 +1255,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
       PageRequest pageable = PageRequest.of(0, 10000);
       Page<Dataset> page = datasetQuery.list(spec, pageable, false, null);
       if (page.hasContent()) {
-        String datasetsJson = JsonUtils.toJson(page.getContent());
-        ProjectExportFileUtils.writeJsonFile(exportDir, "Dataset", datasetsJson);
+        String datasetsJson = AngusParser.JSON_MAPPER.writeValueAsString(page.getContent());
+        ProjectExportFileUtils.writeJsonFile(exportDir, DATASET.getMessage(), datasetsJson);
       }
     } catch (Exception e) {
       log.warn("Failed to export datasets for project: " + projectId, e);

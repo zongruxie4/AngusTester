@@ -4,6 +4,7 @@ import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.pojo.Attachment;
 import cloud.xcan.angus.core.tester.domain.test.cases.FuncCase;
+import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlan;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -69,6 +70,8 @@ public interface FuncCaseCmd {
   void delete0(List<Long> caseIds);
 
   void addReviewActivities(List<FuncCase> casesDb);
+
+  void add0(List<FuncCase> funcCases, List<FuncPlan> plans);
 
 }
 

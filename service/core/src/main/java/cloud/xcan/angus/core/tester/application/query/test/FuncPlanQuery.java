@@ -34,6 +34,8 @@ public interface FuncPlanQuery {
 
   List<FuncPlan> find0ById(Collection<Long> ids);
 
+  List<FuncPlan> findAllByProjectId(Long projectId);
+
   void checkNameExists(Long projectId, String name);
 
   void checkHasStarted(FuncPlan planDb);

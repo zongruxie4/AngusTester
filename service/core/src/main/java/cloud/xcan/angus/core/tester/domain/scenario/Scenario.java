@@ -3,6 +3,7 @@ package cloud.xcan.angus.core.tester.domain.scenario;
 
 import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
+import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
 import cloud.xcan.angus.core.jpa.multitenancy.TenantAuditingEntity;
@@ -11,6 +12,7 @@ import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -150,14 +152,17 @@ public class Scenario extends TenantAuditingEntity<Scenario, Long> implements Ac
   @Transient
   private LocalDateTime lastExecDate;
 
+  @JsonIgnore
   public boolean isEnabledAuth() {
-    return Objects.nonNull(auth) && auth;
+    return nonNull(auth) && auth;
   }
 
+  @JsonIgnore
   public boolean isEnabledTest() {
     return testFunc || testPerf || testStability;
   }
 
+  @JsonIgnore
   public boolean isPassedTest() {
     return isEnabledTest() && (
         (!testFunc || nullSafe(testFuncPassed, false)) &&
@@ -166,29 +171,31 @@ public class Scenario extends TenantAuditingEntity<Scenario, Long> implements Ac
     );
   }
 
+  @JsonIgnore
   public int getEnabledTestNum() {
     int testNum = 0;
-    if (testFunc) {
+    if (nonNull(testFunc) && testFunc) {
       testNum++;
     }
-    if (testPerf) {
+    if (nonNull(testPerf) && testPerf) {
       testNum++;
     }
-    if (testStability) {
+    if (nonNull(testStability) && testStability) {
       testNum++;
     }
     return testNum;
   }
 
+  @JsonIgnore
   public int getPassedTestNum() {
     int passedTestNum = 0;
-    if (testFunc && nullSafe(testFuncPassed, false)) {
+    if (nonNull(testFunc) && testFunc && nullSafe(testFuncPassed, false)) {
       passedTestNum++;
     }
-    if (testPerf && nullSafe(testPerfPassed, false)) {
+    if (nonNull(testPerf) && testPerf && nullSafe(testPerfPassed, false)) {
       passedTestNum++;
     }
-    if (testStability && nullSafe(testStabilityPassed, false)) {
+    if (nonNull(testStability) && testStability && nullSafe(testStabilityPassed, false)) {
       passedTestNum++;
     }
     return passedTestNum;

@@ -17,4 +17,6 @@ public interface ModuleCmd {
 
   void delete(Collection<Long> ids);
 
+  void add0(List<Module> modules);
+
 }

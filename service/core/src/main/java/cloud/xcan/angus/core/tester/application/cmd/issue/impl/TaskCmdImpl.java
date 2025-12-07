@@ -98,7 +98,6 @@ import cloud.xcan.angus.core.tester.application.cmd.issue.TaskTrashCmd;
 import cloud.xcan.angus.core.tester.application.cmd.project.SoftwareVersionCmd;
 import cloud.xcan.angus.core.tester.application.cmd.project.TagTargetCmd;
 import cloud.xcan.angus.core.tester.application.converter.TaskConverter;
-import cloud.xcan.angus.core.tester.application.query.apis.ApisQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskSprintAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskSprintQuery;
@@ -206,8 +205,6 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   private TaskSprintCmd taskSprintCmd;
   @Resource
   private TaskSprintAuthQuery taskSprintAuthQuery;
-  @Resource
-  private ApisQuery apisQuery;
   @Resource
   private TagTargetCmd tagTargetCmd;
   @Resource
@@ -2267,11 +2264,9 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   public void retest0ByTarget(Boolean restart, List<Task> tasksDb) {
     List<Task> retestTaskDbs;
     if (restart) {
-      retestTaskDbs = tasksDb.stream().map(TaskConverter::toRestartTask)
-          .toList();
+      retestTaskDbs = tasksDb.stream().map(TaskConverter::toRestartTask).toList();
     } else {
-      retestTaskDbs = tasksDb.stream().map(o -> o.setStatus(TaskStatus.PENDING))
-          .toList();
+      retestTaskDbs = tasksDb.stream().map(o -> o.setStatus(TaskStatus.PENDING)).toList();
     }
 
     taskRepo.saveAll(retestTaskDbs);
@@ -2324,6 +2319,12 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     taskFuncCaseCmd.deleteByTargetIds(taskIds);
 
     taskRepo.deleteByIdIn(taskIds);
+  }
+
+  @Override
+  public void add0(Task task) {
+    TaskConverter.assembleAddTaskInfo(task, null, true);
+    insert(task);
   }
 
   /**

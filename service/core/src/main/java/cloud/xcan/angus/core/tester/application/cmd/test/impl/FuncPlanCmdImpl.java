@@ -593,6 +593,26 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
     funcReviewCmd.deleteByPlanId(ids);
   }
 
+  @Override
+  public void add0(List<FuncPlan> funcPlans) {
+    for (FuncPlan plan : funcPlans) {
+      // Insert the plan and get ID
+      if (isNull(plan.getId())){
+        plan.setId(BIDUtils.getId(BIDKey.planId));
+      }
+      IdKey<Long, Object> idKey = insert(plan);
+
+      // Initialize plan creator authorization
+      Long currentUserId = getUserId();
+      funcPlanAuthCmd.addCreatorAuth(idKey.getId(), Set.of(currentUserId));
+
+      // Initialize plan owner and tester authorizations
+      funcPlanAuthCmd.addOwnerAndTesterAuth(idKey.getId(),
+          Objects.equals(plan.getOwnerId(), currentUserId)
+              ? null : plan.getOwnerId(), new HashSet<>(Set.of(currentUserId)));
+    }
+  }
+
   /**
    * Updates case review status based on plan review setting changes.
    * <p>

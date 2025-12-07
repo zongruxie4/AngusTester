@@ -5,7 +5,7 @@ import cloud.xcan.angus.spec.locale.EnumMessage;
 
 @EndpointRegister
 public enum ExampleDataType implements EnumMessage<String> {
-  TAG, MODULE, TASK, FUNC, SERVICES, SCENARIO, SCRIPT, MOCK,
+  TAG, MODULE, TASK, FUNC_PLAN, FUNC_CASE, SERVICES, SCENARIO, SCRIPT, MOCK,
   VARIABLE, DATASET, EXECUTION, REPORT;
 
   @Override

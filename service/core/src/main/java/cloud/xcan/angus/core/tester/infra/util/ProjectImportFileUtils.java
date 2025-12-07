@@ -5,7 +5,6 @@ import static cloud.xcan.angus.core.utils.CoreUtils.randomUUID;
 
 import cloud.xcan.angus.core.tester.domain.ExampleDataType;
 import cloud.xcan.angus.core.utils.SpringAppDirUtils;
-import cloud.xcan.angus.spec.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -181,10 +180,14 @@ public class ProjectImportFileUtils {
       return ExampleDataType.TASK;
     }
 
-    // Func (Test Case) - contains "用例" or "case" or "func"
-    if (lowerFileName.contains("用例") || lowerFileName.contains("case") || lowerFileName.contains(
-        "func")) {
-      return ExampleDataType.FUNC;
+    // Func (Test Plan) - contains "计划" or "plan"
+    if (lowerFileName.contains("计划") || lowerFileName.contains("plan")) {
+      return ExampleDataType.FUNC_PLAN;
+    }
+
+    // Func (Test Case) - contains "用例" or "case"
+    if (lowerFileName.contains("用例") || lowerFileName.contains("case")) {
+      return ExampleDataType.FUNC_CASE;
     }
 
     // Services - contains "服务" or "service"

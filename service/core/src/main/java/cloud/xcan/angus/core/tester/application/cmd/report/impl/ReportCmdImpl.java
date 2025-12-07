@@ -411,7 +411,7 @@ public class ReportCmdImpl extends CommCmd<Report, Long> implements ReportCmd {
         }
 
         // Create function report
-        if (dataTypes.contains(ExampleDataType.FUNC)) {
+        if (dataTypes.contains(ExampleDataType.FUNC_CASE)) {
           // Create function plan report
           FuncPlan planDb = funcPlanQuery.findLeastByProjectId(projectId);
           if (nonNull(planDb)) {

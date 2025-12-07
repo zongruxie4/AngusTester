@@ -274,6 +274,11 @@ public class ModuleCmdImpl extends CommCmd<Module, Long> implements ModuleCmd {
   }
 
   @Override
+  public void add0(List<Module> modules) {
+    batchInsert(modules);
+  }
+
+  @Override
   protected BaseRepository<Module, Long> getRepository() {
     return this.moduleRepo;
   }

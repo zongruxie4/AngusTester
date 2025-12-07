@@ -86,4 +86,6 @@ public interface TaskCmd {
 
   void delete0(List<Long> taskIds);
 
+  void add0(Task task);
+
 }
