@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, onMounted, onBeforeUnmount, ref, watch, nextTick, computed } from 'vue';
 import { Button, Tag, Card, Divider, Statistic } from 'ant-design-vue';
-import { Icon, notification, Spin, Table, Input } from '@xcan-angus/vue-ui';
+import { Icon, notification, Spin, Table, Input, Select } from '@xcan-angus/vue-ui';
 import { toClipboard, duration } from '@xcan-angus/infra';
 import { evaluation } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
@@ -11,11 +11,13 @@ import { EvaluationDetail } from '../types';
 import eCharts from '@/utils/echarts';
 import { throttle, debounce } from 'throttle-debounce';
 import { enumUtils } from '@xcan-angus/infra';
-import { EvaluationPurpose } from '@/enums/enums';
+import { EvaluationPurpose, TestPurpose } from '@/enums/enums';
 import { testerSetting } from '@/api/tester';
 
+import SelectEnum from '@/components/form/enum/SelectEnum.vue';
+
 const { t } = useI18n();
-enumUtils.enumToMessages(EvaluationPurpose);
+const testPurposeOptions = enumUtils.enumToMessages(EvaluationPurpose)
 
 // Props
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -544,6 +546,7 @@ const loadIndicatorConfig = async () => {
 
 const caseNameKeyword = ref('');
 const caseCodeKeyword = ref('');
+const testPurpose = ref<EvaluationPurpose | undefined>(undefined);
 const showTableList = ref([])
 
 const caseDetailsColumns = [
@@ -608,13 +611,16 @@ onMounted(async () => {
   }, { deep: true });
 
 
-  watch([() => caseNameKeyword.value, () => caseCodeKeyword.value], debounce(duration.search, () => {
+  watch([() => caseNameKeyword.value, () => caseCodeKeyword.value, () => testPurpose.value], debounce(duration.search, () => {
     showTableList.value = evaluationDetail.value?.result?.caseDetails || [];
     if (caseNameKeyword.value) {
       showTableList.value = (showTableList.value).filter(item => item.name.includes(caseNameKeyword.value));
     }
     if (caseCodeKeyword.value) {
       showTableList.value = (showTableList.value).filter(item => item.code.includes(caseCodeKeyword.value));
+    }
+    if (testPurpose.value) {
+      showTableList.value = (showTableList.value).filter(item => item.testPurpose === testPurpose.value);
     }
   }));
 
@@ -1187,6 +1193,12 @@ onBeforeUnmount(() => {
       <div class="flex space-x-2">
         <Input v-model:value="caseNameKeyword" class="w-50" placeholder="搜索测试用例名称" />
         <Input v-model:value="caseCodeKeyword" class="w-50" placeholder="搜索测试用例编码" />
+        <SelectEnum
+          v-model:value="testPurpose"
+          class="w-50"
+          allowClear
+          placeholder="测试目的"
+          enumKey="TestPurpose"/>
       </div>
       <div class="evaluation-results-container">
         <Table
