@@ -81,6 +81,7 @@ watch(() => props.projectId, newValue => {
           <div class="flex items-center min-w-0 pt-2">
             <h1 class="text-lg font-bold text-blue-600 truncate">{{ detailData.name }}</h1>
           </div>
+          <Tag color="green" class=" py-1 px-2">{{ detailData.version }}</Tag>
         </div>
 
         <!-- Project information grid -->

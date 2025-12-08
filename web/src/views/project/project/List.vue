@@ -282,6 +282,7 @@ defineExpose({
                     @click="handleOpenDetailTab(item)">
                     {{ item.name }}
                   </div>
+                  <Tag color="green" class=" py-1 px-2">{{ item.version }}</Tag>
                   <Tag class="project-type-tag">{{ item.type?.message }}</Tag>
                   <div class="project-id-text" :title="item.id">
                     ID: <span>{{ item.id }}</span>
