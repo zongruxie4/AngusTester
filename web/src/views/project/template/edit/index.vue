@@ -613,6 +613,11 @@ onMounted(() => {
               </FormItem>
               
             </div>
+            <FormItem :label="t('common.description')">
+              <RichEditor
+                v-model:value="formState.templateContent_issue.description"
+                :options="{placeholder: t('common.placeholders.inputDescription30')}" />
+            </FormItem>
           </template>
         </div>
       </Form>

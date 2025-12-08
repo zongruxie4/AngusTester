@@ -2,12 +2,12 @@
 import {  defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { notification, Spin, Hints } from '@xcan-angus/vue-ui';
-import { enumUtils } from '@xcan-angus/infra';
+import { enumUtils, Priority, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { template as templateApi } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TestTemplateEditFormState, TestTemplateDetail } from '../types';
 import { BasicProps } from '@/types/types';
-import { TestTemplateType, CaseStepView, TestLayer, TestPurpose } from '@/enums/enums';
+import { TestTemplateType, CaseStepView, TestLayer, TestPurpose, TaskType, BugLevel,  } from '@/enums/enums';
 import { CaseTestStep } from '@/views/test/types';
 import CaseSteps from '@/views/test/case/list/CaseSteps.vue';
 
@@ -20,6 +20,11 @@ const props = withDefaults(defineProps<BasicProps>(), {
   appInfo: undefined,
   data: undefined
 });
+
+enumUtils.enumToMessages(TaskType);
+enumUtils.enumToMessages(BugLevel);
+enumUtils.enumToMessages(Priority);
+enumUtils.enumToMessages(EvalWorkloadMethod);
 
 const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
 
@@ -179,7 +184,10 @@ onMounted(() => {
           </FormItem>
 
           <FormItem name="templateType" :label="t('testTemplate.columns.templateType')">
-            {{ enumUtils.getEnumDescription(TestTemplateType, formState.templateType) }}
+            <template v-if="formState.templateType === 'ISSUE'">
+              {{ t('issue.title') }}
+            </template>
+            <template v-else>{{ enumUtils.getEnumDescription(TestTemplateType, formState.templateType) }}</template>
           </FormItem>
         </div>
 
@@ -274,8 +282,37 @@ onMounted(() => {
             </FormItem>
           </template>
 
-          <template v-if="formState.templateType === 'ISSUE'">
-            
+          <template v-if="formState.templateType === 'ISSUE' && formState.templateContent">
+            <FormItem :label="t('common.name')">
+              {{ formState.templateContent.name }}
+            </FormItem>
+            <FormItem :label="t('common.type')">
+              {{ enumUtils.getEnumDescription(TaskType, formState.templateContent.taskType) }}
+            </FormItem>
+            <FormItem :label="t('common.bugLevel')">
+              {{ enumUtils.getEnumDescription(BugLevel, formState.templateContent.bugLevel) }}
+            </FormItem>
+            <FormItem :label="t('common.priority')">
+              {{ enumUtils.getEnumDescription(Priority, formState.templateContent.priority) }}
+            </FormItem>
+            <FormItem :label="t('common.escapedBug')">
+              {{ formState.templateContent.missingBug ? t('status.yes') : t('status.no') }}
+            </FormItem>
+            <FormItem :label="t('common.evalWorkloadMethod')">
+              {{ enumUtils.getEnumDescription(EvalWorkloadMethod, formState.templateContent.evalWorkloadMethod) }}
+            </FormItem>
+            <FormItem :label="t('common.evalWorkload')">
+              {{ formState.templateContent.evalWorkload }}
+            </FormItem>
+            <FormItem :label="t('common.actualWorkload')">
+              {{ formState.templateContent.actualWorkload }}
+            </FormItem>
+            <FormItem :label="t('common.description')">
+              <RichEditor
+                v-model:value="formState.templateContent.description"
+                mode="view"
+                :options="{placeholder: t('common.placeholders.inputDescription30')}" />
+            </FormItem>
           </template>
         </div>
       </Form>
