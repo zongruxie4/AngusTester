@@ -68,6 +68,8 @@ export interface ProjectMembers {
  * @interface Project
  */
 export interface Project {
+  /** Project version */
+  version?: string;
   /** Unique project identifier */
   id?: string;
   /** Project name */

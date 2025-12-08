@@ -217,18 +217,31 @@ onMounted(async () => {
                   </div>
                 </FormItem>
 
-                <FormItem
-                  :label="t('common.name')"
-                  name="name"
-                  class="form-field"
-                  required>
-                  <Input
-                    v-model:value="projectDetail.name"
-                    :placeholder="t('project.edit.form.projectNamePlaceholder')"
-                    :maxlength="100"
-                    class="enhanced-input">
-                  </Input>
-                </FormItem>
+                <div class="form-row">
+                  <FormItem
+                    :label="t('common.name')"
+                    name="name"
+                    class="form-field"
+                    required>
+                    <Input
+                      v-model:value="projectDetail.name"
+                      :placeholder="t('project.edit.form.projectNamePlaceholder')"
+                      :maxlength="100"
+                      class="enhanced-input">
+                    </Input>
+                  </FormItem>
+  
+                  <FormItem
+                    class="form-field"
+                    :label="t('common.version')">
+                    <Input
+                      v-model:value="projectDetail.version"
+                      :placeholder="t('project.edit.form.versionNamePlaceholder')"
+                      :maxlength="100"
+                      class="enhanced-input">
+                    </Input>
+                  </FormItem>
+                </div>
 
                 <FormItem
                   :label="t('common.planTime')"
@@ -474,18 +487,30 @@ onMounted(async () => {
                   </div>
                 </div>
               </FormItem>
-              <FormItem
-                :label="t('common.name')"
-                name="name"
-                class="form-field"
-                required>
-                <Input
-                  v-model:value="projectDetail.name"
-                  :placeholder="t('project.edit.form.projectNamePlaceholder')"
-                  :maxlength="100"
-                  class="enhanced-input">
-                </Input>
-              </FormItem>
+              <div class="form-row">
+                <FormItem
+                  :label="t('common.name')"
+                  name="name"
+                  class="form-field"
+                  required>
+                  <Input
+                    v-model:value="projectDetail.name"
+                    :placeholder="t('project.edit.form.projectNamePlaceholder')"
+                    :maxlength="100"
+                    class="enhanced-input">
+                  </Input>
+                </FormItem>
+                <FormItem
+                  class="form-field"
+                  :label="t('common.version')">
+                  <Input
+                    v-model:value="projectDetail.version"
+                    :placeholder="t('project.edit.form.versionNamePlaceholder')"
+                    :maxlength="100"
+                    class="enhanced-input">
+                  </Input>
+                </FormItem>
+              </div>
 
               <div class="form-row">
                 <FormItem

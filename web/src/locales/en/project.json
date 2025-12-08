@@ -74,7 +74,8 @@
         "ownerDescription": "By setting a project owner, responsibilities and authorities are clarified, better promoting project completion and progress control, such as: problem solving, progress advancement, team member collaboration, etc.",
         "importExampleDescription": "Import main business sample data for quickly familiarizing with AngusTester business and feature demonstration.",
         "membersDescription": "Define project participants. Project members will automatically be assigned data permissions under the project for convenient team collaboration.",
-        "descriptionPlaceholder": "Please enter detailed project objectives, scope, etc., maximum 2000 characters"
+        "descriptionPlaceholder": "Please enter detailed project objectives, scope, etc., maximum 2000 characters",
+        "versionNamePlaceholder": "Version name, e.g.: v1.0"
       },
       "actions": {
         "clickToReplaceIcon": "Upload Icon",

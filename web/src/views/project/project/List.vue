@@ -34,7 +34,11 @@ const props = withDefaults(defineProps<BasicProps>(), {
   appInfo: undefined
 });
 
-const emits = defineEmits<{(e: 'delOk', value: string[]);}>();
+const emits = defineEmits<{
+  (e: 'delOk', value: string[]);
+  (e: 'import');
+  (e: 'export', projectData: Project);
+}>();
 
 // Async component definitions
 const Introduce = defineAsyncComponent(() => import('@/views/project/project/Introduce.vue'));
@@ -93,6 +97,10 @@ const moreButton = computed(() => [
   {
     key: 'biaoqian',
     name: t('project.actions.configTag')
+  },
+  {
+    key: 'export',
+    name: t('actions.export')
   }
 ]);
 
@@ -122,11 +130,19 @@ const handleDeleteProject = async (projectData: Project): Promise<void> => {
 };
 
 const handleEditProject = (projectData: Project, key?: string): void => {
-  editProjectTab(projectData, key || 'basic');
+  if (key === 'export') {
+    emits('export', projectData);
+  } else {
+    editProjectTab(projectData, key || 'basic');
+  }
 };
 
 const handleOpenDetailTab = (projectData: Project): void => {
   openDetailTab(projectData);
+};
+
+const handleImportProject = (): void => {
+  emits('import');
 };
 
 // Check user permissions
@@ -207,6 +223,11 @@ defineExpose({
             </div>
 
             <div class="flex items-center space-x-3">
+
+              <Button type="primary" size="small" @click="handleImportProject">
+                <Icon icon="icon-shangchuan" class="mr-1 text-3.5" />
+                导入项目
+              </Button>
               <Button
                 type="primary"
                 size="small"

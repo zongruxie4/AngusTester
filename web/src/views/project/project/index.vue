@@ -21,6 +21,8 @@ const PROJECT_PAGE_TYPES = {
 const ProjectList = defineAsyncComponent(() => import('@/views/project/project/List.vue'));
 const EditProject = defineAsyncComponent(() => import('@/views/project/project/Edit.vue'));
 const ProjectDetail = defineAsyncComponent(() => import('@/views/project/project/Detail.vue'));
+const ImportProjectModal = defineAsyncComponent(() => import('@/views/project/project/ImportProjectModal.vue'));
+const ExportProjectModal = defineAsyncComponent(() => import('@/views/project/project/ExportProjectModal.vue'));
 
 // Reactive data setup
 const userInfo = ref(appContext.getUser());
@@ -28,6 +30,9 @@ const userInfo = ref(appContext.getUser());
 const projectId = inject<Ref<string>>('projectId', ref(''));
 const browserTabRef = ref();
 const projectHomeRef = ref();
+const importProjectVisible = ref(false);
+const exportProjectVisible = ref(false);
+const selectedProjectForExport = ref<any>(undefined);
 
 // Computed properties
 const STORAGE_KEY = computed(() => {
@@ -77,6 +82,22 @@ const refreshList = () => {
   }
 };
 
+// Handle import project
+const handleImportProject = () => {
+  importProjectVisible.value = true;
+};
+
+// Handle import success
+const handleImportSuccess = () => {
+  refreshList();
+};
+
+// Handle export project
+const handleExportProject = (projectData: any) => {
+  selectedProjectForExport.value = projectData;
+  exportProjectVisible.value = true;
+};
+
 // Lifecycle hooks
 onMounted(() => {
   watch([() => browserTabRef.value, () => userInfo.value], () => {
@@ -117,7 +138,9 @@ provide('delTabPane', delTabPane);
           ref="projectHomeRef"
           :userInfo="transformedUserInfo"
           :projectId="projectId"
-          @delOk="delTabPane" />
+          @delOk="delTabPane"
+          @import="handleImportProject"
+          @export="handleExportProject" />
       </template>
 
       <!-- Project edit tab -->
@@ -134,6 +157,16 @@ provide('delTabPane', delTabPane);
       </template>
     </template>
   </BrowserTab>
+  
+  <!-- Import Project Modal -->
+  <ImportProjectModal
+    v-model:visible="importProjectVisible"
+    @ok="handleImportSuccess" />
+  
+  <!-- Export Project Modal -->
+  <ExportProjectModal
+    v-model:visible="exportProjectVisible"
+    :projectData="selectedProjectForExport" />
 </template>
 
 <style scoped>

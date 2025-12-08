@@ -103,7 +103,8 @@ export function useForm (
         name,
         ownerId,
         description,
-        avatar
+        avatar,
+        version
       } = data;
 
       // Set form data
@@ -114,6 +115,7 @@ export function useForm (
         description,
         avatar,
         type,
+        version,
         importExample: false,
         members: data.members,
         dateRange: [startDate, deadlineDate]

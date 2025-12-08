@@ -61,4 +61,14 @@ export default class API {
   backTrash (id: string): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/trash/${id}/back`);
   }
+
+  importProject (formData: FormData): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/import`, formData);
+  }
+
+  exportProject (projectId: string, format: 'zip' | 'tar' | 'tar.gz'): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${projectId}/export?format=${format}`, undefined, {
+      responseType: 'blob'
+    });
+  }
 }
