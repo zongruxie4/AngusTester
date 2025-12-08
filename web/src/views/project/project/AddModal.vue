@@ -268,6 +268,17 @@ watch(() => props.visible, (newValue) => {
               class="enhanced-input" />
           </FormItem>
 
+          <FormItem
+            class="form-field"
+            :label="t('common.version')">
+            <Input
+              v-model:value="formData.version"
+              :placeholder="t('project.edit.form.versionNamePlaceholder')"
+              :maxlength="100"
+              class="enhanced-input">
+            </Input>
+          </FormItem>
+
           <!-- Time plan -->
           <FormItem
             name="dateRange"
