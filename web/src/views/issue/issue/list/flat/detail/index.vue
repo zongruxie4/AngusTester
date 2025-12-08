@@ -2,10 +2,11 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
-import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
-import { appContext, duration, enumUtils, http, toClipboard, utils } from '@xcan-angus/infra';
-import { TaskSprintPermission, TaskStatus, TaskType } from '@/enums/enums';
+import { Icon, modal, notification, Spin, Modal, Input } from '@xcan-angus/vue-ui';
+import { appContext, duration, enumUtils, http, toClipboard, utils, Priority } from '@xcan-angus/infra';
+import { TaskSprintPermission, TaskStatus, TaskType, BugLevel } from '@/enums/enums';
 import { debounce } from 'throttle-debounce';
+import { template } from '@/api/tester';
 import { cloneDeep } from 'lodash-es';
 import { issue } from '@/api/tester';
 
@@ -921,6 +922,40 @@ const actionMenuItemsMap = computed(() => {
   return menuMap;
 });
 
+
+const addTemplateVisible = ref(false);
+const templateName =ref<string | undefined>();
+const openAddTemplate = () => {
+  addTemplateVisible.value = true;
+  templateName.value = undefined;
+};
+
+const handleAddTemplate = async() => {
+  if (!templateName.value?.trim()) {
+    return;
+  }
+  const { name, taskType, bugLevel, priority, missingBug, evalWorkloadMethod, evalWorkload, actualWorkload, description } = currentTaskInfo.value;
+  const templateContent = {
+    description,
+    name,
+    taskType: taskType?.value || taskType,
+    bugLevel: bugLevel?.value || BugLevel.MINOR,
+    priority: priority?.value || Priority.MEDIUM,
+    missingBug: missingBug || false,
+    evalWorkloadMethod: evalWorkloadMethod?.value || evalWorkloadMethod,
+    evalWorkload: evalWorkload,
+    actualWorkload: actualWorkload,
+    templateType: 'ISSUE'
+  };
+
+  const [error] = await template.addTemplate({templateContent, name: templateName.value, templateType: 'ISSUE'});
+  if (error) {
+    return;
+  }
+  addTemplateVisible.value = false;
+  notification.success(t('actions.tips.saveSuccess'));
+}
+
 /**
  * Generates CSS class name based on full screen state
  * <p>
@@ -1162,6 +1197,11 @@ const getReferencedTaskCount = (type = 'TASK') => {
             <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zuidahua" />
             <span>{{ t('actions.fullScreen') }}</span>
           </template>
+        </Button>
+
+        <Button size="small" @click="openAddTemplate">
+          <Icon class="mr-1" icon="icon-baocun" />
+          <span>{{ t('actions.saveModule') }}</span>
         </Button>
       </div>
 
@@ -1420,6 +1460,17 @@ const getReferencedTaskCount = (type = 'TASK') => {
         :taskInfo="selectedTaskForSplit"
         @ok="confirmSplitTask"
         @cancel="cancelSplitTask" />
+    </AsyncComponent>
+
+    <AsyncComponent :visible="addTemplateVisible">
+      <Modal
+        v-model:visible="addTemplateVisible"
+        :title="t('actions.saveModule')"
+        @cancel="addTemplateVisible = false"
+        @ok="handleAddTemplate">
+        <Input v-model:value="templateName" :placeholder="t('testTemplate.placeholders.namePlaceholder')" />
+      </Modal>
+
     </AsyncComponent>
   </Spin>
 </template>

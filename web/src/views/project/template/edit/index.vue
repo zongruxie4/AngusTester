@@ -131,6 +131,11 @@ const loadTemplateDetail = async () => {
     const templateContent = template.templateContent || {};
 
     updateTabPane({name: template.name, _id: template.id});
+    formState.value = {
+      id: template.id,
+      name: template.name,
+      templateType: templateType,
+    };
 
     // Initialize stepView and steps for test case template
     if (templateType === TestTemplateType.TEST_CASE) {
@@ -169,36 +174,16 @@ const loadTemplateDetail = async () => {
       formState.value.templateContent_issue = {
         templateType: 'ISSUE',
         name: templateContent.name || '',
-        taskType: templateContent.taskType || '',
-        bugLevel: templateContent.bugLevel || '',
-        priority: templateContent.priority || '',
+        taskType: templateContent.taskType?.value || templateContent.taskType || '',
+        bugLevel: templateContent.bugLevel?.value || templateContent.bugLevel || '',
+        priority: templateContent.priority?.value || templateContent.priority || '',
         missingBug: templateContent.missingBug || false,
-        evalWorkloadMethod: templateContent.evalWorkloadMethod || EvalWorkloadMethod.WORKING_HOURS,
+        evalWorkloadMethod: templateContent.evalWorkloadMethod?.value || EvalWorkloadMethod.WORKING_HOURS,
         evalWorkload: templateContent.evalWorkload || 0,
         actualWorkload: templateContent.actualWorkload || 0,
         description: templateContent.description || ''
       };
     }
-    
-
-    formState.value = {
-      id: template.id,
-      name: template.name,
-      templateType: templateType,
-    //   templateContent: {
-    //     templateType: templateType,
-    //     testingScope: templateContent.testingScope || '',
-    //     testingObjectives: templateContent.testingObjectives || '',
-    //     acceptanceCriteria: templateContent.acceptanceCriteria || '',
-    //     otherInformation: templateContent.otherInformation || '',
-    //     precondition: templateContent.precondition || '',
-    //     stepView: stepView,
-    //     steps: steps,
-    //     description: templateContent.description || '',
-    //     testLayer: testLayer,
-    //     testPurpose: testPurpose
-    //   }
-    };
     originalFormState.value = JSON.parse(JSON.stringify(formState.value));
   }
 };
@@ -493,7 +478,7 @@ onMounted(() => {
           </template>
 
           <!-- Issue Template Content -->
-          <template v-if="formState.templateType === 'ISSUE'">
+          <template v-if="formState.templateType === 'ISSUE' && formState.templateContent_issue">
             <FormItem
               :name="['templateContent_issue', 'name']"
               :label="t('common.name')"
@@ -546,7 +531,8 @@ onMounted(() => {
               </FormItem>
             </div>
 
-            <template v-if="formState.templateContent_issue.taskType === TaskType.BUG">
+            {{ formState.templateContent_issue?.taskType }}
+            <template v-if="formState.templateContent_issue?.taskType === TaskType.BUG">
               <div class="flex space-x-4">
                 <FormItem
                   :name="['templateContent_issue', 'bugLevel']"
