@@ -228,16 +228,18 @@
         "reportContacts": "Report contacts",
         "description": "Report description",
         "reportCopyright": "Report copyright",
-        "otherInformation": "Other information",
+        "otherInformation": "Suggestions and improvements",
         "watermark": "Add watermark to report content"
       },
       "placeholders": {
         "reportContacts": "Contact information, the default is the current user name and email, the maximum length is 200 characters",
         "reportCopyright": "Report copyright, declare copyright ownership, usage restrictions, etc., the maximum length is 200 characters",
-        "otherInformation": "Other information, used to supplement the report, the maximum length is 200 characters",
+        "otherInformation": "Suggestions and improvements information, used to supplement the report, the maximum length is 200 characters",
         "watermark": "Watermark text, the default is the current tenant name, the maximum length is 100 characters"
-      }
-    },
+      },
+      "defaultWatermark": "Confidential, internal use only",
+      "reportCopyright": "© {tenantName} {year}. All rights reserved.\nWithout written permission from the company, no unit or individual may copy or distribute any part of this document, nor may it be disseminated in any form."
+    },  
     "taskContent": {
       "filter": "Filter",
       "sprintPlaceholder": "Select sprint",
@@ -426,7 +428,7 @@
       "description": "Description",
       "contact": "Contact",
       "copyright": "Copyright",
-      "other": "Other"
+      "other": "Suggestions and improvements"
     },
     "actions": {
       "exportPDF": "Export PDF",
@@ -488,7 +490,7 @@
           "description": "Description",
           "contact": "Contact",
           "copyright": "Copyright",
-          "other": "Other"
+          "other": "Suggestions and improvements"
         }
       },
       "testResult": {
@@ -577,7 +579,7 @@
           "description": "Description",
           "contact": "Contact",
           "copyright": "Copyright",
-          "other": "Other"
+          "other": "Suggestions and improvements"
         }
       },
       "detail": {
@@ -662,7 +664,7 @@
           "testPassed": "Test Passed",
           "contact": "Contact",
           "copyright": "Copyright",
-          "other": "Other"
+          "other": "Suggestions and improvements"
         }
       },
       "detail": {
@@ -870,7 +872,7 @@
           "description": "Description",
           "contact": "Contact",
           "copyright": "Copyright",
-          "other": "Other"
+          "other": "Suggestions and improvements"
         }
       },
       "info": {
@@ -988,7 +990,7 @@
           "description": "Description",
           "contact": "Contact",
           "copyright": "Copyright",
-          "other": "Other"
+          "other": "Suggestions and improvements"
         }
       },
       "detail": {
@@ -1155,7 +1157,7 @@
           "description": "Description",
           "contact": "Contact",
           "copyright": "Copyright",
-          "other": "Other"
+          "other": "Suggestions and improvements"
         }
       },
       "info": {
@@ -1338,7 +1340,7 @@
           "description": "Description",
           "contact": "Contact",
           "copyright": "Copyright",
-          "other": "Other"
+          "other": "Suggestions and improvements"
         }
       },
       "info": {
@@ -1518,7 +1520,7 @@
           "description": "Description",
           "contact": "Contact",
           "copyright": "Copyright",
-          "other": "Other"
+          "other": "Suggestions and improvements"
         }
       },
       "info": {
@@ -1603,7 +1605,7 @@
           "description": "Description",
           "contact": "Contact",
           "copyright": "Copyright",
-          "other": "Other"
+          "other": "Suggestions and improvements"
         }
       },
       "sprintDetail": {
@@ -1747,7 +1749,7 @@
         "fields": {
           "contact": "Contact",
           "copyright": "Copyright",
-          "other": "Other"
+          "other": "Suggestions and improvements"
         }
       },
       "info": {
@@ -1962,6 +1964,17 @@
         "totalCases": "Total Cases",
         "totalScore": "Total Score",
         "averageScore": "Average Score"
+      },
+      "caseListDetail": {
+        "title": "Test Case Details",
+        "columns": {
+          "code": "Code",
+          "name": "Name",
+          "testResult": "Test Result",
+          "testScore": "Test Score",
+          "testRemark": "Test Remark",
+          "testerName": "Tester Name"
+        }
       }
     }
   }

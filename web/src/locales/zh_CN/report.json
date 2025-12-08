@@ -233,15 +233,16 @@
         "reportContacts": "展示联系人",
         "description": "展示报告描述",
         "reportCopyright": "展示版权说明",
-        "otherInformation": "其他信息",
+        "otherInformation": "建议与改进",
         "watermark": "为报告内容添加水印"
       },
       "placeholders": {
         "reportContacts": "联系人信息，默认为当前用户名称和邮箱，最长200个字符",
         "reportCopyright": "报告版权说明，申明版权所有、使用范围限制等，最长200个字符",
-        "otherInformation": "其他信扩展息，用于对报告补充说明，最长200个字符",
+        "otherInformation": "建议与改进信息，用于对报告补充说明，最长200个字符",
         "watermark": "水印文案，默认为当前租户名，最长100个字符"
       },
+      "defaultWatermark": "内部保密、仅限内部使用",
       "reportCopyright": "© {tenantName} {year}。 保留一切权利。\n非经本公司书面许可，任何单位和个人不得擅自摘抄、复制本文档内容的部分或全部，并不得以任何形式传播。"
     },
     "taskContent": {
@@ -430,7 +431,7 @@
       "description": "描述",
       "contact": "联系人",
       "copyright": "版权说明",
-      "other": "其他"
+      "other": "改进与建议"
     },
     "actions": {
       "exportPDF": "导出PDF",
@@ -492,7 +493,7 @@
           "description": "描述",
           "contact": "联系人",
           "copyright": "版权说明",
-          "other": "其他"
+          "other": "改进与建议"
         }
       },
       "testResult": {
@@ -582,7 +583,7 @@
           "description": "描述",
           "contact": "联系人",
           "copyright": "版权说明",
-          "other": "其他"
+          "other": "改进与建议"
         }
       },
       "detail": {
@@ -667,7 +668,7 @@
           "testPassed": "测试是否通过",
           "contact": "联系人",
           "copyright": "版权说明",
-          "other": "其他"
+          "other": "改进与建议"
         }
       },
       "detail": {
@@ -871,7 +872,7 @@
           "description": "描述",
           "contact": "联系人",
           "copyright": "版权说明",
-          "other": "其他"
+          "other": "改进与建议"
         }
       },
       "info": {
@@ -986,7 +987,7 @@
         "fields": {
           "contact": "联系人",
           "copyright": "版权说明",
-          "other": "其他"
+          "other": "改进与建议"
         }
       },
       "detail": {
@@ -1158,7 +1159,7 @@
         "fields": {
           "contact": "联系人",
           "copyright": "版权说明",
-          "other": "其他"
+          "other": "改进与建议"
         }
       },
       "info": {
@@ -1346,7 +1347,7 @@
           "description": "描述",
           "contact": "联系人",
           "copyright": "版权说明",
-          "other": "其他"
+          "other": "改进与建议"
         }
       },
       "info": {
@@ -1525,7 +1526,7 @@
           "description": "描述",
           "contact": "联系人",
           "copyright": "版权说明",
-          "other": "其他"
+          "other": "改进与建议"
         }
       },
       "info": {
@@ -1609,7 +1610,7 @@
         "fields": {
           "contact": "联系人",
           "copyright": "版权说明",
-          "other": "其他"
+          "other": "改进与建议"
         }
       },
       "sprintDetail": {
@@ -1755,7 +1756,7 @@
         "fields": {
           "contact": "联系人",
           "copyright": "版权说明",
-          "other": "其他"
+          "other": "改进与建议"
         }
       },
       "info": {
@@ -1967,6 +1968,17 @@
         "totalCases": "总用例",
         "totalScore": "总得分",
         "averageScore": "平均得分"
+      },
+      "caseListDetail": {
+        "title": "测试用例明细",
+        "columns": {
+          "code": "编码",
+          "name": "名称",
+          "testResult": "测试结果",
+          "testScore": "测试得分",
+          "testRemark": "测试备注",
+          "testerName": "测试人"
+        }
       }
     }
   }

@@ -206,7 +206,7 @@ const resetData = () => {
       year: dayjs().year()
     }),
     otherInformation: '',
-    watermark: tenantInfo?.value?.tenantName
+    watermark: t('reportAdd.basic.defaultWatermark')
   };
   contentSetting.value = {
     filter: {}

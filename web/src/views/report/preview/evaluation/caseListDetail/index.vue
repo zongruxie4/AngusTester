@@ -30,38 +30,36 @@ const len = computed(() => {
   }
   return _len;
 });
-
-//  编码、名称、测试结果、测试得分、测试备注、测试人
 </script>
 
 <template>
   <div>
     <div id="a3" class="test-case-detail mb-4">
-      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>测试用例明细</span>
+      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.evaluation.caseListDetail.title') }}</span>
     </div>
 
     <div v-if="len>0" class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-35 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          编码
+          {{ t('reportPreview.evaluation.caseListDetail.columns.code') }}
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          名称
+          {{ t('reportPreview.evaluation.caseListDetail.columns.name') }}
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          测试结果
+          {{ t('reportPreview.evaluation.caseListDetail.columns.testResult') }}
         </div>
         <div class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          测试得分
+          {{ t('reportPreview.evaluation.caseListDetail.columns.testScore') }}
         </div>
         <div  class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          测试备注
+          {{ t('reportPreview.evaluation.caseListDetail.columns.testRemark') }}
         </div>
         <div class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 ">
-          测试人
+          {{ t('reportPreview.evaluation.caseListDetail.columns.testerName') }}
         </div>
       </div>
 
