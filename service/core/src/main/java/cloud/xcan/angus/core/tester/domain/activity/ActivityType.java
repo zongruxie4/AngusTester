@@ -34,12 +34,16 @@ public enum ActivityType implements ValueObject<ActivityType> {
     return this.name();
   }
 
+  public String getMessageKeyPrefix() {
+    return "xcm.tester.activity.";
+  }
+
   public String getDescMessageKey() {
-    return "xcm.tester.activity." + this.name();
+    return getMessageKeyPrefix() + this.name();
   }
 
   public String getDetailMessageKey() {
-    return "xcm.tester.activity.detail." + this.name();
+    return getMessageKeyPrefix() + "detail." + this.name();
   }
 
 }

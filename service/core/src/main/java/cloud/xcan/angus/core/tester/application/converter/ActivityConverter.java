@@ -466,9 +466,9 @@ public class ActivityConverter {
         .setUserId(getUserId())
         .setType(ActivityType.UPDATED)
         .setOptDate(LocalDateTime.now())
-        .setDescription(message(ActivityType.UPDATED.getDescMessageKey() + messageKey,
+        .setDescription(message(ActivityType.UPDATED.getMessageKeyPrefix() + messageKey,
             new Object[]{value}, getDefaultLanguage().toLocale()))
-        .setDetail(message(ActivityType.UPDATED.getDescMessageKey() + messageKey,
+        .setDetail(message(ActivityType.UPDATED.getMessageKeyPrefix() + messageKey,
             new Object[]{value}, getDefaultLanguage().toLocale()));
   }
 
