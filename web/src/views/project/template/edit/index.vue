@@ -384,7 +384,7 @@ onMounted(() => {
           <div class="text-3.5 font-semibold mb-4">{{ t('testTemplate.templateContent') }}</div>
 
           <!-- Test Plan Template Content -->
-          <template v-if="formState.templateType === TestTemplateType.TEST_PLAN">
+          <template v-if="formState.templateType === TestTemplateType.TEST_PLAN && formState.templateContent_plan">
             <FormItem :label="t('testTemplate.columns.testingScope')">
               <RichEditor
                 ref="scopeRichRef"
@@ -415,7 +415,7 @@ onMounted(() => {
           </template>
 
           <!-- Test Case Template Content -->
-          <template v-if="formState.templateType === TestTemplateType.TEST_CASE">
+          <template v-if="formState.templateType === TestTemplateType.TEST_CASE && formState.templateContent_case">
 
             <div class="flex space-x-2">
               <FormItem
@@ -531,7 +531,6 @@ onMounted(() => {
               </FormItem>
             </div>
 
-            {{ formState.templateContent_issue?.taskType }}
             <template v-if="formState.templateContent_issue?.taskType === TaskType.BUG">
               <div class="flex space-x-4">
                 <FormItem

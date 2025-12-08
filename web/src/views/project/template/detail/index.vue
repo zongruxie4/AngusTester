@@ -233,7 +233,6 @@ onMounted(() => {
               :name="['templateContent', 'testLayer']"
               :label="t('common.testLayer')"
               class="flex-1">
-
               {{ enumUtils.getEnumDescription(TestLayer, formState.templateContent.testLayer) }}
             </FormItem>
 
@@ -273,6 +272,10 @@ onMounted(() => {
                 mode="view"
                 :options="{placeholder: t('common.placeholders.inputDescription30')}" />
             </FormItem>
+          </template>
+
+          <template v-if="formState.templateType === 'ISSUE'">
+            
           </template>
         </div>
       </Form>
