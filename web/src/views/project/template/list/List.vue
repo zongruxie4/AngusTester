@@ -20,6 +20,7 @@ const emit = defineEmits<{
   delete: [templateData: TestTemplateDetail];
   add: [];
   view: [templateData: TestTemplateDetail];
+  import: [];
 }>();
 
 const { t } = useI18n();
@@ -113,18 +114,27 @@ const handleView = (template: TestTemplateDetail) => {
   emit('view', template);
 };
 
+const handleImportTemplate = () => {
+  emit('import');
+};
+
 </script>
 
 <template>
   <div class="flex flex-col">
-    <div class="flex justify-between items-center mb-2">
+    <div class="flex justify-between items-center mb-2 space-x-2">
       <Input
       :value="searchKeyword"
       :placeholder="t('common.placeholders.searchKeyword')"
       class="w-70"
       @change="handleSearchKeywordChange" />
+      <div class="flex-1"></div>
+      <Button type="primary" @click="handleImportTemplate">
+        <Icon icon="icon-shangchuan" class="mr-1" />
+        导入模版
+      </Button>
       <Button type="primary" @click="handleAdd">
-        <Icon icon="icon-jia" />
+        <Icon icon="icon-jia" class="mr-1" />
         {{ t('testTemplate.actions.addTemplate') }}
       </Button>
     </div>

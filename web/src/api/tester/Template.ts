@@ -21,5 +21,13 @@ export default class API {
   getTemplateList (): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}`);
   }
+
+  importTemplate (formData: FormData): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/import`, formData);
+  }
+
+  downloadTemplate (templateId: string, format:  'excel'|'csv'|'json',): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${templateId}/export?format=${format}`);
+  }
 }
 

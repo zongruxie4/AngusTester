@@ -27,21 +27,26 @@ export const createMenuItems = (
       name: t('project.title'),
       key: ProjectMenuKey.PROJECT
     },
-    visibility.aiEnabled
-      ? {
-          icon: 'icon-AIzhushou',
-          name: t('AI.title'),
-          key: ProjectMenuKey.AI
-        }
-      : null,
     visibility.hasProjectId
       ? {
-          icon: 'icon-banben1',
-          name: t('version.title'),
-          key: ProjectMenuKey.VERSION
+          icon: 'icon-pingshen',
+          name: t('evaluation.title'),
+          key: ProjectMenuKey.EVALUATION
         }
       : null,
-    visibility.hasProjectId
+      {
+        name: t('testTemplate.title'),
+        key: ProjectMenuKey.TEMPLATES,
+        icon: 'icon-kanbanshitu'
+      },
+      visibility.hasProjectId
+        ? {
+            icon: 'icon-banben1',
+            name: t('version.title'),
+            key: ProjectMenuKey.VERSION
+          }
+        : null,
+        visibility.hasProjectId
       ? {
           icon: 'icon-mokuai1',
           name: t('module.title'),
@@ -55,28 +60,24 @@ export const createMenuItems = (
           key: ProjectMenuKey.TAGS
         }
       : null,
-    visibility.hasProjectId
-      ? {
-          icon: 'icon-pingshen',
-          name: t('evaluation.title'),
-          key: ProjectMenuKey.EVALUATION
-        }
-      : null,
     {
       icon: 'icon-fabu',
       name: t('activity.title'),
       key: ProjectMenuKey.ACTIVITY
     },
-    {
-      name: t('testTemplate.title'),
-      key: ProjectMenuKey.TEMPLATES,
-      icon: 'icon-kanbanshitu'
-    },
+   
     {
       icon: 'icon-qingchu',
       name: t('trash.title'),
       key: ProjectMenuKey.TRASH
-    }
+    },
+    visibility.aiEnabled
+      ? {
+          icon: 'icon-AIzhushou',
+          name: t('AI.title'),
+          key: ProjectMenuKey.AI
+        }
+      : null,
   ];
   return items.filter((i): i is LeftMenuItem<ProjectMenuKey> => i !== null);
 };

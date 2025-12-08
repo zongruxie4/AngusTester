@@ -10,6 +10,7 @@ import { TestTemplateDetail } from '../types';
 // Async components
 const Introduce = defineAsyncComponent(() => import('@/views/project/template/list/Introduce.vue'));
 const List = defineAsyncComponent(() => import('@/views/project/template/list/List.vue'));
+const ImportTemplate = defineAsyncComponent(() => import('@/views/project/template/list/ImportTemplate.vue'));
 
 // Composables
 const { t } = useI18n();
@@ -27,6 +28,7 @@ const addTabPane = inject<(data: any) => void>('addTabPane', () => ({}));
 // Reactive data
 const isDataLoaded = ref(false);
 const isLoading = ref(false);
+const importTemplateVisible = ref(false);
 
 // Data state
 const dataList = ref<TestTemplateDetail[]>([]);
@@ -113,6 +115,14 @@ const handleView = (templateData: TestTemplateDetail) => {
   });
 };
 
+const handleImportTemplate = () => {
+  importTemplateVisible.value = true;
+};
+
+const handleImportSuccess = () => {
+  loadData();
+};
+
 // lifecycle hooks
 onMounted(() => {
   watch(() => props.notify, (newValue) => {
@@ -149,6 +159,7 @@ onMounted(() => {
           <List
             :dataList="dataList"
             :loading="isLoading"
+            @import="handleImportTemplate"
             @edit="handleEdit"
             @delete="handleDelete"
             @add="handleAdd"
@@ -156,6 +167,12 @@ onMounted(() => {
         </div>
       </template>
     </Spin>
+    
+    <!-- Import Template Modal -->
+    <ImportTemplate
+      v-model:visible="importTemplateVisible"
+      @update:visible="importTemplateVisible = $event"
+      @ok="handleImportSuccess" />
   </div>
 </template>
 
