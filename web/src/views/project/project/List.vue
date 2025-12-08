@@ -226,7 +226,7 @@ defineExpose({
 
               <Button type="primary" size="small" @click="handleImportProject">
                 <Icon icon="icon-shangchuan" class="mr-1 text-3.5" />
-                导入项目
+                {{ t('project.actions.importProject') }}
               </Button>
               <Button
                 type="primary"

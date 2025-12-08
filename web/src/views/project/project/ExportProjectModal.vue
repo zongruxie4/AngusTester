@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Modal, Icon, notification, Spin } from '@xcan-angus/vue-ui';
-import { Button, Form, FormItem, RadioGroup, Input } from 'ant-design-vue';
+import { Button, Form, FormItem, RadioGroup } from 'ant-design-vue';
 import { project } from '@/api/tester';
 import type { Project } from './types';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -27,9 +30,9 @@ const projectId = ref<string>('');
 const isLoading = ref(false);
 
 const formatOptions = [
-  { label: 'ZIP (.zip)', value: 'zip' as ExportFormat },
-  { label: 'TAR (.tar)', value: 'tar' as ExportFormat },
-  { label: 'TAR.GZ (.tar.gz)', value: 'tar.gz' as ExportFormat }
+  { label: t('project.exportProject.formatOptions.zip'), value: 'zip' as ExportFormat },
+  { label: t('project.exportProject.formatOptions.tar'), value: 'tar' as ExportFormat },
+  { label: t('project.exportProject.formatOptions.tarGz'), value: 'tar.gz' as ExportFormat }
 ];
 
 // Close modal
@@ -52,7 +55,7 @@ const handleExport = async () => {
     );
 
     if (error) {
-      notification.error(error.message || '导出失败');
+      notification.error(error.message || t('project.exportProject.messages.exportFailed'));
       isLoading.value = false;
       return;
     }
@@ -66,7 +69,7 @@ const handleExport = async () => {
     } else if (response?.data) {
       blob = new Blob([response.data], { type: 'application/octet-stream' });
     } else {
-      notification.error('导出数据格式错误');
+      notification.error(t('project.exportProject.messages.exportDataFormatError'));
       isLoading.value = false;
       return;
     }
@@ -91,10 +94,10 @@ const handleExport = async () => {
     // Clean up
     URL.revokeObjectURL(url);
     
-    notification.success('导出成功');
+    notification.success(t('common.tips.exportSuccess'));
     closeModal();
   } catch (error: any) {
-    notification.error(error.message || '导出失败');
+    notification.error(error.message || t('project.exportProject.messages.exportFailed'));
   } finally {
     isLoading.value = false;
   }
@@ -116,7 +119,7 @@ watch(() => props.visible, (newValue) => {
 
 <template>
   <Modal
-    title="导出项目"
+    :title="t('project.exportProject.title')"
     :visible="props.visible"
     :width="500"
     :centered="true"
@@ -128,14 +131,14 @@ watch(() => props.visible, (newValue) => {
         class="export-project-form">
         
         <!-- Project Info -->
-        <FormItem label="项目信息" v-if="projectData">
+        <FormItem :label="t('project.exportProject.labels.projectInfo')" v-if="projectData">
           <div class="project-info">
             <div class="project-name">
               <Icon icon="icon-xiangmu" class="project-icon" />
               <span>{{ projectData.name || '-' }}</span>
             </div>
             <div class="project-id" v-if="projectData.id">
-              <span class="id-label">ID：</span>
+              <span class="id-label">{{ t('project.exportProject.labels.id') }}</span>
               <span class="id-value">{{ projectData.id }}</span>
             </div>
           </div>
@@ -143,7 +146,7 @@ watch(() => props.visible, (newValue) => {
 
         <!-- Export Format Selection -->
         <FormItem
-          label="导出格式"
+          :label="t('project.exportProject.labels.exportFormat')"
           required>
           <RadioGroup
             v-model:value="selectedFormat"
@@ -156,22 +159,22 @@ watch(() => props.visible, (newValue) => {
           <div class="description-item">
             <Icon icon="icon-wendang" class="description-icon zip" />
             <div class="description-content">
-              <div class="description-title">ZIP (.zip)</div>
-              <div class="description-text">最常用的压缩格式，兼容性最好，Windows和Mac系统都支持</div>
+              <div class="description-title">{{ t('project.exportProject.formatDescriptions.zip.title') }}</div>
+              <div class="description-text">{{ t('project.exportProject.formatDescriptions.zip.description') }}</div>
             </div>
           </div>
           <div class="description-item">
             <Icon icon="icon-wendang" class="description-icon tar" />
             <div class="description-content">
-              <div class="description-title">TAR (.tar)</div>
-              <div class="description-text">Unix/Linux系统常用的归档格式，未压缩的打包文件</div>
+              <div class="description-title">{{ t('project.exportProject.formatDescriptions.tar.title') }}</div>
+              <div class="description-text">{{ t('project.exportProject.formatDescriptions.tar.description') }}</div>
             </div>
           </div>
           <div class="description-item">
             <Icon icon="icon-wendang" class="description-icon tar-gz" />
             <div class="description-content">
-              <div class="description-title">TAR.GZ (.tar.gz)</div>
-              <div class="description-text">TAR格式的压缩文件，结合了归档和压缩，文件更小</div>
+              <div class="description-title">{{ t('project.exportProject.formatDescriptions.tarGz.title') }}</div>
+              <div class="description-text">{{ t('project.exportProject.formatDescriptions.tarGz.description') }}</div>
             </div>
           </div>
         </div>
@@ -179,10 +182,10 @@ watch(() => props.visible, (newValue) => {
         <!-- Footer Buttons -->
         <FormItem>
           <div class="form-footer">
-            <Button @click="closeModal">取消</Button>
+            <Button @click="closeModal">{{ t('actions.cancel') }}</Button>
             <Button type="primary" @click="handleExport" :loading="isLoading">
               <Icon icon="icon-daochu1" class="mr-1" />
-              开始导出
+              {{ t('project.exportProject.buttons.startExport') }}
             </Button>
           </div>
         </FormItem>

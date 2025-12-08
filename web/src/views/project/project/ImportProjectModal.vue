@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Modal, Icon, notification, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Input, UploadDragger, RadioGroup } from 'ant-design-vue';
 import { ProjectType } from '@/enums/enums';
 import { enumUtils } from '@xcan-angus/infra';
 import { project } from '@/api/tester';
 import { formatBytes } from '@/utils/common';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -48,7 +51,7 @@ const handleFileSelection = (fileInfo: any) => {
   const isValidFormat = validExtensions.some(ext => fileName.endsWith(ext));
   
   if (!isValidFormat) {
-    notification.error('不支持的文件格式，仅支持 ZIP (.zip)、TAR (.tar, .tar.gz, .tgz) 格式');
+    notification.error(t('project.importProject.messages.invalidFileFormat'));
     return;
   }
   
@@ -88,7 +91,7 @@ const validateFileSelection = async () => {
   if (uploadedFile.value) {
     return Promise.resolve();
   }
-  return Promise.reject(new Error('请上传项目文件'));
+  return Promise.reject(new Error(t('project.importProject.messages.uploadFileRequired')));
 };
 
 // Close modal
@@ -107,12 +110,12 @@ const handleSubmit = async () => {
     await formRef.value.validate();
     
     if (!uploadedFile.value) {
-      notification.error('请上传项目文件');
+      notification.error(t('project.importProject.messages.uploadFileRequired'));
       return;
     }
     
     if (!projectName.value.trim()) {
-      notification.error('请输入项目名称');
+      notification.error(t('project.importProject.messages.projectNameRequired'));
       return;
     }
     
@@ -128,11 +131,11 @@ const handleSubmit = async () => {
     isLoading.value = false;
     
     if (error) {
-      notification.error(error.message || '导入失败');
+      notification.error(error.message || t('project.importProject.messages.importFailed'));
       return;
     }
     
-    notification.success('导入成功');
+    notification.success(t('common.tips.importSuccess'));
     emits('ok');
     closeModal();
   } catch (error) {
@@ -154,7 +157,7 @@ watch(() => props.visible, (newValue) => {
 
 <template>
   <Modal
-    title="导入项目"
+    :title="t('project.importProject.title')"
     :visible="props.visible"
     :width="600"
     :centered="true"
@@ -169,9 +172,9 @@ watch(() => props.visible, (newValue) => {
         
         <!-- Project Type Selection -->
         <FormItem
-          label="项目类型"
+          :label="t('project.importProject.labels.projectType')"
           name="projectType"
-          :rules="[{ required: true, message: '请选择项目类型' }]"
+          :rules="[{ required: true, message: t('project.importProject.messages.selectProjectType') }]"
           required>
           <RadioGroup
             v-model:value="selectedProjectType"
@@ -181,7 +184,7 @@ watch(() => props.visible, (newValue) => {
 
         <!-- File Upload -->
         <FormItem
-          label="导入文件"
+          :label="t('project.importProject.labels.importFile')"
           name="file"
           :rules="{ validator: validateFileSelection }"
           required>
@@ -198,10 +201,10 @@ watch(() => props.visible, (newValue) => {
                   <Icon icon="icon-shangchuan" />
                 </div>
                 <div class="upload-text">
-                  <div class="upload-title">拖拽文件到此处或点击上传</div>
-                  <div class="upload-subtitle">支持格式: ZIP (.zip, 默认), TAR (.tar, .tar.gz, .tgz)</div>
+                  <div class="upload-title">{{ t('project.importProject.upload.title') }}</div>
+                  <div class="upload-subtitle">{{ t('project.importProject.upload.subtitle') }}</div>
                 </div>
-                <Button type="primary" class="upload-button">选择文件</Button>
+                <Button type="primary" class="upload-button">{{ t('project.importProject.buttons.selectFile') }}</Button>
               </div>
             </UploadDragger>
           </div>
@@ -222,23 +225,23 @@ watch(() => props.visible, (newValue) => {
 
         <!-- Project Name -->
         <FormItem
-          label="项目名称"
+          :label="t('project.importProject.labels.projectName')"
           name="name"
-          :rules="[{ required: true, message: '请输入项目名称' }]"
+          :rules="[{ required: true, message: t('project.importProject.messages.projectNameRequired') }]"
           required>
           <Input
             v-model:value="projectName"
-            placeholder="请输入项目名称"
+            :placeholder="t('project.importProject.placeholders.projectName')"
             :maxlength="100" />
         </FormItem>
 
         <!-- Footer Buttons -->
         <FormItem>
           <div class="form-footer">
-            <Button @click="closeModal">取消</Button>
+            <Button @click="closeModal">{{ t('actions.cancel') }}</Button>
             <Button type="primary" @click="handleSubmit" :loading="isLoading">
               <Icon icon="icon-shangchuan" class="mr-1" />
-              开始导入
+              {{ t('project.importProject.buttons.startImport') }}
             </Button>
           </div>
         </FormItem>

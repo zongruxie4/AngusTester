@@ -30,7 +30,8 @@
       "deleteProject": "Delete Project",
       "configModule": "Configure Module",
       "configVersion": "Configure Version",
-      "configTag": "Configure Tag"
+      "configTag": "Configure Tag",
+      "importProject": "Import Project"
     },
     "list": {
       "addedProjects": "Added Projects",
@@ -80,6 +81,66 @@
       "actions": {
         "clickToReplaceIcon": "Upload Icon",
         "uploadIcon": "Upload Icon"
+      }
+    },
+    "exportProject": {
+      "title": "Export Project",
+      "labels": {
+        "projectInfo": "Project Information",
+        "exportFormat": "Export Format",
+        "id": "ID:"
+      },
+      "messages": {
+        "exportFailed": "Export Failed",
+        "exportDataFormatError": "Export Data Format Error"
+      },
+      "buttons": {
+        "startExport": "Start Export"
+      },
+      "formatDescriptions": {
+        "zip": {
+          "title": "ZIP (.zip)",
+          "description": "The most commonly used compression format, compatible with Windows and Mac systems"
+        },
+        "tar": {
+          "title": "TAR (.tar)",
+          "description": "Unix/Linux commonly used archive format, uncompressed packaged files"
+        },
+        "tarGz": {
+          "title": "TAR.GZ (.tar.gz)",
+          "description": "Compressed TAR format, combining archive and compression, smaller file size"
+        }
+      },
+      "formatOptions": {
+        "zip": "ZIP (.zip)",
+        "tar": "TAR (.tar)",
+        "tarGz": "TAR.GZ (.tar.gz)"
+      }
+    },
+    "importProject": {
+      "title": "Import Project",
+      "labels": {
+        "projectType": "Project Type",
+        "importFile": "Import File",
+        "projectName": "Project Name"
+      },
+      "placeholders": {
+        "projectName": "Please enter project name"
+      },
+      "messages": {
+        "invalidFileFormat": "不支持的文件格式，仅支持 ZIP (.zip)、TAR (.tar, .tar.gz, .tgz) 格式",
+        "uploadFileRequired": "Please upload project file",
+        "projectNameRequired": "Please enter project name",
+        "selectProjectType": "Please select project type",
+        "importFailed": "Import Failed"
+      },
+      "buttons": {
+        "selectFile": "Select File",
+        "startImport": "Start Import"
+      },
+      "upload": {
+        "title": "Drag files here or click upload",
+        "subtitle": "Supported formats: ZIP (.zip, default), TAR (.tar, .tar.gz, .tgz)"
       }
     }
   },
