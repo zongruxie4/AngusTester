@@ -39,7 +39,7 @@ export function useManagement () {
     avatar: '',
     dateRange: undefined,
     importExample: true,
-    version: undefined
+    version: 'V1.0'
   });
 
   const isFormValid = computed(() => {
@@ -65,7 +65,7 @@ export function useManagement () {
     formData.avatar = '';
     formData.dateRange = undefined;
     formData.importExample = true;
-    formData.version = undefined;
+    formData.version = 'V1.0';   
     projectType.value = ProjectType.AGILE;
     memberType.value = 'user';
 
@@ -100,7 +100,7 @@ export function useManagement () {
     formData.avatar = project.avatar || '';
     formData.dateRange = project.dateRange || [project.startDate || '', project.deadlineDate || ''];
     formData.importExample = project.importExample ?? false;
-    formData.version = project.version || ''; 
+    formData.version = project.version || 'V1.0'; 
     projectType.value = project.type?.value || ProjectType.AGILE;
 
     if (project.members) {

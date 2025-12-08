@@ -77,7 +77,7 @@
         "importExampleDescription": "导入主要业务示例数据，用于快速熟悉AngusTester业务与功能演示。",
         "membersDescription": "明确项目的参与人员，项目成员会自动分配项目下数据权限，方便团队协作。",
         "descriptionPlaceholder": "请输入项目目标、范围等详细说明，最多2000个字符",
-        "versionNamePlaceholder": "版本名称，如：v1.0"
+        "versionNamePlaceholder": "版本号，如：V1.0"
       },
       "actions": {
         "clickToReplaceIcon": "点击上传图标",

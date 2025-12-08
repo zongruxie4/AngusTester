@@ -42,7 +42,8 @@ export function useForm (
   /** Project detail form data */
   const projectDetail = ref<Project>({
     type: { value: ProjectType.AGILE, message: '' },
-    importExample: false
+    importExample: false,
+    version: 'V1.0'
   });
 
   /**
@@ -115,7 +116,7 @@ export function useForm (
         description,
         avatar,
         type,
-        version,
+        version: version ? version : 'V1.0',
         importExample: false,
         members: data.members,
         dateRange: [startDate, deadlineDate]
