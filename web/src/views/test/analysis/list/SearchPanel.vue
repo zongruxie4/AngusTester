@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { cloneDeep } from 'lodash-es';
-import { XCanDexie, SearchCriteria, PageQuery } from '@xcan-angus/infra';
+import { XCanDexie, SearchCriteria, PageQuery, TESTER } from '@xcan-angus/infra';
 import { QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig } from 'src/components/form/quickSearch';
 
 // Component setup
@@ -336,6 +336,13 @@ const searchOptions = [
     type: 'input',
     valueKey: 'name',
     placeholder: t('common.placeholders.searchKeyword')
+  },
+  {
+    type: 'select',
+    valueKey: 'planId',
+    placeholder: t('测试计划'),
+    action: `${TESTER}/func/plan?projectId=${props.projectId}&fullTextSearch=true`,
+    fieldNames: { value: 'id', label: 'name' }
   },
   {
     type: 'select-user',

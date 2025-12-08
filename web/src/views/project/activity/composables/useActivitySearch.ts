@@ -1,6 +1,6 @@
 import { ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { TESTER, CombinedTargetType, PageQuery, SearchCriteria } from '@xcan-angus/infra';
+import { TESTER, PageQuery, SearchCriteria, CombinedTargetType } from '@xcan-angus/infra';
 
 /**
  * Composable for managing activity search functionality

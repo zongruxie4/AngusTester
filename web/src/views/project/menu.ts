@@ -8,7 +8,8 @@ export enum ProjectMenuKey {
   TAGS = 'tags',
   EVALUATION = 'evaluation',
   ACTIVITY = 'activity',
-  TRASH = 'trash'
+  TRASH = 'trash',
+  TEMPLATES = 'templates'
 }
 
 export type ProjectMenuVisibility = {
@@ -65,6 +66,11 @@ export const createMenuItems = (
       icon: 'icon-fabu',
       name: t('activity.title'),
       key: ProjectMenuKey.ACTIVITY
+    },
+    {
+      name: t('testTemplate.title'),
+      key: ProjectMenuKey.TEMPLATES,
+      icon: 'icon-kanbanshitu'
     },
     {
       icon: 'icon-qingchu',

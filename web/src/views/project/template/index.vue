@@ -5,7 +5,7 @@ import { BrowserTab } from '@xcan-angus/vue-ui';
 import { IPane, utils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { BasicProps } from '@/types/types';
-import { TestMenuKey } from '@/views/test/menu';
+import { ProjectMenuKey } from '@/views/project/menu';
 
 const { t } = useI18n();
 
@@ -17,9 +17,9 @@ const props = withDefaults(defineProps<BasicProps>(), {
 });
 
 // Async Components
-const TemplateList = defineAsyncComponent(() => import('@/views/test/template/list/index.vue'));
-const TemplateEdit = defineAsyncComponent(() => import('@/views/test/template/edit/index.vue'));
-const TemplateDetail = defineAsyncComponent(() => import('@/views/test/template/detail/index.vue'));
+const TemplateList = defineAsyncComponent(() => import('@/views/project/template/list/index.vue'));
+const TemplateEdit = defineAsyncComponent(() => import('@/views/project/template/edit/index.vue'));
+const TemplateDetail = defineAsyncComponent(() => import('@/views/project/template/detail/index.vue'));
 
 // Router and UI References
 const route = useRoute();
@@ -144,7 +144,7 @@ const handleHashChange = (hash: string) => {
       });
     }
   }
-  router.replace(`/test#${TestMenuKey.TEMPLATES}`);
+  router.replace(`/project#${ProjectMenuKey.TEMPLATES}`);
 };
 
 /**

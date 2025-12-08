@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, Ref, ref, onMounted, watch } from 'vue';
-import { appContext } from '@xcan-angus/infra';
+import { appContext, utils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { ProjectInfo } from '@/layout/types';
 import { ProjectMenuKey, createMenuItems, ProjectMenuVisibility } from '@/views/project/menu';
@@ -13,6 +13,7 @@ const Module = defineAsyncComponent(() => import('@/views/project/module/index.v
 const Tags = defineAsyncComponent(() => import('@/views/project/tag/index.vue'));
 const Version = defineAsyncComponent(() => import('@/views/project/version/index.vue'));
 const Evaluation = defineAsyncComponent(() => import('@/views/project/evaluation/index.vue'));
+const Template = defineAsyncComponent(() => import('@/views/project/template/index.vue'));
 
 const { t } = useI18n();
 
@@ -21,6 +22,9 @@ const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInf
 const appInfo = ref(appContext.getAccessApp());
 const aiAgent = inject('aiAgent', ref({ chatIframe: '' }));
 const aiEnabled = inject('aiEnabled', ref(false));
+const templatesRefreshToken = ref<string>('');
+
+let hasTemplatesRefreshTriggered = false;
 
 const projectId = computed(() => {
   return projectInfo.value?.id;
@@ -42,6 +46,13 @@ const menuItems = computed(() => {
 });
 
 const handleMenuSectionChange = (newMenuKey: ProjectMenuKey | undefined) => {
+  if (newMenuKey === ProjectMenuKey.TEMPLATES) {
+    if (hasTemplatesRefreshTriggered) {
+      templatesRefreshToken.value = utils.uuid();
+    }
+    hasTemplatesRefreshTriggered = true;
+    return;
+  }
   // Currently no refresh-token logic required for project menus.
   // This handler exists for consistency with other sections and future extension.
   if (!newMenuKey) return;
@@ -105,6 +116,14 @@ onMounted(() => {
         :userInfo="userInfo"
         :appInfo="appInfo"
         class="p-5" />
+    </template>
+
+    <template #templates>
+      <Template
+        :projectId="projectId"
+        :userInfo="userInfo"
+        :appInfo="appInfo"
+        :refreshNotify="templatesRefreshToken" />
     </template>
 
     <template #evaluation>

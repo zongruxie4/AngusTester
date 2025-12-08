@@ -548,6 +548,7 @@
       },
       "CombinedTargetType": {
         "PROJECT": "项目",
+        "EVALUATION": "测评",
         "TAG": "标签",
         "MODULE": "模块",
         "TASK": "任务",

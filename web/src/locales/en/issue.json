@@ -54,6 +54,7 @@
       "story": "Specific goals or expectations that users want to achieve, usually described in concise, understandable language, such as: As a <role>, I want <goal> so that <benefit>.",
       "task": "General work items or activities",
       "bug": "Program errors or vulnerabilities",
+      "design": "Design document writing",
       "apiTest": "API functionality, performance, and stability testing tasks",
       "scenarioTest": "Scenario functionality, performance, and stability testing tasks"
     },

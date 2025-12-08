@@ -300,7 +300,7 @@ defineExpose({
         v-model:value="date"
         format="YYYY-MM-DD HH:mm:ss"
         class="w-1/2"
-        :allowClear="false"
+        :allowClear="true"
         :showNow="false"
         :showTime="{ format: TIME_FORMAT }"
         :placeholder="[t('common.startDate'), t('common.deadlineDate')]"

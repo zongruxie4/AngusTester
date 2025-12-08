@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, watch, Ref, defineAsyncComponent } from 'vue';
+import { computed, inject, onMounted, ref, watch, Ref, defineAsyncComponent, onBeforeUnmount } from 'vue';
 import {
   DatePicker, Hints, Icon, IconTask, Input, Modal, notification, Select, Spin, Dropdown
 } from '@xcan-angus/vue-ui';
@@ -196,7 +196,8 @@ const save = (type: 'save' | 'add') => {
     'testerId',
     'deadlineDate',
     'testLayer',
-    'testPurpose'
+    'testPurpose',
+    'description'
   ];
 
   if (caseFormData.value.actualWorkload) {
@@ -205,11 +206,6 @@ const save = (type: 'save' | 'add') => {
 
   formRef.value.validate(validationRuleKeys)
     .then(async () => {
-      if (caseFormData.value.description?.length > 2000) {
-        notification.warning(t('testCase.messages.richTextTooLong'));
-        return;
-      }
-
       if (props.editCase) {
         await saveEditedCase();
       } else {
@@ -613,12 +609,47 @@ const validateEvalWorkload = async (_rule: Rule, value: string) => {
   }
 };
 
+const autoSave = () => {
+  if (currentCaseDetail.value?.description !== caseFormData.value.description
+  || currentCaseDetail.value?.precondition !== caseFormData.value.precondition
+  || JSON.stringify(currentCaseDetail.value?.steps) !== JSON.stringify(caseFormData.value.steps)) {
+    let validationRuleKeys = [
+      'name',
+      'planId',
+      'testerId',
+      'deadlineDate',
+      'testLayer',
+      'testPurpose',
+      'description'
+    ];
+
+    if (caseFormData.value.actualWorkload) {
+      validationRuleKeys = [...validationRuleKeys, 'evalWorkload'];
+    }
+    formRef.value.validate(validationRuleKeys)
+      .then(async () => {
+        const params = prepareFormParams();
+        await testCase.putCase([{ id: props.editCase?.id, ...params }]);
+        const [error, { data }] = await testCase.getCaseDetail(props.editCase?.id as string);
+        if (error) {
+          return;
+        }
+        currentCaseDetail.value = data;
+      });
+  }
+};
+
+let intervalSave: NodeJS.Timeout | null = null;
+
 onMounted(() => {
   watch(() => props.visible, async (newValue) => {
+    intervalSave && clearInterval(intervalSave);
+    intervalSave = null;
     if (newValue) {
       await loadModuleTreeOptions();
       if (props.editCase) {
-        loadCaseDetails();
+        await loadCaseDetails();
+        intervalSave = setInterval(() => autoSave(), 30000);
       } else {
         resetForm();
       }
@@ -637,6 +668,12 @@ onMounted(() => {
 
   loadEnumOptions();
 });
+
+onBeforeUnmount(() => {
+  intervalSave && clearInterval(intervalSave);
+  intervalSave = null
+});
+
 </script>
 <template>
   <Modal

@@ -305,6 +305,7 @@ onBeforeUnmount(() => {
     <SearchPanel
       v-model:orderBy="sortConfig.orderBy"
       v-model:orderSort="sortConfig.orderSort"
+      :key="props.projectId"
       :userInfo="searchPanelUserInfo"
       :projectId="props.projectId"
       @change="handleSearchSubmit"

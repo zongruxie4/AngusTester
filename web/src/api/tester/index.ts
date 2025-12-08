@@ -26,7 +26,7 @@ import Tag from './Tag';
 import Test from './Test';
 import TestPlan from './TestPlan';
 import TestCase from './TestCase';
-import Template from './TestTemplate';
+import Template from './Template';
 import Evaluation from './Evaluation';
 import TesterSetting from './TesterSetting';
 

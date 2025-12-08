@@ -3,7 +3,7 @@ import {  defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { notification, Spin, Hints } from '@xcan-angus/vue-ui';
 import { enumUtils } from '@xcan-angus/infra';
-import { template } from '@/api/tester';
+import { template as templateApi } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TestTemplateEditFormState, TestTemplateDetail } from '../types';
 import { BasicProps } from '@/types/types';
@@ -74,7 +74,7 @@ const loadTemplateDetail = async () => {
   }
 
   loading.value = true;
-  const [error, res] = await template.getTemplateList();
+  const [error, res] = await templateApi.getTemplateList();
   loading.value = false;
 
   if (error) {

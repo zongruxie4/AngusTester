@@ -167,11 +167,11 @@
       "steps": {
         "weightDescription": {
           "title": "Weight Description",
-          "content": "The weight range for each indicator is 0-100, with higher values indicating greater importance. The weight should total 100%."
+          "content": "The weight range for each indicator is 0-100, with higher values indicating greater importance. The weight should total 100%.; \nEvaluation score calculation method (for functional testing): Functional test score = (sum of all functional test case scores ÷ number of all functional test cases) × weight;"
         },
         "weightSuggestion": {
           "title": "Weight Allocation Suggestion",
-          "content": "Core functionality indicators are typically assigned higher weights;\nAdjust security and performance weights based on project type;\nCompliance indicators may have higher weights in specific industries;\nConsider allocating weights based on user actual usage scenarios"
+          "content": "Core functionality indicators are typically assigned higher weights;\nAdjust security and performance weights based on project type;\nCompliance indicators may have higher weights in specific industries;\nConsider allocating weights based on user actual usage scenarios;"
         }
       }
     }

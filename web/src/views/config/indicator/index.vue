@@ -31,8 +31,9 @@ const steps = computed(() => [
     <!-- <DefaultFunc class="mt-3" />-->
     <DefaultPerform class="mt-5" />
     <DefaultStability class="mt-10" />
-    <HeadIntroduction :steps="steps" class="mt-10 !text-3" />
-    <DefaultEvaluation />
+   
+    <DefaultEvaluation class="mt-10" />
+    <HeadIntroduction :steps="steps" class="mt-2 !text-3" />
     <!-- <HeadIntroduction class="mt-10" :title="t('indicator.efficiencyHint')" />
     <DefaultEfficiency class="mt-3 mb-10" /> -->
   </div>

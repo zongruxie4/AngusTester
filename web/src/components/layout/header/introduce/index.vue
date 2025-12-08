@@ -27,7 +27,7 @@ withDefaults(defineProps<Props>(), {
           <Icon :icon="step.icon" v-if="step.icon" class="text-3.75 mr-1.5" />
           <span>{{ step.title }}</span>
         </div>
-        <div class="text-theme-sub-content min-w-63 max-w-4/5">{{ step.content }}</div>
+        <div class="text-theme-sub-content min-w-63 max-w-4/5 whitespace-pre-line">{{ step.content }}</div>
       </div>
     </div>
   </div>

@@ -8,8 +8,8 @@ import { BasicProps } from '@/types/types';
 import { TestTemplateDetail } from '../types';
 
 // Async components
-const Introduce = defineAsyncComponent(() => import('@/views/test/template/list/Introduce.vue'));
-const List = defineAsyncComponent(() => import('@/views/test/template/list/List.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/project/template/list/Introduce.vue'));
+const List = defineAsyncComponent(() => import('@/views/project/template/list/List.vue'));
 
 // Composables
 const { t } = useI18n();

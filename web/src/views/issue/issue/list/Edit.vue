@@ -89,7 +89,7 @@ const formState = reactive<TaskEditState>({
   taskType: TaskType.TASK,
   bugLevel: BugLevel.MINOR,
   testerId: undefined,
-  escapedBug: false,
+  missingBug: false,
   softwareVersion: undefined
 });
 
@@ -488,7 +488,7 @@ const buildTaskParameters = () => {
   // Add bug-specific fields
   if (formState.taskType === TaskType.BUG) {
     params.bugLevel = formState.bugLevel;
-    params.escapedBug = formState.escapedBug;
+    params.missingBug = formState.missingBug;
   }
   return params;
 };
@@ -651,7 +651,7 @@ const resetFormToDefaults = () => {
   formState.refTaskIds = [];
   formState.refCaseIds = props.refCaseIds || [];
   formState.taskType = props.taskType || TaskType.TASK;
-  formState.escapedBug = false;
+  formState.missingBug = false;
   formState.assigneeId = props.assigneeId || props.userInfo?.id || undefined;
   formState.testerId = props.taskType === TaskType.BUG ? props.userInfo?.id : undefined;
   formState.confirmerId = props.confirmerId || undefined;
@@ -710,7 +710,7 @@ const populateFormWithTaskData = (data: Partial<TaskDetail>) => {
   formState.refCaseIds = data.refCaseInfos?.map(item => item.id) || [];
   formState.taskType = data.taskType?.value || TaskType.TASK;
   formState.testerId = data.testerId;
-  formState.escapedBug = data.escapedBug || false;
+  formState.missingBug = data.missingBug || false;
   formState.bugLevel = data.bugLevel?.value || BugLevel.MINOR;
   formState.softwareVersion = data.softwareVersion;
 
@@ -888,11 +888,11 @@ onMounted(() => {
               </FormItem>
 
               <FormItem
-                name="escapedBug"
+                name="missingBug"
                 :label="t('common.escapedBug')"
                 class="flex-1/2">
                 <Select
-                  :value="(formState.escapedBug as any)"
+                  :value="(formState.missingBug as any)"
                   :options="[
                     { value: (true as any), label: t('status.yes') },
                     { value: (false as any), label: t('status.no') }
