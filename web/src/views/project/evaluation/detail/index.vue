@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { inject, onMounted, onBeforeUnmount, ref, watch, nextTick, computed } from 'vue';
 import { Button, Tag, Card, Divider, Statistic } from 'ant-design-vue';
-import { Icon, notification, Spin, Table } from '@xcan-angus/vue-ui';
-import { toClipboard } from '@xcan-angus/infra';
+import { Icon, notification, Spin, Table, Input } from '@xcan-angus/vue-ui';
+import { toClipboard, duration } from '@xcan-angus/infra';
 import { evaluation } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { BasicProps } from '@/types/types';
 import { ProjectMenuKey } from '@/views/project/menu';
 import { EvaluationDetail } from '../types';
 import eCharts from '@/utils/echarts';
-import { throttle } from 'throttle-debounce';
+import { throttle, debounce } from 'throttle-debounce';
 import { enumUtils } from '@xcan-angus/infra';
 import { EvaluationPurpose } from '@/enums/enums';
 import { testerSetting } from '@/api/tester';
@@ -542,7 +542,10 @@ const loadIndicatorConfig = async () => {
   indicatorConfig.value = res?.data || {};
 };
 
-// 编码、名称、测试结果、测试得分、测试备注、测试人
+const caseNameKeyword = ref('');
+const caseCodeKeyword = ref('');
+const showTableList = ref([])
+
 const caseDetailsColumns = [
   {
     title: '编码',
@@ -577,7 +580,7 @@ const caseDetailsColumns = [
     dataIndex: 'testerName',
     width: 100
   }
-]
+];
 
 // Lifecycle hooks
 onMounted(async () => {
@@ -598,10 +601,22 @@ onMounted(async () => {
 
   // Watch for result changes to update charts
   watch(() => evaluationDetail.value?.result, () => {
+    showTableList.value = evaluationDetail.value?.result?.caseDetails || [];
     nextTick(() => {
       initCharts();
     });
   }, { deep: true });
+
+
+  watch([() => caseNameKeyword.value, () => caseCodeKeyword.value], debounce(duration.search, () => {
+    showTableList.value = evaluationDetail.value?.result?.caseDetails || [];
+    if (caseNameKeyword.value) {
+      showTableList.value = (showTableList.value).filter(item => item.name.includes(caseNameKeyword.value));
+    }
+    if (caseCodeKeyword.value) {
+      showTableList.value = (showTableList.value).filter(item => item.code.includes(caseCodeKeyword.value));
+    }
+  }));
 
   // Add window resize listener
   window.addEventListener('resize', resizeCharts);
@@ -1168,10 +1183,15 @@ onBeforeUnmount(() => {
       <template #title>
         <div class="text-base font-semibold">测试用例明细</div>
       </template>
+     
+      <div class="flex space-x-2">
+        <Input v-model:value="caseNameKeyword" class="w-50" placeholder="搜索测试用例名称" />
+        <Input v-model:value="caseCodeKeyword" class="w-50" placeholder="搜索测试用例编码" />
+      </div>
       <div class="evaluation-results-container">
         <Table
           :columns="caseDetailsColumns"
-          :dataSource="evaluationDetail.result.caseDetails"
+          :dataSource="showTableList"
           :pagination="false"
           :scroll="{ x: '100%' }"
           :rowKey="record => record.id"
