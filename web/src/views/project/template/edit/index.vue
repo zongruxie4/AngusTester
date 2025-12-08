@@ -558,6 +558,27 @@ onMounted(() => {
                 </FormItem>
               </div>
             </template>
+            <FormItem
+              :label="t('common.evalWorkloadMethod')"
+              :name="['templateContent_issue', 'evalWorkloadMethod']">
+              <RadioGroup v-model:value="formState.templateContent_issue.evalWorkloadMethod">
+                <Radio
+                  v-for="item in workloadMethodOptions"
+                  :key="item.value"
+                  :value="item.value">
+                  {{ item.message }}
+                </Radio>
+              </RadioGroup>
+              <Tooltip
+                placement="right"
+                arrowPointAtCenter
+                :overlayStyle="{ 'max-width': '400px' }">
+                <template #title>
+                  <div>{{ t('sprint.tips.evalWorkloadMethodTip') }}</div>
+                </template>
+                <Icon icon="icon-tishi1" class="text-tips text-3.5 cursor-pointer" />
+              </Tooltip>
+            </FormItem>
 
             <div class="flex space-x-4">
               <FormItem
@@ -575,31 +596,23 @@ onMounted(() => {
                   :max="1000"
                   :placeholder="t('common.placeholders.workloadRange')" />
               </FormItem>
-              <FormItem
+              <formItem
                 class="flex-1/2"
-                :label="t('common.evalWorkloadMethod')"
-                :name="['templateContent_issue', 'evalWorkloadMethod']">
-                <RadioGroup v-model:value="formState.templateContent_issue.evalWorkloadMethod">
-                  <Radio
-                    v-for="item in workloadMethodOptions"
-                    :key="item.value"
-                    :value="item.value">
-                    {{ item.message }}
-                  </Radio>
-                </RadioGroup>
-                <Tooltip
-                  placement="right"
-                  arrowPointAtCenter
-                  :overlayStyle="{ 'max-width': '400px' }">
-                  <template #title>
-                    <div>{{ t('sprint.tips.evalWorkloadMethodTip') }}</div>
-                  </template>
-                  <Icon icon="icon-tishi1" class="text-tips text-3.5 cursor-pointer" />
-                </Tooltip>
+                :name="['templateContent_issue', 'actualWorkload']">
+                <template #label>
+                  {{ t('common.actualWorkload') }}
+                </template>
+                <Input
+                  v-model:value="formState.templateContent_issue.actualWorkload"
+                  size="small"
+                  dataType="float"
+                  trimAll
+                  :min="0.1"
+                  :max="1000"
+                  :placeholder="t('common.placeholders.workloadRange')" />
               </FormItem>
+              
             </div>
-
-
           </template>
         </div>
       </Form>
