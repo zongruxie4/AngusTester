@@ -484,7 +484,7 @@ onBeforeUnmount(() => {
             <div class="info-row">
               <span class="info-label">{{ t('reportPreview.evaluation.detail.weight') }}</span>
               <span class="info-value">
-                {{ props.dataSource.content.metrics.FUNCTIONAL_SCORE.weight }} %
+                {{ props.dataSource.content.metrics.FUNCTIONAL_SCORE.weight }}%
               </span>
             </div>
           </div>
@@ -518,7 +518,7 @@ onBeforeUnmount(() => {
             <div class="info-row">
               <span class="info-label">{{ t('reportPreview.evaluation.detail.weight') }}</span>
               <span class="info-value">
-                {{ props.dataSource.content.metrics.PERFORMANCE_SCORE.weight }}
+                {{ props.dataSource.content.metrics.PERFORMANCE_SCORE.weight }} %
               </span>
             </div>
           </div>
@@ -552,233 +552,14 @@ onBeforeUnmount(() => {
             <div class="info-row">
               <span class="info-label">{{ t('reportPreview.evaluation.detail.weight') }}</span>
               <span class="info-value">
-                {{ props.dataSource.content.metrics.STABILITY_SCORE.weight }}
+                {{ props.dataSource.content.metrics.STABILITY_SCORE.weight }}%
               </span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Quality Scores Grid with Progress Bars -->
-      <div class="quality-scores-progress-container mb-6 space-y-6">
-        <!-- Compatibility Score -->
-        <div v-if="props.dataSource?.content?.metrics.COMPATIBILITY_SCORE" class="quality-score-progress-item">
-          <div class="progress-header">
-            <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.COMPATIBILITY_SCORE) }}</span>
-          </div>
-          <div class="flex items-center">
-            <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.totalCases')"
-                :value="props.dataSource?.content?.metrics?.COMPATIBILITY_SCORE.totalCases"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.totalScore')"
-                :value="props.dataSource?.content?.metrics?.COMPATIBILITY_SCORE.totalScore"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.weight')"
-                :value="props.dataSource?.content?.metrics?.COMPATIBILITY_SCORE.weight"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
-            </div>
-            <span class="mr-1">{{ t('reportPreview.evaluation.detail.averageScore') }}</span>
-            <div ref="compatibilityScoreRef" class="quality-score-progress-bar flex-1"></div>
-          </div>
-         
-        </div>
 
-        <!-- Usability Score -->
-        <div v-if="props.dataSource?.content?.metrics.USABILITY_SCORE" class="quality-score-progress-item">
-          <div class="progress-header">
-            <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.USABILITY_SCORE) }}</span>
-          </div>
-          <div class="flex items-center">
-            <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
-              <Statistic
-                  :title="t('reportPreview.evaluation.detail.totalCases')"
-                  :value="props.dataSource?.content?.metrics?.USABILITY_SCORE.totalCases"
-                  suffix=""
-                  class="flex flex-col-reverse"
-                  :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
-                <Statistic
-                  :title="t('reportPreview.evaluation.detail.totalScore')"
-                  :value="props.dataSource?.content?.metrics?.USABILITY_SCORE.totalScore"
-                  suffix=""
-                  class="flex flex-col-reverse"
-                  :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
-                <Statistic
-                  :title="t('reportPreview.evaluation.detail.weight')"
-                  :value="props.dataSource?.content?.metrics?.USABILITY_SCORE.weight"
-                  suffix=""
-                  class="flex flex-col-reverse"
-                  :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
-              </div>
-            <span class="mr-1">{{ t('reportPreview.evaluation.detail.averageScore') }}</span>
-            <div ref="usabilityScoreRef" class="quality-score-progress-bar flex-1"></div>
-          </div>
-        </div>
-        <!-- Maintainability Score -->
-        <div v-if="props.dataSource?.content?.metrics.MAINTAINABILITY_SCORE" class="quality-score-progress-item">
-          <div class="progress-header">
-            <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.MAINTAINABILITY_SCORE) }}</span>
-          </div>
-
-          <div class="flex items-center">
-            <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.totalCases')"
-                :value="props.dataSource?.content?.metrics?.MAINTAINABILITY_SCORE.totalCases"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.totalScore')"
-                :value="props.dataSource?.content?.metrics?.MAINTAINABILITY_SCORE.totalScore"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.weight')"
-                :value="props.dataSource?.content?.metrics?.MAINTAINABILITY_SCORE.weight"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
-            </div>
-            <span class="mr-1">{{ t('reportPreview.evaluation.detail.averageScore') }}</span>
-            <div ref="maintainabilityScoreRef" class="quality-score-progress-bar flex-1"></div>
-          </div>
-        </div>
-
-        <!-- Scalability Score -->
-        <div v-if="props.dataSource?.content?.metrics.SCALABILITY_SCORE" class="quality-score-progress-item">
-          <div class="progress-header">
-            <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.SCALABILITY_SCORE) }}</span>
-          </div>
-          <div class="flex items-center"> 
-            <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.totalCases')"
-                :value="props.dataSource?.content?.metrics?.SCALABILITY_SCORE.totalCases"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.totalScore')"
-                :value="props.dataSource?.content?.metrics?.SCALABILITY_SCORE.totalScore"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.weight')"
-                :value="props.dataSource?.content?.metrics?.SCALABILITY_SCORE.weight"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
-            </div>
-            <span class="mr-1">{{ t('reportPreview.evaluation.detail.averageScore') }}</span>
-            <div ref="scalabilityScoreRef" class="quality-score-progress-bar flex-1"></div>
-          </div>
-        </div>
-
-        <!-- Security Score -->
-        <div v-if="props.dataSource?.content?.metrics.SECURITY_SCORE" class="quality-score-progress-item">
-          <div class="progress-header">
-            <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.SECURITY_SCORE) }}</span>
-          </div>
-          <div class="flex items-center"> 
-            <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.totalCases')"
-                :value="props.dataSource?.content?.metrics?.SECURITY_SCORE.totalCases"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.totalScore')"
-                :value="props.dataSource?.content?.metrics?.SECURITY_SCORE.totalScore"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.weight')"
-                :value="props.dataSource?.content?.metrics?.SECURITY_SCORE.weight"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
-            </div>
-            <span class="mr-1">{{ t('reportPreview.evaluation.detail.averageScore') }}</span>
-            <div ref="securityScoreRef" class="quality-score-progress-bar flex-1"></div>
-          </div>
-        </div>
-
-        <!-- Compliance Score -->
-        <div v-if="props.dataSource?.content?.metrics.COMPLIANCE_SCORE" class="quality-score-progress-item">
-          <div class="progress-header">
-            <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.COMPLIANCE_SCORE) }}</span>
-          </div>
-          <div class="flex items-center">  
-            <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.totalCases')"
-                :value="props.dataSource?.content?.metrics?.COMPLIANCE_SCORE.totalCases"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.totalScore')"
-                :value="props.dataSource?.content?.metrics?.COMPLIANCE_SCORE.totalScore"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.weight')"
-                :value="props.dataSource?.content?.metrics?.COMPLIANCE_SCORE.weight"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
-            </div>
-            <span class="mr-1">{{ t('reportPreview.evaluation.detail.averageScore') }}</span>
-            <div ref="complianceScoreRef" class="quality-score-progress-bar flex-1"></div>
-          </div>
-        </div>
-
-        <!-- Availability Score -->
-        <div v-if="props.dataSource?.content?.metrics.AVAILABILITY_SCORE" class="quality-score-progress-item">
-          <div class="progress-header">
-            <span class="progress-title">{{ enumUtils.getEnumDescription(EvaluationPurpose, EvaluationPurpose.AVAILABILITY_SCORE) }}</span>
-          </div>
-          <div class="flex items-center"> 
-            <div class="quality-score-content inline-flex justify-around space-x-2 w-70">
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.totalCases')"
-                :value="props.dataSource?.content?.metrics?.AVAILABILITY_SCORE.totalCases"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }" />
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.totalScore')"
-                :value="props.dataSource?.content?.metrics?.AVAILABILITY_SCORE.totalScore"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#722ed1' }" />
-              <Statistic
-                :title="t('reportPreview.evaluation.detail.weight')"
-                :value="props.dataSource?.content?.metrics?.AVAILABILITY_SCORE.weight"
-                suffix=""
-                class="flex flex-col-reverse"
-                :value-style="{ fontSize: '18px', fontWeight: 'bold', color: '#52c41a' }" />
-            </div>
-            <span class="mr-1">{{ t('reportPreview.evaluation.detail.averageScore') }}</span>
-            <div ref="availabilityScoreRef" class="quality-score-progress-bar flex-1"></div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 

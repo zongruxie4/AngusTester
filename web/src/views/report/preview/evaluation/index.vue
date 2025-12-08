@@ -26,6 +26,7 @@ const MainTitle = defineAsyncComponent(() => import('@/views/report/preview/comp
 const Summary = defineAsyncComponent(() => import('@/views/report/preview/evaluation/summary/index.vue'));
 const Catalog = defineAsyncComponent(() => import('@/views/report/preview/evaluation/catalog/index.vue'));
 const EvaluationContent = defineAsyncComponent(() => import('@/views/report/preview/evaluation/evaluationContent/index.vue'));
+const CaseListDetail = defineAsyncComponent(() => import('@/views/report/preview/evaluation/caseListDetail/index.vue'));
 
 </script>
 
@@ -53,4 +54,5 @@ const EvaluationContent = defineAsyncComponent(() => import('@/views/report/prev
     <div class="mt-1 rounded w-8.5 h-1 bg-gray-500"></div>
   </div>
   <EvaluationContent :dataSource="props.dataSource" />
+  <CaseListDetail :dataSource="props.dataSource" />
 </template>
