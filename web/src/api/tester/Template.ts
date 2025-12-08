@@ -26,8 +26,10 @@ export default class API {
     return http.post(`${baseUrl}/import`, formData);
   }
 
-  downloadTemplate (templateId: string, format:  'excel'|'csv'|'json',): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${templateId}/export?format=${format}`);
+  downloadTemplate (templateId: string, format: 'excel'|'csv'|'json'): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${templateId}/export?format=${format}`, undefined, {
+      responseType: 'blob'
+    });
   }
 }
 

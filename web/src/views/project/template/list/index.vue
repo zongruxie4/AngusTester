@@ -11,6 +11,7 @@ import { TestTemplateDetail } from '../types';
 const Introduce = defineAsyncComponent(() => import('@/views/project/template/list/Introduce.vue'));
 const List = defineAsyncComponent(() => import('@/views/project/template/list/List.vue'));
 const ImportTemplate = defineAsyncComponent(() => import('@/views/project/template/list/ImportTemplate.vue'));
+const ExportTemplate = defineAsyncComponent(() => import('@/views/project/template/list/ExportTemplate.vue'));
 
 // Composables
 const { t } = useI18n();
@@ -29,6 +30,8 @@ const addTabPane = inject<(data: any) => void>('addTabPane', () => ({}));
 const isDataLoaded = ref(false);
 const isLoading = ref(false);
 const importTemplateVisible = ref(false);
+const exportTemplateVisible = ref(false);
+const selectedTemplateForExport = ref<TestTemplateDetail | undefined>(undefined);
 
 // Data state
 const dataList = ref<TestTemplateDetail[]>([]);
@@ -123,6 +126,11 @@ const handleImportSuccess = () => {
   loadData();
 };
 
+const handleExportTemplate = (templateData: TestTemplateDetail) => {
+  selectedTemplateForExport.value = templateData;
+  exportTemplateVisible.value = true;
+};
+
 // lifecycle hooks
 onMounted(() => {
   watch(() => props.notify, (newValue) => {
@@ -163,7 +171,8 @@ onMounted(() => {
             @edit="handleEdit"
             @delete="handleDelete"
             @add="handleAdd"
-            @view="handleView" />
+            @view="handleView"
+            @export="handleExportTemplate" />
         </div>
       </template>
     </Spin>
@@ -173,6 +182,12 @@ onMounted(() => {
       v-model:visible="importTemplateVisible"
       @update:visible="importTemplateVisible = $event"
       @ok="handleImportSuccess" />
+    
+    <!-- Export Template Modal -->
+    <ExportTemplate
+      v-model:visible="exportTemplateVisible"
+      :templateData="selectedTemplateForExport"
+      @update:visible="exportTemplateVisible = $event" />
   </div>
 </template>
 

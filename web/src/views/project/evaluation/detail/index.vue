@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, onMounted, onBeforeUnmount, ref, watch, nextTick, computed } from 'vue';
 import { Button, Tag, Card, Divider, Statistic } from 'ant-design-vue';
-import { Icon, notification, Spin } from '@xcan-angus/vue-ui';
+import { Icon, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { toClipboard } from '@xcan-angus/infra';
 import { evaluation } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
@@ -542,6 +542,43 @@ const loadIndicatorConfig = async () => {
   indicatorConfig.value = res?.data || {};
 };
 
+// 编码、名称、测试结果、测试得分、测试备注、测试人
+const caseDetailsColumns = [
+  {
+    title: '编码',
+    dataIndex: 'code',
+    width: 100
+  },
+  {
+    title: '名称',
+    dataIndex: 'name',
+    width: 100
+  },
+  {
+    title: '测试结果',
+    dataIndex: 'testResult',
+    width: 100,
+    customRender: ({ text }) => {
+      return text?.message;
+    }
+  },
+  {
+    title: '测试得分',
+    dataIndex: 'testScore',
+    width: 100
+  },
+  {
+    title: '测试备注',
+    dataIndex: 'testRemark',
+    width: 100
+  },
+  {
+    title: '测试人',
+    dataIndex: 'testerName',
+    width: 100
+  }
+]
+
 // Lifecycle hooks
 onMounted(async () => {
   loadIndicatorConfig();
@@ -713,7 +750,7 @@ onBeforeUnmount(() => {
     </Card>
 
     <!-- Part 2: Evaluation Results with Charts -->
-    <Card v-if="evaluationDetail?.result" :bordered="false">
+    <Card v-if="evaluationDetail?.result" class="mb-4" :bordered="false">
       <template #title>
         <div class="text-base font-semibold">{{ t('evaluation.detail.resultTitle') }}</div>
       </template>
@@ -1124,6 +1161,22 @@ onBeforeUnmount(() => {
             </div>
           </div>
         </template>
+      </div>
+    </Card>
+
+    <Card v-if="evaluationDetail?.result?.caseDetails" :bordered="false">
+      <template #title>
+        <div class="text-base font-semibold">测试用例明细</div>
+      </template>
+      <div class="evaluation-results-container">
+        <Table
+          :columns="caseDetailsColumns"
+          :dataSource="evaluationDetail.result.caseDetails"
+          :pagination="false"
+          :scroll="{ x: '100%' }"
+          :rowKey="record => record.id"
+          noDataSize="small">
+        </Table>
       </div>
     </Card>
 

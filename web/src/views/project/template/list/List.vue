@@ -21,6 +21,7 @@ const emit = defineEmits<{
   add: [];
   view: [templateData: TestTemplateDetail];
   import: [];
+  export: [templateData: TestTemplateDetail];
 }>();
 
 const { t } = useI18n();
@@ -118,6 +119,10 @@ const handleImportTemplate = () => {
   emit('import');
 };
 
+const handleOpenExportModal = (template: TestTemplateDetail) => {
+  emit('export', template);
+};
+
 </script>
 
 <template>
@@ -154,6 +159,9 @@ const handleImportTemplate = () => {
             <div class="flex items-center space-x-2 flex-1 min-w-0">
               <span class="font-semibold text-3.5 truncate text-theme-special" @click="handleView(template)">{{ template.name }}</span>
             </div>
+            <Button type="link" size="small" @click="handleOpenExportModal(template)">
+              <Icon icon="icon-daochu1" class="text-4" />
+            </Button>
             <Dropdown
               v-if="!template.isSystem"
               :trigger="['click']">
