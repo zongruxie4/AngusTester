@@ -5,7 +5,11 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_DESC_LENGTH_X4;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH_X2;
 
 import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -30,6 +34,11 @@ public class ScriptAddDto {
 
   @Schema(description = "Authorization control flag for script access management, defaults to disabled")
   public Boolean auth;
+
+  //@NotNull // Compatible with the preservation of legacy data.
+  @Schema(description = "Type of platform for test execution.", defaultValue = "API", requiredMode = RequiredMode.REQUIRED)
+  @Enumerated(EnumType.STRING)
+  private TestPlatform platform = TestPlatform.API;
 
   @NotNull
   @Schema(description = "Script execution type for test methodology control, overrides content-based type detection", example = "TEST_PERFORMANCE", required = true)

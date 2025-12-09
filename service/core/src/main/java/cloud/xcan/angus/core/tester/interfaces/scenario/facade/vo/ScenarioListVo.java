@@ -2,6 +2,7 @@ package cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo;
 
 import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.remote.NameJoinField;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -26,6 +27,8 @@ public class ScenarioListVo {
   private Long moduleId;
 
   private String plugin;
+
+  private TestPlatform platform;
 
   private ScriptType scriptType;
 

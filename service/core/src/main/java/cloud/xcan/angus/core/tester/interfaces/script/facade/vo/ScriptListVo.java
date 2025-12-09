@@ -2,6 +2,7 @@ package cloud.xcan.angus.core.tester.interfaces.script.facade.vo;
 
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.remote.NameJoinField;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +29,8 @@ public class ScriptListVo {
   private String serviceName;
 
   private String name;
+
+  private TestPlatform platform;
 
   private ScriptType type;
 

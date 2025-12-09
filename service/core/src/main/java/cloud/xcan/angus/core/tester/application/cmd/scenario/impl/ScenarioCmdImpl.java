@@ -156,6 +156,10 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
         if (isNull(scenario.getScriptType()) && nonNull(scenario.getAngusScript())) {
           scenario.setScriptType(scenario.getAngusScript().getType());
         }
+        // Set platform type from Angus script if not specified
+        if (isNull(scenario.getPlatform()) && nonNull(scenario.getAngusScript())) {
+          scenario.setPlatform(scenario.getAngusScript().getPlatform());
+        }
 
         // Update scenario with script ID and authorization settings
         scenario.setScriptId(nonNull(scriptIdKey) ? scriptIdKey.getId() : scenario.getScriptId());
@@ -212,6 +216,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
           ScriptInfo scriptInfo = scenarioQuery.checkAndFindScenarioScriptInfo(scenario.getId());
           scriptCmd.angusReplace(scriptInfo.getId(), scenario.getAngusScript(), true);
           scenarioDb.setScriptType(scenario.getAngusScript().getType());
+          scenarioDb.setPlatform(scenario.getAngusScript().getPlatform());
         }
 
         // Update scenario information in database

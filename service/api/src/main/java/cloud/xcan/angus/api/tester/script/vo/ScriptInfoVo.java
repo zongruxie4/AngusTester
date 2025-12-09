@@ -4,6 +4,7 @@ package cloud.xcan.angus.api.tester.script.vo;
 import cloud.xcan.angus.api.commonlink.script.ScriptPermission;
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +25,8 @@ public class ScriptInfoVo {
   private Long serviceId;
 
   private String name;
+
+  private TestPlatform platform;
 
   private ScriptType type;
 

@@ -12,6 +12,7 @@ import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -55,6 +56,8 @@ public class Scenario extends TenantAuditingEntity<Scenario, Long> implements Ac
   private Boolean auth;
 
   private String plugin;
+
+  private TestPlatform platform = TestPlatform.API;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "script_type")

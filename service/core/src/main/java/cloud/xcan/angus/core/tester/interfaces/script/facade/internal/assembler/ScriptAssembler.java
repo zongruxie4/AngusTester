@@ -21,6 +21,7 @@ import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptReplaceDt
 import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.vo.ScriptListVo;
 import cloud.xcan.angus.model.script.ScriptSource;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -34,6 +35,7 @@ public class ScriptAssembler {
     return new Script()
         .setProjectId(dto.getProjectId())
         .setName(dto.getName())
+        .setPlatform(nullSafe(dto.getPlatform(), TestPlatform.API))
         .setType(dto.getType())
         .setSource(ScriptSource.USER_DEFINED)
         .setAuth(nullSafe(dto.getAuth(), false))
@@ -44,6 +46,7 @@ public class ScriptAssembler {
   public static Script updateDtoToDomain(ScriptUpdateDto dto) {
     return new Script().setId(dto.getId())
         .setName(dto.getName())
+        .setPlatform(dto.getPlatform())
         .setType(dto.getType())
         .setContent(dto.getContent())
         .setDescription(dto.getDescription());
@@ -54,6 +57,7 @@ public class ScriptAssembler {
         .setProjectId(isNull(dto.getId()) ? dto.getProjectId() : null)
         .setName(dto.getName())
         .setAuth(isNull(dto.getId()) ? nullSafe(dto.getAuth(), false) : null)
+        .setPlatform(nullSafe(dto.getPlatform(), TestPlatform.API))
         .setType(dto.getType())
         .setSource(isNull(dto.getId()) ? ScriptSource.USER_DEFINED : null)
         .setContent(dto.getContent())
@@ -78,6 +82,7 @@ public class ScriptAssembler {
         .setProjectId(script.getProjectId())
         .setServiceId(script.getServiceId())
         .setName(script.getName())
+        .setPlatform(script.getPlatform())
         .setType(script.getType())
         .setSource(script.getSource())
         .setSourceId(script.getSourceId())
@@ -101,6 +106,7 @@ public class ScriptAssembler {
         .setProjectId(script.getProjectId())
         .setServiceId(script.getServiceId())
         .setName(script.getName())
+        .setPlatform(script.getPlatform())
         .setType(script.getType())
         .setSource(script.getSource())
         .setSourceId(script.getSourceId())
@@ -123,6 +129,7 @@ public class ScriptAssembler {
         .setProjectId(script.getProjectId())
         .setServiceId(script.getServiceId())
         .setName(script.getName())
+        .setPlatform(script.getPlatform())
         .setType(script.getType())
         .setSource(script.getSource())
         .setSourceId(script.getSourceId())

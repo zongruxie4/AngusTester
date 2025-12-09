@@ -62,6 +62,8 @@ public class ScenarioConverter {
         .setDeletedBy(scenarioDb.getDeletedBy())
         .setDeletedDate(scenarioDb.getDeletedDate())
         .setExtSearchMerge(scenarioDb.getExtSearchMerge());
+    scenario.setPlatform(nullSafe(scenario.getAngusScript().getPlatform(),
+        scenarioDb.getPlatform()));
     scenario.setScriptType(nullSafe(scenario.getAngusScript().getType(),
         scenarioDb.getScriptType()));
     scenario.setAuth(nullSafe(scenarioDb.getAuth(), false));
@@ -74,6 +76,7 @@ public class ScenarioConverter {
         .setName(scenarioDb.getName())
         .setAuth(scenarioDb.getAuth())
         .setPlugin(scenarioDb.getPlugin())
+        .setPlatform(scenarioDb.getPlatform())
         .setScriptType(scenarioDb.getScriptType())
         .setDescription(scenarioDb.getDescription())
         .setTestFunc(scenarioDb.getTestFunc())
@@ -101,6 +104,7 @@ public class ScenarioConverter {
         .setId(scenario.getId())
         .setName(scenario.getName())
         .setPlugin(scenario.getPlugin())
+        .setPlatform(scenario.getPlatform())
         .setScriptType(scenario.getScriptType())
         .setScriptId(scenario.getScriptId());
   }
@@ -113,6 +117,7 @@ public class ScenarioConverter {
         .setProjectId(scenario.getProjectId())
         .setPlugin(scenario.getPlugin())
         .setDescription(scenario.getDescription())
+        .setPlatform(scenario.getPlatform())
         .setScriptType(scenario.getScriptType())
         .setScriptId(scenario.getScriptId())
         .setScriptName(scenario.getScriptName())

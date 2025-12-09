@@ -3,6 +3,7 @@ package cloud.xcan.angus.core.tester.domain.scenario.summary;
 
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.remote.NameJoinField;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -27,6 +28,8 @@ public class ScenarioDetailSummary {
   private String plugin;
 
   private String description;
+
+  private TestPlatform platform = TestPlatform.API;
 
   private ScriptType scriptType;
 

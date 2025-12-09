@@ -6,6 +6,7 @@ import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,6 +41,9 @@ public class Script extends TenantAuditingEntity<Script, Long> implements Activi
   private Long serviceId;
 
   private String name;
+
+  @Enumerated(EnumType.STRING)
+  private TestPlatform platform = TestPlatform.API;
 
   @Enumerated(EnumType.STRING)
   private ScriptType type;

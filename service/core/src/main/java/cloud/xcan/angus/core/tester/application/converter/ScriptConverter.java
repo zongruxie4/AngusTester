@@ -28,6 +28,7 @@ public class ScriptConverter {
     return new Script()
         .setProjectId(projectId)
         .setName(script.getInfo().getName())
+        .setPlatform(script.getPlatform())
         .setType(script.getType())
         .setSource(script.getType().isMockData()
             ? ScriptSource.GENERATE_DATA : ScriptSource.USER_DEFINED)
@@ -42,6 +43,7 @@ public class ScriptConverter {
         .setProjectId(projectId)
         .setName(script.getInfo().getName())
         .setDescription(script.getInfo().getDescription())
+        .setPlatform(script.getPlatform())
         .setType(script.getType())
         .setSource(ScriptSource.SCENARIO)
         .setSourceId(scenarioId)
@@ -51,6 +53,7 @@ public class ScriptConverter {
 
   public static void setReplaceInfo(Script scriptDb, Script script, AngusScript angusScript) {
     scriptDb.setName(script.getName())
+        .setPlatform(nullSafe(angusScript.getPlatform(), scriptDb.getPlatform()))
         .setType(nullSafe(script.getType(), scriptDb.getType()))
         .setDescription(script.getDescription())
         .setPlugin(angusScript.getPlugin())
@@ -60,6 +63,7 @@ public class ScriptConverter {
   public static void setReplaceInfo(Script scriptDb, AngusScript angusScript, String content) {
     scriptDb.setName(isNull(angusScript.getInfo())
             ? scriptDb.getName() : stringSafe(angusScript.getInfo().getName()))
+        .setPlatform(angusScript.getPlatform())
         .setType(angusScript.getType())
         .setDescription(isNull(angusScript.getInfo())
             ? scriptDb.getDescription() : stringSafe(angusScript.getInfo().getDescription()))
@@ -73,6 +77,7 @@ public class ScriptConverter {
     script.setServiceId(null);
     String saltName = randomAlphanumeric(3);
     script.setName(scriptDb.getName() + "-Copy." + saltName);
+    script.setPlatform(scriptDb.getPlatform());
     script.setType(scriptDb.getType());
     script.setSource(ScriptSource.USER_DEFINED);
     script.setSourceId(null);
@@ -89,6 +94,7 @@ public class ScriptConverter {
     script.setServiceId(null);
     String saltName = randomAlphanumeric(3);
     script.setName(scriptDb.getName() + "-Copy." + saltName);
+    script.setPlatform(scriptDb.getPlatform());
     script.setType(scriptDb.getType());
     script.setSource(ScriptSource.SCENARIO);
     script.setSourceId(newScenarioId);
