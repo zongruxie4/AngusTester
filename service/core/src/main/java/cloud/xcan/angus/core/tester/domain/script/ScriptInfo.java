@@ -45,6 +45,7 @@ public class ScriptInfo extends TenantAuditingEntity<ScriptInfo, Long> implement
 
   private String name;
 
+  @Enumerated(EnumType.STRING)
   private TestPlatform platform = TestPlatform.API;
 
   @Enumerated(EnumType.STRING)
