@@ -4,6 +4,7 @@ package cloud.xcan.angus.api.tester.script.vo;
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.remote.NameJoinField;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -23,6 +24,8 @@ public class AngusScriptDetailVo {
   private Long serviceId;
 
   private String name;
+
+  private TestPlatform platform;
 
   private ScriptType type;
 
