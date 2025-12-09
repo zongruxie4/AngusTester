@@ -14,6 +14,7 @@ import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.configuration.Configuration;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.script.configuration.StartMode;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.model.script.pipeline.Task;
 import cloud.xcan.angus.remote.NameJoinField;
 import cloud.xcan.angus.spec.unit.TimeValue;
@@ -41,6 +42,8 @@ public class ExecDetailVo {
   private String name;
 
   private String plugin;
+
+  private TestPlatform platform;
 
   private ScriptType scriptType;
 

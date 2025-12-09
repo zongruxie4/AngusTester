@@ -232,7 +232,7 @@ public class ScriptAssembler {
   public static GenericSpecification<ScriptInfo> getSpecification(ScriptFindDto dto) {
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate")
-        .orderByFields("id", "name", "type", "source", "plugin",
+        .orderByFields("id", "name", "platform", "type", "source", "plugin",
             "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate")
         .inAndNotFields("id", "type", "source", "sourceId", "tag", "createdBy")
         .matchSearchFields("name", "description", "extSearchMerge", "plugin")

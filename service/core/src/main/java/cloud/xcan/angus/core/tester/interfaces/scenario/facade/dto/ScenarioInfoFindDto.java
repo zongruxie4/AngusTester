@@ -6,6 +6,7 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH_X2;
 
 import cloud.xcan.angus.core.tester.domain.scenario.auth.ScenarioPermission;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
@@ -37,6 +38,9 @@ public class ScenarioInfoFindDto extends PageQuery {
   @Length(max = MAX_NAME_LENGTH)
   @Schema(description = "Scenario execution plugin name for filtering")
   private String plugin;
+
+  @Schema(description = "Type of platform for test execution")
+  private TestPlatform platform;
 
   @Schema(description = "Scenario script type for format-based filtering")
   private ScriptType scriptType;

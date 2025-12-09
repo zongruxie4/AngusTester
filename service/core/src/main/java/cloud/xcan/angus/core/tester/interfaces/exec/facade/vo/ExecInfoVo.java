@@ -8,6 +8,7 @@ import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.sample.ExecSampleSummaryInfoVo;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.script.configuration.StartMode;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.spec.unit.TimeValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.text.DecimalFormat;
@@ -32,6 +33,8 @@ public class ExecInfoVo {
   private String name;
 
   private String plugin;
+
+  private TestPlatform platform;
 
   private ScriptType scriptType;
 

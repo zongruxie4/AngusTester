@@ -14,6 +14,7 @@ import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.configuration.Configuration;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.script.configuration.StartMode;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.model.script.configuration.Threads;
 import cloud.xcan.angus.model.script.pipeline.Task;
 import cloud.xcan.angus.spec.annotations.Nullable;
@@ -57,6 +58,9 @@ public class Exec extends TenantAuditingEntity<Exec, Long> {
   private String name;
 
   private String plugin;
+
+  @Enumerated(EnumType.STRING)
+  private TestPlatform platform = TestPlatform.API;
 
   /**
    * Note: Execute actual script type.

@@ -28,6 +28,7 @@ import cloud.xcan.angus.model.script.configuration.Configuration;
 import cloud.xcan.angus.model.script.configuration.NodeSelector;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.script.configuration.StartMode;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.model.script.pipeline.Task;
 import cloud.xcan.angus.spec.unit.TimeValue;
 import java.time.LocalDateTime;
@@ -42,6 +43,7 @@ public class ExecConverter {
     Exec exec = new Exec().setProjectId(projectId)
         .setName(stringSafe(name, "unnamed." + System.currentTimeMillis()))
         .setPlugin(angusScript.getPlugin())
+        .setPlatform(angusScript.getPlatform())
         .setScriptType(angusScript.getType())
         .setScriptId(scriptId)
         .setScript(scriptContent)
@@ -89,6 +91,7 @@ public class ExecConverter {
         .setServiceId(script.getServiceId())
         .setName(stringSafe(name, script.getName()))
         .setPlugin(script.getPlugin())
+        .setPlatform(angusScript.getPlatform())
         .setScriptType(nullSafe(scriptType, script.getType()))
         .setScriptId(script.getId())
         .setScript(YAML_MAPPER.writeValueAsString(angusScript))
@@ -136,6 +139,7 @@ public class ExecConverter {
   public static Exec configReplaceToExec(Exec execDb, String name, ScriptType scriptType,
       Configuration configuration, AngusScript script) {
     return execDb.setName(emptySafe(name, execDb.getName()))
+        .setPlatform(nullSafe(script.getPlatform(), TestPlatform.API))
         .setScriptType(nullSafe(scriptType, execDb.getScriptType()))
         .setIterations(getSafeIterations(script))
         .setDuration(configuration.getDuration())

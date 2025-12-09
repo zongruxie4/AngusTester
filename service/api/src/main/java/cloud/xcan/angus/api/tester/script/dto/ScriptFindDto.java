@@ -7,9 +7,12 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH_X2;
 import cloud.xcan.angus.api.commonlink.script.ScriptPermission;
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -39,6 +42,9 @@ public class ScriptFindDto extends PageQuery {
   @Length(max = MAX_NAME_LENGTH_X2)
   @Schema(description = "Script name for partial matching search")
   private String name;
+
+  @Schema(description = "Type of platform for test execution")
+  private TestPlatform platform;
 
   @Schema(description = "Script execution type for methodology filtering", example = "TEST_PERFORMANCE")
   private ScriptType type;

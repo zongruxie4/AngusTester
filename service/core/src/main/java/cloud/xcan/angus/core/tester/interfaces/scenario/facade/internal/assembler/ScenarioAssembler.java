@@ -141,7 +141,7 @@ public class ScenarioAssembler {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .inAndNotFields("id")
-        .rangeSearchFields("id", "createdDate")
+        .rangeSearchFields("id", "platform", "scriptType", "createdDate")
         .matchSearchFields("name", "description", "extSearchMerge")
         .orderByFields("id", "name", "createdDate", "createdBy", "lastModifiedBy")
         .build();

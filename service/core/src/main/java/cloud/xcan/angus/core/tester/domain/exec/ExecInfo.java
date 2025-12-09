@@ -12,6 +12,7 @@ import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSample;
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.script.configuration.StartMode;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.spec.annotations.Nullable;
 import cloud.xcan.angus.spec.unit.TimeValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -53,6 +54,9 @@ public class ExecInfo extends TenantAuditingEntity<ExecInfo, Long> {
   private String name;
 
   private String plugin;
+
+  @Enumerated(EnumType.STRING)
+  private TestPlatform platform = TestPlatform.API;
 
   @Enumerated(EnumType.STRING)
   private ScriptType scriptType;

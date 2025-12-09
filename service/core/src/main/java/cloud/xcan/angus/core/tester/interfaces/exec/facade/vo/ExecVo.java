@@ -10,6 +10,7 @@ import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.sample.ExecSampleS
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.script.configuration.StartMode;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.remote.NameJoinField;
 import cloud.xcan.angus.spec.unit.TimeValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,6 +36,8 @@ public class ExecVo {
   private String name;
 
   private String plugin;
+
+  private TestPlatform platform;
 
   @Schema(description = "Execute actual script type")
   private ScriptType scriptType;

@@ -9,6 +9,7 @@ import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.script.configuration.StartMode;
+import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
@@ -42,6 +43,9 @@ public class ExecFindDto extends PageQuery {
 
   @Schema(description = "Execution status for state-based filtering")
   private ExecStatus status;
+
+  @Schema(description = "Type of platform for test execution")
+  private TestPlatform platform;
 
   @Schema(description = "Script identifier for script-based filtering")
   private Long scriptId;

@@ -8,8 +8,6 @@ import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,9 +28,8 @@ public class ScriptUpdateDto {
   private String name;
 
   //@NotNull // Compatible with the preservation of legacy data.
-  @Schema(description = "Type of platform for test execution.")
-  @Enumerated(EnumType.STRING)
-  private TestPlatform platform = TestPlatform.API;
+  @Schema(description = "Type of platform for test execution")
+  private TestPlatform platform;
 
   @Schema(description = "Script type defining the testing methodology and execution approach", example = "TEST_PERFORMANCE")
   private ScriptType type;

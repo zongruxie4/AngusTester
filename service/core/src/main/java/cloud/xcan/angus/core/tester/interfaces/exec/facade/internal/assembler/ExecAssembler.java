@@ -21,6 +21,7 @@ public class ExecAssembler {
         .setProjectId(exec.getProjectId())
         .setName(exec.getName())
         .setPlugin(exec.getPlugin())
+        .setPlatform(exec.getPlatform())
         .setScriptType(exec.getScriptType())
         .setScriptId(exec.getScriptId())
         //.setScriptSource(exec.getScriptSource())
@@ -55,6 +56,7 @@ public class ExecAssembler {
         .setProjectId(exec.getProjectId())
         .setName(exec.getName())
         .setPlugin(exec.getPlugin())
+        .setPlatform(exec.getPlatform())
         .setScriptType(exec.getScriptType())
         .setScriptId(exec.getScriptId())
         .setScriptName(exec.getScriptName())
@@ -109,6 +111,7 @@ public class ExecAssembler {
     return new ExecVo().setId(exec.getId())
         .setProjectId(exec.getProjectId())
         .setName(exec.getName())
+        .setPlatform(exec.getPlatform())
         .setPlugin(exec.getPlugin())
         .setScriptType(exec.getScriptType())
         .setScriptId(exec.getScriptId())
@@ -154,7 +157,7 @@ public class ExecAssembler {
         .matchSearchFields("name", "plugin", "extSearchMerge")
         .rangeSearchFields("id", "createdDate", "lastModifiedDate", "startDate",
             "actualStartDate", "endDate", "priority")
-        .inAndNotFields("id", "name", "plugin", "priority", "status")
+        .inAndNotFields("id", "name", "plugin", "platform", "scriptType", "priority", "status")
         .orderByFields("id", "createdDate", "startDate", "lastModifiedDate", "actualStartDate",
             "endDate", "priority")
         .build());
