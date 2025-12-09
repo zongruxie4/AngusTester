@@ -879,7 +879,7 @@ public class ExecQueryImpl implements ExecQuery {
    */
   @Override
   public void setSampleContent(Exec exec, Long id) {
-    if (exec.getScriptType().isFunctionalTesting()) {
+    if (/*TODO 兼容手机端测试，后期需要重新实现判断条件 exec.getScriptType().isFunctionalTesting()*/exec.getScriptType().isNonFunctionalTesting()) {
       List<ExecSampleContent> sampleContents = execSampleExtcQuery.findIterationSampleContent(id);
       exec.setSampleContents(sampleContents);
     }
