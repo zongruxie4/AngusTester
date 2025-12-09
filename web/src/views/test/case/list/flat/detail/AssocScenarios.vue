@@ -196,15 +196,12 @@ const columns = [
 ];
 
 const loadScenarioList = async () => {
-  if (isLoading.value) {
-    return;
-  }
   isLoading.value = true;
   const [error, response] = await testCase.getAssociationScenario(props.caseId);
+  isLoading.value = false;
   if (error) {
     return;
   }
-  isLoading.value = false;
   dataSource.value = response?.data || [];
   emit('update:assocScenariosCount', dataSource.value.length);
 };
@@ -298,7 +295,7 @@ onMounted(() => {
               type="text"
               @click="handleExecScenario(record)">
               <Icon icon="icon-zhihang" class="mr-1" />
-              执行
+              {{ t('actions.execute') }}
             </Button>
             <Button
               size="small"

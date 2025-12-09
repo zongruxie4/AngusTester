@@ -44,59 +44,29 @@ const props = withDefaults(defineProps<Props>(), {
 const GridColumns = computed(() => {
   if (props.value?.scriptType?.value === 'MOCK_DATA') {
     return [
-      [
-        { dataIndex: 'id', label: t('common.status') },
-        { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }],
-      [
-        { dataIndex: 'name', label: t('common.scriptType') },
-        { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }],
-      [
-        { dataIndex: 'scriptName', label: t('common.priority') },
-        { dataIndex: 'batchRows', label: t('xcan_testBasicInfo.batchRows') }],
-      [
-        { dataIndex: 'plugin', label: t('common.createdBy') },
-        { dataIndex: 'modifiedByName', label: t('common.lastModifiedBy') }],
-      [
-        { dataIndex: 'actualStartDate', label: t('common.endDate') },
-        (props.value?.status?.value === 'COMPLETED' && props.value?.mockFileUrl) && { dataIndex: 'mockFileUrl', label: t('xcan_testBasicInfo.mockFileUrl') }].filter(Boolean)
+    [{ dataIndex: 'id', label: t('common.id') }, { dataIndex: 'status', label: t('common.status') }, { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }],
+      [{ dataIndex: 'name', label: t('common.name') }, { dataIndex: 'scriptType', label: t('common.scriptType') }, { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }],
+      [{ dataIndex: 'scriptName', label: t('common.scriptName') }, { dataIndex: 'priority', label: t('common.priority') }, { dataIndex: 'batchRows', label: t('xcan_testBasicInfo.batchRows') }],
+      [{ dataIndex: 'plugin', label: t('common.plugin') }, { dataIndex: 'createdByName', label: t('common.creator') }, { dataIndex: 'modifiedByName', label: t('common.modifier') }],
+      [{ dataIndex: 'actualStartDate', label: t('xcan_testBasicInfo.actualStartDate') }, { dataIndex: 'endDate', label: t('common.endTime') }, (props.value?.status?.value === 'COMPLETED' && props.value?.mockFileUrl) && { dataIndex: 'mockFileUrl', label: t('xcan_testBasicInfo.mockFileUrl') }].filter(Boolean)
     ];
   }
 
   if (props.hasIgnoreAssertions) {
     return [
-      [
-        { dataIndex: 'id', label: t('common.endDate') }],
-      [
-        { dataIndex: 'name', label: t('common.scriptType') },
-        { dataIndex: 'updateTestResult', label: t('xcan_testBasicInfo.updateTestResult') },
-        { dataIndex: 'modifiedByName', label: t('common.lastModifiedBy') }],
-      [
-        { dataIndex: 'scriptName', label: t('common.createdBy') }],
-      [
-        { dataIndex: 'plugin', label: t('common.plugin') },
-        { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') },
-        { dataIndex: 'actualStartDate', label: t('xcan_testBasicInfo.actualStartDate') }
-      ]
+    [{ dataIndex: 'id', label: t('common.id') }, { dataIndex: 'status', label: t('common.status') }, { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }, { dataIndex: 'endDate', label: t('common.endTime') }],
+      [{ dataIndex: 'name', label: t('common.name') }, { dataIndex: 'scriptType', label: t('common.scriptType') }, { dataIndex: 'updateTestResult', label: t('xcan_testBasicInfo.updateTestResult') }, { dataIndex: 'modifiedByName', label: t('common.modifier') }],
+      [{ dataIndex: 'scriptName', label: t('common.scriptName') }, { dataIndex: 'priority', label: t('common.priority') }, { dataIndex: 'createdByName', label: t('common.creator') }],
+      [{ dataIndex: 'plugin', label: t('common.plugin') }, { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }, { dataIndex: 'actualStartDate', label: t('xcan_testBasicInfo.actualStartDate') }]
     ];
   }
 
   return [
-    [
-      { dataIndex: 'id', label: t('common.status') },
-      { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }],
-    [
-      { dataIndex: 'name', label: t('common.scriptType') },
-      { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }],
-    [
-      { dataIndex: 'scriptName', label: t('common.priority') },
-      { dataIndex: 'ignoreAssertions', label: t('xcan_testBasicInfo.ignoreAssertions') }],
-    [
-      { dataIndex: 'plugin', label: t('common.createdBy') },
-      { dataIndex: 'modifiedByName', label: t('common.lastModifiedBy') }],
-    [
-      { dataIndex: 'actualStartDate', label: t('common.endDate') },
-      { dataIndex: 'updateTestResult', label: t('xcan_testBasicInfo.updateTestResult') }
-    ]
+  [{ dataIndex: 'id', label: t('common.id') }, { dataIndex: 'status', label: t('common.status') }, { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }],
+    [{ dataIndex: 'name', label: t('common.name') }, { dataIndex: 'scriptType', label: t('common.scriptType') }, { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }],
+    [{ dataIndex: 'scriptName', label: t('common.scriptName') }, { dataIndex: 'priority', label: t('common.priority') }, { dataIndex: 'ignoreAssertions', label: t('xcan_testBasicInfo.ignoreAssertions') }],
+    [{ dataIndex: 'plugin', label: t('common.plugin') }, { dataIndex: 'createdByName', label: t('common.creator') }, { dataIndex: 'modifiedByName', label: t('common.modifier') }],
+    [{ dataIndex: 'actualStartDate', label: t('xcan_testBasicInfo.actualStartDate') }, { dataIndex: 'endDate', label: t('common.endTime') }, { dataIndex: 'updateTestResult', label: t('xcan_testBasicInfo.updateTestResult') }]
   ];
 });
 
