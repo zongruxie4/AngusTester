@@ -42,6 +42,7 @@ export interface TestSummaryProps {
   userInfo: { [key: string]: any };
   projectId: string;
   dataSource: ScenarioResult;
+  scriptType: ScriptType;
 }
 
 export interface TaskProps {

@@ -2,6 +2,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ScriptType, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { SortKey } from './useScenarioData';
+import { TestPlatform } from '@/enums/enums';
 
 /**
  * Composable for managing scenario search and filtering
@@ -43,6 +44,13 @@ export function useScenarioSearch () {
       allowClear: true,
       enumKey: ScriptType,
       excludes: ({ value }: { value: ScriptType }) => [ScriptType.MOCK_DATA, ScriptType.MOCK_APIS].includes(value)
+    },
+    {
+      type: 'select-enum' as const,
+      placeholder: '测试对象平台',
+      valueKey: 'testPlatform',
+      allowClear: true,
+      enumKey: TestPlatform,
     },
     {
       type: 'date-range' as const,
@@ -94,6 +102,20 @@ export function useScenarioSearch () {
     {
       name: t('scenario.list.pluginTypes.tcp'),
       key: 'Tcp',
+      noAuth: true
+    }
+  ]);
+
+
+  const deviceDropdownMenuItems = computed(() => [
+    {
+      name: '新增移动端测试场景',
+      key: 'Mobile',
+      noAuth: true
+    },
+    {
+      name: '新增WEB端测试场景',
+      key: 'Web',
       noAuth: true
     }
   ]);
@@ -171,6 +193,7 @@ export function useScenarioSearch () {
     // Configurations
     searchOptions,
     buttonDropdownMenuItems,
+    deviceDropdownMenuItems,
     sortMenuItems,
     groupingMenuItems,
 

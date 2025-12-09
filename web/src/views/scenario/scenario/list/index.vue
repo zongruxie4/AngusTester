@@ -75,6 +75,7 @@ const {
   filters,
   searchOptions,
   buttonDropdownMenuItems,
+  deviceDropdownMenuItems,
   sortMenuItems,
   groupingMenuItems,
   handleSearchChange,
@@ -134,9 +135,16 @@ const deleteScenarioHandler = (scenaridId: string):void => {
           @change="searchChange" />
 
         <div class="flex-shrink-0 flex items-center flex-nowrap whitespace-nowrap leading-7 space-x-3.5">
-          <Button>
-            
-          </Button>
+
+          <Dropdown :menuItems="deviceDropdownMenuItems" @click="buttonDropdownClick">
+            <Button
+              class="flex-shrink-0 flex items-center"
+              type="primary"
+              size="small">
+                添加设备测试场景
+            </Button>
+          </Dropdown>
+          
           <Button
             class="flex-shrink-0 flex items-center pr-0"
             type="primary"

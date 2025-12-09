@@ -37,7 +37,7 @@ export function useScenarioActions (
   /**
    * Handle dropdown button clicks for different scenario types
    */
-  const buttonDropdownClick = ({ key }: { key: 'Jdbc' | 'WebSocket' | 'Ftp' | 'Ldap' | 'Mail' | 'Smtp' | 'Tcp' }) => {
+  const buttonDropdownClick = ({ key }: { key: 'Jdbc' | 'WebSocket' | 'Ftp' | 'Ldap' | 'Mail' | 'Smtp' | 'Tcp' | 'Web' | 'Mobile' }) => {
     const name = 'scenario' + new Date().getTime();
     const id = utils.uuid();
     const scenarioInfo = { name, projectId: projectId.value };
@@ -63,6 +63,12 @@ export function useScenarioActions (
         break;
       case 'WebSocket':
         addTabPane({ name, _id: id, value: 'WebSocket', scenarioInfo: scenarioInfo });
+        break;
+      case 'Web':
+        addTabPane({ name, _id: id, value: 'Web', scenarioInfo: scenarioInfo });
+        break;
+      case 'Mobile':
+        addTabPane({ name, _id: id, value: 'Mobile', scenarioInfo: scenarioInfo });
         break;
     }
   };

@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, Ref } from 'vue';
 import { scenario } from '@/api/tester';
 import type { ScenarioData } from '../types';
 
@@ -10,6 +10,8 @@ export function useScenarioData (scenarioId: string) {
   const auth = ref(false);
   const authPermissions = ref<string[]>([]);
   const isHttpPlugin = ref(false);
+    // Tab state
+  const activeTab = ref();
 
   /**
    * Load scenario detail data
@@ -21,6 +23,7 @@ export function useScenarioData (scenarioId: string) {
     }
     scenarioData.value = data;
     isHttpPlugin.value = data?.plugin === 'Http';
+    activeTab.value = data.scriptType?.value
     auth.value = data.auth;
 
     if (data.auth) {
@@ -51,6 +54,7 @@ export function useScenarioData (scenarioId: string) {
     auth,
     authPermissions,
     isHttpPlugin,
+    activeTab,
     loadScenarioDetail,
     loadPermissions,
     handleAuthFlagChange

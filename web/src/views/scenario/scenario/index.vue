@@ -49,6 +49,7 @@ const LdapConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/
 const MailConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Mail.vue'));
 const SmtpConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Smtp.vue'));
 const TcpConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Tcp.vue'));
+const MobileConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Mobile.vue'));
 
 // Router and State Management
 const route = useRoute();
@@ -323,6 +324,22 @@ provide('replaceTabPane', replaceTabPane);
       <template v-if="record.value === 'detail'">
         <Detail
           v-bind="record"
+          :userInfo="props.userInfo"
+          :appInfo="props.appInfo"
+          :projectId="props.projectId" />
+      </template>
+      <template v-if="record.value === 'Mobile'">
+        <MobileConfig
+          :tabKey="record._id"
+          :scenarioInfo="record.scenarioInfo"
+          :userInfo="props.userInfo"
+          :appInfo="props.appInfo"
+          :projectId="props.projectId" />
+      </template>
+      <template v-if="record.value === 'Web'">
+        <MobileConfig
+          :tabKey="record._id"
+          :scenarioInfo="record.scenarioInfo"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />

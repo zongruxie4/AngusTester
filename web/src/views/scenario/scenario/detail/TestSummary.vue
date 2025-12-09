@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Popover } from 'ant-design-vue';
+import { ScriptType } from '@xcan-angus/infra';
 
 import { useTestSummary } from './composables/useTestSummary';
 import type { TestSummaryProps } from './types';
@@ -10,7 +11,8 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<TestSummaryProps>(), {
-  dataSource: undefined
+  dataSource: undefined,
+  scriptType: undefined
 });
 
 // Use test summary composable
@@ -78,7 +80,7 @@ const getTestStatusIcon = (testData: any) => {
     </div>
 
     <!-- Functionality test card -->
-    <div class="summary-card functionality-card">
+    <div v-show="props.scriptType === ScriptType.TEST_FUNCTIONALITY" class="summary-card functionality-card">
       <div class="card-header">
         <div class="card-title">
           <Icon icon="icon-gongneng" class="title-icon" />
@@ -137,7 +139,7 @@ const getTestStatusIcon = (testData: any) => {
     </div>
 
     <!-- Performance test card -->
-    <div class="summary-card performance-card">
+    <div v-show="props.scriptType === ScriptType.TEST_PERFORMANCE" class="summary-card performance-card">
       <div class="card-header">
         <div class="card-title">
           <Icon icon="icon-xingneng" class="title-icon" />
@@ -222,7 +224,7 @@ const getTestStatusIcon = (testData: any) => {
     </div>
 
     <!-- Stability test card -->
-    <div class="summary-card stability-card">
+    <div v-show="props.scriptType === ScriptType.TEST_STABILITY" class="summary-card stability-card">
       <div class="card-header">
         <div class="card-title">
           <Icon icon="icon-xingneng" class="title-icon" />
@@ -307,7 +309,7 @@ const getTestStatusIcon = (testData: any) => {
     </div>
 
     <!-- Custom test card -->
-    <div class="summary-card custom-card">
+    <div v-show="props.scriptType === ScriptType.TEST_CUSTOMIZATION" class="summary-card custom-card">
       <div class="card-header">
         <div class="card-title">
           <Icon icon="icon-xingneng" class="title-icon" />

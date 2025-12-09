@@ -29,8 +29,7 @@ const ExecDetail = defineAsyncComponent(() => import('@/views/execution/detail/i
 const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
 const TestSummary = defineAsyncComponent(() => import('./TestSummary.vue'));
 
-// Tab state
-const activeTab = ref('func');
+
 
 // Use composables
 const {
@@ -38,6 +37,7 @@ const {
   auth,
   authPermissions,
   isHttpPlugin,
+  activeTab,
   loadScenarioDetail,
   handleAuthFlagChange
 } = useScenarioData(props.data?.scenarioId);
@@ -128,6 +128,7 @@ onMounted(() => {
       :projectId="props.projectId"
       :appInfo="props.appInfo"
       :userInfo="props.userInfo"
+      :scriptType="scenarioData?.scriptType?.value"
       :dataSource="dataSource" />
     <Tabs
       v-model:activeKey="activeTab"
@@ -135,7 +136,7 @@ onMounted(() => {
       type="card"
       :class="[['activity', 'comment'].includes(activeTab) ? 'min-h-0' : '']"
       class="flex-1">
-      <TabPane key="func" :tab="t('scenario.detail.tabs.func')">
+      <TabPane v-if="scenarioData?.scriptType?.value === ScriptType.TEST_FUNCTIONALITY" :key="ScriptType.TEST_FUNCTIONALITY" :tab="t('scenario.detail.tabs.func')">
         <ExecDetail
           v-if="scenarioData"
           class="p-0"
@@ -146,7 +147,7 @@ onMounted(() => {
           :plugin="scenarioData?.plugin"
           @del="handleResultDeletion" />
       </TabPane>
-      <TabPane key="perf" :tab="t('scenario.detail.tabs.perf')">
+      <TabPane v-if="scenarioData?.scriptType?.value === ScriptType.TEST_PERFORMANCE" :key="ScriptType.TEST_PERFORMANCE" :tab="t('scenario.detail.tabs.perf')">
         <ExecDetail
           :monicaEditorStyle="{height: '600px'}"
           :showBackBtn="false"
@@ -154,7 +155,7 @@ onMounted(() => {
           :scriptType="ScriptType.TEST_PERFORMANCE"
           @del="handleResultDeletion" />
       </TabPane>
-      <TabPane key="stability" :tab="t('scenario.detail.tabs.stability')">
+      <TabPane v-if="scenarioData?.scriptType?.value === ScriptType.TEST_STABILITY" :key="ScriptType.TEST_STABILITY" :tab="t('scenario.detail.tabs.stability')">
         <ExecDetail
           :monicaEditorStyle="{height: '600px'}"
           :showBackBtn="false"
@@ -162,7 +163,7 @@ onMounted(() => {
           :scriptType="ScriptType.TEST_STABILITY"
           @del="handleResultDeletion" />
       </TabPane>
-      <TabPane key="custom" :tab="t('scenario.detail.tabs.custom')">
+      <TabPane v-if="scenarioData?.scriptType?.value === ScriptType.TEST_CUSTOMIZATION" :key="ScriptType.TEST_CUSTOMIZATION" :tab="t('scenario.detail.tabs.custom')">
         <ExecDetail
           :monicaEditorStyle="{height: '600px'}"
           :showBackBtn="false"

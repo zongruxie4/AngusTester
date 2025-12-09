@@ -730,6 +730,18 @@ export enum PiplineTarget {
   TRANS_START = 'TRANS_START'
 }
 
+export enum ScriptLanguage {
+  Java = 'Java',
+  TypeScript = 'TypeScript',
+  Python = 'Python'
+}
+
+export enum TestPlatform {
+  API = 'API',
+  WEB = 'WEB',
+  MOBILE = 'MOBILE'
+};
+
 export const enumNamespaceMap = new Map<any, string>([
   [NodeSource, 'xcm.enum.NodeSource'],
   [CountScriptType, 'xcm.enum.CountScriptType'],
@@ -808,5 +820,7 @@ export const enumNamespaceMap = new Map<any, string>([
   [SecurityCheckSetting, 'xcm.enum.SecurityCheckSetting'],
   [TestTemplateType, 'xcm.enum.TestTemplateType'],
   [EvaluationScope, 'xcm.enum.EvaluationScope'],
-  [EvaluationPurpose, 'xcm.enum.EvaluationPurpose']
+  [EvaluationPurpose, 'xcm.enum.EvaluationPurpose'],
+  [ScriptLanguage, 'xcm.enum.ScriptLanguage'],
+  [TestPlatform, 'xcm.enum.TestPlatform']
 ]);

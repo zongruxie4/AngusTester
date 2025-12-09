@@ -584,6 +584,16 @@
         "SERVICE_AVAILABLE": "Check service availability (with response status code)",
         "API_AVAILABLE": "Check API availability (2xx status code), default",
         "USER_DEFINED_ASSERTION": "Detect based on custom assertions"
+      },
+      "ScriptLanguage": {
+        "java": "Java",
+        "typeScript": "TypeScript",
+        "python": "Python"
+      },
+      "TestPlatform": {
+        "API": "API",
+        "WEB": "WEB",
+        "MOBILE": "MOBILE"
       }
     }
   }

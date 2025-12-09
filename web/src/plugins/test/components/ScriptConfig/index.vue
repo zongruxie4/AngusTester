@@ -10,12 +10,16 @@ import { ScenarioConfig } from '@/plugins/test/types/index';
  * Component props interface
  */
 export interface Props {
-  value: ScenarioConfig['script'];  // Script configuration object to display
+  value: ScenarioConfig['script'] | string;  // Script configuration object to display
+  language?: string;
+  readonly?: boolean;
 }
 
 // Define props with default values
 const props = withDefaults(defineProps<Props>(), {
-  value: undefined
+  value: undefined,
+  language: 'yaml',
+  readonly: true
 });
 
 // Initialize i18n for internationalization
@@ -46,14 +50,18 @@ onMounted(() => {
     if (!newValue) {
       return;
     }
-
-    try {
-      // Try to convert to YAML format (preferred)
-      content.value = YAML.stringify(newValue);
-    } catch (error) {
-      // Fallback to JSON format if YAML conversion fails
-      content.value = JSON.stringify(newValue, null, 2);
+    if (props.language === 'yaml') {
+      try {
+        // Try to convert to YAML format (preferred)
+        content.value = YAML.stringify(newValue);
+      } catch (error) {
+        // Fallback to JSON format if YAML conversion fails
+        content.value = JSON.stringify(newValue, null, 2);
+      }
+    } else {
+      content.value = props.value as string;
     }
+
   }, { 
     immediate: true,  // Execute immediately on mount
     deep: true        // Watch nested properties
@@ -68,13 +76,16 @@ onMounted(() => {
  * @returns true if content is valid YAML, false otherwise
  */
 const isValid = (): boolean => {
-  try {
-    YAML.parse(content.value);
-    return true;
-  } catch (error) {
-    notification.error(t('ftpPlugin.scriptConfig.messages.yamlFormatError'));
-    return false;
+  if (props.language === 'yaml') {
+    try {
+      YAML.parse(content.value);
+      return true;
+    } catch (error) {
+      notification.error(t('ftpPlugin.scriptConfig.messages.yamlFormatError'));
+      return false;
+    }
   }
+  return true
 };
 
 /**
@@ -84,8 +95,11 @@ const isValid = (): boolean => {
  * 
  * @returns Parsed configuration object
  */
-const getData = (): { [key: string]: any } => {
-  return YAML.parse(content.value);
+const getData = (): { [key: string]: any }|string => {
+  if (props.language === 'yaml') {
+    return YAML.parse(content.value);
+  }
+  return content.value as string;
 };
 
 /**
@@ -108,7 +122,7 @@ defineExpose({
   <MonacoEditor
     v-model:loading="loading"
     v-model:value="content"
-    :readOnly="true"
+    :readOnly="props.readonly"
     class="w-full h-full py-3"
-    language="yaml" />
+    :language="props.language" />
 </template>

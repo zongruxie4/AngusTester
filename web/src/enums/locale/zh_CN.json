@@ -584,6 +584,16 @@
         "NOT_SECURITY_CODE": "检测状态码不是401和403、默认",
         "IS_SECURITY_CODE": "检测状态码是401或403、反例",
         "USER_DEFINED_ASSERTION": "根据自定义断言结果检测"
+      },
+      "ScriptLanguage": {
+        "java": "Java",
+        "typeScript": "TypeScript",
+        "python": "Python"
+      },
+      "TestPlatform": {
+        "API": "接口",
+        "WEB": "网页端",
+        "MOBILE": "移动端"
       }
     }
   }

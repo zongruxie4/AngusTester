@@ -114,8 +114,10 @@ export type ScenarioInfo = {
     script: {
         plugin: ScenarioType;
         task: {
-            arguments: { [key: string]: any };
-            pipelines: PipelineInfo[];
+            arguments?: { [key: string]: any };
+            pipelines?: PipelineInfo[];
+            scriptContent?: string;
+            scriptLanguage?: string;
         };
         type: EnumMessage<ScriptTypeInfra>;
         configuration?: {
