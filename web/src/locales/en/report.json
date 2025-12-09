@@ -211,6 +211,8 @@
       "executionPlaceholder": "Select execution",
       "content": "Content",
       "contentHints": "The following is the report output content directory information.",
+      "selectObject": "Select evaluation object",
+      "selectPurpose": "Select evaluation purpose",
       "contentTree": {
         "exec": "Execution information",
         "sprint": "Iteration result",
@@ -1916,6 +1918,12 @@
     },
     "evaluation": {
       "title": "Evaluation Information",
+      "contentTree": {
+        "evaluationInfo": "Evaluation Information",
+        "indicator": "Indicator",
+        "result": "Result",
+        "case": "Cases"
+      },
       "catalog": {
         "title": "Catalog"
       },

@@ -8,8 +8,8 @@ import { TestTemplateType } from '@/enums/enums';
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<{templateType?: TestTemplateType}>(), {
-  templateType: TestTemplateType.TEST_PLAN
+const props = withDefaults(defineProps<{templateType?: TestTemplateType | 'ISSUE'}>(), {
+  templateType: TestTemplateType.TEST_PLAN 
 });
 
 const emit = defineEmits<{

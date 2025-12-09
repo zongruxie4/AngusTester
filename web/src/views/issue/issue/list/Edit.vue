@@ -25,6 +25,7 @@ const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap',
   ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true })
 );
 const RichEditor = defineAsyncComponent(() => import('@/components/editor/richEditor/index.vue'));
+const DropdownTemplateSelect = defineAsyncComponent(() => import('@/components/test/DropdownTemplateSelect.vue'));
 
 const props = withDefaults(defineProps<TaskEditState>(), {
   projectId: undefined,
@@ -742,6 +743,20 @@ const getDropdownContainer = (node: HTMLElement): HTMLElement => {
   return document.body;
 };
 
+const handleSelectTemplate = async (template: any) => {
+  if (template?.templateContent) {
+    formState.name = template.templateContent.name;
+    formState.taskType = template.templateContent.taskType?.value || template.templateContent.taskType;
+    formState.bugLevel = template.templateContent.bugLevel?.value || template.templateContent.bugLevel;
+    formState.priority = template.templateContent.priority?.value || template.templateContent.priority;
+    formState.missingBug = template.templateContent.missingBug || false;
+    formState.evalWorkloadMethod = template.templateContent.evalWorkloadMethod?.value || EvalWorkloadMethod.WORKING_HOURS;
+    formState.evalWorkload = template.templateContent.evalWorkload;
+    formState.actualWorkload = template.templateContent.actualWorkload ;
+    formState.description = template.templateContent.description;
+  }
+};
+
 // Lifecycle hooks
 onMounted(() => {
   initializeComponent();
@@ -794,16 +809,23 @@ onMounted(() => {
       :style="formStyle">
       <div class="flex">
         <div class="flex-1 pr-8">
-          <FormItem
-            name="name"
-            :label="t('common.name')"
-            :rules="{ required: true, message: t('common.placeholders.inputName2') }">
-            <Input
-              v-model:value="formState.name"
-              trim
-              :maxlength="200"
-              :placeholder="t('common.placeholders.inputName2')" />
-          </FormItem>
+          <div class="flex space-x-2">
+            <FormItem
+              name="name"
+              class="flex-1"
+              :label="t('common.name')"
+              :rules="{ required: true, message: t('common.placeholders.inputName2') }">
+                <Input
+                  v-model:value="formState.name"
+                  trim
+                  :maxlength="200"
+                  :placeholder="t('common.placeholders.inputName2')" />
+            </FormItem>
+            <FormItem label="&nbsp;">
+              <DropdownTemplateSelect templateType="ISSUE" @change="handleSelectTemplate" />
+            </FormItem>
+          </div>
+          
 
           <div class="flex space-x-4">
             <FormItem

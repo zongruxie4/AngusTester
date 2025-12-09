@@ -214,6 +214,8 @@
       "executionPlaceholder": "选择执行",
       "content": "内容",
       "contentHints": "以下是报告输出内容目录信息。",
+      "selectObject": "请选择测评对象",
+      "selectPurpose": "请选择测评目的",
       "contentTree": {
         "exec": "执行信息",
         "sprint": "迭代结果",
@@ -1920,6 +1922,12 @@
     },
     "evaluation": {
       "title": "测评信息",
+      "contentTree": {
+        "evaluationInfo": "测评信息",
+        "indicator": "指标",
+        "result": "测评结果",
+        "case": "测评用例"
+      },
       "catalog": {
         "title": "目录"
       },

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Colon, Hints, IconRequired, Select, Icon, DatePicker } from '@xcan-angus/vue-ui';
+import { Colon, Hints, IconRequired, Select, Icon, DatePicker, notification } from '@xcan-angus/vue-ui';
 import { RadioGroup, Tree, Radio } from 'ant-design-vue';
 import { enumUtils, TESTER } from '@xcan-angus/infra';
-import { contentTreeData } from './ExecFuncContentConfig';
+import { contentTreeData } from './TestEvaluationContentConfig';
 import { CombinedTargetType, EvaluationScope, EvaluationPurpose } from '@/enums/enums';
 import { modules } from '@/api/tester';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
@@ -45,7 +45,7 @@ const defaultStartDate = dayjs().format(DATE_TIME_FORMAT);
 const defaultDeadlineDate = dayjs().add(1, 'month').format(DATE_TIME_FORMAT);
 
 // Reactive variable for execution ID
-const evaluationId = ref(props.projectId);
+const evaluationId = ref<string|undefined>(props.projectId);
 const evaluationScope = ref(EvaluationScope.PROJECT);
 const purposes = ref<EvaluationPurpose[]>([]);
 const date = ref<[string, string]>([defaultStartDate, defaultDeadlineDate]);
@@ -146,6 +146,16 @@ const valid = ref(false);
  */
 const validate = () => {
   valid.value = true;
+  if (!evaluationId.value) {
+    notification.warning(t('reportAdd.execFuncContent.selectObject'));
+    valid.value = false;
+    return false;
+  }
+  if (purposes.value.length === 0) {
+    notification.warning(t('reportAdd.execFuncContent.selectPurpose'));
+    valid.value = false;
+    return false;
+  }
   return !!evaluationId.value && purposes.value.length > 0;
 };
 
@@ -313,7 +323,7 @@ defineExpose({
     <span>{{ t('reportAdd.execFuncContent.content') }}</span>
     <Hints :text="t('reportAdd.execFuncContent.contentHints')" />
   </div>
-  <!-- <Tree
+  <Tree
     v-model:checkedKeys="checked"
     class="mt-2 text-3"
     disabled
@@ -330,5 +340,5 @@ defineExpose({
           class="leading-6 items-center" />
       </div>
     </template>
-  </Tree> -->
+  </Tree>
 </template>

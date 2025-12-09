@@ -430,7 +430,7 @@ onMounted(() => {
     <AsyncComponent :visible="authorizeModalVisible">
       <AuthorizeModal
         v-model:visible="authorizeModalVisible"
-        enumKey="FuncPlanPermission"
+        :enumKey="FuncPlanPermission"
         :appId="props.appInfo?.id"
         :listUrl="`${TESTER}/func/plan/auth?planId=${selectedData?.id}`"
         :delUrl="`${TESTER}/func/plan/auth`"
@@ -438,9 +438,9 @@ onMounted(() => {
         :updateUrl="`${TESTER}/func/plan/auth`"
         :enabledUrl="`${TESTER}/func/plan/${selectedData?.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/func/plan/${selectedData?.id}/auth/status`"
-        :onTips="t('testPlan.list.permissionControlOnTips')"
-        :offTips="t('testPlan.list.permissionControlOffTips')"
-        :title="t('actions.permission')"
+        :onTips="t('testPlan.authorization.onTips')"
+        :offTips="t('testPlan.authorization.offTips')"
+        :title="t('testPlan.authorization.title')"
         @change="handleAuthFlagChange" />
     </AsyncComponent>
   </div>

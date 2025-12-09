@@ -612,9 +612,9 @@ onMounted(() => {
         :updateUrl="`${TESTER}/task/sprint/auth`"
         :enabledUrl="`${TESTER}/task/sprint/${selectedSprint?.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/task/sprint/${selectedSprint?.id}/auth/status`"
-        :onTips="t('sprint.anthModal.onTips')"
-        :offTips="t('sprint.anthModal.offTips')"
-        :title="t('sprint.anthModal.title')"
+        :onTips="t('sprint.authorization.onTips')"
+        :offTips="t('sprint.authorization.offTips')"
+        :title="t('sprint.authorization.title')"
         @change="handleAuthFlagChange" />
     </AsyncComponent>
 

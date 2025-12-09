@@ -23,6 +23,11 @@
     "title": "Plan",
     "addedPlans": "Added Plans",
     "noPlans": "You haven't added any plans yet, ",
+    "authorization": {
+      "title": "Plan Permissions",
+      "onTips": "When \"Permission Control\" is enabled, users need to be manually granted plan permissions to perform corresponding operations. Permission control is enabled by default. Note: If the authorized user does not have parent project permissions, view permissions will be automatically granted.",
+      "offTips": "When \"No Permission Control\" is enabled, all users can publicly view and operate the current plan. Users also need to have permissions for the parent project of the current plan."
+    },
     "introduce": {
       "title": "About Test Plan",
       "description": "Test plans serve as the core component of the software testing lifecycle, providing a systematic framework for testing teams. Through detailed test planning, we ensure organized testing activities, improve efficiency and quality, while reducing project risks.",

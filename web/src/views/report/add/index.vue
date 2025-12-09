@@ -297,8 +297,7 @@ const ok = () => {
     }
     emits('ok');
     cancel();
-    // router.push('/report');
-  });
+  }).catch(() => void 0);
 };
 
 /**
