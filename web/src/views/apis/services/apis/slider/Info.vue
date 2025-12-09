@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Grid, Icon, Input, notification, Select, SelectUser } from '@xcan-angus/vue-ui';
 import { Button, Tag, TypographyParagraph } from 'ant-design-vue';
 import { TESTER, appContext } from '@xcan-angus/infra';
-import { ApiStatus } from '@/enums/enums';
+import { ApiStatus, ApiPermission } from '@/enums/enums';
 import { apis } from '@/api/tester';
 
 import SelectEnum from '@/components/form/enum/SelectEnum.vue';
@@ -476,7 +476,7 @@ const columns = computed(() => {
     <AsyncComponent :visible="state.interfaceAuthVisible">
       <AuthorizeModal
         v-model:visible="state.interfaceAuthVisible"
-        :enumKey="'ApiPermission'"
+        :enumKey="ApiPermission"
         :appId="appInfo?.id"
         :listUrl="`${TESTER}/apis/auth?apisId=${props.id}`"
         :delUrl="`${TESTER}/apis/auth`"

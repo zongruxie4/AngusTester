@@ -1174,7 +1174,7 @@ onMounted(() => {
     <AsyncComponent :visible="authorizeModalVisible">
       <AuthorizeModal
         v-model:visible="authorizeModalVisible"
-        enumKey="FuncPlanPermission"
+        :enumKey="FuncPlanPermission"
         :appId="String(props.appInfo?.id || '')"
         :listUrl="`${TESTER}/func/plan/auth?planId=${planDetailData?.id}`"
         :delUrl="`${TESTER}/func/plan/auth`"

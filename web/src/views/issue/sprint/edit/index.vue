@@ -954,7 +954,7 @@ onMounted(() => {
     <AsyncComponent :visible="isAuthorizeModalVisible">
       <AuthorizeModal
         v-model:visible="isAuthorizeModalVisible"
-        enumKey="TaskSprintPermission"
+        :enumKey="TaskSprintPermission"
         :appId="props.appInfo?.id"
         :listUrl="`${TESTER}/task/sprint/auth?sprintId=${currentSprintData?.id}`"
         :delUrl="`${TESTER}/task/sprint/auth`"
