@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Modal, Icon, notification, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Input, UploadDragger } from 'ant-design-vue';
 import { template } from '@/api/tester';
 import { formatBytes } from '@/utils/common';
+
+const { t } = useI18n();
 
 // eslint-disable-next-line import/no-absolute-path
 import CaseTemplateCsv from '/file/Case_Template.csv?url';
@@ -63,22 +66,22 @@ const templateName = ref<string>('');
 const templateTypeOptions = [
   {
     value: 'ISSUE' as TemplateType,
-    label: '问题模板',
-    description: '用于导入问题/缺陷数据',
+    label: t('testTemplate.importTemplate.downloadTemplate.types.issueTemplate'),
+    description: t('testTemplate.importTemplate.downloadTemplate.types.issueTemplateDesc'),
     icon: 'icon-jinggao',
     color: '#ff4d4f'
   },
   {
     value: 'TEST_PLAN' as TemplateType,
-    label: '测试计划模板',
-    description: '用于导入测试计划数据',
+    label: t('testTemplate.importTemplate.downloadTemplate.types.testPlanTemplate'),
+    description: t('testTemplate.importTemplate.downloadTemplate.types.testPlanTemplateDesc'),
     icon: 'icon-wendang',
     color: '#1890ff'
   },
   {
     value: 'TEST_CASE' as TemplateType,
-    label: '测试用例模板',
-    description: '用于导入测试用例数据',
+    label: t('testTemplate.importTemplate.downloadTemplate.types.testCaseTemplate'),
+    description: t('testTemplate.importTemplate.downloadTemplate.types.testCaseTemplateDesc'),
     icon: 'icon-bianji',
     color: '#52c41a'
   }
@@ -108,7 +111,7 @@ const handleFileSelection = (fileInfo: any) => {
   const isValidFormat = validExtensions.some(ext => fileName.endsWith(ext));
   
   if (!isValidFormat) {
-    notification.error('不支持的文件格式，仅支持 Excel (.xlsx, .xls)、CSV (.csv) 或 JSON (.json) 格式');
+    notification.error(t('testTemplate.importTemplate.messages.invalidFileFormat'));
     return;
   }
   
@@ -148,7 +151,7 @@ const validateFileSelection = async () => {
   if (uploadedFile.value) {
     return Promise.resolve();
   }
-  return Promise.reject(new Error('请上传模板文件'));
+  return Promise.reject(new Error(t('testTemplate.importTemplate.messages.uploadFileRequired')));
 };
 
 // Download template file
@@ -173,12 +176,12 @@ const handleSubmit = async () => {
     await formRef.value.validate();
     
     if (!uploadedFile.value) {
-      notification.error('请上传模板文件');
+      notification.error(t('testTemplate.importTemplate.messages.uploadFileRequired'));
       return;
     }
     
     if (!templateName.value.trim()) {
-      notification.error('请输入模板名称');
+      notification.error(t('testTemplate.importTemplate.messages.templateNameRequired'));
       return;
     }
     
@@ -194,11 +197,11 @@ const handleSubmit = async () => {
     isLoading.value = false;
     
     if (error) {
-      notification.error(error.message || '导入失败');
+      notification.error(error.message || t('testTemplate.importTemplate.messages.importFailed'));
       return;
     }
     
-    notification.success('导入成功');
+    notification.success(t('common.tips.importSuccess'));
     emits('ok');
     closeModal();
   } catch (error) {
@@ -231,7 +234,7 @@ watch(() => props.visible, (newValue) => {
 
 <template>
   <Modal
-    :title="'模板导入'"
+    :title="t('testTemplate.importTemplate.title')"
     :visible="props.visible"
     :width="700"
     :centered="true"
@@ -246,7 +249,7 @@ watch(() => props.visible, (newValue) => {
         
         <!-- Template Type Selection -->
         <FormItem
-          label="选择模板类型"
+          :label="t('testTemplate.importTemplate.labels.selectTemplateType')"
           required>
           <div class="template-type-cards">
             <div
@@ -268,7 +271,7 @@ watch(() => props.visible, (newValue) => {
 
         <!-- File Upload -->
         <FormItem
-          label="上传模板文件"
+          :label="t('testTemplate.importTemplate.labels.uploadTemplateFile')"
           name="file"
           :rules="{ validator: validateFileSelection }"
           required>
@@ -285,10 +288,10 @@ watch(() => props.visible, (newValue) => {
                   <Icon icon="icon-shangchuan" />
                 </div>
                 <div class="upload-text">
-                  <div class="upload-title">拖拽文件到此处或点击上传</div>
-                  <div class="upload-subtitle">支持格式: Excel (.xlsx, .xls), CSV (.csv), JSON (.json)</div>
+                  <div class="upload-title">{{ t('testTemplate.importTemplate.upload.title') }}</div>
+                  <div class="upload-subtitle">{{ t('testTemplate.importTemplate.upload.subtitle') }}</div>
                 </div>
-                <Button type="primary" class="upload-button">选择文件</Button>
+                <Button type="primary" class="upload-button">{{ t('testTemplate.importTemplate.buttons.selectFile') }}</Button>
               </div>
             </UploadDragger>
           </div>
@@ -309,19 +312,19 @@ watch(() => props.visible, (newValue) => {
 
         <!-- Template Name -->
         <FormItem
-          label="模板名称"
+          :label="t('testTemplate.importTemplate.labels.templateName')"
           name="name"
-          :rules="[{ required: true, message: '请输入模板名称' }]"
+          :rules="[{ required: true, message: t('testTemplate.importTemplate.messages.templateNameRequired') }]"
           required>
           <Input
             v-model:value="templateName"
-            placeholder="请输入模板名称"
+            :placeholder="t('testTemplate.importTemplate.placeholders.templateName')"
             :maxlength="100" />
-          <div class="form-hint">默认使用上传的文件名,可手动修改</div>
+          <div class="form-hint">{{ t('testTemplate.importTemplate.formHint') }}</div>
         </FormItem>
 
         <div class="rounded bg-gray-100 p-4 space-y-3">
-            <div class="font-semibold"><Icon icon="icon-daochu1" class="download-icon mr-1" />下载当前类型的模板文件</div>
+            <div class="font-semibold"><Icon icon="icon-daochu1" class="download-icon mr-1" />{{ t('testTemplate.importTemplate.downloadTemplate.title') }}</div>
             <div class="download-section">
                 <div class="download-buttons">
                     <Button
@@ -346,8 +349,8 @@ watch(() => props.visible, (newValue) => {
         <!-- Footer Buttons -->
         <FormItem>
           <div class="form-footer">
-            <Button @click="closeModal">取消</Button>
-            <Button type="primary" @click="handleSubmit">开始导入</Button>
+            <Button @click="closeModal">{{ t('actions.cancel') }}</Button>
+            <Button type="primary" @click="handleSubmit">{{ t('testTemplate.importTemplate.buttons.startImport') }}</Button>
           </div>
         </FormItem>
       </Form>

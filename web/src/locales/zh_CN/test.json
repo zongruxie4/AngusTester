@@ -609,6 +609,78 @@
       "customTemplate": "自定义模版",
       "deleteConfirm": "确定要删除模版「{name}」吗？"
     },
-    "templateContent": "模版内容"
+    "templateContent": "模版内容",
+    "exportTemplate": {
+      "title": "模板导出",
+      "labels": {
+        "templateInfo": "模板信息",
+        "type": "类型：",
+        "selectExportFormat": "选择导出格式"
+      },
+      "messages": {
+        "templateDataNotExists": "模板数据不存在",
+        "exportFailed": "导出失败",
+        "exportDataFormatError": "导出数据格式错误"
+      },
+      "buttons": {
+        "startExport": "开始导出"
+      },
+      "formatDescriptions": {
+        "excel": {
+          "title": "Excel (.xlsx)",
+          "description": "适用于 Microsoft Excel 和其他电子表格软件"
+        },
+        "csv": {
+          "title": "CSV (.csv)",
+          "description": "纯文本格式，兼容性最好，可用任何文本编辑器打开"
+        },
+        "json": {
+          "title": "JSON (.json)",
+          "description": "结构化数据格式，便于程序处理和解析"
+        }
+      },
+      "formatOptions": {
+        "excel": "Excel (.xlsx)",
+        "csv": "CSV (.csv)",
+        "json": "JSON (.json)"
+      }
+    },
+    "importTemplate": {
+      "title": "模板导入",
+      "labels": {
+        "selectTemplateType": "选择模板类型",
+        "uploadTemplateFile": "上传模板文件",
+        "templateName": "模板名称"
+      },
+      "placeholders": {
+        "templateName": "请输入模板名称"
+      },
+      "messages": {
+        "invalidFileFormat": "不支持的文件格式，仅支持 Excel (.xlsx, .xls)、CSV (.csv) 或 JSON (.json) 格式",
+        "uploadFileRequired": "请上传模板文件",
+        "templateNameRequired": "请输入模板名称",
+        "importFailed": "导入失败"
+      },
+      "buttons": {
+        "selectFile": "选择文件",
+        "startImport": "开始导入"
+      },
+      "upload": {
+        "title": "拖拽文件到此处或点击上传",
+        "subtitle": "支持格式: Excel (.xlsx, .xls), CSV (.csv), JSON (.json)"
+      },
+      "formHint": "默认使用上传的文件名,可手动修改",
+      "downloadTemplate": {
+        "title": "下载当前类型的模板文件",
+        "types": {
+          "issueTemplate": "问题模板",
+          "issueTemplateDesc": "用于导入问题/缺陷数据",
+          "testPlanTemplate": "测试计划模板",
+          "testPlanTemplateDesc": "用于导入测试计划数据",
+          "testCaseTemplate": "测试用例模板",
+          "testCaseTemplateDesc": "用于导入测试用例数据"
+        }
+      }
+    }
   }
 }

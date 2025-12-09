@@ -610,6 +610,78 @@
       "customTemplate": "Custom Template",
       "deleteConfirm": "Confirm to delete template 「{name}」?"
     },
-    "templateContent": "Template Content"
+    "templateContent": "Template Content",
+    "exportTemplate": {
+      "title": "模板导出",
+      "labels": {
+        "templateInfo": "模板信息",
+        "type": "类型：",
+        "selectExportFormat": "选择导出格式"
+      },
+      "messages": {
+        "templateDataNotExists": "模板数据不存在",
+        "exportFailed": "导出失败",
+        "exportDataFormatError": "导出数据格式错误"
+      },
+      "buttons": {
+        "startExport": "开始导出"
+      },
+      "formatDescriptions": {
+        "excel": {
+          "title": "Excel (.xlsx)",
+          "description": "适用于 Microsoft Excel 和其他电子表格软件"
+        },
+        "csv": {
+          "title": "CSV (.csv)",
+          "description": "纯文本格式，兼容性最好，可用任何文本编辑器打开"
+        },
+        "json": {
+          "title": "JSON (.json)",
+          "description": "结构化数据格式，便于程序处理和解析"
+        }
+      },
+      "formatOptions": {
+        "excel": "Excel (.xlsx)",
+        "csv": "CSV (.csv)",
+        "json": "JSON (.json)"
+      }
+    },
+    "importTemplate": {
+      "title": "Template Import",
+      "labels": {
+        "selectTemplateType": "Select Template Type",
+        "uploadTemplateFile": "Upload Template File",
+        "templateName": "Template Name"
+      },
+      "placeholders": {
+        "templateName": "Please enter template name"
+      },
+      "messages": {
+        "invalidFileFormat": "Unsupported file format, only Excel (.xlsx, .xls), CSV (.csv), or JSON (.json) format is supported",
+        "uploadFileRequired": "Please upload template file",
+        "templateNameRequired": "Please enter template name",
+        "importFailed": "Import failed"
+      },
+      "buttons": {
+        "selectFile": "Select File",
+        "startImport": "Start Import"
+      },
+      "upload": {
+        "title": "Drag and drop files here or click to upload",
+        "subtitle": "Supported formats: Excel (.xlsx, .xls), CSV (.csv), JSON (.json)"
+      },
+      "formHint": "Default uses the uploaded file name, can be manually modified",
+      "downloadTemplate": {
+        "title": "Download the template file of the current type",
+        "types": {
+          "issueTemplate": "Issue Template",
+          "issueTemplateDesc": "Used to import issue/defect data",
+          "testPlanTemplate": "Test Plan Template",
+          "testPlanTemplateDesc": "Used to import test plan data",
+          "testCaseTemplate": "Test Case Template",
+          "testCaseTemplateDesc": "Used to import test case data"
+        }
+      }
+    }
   }
 }

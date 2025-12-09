@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Modal, Icon, notification, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, RadioGroup } from 'ant-design-vue';
 import { template } from '@/api/tester';
 import { TestTemplateDetail } from '../types';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -26,9 +29,9 @@ const selectedFormat = ref<ExportFormat>('excel');
 const isLoading = ref(false);
 
 const formatOptions = [
-  { label: 'Excel (.xlsx)', value: 'excel' as ExportFormat },
-  { label: 'CSV (.csv)', value: 'csv' as ExportFormat },
-  { label: 'JSON (.json)', value: 'json' as ExportFormat }
+  { label: t('testTemplate.exportTemplate.formatOptions.excel'), value: 'excel' as ExportFormat },
+  { label: t('testTemplate.exportTemplate.formatOptions.csv'), value: 'csv' as ExportFormat },
+  { label: t('testTemplate.exportTemplate.formatOptions.json'), value: 'json' as ExportFormat }
 ];
 
 // Close modal
@@ -40,7 +43,7 @@ const closeModal = () => {
 // Handle export
 const handleExport = async () => {
   if (!props.templateData) {
-    notification.error('模板数据不存在');
+    notification.error(t('testTemplate.exportTemplate.messages.templateDataNotExists'));
     return;
   }
 
@@ -53,7 +56,7 @@ const handleExport = async () => {
     );
 
     if (error) {
-      notification.error(error.message || '导出失败');
+      notification.error(error.message || t('testTemplate.exportTemplate.messages.exportFailed'));
       isLoading.value = false;
       return;
     }
@@ -69,7 +72,7 @@ const handleExport = async () => {
       // If data is not a Blob, try to create one
       blob = new Blob([response.data], { type: 'application/octet-stream' });
     } else {
-      notification.error('导出数据格式错误');
+      notification.error(t('testTemplate.exportTemplate.messages.exportDataFormatError'));
       isLoading.value = false;
       return;
     }
@@ -92,10 +95,10 @@ const handleExport = async () => {
     // Clean up
     URL.revokeObjectURL(url);
     
-    notification.success('导出成功');
+    notification.success(t('common.tips.exportSuccess'));
     closeModal();
   } catch (error: any) {
-    notification.error(error.message || '导出失败');
+    notification.error(error.message || t('testTemplate.exportTemplate.messages.exportFailed'));
   } finally {
     isLoading.value = false;
   }
@@ -111,7 +114,7 @@ watch(() => props.visible, (newValue) => {
 
 <template>
   <Modal
-    title="模板导出"
+    :title="t('testTemplate.exportTemplate.title')"
     :visible="props.visible"
     :width="500"
     :centered="true"
@@ -123,14 +126,14 @@ watch(() => props.visible, (newValue) => {
         class="export-template-form">
         
         <!-- Template Info -->
-        <FormItem label="模板信息">
+        <FormItem :label="t('testTemplate.exportTemplate.labels.templateInfo')">
           <div class="template-info">
             <div class="template-name">
               <Icon icon="icon-wendang" class="template-icon" />
               <span>{{ templateData?.name || '-' }}</span>
             </div>
             <div class="template-type" v-if="templateData">
-              <span class="type-label">类型：</span>
+              <span class="type-label">{{ t('testTemplate.exportTemplate.labels.type') }}</span>
               <span class="type-value">{{ templateData.templateType }}</span>
             </div>
           </div>
@@ -138,7 +141,7 @@ watch(() => props.visible, (newValue) => {
 
         <!-- Export Format Selection -->
         <FormItem
-          label="选择导出格式"
+          :label="t('testTemplate.exportTemplate.labels.selectExportFormat')"
           required>
           <RadioGroup
             v-model:value="selectedFormat"
@@ -151,22 +154,22 @@ watch(() => props.visible, (newValue) => {
           <div class="description-item">
             <Icon icon="icon-wendang" class="description-icon excel" />
             <div class="description-content">
-              <div class="description-title">Excel (.xlsx)</div>
-              <div class="description-text">适用于 Microsoft Excel 和其他电子表格软件</div>
+              <div class="description-title">{{ t('testTemplate.exportTemplate.formatDescriptions.excel.title') }}</div>
+              <div class="description-text">{{ t('testTemplate.exportTemplate.formatDescriptions.excel.description') }}</div>
             </div>
           </div>
           <div class="description-item">
             <Icon icon="icon-wendang" class="description-icon csv" />
             <div class="description-content">
-              <div class="description-title">CSV (.csv)</div>
-              <div class="description-text">纯文本格式，兼容性最好，可用任何文本编辑器打开</div>
+              <div class="description-title">{{ t('testTemplate.exportTemplate.formatDescriptions.csv.title') }}</div>
+              <div class="description-text">{{ t('testTemplate.exportTemplate.formatDescriptions.csv.description') }}</div>
             </div>
           </div>
           <div class="description-item">
             <Icon icon="icon-wendang" class="description-icon json" />
             <div class="description-content">
-              <div class="description-title">JSON (.json)</div>
-              <div class="description-text">结构化数据格式，便于程序处理和解析</div>
+              <div class="description-title">{{ t('testTemplate.exportTemplate.formatDescriptions.json.title') }}</div>
+              <div class="description-text">{{ t('testTemplate.exportTemplate.formatDescriptions.json.description') }}</div>
             </div>
           </div>
         </div>
@@ -174,10 +177,10 @@ watch(() => props.visible, (newValue) => {
         <!-- Footer Buttons -->
         <FormItem>
           <div class="form-footer">
-            <Button @click="closeModal">取消</Button>
+            <Button @click="closeModal">{{ t('actions.cancel') }}</Button>
             <Button type="primary" @click="handleExport" :loading="isLoading">
               <Icon icon="icon-daochu1" class="mr-1" />
-              开始导出
+              {{ t('testTemplate.exportTemplate.buttons.startExport') }}
             </Button>
           </div>
         </FormItem>

@@ -47,7 +47,9 @@ const showData = computed(() => {
 const getTemplateTypeText = (type: string) => {
   return type === TestTemplateType.TEST_PLAN 
     ? t('xcm.enum.TestTemplateType.TEST_PLAN') 
-    : t('xcm.enum.TestTemplateType.TEST_CASE');
+    : type === TestTemplateType.TEST_CASE
+    ? t('xcm.enum.TestTemplateType.TEST_CASE')
+    : type === 'ISSUE' ? t('issue.title') : '';
 };
 
 /**
@@ -181,7 +183,7 @@ const handleOpenExportModal = (template: TestTemplateDetail) => {
         </template>
 
         <div class="flex flex-col space-y-2 text-3 h-full justify-between">
-          <div v-if="template.templateType === TestTemplateType.TEST_CASE" class="truncate">
+          <div v-if="template.templateType === TestTemplateType.TEST_CASE || template.templateType === 'ISSUE'" class="truncate">
             <richTextContent
               :value="template.templateContent?.description"
               :emptyText="t('common.noDescription')" />
