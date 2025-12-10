@@ -80,7 +80,9 @@ const handleFileSelection = (fileInfo: any) => {
     projectName.value = nameWithoutExt;
   }
   
-  formRef.value?.validateFields(['file']);
+  setTimeout(() => {
+    formRef.value?.validateFields(['file']);
+  });
 };
 
 // Remove selected file
