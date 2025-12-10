@@ -729,6 +729,7 @@ const save = async (data?: {
   description: string;
   projectId: string;
   name: string;
+  moduleId: string;
 }, notificationFlag = true) => {
   const validFlag = await isValid();
   if (!validFlag) {
@@ -761,6 +762,7 @@ const save = async (data?: {
   if (data) {
     params.description = data.description;
     params.name = data.name;
+    params.moduleId = data.moduleId;
   }
 
   const formData = getData();

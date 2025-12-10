@@ -697,8 +697,7 @@ const authFlagChange = (_authFlag: boolean) => {
 
 const save = async (data?: {
   description: string;
-  dirId: string;
-  dirName: string;
+  moduleId: string;
   name: string;
 }, notificationFlag = true) => {
   const validFlag = await isValid();
@@ -735,9 +734,9 @@ const save = async (data?: {
 
   if (data) {
     params.description = data.description;
-    params.dirId = data.dirId;
-    params.dirName = data.dirName;
+
     params.name = data.name;
+    params.moduleId = data.moduleId;
   }
 
   const formData = getData();
