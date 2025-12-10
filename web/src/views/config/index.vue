@@ -9,6 +9,7 @@ const Indicator = defineAsyncComponent(() => import('@/views/config/indicator/in
 const Event = defineAsyncComponent(() => import('@/views/config/event/index.vue'));
 const Proxy = defineAsyncComponent(() => import('@/views/config/proxy/index.vue'));
 const Node = defineAsyncComponent(() => import('@/views/config/node/index.vue'));
+const MobileDevice  = defineAsyncComponent(() => import('@/views/config/mobileDevice/index.vue'));
 
 const { t } = useI18n();
 
@@ -37,6 +38,9 @@ const menuItems = createMenuItems(t);
     </template>
     <template #node>
       <Node class="overflow-auto h-full" />
+    </template>
+    <template #mobileDevice>
+      <MobileDevice class="overflow-auto h-full" />
     </template>
   </LeftMenu>
 </template>

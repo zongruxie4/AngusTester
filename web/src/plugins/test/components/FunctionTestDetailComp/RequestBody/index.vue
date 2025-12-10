@@ -37,7 +37,7 @@ const forms = computed(() => {
  * @returns Raw body content string or undefined
  */
 const rawContent = computed(() => {
-  return props.value?.content?.request0?.rawContent;
+  return props.value?.content?.request0?.body;
 });
 </script>
 
@@ -51,7 +51,7 @@ const rawContent = computed(() => {
   <template v-else-if="forms">
     <div class="pt-4.75 pb-4 pl-0.5">
       <FormatHighlight
-        :dataSource="forms"
+        :dataSource="value?.content?.request0?.forms"
         dataType="json"
         format="preview" />
     </div>
