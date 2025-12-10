@@ -288,6 +288,7 @@ export type ExecContent = {
         success: boolean;
         failMessage: string;
         request0: {
+            body?: string;
             method: string;
             url: string;
             headers: {[key:string]:string};
