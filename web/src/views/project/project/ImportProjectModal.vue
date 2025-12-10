@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Modal, Icon, notification, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Input, UploadDragger, RadioGroup } from 'ant-design-vue';
-import { ProjectType } from '@/enums/enums';
+import { ProjectType, ProjectDataType } from '@/enums/enums';
 import { enumUtils } from '@xcan-angus/infra';
 import { project } from '@/api/tester';
 import { formatBytes } from '@/utils/common';
@@ -27,6 +27,7 @@ const emits = defineEmits<{
 const formRef = ref();
 const isLoading = ref(false);
 const selectedProjectType = ref<ProjectType>(ProjectType.AGILE);
+const selectedDataType = ref<ProjectDataType>(ProjectDataType.DATA);
 const uploadedFile = ref<File | undefined>(undefined);
 const projectName = ref<string>('');
 
@@ -36,9 +37,20 @@ const projectTypeOptions = enumUtils.enumToMessages(ProjectType).map(item => ({
   value: item.value as ProjectType
 }));
 
+// Project data type options
+const dataTypeOptions = enumUtils.enumToMessages(ProjectDataType).map(item => ({
+  label: item.message,
+  value: item.value as ProjectDataType
+}));
+
 // Handle project type selection
 const handleProjectTypeChange = (e: any) => {
   selectedProjectType.value = e.target.value;
+};
+
+// Handle data type selection
+const handleDataTypeChange = (e: any) => {
+  selectedDataType.value = e.target.value;
 };
 
 // Handle file selection
@@ -58,12 +70,19 @@ const handleFileSelection = (fileInfo: any) => {
   uploadedFile.value = file;
   
   // Set default project name from file name (without extension)
+  // If name contains "-", take the part before "-"
   if (!projectName.value) {
-    const nameWithoutExt = file.name.replace(/\.(zip|tar|tar\.gz|tgz)$/i, '');
+    let nameWithoutExt = file.name.replace(/\.(zip|tar|tar\.gz|tgz)$/i, '');
+    // If name contains "-", take the part before "-"
+    if (nameWithoutExt.includes('-')) {
+      nameWithoutExt = nameWithoutExt.split('-')[0];
+    }
     projectName.value = nameWithoutExt;
   }
   
-  formRef.value?.validateFields(['file']);
+  setTimeout(() => {
+    formRef.value?.validateFields(['file']);
+  });
 };
 
 // Remove selected file
@@ -99,6 +118,7 @@ const closeModal = () => {
   emits('update:visible', false);
   // Reset form
   selectedProjectType.value = ProjectType.AGILE;
+  selectedDataType.value = ProjectDataType.DATA;
   uploadedFile.value = undefined;
   projectName.value = '';
   formRef.value?.resetFields();
@@ -123,6 +143,7 @@ const handleSubmit = async () => {
     
     const formData = new FormData();
     formData.append('projectType', selectedProjectType.value);
+    formData.append('dataType', selectedDataType.value);
     formData.append('name', projectName.value.trim());
     formData.append('file', uploadedFile.value);
     
@@ -135,7 +156,7 @@ const handleSubmit = async () => {
       return;
     }
     
-    notification.success(t('common.tips.importSuccess'));
+    notification.success(t('actions.tips.importSuccess'));
     emits('ok');
     closeModal();
   } catch (error) {
@@ -148,6 +169,7 @@ const handleSubmit = async () => {
 watch(() => props.visible, (newValue) => {
   if (!newValue) {
     selectedProjectType.value = ProjectType.AGILE;
+    selectedDataType.value = ProjectDataType.DATA;
     uploadedFile.value = undefined;
     projectName.value = '';
     formRef.value?.resetFields();
@@ -166,7 +188,7 @@ watch(() => props.visible, (newValue) => {
     <Spin :spinning="isLoading">
       <Form
         ref="formRef"
-        :model="{ projectType: selectedProjectType, file: uploadedFile, name: projectName }"
+        :model="{ projectType: selectedProjectType, dataType: selectedDataType, file: uploadedFile, name: projectName }"
         layout="vertical"
         class="import-project-form">
         
@@ -180,6 +202,18 @@ watch(() => props.visible, (newValue) => {
             v-model:value="selectedProjectType"
             :options="projectTypeOptions"
             @change="handleProjectTypeChange" />
+        </FormItem>
+
+        <!-- Data Type Selection -->
+        <FormItem
+          :label="t('project.importProject.labels.dataType')"
+          name="dataType"
+          :rules="[{ required: true, message: t('project.importProject.messages.selectDataType') }]"
+          required>
+          <RadioGroup
+            v-model:value="selectedDataType"
+            :options="dataTypeOptions"
+            @change="handleDataTypeChange" />
         </FormItem>
 
         <!-- File Upload -->

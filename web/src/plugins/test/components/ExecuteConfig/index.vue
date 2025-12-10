@@ -144,7 +144,7 @@ defineExpose({ isValid, getData });
         :excludes="props.excludes"
         defaultActiveFirstOption
         :enumKey="ScriptType"
-        class="w-104"
+        class="w-50"
         @change="scriptTypeChange" />
     </div>
 

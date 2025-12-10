@@ -391,6 +391,11 @@ export enum ProjectType {
   TESTING = 'TESTING'
 }
 
+export enum ProjectDataType {
+  DATA = 'DATA',
+  DELIVERABLES = 'DELIVERABLES'
+}
+
 // Export/Share Enums
 export enum ServicesExportScope {
   SERVICE = 'SERVICE',
@@ -770,6 +775,7 @@ export const enumNamespaceMap = new Map<any, string>([
   [ExecResult, 'xcm.enum.ExecResult'],
   [TestResultStatus, 'xcm.enum.TestResultStatus'],
   [ProjectType, 'xcm.enum.ProjectType'],
+  [ProjectDataType, 'xcm.enum.ProjectDataType'],
   [ServicesExportScope, 'xcm.enum.ServicesExportScope'],
   [ApisShareScope, 'xcm.enum.ApisShareScope'],
   [ApiImportSource, 'xcm.enum.ApiImportSource'],

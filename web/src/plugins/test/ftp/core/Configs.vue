@@ -1417,9 +1417,9 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
         :updateUrl="`${TESTER}/scenario/auth`"
         :enabledUrl="`${TESTER}/scenario/${scenarioConfigData?.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/scenario/${scenarioConfigData?.id}/auth/status`"
-        :onTips="t('ftpPlugin.auth.onTips')"
-        :offTips="t('ftpPlugin.auth.offTips')"
-        :title="t('ftpPlugin.auth.title')"
+        :onTips="t('ftpPlugin.permission.onTips')"
+        :offTips="t('ftpPlugin.permission.offTips')"
+        :title="t('ftpPlugin.permission.title')"
         @change="authFlagChange" />
     </AsyncComponent>
 

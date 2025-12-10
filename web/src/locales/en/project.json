@@ -121,14 +121,15 @@
       "title": "Import Project",
       "labels": {
         "projectType": "Project Type",
+        "dataType": "Data Type",
         "importFile": "Import File",
         "projectName": "Project Name"
       },
       "placeholders": {
-        "projectName": "Please enter project name"
+        "projectName": "Project name, default upload file name, support file name format: project name-version.format"
       },
       "messages": {
-        "invalidFileFormat": "不支持的文件格式，仅支持 ZIP (.zip)、TAR (.tar, .tar.gz, .tgz) 格式",
+        "invalidFileFormat": "Unsupported file format, only ZIP (.zip), TAR (.tar, .tar.gz, .tgz) format is supported",
         "uploadFileRequired": "Please upload project file",
         "projectNameRequired": "Please enter project name",
         "selectProjectType": "Please select project type",
