@@ -152,6 +152,7 @@ onMounted(() => {
           :monicaEditorStyle="{height: '600px'}"
           :showBackBtn="false"
           :execId="perfExecId"
+          :plugin="scenarioData?.plugin"
           :scriptType="ScriptType.TEST_PERFORMANCE"
           @del="handleResultDeletion" />
       </TabPane>
@@ -160,6 +161,7 @@ onMounted(() => {
           :monicaEditorStyle="{height: '600px'}"
           :showBackBtn="false"
           :execId="stabilityExecId"
+          :plugin="scenarioData?.plugin"
           :scriptType="ScriptType.TEST_STABILITY"
           @del="handleResultDeletion" />
       </TabPane>
@@ -168,6 +170,7 @@ onMounted(() => {
           :monicaEditorStyle="{height: '600px'}"
           :showBackBtn="false"
           :execId="customExecId"
+          :plugin="scenarioData?.plugin"
           :scriptType="ScriptType.TEST_CUSTOMIZATION"
           @del="handleResultDeletion" />
       </TabPane>

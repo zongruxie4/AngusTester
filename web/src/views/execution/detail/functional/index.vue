@@ -31,6 +31,7 @@ const Tcp = defineAsyncComponent(() => import('./Tcp.vue'));
 const Ftp = defineAsyncComponent(() => import('./Ftp.vue'));
 const Ldap = defineAsyncComponent(() => import('./Ldap.vue'));
 const WebSocket = defineAsyncComponent(() => import('./WebSocket.vue'));
+const Mobile = defineAsyncComponent(() => import('./Mobile.vue'));
 
 // State & Timers
 let refreshTimer: NodeJS.Timeout | null = null;
@@ -189,4 +190,13 @@ onBeforeUnmount(() => {
       :execContent="executionContent"
       :exception="props.exception" />
   </template>
+  <template v-else-if="props.execInfo?.plugin === 'Mobile'">
+    <Mobile
+      :execInfo="props.execInfo"
+      :execContent="executionContent"
+      :exception="props.exception" />
+    
+  </template>
+
+  
 </template>

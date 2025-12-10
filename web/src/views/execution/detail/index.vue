@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
@@ -17,6 +17,7 @@ const PerformanceTest = defineAsyncComponent(() => import('./performance/index.v
 const FunctionalTest = defineAsyncComponent(() => import('./functional/index.vue'));
 const TestResult = defineAsyncComponent(() => import('./result/index.vue'));
 const ServiceConfig = defineAsyncComponent(() => import('./Server.vue'));
+// const MobileResult = defineAsyncComponent(() => import('./MobileExecPerfDetail.vue'));
 
 /**
  * Props for the Execution Detail component
@@ -79,6 +80,15 @@ const languageOpt = [
     label: 'JSON'
   }
 ];
+
+const showPerformanceTest = computed(() => {
+  return detail.value
+    && [ScriptType.TEST_PERFORMANCE,ScriptType.TEST_STABILITY, ScriptType.MOCK_DATA, ScriptType.TEST_CUSTOMIZATION].includes(detail.value.scriptType.value);
+});
+
+const showFuncTest = computed(() => {
+  return detail.value && [ScriptType.TEST_FUNCTIONALITY, ScriptType.TEST_COMPATIBILITY, ScriptType.TEST_COMPLIANCE].includes(detail.value.scriptType.value);
+});
 
 // Reactive state for script language type
 const scriptLanguageType = ref('yaml');
@@ -157,17 +167,15 @@ const pageNo = route.query.pageNo;
       <TabPane
         key="1"
         :tab="t('execution.info.executionDetails')">
-        <!--    TODO 基本信息中“创建”字段正下方添加“修改”，格式：修改人 修改时间，和创建一样    -->
         <PerformanceTest
-          v-if="detail
-            && [ScriptType.TEST_PERFORMANCE,ScriptType.TEST_STABILITY, ScriptType.MOCK_DATA, ScriptType.TEST_CUSTOMIZATION].includes(detail.scriptType.value)"
+          v-if="showPerformanceTest"
           ref="performanceRef"
           v-model:loading="loading"
           :detail="detail"
           :exception="exception"
           @loaded="getInfo" />
         <FunctionalTest
-          v-else-if="detail && detail.scriptType.value===ScriptType.TEST_FUNCTIONALITY"
+          v-else-if="showFuncTest"
           ref="funcRef"
           v-model:loading="loading"
           :execInfo="detail"

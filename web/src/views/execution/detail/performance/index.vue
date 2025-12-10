@@ -35,7 +35,9 @@ const PerformanceInfo = defineAsyncComponent(() =>
     ? import('@/views/execution/detail/performance/mock/index.vue')
     : props.detail?.plugin === 'Http'
       ? import('./Http.vue')
-      : import('./Jdbc.vue')) as any;
+      : (props.detail?.plugin === 'Mobile' || props.detail?.plugin === 'Web')
+        ? import('./Mobile.vue')
+        : import('./Jdbc.vue')) as any;
 
 const emit = defineEmits<PerformanceDetailEmits>();
 

@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<Props>(), {
 <template>
   <div
     :class="props.value?.value"
-    class="test-type-div inline-block h-5 leading-5 px-2 text-3 rounded text-white select-none text-center">
+    class="test-type-div inline-block h-5 leading-5 px-2 text-3 rounded select-none text-center">
     {{ props.value?.message }}
   </div>
 </template>

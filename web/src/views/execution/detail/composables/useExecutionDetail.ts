@@ -61,7 +61,7 @@ export const useExecutionDetail = (props: any, emit: any) => {
 
     // Fetch execution details from API
     const [error, { data }] = await exec.getDetail(id);
-
+    loading.value = false;
     // Handle API error
     if (error) {
       loading.value = false;
