@@ -57,6 +57,7 @@ public class Scenario extends TenantAuditingEntity<Scenario, Long> implements Ac
 
   private String plugin;
 
+  @Enumerated(EnumType.STRING)
   private TestPlatform platform = TestPlatform.API;
 
   @Enumerated(EnumType.STRING)

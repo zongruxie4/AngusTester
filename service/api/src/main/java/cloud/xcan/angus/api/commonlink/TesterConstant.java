@@ -20,6 +20,8 @@ public interface TesterConstant {
 
   int MOCK_EXCEPTION_SALF_LENGTH = 200;
 
+  String UPLOAD_TESTER_FILES_BIZ_KEY = "angusTesterDataFiles";
+
   /**
    * Config Data
    */

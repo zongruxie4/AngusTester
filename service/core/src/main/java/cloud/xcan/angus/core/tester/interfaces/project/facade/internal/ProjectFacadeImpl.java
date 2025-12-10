@@ -72,7 +72,8 @@ public class ProjectFacadeImpl implements ProjectFacade {
 
   @Override
   public IdKey<Long, Object> imports(ProjectImportDto dto) {
-    return projectCmd.imports(dto.getProjectType(), dto.getName(), dto.getFile());
+    return projectCmd.imports(dto.getProjectType(), dto.getDataType(),
+        dto.getName(), dto.getFile());
   }
 
   @Override
