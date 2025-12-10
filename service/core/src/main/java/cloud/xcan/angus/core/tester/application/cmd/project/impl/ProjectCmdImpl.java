@@ -270,7 +270,9 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   @Override
   public IdKey<Long, Object> add0(Project project) {
     // Save project to database and get generated ID
-    project.setId(BIDUtils.getId(BIDKey.projectId));
+    if (nonNull(project.getId())){
+      project.setId(BIDUtils.getId(BIDKey.projectId));
+    }
     IdKey<Long, Object> idKey = insert(project);
 
     // Ensure project owner is included in member list
