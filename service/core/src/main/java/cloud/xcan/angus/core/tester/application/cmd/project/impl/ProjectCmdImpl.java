@@ -13,6 +13,7 @@ import static cloud.xcan.angus.api.commonlink.CombinedTargetType.VARIABLE;
 import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_AFTER_HOURS;
 import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_BEFORE_HOURS;
 import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_PROJECT_FILE;
+import static cloud.xcan.angus.api.commonlink.TesterConstant.UPLOAD_TESTER_FILES_BIZ_KEY;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.cmd.issue.impl.TaskCmdImpl.getTaskCode;
@@ -30,6 +31,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.stringSafe;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
 
@@ -37,6 +39,8 @@ import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
 import cloud.xcan.angus.api.commonlink.tag.OrgTargetType;
 import cloud.xcan.angus.api.commonlink.user.User;
 import cloud.xcan.angus.api.manager.UserManager;
+import cloud.xcan.angus.api.storage.file.FileRemote;
+import cloud.xcan.angus.api.storage.file.vo.FileUploadVo;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -77,6 +81,7 @@ import cloud.xcan.angus.core.tester.domain.data.variables.Variable;
 import cloud.xcan.angus.core.tester.domain.issue.Task;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockService;
 import cloud.xcan.angus.core.tester.domain.project.Project;
+import cloud.xcan.angus.core.tester.domain.project.ProjectDataType;
 import cloud.xcan.angus.core.tester.domain.project.ProjectRepo;
 import cloud.xcan.angus.core.tester.domain.project.ProjectType;
 import cloud.xcan.angus.core.tester.domain.project.module.Module;
@@ -200,6 +205,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   private DatasetQuery datasetQuery;
   @Resource
   private FuncPlanQuery funcPlanQuery;
+  @Resource
+  private FileRemote fileRemote;
 
   /**
    * Adds a new project to the system.
@@ -626,18 +633,23 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public IdKey<Long, Object> imports(ProjectType projectType, String name, MultipartFile file) {
+  public IdKey<Long, Object> imports(ProjectType projectType, ProjectDataType dataType,
+      String name, MultipartFile file) {
     return new BizTemplate<IdKey<Long, Object>>() {
+      String projectVersion;
+
       @Override
       protected void checkParams() {
         // Check if project creation exceeds quota limits
         projectQuery.checkQuota(1);
 
         // Validate project name and version combination is unique within the tenant
-        projectQuery.checkAddNameAndVersionExists(name, "V1.0");
+        String fileName = file.getOriginalFilename();
+        projectVersion = fileName.contains("-")
+            ? stringSafe(fileName.split("-")[1].trim(), "V1.0") : "V1.0";
+        projectQuery.checkAddNameAndVersionExists(name, projectVersion);
 
         // Validate file name
-        String fileName = file.getOriginalFilename();
         assertNotEmpty(fileName, "File name is required");
         String lowerFileName = fileName.toLowerCase();
         assertTrue(lowerFileName.endsWith(".zip") || lowerFileName.endsWith(".tar")
@@ -648,6 +660,20 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
       @Override
       @SneakyThrows
       protected IdKey<Long, Object> process() {
+
+        if (dataType.equals(ProjectDataType.DELIVERABLES)) {
+          // Upload project deliverables
+          fileRemote.upload(
+              new MultipartFile[]{file}, null, UPLOAD_TESTER_FILES_BIZ_KEY,
+              null, true).orElseContentThrow();
+
+          // Set project properties
+          Project project = new Project();
+          assembleProjectInfo(project);
+          // Create project
+          return projectCmd.add0(project);
+        }
+
         String fileName = file.getOriginalFilename();
         File tmpPath = ProjectImportFileUtils.getImportTmpPath();
         File importFile = new File(tmpPath.getPath() + File.separator + fileName);
@@ -670,19 +696,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
           });
 
           // Set project properties
-          project.setId(BIDUtils.getId(BIDKey.projectId));
-          project.setType(projectType);
-          project.setName(name);
-          project.setOwnerId(getUserId());
-          LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> memberTypeIds = new LinkedHashMap<>();
-          memberTypeIds.put(OrgTargetType.USER, new LinkedHashSet<>(List.of(getUserId())));
-          project.setMemberTypeIds(memberTypeIds);
-          project.setStartDate(LocalDateTime.now());
-          project.setDeadlineDate(LocalDateTime.now().plusHours(SAMPLE_AFTER_HOURS));
-          if (isEmpty(project.getVersion())) {
-            project.setVersion("V1.0");
-          }
-
+          assembleProjectInfo(project);
           // Create project
           IdKey<Long, Object> idKey = projectCmd.add0(project);
 
@@ -700,6 +714,21 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         } finally {
           // Clean up temporary files
           FileUtils.deleteQuietly(tmpPath);
+        }
+      }
+
+      private void assembleProjectInfo(Project project) {
+        project.setId(BIDUtils.getId(BIDKey.projectId));
+        project.setType(projectType);
+        project.setName(name);
+        project.setOwnerId(getUserId());
+        LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> memberTypeIds = new LinkedHashMap<>();
+        memberTypeIds.put(OrgTargetType.USER, new LinkedHashSet<>(List.of(getUserId())));
+        project.setMemberTypeIds(memberTypeIds);
+        project.setStartDate(LocalDateTime.now());
+        project.setDeadlineDate(LocalDateTime.now().plusHours(SAMPLE_AFTER_HOURS));
+        if (isEmpty(project.getVersion())) {
+          project.setVersion(projectVersion);
         }
       }
     }.execute();

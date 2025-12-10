@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.project.facade.dto;
 
+import cloud.xcan.angus.core.tester.domain.project.ProjectDataType;
 import cloud.xcan.angus.core.tester.domain.project.ProjectType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
@@ -22,6 +23,11 @@ public class ProjectImportDto {
   @NotNull
   @Schema(description = "Project type (AGILE, WATERFALL, etc.)", requiredMode = RequiredMode.REQUIRED)
   private ProjectType projectType;
+
+  @NotNull
+  @Schema(description = "Project data types are divided into two categories: project data and project deliverables, with project data as the default type",
+      requiredMode = RequiredMode.REQUIRED, defaultValue = "DATA")
+  private ProjectDataType dataType = ProjectDataType.DATA;
 
   @NotBlank
   @Schema(description = "Project name for the imported project", requiredMode = RequiredMode.REQUIRED)
