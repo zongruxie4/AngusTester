@@ -54,25 +54,23 @@ const ScriptConfig = defineAsyncComponent(() => import('@/plugins/test/component
 const ExportScriptModal = defineAsyncComponent(() => import('@/plugins/test/components/ExportScriptModal/index.vue'));
 const SelectScriptModal = defineAsyncComponent(() => import('@/plugins/test/components/SelectScriptModal/index.vue'));
 const ImportScript = defineAsyncComponent(() => import('@/plugins/test/components/ImportScript/index.vue'));
-// const ExecuteConfig = defineAsyncComponent(() => import('@/plugins/test/components/ExecuteConfig/index.vue'));
+const ExecuteConfig = defineAsyncComponent(() => import('@/plugins/test/components/ExecuteConfig/index.vue'));
 // const DebugResult = defineAsyncComponent(() => import('./DebugResult/index.vue'));
 const DebugLog = defineAsyncComponent(() => import('@/plugins/test/components/DebugLog/index.vue'));
 const ExecLog = defineAsyncComponent(() => import('@/plugins/test/components/ExecLog/index.vue'));
 
 const codeConfigRef = ref();
 // const uiConfigRef = ref();
-// const executeConfigRef = ref();
+const executeConfigRef = ref();
 const toolbarRef = ref();
 const drawerRef = ref();
 const saveFormRef = ref();
 
-const activeKey = ref<'taskConfig' | 'executeConfig'>('taskConfig');
 const toolbarActiveKey = ref<'debugResult' | 'logs' | 'null'>('null');
-const height = ref(34);
+const height = ref(72);
 const isFull = ref(false);
 const isOpen = ref(false);
 const isMoving = ref(false);
-const isPageViewMode = ref(true);
 const selectModalVisible = ref(false);// 选择脚本弹窗
 const uploadVisible = ref(false);// 导入脚本弹窗
 const exportModalVisible = ref(false);// 导出脚本弹窗
@@ -98,14 +96,28 @@ const scriptConfig = ref<{
   type: ScriptType;
   task: {
     scriptContent: '',
-    scriptLanguage: ''
+    scriptLanguage: '',
+    configuration: {
+      thread: {
+        threads: string,
+        rampUpInterval: string,
+        rampUpThreads: string
+      }
+    }
   };
   plugin: 'Mobile';
 }>({
   type: 'TEST_PERFORMANCE',
   task: {
     scriptContent: '',
-    scriptLanguage: ''
+    scriptLanguage: '',
+    configuration: {
+      thread: {
+        threads: '5000',
+        rampUpInterval: '1min',
+        rampUpThreads: '100'
+      }
+    }
   },
   plugin: 'Mobile'
 });
@@ -321,18 +333,30 @@ const selectScriptOk = (data: ScenarioConfig['script']) => {
 
         const defaultConfig = generateDefaultConfig(scenarioConfigData.value?.script?.type);
         if (!isEqual(defaultConfig, configData)) {
+          let _configuration = data.configuration;
+
+          if (!_configuration) {
+            _configuration = defaultConfig.configuration;
+          }
             scenarioConfigData.value.script.type = scriptType;
-            setScriptConfig(scriptType);
+            setScriptConfig(scriptType, _configuration);
         }
     }
   }
 };
 
 
-const setScriptConfig = (type: ScriptType) => {
+const setScriptConfig = (type: ScriptType, configuration: {
+  thread: {
+    threads: string,
+    rampUpInterval: string,
+    rampUpThreads: string
+  }
+}) => {
   scriptConfig.value = {
     type,
     plugin: 'Mobile',
+    configuration,
     task: {
       ...scriptConfig.value.task
     }
@@ -347,7 +371,37 @@ const cancel = () => {
 
 const scriptTypeChange = (value: ScriptType) => {
   scenarioConfigData.value.script.type = value;
+ 
+  if (typeof executeConfigRef.value?.getData === 'function') {
+    const configData = executeConfigRef.value.getData();
+    scenarioConfigData.value.script.configuration = cloneDeep(configData.configuration);
+    scenarioConfigData.value.script.task.arguments = cloneDeep(configData.arguments);
+  }
+
+  if (value === 'TEST_FUNCTIONALITY') {
+    scenarioConfigData.value.script.configuration.thread.threads = '1';
+    scenarioConfigData.value.script.configuration.iterations = '1';
+    scenarioConfigData.value.script.task.arguments.ignoreAssertions = false;
+  } else if (value === 'TEST_PERFORMANCE') {
+    scenarioConfigData.value.script.configuration.duration = '50min';
+    if (scenarioConfigData.value.script.configuration.thread) {
+      scenarioConfigData.value.script.configuration.thread.threads = '5000';
+      scenarioConfigData.value.script.configuration.thread.rampUpInterval = '1min';
+      scenarioConfigData.value.script.configuration.thread.rampUpThreads = '100';
+    } else {
+      scenarioConfigData.value.script.configuration.thread = {
+        threads: '5000',
+        rampUpInterval: '1min', // 增压间隔
+        rampUpThreads: '100' // 增压线程数
+      };
+    }
+  } else if (value === 'TEST_STABILITY') {
+    scenarioConfigData.value.script.configuration.duration = '30min';
+    scenarioConfigData.value.script.configuration.thread.threads = '200';
+  }
   scriptConfig.value.type = value;
+  scriptConfig.value.configuration = cloneDeep(scenarioConfigData.value.script.configuration);
+
 };
 
 const scriptTypeExcludes = ({ value }): boolean => {
@@ -367,6 +421,13 @@ const fullScreen = () => {
 };
 
 const isValid = async (): Promise<boolean> => {
+  if (typeof executeConfigRef.value?.isValid === 'function') {
+    const validFlag = await executeConfigRef.value.isValid();
+    if (!validFlag) {
+      notification.error(t('httpPlugin.messages.executeConfigError'));
+      return false;
+    }
+  }
 
   return true;
 };
@@ -378,15 +439,20 @@ const getData = (): {
   const data: {
     scriptContent: string;
     scriptLanguage: string;
+    configuration: {[key: string]: any}
   } = {
     scriptContent: '',
     scriptLanguage: scenarioConfigData.value?.script?.task?.scriptLanguage
   };
+  if (typeof executeConfigRef.value?.getData === 'function') {
+      const tempData = executeConfigRef.value.getData();
+      data.configuration = tempData.configuration;
+    }
 
   const _scriptData = codeConfigRef.value.getData();
-    if (_scriptData) {
-        data.scriptContent = _scriptData;
-    }
+  if (_scriptData) {
+      data.scriptContent = _scriptData;
+  }
 
   return data;
 };
@@ -526,6 +592,10 @@ const save = async (data?: {
   const formData = getData();
   params.script.task = formData;
 
+  if (formData.configuration) {
+    params.script.configuration = formData.configuration;
+  }
+
   toOpenapiObject(params.script);
 
   controller = new AbortController();
@@ -638,13 +708,20 @@ const setScenarioConfigData = (data: ScenarioInfo) => {
 
   if (script) {
     const scriptType = script.type?.value || script.type;
+    const defaultConfig = generateDefaultConfig(scriptType);
+    const _configuration = script.configuration || defaultConfig.configuration;
+    scenarioConfigData.value.script = {
+      ...script,
+      configuration: _configuration,
+      type: scriptType,
+    };
    
     scenarioConfigData.value.script = {
       ...script,
       type: scriptType,
       task: {
         scriptContent: script.task?.scriptContent,
-        scriptLanguage: script.task?.scriptLanguage
+        scriptLanguage: script.task?.scriptLanguage,
       }
     };
 
@@ -652,19 +729,8 @@ const setScenarioConfigData = (data: ScenarioInfo) => {
       scenarioConfigData.value.script.issue = {
         ...script.task,
       };
-
-      if (script.task.pipelines?.length) {
-        scenarioConfigData.value.script.task.pipelines = script.task.pipelines.map(item => {
-          return {
-            id: utils.uuid(),
-            ...item,
-            type: item.type?.value || item.type
-          };
-        });
-      }
     }
-
-    setScriptConfig(scriptType);
+    setScriptConfig(scriptType, _configuration);
   }
 
   initBtn();
@@ -690,14 +756,6 @@ const loadScenarioInfo = async (id: string) => {
 
   toOpenapiObject(data.script);
   let hasEnabled = false;
-  data.script?.task?.pipelines?.forEach(item => {
-    // 只允许启用一个
-    if (hasEnabled) {
-      item.enabled = false;
-    } else if (item.enabled) {
-      hasEnabled = true;
-    }
-  });
 
   return data;
 };
@@ -798,10 +856,12 @@ onMounted(() => {
     if (!newValue) {
       return;
     }
+    const type = 'TEST_PERFORMANCE';
 
+    const { configuration } = generateDefaultConfig(type);
     const id = newValue.id;
     const { name } = newValue;
-    const type = 'TEST_PERFORMANCE';
+  
     scenarioConfigData.value = {
       name,
       description: '',
@@ -817,11 +877,21 @@ onMounted(() => {
         task: {
           scriptLanguage: 'TypeScript',
           scriptContent: '',
+        },
+        configuration: {
+          thread: {
+            threads: '5000',
+            rampUpInterval: '1min',
+            rampUpThreads: '100'
+          },
+          duration: '50min',
+          iterations: '1',
+          ignoreAssertions: false
         }
       }
     };
 
-    setScriptConfig(scenarioConfigData.value.script.type);
+    setScriptConfig(scenarioConfigData.value.script.type, configuration);
 
     saveFormConfigData.value = {
       id,
@@ -845,7 +915,16 @@ onMounted(() => {
 
 const generateDefaultConfig = (type: ScriptType) => {
   const data = {
-    type
+    type,
+    configuration: {
+      thread: {
+        threads: '1'
+      },
+      onError: {
+        sampleError: true,
+        sampleErrorNum: '20'
+      }
+    },
   };
   return data;
 };
@@ -919,127 +998,126 @@ const drawerMenuItems = computed(() => {
   return baseItems.filter(item => ['save'].includes(item.key));
 });
 
-const setGlobalTabActiveKey = (key: 'taskConfig' | 'executeConfig') => {
-  activeKey.value = key;
-};
-
 provide('userInfo', props.userInfo);
-provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
 </script>
 <template>
   <Spin  class="h-full overflow-hidden text-3 pt-1.5">
     <Tabs
-      v-model:activeKey="activeKey"
       class="pure-tab-wrap h-full leading-5"
+      style="height: calc(100%);"
       size="small">
       <template #rightExtra>
         <ButtonGroup :hideKeys="hideButtonSet" :debugLoading="debugLoading" @click="buttonGroupClick" />
       </template>
-      <template #leftExtra>
-        <SelectEnum
-            v-if="scenarioConfigData?.script?.task"
-            v-model:value="scenarioConfigData.script.task.scriptLanguage"
-            class="w-40 mr-2"
-            :enumKey="ScriptLanguage" />
-        <SelectEnum
-            :value="scenarioConfigData?.script?.type"
-            class="w-40"
-            :excludes="scriptTypeExcludes"
-            :enumKey="ScriptTypeInfra"
-            @change="scriptTypeChange" />
-      </template>
-    </Tabs>
-    <div
-      style="height: calc(100% - 38px);"
-      class="w-full flex flex-nowrap items-center overflow-x-auto overflow-y-hidden">
-      <div class="flex-1 h-full min-w-0">
+      <TabPane tab="脚本" key="script">
         <div
-          class="bg-white overflow-auto"
-          :class="{ 'transition-150': !isMoving }"
-          :style="'height:calc(100% - ' + height + 'px);'">
-          <ScriptConfig
-            ref="codeConfigRef"
-            :readonly="false"
-            :language="(scenarioConfigData?.script?.task?.scriptLanguage|| '').toLowerCase()"
-            :value="scenarioConfigData?.script?.task?.scriptContent || ''" />
+        style="height: calc(100%);"
+        class="w-full flex flex-nowrap items-center overflow-x-auto overflow-y-hidden">
+        <div class="flex-1 h-full min-w-0">
+          <div class="p-1 px-4">
+            <SelectEnum
+                v-if="scenarioConfigData?.script?.task"
+                v-model:value="scenarioConfigData.script.task.scriptLanguage"
+                class="w-40 mr-2"
+                :enumKey="ScriptLanguage" />
+          </div>
+          <div
+            class="bg-white overflow-auto"
+            :class="{ 'transition-150': !isMoving }"
+            :style="'height:calc(100% - ' + height + 'px);'">
+            <ScriptConfig
+              ref="codeConfigRef"
+              :readonly="false"
+              :language="(scenarioConfigData?.script?.task?.scriptLanguage|| '').toLowerCase()"
+              :value="scenarioConfigData?.script?.task?.scriptContent || ''" />
+          </div>
+          <Toolbar
+            ref="toolbarRef"
+            v-model:clientHeight="height"
+            v-model:isFull="isFull"
+            v-model:isOpen="isOpen"
+            v-model:isMoving="isMoving"
+            v-model:activeKey="toolbarActiveKey"
+            :menuItems="toolbarMenuItems"
+            :extraMenuItems="toolbarExtraMenuItems"
+            :destroyInactiveTabPane="false"
+            class="relative z-1 bg-white">
+            <template #toggle>
+              <Icon
+                :icon="isOpen ? 'icon-shouqi' : 'icon-spread'"
+                style="font-size: 14px;cursor: pointer;"
+                @click="close" />
+            </template>
+            <template #screen>
+              <Icon
+                :icon="isFull ? 'icon-tuichuzuida' : 'icon-zuidahua'"
+                style="font-size: 14px;cursor: pointer;"
+                @click="fullScreen" />
+            </template>
+            <template #debugResult>
+              <!-- <DebugResult :value="debugExecInfo" :httpError="debugHttpError" /> -->
+            </template>
+            <template #logs>
+              <DebugLog :value="debugExecInfo?.schedulingResult" />
+            </template>
+            <template #execLog>
+              <ExecLog
+                :execId="debugExecInfo?.id"
+                :execNode="debugExecInfo?.execNode"
+                :schedulingResult="debugExecInfo?.schedulingResult" />
+            </template>
+          </Toolbar>
         </div>
-        <Toolbar
-          ref="toolbarRef"
-          v-model:clientHeight="height"
-          v-model:isFull="isFull"
-          v-model:isOpen="isOpen"
-          v-model:isMoving="isMoving"
-          v-model:activeKey="toolbarActiveKey"
-          :menuItems="toolbarMenuItems"
-          :extraMenuItems="toolbarExtraMenuItems"
-          :destroyInactiveTabPane="false"
-          class="relative z-1 bg-white">
-          <template #toggle>
-            <Icon
-              :icon="isOpen ? 'icon-shouqi' : 'icon-spread'"
-              style="font-size: 14px;cursor: pointer;"
-              @click="close" />
+        <Drawer
+          ref="drawerRef"
+          :menuItems="drawerMenuItems"
+          class="flex-shrink-0">
+          <template #save>
+            <SaveForm
+              ref="saveFormRef"
+              class="pr-3.5 py-3"
+              :projectId="props.projectId"
+              :value="saveFormConfigData"
+              :loading="loading"
+              @save="save"
+              @canecel="cancel" />
           </template>
-          <template #screen>
-            <Icon
-              :icon="isFull ? 'icon-tuichuzuida' : 'icon-zuidahua'"
-              style="font-size: 14px;cursor: pointer;"
-              @click="fullScreen" />
+          <template #indicator>
+            <Indicator :id="scenarioConfigData?.id" type="SCENARIO" />
           </template>
-          <template #debugResult>
-            <!-- <DebugResult :value="debugExecInfo" :httpError="debugHttpError" /> -->
-          </template>
-          <template #logs>
-            <DebugLog :value="debugExecInfo?.schedulingResult" />
-          </template>
-          <template #execLog>
-            <ExecLog
-              :execId="debugExecInfo?.id"
-              :execNode="debugExecInfo?.execNode"
-              :schedulingResult="debugExecInfo?.schedulingResult" />
-          </template>
-        </Toolbar>
-      </div>
-      <Drawer
-        ref="drawerRef"
-        :menuItems="drawerMenuItems"
-        class="flex-shrink-0">
-        <template #save>
-          <SaveForm
-            ref="saveFormRef"
-            class="pr-3.5 py-3"
-            :projectId="props.projectId"
-            :value="saveFormConfigData"
-            :loading="loading"
-            @save="save"
-            @canecel="cancel" />
-        </template>
-        <template #indicator>
-          <Indicator :id="scenarioConfigData?.id" type="SCENARIO" />
-        </template>
 
-        <template #testInfo>
-          <HttpTestInfo
-            :id="scenarioConfigData?.id"
-            class="mt-2"
-            type="SCENARIO" />
-        </template>
+          <template #testInfo>
+            <HttpTestInfo
+              :id="scenarioConfigData?.id"
+              class="mt-2"
+              type="SCENARIO" />
+          </template>
 
-        <template #activity>
-          <ActivityTimeline
-            :id="scenarioConfigData?.id"
-            :projectId="props.projectId"
-            class="pt-4.75 pr-3.5" />
-        </template>
+          <template #activity>
+            <ActivityTimeline
+              :id="scenarioConfigData?.id"
+              :projectId="props.projectId"
+              class="pt-4.75 pr-3.5" />
+          </template>
 
-        <template #comment>
-          <SmartComment
-            :id="scenarioConfigData?.id"
-            :userId="props.userInfo?.id"
-            class="h-full pt-4.75 pr-3.5" />
-        </template>
-      </Drawer>
-    </div>
+          <template #comment>
+            <SmartComment
+              :id="scenarioConfigData?.id"
+              :userId="props.userInfo?.id"
+              class="h-full pt-4.75 pr-3.5" />
+          </template>
+        </Drawer>
+        </div>
+      </TabPane>
+      <TabPane tab="执行配置" key="executeConfig" forceRender>
+        <ExecuteConfig
+          ref="executeConfigRef"
+          :value="scriptConfig"
+          :excludes="scriptTypeExcludes"
+          @scriptTypeChange="scriptTypeChange"/>
+      </TabPane>
+    </Tabs>
+    
 
     <AsyncComponent :visible="authVisible">
       <AuthorizeModal
@@ -1052,9 +1130,9 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
         :updateUrl="`${TESTER}/scenario/auth`"
         :enabledUrl="`${TESTER}/scenario/${scenarioConfigData?.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/scenario/${scenarioConfigData?.id}/auth/status`"
-        :onTips="t('ftpPlugin.auth.onTips')"
-        :offTips="t('ftpPlugin.auth.offTips')"
-        :title="t('ftpPlugin.auth.title')"
+        :onTips="t('ftpPlugin.permission.onTips')"
+        :offTips="t('ftpPlugin.permission.offTips')"
+        :title="t('ftpPlugin.permission.title')"
         @change="authFlagChange" />
     </AsyncComponent>
 
