@@ -662,14 +662,15 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
       protected IdKey<Long, Object> process() {
 
         if (dataType.equals(ProjectDataType.DELIVERABLES)) {
-          // Upload project deliverables
-          fileRemote.upload(
-              new MultipartFile[]{file}, null, UPLOAD_TESTER_FILES_BIZ_KEY,
-              null, true).orElseContentThrow();
-
           // Set project properties
           Project project = new Project();
           assembleProjectInfo(project);
+
+          // Upload project deliverables
+          fileRemote.upload(
+              new MultipartFile[]{file}, null, UPLOAD_TESTER_FILES_BIZ_KEY,
+              null, project.getId(), true).orElseContentThrow();
+
           // Create project
           return projectCmd.add0(project);
         }
