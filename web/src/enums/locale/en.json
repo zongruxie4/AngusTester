@@ -209,6 +209,10 @@
         "GENERAL": "General Project Management",
         "TESTING": "Software Testing Project"
       },
+      "ProjectDataType": {
+        "DATA": "Project Data",
+        "DELIVERABLES": "Deliverables"
+      },
       "ServicesExportScope": {
         "SERVICE": "Service",
         "APIS": "By API"

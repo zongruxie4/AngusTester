@@ -209,6 +209,10 @@
         "GENERAL": "一般项目管理",
         "TESTING": "软件测试项目"
       },
+      "ProjectDataType": {
+        "DATA": "项目数据",
+        "DELIVERABLES": "交付成果"
+      },
       "ServicesExportScope": {
         "SERVICE": "服务",
         "APIS": "按接口"
