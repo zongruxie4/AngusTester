@@ -41,11 +41,11 @@ const len = computed(() => {
     <div v-if="len>0" class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
-          class="w-35 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
+          class="w-30 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
           {{ t('reportPreview.evaluation.caseListDetail.columns.code') }}
         </div>
         <div
-          class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
+          class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
           {{ t('reportPreview.evaluation.caseListDetail.columns.name') }}
         </div>
         <div
@@ -68,10 +68,10 @@ const len = computed(() => {
         :key="item.id"
         :class="{'border-b':_index<len}"
         class="flex border-solid border-border-input">
-        <div class="w-35 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
+        <div class="w-30 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
           {{ item.code }}
         </div>
-        <div class="w-27 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
+        <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
           {{ item.name }}
         </div>
         <div class="w-27 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">

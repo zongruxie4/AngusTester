@@ -405,7 +405,8 @@ const scriptTypeChange = (value: ScriptType) => {
 };
 
 const scriptTypeExcludes = ({ value }): boolean => {
-  return !['TEST_PERFORMANCE', 'TEST_FUNCTIONALITY', 'TEST_STABILITY',  'TEST_COMPATIBILITY', 'TEST_COMPLIANCE'].includes(value);
+  return false;
+  // return !['TEST_PERFORMANCE', 'TEST_FUNCTIONALITY', 'TEST_STABILITY',  'TEST_COMPATIBILITY', 'TEST_COMPLIANCE'].includes(value);
 };
 
 const close = () => {

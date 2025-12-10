@@ -553,12 +553,12 @@ const caseDetailsColumns = [
   {
     title: '编码',
     dataIndex: 'code',
-    width: 100
+    width: 120
   },
   {
     title: '名称',
     dataIndex: 'name',
-    width: 100
+    ellipsis: true
   },
   {
     title: '测试结果',
@@ -571,17 +571,17 @@ const caseDetailsColumns = [
   {
     title: '测试得分',
     dataIndex: 'testScore',
-    width: 100
+    width: 120
   },
   {
     title: '测试备注',
     dataIndex: 'testRemark',
-    width: 100
+    width: 150
   },
   {
     title: '测试人',
     dataIndex: 'testerName',
-    width: 100
+    width: 120
   }
 ];
 
