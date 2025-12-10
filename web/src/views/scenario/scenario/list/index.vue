@@ -128,7 +128,44 @@ const deleteScenarioHandler = (scenaridId: string):void => {
         :notify="props.notify" />
     </div>
     <Spin class="flex-1 h-full flex flex-col py-5" :spinning="loading">
-      <div class="flex-shrink-0 flex items-start text-3 px-5 mb-3.5 space-x-3">
+      <div class="flex space-x-2 px-2 pb-2">
+        <Button
+          class="flex-shrink-0 flex items-center"
+          type="primary"
+          size="small"
+          @click="buttonDropdownClick({ key: 'Mobile' })">
+          <Icon icon="icon-jia" class="text-3.5 mr-1" />
+          添加移动应用场景
+        </Button>
+        <Button
+          class="flex-shrink-0 flex items-center"
+          type="primary"
+          size="small"
+          @click="buttonDropdownClick({ key: 'Web' })">
+          <Icon icon="icon-jia" class="text-3.5  mr-1" />
+          添加WebUI场景
+        </Button>
+        
+        
+        <Button
+          class="flex-shrink-0 flex items-center pr-0"
+          type="primary"
+          size="small"
+          @click="createHttpScenario">
+          <div class="flex items-center">
+            <Icon icon="icon-jia" class="text-3.5" />
+            <span class="ml-1">{{ t('scenario.list.actions.addHttpScenario') }}</span>
+          </div>
+          <Dropdown :menuItems="buttonDropdownMenuItems" @click="buttonDropdownClick">
+            <div class="w-5 h-5 flex items-center justify-center">
+              <Icon icon="icon-more" />
+            </div>
+          </Dropdown>
+        </Button>
+        
+      </div>
+      
+      <div class="flex-shrink-0 flex items-start text-3 px-2 mb-3.5 space-x-3">
         <SearchPanel
           class="flex-1"
           :options="searchOptions"
@@ -136,65 +173,41 @@ const deleteScenarioHandler = (scenaridId: string):void => {
 
         <div class="flex-shrink-0 flex items-center flex-nowrap whitespace-nowrap leading-7 space-x-3.5">
 
-          <Dropdown :menuItems="deviceDropdownMenuItems" @click="buttonDropdownClick">
-            <Button
-              class="flex-shrink-0 flex items-center"
-              type="primary"
-              size="small">
-                添加设备测试场景
-            </Button>
-          </Dropdown>
-          
-          <Button
-            class="flex-shrink-0 flex items-center pr-0"
-            type="primary"
-            size="small"
-            @click="createHttpScenario">
-            <div class="flex items-center">
-              <Icon icon="icon-jia" class="text-3.5" />
-              <span class="ml-1">{{ t('scenario.list.actions.addHttpScenario') }}</span>
-            </div>
-            <Dropdown :menuItems="buttonDropdownMenuItems" @click="buttonDropdownClick">
-              <div class="w-5 h-5 flex items-center justify-center">
-                <Icon icon="icon-more" />
-              </div>
-            </Dropdown>
-          </Button>
-
-          <div
-            class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover"
-            @click="addScenarioAuthorize">
-            <Icon icon="icon-quanxian1" />
-            <span>{{ t('actions.permission') }}</span>
-          </div>
-
           <DropdownSort
-            v-model:orderBy="orderBy"
-            v-model:orderSort="orderSort"
-            :menuItems="sortMenuItems"
-            @click="sortHandler">
-            <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
-              <Icon icon="icon-shunxu" />
-              <span>{{ t('actions.sort') }}</span>
-            </div>
-          </DropdownSort>
-
-          <DropdownGroup
-            :activeKey="groupedKey"
-            :menuItems="groupingMenuItems"
-            @click="groupingHandler">
-            <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
-              <Icon icon="icon-fenzu" />
-              <span>{{ t('organization.group') }}</span>
-            </div>
-          </DropdownGroup>
-
-          <div
-            class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover"
-            @click="refreshHandler">
-            <Icon icon="icon-shuaxin" />
-            <span>{{ t('actions.refresh') }}</span>
+          v-model:orderBy="orderBy"
+          v-model:orderSort="orderSort"
+          :menuItems="sortMenuItems"
+          @click="sortHandler">
+          <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
+            <Icon icon="icon-shunxu" />
+            <span>{{ t('actions.sort') }}</span>
           </div>
+        </DropdownSort>
+
+        <DropdownGroup
+          :activeKey="groupedKey"
+          :menuItems="groupingMenuItems"
+          @click="groupingHandler">
+          <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
+            <Icon icon="icon-fenzu" />
+            <span>{{ t('organization.group') }}</span>
+          </div>
+        </DropdownGroup>
+
+        <div
+          class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover"
+          @click="refreshHandler">
+          <Icon icon="icon-shuaxin" />
+          <span>{{ t('actions.refresh') }}</span>
+        </div>
+        <div
+          class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover"
+          @click="addScenarioAuthorize">
+          <Icon icon="icon-quanxian1" />
+          <span>{{ t('actions.permission') }}</span>
+        </div>
+
+          
         </div>
       </div>
 
@@ -224,7 +237,7 @@ const deleteScenarioHandler = (scenaridId: string):void => {
               :userInfo="props.userInfo"
               :appInfo="props.appInfo"
               :projectId="props.projectId"
-              class="px-5 flex-1 overflow-auto"
+              class="px-1 flex-1 overflow-auto"
               @clone="cloneHandler"
               @delete="deleteScenarioHandler" />
           </AsyncComponent>
