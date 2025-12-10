@@ -5,7 +5,8 @@ export enum ConfigMenuKey {
   INDICATOR = 'indicator',
   EVENT = 'event',
   NODE = 'node',
-  PROXY = 'proxy'
+  PROXY = 'proxy',
+  MOBILE_DEVICE = 'mobileDevice'
 }
 
 export const createMenuItems = (t: (key: string) => string): LeftMenuItem<ConfigMenuKey>[] => [
@@ -13,5 +14,6 @@ export const createMenuItems = (t: (key: string) => string): LeftMenuItem<Config
   { icon: 'icon-zhibiao', name: t('indicator.title'), key: ConfigMenuKey.INDICATOR },
   { icon: 'icon-tuisongtongzhi', name: t('event.title'), key: ConfigMenuKey.EVENT },
   { icon: 'icon-guanlijiedian', name: t('node.title'), key: ConfigMenuKey.NODE },
-  { icon: 'icon-jiekoudaili', name: t('proxy.title'), key: ConfigMenuKey.PROXY }
+  { icon: 'icon-jiekoudaili', name: t('proxy.title'), key: ConfigMenuKey.PROXY },
+  { icon: 'icon-jiekoudaili', name: '移动设备', key: ConfigMenuKey.MOBILE_DEVICE }
 ];

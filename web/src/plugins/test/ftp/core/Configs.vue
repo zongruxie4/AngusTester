@@ -142,6 +142,13 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
   if (key === 'save') {
     if (!scriptId.value) {
       drawerRef.value.open(key);
+      if (typeof saveFormRef.value?.isValid === 'function') {
+        if (!saveFormRef.value.isValid()) {
+          return;
+        } else {
+          save(saveFormRef.value.getData(), true);
+        }
+      }
     } else {
       save();
     }
