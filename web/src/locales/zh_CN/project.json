@@ -123,11 +123,12 @@
       "title": "导入项目",
       "labels": {
         "projectType": "项目类型",
+        "dataType": "数据类型",
         "importFile": "导入文件",
         "projectName": "项目名称"
       },
       "placeholders": {
-        "projectName": "请输入项目名称"
+        "projectName": "请输入项目名称，默认上传文件名，支持文件名格式：项目名称-版本号.格式"
       },
       "messages": {
         "invalidFileFormat": "不支持的文件格式，仅支持 ZIP (.zip)、TAR (.tar, .tar.gz, .tgz) 格式",
