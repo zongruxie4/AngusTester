@@ -14,6 +14,8 @@ import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.core.tester.domain.script.count.ScriptCount;
 import cloud.xcan.angus.core.tester.domain.script.count.ScriptResourcesCreationCount;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils;
+import cloud.xcan.angus.core.tester.infra.util.BIDUtils.BIDKey;
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
@@ -90,6 +92,7 @@ public class ScriptConverter {
 
   public static Script toClonedScenarioScript(Script scriptDb, Long newScenarioId) {
     Script script = new Script();
+    script.setId(BIDUtils.getId(BIDKey.scriptId));
     script.setProjectId(scriptDb.getProjectId());
     script.setServiceId(null);
     String saltName = randomAlphanumeric(3);
