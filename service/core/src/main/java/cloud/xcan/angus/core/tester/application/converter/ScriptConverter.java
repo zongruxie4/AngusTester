@@ -75,6 +75,7 @@ public class ScriptConverter {
 
   public static Script toClonedScript(Script scriptDb) {
     Script script = new Script();
+    script.setId(BIDUtils.getId(BIDKey.scriptId));
     script.setProjectId(scriptDb.getProjectId());
     script.setServiceId(null);
     String saltName = randomAlphanumeric(3);
