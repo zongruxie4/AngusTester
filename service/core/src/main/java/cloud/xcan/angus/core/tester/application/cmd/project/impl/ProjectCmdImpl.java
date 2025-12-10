@@ -663,15 +663,15 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
 
         if (dataType.equals(ProjectDataType.DELIVERABLES)) {
           // Upload project deliverables
-          List<FileUploadVo> uploadResult = fileRemote.upload(
-              UPLOAD_TESTER_FILES_BIZ_KEY, new MultipartFile[]{file}, null,
+          fileRemote.upload(
+              new MultipartFile[]{file}, null, UPLOAD_TESTER_FILES_BIZ_KEY,
               null, true).orElseContentThrow();
 
           // Set project properties
           Project project = new Project();
           assembleProjectInfo(project);
           // Create project
-          IdKey<Long, Object> idKey = projectCmd.add0(project);
+          return projectCmd.add0(project);
         }
 
         String fileName = file.getOriginalFilename();
