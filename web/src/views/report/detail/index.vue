@@ -145,6 +145,7 @@ const activityType = ['REPORT'];
             :contentSetting="report.contentSetting?.filter"
             :projectId="report.projectId"
             :projectName="report.projectId"
+            :targetName="report.targetName"
             :template="report.template?.value" />
         </TabPane>
         <TabPane key="record" :tab="t('reportHome.reportDetail.tabs.record')">

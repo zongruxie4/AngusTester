@@ -25,6 +25,7 @@ interface Props {
     planOrSprintId?: string;
   };
   projectName: string;
+  targetName?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -227,6 +228,7 @@ onMounted(() => {
       return;
     }
 
+
     loadExecName(targetId);
   }, {
     deep: true,
@@ -253,9 +255,9 @@ onMounted(() => {
 <template>
   <div>
     <div
-      v-if="props.template && [ReportTemplate.PROJECT_PROGRESS, ReportTemplate.TASK_SPRINT, ReportTemplate.FUNC_TESTING_PLAN].includes(props.template)"
+      v-if="props.template && [ReportTemplate.PROJECT_PROGRESS, ReportTemplate.TASK_SPRINT, ReportTemplate.FUNC_TESTING_PLAN, ReportTemplate.TEST_EVALUATION].includes(props.template)"
       class="spacey-2">
-      <div class="leading-7 flex items-center space-x-2">
+      <div v-show="[ReportTemplate.PROJECT_PROGRESS, ReportTemplate.TASK_SPRINT, ReportTemplate.FUNC_TESTING_PLAN].includes(props.template)" class="leading-7 flex items-center space-x-2">
         <span class="w-12">{{ t('reportHome.reportDetail.content.organizationPersonnel') }}</span>
         <span v-if="props.contentSetting.creatorObjectType">（{{
           authObjectTypeOpt[props.contentSetting.creatorObjectType]
@@ -275,11 +277,11 @@ onMounted(() => {
       </div>
     </div>
 
-    <div v-if="props.template === ReportTemplate.PROJECT_PROGRESS" class="leading-7 flex items-center space-x-2">
+    <div v-if="props.template === ReportTemplate.PROJECT_PROGRESS || props.contentSetting?.targetType?.value === 'PROJECT'" class="leading-7 flex items-center space-x-2">
       <span class="w-12">{{ t('reportHome.reportDetail.content.project') }}</span>
       <Colon />
       <div>
-        {{ props.projectName }}
+        {{ props.targetName }}
       </div>
     </div>
 
@@ -289,7 +291,7 @@ onMounted(() => {
       <span class="w-12">{{ t('common.sprint') }}</span>
       <Colon />
       <div>
-        {{ sprintName }}
+        {{ sprintName || props.targetName }}
       </div>
     </div>
 
@@ -299,7 +301,7 @@ onMounted(() => {
       <span class="w-12">{{ t('common.issue') }}</span>
       <Colon />
       <div>
-        {{ taskName }}
+        {{ taskName  || props.targetName }}
       </div>
     </div>
 
@@ -309,7 +311,7 @@ onMounted(() => {
       <span class="w-12">{{ t('common.plan') }}</span>
       <Colon />
       <div>
-        {{ planName }}
+        {{ planName}}
       </div>
     </div>
 
@@ -319,7 +321,7 @@ onMounted(() => {
       <span class="w-12">{{ t('common.useCase') }}</span>
       <Colon />
       <div>
-        {{ caseName }}
+        {{ caseName  || props.targetName }}
       </div>
     </div>
 
@@ -339,7 +341,7 @@ onMounted(() => {
       <span class="w-12">{{ t('common.api') }}</span>
       <Colon />
       <div>
-        {{ apisName }}
+        {{ apisName  || props.targetName }}
       </div>
     </div>
 
@@ -349,7 +351,7 @@ onMounted(() => {
       <span class="w-12">{{ t('common.scenario') }}</span>
       <Colon />
       <div>
-        {{ scenarioName }}
+        {{ scenarioName  || props.targetName }}
       </div>
     </div>
 
@@ -359,7 +361,7 @@ onMounted(() => {
       <span class="w-12">{{ t('common.execution') }}</span>
       <Colon />
       <div>
-        {{ execName }}
+        {{ execName  || props.targetName }}
       </div>
     </div>
 

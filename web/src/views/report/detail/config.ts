@@ -8,7 +8,7 @@ import { contentTreeData as scenarioContentTreeData } from '@/views/report/add/S
 import { contentTreeData as serviceContentTreeData } from '@/views/report/add/ServicesContentConfig';
 import { contentTreeData as sprintContentTreeData } from '@/views/report/add/SprintContentConfig';
 import { contentTreeData as taskContentTreeData } from '@/views/report/add/TaskContentConfig';
-
+import { contentTreeData as testEvaluationContentTreeData } from '@/views/report/add/TestEvaluationContentConfig';
 export const treeData = {
   APIS_TESTING_RESULT: apisContentTreeData,
   FUNC_TESTING_CASE: caseContentTreeData,
@@ -21,5 +21,6 @@ export const treeData = {
   SERVICES_TESTING_RESULT: serviceContentTreeData,
   SCENARIO_TESTING_RESULT: scenarioContentTreeData,
   TASK_SPRINT: sprintContentTreeData,
-  TASK: taskContentTreeData
+  TASK: taskContentTreeData,
+  TEST_EVALUATION: testEvaluationContentTreeData
 };

@@ -71,6 +71,7 @@ contentTreeData.forEach(item => {
  * Toggle purpose selection
  */
  const togglePurpose = (purpose: string) => {
+
   const currentPurposes = purposes.value || [];
   const purposeValue = purpose as EvaluationPurpose;
   const index = currentPurposes.indexOf(purposeValue);
@@ -124,6 +125,13 @@ onMounted(async() => {
   watch(() => props.contentSetting, newValue => {
     if (newValue?.targetId) {
         evaluationId.value = newValue.targetId;
+        purposes.value = (newValue?.evaluationPurposes || []).filter(Boolean).map(i=> i.value);
+        evaluationScope.value = newValue?.targetType?.value;
+        if (newValue.createdDateEnd && newValue.createdDateStart) {
+          date.value = [newValue.createdDateStart, newValue.createdDateEnd];  
+        } else {
+          date.value = undefined;
+        }
     }
   }, {
     immediate: true
@@ -192,6 +200,7 @@ defineExpose({
       <Colon />
       <RadioGroup
         v-model:value="evaluationScope"
+        :disabled="!props.projectId || props.disabled"
         class="mt-0.5"
         @change="handleScopeChange">
         <Radio
@@ -208,6 +217,7 @@ defineExpose({
       <Colon />
       <Select
         v-model:value="evaluationId"
+        :disabled="!props.projectId || props.disabled"
         size="small"
         class="w-50"
         :lazy="false"
@@ -239,6 +249,7 @@ defineExpose({
         <Tree
           v-if="moduleTreeData.length > 0"
           :treeData="moduleTreeData"
+          :disabled="!props.projectId || props.disabled"
           :selectedKeys="evaluationId ? [evaluationId] : []"
           blockNode
           defaultExpandAll
