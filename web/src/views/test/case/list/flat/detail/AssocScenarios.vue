@@ -106,13 +106,16 @@ const handleBatchExecScenarios = () => {
 };
 
 const handleExecScenarioOk = async(params: any) => {
-  Promise.all(selectedScenarioIds.value.map((id: string) => {
+
+  const requestList = (selectedId.value ? [selectedId.value] : selectedScenarioIds.value).map((id: string) => {
     return http.put(`${TESTER}/scenario/${id || ''}/exec`, params, { dataType: true });
-  })).then(()=> {
+  });
+  Promise.all(requestList).then(()=> {
     notification.success(t('actions.tips.execSuccess'));
     loadScenarioList();
   }).finally(() => {
     selectedScenarioIds.value = [];
+    selectedId.value = undefined;
   });
 };
 
@@ -144,6 +147,7 @@ const columns = [
     key: 'name',
     dataIndex: 'name',
     title: t('common.scenarioName'),
+    width: 180
   },
   {
     key: 'plugin',
@@ -179,7 +183,10 @@ const columns = [
     key: 'lastExecFailureMessage',
     dataIndex: 'lastExecFailureMessage',
     title: t('common.failureReason'),
-    width: 140
+    width: 140,
+    customRender: ({text}) => {
+      return text || '--'
+    }
   },
   {
     key: 'lastExecDate',
@@ -216,6 +223,10 @@ onMounted(() => {
       loadScenarioList();
     }
   }, { immediate: true });
+});
+
+defineExpose({
+  refresh: loadScenarioList
 });
 
 </script>
@@ -265,7 +276,11 @@ onMounted(() => {
 
         <template v-if="column.dataIndex === 'lastExecName'">
           <RouterLink :to="`/execution/info/${record.lastExecId}`">
-            {{ record.lastExecName }}
+            <Button
+              type="link"
+              size="small">
+              {{ record.lastExecName }}
+            </Button>
           </RouterLink>
         </template>
 
@@ -307,6 +322,7 @@ onMounted(() => {
           </div>
           
         </template>
+
       </template>
     </Table>
 

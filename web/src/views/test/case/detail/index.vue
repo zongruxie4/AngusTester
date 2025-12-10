@@ -312,6 +312,7 @@ const handleAddIssueSuccess = async () => {
 
 const smartCommentComponentRef = ref<any>(null);
 const reviewRecordComponentRef = ref();
+const assocScenariosComponentRef = ref();
 
 /**
  * Handle edit completed and refresh detail if in tab mode.
@@ -357,6 +358,9 @@ const refreshActiveTabContent = () => {
 
   if (reviewRecordComponentRef.value) {
     reviewRecordComponentRef.value.refresh();
+  }
+  if (activeKey.value === 'assocScenarios') {
+    assocScenariosComponentRef.value.refresh();
   }
 };
 
@@ -683,6 +687,7 @@ defineExpose({
         </template>
         <AssocScenariosTab
           v-model:assocScenariosCount="assocScenariosCount"
+           ref="assocScenariosComponentRef"
           :projectId="projectId"
           :userInfo="props.userInfo"
           :caseId="caseDetail?.id" />
