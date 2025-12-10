@@ -95,7 +95,7 @@
       "TaskStatus": {
         "PENDING": "待处理",
         "IN_PROGRESS": "进行中",
-        "CONFIRMING": "待确认",
+        "CONFIRMING": "待审核",
         "COMPLETED": "已完成",
         "CANCELED": "已取消"
       },
