@@ -100,14 +100,14 @@ const browserTabRef = ref();
           addTabPane({
             _id: 'webList',
             value: 'webList',
-            name: 'Web设备管理',
+            name: '浏览器管理',
             closable: false // Prevent closing of main version list tab
           });
         } else {
           updateTabPane({
             _id: 'webList',
             value: 'webList',
-            name: 'Web设备管理',
+            name: '浏览器管理',
             closable: false // Prevent closing of main version list tab
           });
         }
