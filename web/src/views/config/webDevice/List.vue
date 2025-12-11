@@ -445,7 +445,7 @@ const searchPanels = [
         <div class="stat-card-content">
           <div class="browser-type-header">
             <div class="browser-icon-wrapper" :style="{ backgroundColor: browser.color + '20', borderColor: browser.color + '40' }">
-              <Icon :icon="browser.icon" class="browser-icon" :style="{ color: browser.color }" />
+              <Icon icon="icon-daoruyiyoufuwujixitongyangli" class="browser-icon" :style="{ color: browser.color }" />
             </div>
             <div class="browser-info">
               <div class="browser-name">{{ browser.name }}</div>

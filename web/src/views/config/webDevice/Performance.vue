@@ -5,13 +5,13 @@ import * as echarts from 'echarts/core';
 import {
   GridComponent,
   TooltipComponent,
-  LegendComponent
+  LegendComponent,
+  TitleComponent
 } from 'echarts/components';
 import { LineChart, BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { UniversalTransition } from 'echarts/features';
 import elementResizeDetector from 'element-resize-detector';
-import { TitleComponent } from 'echarts/components';
 
 // Register ECharts components
 echarts.use([
@@ -28,32 +28,33 @@ echarts.use([
 // Chart references
 const cpuChartRef = ref<HTMLElement>();
 const memoryChartRef = ref<HTMLElement>();
-const batteryChartRef = ref<HTMLElement>();
 const networkChartRef = ref<HTMLElement>();
+const sessionChartRef = ref<HTMLElement>();
 
 let cpuChart: echarts.ECharts | null = null;
 let memoryChart: echarts.ECharts | null = null;
-let batteryChart: echarts.ECharts | null = null;
 let networkChart: echarts.ECharts | null = null;
+let sessionChart: echarts.ECharts | null = null;
 
 const erd = elementResizeDetector({ strategy: 'scroll' });
 
 // Time labels (0:00 to 22:00, 2-hour intervals)
 const timeLabels = ['0:00', '2:00', '4:00', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'];
 
-// CPU Usage Data
-const cpuData = [15, 18, 20, 25, 30, 35, 38, 40, 35, 28, 22, 20];
+// CPU Usage Data (starts around 25%, peaks at 50% at 14:00)
+const cpuData = [25, 28, 30, 32, 35, 38, 42, 50, 45, 38, 32, 30];
 
-// Memory Usage Data (in GB)
-const memoryData = [2.2, 2.3, 2.4, 2.6, 2.8, 3.0, 3.2, 3.4, 3.5, 3.3, 3.1, 3.0];
-
-// Battery and Temperature Data
-const batteryData = [100, 95, 90, 85, 75, 65, 55, 45, 40, 38, 36, 35];
-const temperatureData = [25, 26, 27, 28, 30, 32, 34, 37, 35, 32, 30, 29];
+// Memory Usage Data (in GB, starts around 6GB, peaks at 7.5GB at 14:00)
+const memoryData = [6.0, 6.2, 6.4, 6.6, 6.8, 7.0, 7.2, 7.5, 7.3, 7.1, 7.0, 7.0];
 
 // Network Traffic Data
-const downloadData = [15, 28, 10, 40, 55, 70, 45, 60, 75, 35, 25, 15];
-const uploadData = [5, 8, 5, 12, 18, 20, 15, 20, 25, 10, 8, 5];
+// Download speed (MB/s): starts around 2.5, peaks at 4.8 at 14:00
+const downloadData = [2.5, 2.8, 2.6, 3.0, 3.5, 4.0, 4.5, 4.8, 4.2, 3.5, 2.8, 2.5];
+// Upload speed (MB/s): starts around 0.8, peaks at 2.5 at 14:00
+const uploadData = [0.8, 1.0, 1.2, 1.5, 1.8, 2.0, 2.3, 2.5, 2.2, 1.8, 1.2, 0.8];
+
+// Session Count Data (starts low, peaks at 4.8 at 12:00 and 14:00)
+const sessionData = [1.0, 1.2, 1.5, 2.0, 2.5, 3.5, 4.5, 4.8, 3.5, 2.0, 1.5, 0.8];
 
 // CPU Chart Option
 const cpuChartOption = computed(() => ({
@@ -111,7 +112,7 @@ const cpuChartOption = computed(() => ({
   },
   series: [
     {
-      name: 'CPU使用率',
+      name: 'CPU使用率 (%)',
       type: 'line',
       data: cpuData,
       smooth: true,
@@ -136,7 +137,12 @@ const cpuChartOption = computed(() => ({
         }
       }
     }
-  ]
+  ],
+  legend: {
+    show: true,
+    bottom: 0,
+    data: ['CPU使用率 (%)']
+  }
 }));
 
 // Memory Chart Option
@@ -178,8 +184,8 @@ const memoryChartOption = computed(() => ({
     nameLocation: 'middle',
     nameGap: 40,
     min: 0,
-    max: 8,
-    interval: 1,
+    max: 16,
+    interval: 2,
     axisLabel: {
       fontSize: 12,
       color: '#666',
@@ -195,7 +201,7 @@ const memoryChartOption = computed(() => ({
   },
   series: [
     {
-      name: '内存使用',
+      name: '内存使用 (GB)',
       type: 'line',
       data: memoryData,
       smooth: true,
@@ -220,13 +226,18 @@ const memoryChartOption = computed(() => ({
         }
       }
     }
-  ]
+  ],
+  legend: {
+    show: true,
+    bottom: 0,
+    data: ['内存使用 (GB)']
+  }
 }));
 
-// Battery and Temperature Chart Option
-const batteryChartOption = computed(() => ({
+// Network Traffic Chart Option
+const networkChartOption = computed(() => ({
   title: {
-    text: '电池与温度',
+    text: '网络流量',
     left: 'center',
     textStyle: {
       fontSize: 14,
@@ -239,11 +250,6 @@ const batteryChartOption = computed(() => ({
     axisPointer: {
       type: 'cross'
     }
-  },
-  legend: {
-    data: ['电池电量', '电池温度'],
-    top: 30,
-    right: 20
   },
   grid: {
     left: '10%',
@@ -261,51 +267,58 @@ const batteryChartOption = computed(() => ({
       color: '#666'
     }
   },
-  yAxis: [
+  yAxis: {
+    type: 'value',
+    name: '速度 (MB/s)',
+    nameLocation: 'middle',
+    nameGap: 40,
+    min: 0,
+    max: 5.0,
+    interval: 0.5,
+    axisLabel: {
+      fontSize: 12,
+      color: '#666',
+      formatter: '{value}'
+    },
+    splitLine: {
+      show: true,
+      lineStyle: {
+        type: 'dashed',
+        color: '#f0f0f0'
+      }
+    }
+  },
+  series: [
     {
-      type: 'value',
-      name: '电池电量 (%)',
-      nameLocation: 'middle',
-      nameGap: 50,
-      min: 0,
-      max: 100,
-      interval: 10,
-      position: 'left',
-      axisLabel: {
-        fontSize: 12,
-        color: '#666',
-        formatter: '{value}%'
+      name: '下载速度 (MB/s)',
+      type: 'line',
+      data: downloadData,
+      smooth: true,
+      lineStyle: {
+        color: '#1890ff',
+        width: 2
       },
-      splitLine: {
-        show: true,
-        lineStyle: {
-          type: 'dashed',
-          color: '#f0f0f0'
+      itemStyle: {
+        color: '#1890ff'
+      },
+      areaStyle: {
+        color: {
+          type: 'linear',
+          x: 0,
+          y: 0,
+          x2: 0,
+          y2: 1,
+          colorStops: [
+            { offset: 0, color: 'rgba(24, 144, 255, 0.3)' },
+            { offset: 1, color: 'rgba(24, 144, 255, 0.05)' }
+          ]
         }
       }
     },
     {
-      type: 'value',
-      name: '电池温度 (°C)',
-      nameLocation: 'middle',
-      nameGap: 50,
-      min: 20,
-      max: 40,
-      interval: 2,
-      position: 'right',
-      axisLabel: {
-        fontSize: 12,
-        color: '#666',
-        formatter: '{value}°C'
-      }
-    }
-  ],
-  series: [
-    {
-      name: '电池电量',
+      name: '上传速度 (MB/s)',
       type: 'line',
-      yAxisIndex: 0,
-      data: batteryData,
+      data: uploadData,
       smooth: true,
       lineStyle: {
         color: '#52c41a',
@@ -313,29 +326,33 @@ const batteryChartOption = computed(() => ({
       },
       itemStyle: {
         color: '#52c41a'
-      }
-    },
-    {
-      name: '电池温度',
-      type: 'line',
-      yAxisIndex: 1,
-      data: temperatureData,
-      smooth: true,
-      lineStyle: {
-        color: '#ff4d4f',
-        width: 2
       },
-      itemStyle: {
-        color: '#ff4d4f'
+      areaStyle: {
+        color: {
+          type: 'linear',
+          x: 0,
+          y: 0,
+          x2: 0,
+          y2: 1,
+          colorStops: [
+            { offset: 0, color: 'rgba(82, 196, 26, 0.3)' },
+            { offset: 1, color: 'rgba(82, 196, 26, 0.05)' }
+          ]
+        }
       }
     }
-  ]
+  ],
+  legend: {
+    show: true,
+    bottom: 0,
+    data: ['下载速度 (MB/s)', '上传速度 (MB/s)']
+  }
 }));
 
-// Network Traffic Chart Option
-const networkChartOption = computed(() => ({
+// Session Count Chart Option
+const sessionChartOption = computed(() => ({
   title: {
-    text: '网络流量',
+    text: '会话数量',
     left: 'center',
     textStyle: {
       fontSize: 14,
@@ -348,11 +365,6 @@ const networkChartOption = computed(() => ({
     axisPointer: {
       type: 'shadow'
     }
-  },
-  legend: {
-    data: ['下载 (MB)', '上传 (MB)'],
-    top: 30,
-    right: 20
   },
   grid: {
     left: '10%',
@@ -371,12 +383,12 @@ const networkChartOption = computed(() => ({
   },
   yAxis: {
     type: 'value',
-    name: '流量 (MB)',
+    name: '会话数',
     nameLocation: 'middle',
     nameGap: 40,
     min: 0,
-    max: 80,
-    interval: 10,
+    max: 5.0,
+    interval: 0.5,
     axisLabel: {
       fontSize: 12,
       color: '#666',
@@ -392,30 +404,25 @@ const networkChartOption = computed(() => ({
   },
   series: [
     {
-      name: '下载 (MB)',
+      name: '活动会话数',
       type: 'bar',
-      data: downloadData,
+      data: sessionData,
       itemStyle: {
-        color: '#1890ff',
-        borderRadius: [4, 4, 0, 0]
-      }
-    },
-    {
-      name: '上传 (MB)',
-      type: 'bar',
-      data: uploadData,
-      itemStyle: {
-        color: '#52c41a',
-        borderRadius: [4, 4, 0, 0]
-      }
+        color: '#722ed1'
+      },
+      barWidth: '60%'
     }
-  ]
+  ],
+  legend: {
+    show: true,
+    bottom: 0,
+    data: ['活动会话数']
+  }
 }));
 
 // Initialize charts
-const initCharts = () => {
-  // CPU Chart
-  if (cpuChartRef.value) {
+const initChart = () => {
+  if (cpuChartRef.value && !cpuChart) {
     cpuChart = echarts.init(cpuChartRef.value);
     cpuChart.setOption(cpuChartOption.value);
     erd.listenTo(cpuChartRef.value, () => {
@@ -423,8 +430,7 @@ const initCharts = () => {
     });
   }
 
-  // Memory Chart
-  if (memoryChartRef.value) {
+  if (memoryChartRef.value && !memoryChart) {
     memoryChart = echarts.init(memoryChartRef.value);
     memoryChart.setOption(memoryChartOption.value);
     erd.listenTo(memoryChartRef.value, () => {
@@ -432,96 +438,80 @@ const initCharts = () => {
     });
   }
 
-  // Battery Chart
-  if (batteryChartRef.value) {
-    batteryChart = echarts.init(batteryChartRef.value);
-    batteryChart.setOption(batteryChartOption.value);
-    erd.listenTo(batteryChartRef.value, () => {
-      batteryChart?.resize();
-    });
-  }
-
-  // Network Chart
-  if (networkChartRef.value) {
+  if (networkChartRef.value && !networkChart) {
     networkChart = echarts.init(networkChartRef.value);
     networkChart.setOption(networkChartOption.value);
     erd.listenTo(networkChartRef.value, () => {
       networkChart?.resize();
     });
   }
+
+  if (sessionChartRef.value && !sessionChart) {
+    sessionChart = echarts.init(sessionChartRef.value);
+    sessionChart.setOption(sessionChartOption.value);
+    erd.listenTo(sessionChartRef.value, () => {
+      sessionChart?.resize();
+    });
+  }
 };
 
-// Cleanup
-onBeforeUnmount(() => {
-//   if (cpuChart) {
-//     cpuChart.dispose();
-//     cpuChart = null;
-//   }
-//   if (memoryChart) {
-//     memoryChart.dispose();
-//     memoryChart = null;
-//   }
-//   if (batteryChart) {
-//     batteryChart.dispose();
-//     batteryChart = null;
-//   }
-//   if (networkChart) {
-//     networkChart.dispose();
-//     networkChart = null;
-//   }
-//   if (cpuChartRef.value) {
-//     erd.uninstall(cpuChartRef.value);
-//   }
-//   if (memoryChartRef.value) {
-//     erd.uninstall(memoryChartRef.value);
-//   }
-//   if (batteryChartRef.value) {
-//     erd.uninstall(batteryChartRef.value);
-//   }
-//   if (networkChartRef.value) {
-//     erd.uninstall(networkChartRef.value);
-//   }
-});
+// Cleanup charts
+const cleanupCharts = () => {
+  if (cpuChart && cpuChartRef.value) {
+    erd.uninstall(cpuChartRef.value);
+    cpuChart.dispose();
+    cpuChart = null;
+  }
+  if (memoryChart && memoryChartRef.value) {
+    erd.uninstall(memoryChartRef.value);
+    memoryChart.dispose();
+    memoryChart = null;
+  }
+  if (networkChart && networkChartRef.value) {
+    erd.uninstall(networkChartRef.value);
+    networkChart.dispose();
+    networkChart = null;
+  }
+  if (sessionChart && sessionChartRef.value) {
+    erd.uninstall(sessionChartRef.value);
+    sessionChart.dispose();
+    sessionChart = null;
+  }
+};
 
 onMounted(() => {
-  initCharts();
+  initChart();
+});
+
+onBeforeUnmount(() => {
+  cleanupCharts();
 });
 </script>
 
 <template>
   <div class="performance-monitoring">
     <!-- Real-time Performance Monitoring -->
-    <div class="monitoring-section">
-      <div class="section-header">
-        <div class="section-title">实时性能监控</div>
-      </div>
+    <div class="realtime-monitoring">
+      <div class="section-title">实时性能监控</div>
       <div class="charts-grid">
-        <!-- CPU Usage Chart -->
         <Card class="chart-card">
           <div ref="cpuChartRef" class="chart-container"></div>
         </Card>
-
-        <!-- Memory Usage Chart -->
         <Card class="chart-card">
           <div ref="memoryChartRef" class="chart-container"></div>
         </Card>
       </div>
     </div>
 
-    <!-- Device Status Monitoring -->
-    <div class="monitoring-section">
-      <div class="section-header">
-        <div class="section-title">设备状态监控</div>
-      </div>
+    <!-- Network and Session Monitoring -->
+    <div class="network-session-monitoring">
+      <div class="section-title">网络与会话监控</div>
       <div class="charts-grid">
-        <!-- Battery and Temperature Chart -->
-        <Card class="chart-card">
-          <div ref="batteryChartRef" class="chart-container"></div>
-        </Card>
-
-        <!-- Network Traffic Chart -->
         <Card class="chart-card">
           <div ref="networkChartRef" class="chart-container"></div>
+        </Card>
+        <Card class="chart-card">
+          <div ref="sessionChartRef" class="chart-container"></div>
         </Card>
       </div>
     </div>
@@ -538,15 +528,15 @@ onMounted(() => {
           <div class="indicator-content">
             <div class="indicator-item">
               <span class="indicator-label">当前CPU使用率:</span>
-              <span class="indicator-value">28.5%</span>
+              <span class="indicator-value">42.5%</span>
             </div>
             <div class="indicator-item">
               <span class="indicator-label">峰值CPU使用率:</span>
-              <span class="indicator-value">68.2%</span>
+              <span class="indicator-value">78.2%</span>
             </div>
             <div class="indicator-item">
               <span class="indicator-label">平均CPU使用率:</span>
-              <span class="indicator-value">24.3%</span>
+              <span class="indicator-value">38.3%</span>
             </div>
           </div>
         </Card>
@@ -554,62 +544,62 @@ onMounted(() => {
         <!-- Memory Usage Section -->
         <Card class="indicator-card memory-card">
           <div class="indicator-header">
-            <div class="indicator-title">内存占用</div>
+            <div class="indicator-title">内存使用</div>
           </div>
           <div class="indicator-content">
             <div class="indicator-item">
               <span class="indicator-label">当前内存占用:</span>
-              <span class="indicator-value">3.2 GB / 8 GB</span>
+              <span class="indicator-value">7.8 GB / 16 GB</span>
             </div>
             <div class="indicator-item">
               <span class="indicator-label">内存使用率:</span>
-              <span class="indicator-value">40%</span>
+              <span class="indicator-value">48%</span>
             </div>
             <div class="indicator-item">
               <span class="indicator-label">可用内存:</span>
-              <span class="indicator-value">4.8 GB</span>
+              <span class="indicator-value">8.2 GB</span>
             </div>
           </div>
         </Card>
 
-        <!-- Battery Status Section -->
-        <Card class="indicator-card battery-card">
-          <div class="indicator-header">
-            <div class="indicator-title">电池电量</div>
-          </div>
-          <div class="indicator-content">
-            <div class="indicator-item">
-              <span class="indicator-label">电池电量:</span>
-              <span class="indicator-value">78%</span>
-            </div>
-            <div class="indicator-item">
-              <span class="indicator-label">电池温度:</span>
-              <span class="indicator-value">32.5°C</span>
-            </div>
-            <div class="indicator-item">
-              <span class="indicator-label">充电状态:</span>
-              <span class="indicator-value">正在充电</span>
-            </div>
-          </div>
-        </Card>
-
-        <!-- Network Status Section -->
+        <!-- Network Performance Section -->
         <Card class="indicator-card network-card">
           <div class="indicator-header">
-            <div class="indicator-title">网络状态</div>
+            <div class="indicator-title">网络性能</div>
           </div>
           <div class="indicator-content">
             <div class="indicator-item">
-              <span class="indicator-label">网络状态:</span>
-              <span class="indicator-value">Wi-Fi连接</span>
+              <span class="indicator-label">网络上传速度:</span>
+              <span class="indicator-value">1.5 MB/s</span>
             </div>
             <div class="indicator-item">
-              <span class="indicator-label">上传速度:</span>
-              <span class="indicator-value">1.2 MB/s</span>
+              <span class="indicator-label">网络下载速度:</span>
+              <span class="indicator-value">4.8 MB/s</span>
             </div>
             <div class="indicator-item">
-              <span class="indicator-label">下载速度:</span>
-              <span class="indicator-value">4.5 MB/s</span>
+              <span class="indicator-label">网络延迟:</span>
+              <span class="indicator-value">12ms</span>
+            </div>
+          </div>
+        </Card>
+
+        <!-- Session and Response Metrics Section -->
+        <Card class="indicator-card session-card">
+          <div class="indicator-header">
+            <div class="indicator-title">会话和响应指标</div>
+          </div>
+          <div class="indicator-content">
+            <div class="indicator-item">
+              <span class="indicator-label">当前会话数:</span>
+              <span class="indicator-value">3</span>
+            </div>
+            <div class="indicator-item">
+              <span class="indicator-label">会话成功率:</span>
+              <span class="indicator-value">92%</span>
+            </div>
+            <div class="indicator-item">
+              <span class="indicator-label">平均响应时间:</span>
+              <span class="indicator-value">245ms</span>
             </div>
           </div>
         </Card>
@@ -625,46 +615,34 @@ onMounted(() => {
   gap: 24px;
 }
 
-.monitoring-section {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.section-header {
-  margin-bottom: 8px;
-}
-
 .section-title {
   font-size: 16px;
   font-weight: 600;
   color: #262626;
+  margin-bottom: 16px;
+}
+
+.realtime-monitoring,
+.network-session-monitoring {
+  display: flex;
+  flex-direction: column;
 }
 
 .charts-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 20px;
 }
 
 .chart-card {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
+  padding: 20px;
 }
 
 .chart-container {
   width: 100%;
-  height: 300px;
-}
-
-/* Card Styles */
-:deep(.ant-card) {
-  background: #fff;
-}
-
-:deep(.ant-card-body) {
-  padding: 20px;
+  height: 350px;
 }
 
 /* Responsive Design */
@@ -676,7 +654,7 @@ onMounted(() => {
 
 @media (max-width: 768px) {
   .chart-container {
-    height: 250px;
+    height: 300px;
   }
 }
 
@@ -708,12 +686,12 @@ onMounted(() => {
   border-left-color: #52c41a;
 }
 
-.battery-card {
-  border-left-color: #fa8c16;
-}
-
 .network-card {
   border-left-color: #722ed1;
+}
+
+.session-card {
+  border-left-color: #fa8c16;
 }
 
 .indicator-header {
