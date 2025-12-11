@@ -71,7 +71,7 @@ const { t } = useI18n();
   const route = useRoute();
   const router = useRouter();
 
-const storageKey = ref('mobile');
+const storageKey = ref('web');
 const browserTabRef = ref();
 
  /**
@@ -81,10 +81,10 @@ const browserTabRef = ref();
   const initialize = (): void => {
     if (typeof browserTabRef.value?.add === 'function') {
       browserTabRef.value.add((ids: string[]) => {
-        if (!ids.includes('mobileList')) {
+        if (!ids.includes('webList')) {
           return {
-            _id: 'mobileList',
-            value: 'mobileList',
+            _id: 'webList',
+            value: 'webList',
             name: t('version.title'),
             closable: false // Prevent closing of main version list tab
           };
@@ -96,18 +96,18 @@ const browserTabRef = ref();
     watch(() => browserTabRef.value, () => {
       if (typeof browserTabRef.value?.update === 'function') {
         const tabData = browserTabRef.value.getData().map(item => item.value);
-        if (!tabData.includes('mobileList')) {
+        if (!tabData.includes('webList')) {
           addTabPane({
-            _id: 'mobileList',
-            value: 'mobileList',
-            name: '移动设备管理',
+            _id: 'webList',
+            value: 'webList',
+            name: 'Web设备管理',
             closable: false // Prevent closing of main version list tab
           });
         } else {
           updateTabPane({
-            _id: 'mobileList',
-            value: 'mobileList',
-            name: '移动设备管理',
+            _id: 'webList',
+            value: 'webList',
+            name: 'Web设备管理',
             closable: false // Prevent closing of main version list tab
           });
         }
@@ -160,7 +160,7 @@ const browserTabRef = ref();
             browserTabRef.value.add(() => {
               return {
                 _id: data?.list?.[0].id + '-detail',
-                value: 'mobileDetails',
+                value: 'webDetails',
                 data: { _id: data?.list?.[0].id, id: data?.list?.[0].id }
               };
             });
@@ -173,7 +173,7 @@ const browserTabRef = ref();
         browserTabRef.value.add(() => {
           return {
             _id: id + '-detail',
-            value: 'mobileDetails',
+            value: 'webDetails',
             data: { _id: id, id }
           };
         });
@@ -218,8 +218,6 @@ const storageKeyChange = () => {
   provide('updateTabPane', updateTabPane);
   provide('replaceTabPane', replaceTabPane);
 
-
-
 </script>
 <template>
   <BrowserTab
@@ -230,14 +228,14 @@ const storageKeyChange = () => {
     :storageKey="storageKey"
     @storageKeyChange="storageKeyChange">
     <template #default="record">
-      <template v-if="record.value === 'mobileList'">
+      <template v-if="record.value === 'webList'">
         <List
           v-bind="record"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
       </template>
-      <template v-else-if="record.value === 'mobileDetails'">
+      <template v-else-if="record.value === 'webDetails'">
         <Detail
           v-bind="record"
           :userInfo="props.userInfo"

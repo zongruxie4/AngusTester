@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Table, Icon, Select, Card } from '@xcan-angus/vue-ui';
+import { ref, inject } from 'vue';
+import { Table, Icon, Select, Card, SearchPanel} from '@xcan-angus/vue-ui';
 import { Button, Tag, Dropdown, Menu } from 'ant-design-vue';
 import type { VersionListProps } from './types';
+import { useRouter } from 'vue-router';
+import { M } from 'oas/dist/extensions-BgSADIb5.cjs';
 
 // Component props with default values
 const props = withDefaults(defineProps<VersionListProps>(), {
 });
+
+const addTabPane = inject('addTabPane', () => ({}));
 
 // Device Statistics Data
 const deviceStats = ref({
@@ -216,11 +220,42 @@ const handleMore = (record: any, key: string) => {
   console.log('More action:', key, record);
 };
 
+const viewDetail = ({id, deviceName}) => {
+  addTabPane({value: 'mobileDetails', name: deviceName,  _id: id + 'detail', data: {id, }, noCache: true});
+}
+
 // More actions menu
 const moreMenuItems = [
   { key: 'edit', label: '编辑' },
   { key: 'delete', label: '删除' },
   { key: 'logs', label: '查看日志' }
+];
+
+
+const searchPanels = [
+  {
+    type: 'input',
+    valueKey: 'searchKeyWords',
+    placeholder: '搜索关键词'
+  },
+  {
+    type: 'select',
+    valueKey: 'status',
+    options: statusOptions,
+    placeholder: '状态'
+  },
+  {
+    type: 'select',
+    valueKey: 'type',
+    options: typeOptions,
+    placeholder: '类型'
+  },
+  {
+    type: 'select',
+    valueKey: 'nodeId',
+    options: nodeOptions,
+    placeholder: '节点'
+  }
 ];
 
 </script>
@@ -274,22 +309,14 @@ const moreMenuItems = [
     <!-- Device List Section -->
     <div class="device-list-section">
       <div class="text-3.5 font-semibold mb-4">设备列表</div>
-      <div class="flex">
-        <Select
-          v-model:value="statusFilter"
-          :options="statusOptions"
-          class="filter-select"
-          style="width: 120px" />
-        <Select
-          v-model:value="typeFilter"
-          :options="typeOptions"
-          class="filter-select"
-          style="width: 120px" />
-        <Select
-          v-model:value="nodeFilter"
-          :options="nodeOptions"
-          class="filter-select"
-          style="width: 120px" />
+      <div class="flex justify-between">
+        <SearchPanel
+        class="mb-2"
+        :options="searchPanels" />
+        <Button type="primary" size="small" @click="handleRefresh">
+          <Icon icon="icon-shuaxin" class="mr-1" />
+          刷新
+        </Button>
       </div>
 
       <Table
@@ -302,8 +329,8 @@ const moreMenuItems = [
         <template #bodyCell="{ column, record, text }">
           <template v-if="column.dataIndex === 'deviceName'">
             <div class="device-name-cell">
-              <div class="device-name-main">{{ record.deviceName }}</div>
-              <div class="device-name-id">{{ record.deviceId }}</div>
+              <div class="device-name-main"><Button size="small" type="link" @click="viewDetail(record)">{{ record.deviceName }}</Button></div>
+              <div class="device-name-id pl-2">{{ record.deviceId }}</div>
             </div>
           </template>
 
@@ -483,7 +510,6 @@ const moreMenuItems = [
 .device-name-main {
   font-size: 14px;
   font-weight: 500;
-  color: #262626;
 }
 
 .device-name-id {

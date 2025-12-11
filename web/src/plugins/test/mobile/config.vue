@@ -1117,7 +1117,7 @@ provide('userInfo', props.userInfo);
         </Drawer>
         </div>
       </TabPane>
-      <TabPane tab="执行配置" key="executeConfig" forceRender>
+      <TabPane tab="执行配置" key="executeConfig">
         <ExecuteConfig
           ref="executeConfigRef"
           :value="scriptConfig"
