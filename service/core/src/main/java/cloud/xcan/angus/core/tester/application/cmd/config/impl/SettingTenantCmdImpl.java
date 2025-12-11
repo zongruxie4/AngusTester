@@ -123,9 +123,9 @@ public class SettingTenantCmdImpl extends CommCmd<TenantSetting, Long> implement
         setting.setEvaluationWeightData(evaluation);
         updateTenantSetting(getOptTenantId(), setting);
 
-        activityCmd.add(toUpdateGlobalResourceActivity(CombinedTargetType.INDICATOR,
-            GlobalResourceType.EVALUATION, "INDICATOR_UPDATE_TO",
-            compareEvaluationMaps(setting.getEvaluationWeightData(), evaluation)));
+  //        activityCmd.add(toUpdateGlobalResourceActivity(CombinedTargetType.INDICATOR,
+  //            GlobalResourceType.EVALUATION, "INDICATOR_UPDATE_TO",
+  //            compareEvaluationMaps(setting.getEvaluationWeightData(), evaluation)));
         return null;
       }
     }.execute();
@@ -177,9 +177,9 @@ public class SettingTenantCmdImpl extends CommCmd<TenantSetting, Long> implement
         setting.setPerfData(data);
         updateTenantSetting(getOptTenantId(), setting);
 
-        activityCmd.add(toUpdateGlobalResourceActivity(CombinedTargetType.INDICATOR,
-            GlobalResourceType.EVALUATION, "INDICATOR_UPDATE_TO",
-            compareObjects(setting.getFuncData(), data)));
+      //        activityCmd.add(toUpdateGlobalResourceActivity(CombinedTargetType.INDICATOR,
+      //            GlobalResourceType.EVALUATION, "INDICATOR_UPDATE_TO",
+      //            compareObjects(setting.getFuncData(), data)));
         return null;
       }
     }.execute();
@@ -204,9 +204,9 @@ public class SettingTenantCmdImpl extends CommCmd<TenantSetting, Long> implement
         setting.setStabilityData(data);
         updateTenantSetting(getOptTenantId(), setting);
 
-        activityCmd.add(toUpdateGlobalResourceActivity(CombinedTargetType.INDICATOR,
-            GlobalResourceType.EVALUATION, "INDICATOR_UPDATE_TO",
-            compareObjects(setting.getFuncData(), data)));
+//        activityCmd.add(toUpdateGlobalResourceActivity(CombinedTargetType.INDICATOR,
+//            GlobalResourceType.EVALUATION, "INDICATOR_UPDATE_TO",
+//            compareObjects(setting.getFuncData(), data)));
         return null;
       }
     }.execute();
