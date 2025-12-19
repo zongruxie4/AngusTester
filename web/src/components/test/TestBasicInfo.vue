@@ -1,38 +1,38 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { Button } from 'ant-design-vue';
-import { useI18n } from 'vue-i18n';
+import {computed} from 'vue';
+import {Button} from 'ant-design-vue';
+import {useI18n} from 'vue-i18n';
 
-import { Icon, Tooltip, Grid, Colon } from '@xcan-angus/vue-ui';
+import {Colon, Grid, Icon, Tooltip} from '@xcan-angus/vue-ui';
 
 import ScriptTypeTag from '@/components/script/ScriptTypeTag.vue';
 
-const { t } = useI18n();
+const {t} = useI18n();
 
 interface Props {
   value: {
-    id:string;
-    name:string;
-    plugin:string;
-    priority:string;
-    actualStartDate:string;
-    endDate:string;
-    result:string;
-    scriptType:{value:string;message:string;};
-    scriptId:string;
-    creator:string;
-    createdDate:string;
-    modifier:string;
-    modifiedDate:string;
-    status:{value:string;message:string;};
+    id: string;
+    name: string;
+    plugin: string;
+    priority: string;
+    actualStartDate: string;
+    endDate: string;
+    result: string;
+    scriptType: { value: string; message: string; };
+    scriptId: string;
+    creator: string;
+    createdDate: string;
+    modifier: string;
+    modifiedDate: string;
+    status: { value: string; message: string; };
   };
-  exception:{
-    codeName:string;
-    messageName:string;
-    code:string;
-    message:string;
+  exception: {
+    codeName: string;
+    messageName: string;
+    code: string;
+    message: string;
   };
-  hasIgnoreAssertions?:boolean;
+  hasIgnoreAssertions?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -44,29 +44,80 @@ const props = withDefaults(defineProps<Props>(), {
 const GridColumns = computed(() => {
   if (props.value?.scriptType?.value === 'MOCK_DATA') {
     return [
-    [{ dataIndex: 'id', label: t('common.id') }, { dataIndex: 'status', label: t('common.status') }, { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }],
-      [{ dataIndex: 'name', label: t('common.name') }, { dataIndex: 'scriptType', label: t('common.scriptType') }, { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }],
-      [{ dataIndex: 'scriptName', label: t('common.scriptName') }, { dataIndex: 'priority', label: t('common.priority') }, { dataIndex: 'batchRows', label: t('xcan_testBasicInfo.batchRows') }],
-      [{ dataIndex: 'plugin', label: t('common.plugin') }, { dataIndex: 'creator', label: t('common.creator') }, { dataIndex: 'modifier', label: t('common.modifier') }],
-      [{ dataIndex: 'actualStartDate', label: t('xcan_testBasicInfo.actualStartDate') }, { dataIndex: 'endDate', label: t('common.endTime') }, (props.value?.status?.value === 'COMPLETED' && props.value?.mockFileUrl) && { dataIndex: 'mockFileUrl', label: t('xcan_testBasicInfo.mockFileUrl') }].filter(Boolean)
+      [{dataIndex: 'id', label: t('common.id')}, {
+        dataIndex: 'status',
+        label: t('common.status')
+      }, {dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes')}],
+      [{dataIndex: 'name', label: t('common.name')}, {
+        dataIndex: 'scriptType',
+        label: t('common.scriptType')
+      }, {dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval')}],
+      [{dataIndex: 'scriptName', label: t('common.scriptName')}, {
+        dataIndex: 'priority',
+        label: t('common.priority')
+      }, {dataIndex: 'batchRows', label: t('xcan_testBasicInfo.batchRows')}],
+      [{dataIndex: 'plugin', label: t('common.plugin')}, {
+        dataIndex: 'creator',
+        label: t('common.creator')
+      }, {dataIndex: 'modifier', label: t('common.modifier')}],
+      [{dataIndex: 'actualStartDate', label: t('xcan_testBasicInfo.actualStartDate')}, {
+        dataIndex: 'endDate',
+        label: t('common.endTime')
+      }, (props.value?.status?.value === 'COMPLETED' && props.value?.mockFileUrl) && {
+        dataIndex: 'mockFileUrl',
+        label: t('xcan_testBasicInfo.mockFileUrl')
+      }].filter(Boolean)
     ];
   }
 
   if (props.hasIgnoreAssertions) {
     return [
-    [{ dataIndex: 'id', label: t('common.id') }, { dataIndex: 'status', label: t('common.status') }, { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }, { dataIndex: 'endDate', label: t('common.endTime') }],
-      [{ dataIndex: 'name', label: t('common.name') }, { dataIndex: 'scriptType', label: t('common.scriptType') }, { dataIndex: 'updateTestResult', label: t('xcan_testBasicInfo.updateTestResult') }, { dataIndex: 'modifier', label: t('common.modifier') }],
-      [{ dataIndex: 'scriptName', label: t('common.scriptName') }, { dataIndex: 'priority', label: t('common.priority') }, { dataIndex: 'creator', label: t('common.creator') }],
-      [{ dataIndex: 'plugin', label: t('common.plugin') }, { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }, { dataIndex: 'actualStartDate', label: t('xcan_testBasicInfo.actualStartDate') }]
+      [{dataIndex: 'id', label: t('common.id')}, {
+        dataIndex: 'status',
+        label: t('common.status')
+      }, {dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval')}, {
+        dataIndex: 'endDate',
+        label: t('common.endTime')
+      }],
+      [{dataIndex: 'name', label: t('common.name')}, {
+        dataIndex: 'scriptType',
+        label: t('common.scriptType')
+      }, {dataIndex: 'updateTestResult', label: t('xcan_testBasicInfo.updateTestResult')}, {
+        dataIndex: 'modifier',
+        label: t('common.modifier')
+      }],
+      [{dataIndex: 'scriptName', label: t('common.scriptName')}, {
+        dataIndex: 'priority',
+        label: t('common.priority')
+      }, {dataIndex: 'creator', label: t('common.creator')}],
+      [{dataIndex: 'plugin', label: t('common.plugin')}, {
+        dataIndex: 'execNodes',
+        label: t('xcan_testBasicInfo.execNodes')
+      }, {dataIndex: 'actualStartDate', label: t('xcan_testBasicInfo.actualStartDate')}]
     ];
   }
 
   return [
-  [{ dataIndex: 'id', label: t('common.id') }, { dataIndex: 'status', label: t('common.status') }, { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }],
-    [{ dataIndex: 'name', label: t('common.name') }, { dataIndex: 'scriptType', label: t('common.scriptType') }, { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }],
-    [{ dataIndex: 'scriptName', label: t('common.scriptName') }, { dataIndex: 'priority', label: t('common.priority') }, { dataIndex: 'ignoreAssertions', label: t('xcan_testBasicInfo.ignoreAssertions') }],
-    [{ dataIndex: 'plugin', label: t('common.plugin') }, { dataIndex: 'creator', label: t('common.creator') }, { dataIndex: 'modifier', label: t('common.modifier') }],
-    [{ dataIndex: 'actualStartDate', label: t('xcan_testBasicInfo.actualStartDate') }, { dataIndex: 'endDate', label: t('common.endTime') }, { dataIndex: 'updateTestResult', label: t('xcan_testBasicInfo.updateTestResult') }]
+    [{dataIndex: 'id', label: t('common.id')}, {
+      dataIndex: 'status',
+      label: t('common.status')
+    }, {dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes')}],
+    [{dataIndex: 'name', label: t('common.name')}, {
+      dataIndex: 'scriptType',
+      label: t('common.scriptType')
+    }, {dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval')}],
+    [{dataIndex: 'scriptName', label: t('common.scriptName')}, {
+      dataIndex: 'priority',
+      label: t('common.priority')
+    }, {dataIndex: 'ignoreAssertions', label: t('xcan_testBasicInfo.ignoreAssertions')}],
+    [{dataIndex: 'plugin', label: t('common.plugin')}, {
+      dataIndex: 'creator',
+      label: t('common.creator')
+    }, {dataIndex: 'modifier', label: t('common.modifier')}],
+    [{dataIndex: 'actualStartDate', label: t('xcan_testBasicInfo.actualStartDate')}, {
+      dataIndex: 'endDate',
+      label: t('common.endTime')
+    }, {dataIndex: 'updateTestResult', label: t('xcan_testBasicInfo.updateTestResult')}]
   ];
 });
 
@@ -118,21 +169,21 @@ const letterMap = {
       </template>
     </template>
     <template #ignoreAssertions="{text}">
-      {{ typeof text ==='boolean'?text?t('status.ignored'):t('status.notIgnored'):'--' }}
+      {{ typeof text === 'boolean' ? text ? t('status.ignored') : t('status.notIgnored') : '--' }}
     </template>
     <template #reportInterval="{text}">
       <template v-if="text">
-        {{ splitTime(text)[0]+splitTime(text)[1] }}
+        {{ splitTime(text)[0] + splitTime(text)[1] }}
       </template>
       <template v-else>
         --
       </template>
     </template>
     <template #updateTestResult="{text}">
-      {{ typeof text ==='boolean'?text?t('xcan_testBasicInfo.update'):t('xcan_testBasicInfo.notUpdate'):'--' }}
+      {{ typeof text === 'boolean' ? text ? t('xcan_testBasicInfo.update') : t('xcan_testBasicInfo.notUpdate') : '--' }}
     </template>
     <template #scriptType="{text}">
-      <ScriptTypeTag :value="text" class="transform-gpu -translate-y-0.25" />
+      <ScriptTypeTag :value="text" class="transform-gpu -translate-y-0.25"/>
     </template>
     <template #scriptName="{text}">
       <template v-if="text">
@@ -149,13 +200,9 @@ const letterMap = {
       <span class="mr-2">{{ text }}</span>
       <span class="whitespace-nowrap">{{ props.value?.createdDate }}</span>
     </template>
-    <template #modifier>
-      <span class="mr-2">{{ props.value?.modifier }}</span>
-      <span class="whitespace-nowrap">{{ props.value?.modifiedDate }}</span>
-    </template>
     <template #modifier="{text}">
       <span class="mr-2">{{ text }}</span>
-      <span>{{ props.value?.modifiedDate }}</span>
+      <span class="whitespace-nowrap">{{ props.value?.modifiedDate }}</span>
     </template>
     <template #status="{text}">
       <div class="flex items-center flex-none">
@@ -166,12 +213,16 @@ const letterMap = {
             placement="topLeft"
             arrowPointAtCenter
             :overlayStyle="{'max-width': '400px'}">
-            <Icon icon="icon-tishi1" class="ml-1 text-3 text-status-warn cursor-pointer" />
+            <Icon icon="icon-tishi1" class="ml-1 text-3 text-status-warn cursor-pointer"/>
             <template #title>
               <div class="flex space-x-2 leading-5">
                 <div class="space-y-1 text-text-content">
-                  <div class="whitespace-nowrap">{{ props.exception.codeName }}<Colon /></div>
-                  <div class="whitespace-nowrap">{{ props.exception.messageName }}<Colon /></div>
+                  <div class="whitespace-nowrap">{{ props.exception.codeName }}
+                    <Colon/>
+                  </div>
+                  <div class="whitespace-nowrap">{{ props.exception.messageName }}
+                    <Colon/>
+                  </div>
                 </div>
                 <div class="space-y-1 text-text-sub-content">
                   <div>{{ props.exception.code }}</div>
