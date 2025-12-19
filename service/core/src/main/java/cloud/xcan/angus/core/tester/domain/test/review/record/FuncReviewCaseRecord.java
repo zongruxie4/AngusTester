@@ -80,7 +80,7 @@ public class FuncReviewCaseRecord extends EntitySupport<FuncReviewCaseRecord, Lo
   private Long createdBy;
 
   @Transient
-  private String createdByName;
+  private String creator;
   @Transient
   private String avatar;
 

@@ -1,6 +1,5 @@
 package cloud.xcan.angus.core.tester.interfaces.analysis.facade.dto;
 
-import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_CODE_LENGTH;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH_X2;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_URL_LENGTH_X4;
@@ -19,7 +18,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Setter
@@ -102,19 +100,5 @@ public class FuncCaseSummaryStatisticsDto extends PageQuery {
   @Length(max = MAX_URL_LENGTH_X4)
   @Schema(description = "API endpoint URL for the case")
   private String endpoint;
-
-  @Schema(description = "Case creator user identifier")
-  private Long createdBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Case creation timestamp")
-  private LocalDateTime createdDate;
-
-  @Schema(description = "Last modifier user identifier")
-  private Long lastModifiedBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Last modification timestamp")
-  private LocalDateTime lastModifiedDate;
 
 }

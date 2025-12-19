@@ -4,7 +4,6 @@ package cloud.xcan.angus.core.tester.application.cmd.issue.impl;
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.TASK;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -19,6 +18,7 @@ import cloud.xcan.angus.core.tester.domain.issue.remark.TaskRemark;
 import cloud.xcan.angus.core.tester.domain.issue.remark.TaskRemarkRepo;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author XiaoLong Liu
  */
-@Biz
+@Service
 public class TaskRemarkCmdImpl extends CommCmd<TaskRemark, Long> implements TaskRemarkCmd {
 
   @Resource

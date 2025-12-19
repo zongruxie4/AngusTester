@@ -379,7 +379,7 @@ onBeforeUnmount(() => {
               </div>
             </div>
             <div class="mt-1 text-right">
-              <span class="font-semibold mr-1">{{ item.createdByName }}</span>
+              <span class="font-semibold mr-1">{{ item.creator }}</span>
               {{ t('status.createdAt') }}&nbsp;{{ item.createdDate }}
             </div>
             <div class="flex justify-end">

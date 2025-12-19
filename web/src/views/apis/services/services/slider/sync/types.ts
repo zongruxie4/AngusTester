@@ -25,9 +25,9 @@ export type SyncConfigInfo = {
   syncSuccess?: boolean;
   syncFailureCause?: string;
   lastSyncDate?: string;
-  lastModifiedBy: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifier: string;
+  modifiedDate: string;
 
   // Temp fileds in web
   isEdit:boolean;

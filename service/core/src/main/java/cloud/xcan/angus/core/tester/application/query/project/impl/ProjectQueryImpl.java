@@ -17,7 +17,6 @@ import static java.util.Collections.emptyList;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.api.commonlink.user.UserBase;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -37,6 +36,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -47,7 +47,7 @@ import org.springframework.data.domain.PageRequest;
  * validation.
  * </p>
  */
-@Biz
+@Service
 public class ProjectQueryImpl implements ProjectQuery {
 
   @Resource

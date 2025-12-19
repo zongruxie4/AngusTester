@@ -50,8 +50,8 @@ public class NodeDomainDnsAssembler {
         .setCreatedBy(dns.getCreatedBy())
         .setCreatedDate(dns.getCreatedDate())
         .setTenantId(dns.getTenantId())
-        .setLastModifiedBy(dns.getLastModifiedBy())
-        .setLastModifiedDate(dns.getLastModifiedDate());
+        .setModifiedBy(dns.getModifiedBy())
+        .setModifiedDate(dns.getModifiedDate());
   }
 
   public static GenericSpecification<NodeDomainDns> getSpecification(NodeDomainDnsFindDto dto) {

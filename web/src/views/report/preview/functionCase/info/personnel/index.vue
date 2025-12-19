@@ -44,7 +44,7 @@ const caseInfo = computed(() => {
           {{ t('common.creator') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-          {{ caseInfo?.createdByName }}
+          {{ caseInfo?.creator }}
         </div>
       </div>
 
@@ -61,7 +61,7 @@ const caseInfo = computed(() => {
           {{ t('common.modifier') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-          {{ caseInfo?.lastModifiedByName }}
+          {{ caseInfo?.modifier }}
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ export type DataSetItem = {
     /** Creator user ID */
     createdBy: string;
     /** Creator user name */
-    createdByName: string;
+    creator: string;
     /** Creation date */
     createdDate: string;
     /** Dataset description */
@@ -71,11 +71,11 @@ export type DataSetItem = {
     /** Dataset ID */
     id: string;
     /** Last modifier user ID */
-    lastModifiedBy: string;
+    modifiedBy: string;
     /** Last modifier user name */
-    lastModifiedByName: string;
+    modifier: string;
     /** Last modification date */
-    lastModifiedDate: string;
+    modifiedDate: string;
     /** Dataset name */
     name: string;
     /** Dataset parameters */

@@ -118,7 +118,7 @@ const searchPanelOptions = computed(() => [
       t('common.placeholders.selectModifiedDateRange.0'),
       t('common.placeholders.selectModifiedDateRange.1')
     ],
-    valueKey: 'lastModifiedDate',
+    valueKey: 'modifiedDate',
     type: 'date-range',
     allowClear: true,
     showTime: true

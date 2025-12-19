@@ -85,7 +85,6 @@ import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.Result;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.api.pojo.Attachment;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.biz.exception.BizException;
@@ -147,6 +146,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -176,7 +176,7 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author XiaoLong Liu
  */
-@Biz
+@Service
 public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
   @Resource

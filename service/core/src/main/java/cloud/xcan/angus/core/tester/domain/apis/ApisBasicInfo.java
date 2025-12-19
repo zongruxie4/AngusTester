@@ -198,7 +198,7 @@ public class ApisBasicInfo extends TenantAuditingEntity<ApisBasicInfo, Long>
   @Transient
   private Long unarchivedId;
   @Transient
-  private String createdByName;
+  private String creator;
   @Transient
   private String avatar;
   @Transient

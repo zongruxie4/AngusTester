@@ -39,7 +39,7 @@ const processedDate = computed(() => props.dataSource?.processedDate);
 const confirmedDate = computed(() => props.dataSource?.confirmedDate);
 const completedDate = computed(() => props.dataSource?.completedDate);
 const canceledDate = computed(() => props.dataSource?.canceledDate);
-const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
+const modifiedDate = computed(() => props.dataSource?.modifiedDate);
 
 // Date validation state
 const hasDateValidationError = ref();
@@ -237,10 +237,10 @@ const disablePastDates = (current: Dayjs) => {
         <!-- Last Modified Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('common.lastModifiedDate') }}</span>
+            <span>{{ t('common.modifiedDate') }}</span>
           </div>
           <div class="info-value">
-            <span class="info-text" :class="{ 'dash-text': !lastModifiedDate }">{{ lastModifiedDate || '--' }}</span>
+            <span class="info-text" :class="{ 'dash-text': !modifiedDate }">{{ modifiedDate || '--' }}</span>
           </div>
         </div>
       </div>

@@ -29,7 +29,6 @@ import static org.apache.commons.lang3.exception.ExceptionUtils.getMessage;
 import cloud.xcan.angus.agent.message.runner.RunnerRunDto;
 import cloud.xcan.angus.agent.message.runner.RunnerRunVo;
 import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -82,6 +81,7 @@ import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -100,7 +100,7 @@ import org.springframework.transaction.annotation.Transactional;
  * </p>
  */
 @Slf4j
-@Biz
+@Service
 public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDebugCmd {
 
   @Resource
@@ -641,7 +641,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
         ApiLocaleResult<?> result = objectMapper.readValue(response.body(),
             new TypeReference<ApiLocaleResult<?>>() {
             });
-        return RunnerRunVo.fail(String.valueOf(dto.getId()), result.getMsg());
+        return RunnerRunVo.fail(String.valueOf(dto.getId()), result.getMessage());
       }
     } catch (Throwable e) {
       // Handle communication exception

@@ -15,7 +15,7 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.api.commonlink.TesterConstant;
 import cloud.xcan.angus.api.commonlink.user.UserRepo;
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.tester.application.query.test.FuncPlanAuthQuery;
@@ -65,7 +65,7 @@ import org.springframework.data.jpa.domain.Specification;
  * Supports both individual plan operations and bulk operations with proper error handling
  * and resource validation.
  */
-@Biz
+@Service
 public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
 
   @Resource

@@ -10,11 +10,11 @@ export type BaselineDetail = {
   caseIds?: string[];
   tenantId: string;
   createdBy: string;
-  createdByName: string;
+  creator: string;
   createdDate: string;
-  lastModifiedBy: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifier: string;
+  modifiedDate: string;
 }
 
 export type BaselineCaseInfo = {

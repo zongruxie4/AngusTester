@@ -49,8 +49,8 @@ public class ServicesAssembler {
         .setApisCaseNum(services.getApisCaseNum())
         .setCreatedBy(services.getCreatedBy())
         .setCreatedDate(services.getCreatedDate())
-        .setLastModifiedBy(services.getLastModifiedBy())
-        .setLastModifiedDate(services.getLastModifiedDate());
+        .setModifiedBy(services.getModifiedBy())
+        .setModifiedDate(services.getModifiedDate());
     Object schema = PrincipalContext.getExtension("servicesSchema");
     if (isNotNull(schema)) {
       detailVo.setSchema(ServicesSchemaAssembler.toDetailVo((ServicesSchema) schema));
@@ -85,7 +85,7 @@ public class ServicesAssembler {
     ApiLocaleResult<PageResult<ServiceVo>> apiResult = ApiLocaleResult.success(result);
     Object queryAll = PrincipalContext.getExtension("queryAllEmpty");
     if (result.isEmpty() && nonNull(queryAll) && (boolean) queryAll) {
-      apiResult.getExt().put("allowImportSamples", true);
+      apiResult.getExtensions().put("allowImportSamples", true);
     }
     return apiResult;
   }

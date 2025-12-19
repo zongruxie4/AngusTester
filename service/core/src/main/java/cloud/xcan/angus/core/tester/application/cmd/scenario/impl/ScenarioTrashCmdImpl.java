@@ -8,7 +8,7 @@ import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Ensures permission checks, cascading operations, and batch processing with transaction
  * management.
  */
-@Biz
+@Service
 public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implements ScenarioTrashCmd {
 
   @Resource

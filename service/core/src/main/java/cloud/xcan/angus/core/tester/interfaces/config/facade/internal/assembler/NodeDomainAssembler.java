@@ -34,8 +34,8 @@ public class NodeDomainAssembler {
         .setDnsNum(dto.getDnsNum())
         .setCreatedBy(dto.getCreatedBy())
         .setCreatedDate(dto.getCreatedDate())
-        .setLastModifiedBy(dto.getLastModifiedBy())
-        .setLastModifiedDate(dto.getLastModifiedDate());
+        .setModifiedBy(dto.getModifiedBy())
+        .setModifiedDate(dto.getModifiedDate());
   }
 
   public static GenericSpecification<NodeDomain> getSpecification(NodeDomainFindDto dto) {

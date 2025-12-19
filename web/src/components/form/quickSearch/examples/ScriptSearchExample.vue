@@ -46,7 +46,7 @@ const quickSearchConfig: QuickSearchConfig = {
   // Audit information options
   auditOptions: createAuditOptions([
     { key: 'createdBy', name: 'Created by me', fieldKey: 'createdBy' },
-    { key: 'lastModifiedBy', name: 'Modified by me', fieldKey: 'lastModifiedBy' }
+    { key: 'modifiedBy', name: 'Modified by me', fieldKey: 'modifiedBy' }
   ], currentUserId),
 
   // Enum status options (using enumType for automatic generation)

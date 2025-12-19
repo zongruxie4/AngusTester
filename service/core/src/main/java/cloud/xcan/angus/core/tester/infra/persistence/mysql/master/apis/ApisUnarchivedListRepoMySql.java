@@ -39,7 +39,7 @@ public class ApisUnarchivedListRepoMySql extends
 
   @Override
   public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
-    return "a.id,a.protocol,a.summary,a.endpoint,a.method,a.created_by,a.created_date,a.last_modified_by,a.last_modified_date";
+    return "a.id,a.protocol,a.summary,a.endpoint,a.method,a.created_by,a.created_date,a.modified_by,a.modified_date";
   }
 
 }

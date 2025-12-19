@@ -65,7 +65,7 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
     {
       key: 'myModified',
       name: t('quickSearch.modifiedByMe'),
-      fieldKey: 'lastModifiedBy'
+      fieldKey: 'modifiedBy'
     }
   ], String(currentUser.value?.id || '')),
   // Enum status options for plan status

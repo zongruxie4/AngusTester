@@ -42,8 +42,8 @@ type Props = {
   filters: SearchCriteria[];
   notify: string;
   moduleId: string;
-  groupKey: 'none' | 'testerName' | 'lastModifiedByName';
-  orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName';
+  groupKey: 'none' | 'testerName' | 'modifier';
+  orderBy: 'priority' | 'deadlineDate' | 'creator' | 'testerName';
   orderSort: PageQuery.OrderSort;
 };
 
@@ -90,7 +90,7 @@ const numMap = ref<{ [key in CaseTestResult]: number }>({
 });
 
 const testerNameList = ref<{ name: string; value: string }[]>([]);
-const lastModifiedByNameList = ref<{ name: string; value: string }[]>([]);
+const modifierList = ref<{ name: string; value: string }[]>([]);
 const groupDataMap = ref<{ [key: string]: { [key in CaseTestResult]: CaseDetail[] } }>({});
 
 const isDraggingToColumn = ref<string|null>(null);
@@ -163,7 +163,7 @@ const loadCases = async () => {
 
   const planIdSet = new Set<number>();
   const testerNameSet = new Set<string>();
-  const lastModifiedByNameSet = new Set<string>();
+  const modifierSet = new Set<string>();
   for (let i = 0, len = _caseList.length; i < len; i++) {
     const item = _caseList[i];
     const testResult = item.testResult?.value;
@@ -185,15 +185,15 @@ const loadCases = async () => {
       }
     }
 
-    if (!lastModifiedByNameSet.has(item.lastModifiedByName)) {
-      lastModifiedByNameList.value.push({
-        name: item.lastModifiedByName,
-        value: item.lastModifiedBy
+    if (!modifierSet.has(item.modifier)) {
+      modifierList.value.push({
+        name: item.modifier,
+        value: item.modifiedBy
       });
     }
 
     testerNameSet.add(item.testerName);
-    lastModifiedByNameSet.add(item.lastModifiedByName);
+    modifierSet.add(item.modifier);
 
     if (props.groupKey !== 'none') {
       setGroupData(item);
@@ -257,12 +257,12 @@ const getParams = () => {
  * Accumulate a single case into grouped data map by selected group key
  */
 const setGroupData = (data:CaseDetail) => {
-  const { testResult: { value: testResultValue }, testerId = -1, lastModifiedBy } = data;
+  const { testResult: { value: testResultValue }, testerId = -1, modifiedBy } = data;
   let key:any = -1;
   if (props.groupKey === 'testerName') {
     key = testerId;
-  } else if (props.groupKey === 'lastModifiedByName') {
-    key = lastModifiedBy;
+  } else if (props.groupKey === 'modifier') {
+    key = modifiedBy;
   }
 
   if (groupDataMap.value[key]) {
@@ -574,11 +574,11 @@ const revertDragInGroup = (id: number, index: number, testResult: CaseTestResult
 /**
  * Entry point for applying sort to all columns
  */
-const handleSortRequest = (data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName'; orderSort: PageQuery.OrderSort; }) => {
+const handleSortRequest = (data: { orderBy: 'priority' | 'deadlineDate' | 'creator' | 'testerName'; orderSort: PageQuery.OrderSort; }) => {
   sortData(data.orderBy, data.orderSort);
 };
 
-const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName', orderSort: PageQuery.OrderSort) => {
+const sortData = (orderBy: 'priority' | 'deadlineDate' | 'creator' | 'testerName', orderSort: PageQuery.OrderSort) => {
   const map = caseDataMap.value;
   if (orderBy === 'priority') {
     const sortKeys = orderSort === PageQuery.OrderSort.Desc ? ['HIGHEST', 'HIGH', 'MEDIUM', 'LOW', 'LOWEST'] : ['LOWEST', 'LOW', 'MEDIUM', 'HIGH', 'HIGHEST'];
@@ -626,7 +626,7 @@ const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'test
     return;
   }
 
-  if (orderBy === 'testerName' || orderBy === 'createdByName') {
+  if (orderBy === 'testerName' || orderBy === 'creator') {
     if (orderSort === PageQuery.OrderSort.Desc) {
       for (const key in map) {
         map[key] = reverse(sortBy(map[key], orderBy));
@@ -645,7 +645,7 @@ const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'test
 /**
  * Apply grouping and rebuild grouped data map
  */
-const handleGroupChange = (value: 'none' | 'testerName' | 'lastModifiedByName') => {
+const handleGroupChange = (value: 'none' | 'testerName' | 'modifier') => {
   arrowOpenSet.value.clear();
 
   if (value === 'none') {
@@ -1143,8 +1143,8 @@ const toggleOpen = () => {
     let list: number[] = [];
     if (props.groupKey === 'testerName') {
       list = testerNameList.value.map(item => item.value);
-    } else if (props.groupKey === 'lastModifiedByName') {
-      list = lastModifiedByNameList.value.map(item => item.value);
+    } else if (props.groupKey === 'modifier') {
+      list = modifierList.value.map(item => item.value);
     }
 
     for (let i = 0, len = list.length; i < len; i++) {
@@ -1213,7 +1213,7 @@ const resetData = () => {
   };
 
   testerNameList.value = [];
-  lastModifiedByNameList.value = [];
+  modifierList.value = [];
 };
 
 onMounted(() => {
@@ -1271,7 +1271,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         }
       ];
 
-      if (!review || (review && reviewStatus.value === ReviewStatus.PASSED)) {  
+      if (!review || (review && reviewStatus.value === ReviewStatus.PASSED)) {
         if (testResult.value === CaseTestResult.PENDING || testResult.value === CaseTestResult.BLOCKED) {
           menuItems.push({
             name: t('testCase.actions.testPassed'),
@@ -1404,8 +1404,8 @@ const showGroupData = computed(() => {
     return testerNameList.value;
   }
 
-  if (props.groupKey === 'lastModifiedByName') {
-    return lastModifiedByNameList.value;
+  if (props.groupKey === 'modifier') {
+    return modifierList.value;
   }
 
   return [];
@@ -1532,48 +1532,48 @@ const checkedCaseId = computed(() => {
       </div>
       <div style="height:calc(100% - 32px);" class="overflow-y-auto">
         <div
-          v-for="_createdByName in showGroupData"
-          :key="_createdByName.value"
-          :class="{ 'h-full': arrowOpenSet.has(_createdByName.value) }"
+          v-for="_creator in showGroupData"
+          :key="_creator.value"
+          :class="{ 'h-full': arrowOpenSet.has(_creator.value) }"
           class="flex items-start flex-nowrap border-b border-solid border-theme-text-box overflow-x-hidden">
           <div class="w-50 flex-shrink-0 flex items-center justify-between px-2.5 py-3.5">
             <div class="flex items-center overflow-hidden">
               <Arrow
-                :open="arrowOpenSet.has(_createdByName.value)"
+                :open="arrowOpenSet.has(_creator.value)"
                 type="dashed"
                 class="flex-shrink-0 mr-1.5"
                 style="font-size:12px;"
-                @change="arrowOpenChange($event, _createdByName.value)" />
-              <div class="flex-1 truncate font-semibold" :title="_createdByName.name">{{ _createdByName.name }}</div>
+                @change="arrowOpenChange($event, _creator.value)" />
+              <div class="flex-1 truncate font-semibold" :title="_creator.name">{{ _creator.name }}</div>
               <div class="flex-shrink-0">
               </div>
             </div>
             <div class="flex items-center">
-              <span>{{ Object.values(groupDataMap[_createdByName.value] || {}).reduce((prev, cur) => prev + cur.length,0) }}</span>
+              <span>{{ Object.values(groupDataMap[_creator.value] || {}).reduce((prev, cur) => prev + cur.length,0) }}</span>
               <span>{{ t('common.useCase') }}</span>
             </div>
           </div>
           <div class="relative h-full flex items-start" style="width: calc(100% - 193px);">
-            <template v-if="!arrowOpenSet.has(_createdByName.value)">
+            <template v-if="!arrowOpenSet.has(_creator.value)">
               <div
                 v-for="_testResult in testResultList"
                 :key="_testResult.value"
                 style="width:20%;"
                 class="flex items-center px-2.5 py-3.5 space-x-1.5">
                 <span>{{ _testResult.message }}</span>
-                <span>{{ groupDataMap[_createdByName.value]?.[_testResult.value]?.length || 0 }}</span>
+                <span>{{ groupDataMap[_creator.value]?.[_testResult.value]?.length || 0 }}</span>
               </div>
             </template>
-            <AsyncComponent :visible="arrowOpenSet.has(_createdByName.value)">
+            <AsyncComponent :visible="arrowOpenSet.has(_creator.value)">
               <Draggable
                 v-for="(_testResult,testResultIndex) in testResultList"
-                v-show="arrowOpenSet.has(_createdByName.value)"
+                v-show="arrowOpenSet.has(_creator.value)"
                 :id="`${_testResult.value}-${testResultIndex}`"
                 :key="_testResult.value"
                 style="width:20%;height: 100%;"
-                :list="(groupDataMap[_createdByName.value]?.[_testResult.value] || [])"
+                :list="(groupDataMap[_creator.value]?.[_testResult.value] || [])"
                 :animation="300"
-                :group="`cases-${_createdByName.value}`"
+                :group="`cases-${_creator.value}`"
                 :class="{'highlight-enabled':testResultIndex===isDraggingToColumn,highlight:isDraggingToColumnTestResult.includes(_testResult.value)}"
                 class="draggable-container right-border relative overflow-y-auto scroll-smooth space-y-2 px-2 py-2"
                 ghostClass="ghost"
@@ -1585,10 +1585,10 @@ const checkedCaseId = computed(() => {
                 @add="handleGroupDragAdd($event, _testResult.value)">
                 <template #item="{ element, index }: { element: CaseDetail; index: number; }">
                   <div
-                    :id="`${_testResult.value}-${index}-${element.id}-${_createdByName.value}`"
+                    :id="`${_testResult.value}-${index}-${element.id}-${_creator.value}`"
                     :class="{ 'active-item': checkedCaseId === element.id }"
                     class="case-board-item border border-solid rounded border-theme-text-box p-2 space-y-1.5"
-                    @click="handleSelectCard(element,index,String(_createdByName.value))">
+                    @click="handleSelectCard(element,index,String(_creator.value))">
                     <div class="flex items-center overflow-hidden">
                       <IconTask :value="element.testResult.value" class="mr-1.5" />
                       <span :title="element.name" class="flex-1 truncate font-semibold">{{ element.name }}</span>

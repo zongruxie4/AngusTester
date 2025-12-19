@@ -190,8 +190,8 @@ const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
 
             <!-- Right side: Created info -->
             <div class="flex items-center space-x-2 text-xs text-theme-sub-content">
-              <span class="text-theme-content font-medium truncate max-w-16" :title="item.createdByName">
-                {{ item.createdByName || '-' }}
+              <span class="text-theme-content font-medium truncate max-w-16" :title="item.creator">
+                {{ item.creator || '-' }}
               </span>
               <span class="whitespace-nowrap">{{ t('status.createdAt') }}</span>
               <span class="text-theme-sub-content whitespace-nowrap">{{ item.createdDate || '-' }}</span>

@@ -62,7 +62,7 @@ const groupedList = getGroupedList(props.dataSource, props.groupedKey);
                 :src="dataList[0].avatar"
                 type="avatar"
                 class="w-6 h-6 rounded-xl" />
-              <div class="text-theme-content pt-0.5 font-bold">{{ dataList[0].createdByName }}</div>
+              <div class="text-theme-content pt-0.5 font-bold">{{ dataList[0].creator }}</div>
             </div>
 
             <div v-else-if="props.groupedKey === 'plugin'" class="flex-1 flex items-center">

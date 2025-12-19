@@ -53,9 +53,9 @@ public class FuncTrash extends TenantEntity<FuncTrash, Long> implements Activity
   private LocalDateTime deletedDate;
 
   @Transient
-  private String createdByName;
+  private String creator;
   @Transient
-  private String createdByAvatar;
+  private String creatorAvatar;
   @Transient
   private String deletedByName;
   @Transient

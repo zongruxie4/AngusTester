@@ -14,12 +14,12 @@ export type ApiInfo = {
   deprecated: boolean;
   status: EnumMessage<ApiStatus>;
   createdBy: string;
-  createdByName: string;
+  creator: string;
   ownerId: string;
   ownerName: string;
   avatar: string;
   createdDate: string;
-  lastModifiedDate: string;
+  modifiedDate: string;
   auth: boolean;
 }
 
@@ -41,12 +41,12 @@ export type ApisListInfo = {
   follow: boolean;
   tenantId: string;
   createdBy: string;
-  createdByName: string;
+  creator: string;
   ownerId: string;
   ownerName: string;
   avatar: string;
   createdDate: string;
-  lastModifiedDate: string;
+  modifiedDate: string;
   auth: boolean;
   serviceAuth: boolean;
   /**
@@ -146,12 +146,12 @@ export type ApisDetail = {
 
   tenantId: string;
   createdBy: string;
-  createdByName: string;
+  creator: string;
   // avatar: string;
   createdDate: string;
-  lastModifiedBy: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifier: string;
+  modifiedDate: string;
 }
 
 export interface ApisFormEdit {
@@ -202,7 +202,7 @@ export type ApisUnarchivedListInfo = {
   endpoint: string;
   summary: string;
   createdDate: string;
-  lastModifiedDate: string;
+  modifiedDate: string;
 }
 
 // Detail VO mapped from backend class `ApisUnarchivedDetailVo`
@@ -234,7 +234,7 @@ export interface ApisUnarchivedDetail {
   tenantId?: string;
   createdBy?: string;
   createdDate?: string;
-  lastModifiedDate?: string;
+  modifiedDate?: string;
 }
 
 export interface ParamsItem {

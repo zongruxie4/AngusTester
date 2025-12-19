@@ -8,7 +8,6 @@ import static cloud.xcan.angus.core.tester.application.converter.FuncReviewCaseC
 import static cloud.xcan.angus.core.tester.application.query.test.impl.FuncCaseQueryImpl.getCaseDetailSummary;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.JoinSupplier;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
@@ -44,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
  * comprehensive activity logging for audit purposes.
  * </p>
  */
-@Biz
+@Service
 public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
     implements FuncReviewCaseCmd {
 

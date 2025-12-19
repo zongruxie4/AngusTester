@@ -85,7 +85,7 @@ public class NodeMetricsConverter {
     nodeDb.setTenantId(tenantId);
     nodeDb.setId(deviceId).setOs(new Os())
         .setAgentInstalled(true).setAgentOnline(true)
-        .setLastModifiedDate(LocalDateTime.now());
+        .setModifiedDate(LocalDateTime.now());
     Info info = new Info();
     Os os = new Os();
     Map<String, Response> contentMap = content.stream()

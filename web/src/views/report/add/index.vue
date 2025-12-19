@@ -158,7 +158,7 @@ const basicInfoSetting = ref({
 });
 
 // Creator name
-const createdByName = ref();
+const creator = ref();
 
 // Validation state
 const isValid = ref(false);
@@ -189,7 +189,7 @@ const validate = async () => {
 const resetData = () => {
   isChangeDescription.value = false;
   reportIdRef.value = undefined;
-  createdByName.value = undefined;
+  creator.value = undefined;
   reportTemplate.value = [ReportTemplate.PROJECT_PROGRESS];
   formState.value = {
     name: '',
@@ -239,7 +239,7 @@ const loadReportById = async () => {
   formState.value.name = name;
   formState.value.version = version;
   formState.value.description = description;
-  createdByName.value = data.createdByName;
+  creator.value = data.creator;
 };
 
 /**
@@ -376,7 +376,7 @@ onMounted(() => {
               <div class="font-semibold text-3.5">{{ report?.label }}</div>
               <div class="flex justify-between">
                 <div class="text-3 flex-1">{{ t('common.category') }}： {{ reportTypeName }}</div>
-                <div class="text-3 flex-1">{{ t('common.reporter') }}： {{ reportId ? createdByName : tenantInfo?.fullName }}</div>
+                <div class="text-3 flex-1">{{ t('common.reporter') }}： {{ reportId ? creator : tenantInfo?.fullName }}</div>
               </div>
               <div class="text-3">{{ t('common.description') }}： {{ report?.description }}</div>
             </div>

@@ -18,7 +18,6 @@ import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.spring.SpringContextHolder;
 import cloud.xcan.angus.core.tester.application.converter.ApisConverter;
@@ -68,6 +67,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -78,7 +78,7 @@ import org.springframework.cache.annotation.Cacheable;
  * parsing.
  * </p>
  */
-@Biz
+@Service
 @Slf4j
 public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
 

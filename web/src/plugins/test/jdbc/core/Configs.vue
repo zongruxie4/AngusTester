@@ -1183,7 +1183,7 @@ const cleanupRequest = (data: { [key: string]: any } = {}) => {
 };
 
 const cleanupVariables = (data: { [key: string]: any }[]) => {
-  const variablesKeys: readonly string[] = ['name', 'description', 'x-id', 'passwordValue', 'x-createdByName', 'value', 'extraction'];
+  const variablesKeys: readonly string[] = ['name', 'description', 'x-id', 'passwordValue', 'x-creator', 'value', 'extraction'];
   // const extractionKeys: readonly string[] = ['method', 'expression', 'defaultValue', 'location', 'parameterName', 'request', 'name'];
   const _variables = data || [];
   const _len = _variables.length;
@@ -1211,7 +1211,7 @@ const cleanupVariables = (data: { [key: string]: any }[]) => {
 };
 
 const cleanupDatasets = (data: { [key: string]: any }[]) => {
-  const variablesKeys: readonly string[] = ['name', 'description', 'extracted', 'parameters', 'extraction', 'x-id', 'x-createdByName'];
+  const variablesKeys: readonly string[] = ['name', 'description', 'extracted', 'parameters', 'extraction', 'x-id', 'x-creator'];
   const extractionKeys: readonly string[] = [
     'columnIndex',
     'encoding',

@@ -11,7 +11,6 @@ import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -38,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -51,7 +51,7 @@ import org.springframework.transaction.annotation.Transactional;
  * </p>
  */
 @Slf4j
-@Biz
+@Service
 public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuthCmd {
 
   @Resource

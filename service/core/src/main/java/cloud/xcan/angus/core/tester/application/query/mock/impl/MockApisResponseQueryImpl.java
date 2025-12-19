@@ -3,7 +3,7 @@ package cloud.xcan.angus.core.tester.application.query.mock.impl;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.mock.MockApisQuery;
 import cloud.xcan.angus.core.tester.application.query.mock.MockApisResponseQuery;
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  * The implementation uses the BizTemplate pattern for consistent business logic handling
  * and proper error management across all operations.
  */
-@Biz
+@Service
 public class MockApisResponseQueryImpl implements MockApisResponseQuery {
 
   @Resource

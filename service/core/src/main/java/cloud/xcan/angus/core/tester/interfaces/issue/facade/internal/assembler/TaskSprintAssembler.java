@@ -96,8 +96,8 @@ public class TaskSprintAssembler {
         .setTenantId(sprint.getTenantId())
         .setCreatedBy(sprint.getCreatedBy())
         .setCreatedDate(sprint.getCreatedDate())
-        .setLastModifiedBy(sprint.getLastModifiedBy())
-        .setLastModifiedDate(sprint.getLastModifiedDate())
+        .setModifiedBy(sprint.getModifiedBy())
+        .setModifiedDate(sprint.getModifiedDate())
         .setTaskNum(sprint.getTaskNum())
         .setValidNum(sprint.getValidTaskNum())
         .setProgress(sprint.getProgress())
@@ -108,7 +108,7 @@ public class TaskSprintAssembler {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdDate", "startDate", "deadlineDate")
-        .orderByFields("id", "name", "ownerId", "createdBy", "createdDate", "lastModifiedBy"
+        .orderByFields("id", "name", "ownerId", "createdBy", "createdDate", "modifiedBy"
             , "startDate", "deadlineDate")
         .matchSearchFields("name", "description")
         .build();

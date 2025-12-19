@@ -181,7 +181,7 @@ public class ApisCase extends TenantAuditingEntity<ApisCase, Long> implements Ac
   @Transient
   private Long apisServiceId;
   @Transient
-  private String createdByName;
+  private String creator;
   @Transient
   private String avatar;
 

@@ -17,7 +17,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -50,6 +49,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -66,7 +66,7 @@ import org.springframework.transaction.annotation.Transactional;
  * reset functionality, and comprehensive activity tracking.
  * </p>
  */
-@Biz
+@Service
 public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlanCmd {
 
   @Resource

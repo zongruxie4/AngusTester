@@ -51,13 +51,13 @@ const currentTaskId = computed(() => props.dataSource?.id);
 /**
  * Name of the user who created the task
  */
-const taskCreatedByName = computed(() => props.dataSource?.createdByName);
+const taskcreator = computed(() => props.dataSource?.creator);
 
 
 /**
  * Name of the user who last modified the task
  */
-const taskLastModifiedByName = computed(() => props.dataSource?.lastModifiedByName);
+const taskmodifier = computed(() => props.dataSource?.modifier);
 
 /**
  * Current assignee ID from data source
@@ -343,7 +343,7 @@ const handleTesterSelectionBlur = async () => {
             <span>{{ t('common.creator') }}</span>
           </div>
           <div class="info-value">
-            <span class="info-text">{{ taskCreatedByName }}</span>
+            <span class="info-text">{{ taskcreator }}</span>
           </div>
         </div>
 
@@ -475,7 +475,7 @@ const handleTesterSelectionBlur = async () => {
             <span>{{ t('common.modifier') }}</span>
           </div>
           <div class="info-value">
-            <span class="info-text">{{ taskLastModifiedByName }}</span>
+            <span class="info-text">{{ taskmodifier }}</span>
           </div>
         </div>
       </div>

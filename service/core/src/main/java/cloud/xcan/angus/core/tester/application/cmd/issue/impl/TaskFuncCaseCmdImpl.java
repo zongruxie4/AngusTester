@@ -4,7 +4,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.issue.TaskFuncCaseCmd;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 
 /**
  * Implementation of task functional case command operations for task-case associations.
@@ -34,7 +34,7 @@ import java.util.Set;
  *   <li>Target-based association management</li>
  * </ul></p>
  */
-@Biz
+@Service
 public class TaskFuncCaseCmdImpl extends CommCmd<TaskFuncCase, Long> implements TaskFuncCaseCmd {
 
   @Resource

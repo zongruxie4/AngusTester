@@ -746,7 +746,7 @@ export type ExecInfo = {
         }[]
     };
     createdBy: string;
-    createdByName: string;
+    creator: string;
     createdDate: string;
     currentDuration: string;
     currentDurationProgress: string;
@@ -786,9 +786,9 @@ export type ExecInfo = {
     ignoreAssertions: boolean;
     iterations: string;
     iterationsProgress: boolean;
-    lastModifiedBy: string;
-    lastModifiedByName: string;
-    lastModifiedDate: string;
+    modifiedBy: string;
+    modifier: string;
+    modifiedDate: string;
     lastSchedulingDate: string;
     lastSchedulingResult: {
         console: string[];
@@ -1373,14 +1373,14 @@ export type ReportInfo = {
     };
     createdAt: { value: 'AT_SOME_DATE' | 'NOW' | 'PERIODICALLY'; message: string; };
     createdBy: string;
-    createdByName: string;
+    creator: string;
     createdDate: string;
     description: string;
     failureMessage: string;
     id: string;
-    lastModifiedBy: string;
-    lastModifiedByName: string;
-    lastModifiedDate: string;
+    modifiedBy: string;
+    modifier: string;
+    modifiedDate: string;
     name: string;
     nextGenerationDate: string;
     projectId: string;
@@ -1435,14 +1435,14 @@ export type ReportContent = {
         };
         createdAt: { value: 'AT_SOME_DATE' | 'NOW' | 'PERIODICALLY'; message: string; };
         createdBy: string;
-        createdByName: string;
+        creator: string;
         createdDate: string;
         description: string;
         failureMessage: string;
         id: string;
-        lastModifiedBy: string;
-        lastModifiedByName: string;
-        lastModifiedDate: string;
+        modifiedBy: string;
+        modifier: string;
+        modifiedDate: string;
         name: string;
         nextGenerationDate: string;
         projectId: string;

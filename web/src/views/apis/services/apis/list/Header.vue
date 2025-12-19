@@ -72,7 +72,7 @@ const sortAndGroupOptions: any = reactive({
     orderSort: 'ASC'
   },
   {
-    key: 'createdByName',
+    key: 'creator',
     name: t('service.groupHeader.sort.byCreatedBy'),
     orderSort: 'ASC'
   }],

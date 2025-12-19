@@ -14,7 +14,7 @@ import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -70,7 +70,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Supports script management, authorization setup, indicator tracking, and comprehensive activity
  * tracking.
  */
-@Biz
+@Service
 public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements ScenarioCmd {
 
   @Resource

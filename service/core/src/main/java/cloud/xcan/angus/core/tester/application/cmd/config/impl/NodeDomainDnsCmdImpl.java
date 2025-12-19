@@ -4,7 +4,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.enums.NormalStatus;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -18,6 +17,7 @@ import cloud.xcan.angus.core.tester.infra.iaas.DnsClient;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  * <p>
  * Ensures DNS integration, domain existence, and batch operations with transaction management.
  */
-@Biz
+@Service
 public class NodeDomainDnsCmdImpl extends CommCmd<NodeDomainDns, Long> implements NodeDomainDnsCmd {
 
   @Resource

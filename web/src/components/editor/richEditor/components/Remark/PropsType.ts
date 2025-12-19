@@ -2,7 +2,7 @@ export interface RemarkInfo {
     avatar: string,
     content: string,
     createdBy: string,
-    createdByName: string,
+    creator: string,
     createdDate: string,
     id: string,
     quoteRemark: string,

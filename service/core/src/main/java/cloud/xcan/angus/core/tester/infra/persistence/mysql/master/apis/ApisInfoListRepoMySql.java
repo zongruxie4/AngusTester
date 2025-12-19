@@ -50,7 +50,7 @@ public class ApisInfoListRepoMySql extends AbstractSearchRepository<ApisBasicInf
   public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
     return
         "a.id,a.summary,a.operation_id,a.project_id,a.auth,a.service_auth,a.source,a.import_source,a.owner_id,"
-            + "a.created_by,a.created_date,a.last_modified_by,a.last_modified_date,a.endpoint,a.method,a.status,a.tags,a.protocol,a.deprecated,"
+            + "a.created_by,a.created_date,a.modified_by,a.modified_date,a.endpoint,a.method,a.status,a.tags,a.protocol,a.deprecated,"
             + "a.test_func,a.test_func_passed,a.test_func_failure_message,a.test_perf,a.test_perf_passed,a.test_perf_failure_message,a.test_stability,a.test_stability_passed,a.test_stability_failure_message";
   }
 

@@ -14,7 +14,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.CriteriaUtils;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -70,7 +70,7 @@ import org.springframework.data.domain.PageRequest;
  * from different nodes and pipeline names while maintaining data integrity and temporal accuracy.
  */
 @Slf4j
-@Biz
+@Service
 public class ExecSampleQueryImpl implements ExecSampleQuery {
 
   @Resource

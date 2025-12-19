@@ -9,7 +9,6 @@ import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.groupingBy;
 
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.CriteriaUtils;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -33,6 +32,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -42,7 +42,7 @@ import org.springframework.data.domain.PageRequest;
  * Provides methods for tag CRUD operations, tag association management, and permission validation.
  * </p>
  */
-@Biz
+@Service
 public class TagQueryImpl implements TagQuery {
 
   @Resource

@@ -136,7 +136,7 @@ const tableColumns = computed(() => [
   },
   {
     title: t('common.creator'),
-    dataIndex: 'createdByName',
+    dataIndex: 'creator',
     width: 120,
     customCell: () => {
       return { style: 'white-space:nowrap;' };
@@ -151,8 +151,8 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('common.lastModifiedDate'),
-    dataIndex: 'lastModifiedDate',
+    title: t('common.modifiedDate'),
+    dataIndex: 'modifiedDate',
     sorter: true,
     width: 150,
     customCell: () => {
@@ -229,7 +229,7 @@ const tableColumns = computed(() => [
         {{ text?.message }}
       </template>
 
-      <template v-if="column.dataIndex === 'createdByName'">
+      <template v-if="column.dataIndex === 'creator'">
         <span v-if="record.groupName"></span>
         <template v-else>{{ text || '--' }}</template>
       </template>

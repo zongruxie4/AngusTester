@@ -19,8 +19,8 @@ export interface ProjectInfo {
   description: string;
   createdBy: string;
   createdDate: string;
-  lastModifiedBy: string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifiedDate: string;
 }
 
 /**

@@ -137,6 +137,6 @@ export type SourceItem = {
         message: string;
     };
     createdBy: string;
-    createdByName: string;
+    creator: string;
     createdDate: string;
 }

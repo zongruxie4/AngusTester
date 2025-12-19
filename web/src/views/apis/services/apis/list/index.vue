@@ -533,7 +533,7 @@ watch(() => [props.allData, props.groupedBy], () => {
       groupedData.value.push({
         type: 'group',
         spread: true,
-        createdByName: objData[key][0].createdByName,
+        creator: objData[key][0].creator,
         avatar: objData[key][0].avatar,
         method: objData[key][0].method,
         ownerName: objData[key][0].ownerName,

@@ -6,7 +6,7 @@ import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SCE_FAVOURIT
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static java.util.Objects.isNull;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
  * <p>
  * Ensures permission checks, duplicate prevention, and activity logging.
  */
-@Biz
+@Service
 public class ScenarioFavouriteCmdImpl extends CommCmd<ScenarioFavourite, Long> implements
     ScenarioFavouriteCmd {
 

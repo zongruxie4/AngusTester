@@ -51,11 +51,11 @@ public class ServicesSyncDetailVo {
   @Schema(description = "Last synchronization date")
   private LocalDateTime lastSyncDate;
 
-  private Long lastModifiedBy;
+  private Long modifiedBy;
 
-  @NameJoinField(id = "lastModifiedBy", repository = "commonUserBaseRepo")
-  private String lastModifiedByName;
+  @NameJoinField(id = "modifiedBy", repository = "commonUserBaseRepo")
+  private String modifier;
 
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
 }

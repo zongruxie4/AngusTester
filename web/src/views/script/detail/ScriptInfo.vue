@@ -150,7 +150,7 @@ const {
         <Colon class="w-1 text-theme-sub-content" />
       </div>
       <div class="whitespace-pre-wrap break-words break-all text-theme-title">
-        {{ dataSource.createdByName }}
+        {{ dataSource.creator }}
       </div>
     </div>
 
@@ -168,22 +168,22 @@ const {
     <!-- Last Updater -->
     <div class="relative flex items-start group">
       <div class="w-21.75 flex items-center flex-shrink-0">
-        <span class="text-theme-sub-content font-medium">{{ t('common.lastModifiedBy') }}</span>
+        <span class="text-theme-sub-content font-medium">{{ t('common.modifiedBy') }}</span>
         <Colon class="w-1 text-theme-sub-content" />
       </div>
       <div class="whitespace-pre-wrap break-words break-all text-theme-title">
-        {{ dataSource.lastModifiedByName }}
+        {{ dataSource.modifier }}
       </div>
     </div>
 
     <!-- Last Modified Time -->
     <div class="relative flex items-start group">
       <div class="w-21.75 flex items-center flex-shrink-0">
-        <span class="text-theme-sub-content font-medium">{{ t('common.lastModifiedDate') }}</span>
+        <span class="text-theme-sub-content font-medium">{{ t('common.modifiedDate') }}</span>
         <Colon class="w-1 text-theme-sub-content" />
       </div>
       <div class="whitespace-pre-wrap break-words break-all text-theme-title">
-        {{ dataSource.lastModifiedDate }}
+        {{ dataSource.modifiedDate }}
       </div>
     </div>
 

@@ -360,8 +360,8 @@ const hintTextMap = {
                       @click="handleCollapseArrowChange(!collapseActiveKeys.includes(item.id), item.id)">{{ item.name }}</span>
                   </div>
                 </div>
-                <div class="table-tbody-td" :title="item.createdByName">
-                  <div class="flex-1 truncate">{{ item.createdByName }}</div>
+                <div class="table-tbody-td" :title="item.creator">
+                  <div class="flex-1 truncate">{{ item.creator }}</div>
                 </div>
                 <div class="table-tbody-td flex items-center space-x-2.5">
                   <Popconfirm :title="t('commonComp.apis.parameterizationDataset.cancelReferenceConfirm', { name: item.name })" @confirm="handleDatasetDeletion(item)">

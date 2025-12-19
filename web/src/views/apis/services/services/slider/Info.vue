@@ -168,9 +168,9 @@ const columns = computed(() => [
     { label: t('common.authControl'), dataIndex: 'auth' },
     { label: t('service.serviceDetail.columns.apisNum'), dataIndex: 'apisNum' },
     { label: t('service.serviceDetail.columns.apisCaseNum'), dataIndex: 'apisCaseNum' }, // @todo
-    { label: t('common.createdBy'), dataIndex: 'createdByName' },
+    { label: t('common.createdBy'), dataIndex: 'creator' },
     { label: t('common.createdDate'), dataIndex: 'createdDate' },
-    { label: t('common.lastModifiedDate'), dataIndex: 'lastModifiedDate' },
+    { label: t('common.modifiedDate'), dataIndex: 'modifiedDate' },
     { label: t('service.groupApiDetail.columns.securityTitle'), dataIndex: 'securityTitle' },
     { dataIndex: 'security', fullWidthContent: true }
   ].filter(Boolean)

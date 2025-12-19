@@ -4,7 +4,7 @@ import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.biz.exception.QuotaException;
@@ -31,7 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
  * Implements business logic validation, quota limits (max 200 custom templates), and activity
  * logging for all template operations.
  */
-@Biz
+@Service
 public class TemplateCmdImpl extends CommCmd<Template, Long> implements TemplateCmd {
 
   private static final int MAX_CUSTOM_TEMPLATE_COUNT = 200;

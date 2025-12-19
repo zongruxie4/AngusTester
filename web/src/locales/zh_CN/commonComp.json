@@ -407,7 +407,7 @@
     "selectGroup": "请选择组",
     "add": "添加",
     "all": "全部"
-    
+
   },
   "xcan_apiAuthencation": {
     "noAuth": "不认证",
@@ -1009,7 +1009,7 @@
     "sprintName": "所属迭代",
     "assigneeName": "经办人",
     "confirmerName": "确认人",
-    "createdByName": "创建人"
+    "creator": "创建人"
   },
   "xcan_indicator": {
     "functionalIndicator": "功能能指标",

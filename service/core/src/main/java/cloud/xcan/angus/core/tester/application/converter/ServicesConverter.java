@@ -65,7 +65,7 @@ public class ServicesConverter {
         .setApisCaseNum(services.getApisCaseNum())
         .setCreatedBy(services.getCreatedBy())
         .setCreatedDate(services.getCreatedDate())
-        .setLastModifiedBy(services.getLastModifiedBy())
-        .setLastModifiedDate(services.getLastModifiedDate());
+        .setModifiedBy(services.getModifiedBy())
+        .setModifiedDate(services.getModifiedDate());
   }
 }

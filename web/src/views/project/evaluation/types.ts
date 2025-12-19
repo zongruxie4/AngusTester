@@ -16,11 +16,11 @@ export interface EvaluationDetail {
   deadlineDate?: string;
   result?: any;
   createdBy?: string;
-  createdByName?: string;
+  creator?: string;
   createdDate?: string;
-  lastModifiedBy?: string;
+  modifiedBy?: string;
   lastModifiedName?: string;
-  lastModifiedDate?: string;
+  modifiedDate?: string;
 }
 
 /**

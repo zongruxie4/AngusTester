@@ -35,10 +35,10 @@ export interface VersionInfo {
   taskByStatus?: {
     [key: string]: TaskInfo[];
   };
-  createdByName?: string;
-  lastModifiedByName?: string;
+  creator?: string;
+  modifier?: string;
   createdDate?: string;
-  lastModifiedDate?: string;
+  modifiedDate?: string;
 }
 
 // Chart data interfaces
@@ -123,4 +123,4 @@ export interface StatusColorConfig {
 }
 
 // Order configuration
-export type OrderByKey = 'createdDate' | 'createdByName';
+export type OrderByKey = 'createdDate' | 'creator';

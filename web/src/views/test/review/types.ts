@@ -18,11 +18,11 @@ export type ReviewDetail = {
   description: string;
   tenantId: number;
   createdBy: number;
-  createdByName: string;
+  creator: string;
   createdDate: string;
-  lastModifiedBy: number;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifiedBy: number;
+  modifier: string;
+  modifiedDate: string;
   caseNum: number;
   progress: ProgressInfo;
 }
@@ -53,7 +53,7 @@ export type ReviewCaseInfo = {
   reviewStatus: EnumMessage<ReviewStatus>;
   reviewRemark: string;
   createdBy: number;
-  createdByName: string;
+  creator: string;
   createdDate: string;
 }
 
@@ -72,7 +72,7 @@ export type ReviewCaseDetail = {
   reviewStatus: EnumMessage<ReviewStatus>;
   reviewRemark: string;
   createdBy: number;
-  createdByName: string;
+  creator: string;
   createdDate: string;
   caseInfo?: CaseDetail;
 }

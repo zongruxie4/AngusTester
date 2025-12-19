@@ -3,7 +3,7 @@ import { PageQuery, SearchCriteria, EnumMessage, CombinedTargetType } from '@xca
 import { ReportCategory, ReportPermission, ReportStatus, ReportTemplate } from '@/enums/enums';
 
 // Base types
-export type OrderByKey = 'createdDate' | 'createdByName';
+export type OrderByKey = 'createdDate' | 'creator';
 
 // Report related types
 export interface ReportDetail {
@@ -22,15 +22,15 @@ export interface ReportDetail {
   auth?: boolean;
   failureMessage?: string;
   createdBy?: string;
-  createdByName?: string;
+  creator?: string;
   createdDate?: string;
-  lastModifiedBy?: string;
-  lastModifiedByName?: string;
-  lastModifiedDate?: string;
+  modifiedBy?: string;
+  modifier?: string;
+  modifiedDate?: string;
 }
 
 // Menu item types
-export type MenuItemKey = 'none' | 'createdBy' | 'lastModifiedBy' | 'last1Day' | 'last3Days' | 'last7Days';
+export type MenuItemKey = 'none' | 'createdBy' | 'modifiedBy' | 'last1Day' | 'last3Days' | 'last7Days';
 
 export interface MenuItem {
   key: MenuItemKey;

@@ -7,7 +7,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -49,7 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
  * <p>The implementation uses cache eviction strategies to ensure data consistency
  * and provides batch operations for better performance.</p>
  */
-@Biz
+@Service
 public class ServicesCompCmdImpl extends CommCmd<ServicesComp, Long> implements ServicesCompCmd {
 
   @Resource

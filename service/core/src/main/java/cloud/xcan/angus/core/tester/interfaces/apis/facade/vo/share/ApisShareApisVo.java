@@ -35,7 +35,7 @@ public class ApisShareApisVo {
   private Long createdBy;
 
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")
-  private String createdByName;
+  private String creator;
 
   private Long ownerId;
 
@@ -44,5 +44,5 @@ public class ApisShareApisVo {
 
   private LocalDateTime createdDate;
 
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 }

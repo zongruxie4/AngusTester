@@ -43,20 +43,20 @@ export function useTableColumns () {
     },
     {
       title: t('common.modifier'),
-      dataIndex: 'lastModifiedByName',
+      dataIndex: 'modifier',
       groupName: 'person',
       width: 100
     },
     {
       title: t('common.creator'),
-      dataIndex: 'createdByName',
+      dataIndex: 'creator',
       groupName: 'person',
       hide: true,
       width: 100
     },
     {
-      title: t('common.lastModifiedDate'),
-      dataIndex: 'lastModifiedDate',
+      title: t('common.modifiedDate'),
+      dataIndex: 'modifiedDate',
       groupName: 'date',
       width: 130
     },

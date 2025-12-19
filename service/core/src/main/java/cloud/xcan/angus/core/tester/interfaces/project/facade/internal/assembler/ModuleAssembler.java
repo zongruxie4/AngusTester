@@ -91,6 +91,6 @@ public class ModuleAssembler {
         .setHasEditPermission(module.getHasEditPermission())
         .setHit(module.getHit())
         .setCreatedBy(module.getCreatedBy())
-        .setCreatedByName(module.getCreatedByName());
+        .setCreator(module.getCreator());
   }
 }

@@ -14,7 +14,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -42,7 +42,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
-@Biz
+@Service
 public class ModuleCmdImpl extends CommCmd<Module, Long> implements ModuleCmd {
 
   @Resource

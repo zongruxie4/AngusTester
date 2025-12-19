@@ -32,8 +32,8 @@ const testerIdValue = ref<number>();
 
 const developerName = computed(() => props.dataSource?.developerName);
 const reviewerName = computed(() => props.dataSource?.reviewerName);
-const createdByName = computed(() => props.dataSource?.createdByName);
-const lastModifiedByName = computed(() => props.dataSource?.lastModifiedByName);
+const creator = computed(() => props.dataSource?.creator);
+const modifier = computed(() => props.dataSource?.modifier);
 
 const testerId = computed(() => props.dataSource?.testerId);
 const testerName = computed(() => props.dataSource?.testerName);
@@ -165,7 +165,7 @@ const refreshCaseDetail = async () => {
             <span>{{ t('common.creator') }}</span>
           </div>
           <div class="info-value">
-            <span class="info-text">{{ createdByName }}</span>
+            <span class="info-text">{{ creator }}</span>
           </div>
         </div>
 
@@ -236,7 +236,7 @@ const refreshCaseDetail = async () => {
             <span>{{ t('common.modifier') }}</span>
           </div>
           <div class="info-value">
-            <span class="info-text">{{ lastModifiedByName }}</span>
+            <span class="info-text">{{ modifier }}</span>
           </div>
         </div>
       </div>

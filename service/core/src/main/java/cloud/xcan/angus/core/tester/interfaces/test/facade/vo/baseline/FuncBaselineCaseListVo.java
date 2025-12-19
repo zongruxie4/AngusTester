@@ -136,18 +136,18 @@ public class FuncBaselineCaseListVo extends FuncCaseListVo {
 
   private Long createdBy;
 
-  private String createdByName;
+  private String creator;
 
   private String avatar;
 
   private LocalDateTime createdDate;
 
-  private Long lastModifiedBy;
+  private Long modifiedBy;
 
-  @NameJoinField(id = "lastModifiedBy", repository = "commonUserBaseRepo")
-  private String lastModifiedByName;
+  @NameJoinField(id = "modifiedBy", repository = "commonUserBaseRepo")
+  private String modifier;
 
   @DateTimeFormat(DEFAULT_DATE_TIME_FORMAT)
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
 }

@@ -68,13 +68,13 @@ public class ServicesComp extends TenantEntity<ServicesComp, Long> {
   @Column(name = "schema_hash")
   private int schemaHash;
 
-  @Column(name = "last_modified_by")
+  @Column(name = "modified_by")
   @LastModifiedBy
-  private Long lastModifiedBy;
+  private Long modifiedBy;
 
-  @Column(name = "last_modified_date")
+  @Column(name = "modified_date")
   @LastModifiedDate
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
   // @Transient -> transient <- Json and jpa both ignore
   @JsonIgnore

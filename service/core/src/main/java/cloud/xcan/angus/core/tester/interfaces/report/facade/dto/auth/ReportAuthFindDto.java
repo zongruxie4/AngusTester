@@ -5,7 +5,6 @@ import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotNull;
-import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,8 +22,5 @@ public class ReportAuthFindDto extends PageQuery {
 
   @Schema(description = "Authorization object ID to filter by specific user, group, or department")
   private Long authObjectId;
-
-  @Schema(description = "Creation date to filter authorizations created on a specific date")
-  private Date createdDate;
 
 }

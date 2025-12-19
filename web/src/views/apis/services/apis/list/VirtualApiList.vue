@@ -344,7 +344,7 @@ onMounted(() => {
               type="avatar"
               :src="item.avatar"
               class="w-7.5 h-7.5 rounded-full" />
-            <span class="flex-1 ml-7.5">{{ item.createdByName }}</span>
+            <span class="flex-1 ml-7.5">{{ item.creator }}</span>
           </div>
           <div v-else-if="groupedBy === 'ownerId'" class="flex items-center flex-1 px-2">
             <Image

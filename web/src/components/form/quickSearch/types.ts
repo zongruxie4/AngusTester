@@ -20,7 +20,7 @@ export interface BaseQuickSearchOption {
 export interface AuditInfoOption extends BaseQuickSearchOption {
   /** Type identifier for audit options */
   type: 'audit';
-  /** Field key to filter by (e.g., 'createdBy', 'lastModifiedBy') */
+  /** Field key to filter by (e.g., 'createdBy', 'modifiedBy') */
   fieldKey: string;
   /** Value to filter by (usually current user ID) */
   fieldValue: string;
@@ -50,7 +50,7 @@ export type TimeRangeValue = 'last1Day' | 'last3Days' | 'last7Days' | 'last30Day
 export interface TimeRangeOption extends BaseQuickSearchOption {
   /** Type identifier for time options */
   type: 'time';
-  /** Field key to filter by (e.g., 'createdDate', 'lastModifiedDate') */
+  /** Field key to filter by (e.g., 'createdDate', 'modifiedDate') */
   fieldKey: string;
   /** Time range value (e.g., 'last1Day', 'last3Days', 'last7Days', 'last30Days') */
   timeRange: TimeRangeValue;

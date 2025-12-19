@@ -45,10 +45,10 @@ public class AnalysisFuncAssembler {
   public static Set<SearchCriteria> getSearchCriteria(FuncCaseSummaryStatisticsDto dto) {
     // Build the final filters
     return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("deadlineDate", "createdDate", "lastModifiedDate",
+        .rangeSearchFields("deadlineDate", "createdDate", "modifiedDate",
             "reviewDate", "testResultHandleDate", "reviewNum", "testNum", "testFailNum")
         .inAndNotFields("id", "tagId", "testResult", "testerId")
-        .orderByFields("id", "createdDate", "lastModifiedDate", "priority",
+        .orderByFields("id", "createdDate", "modifiedDate", "priority",
             "deadlineDate", "reviewStatus", "reviewNum", "testerId", "reviewerId",
             "testNum", "testFailNum", "testResult", "reviewDate", "testResultHandleDate")
         .matchSearchFields("name", "description", "code", "uri")

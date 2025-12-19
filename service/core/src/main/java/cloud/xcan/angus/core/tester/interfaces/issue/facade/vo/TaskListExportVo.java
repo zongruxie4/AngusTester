@@ -140,15 +140,15 @@ public class TaskListExportVo {
   //@ExcelIgnore
   //private Long createdBy;
   //@NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")
-  private String createdByName;
+  private String creator;
   @DateTimeFormat(DEFAULT_DATE_TIME_FORMAT)
   private LocalDateTime createdDate;
 
   //@ExcelIgnore
-  //private Long lastModifiedBy;
-  //@NameJoinField(id = "lastModifiedBy", repository = "commonUserBaseRepo")
-  private String lastModifiedByName;
+  //private Long modifiedBy;
+  //@NameJoinField(id = "modifiedBy", repository = "commonUserBaseRepo")
+  private String modifier;
   @DateTimeFormat(DEFAULT_DATE_TIME_FORMAT)
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
 }

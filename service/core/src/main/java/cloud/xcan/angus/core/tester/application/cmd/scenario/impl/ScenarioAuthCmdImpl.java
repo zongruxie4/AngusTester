@@ -9,7 +9,7 @@ import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.AUTH_CAN
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.AUTH_UPDATED;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Supports creator authorization management, authorization control enablement, and comprehensive
  * activity tracking.
  */
-@Biz
+@Service
 public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements ScenarioAuthCmd {
 
   @Resource

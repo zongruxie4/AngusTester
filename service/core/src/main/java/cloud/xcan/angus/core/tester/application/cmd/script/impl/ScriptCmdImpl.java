@@ -33,7 +33,7 @@ import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import cloud.xcan.angus.api.commonlink.script.ScriptPermission;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -112,7 +112,7 @@ import org.springframework.transaction.annotation.Transactional;
  * </ul></p>
  */
 @Slf4j
-@Biz
+@Service
 public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   @Resource

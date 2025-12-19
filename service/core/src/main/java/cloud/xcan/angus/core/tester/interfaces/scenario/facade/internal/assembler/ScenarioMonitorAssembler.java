@@ -58,8 +58,8 @@ public class ScenarioMonitorAssembler {
         .setTenantId(monitor.getTenantId())
         .setCreatedBy(monitor.getCreatedBy())
         .setCreatedDate(monitor.getCreatedDate())
-        .setLastModifiedBy(monitor.getLastModifiedBy())
-        .setLastModifiedDate(monitor.getLastModifiedDate());
+        .setModifiedBy(monitor.getModifiedBy())
+        .setModifiedDate(monitor.getModifiedDate());
   }
 
   public static ScenarioMonitorListVo toListVo(ScenarioMonitor monitor) {
@@ -75,8 +75,8 @@ public class ScenarioMonitorAssembler {
         .setTenantId(monitor.getTenantId())
         .setCreatedBy(monitor.getCreatedBy())
         .setCreatedDate(monitor.getCreatedDate())
-        .setLastModifiedBy(monitor.getLastModifiedBy())
-        .setLastModifiedDate(monitor.getLastModifiedDate());
+        .setModifiedBy(monitor.getModifiedBy())
+        .setModifiedDate(monitor.getModifiedDate());
   }
 
   public static GenericSpecification<ScenarioMonitor> getSpecification(ScenarioMonitorFindDto dto) {
@@ -85,7 +85,7 @@ public class ScenarioMonitorAssembler {
         .inAndNotFields("id")
         .rangeSearchFields("id", "createdDate")
         .matchSearchFields("name", "description")
-        .orderByFields("id", "name", "status", "createdDate", "createdBy", "lastModifiedBy")
+        .orderByFields("id", "name", "status", "createdDate", "createdBy", "modifiedBy")
         .build();
     return new GenericSpecification<>(filters);
   }

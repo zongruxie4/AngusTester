@@ -184,8 +184,8 @@ public class ApisConverter {
         .setMethod(convert(objects[4], HttpMethod.class));
     apis.setCreatedBy(convert(objects[5], Long.class));
     apis.setCreatedDate(convert(objects[6], LocalDateTime.class));
-    apis.setLastModifiedBy(convert(objects[7], Long.class));
-    apis.setLastModifiedDate(convert(objects[8], LocalDateTime.class));
+    apis.setModifiedBy(convert(objects[7], Long.class));
+    apis.setModifiedDate(convert(objects[8], LocalDateTime.class));
     return apis;
   }
 
@@ -201,8 +201,8 @@ public class ApisConverter {
         .setOwnerId(convert(objects[8], Long.class));
     apis.setCreatedBy(convert(objects[9], Long.class));
     apis.setCreatedDate(convert(objects[10], LocalDateTime.class));
-    apis.setLastModifiedBy(convert(objects[11], Long.class));
-    apis.setLastModifiedDate(convert(objects[12], LocalDateTime.class));
+    apis.setModifiedBy(convert(objects[11], Long.class));
+    apis.setModifiedDate(convert(objects[12], LocalDateTime.class));
     apis.setEndpoint(convert(objects[13], String.class));
     apis.setMethod(convert(objects[14], HttpMethod.class));
     apis.setStatus(convert(objects[15], ApiStatus.class));
@@ -458,7 +458,7 @@ public class ApisConverter {
         //.setTenantId(apis.getTenantId())
         .setCreatedBy(apis.getCreatedBy())
         .setCreatedDate(apis.getCreatedDate())
-        .setLastModifiedDate(apis.getLastModifiedDate());
+        .setModifiedDate(apis.getModifiedDate());
   }
 
   public static ApisDetailSummary toApisDetailSummary(Apis apis) {
@@ -508,7 +508,7 @@ public class ApisConverter {
         .setTenantId(apis.getTenantId())
         .setCreatedBy(apis.getCreatedBy())
         .setCreatedDate(apis.getCreatedDate())
-        .setLastModifiedDate(apis.getLastModifiedDate());
+        .setModifiedDate(apis.getModifiedDate());
   }
 
 

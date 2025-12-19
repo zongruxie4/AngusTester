@@ -9,7 +9,7 @@ import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -46,7 +46,7 @@ import org.springframework.data.domain.PageRequest;
  *
  * @author XiaoLong Liu
  */
-@Biz
+@Service
 public class ApisTrashQueryImpl implements ApisTrashQuery {
 
   @Resource
@@ -114,8 +114,8 @@ public class ApisTrashQueryImpl implements ApisTrashQuery {
 
         if (!page.isEmpty()) {
           // Enrich trash data with creator and deleter user information
-          userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "createdByName",
-              "createdByAvatar");
+          userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "creator",
+              "creatorAvatar");
           userManager.setUserNameAndAvatar(page.getContent(), "deletedBy", "deletedByName",
               "deletedByAvatar");
         }

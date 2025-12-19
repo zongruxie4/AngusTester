@@ -17,10 +17,10 @@ export type ApiDesignInfo = {
   designSourceName: string;
   tenantId: number;
   createdBy: number;
-  createdByName: string;
-  createdByAvatar: string;
+  creator: string;
+  creatorAvatar: string;
   createdDate: Dayjs;
-  lastModifiedBy: number;
-  lastModifiedByName: string;
-  lastModifiedDate: Dayjs;
+  modifiedBy: number;
+  modifier: string;
+  modifiedDate: Dayjs;
 }

@@ -1,6 +1,5 @@
 package cloud.xcan.angus.core.tester.application.query.analysis.impl;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.analysis.AnalysisSearch;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
@@ -11,8 +10,9 @@ import jakarta.annotation.Resource;
 import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
-@Biz
+@Service
 public class AnalysisSearchImpl implements AnalysisSearch {
 
   @Resource

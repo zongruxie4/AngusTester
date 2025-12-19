@@ -20,7 +20,6 @@ import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.jpa.criteria.CriteriaUtils;
@@ -72,6 +71,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -85,7 +85,7 @@ import org.springframework.data.domain.PageRequest;
 @Slf4j
 @SummaryQueryRegister(name = "Script", table = "script", groupByColumns = {/*"created_date", */
     "type", "source"})
-@Biz
+@Service
 public class ScriptQueryImpl implements ScriptQuery {
 
   @Resource

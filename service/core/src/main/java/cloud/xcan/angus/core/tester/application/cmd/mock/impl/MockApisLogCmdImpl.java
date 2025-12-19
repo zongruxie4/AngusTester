@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.application.cmd.mock.impl;
 
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isOpenApi2p;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -13,6 +12,7 @@ import cloud.xcan.angus.core.tester.domain.mock.apis.log.MockApisLog;
 import cloud.xcan.angus.core.tester.domain.mock.apis.log.MockApisLogRepo;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  * <p>
  * Ensures permission checks and repository access.
  */
-@Biz
+@Service
 public class MockApisLogCmdImpl extends CommCmd<MockApisLog, Long> implements MockApisLogCmd {
 
   @Resource

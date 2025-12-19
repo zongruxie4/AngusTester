@@ -12,7 +12,6 @@ import static java.lang.String.format;
 import static java.util.Collections.emptyList;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -28,6 +27,7 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Provides methods for adding and deleting variable associations, including activity logging and
  * permission checks.
  */
-@Biz
+@Service
 public class VariableTargetCmdImpl extends CommCmd<VariableTarget, Long> implements
     VariableTargetCmd {
 

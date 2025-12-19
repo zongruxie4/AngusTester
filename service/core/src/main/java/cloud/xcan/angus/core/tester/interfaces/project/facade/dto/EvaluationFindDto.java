@@ -37,11 +37,11 @@ public class EvaluationFindDto extends PageQuery {
   private LocalDateTime createdDate;
 
   @Schema(description = "Last modifier identifier for modification-based filtering")
-  private Long lastModifiedBy;
+  private Long modifiedBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
   @Schema(description = "Evaluation last modification date for temporal filtering")
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
   @Override
   public String getDefaultOrderBy() {

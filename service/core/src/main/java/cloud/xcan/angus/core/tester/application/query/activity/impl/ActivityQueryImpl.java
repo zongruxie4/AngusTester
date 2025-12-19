@@ -4,7 +4,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
@@ -23,6 +22,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 /**
  * Implementation of activity query operations for activity management and reporting.
@@ -45,7 +45,7 @@ import org.springframework.data.domain.PageRequest;
  *
  * @author XiaoLong Liu
  */
-@Biz
+@Service
 @SummaryQueryRegister(name = "Activity", table = "activity", groupByColumns = {"opt_date",
     "target_type"})
 public class ActivityQueryImpl implements ActivityQuery {

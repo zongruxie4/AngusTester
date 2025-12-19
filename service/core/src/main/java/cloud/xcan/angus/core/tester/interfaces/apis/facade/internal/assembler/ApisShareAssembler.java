@@ -71,11 +71,11 @@ public class ApisShareAssembler {
         .setExpired(!share.isNotExpired())
         .setTenantId(share.getTenantId())
         .setCreatedBy(share.getCreatedBy())
-        .setCreatedByName(share.getCreatedByName())
-        .setCreatedByAvatar(share.getAvatar())
+        .setCreator(share.getCreator())
+        .setCreatorAvatar(share.getAvatar())
         .setCreatedDate(share.getCreatedDate())
-        .setLastModifiedBy(share.getLastModifiedBy())
-        .setLastModifiedDate(share.getLastModifiedDate());
+        .setModifiedBy(share.getModifiedBy())
+        .setModifiedDate(share.getModifiedDate());
   }
 
   public static GenericSpecification<ApisShare> getSpecification(ApisShareFindDto dto) {

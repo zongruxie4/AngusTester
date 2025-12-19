@@ -58,7 +58,6 @@ import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.ReviewStatus;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.api.pojo.Attachment;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -122,6 +121,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -137,7 +137,7 @@ import org.springframework.web.multipart.MultipartFile;
  * Supports batch operations, association management, test result tracking, and review workflow
  * integration.
  */
-@Biz
+@Service
 public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCaseCmd {
 
   @Resource

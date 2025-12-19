@@ -12,7 +12,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -57,7 +57,7 @@ import java.util.Set;
  *
  * @author XiaoLong Liu
  */
-@Biz
+@Service
 public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> implements
     SoftwareVersionCmd {
 

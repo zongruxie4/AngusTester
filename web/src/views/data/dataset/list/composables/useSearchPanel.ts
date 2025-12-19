@@ -68,7 +68,7 @@ export function useSearchPanel (emits: DatasetSearchEmits) {
       {
         key: 'modifiedByMe',
         name: t('quickSearch.modifiedByMe'),
-        fieldKey: 'lastModifiedBy'
+        fieldKey: 'modifiedBy'
       }
     ], String(userInfo.value?.id || '')),
     timeOptions: createTimeOptions([
@@ -89,7 +89,7 @@ export function useSearchPanel (emits: DatasetSearchEmits) {
   const searchFilters = ref<SearchCriteria[]>([]);
   const quickSearchFilters = ref<SearchCriteria[]>([]);
   const assocFilters = ref<SearchCriteria[]>([]);
-  const assocKeys = ['createdBy', 'lastModifiedBy', 'createdDate'];
+  const assocKeys = ['createdBy', 'modifiedBy', 'createdDate'];
 
   const getParams = () => {
     return {

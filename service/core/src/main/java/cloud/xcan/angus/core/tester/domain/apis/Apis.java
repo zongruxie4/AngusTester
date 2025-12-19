@@ -342,7 +342,7 @@ public class Apis extends TenantAuditingEntity<Apis, Long> implements ActivityRe
   @Transient
   private Long unarchivedId;
   @Transient
-  private String createdByName;
+  private String creator;
   @Transient
   private String avatar;
   @Transient

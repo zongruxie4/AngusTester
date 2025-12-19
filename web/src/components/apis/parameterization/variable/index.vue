@@ -17,7 +17,7 @@ type Props = {
   targetType: 'API' | 'SCENARIO' | 'API_CASE';
   dataSource: {
     'x-id': string;
-    'x-createdByName': string;
+    'x-creator': string;
     name: string;
     description: string;
     extracted: string;
@@ -237,9 +237,9 @@ const tableColumns = [
     ellipsis: true
   },
   {
-    key: 'createdByName',
+    key: 'creator',
     title: t('common.creator'),
-    dataIndex: 'createdByName',
+    dataIndex: 'creator',
     ellipsis: true,
     width: '8%'
   },

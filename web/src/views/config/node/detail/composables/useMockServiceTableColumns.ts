@@ -42,7 +42,7 @@ export function useMockServiceTableColumns () {
       width: 100
     },
     {
-      dataIndex: 'createdByName',
+      dataIndex: 'creator',
       title: t('common.creator'),
       width: 120
     },

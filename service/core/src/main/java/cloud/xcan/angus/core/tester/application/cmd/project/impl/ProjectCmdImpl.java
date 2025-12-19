@@ -41,7 +41,7 @@ import cloud.xcan.angus.api.commonlink.user.User;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.api.storage.file.FileRemote;
 import cloud.xcan.angus.api.storage.file.vo.FileUploadVo;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -142,7 +142,7 @@ import org.springframework.web.multipart.MultipartFile;
  * tracking.
  */
 @Slf4j
-@Biz
+@Service
 public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd {
 
   @Resource
@@ -270,7 +270,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   @Override
   public IdKey<Long, Object> add0(Project project) {
     // Save project to database and get generated ID
-    if (nonNull(project.getId())){
+    if (nonNull(project.getId())) {
       project.setId(BIDUtils.getId(BIDKey.projectId));
     }
     IdKey<Long, Object> idKey = insert(project);
@@ -771,8 +771,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         module.setTenantId(null);
         module.setCreatedBy(null);
         module.setCreatedDate(null);
-        module.setLastModifiedBy(null);
-        module.setLastModifiedDate(null);
+        module.setModifiedBy(null);
+        module.setModifiedDate(null);
       }
       moduleCmd.add0(modules);
     }
@@ -798,8 +798,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         task.setTenantId(null);
         task.setCreatedBy(null);
         task.setCreatedDate(null);
-        task.setLastModifiedBy(null);
-        task.setLastModifiedDate(null);
+        task.setModifiedBy(null);
+        task.setModifiedDate(null);
         // Reset count fields to 0
         //        task.setFailNum(0);
         //        task.setTotalNum(0);
@@ -823,8 +823,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         funcPlan.setTenantId(null);
         funcPlan.setCreatedBy(null);
         funcPlan.setCreatedDate(null);
-        funcPlan.setLastModifiedBy(null);
-        funcPlan.setLastModifiedDate(null);
+        funcPlan.setModifiedBy(null);
+        funcPlan.setModifiedDate(null);
       }
       funcPlanCmd.add0(funcPlans);
     }
@@ -848,8 +848,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         funcCase.setTenantId(null);
         funcCase.setCreatedBy(getUserId());
         funcCase.setCreatedDate(LocalDateTime.now());
-        funcCase.setLastModifiedBy(null);
-        funcCase.setLastModifiedDate(null);
+        funcCase.setModifiedBy(null);
+        funcCase.setModifiedDate(null);
         // Reset count fields to 0
         //        funcCase.setReviewNum(0);
         //        funcCase.setReviewFailNum(0);
@@ -908,8 +908,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         scenario.setDeleted(false);
         scenario.setCreatedBy(null);
         scenario.setCreatedDate(null);
-        scenario.setLastModifiedBy(null);
-        scenario.setLastModifiedDate(null);
+        scenario.setModifiedBy(null);
+        scenario.setModifiedDate(null);
         scenarioCmd.add(scenario);
       }
     }
@@ -976,8 +976,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         // Reset audit fields to null
         mockService.setCreatedBy(null);
         mockService.setCreatedDate(null);
-        mockService.setLastModifiedBy(null);
-        mockService.setLastModifiedDate(null);
+        mockService.setModifiedBy(null);
+        mockService.setModifiedDate(null);
         IdKey<Long, Object> mockIdKey = mockServiceCmd.add(mockService);
         // Import mock service content if available
         if (isNotEmpty(mockService.getImportText())) {

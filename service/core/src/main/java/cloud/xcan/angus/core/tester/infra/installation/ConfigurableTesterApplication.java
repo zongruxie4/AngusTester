@@ -448,7 +448,7 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
               + "source, free, enabled, username, password, ssh_port, "
               + "instance_id, instance_name, instance_expired_date, deleted, "
               + "order_id, charge_type, install_agent, sync, ext_search_merge, "
-              + "tenant_id, created_by, created_date, last_modified_by, last_modified_date) "
+              + "tenant_id, created_by, created_date, modified_by, modified_date) "
               + "VALUES (?, ?, ?, ?, ?, ?, ?, " + "?, ?, ?, ?, ?, ?, "
               + "?, ?, ?, ?, " + " ?, ?, ?, ?, ?, " + "?, ?, ?, ?, ?)",
           Arrays.asList(nodeId, nullSafe(getHostName(), "INSTALLATION_APP") , ip, null, null, null, null,
@@ -476,7 +476,7 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
         singletonList(nodeId), (rs) -> rs.next() ? rs.getLong("id") : null);
     if (isNull(nodeId0)){
       JDBCUtils.executeUpdate(testerConnection,
-          "INSERT node_info(id, tenant_id, info, os, agent_installed, agent_auth, last_modified_date) "
+          "INSERT node_info(id, tenant_id, info, os, agent_installed, agent_auth, modified_date) "
               + "VALUES (?, ?, ?, ?, ?, ?, ?)",
           Arrays.asList(nodeId, tenantId, null, null, 0, null, formatByDateTimePattern(new Date()))
       );

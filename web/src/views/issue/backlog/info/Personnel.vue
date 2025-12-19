@@ -232,8 +232,8 @@ const assignCurrentUserToRole = (roleKey: 'assigneeId' | 'confirmerId' | 'tester
 
 // Computed Properties
 const currentTaskId = computed(() => props.dataSource?.id);
-const createdByName = computed(() => props.dataSource?.createdByName);
-const lastModifiedByName = computed(() => props.dataSource?.lastModifiedByName);
+const creator = computed(() => props.dataSource?.creator);
+const modifier = computed(() => props.dataSource?.modifier);
 
 // Current user information
 const currentUserId = computed(() => {
@@ -307,7 +307,7 @@ const testerDefaultOptions = computed(() => {
             <span>{{ t('common.creator') }}</span>
           </div>
           <div class="info-value">
-            <span class="info-text">{{ createdByName }}</span>
+            <span class="info-text">{{ creator }}</span>
           </div>
         </div>
 
@@ -439,7 +439,7 @@ const testerDefaultOptions = computed(() => {
             <span>{{ t('common.modifier') }}</span>
           </div>
           <div class="info-value">
-            <span class="info-text">{{ lastModifiedByName }}</span>
+            <span class="info-text">{{ modifier }}</span>
           </div>
         </div>
       </div>

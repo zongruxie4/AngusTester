@@ -16,7 +16,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -47,6 +46,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -68,7 +68,7 @@ import org.springframework.transaction.annotation.Transactional;
  *   <li>Activity logging for audit trails</li>
  * </ul></p>
  */
-@Biz
+@Service
 public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements TaskSprintCmd {
 
   @Resource

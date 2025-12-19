@@ -5,7 +5,6 @@ import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -18,6 +17,7 @@ import cloud.xcan.angus.core.tester.domain.config.user.UserSettingRepo;
 import cloud.xcan.angus.core.tester.domain.config.user.apiproxy.ApiProxyType;
 import cloud.xcan.angus.core.tester.domain.config.user.apiproxy.UserApiProxy;
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
  * configurations.
  * </p>
  */
-@Biz
+@Service
 public class SettingUserCmdImpl extends CommCmd<UserSetting, Long> implements SettingUserCmd {
 
   @Resource

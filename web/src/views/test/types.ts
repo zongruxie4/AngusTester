@@ -48,11 +48,11 @@ export type CaseInfo = {
   follow: boolean;
   tenantId?: number;
   createdBy: number;
-  createdByName: string;
+  creator: string;
   avatar: string;
   createdDate: string;
-  lastModifiedBy: number;
-  lastModifiedDate: string;
+  modifiedBy: number;
+  modifiedDate: string;
   tags: TagInfo[];
 }
 
@@ -112,12 +112,12 @@ export type CaseDetail = {
   follow: boolean;
   tenantId: string;
   createdBy: string;
-  createdByName: string;
+  creator: string;
   avatar: string;
   createdDate: string;
-  lastModifiedBy: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifier: string;
+  modifiedDate: string;
   testLayer: TestLayer;
   testPurpose: TestPurpose;
   /** Optional reference map used when updating associations */
@@ -139,7 +139,7 @@ export type CaseReviewRecord = {
   reviewStatus?: EnumMessage<ReviewStatus>;
   reviewRemark?: string;
   createdBy?: string;
-  createdByName?: string;
+  creator?: string;
   avatar?: string;
   createdDate?: Date | string;
 }

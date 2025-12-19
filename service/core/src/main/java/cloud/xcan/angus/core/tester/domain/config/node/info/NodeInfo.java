@@ -45,8 +45,8 @@ public class NodeInfo extends TenantEntity<NodeInfo, Long> {
   private AgentAuth agentAuth;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-  @Column(name = "last_modified_date", columnDefinition = "TIMESTAMP")
-  private LocalDateTime lastModifiedDate;
+  @Column(name = "modified_date", columnDefinition = "TIMESTAMP")
+  private LocalDateTime modifiedDate;
 
   @Transient
   private Boolean agentOnline;

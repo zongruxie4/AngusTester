@@ -3,7 +3,7 @@ package cloud.xcan.angus.core.tester.application.query.exec.impl;
 import static cloud.xcan.angus.core.tester.infra.metricsds.MetricsDynamicDataSourceAspect.DEFAULT_SHARDING_KEY;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecSampleErrorContentQuery;
@@ -25,7 +25,7 @@ import org.springframework.data.domain.PageRequest;
  * Supports both paginated queries with search criteria and direct content retrieval for specific
  * execution IDs.
  */
-@Biz
+@Service
 public class ExecSampleErrorContentQueryImpl implements ExecSampleErrorContentQuery {
 
   @Resource

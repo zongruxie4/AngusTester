@@ -7,7 +7,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -33,6 +32,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
  * <p>
  * Ensures permission checks, activity logging, and batch operations with transaction management.
  */
-@Biz
+@Service
 @Slf4j
 public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> implements
     MockApisResponseCmd {

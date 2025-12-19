@@ -15,7 +15,6 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.api.commonlink.TesterConstant;
 import cloud.xcan.angus.api.commonlink.user.UserRepo;
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.tester.application.query.report.ReportAuthQuery;
@@ -42,9 +41,10 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-@Biz
+@Service
 public class ReportAuthQueryImpl implements ReportAuthQuery {
 
   @Resource

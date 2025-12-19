@@ -4,7 +4,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskFuncCaseQuery;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.issue.TaskInfoRepo;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * analysis.
  * </p>
  */
-@Biz
+@Service
 public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
 
   @Resource

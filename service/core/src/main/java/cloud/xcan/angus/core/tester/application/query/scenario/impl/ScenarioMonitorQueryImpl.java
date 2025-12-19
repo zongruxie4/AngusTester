@@ -13,7 +13,6 @@ import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.enums.NoticeType;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.event.EventSender;
 import cloud.xcan.angus.core.event.source.EventContent;
@@ -39,6 +38,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -49,7 +49,7 @@ import org.springframework.data.domain.PageRequest;
  * monitoring statistics assembly.
  * </p>
  */
-@Biz
+@Service
 public class ScenarioMonitorQueryImpl implements ScenarioMonitorQuery {
 
   @Resource

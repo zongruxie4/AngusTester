@@ -23,7 +23,7 @@ public class TaskRemarkSummary {
   private Long createdBy;
 
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")
-  private String createdByName;
+  private String creator;
 
   @JsonFormat(pattern = DEFAULT_DATE_TIME_FORMAT)
   private LocalDateTime createdDate;

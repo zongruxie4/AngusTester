@@ -26,7 +26,7 @@ import static org.apache.commons.lang3.time.DateFormatUtils.format;
 import cloud.xcan.angus.api.commonlink.apis.ApiSource;
 import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
 import cloud.xcan.angus.api.commonlink.services.ServicesPermission;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -105,7 +105,7 @@ import org.springframework.web.multipart.MultipartFile;
  *   <li>Schema and component synchronization</li>
  * </ul></p>
  */
-@Biz
+@Service
 @Slf4j
 public class ServicesCmdImpl extends CommCmd<Services, Long> implements ServicesCmd {
 

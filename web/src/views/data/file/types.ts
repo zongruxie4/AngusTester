@@ -32,8 +32,8 @@ export const columns = [
     width: '10%'
   },
   {
-    title: t('common.lastModifiedDate'),
-    dataIndex: 'lastModifiedDate',
+    title: t('common.modifiedDate'),
+    dataIndex: 'modifiedDate',
     ellipsis: true,
     width: '15%'
   },
@@ -99,7 +99,7 @@ export interface SourceType {
   /** File type information */
   type: FileType;
   /** Last modified date */
-  lastModifiedDate: string;
+  modifiedDate: string;
   /** Flag indicating if rename mode is active */
   renameFlag?: boolean;
   /** Cached name for rename operations */
@@ -140,7 +140,7 @@ export interface SpaceInfoType {
   /** Number of sub-files */
   subFileNum: string;
   /** Name of user who created the space */
-  createdByName: string;
+  creator: string;
   /** Date when space was created */
   createdDate: string;
 }

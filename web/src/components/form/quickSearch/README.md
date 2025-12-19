@@ -31,7 +31,7 @@ const searchConfig = {
   title: 'Quick Search',
   auditOptions: createAuditOptions([
     { key: 'createdBy', name: 'Created by me', fieldKey: 'createdBy' },
-    { key: 'lastModifiedBy', name: 'Modified by me', fieldKey: 'lastModifiedBy' }
+    { key: 'modifiedBy', name: 'Modified by me', fieldKey: 'modifiedBy' }
   ], currentUserId),
   
   // Option 1: Manual enum options

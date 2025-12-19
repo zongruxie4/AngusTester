@@ -225,8 +225,8 @@ public class TaskAssembler {
         .setTenantId(task.getTenantId())
         .setCreatedBy(task.getCreatedBy())
         .setCreatedDate(task.getCreatedDate())
-        .setLastModifiedBy(task.getLastModifiedBy())
-        .setLastModifiedDate(task.getLastModifiedDate());
+        .setModifiedBy(task.getModifiedBy())
+        .setModifiedDate(task.getModifiedDate());
   }
 
   public static IdAndNameVo toTagVo(TagTarget o) {
@@ -258,7 +258,7 @@ public class TaskAssembler {
         .setFavourite(task.getFavourite())
         .setFollow(task.getFollow())
         .setCreatedBy(task.getCreatedBy())
-        .setLastModifiedBy(task.getLastModifiedBy());
+        .setModifiedBy(task.getModifiedBy());
   }
 
   public static TaskListVo toListVo(Task task) {
@@ -310,8 +310,8 @@ public class TaskAssembler {
         .setTenantId(task.getTenantId())
         .setCreatedBy(task.getCreatedBy())
         .setCreatedDate(task.getCreatedDate())
-        .setLastModifiedBy(task.getLastModifiedBy())
-        .setLastModifiedDate(task.getLastModifiedDate());
+        .setModifiedBy(task.getModifiedBy())
+        .setModifiedDate(task.getModifiedDate());
   }
 
   public static TaskListExportVo toTaskVo(TaskListVo listVo) {
@@ -351,10 +351,10 @@ public class TaskAssembler {
         .setRefTags(isNotEmpty(listVo.getTags()) ? listVo.getTags().stream()
             .map(IdAndNameVo::getName).toList() : emptyList())
         .setDescription(listVo.getDescription())
-        .setCreatedByName(listVo.getCreatedByName())
+        .setCreator(listVo.getCreator())
         .setCreatedDate(listVo.getCreatedDate())
-        .setLastModifiedByName(listVo.getLastModifiedByName())
-        .setLastModifiedDate(listVo.getLastModifiedDate());
+        .setModifier(listVo.getModifier())
+        .setModifiedDate(listVo.getModifiedDate());
   }
 
   @SneakyThrows
@@ -380,7 +380,7 @@ public class TaskAssembler {
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .matchSearchFields("name", "code")
         .rangeSearchFields("startDate", "deadlineDate", "confirmedDate", "completedDate",
-            "processedDate", "canceledDate", "execDate", "createdDate", "lastModifiedDate",
+            "processedDate", "canceledDate", "execDate", "createdDate", "modifiedDate",
             "failNum", "totalNum", "evalWorkload", "actualWorkload")
         .inAndNotFields("id", "tagId", "status", "assigneeId", "confirmerId", "moduleId")
         .orderByFields("id", "name", "code", "createdDate", "taskType", "testType", "bugLevel",

@@ -57,7 +57,7 @@ const len = computed(() => {
         :key="item.id"
         class="mb-2.5 last:mb-0">
         <div class="flex items-center mb-0.5 space-x-3">
-          <div class="text-theme-content font-medium">{{ item.createdByName }}</div>
+          <div class="text-theme-content font-medium">{{ item.creator }}</div>
           <div>{{ item.createdDate }}</div>
         </div>
 

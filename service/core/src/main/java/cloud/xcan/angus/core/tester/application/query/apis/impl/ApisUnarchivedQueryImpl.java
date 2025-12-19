@@ -6,7 +6,7 @@ import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -48,7 +48,7 @@ import org.springframework.data.domain.PageRequest;
  *   <li>Update permission validation</li>
  * </ul></p>
  */
-@Biz
+@Service
 @Slf4j
 @SummaryQueryRegister(name = "ApisUnarchived", table = "apis_unarchived",
     groupByColumns = {"created_date", "method"})

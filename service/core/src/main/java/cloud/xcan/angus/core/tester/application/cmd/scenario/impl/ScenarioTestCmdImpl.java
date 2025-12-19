@@ -11,7 +11,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecCmd;
@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
  * <p>
  * Ensures permission checks, activity logging, and batch operations with transaction management.
  */
-@Biz
+@Service
 public class ScenarioTestCmdImpl implements ScenarioTestCmd {
 
   @Resource

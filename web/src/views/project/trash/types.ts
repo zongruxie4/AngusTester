@@ -13,13 +13,13 @@ export type TrashItem = {
   deletedBy: string;
 
   /** Avatar URL of the user who created the item */
-  createdByAvatar: string;
+  creatorAvatar: string;
 
   /** Avatar URL of the user who deleted the item */
   deletedByAvatar: string;
 
   /** Display name of the user who created the item */
-  createdByName: string;
+  creator: string;
 
   /** Display name of the user who deleted the item */
   deletedByName: string;

@@ -121,8 +121,8 @@ const statusColorConfig = getStatusColorConfig();
         </div>
 
         <div class="flex items-center">
-          <span class="font-semibold">{{ dataSource?.lastModifiedByName }}</span>
-          <span class="ml-1">{{ t('scenarioMonitor.detail.lastModified') }} {{ dataSource?.lastModifiedDate }}</span>
+          <span class="font-semibold">{{ dataSource?.modifier }}</span>
+          <span class="ml-1">{{ t('scenarioMonitor.detail.lastModified') }} {{ dataSource?.modifiedDate }}</span>
 
           <div class="ml-10">
             <Button

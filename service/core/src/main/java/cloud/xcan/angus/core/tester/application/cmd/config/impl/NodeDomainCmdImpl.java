@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.application.cmd.config.impl;
 
 import cloud.xcan.angus.api.enums.NormalStatus;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -12,6 +11,7 @@ import cloud.xcan.angus.core.tester.domain.config.node.domain.NodeDomainRepo;
 import cloud.xcan.angus.core.tester.infra.iaas.DnsClient;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Ensures domain name uniqueness, DNS integration, and batch operations with transaction
  * management.
  */
-@Biz
+@Service
 public class NodeDomainCmdImpl extends CommCmd<NodeDomain, Long> implements NodeDomainCmd {
 
   @Resource

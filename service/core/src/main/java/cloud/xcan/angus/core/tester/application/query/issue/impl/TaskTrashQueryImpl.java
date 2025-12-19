@@ -9,7 +9,7 @@ import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -33,7 +33,7 @@ import org.springframework.data.domain.PageRequest;
  * control for trash operations.
  * </p>
  */
-@Biz
+@Service
 public class TaskTrashQueryImpl implements TaskTrashQuery {
 
   /**
@@ -102,8 +102,8 @@ public class TaskTrashQueryImpl implements TaskTrashQuery {
         // Set user information for non-empty results
         if (!page.isEmpty()) {
           // Set creator information (name and avatar)
-          userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "createdByName",
-              "createdByAvatar");
+          userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "creator",
+              "creatorAvatar");
           // Set deleter information (name and avatar)
           userManager.setUserNameAndAvatar(page.getContent(), "deletedBy", "deletedByName",
               "deletedByAvatar");

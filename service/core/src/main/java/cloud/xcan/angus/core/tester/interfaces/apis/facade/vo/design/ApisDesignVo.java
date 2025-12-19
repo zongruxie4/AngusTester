@@ -33,17 +33,17 @@ public class ApisDesignVo {
 
   private Long createdBy;
 
-  private String createdByName;
+  private String creator;
 
-  private String createdByAvatar;
+  private String creatorAvatar;
 
   private LocalDateTime createdDate;
 
-  protected Long lastModifiedBy;
+  protected Long modifiedBy;
 
-  @NameJoinField(id = "lastModifiedBy", repository = "commonUserBaseRepo")
-  private String lastModifiedByName;
+  @NameJoinField(id = "modifiedBy", repository = "commonUserBaseRepo")
+  private String modifier;
 
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
 }

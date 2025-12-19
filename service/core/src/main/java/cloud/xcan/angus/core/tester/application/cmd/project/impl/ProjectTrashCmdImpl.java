@@ -9,7 +9,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Collections.singletonList;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Ensures permission checks, cascading operations, and batch processing with transaction
  * management.
  */
-@Biz
+@Service
 public class ProjectTrashCmdImpl extends CommCmd<ProjectTrash, Long> implements ProjectTrashCmd {
 
   @Resource

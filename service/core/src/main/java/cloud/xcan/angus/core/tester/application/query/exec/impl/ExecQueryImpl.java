@@ -41,7 +41,7 @@ import cloud.xcan.angus.api.manager.SettingManager;
 import cloud.xcan.angus.api.manager.SettingTenantManager;
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
 import cloud.xcan.angus.api.pojo.node.NodeInfo;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.SneakyThrow0;
 import cloud.xcan.angus.core.biz.exception.BizException;
@@ -104,7 +104,7 @@ import org.springframework.data.domain.PageRequest;
  * <p>
  * Supports summary query registration for analytics and reporting purposes.
  */
-@Biz
+@Service
 @SummaryQueryRegister(name = "Exec", table = "exec",
     groupByColumns = {"created_date", "script_type", "status",}
 )

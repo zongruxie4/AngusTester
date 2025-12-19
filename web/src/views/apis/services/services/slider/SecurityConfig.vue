@@ -106,9 +106,9 @@ const defaultCompDetail:ServicesCompDetail = {
   ref: '',
   model: defaultModel,
   description: '',
-  lastModifiedBy: '',
-  lastModifiedByName: '',
-  lastModifiedDate: '',
+  modifiedBy: '',
+  modifier: '',
+  modifiedDate: '',
 
   // Temporary fields used only in web UI
   isEdit: true,

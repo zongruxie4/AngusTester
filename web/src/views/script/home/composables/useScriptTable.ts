@@ -97,20 +97,20 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
     },
     {
       title: t('common.creator'),
-      dataIndex: 'createdByName',
+      dataIndex: 'creator',
       width: '8%',
-      groupName: 'createdByName',
-      key: 'createdByName',
+      groupName: 'creator',
+      key: 'creator',
       customRender: ({ text }: { text: string }) => text || '--',
       ellipsis: true
     },
     {
       title: t('common.modifier'),
-      dataIndex: 'lastModifiedByName',
+      dataIndex: 'modifier',
       width: '8%',
-      groupName: 'createdByName',
+      groupName: 'creator',
       hide: true,
-      key: 'lastModifiedByName',
+      key: 'modifier',
       customRender: ({ text }: { text: string }) => text || '--',
       ellipsis: true
     },
@@ -126,13 +126,13 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       }
     },
     {
-      title: t('common.lastModifiedDate'),
-      dataIndex: 'lastModifiedDate',
+      title: t('common.modifiedDate'),
+      dataIndex: 'modifiedDate',
       width: '10%',
       sorter: true,
       groupName: 'createdDate',
       hide: true,
-      key: 'lastModifiedDate',
+      key: 'modifiedDate',
       customCell: () => {
         return { style: 'white-space:nowrap;' };
       }

@@ -16,7 +16,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.apis.ApiPermission;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -42,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -54,7 +54,7 @@ import org.springframework.transaction.annotation.Transactional;
  * checks, name uniqueness, quota validation, script synchronization, and activity logging.
  * </p>
  */
-@Biz
+@Service
 public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCaseCmd {
 
   @Resource

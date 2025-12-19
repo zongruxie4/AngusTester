@@ -11,7 +11,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.pojo.auth.SimpleHttpAuth;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.exception.QuotaException;
@@ -28,6 +27,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -39,7 +39,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
  * retrieval.
  * </p>
  */
-@Biz
+@Service
 public class ServicesSyncQueryImpl implements ServicesSyncQuery {
 
   @Resource

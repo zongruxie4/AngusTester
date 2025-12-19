@@ -20,8 +20,8 @@ public class ServicesCompAssembler {
         .setModel(nullSafe(ignoreModel, false) ? null : comp.getModel())
         .setResolvedRefModels(nullSafe(ignoreModel, false) ? null : comp.getResolvedRefModels())
         .setDescription(comp.getDescription())
-        .setLastModifiedBy(comp.getLastModifiedBy())
-        .setLastModifiedDate(comp.getLastModifiedDate());
+        .setModifiedBy(comp.getModifiedBy())
+        .setModifiedDate(comp.getModifiedDate());
   }
 
 }

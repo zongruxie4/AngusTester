@@ -15,8 +15,8 @@ interface ModelOption {
   ref: string;
   key: string;
   model: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifier: string;
+  modifiedDate: string;
   resolvedRefModels?: any;
   label: string;
   value: string;
@@ -139,7 +139,7 @@ watch(() => props.visible, (isVisible) => {
       <div style="background-color: #fafafa;" class="flex items-center px-3 rounded">
         <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.componentName') }}</div>
         <div class="flex-1/3">{{ t('common.modifier') }}</div>
-        <div class="flex-1/3">{{ t('common.lastModifiedDate') }}</div>
+        <div class="flex-1/3">{{ t('common.modifiedDate') }}</div>
       </div>
       <Spin :spinning="isLoading">
         <template v-if="!isLoading && !filteredModelOptions?.length">
@@ -158,8 +158,8 @@ watch(() => props.visible, (isVisible) => {
                   {{ item.key }}
                 </Checkbox>
               </div>
-              <div class="flex-1/3">{{ item.lastModifiedByName }}</div>
-              <div class="flex-1/3">{{ item.lastModifiedDate }}</div>
+              <div class="flex-1/3">{{ item.modifier }}</div>
+              <div class="flex-1/3">{{ item.modifiedDate }}</div>
             </div>
           </div>
         </template>

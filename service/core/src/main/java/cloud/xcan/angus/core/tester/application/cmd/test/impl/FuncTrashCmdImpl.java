@@ -10,7 +10,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.isNull;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -30,6 +29,7 @@ import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
  * activity tracking for audit purposes.
  * </p>
  */
-@Biz
+@Service
 public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTrashCmd {
 
   @Resource

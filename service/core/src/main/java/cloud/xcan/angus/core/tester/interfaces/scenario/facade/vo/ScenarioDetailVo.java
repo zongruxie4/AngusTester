@@ -5,10 +5,6 @@ import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.script.configuration.TestPlatform;
 import cloud.xcan.angus.remote.NameJoinField;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -87,15 +83,15 @@ public class ScenarioDetailVo {
   private Long createdBy;
 
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")
-  private String createdByName;
+  private String creator;
 
   private LocalDateTime createdDate;
 
-  private Long lastModifiedBy;
+  private Long modifiedBy;
 
-  @NameJoinField(id = "lastModifiedBy", repository = "commonUserBaseRepo")
-  private String lastModifiedByName;
+  @NameJoinField(id = "modifiedBy", repository = "commonUserBaseRepo")
+  private String modifier;
 
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
 }

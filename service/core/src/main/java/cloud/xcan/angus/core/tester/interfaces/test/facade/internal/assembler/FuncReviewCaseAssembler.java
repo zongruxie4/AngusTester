@@ -35,7 +35,7 @@ public class FuncReviewCaseAssembler {
         .setReviewStatus(reviewCase.getReviewStatus())
         .setReviewRemark(reviewCase.getReviewRemark())
         .setCreatedBy(reviewCase.getCreatedBy())
-        //.setCreatedByName(reviewCase.getCreatedByName())
+        //.setCreator(reviewCase.getCreator())
         .setCreatedDate(reviewCase.getCreatedDate());
   }
 
@@ -56,7 +56,7 @@ public class FuncReviewCaseAssembler {
         .setReviewStatus(reviewCase.getReviewStatus())
         .setReviewRemark(reviewCase.getReviewRemark())
         .setCreatedBy(reviewCase.getCreatedBy())
-        //.setCreatedByName(reviewCase.getCreatedByName())
+        //.setCreator(reviewCase.getCreator())
         .setCreatedDate(reviewCase.getCreatedDate());
   }
 

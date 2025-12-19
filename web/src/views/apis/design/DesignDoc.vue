@@ -115,7 +115,7 @@ onMounted(async () => {
 
           <div class="text-5 font-medium">{{ designInfo.name }}</div>
 
-          <div>{{ designInfo.lastModifiedByName }}{{ t('status.modifiedAt')}} {{ designInfo.lastModifiedDate }}</div>
+          <div>{{ designInfo.modifier }}{{ t('status.modifiedAt')}} {{ designInfo.modifiedDate }}</div>
 
           <div class="relative left-20 space-x-2">
             <Button

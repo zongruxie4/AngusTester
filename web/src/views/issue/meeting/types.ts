@@ -17,8 +17,8 @@ export type MeetingInfo = {
   time?: string;
   participantNames?: string;
   moderatorName?: string;
-  lastModifiedByName?: string;
-  lastModifiedDate?: string;
+  modifier?: string;
+  modifiedDate?: string;
   description?: string;
   otherInformation?: string;
 }

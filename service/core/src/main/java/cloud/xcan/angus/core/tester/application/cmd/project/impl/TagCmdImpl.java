@@ -10,7 +10,7 @@ import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.UPDATED;
 import static cloud.xcan.angus.core.tester.infra.util.AngusTesterUtils.parseSample;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getDefaultLanguage;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -54,7 +54,7 @@ import org.springframework.transaction.annotation.Transactional;
  *   <li>Activity logging for audit trails</li>
  * </ul></p>
  */
-@Biz
+@Service
 public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
 
   @Resource

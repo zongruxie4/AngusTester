@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.application.query.mock.impl;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.mock.MockDataQuery;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
@@ -27,7 +27,7 @@ import java.util.List;
  * The implementation uses the BizTemplate pattern for consistent business logic handling
  * and proper error management across all operations.
  */
-@Biz
+@Service
 public class MockDataQueryImpl implements MockDataQuery {
 
   @Resource

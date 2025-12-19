@@ -9,7 +9,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -30,6 +29,7 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import java.util.Collection;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
  * authorization, and comprehensive activity tracking.
  * </p>
  */
-@Biz
+@Service
 public class FuncPlanAuthCmdImpl extends CommCmd<FuncPlanAuth, Long> implements FuncPlanAuthCmd {
 
   @Resource

@@ -40,7 +40,7 @@ export function useScriptSearch (userId: string) {
     title: t('quickSearch.title'),
     auditOptions: createAuditOptions([
       { key: 'createdBy', name: t('quickSearch.createdByMe'), fieldKey: 'createdBy' },
-      { key: 'lastModifiedBy', name: t('quickSearch.modifiedByMe'), fieldKey: 'lastModifiedBy' }
+      { key: 'modifiedBy', name: t('quickSearch.modifiedByMe'), fieldKey: 'modifiedBy' }
     ], userId),
     enumType: createEnumTypeConfig(ScriptType, 'type', [ScriptType.MOCK_APIS]),
     timeOptions: createTimeOptions([
@@ -67,7 +67,7 @@ export function useScriptSearch (userId: string) {
 
     isUpdating = true;
     // Merge quick search criteria with existing filters
-    const quickSearchFields = ['createdBy', 'lastModifiedBy', 'type', 'createdDate'];
+    const quickSearchFields = ['createdBy', 'modifiedBy', 'type', 'createdDate'];
     const otherFilters = filters.value.filter(f => f.key && !quickSearchFields.includes(f.key));
     if (key === 'createdBy') {
       const createdBySearchCriteria = searchCriteria.find(f => f.key === 'createdBy');
@@ -87,19 +87,19 @@ export function useScriptSearch (userId: string) {
         }
       }
     }
-    if (key === 'lastModifiedBy') {
-      const lastModifiedBySearchCriteria = searchCriteria.find(f => f.key === 'lastModifiedBy');
-      if (lastModifiedBySearchCriteria) {
+    if (key === 'modifiedBy') {
+      const modifiedBySearchCriteria = searchCriteria.find(f => f.key === 'modifiedBy');
+      if (modifiedBySearchCriteria) {
         if (typeof searchPanelRef.value?.setConfigs === 'function') {
           searchPanelRef.value.setConfigs([{
-            valueKey: 'lastModifiedBy',
+            valueKey: 'modifiedBy',
             value: userId
           }]);
         }
       } else {
         if (typeof searchPanelRef.value?.setConfigs === 'function') {
           searchPanelRef.value.setConfigs([{
-            valueKey: 'lastModifiedBy',
+            valueKey: 'modifiedBy',
             value: undefined
           }]);
         }
@@ -154,8 +154,8 @@ export function useScriptSearch (userId: string) {
     if (key === 'createdBy' && searchCriteriaKeys.includes('createdBy')) {
       quickSearchOptionsRef.value.clearSelectedMap('createdBy');
     }
-    if (key === 'lastModifiedBy' && searchCriteriaKeys.includes('lastModifiedBy')) {
-      quickSearchOptionsRef.value.clearSelectedMap('lastModifiedBy');
+    if (key === 'modifiedBy' && searchCriteriaKeys.includes('modifiedBy')) {
+      quickSearchOptionsRef.value.clearSelectedMap('modifiedBy');
     }
     if (key === 'createdDate' && searchCriteriaKeys.includes('createdDate')) {
       quickSearchOptionsRef.value.clearSelectedMap(['createdDate', 'last1Day', 'last3Days', 'last7Days']);
@@ -275,7 +275,7 @@ export function useScriptSearch (userId: string) {
     },
     {
       type: 'select-user',
-      valueKey: 'lastModifiedBy',
+      valueKey: 'modifiedBy',
       placeholder: t('common.placeholders.selectModifier')
     },
     {
@@ -289,7 +289,7 @@ export function useScriptSearch (userId: string) {
     },
     {
       type: 'date-range',
-      valueKey: 'lastModifiedDate',
+      valueKey: 'modifiedDate',
       placeholder: [
         t('common.placeholders.selectModifiedDateRange.0'),
         t('common.placeholders.selectModifiedDateRange.1')

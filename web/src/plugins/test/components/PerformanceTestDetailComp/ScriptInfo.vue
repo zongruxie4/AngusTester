@@ -21,10 +21,10 @@ interface ScriptInfo {
     value: string;
     message: string;
   };
-  createdByName?: string;            // Creator username
+  creator?: string;            // Creator username
   createdDate?: string;              // Creation timestamp
-  lastModifiedDate?: string;         // Last modification timestamp
-  lastModifiedByName?: string;       // Last modifier username
+  modifiedDate?: string;         // Last modification timestamp
+  modifier?: string;       // Last modifier username
 }
 
 /**
@@ -102,8 +102,8 @@ const formData = reactive({
   createdBy: '',                 // Creator username (read-only)
   exec: '',                      // Execution info (unused)
   createdDate: '',               // Creation timestamp (read-only)
-  lastModifiedDate: '',          // Last modification timestamp (read-only)
-  lastModifiedByName: '',        // Last modifier username (read-only)
+  modifiedDate: '',          // Last modification timestamp (read-only)
+  modifier: '',        // Last modifier username (read-only)
   typeName: '',                  // Script type display name (read-only)
   sourceName: ''                 // Source display name (read-only)
 });
@@ -139,11 +139,11 @@ const infoConfig = [[
   },
   {
     label: t('common.modifier'),
-    dataIndex: 'lastModifiedByName'
+    dataIndex: 'modifier'
   },
   {
-    label: t('common.lastModifiedDate'),
-    dataIndex: 'lastModifiedDate'
+    label: t('common.modifiedDate'),
+    dataIndex: 'modifiedDate'
   },
   {
     label: t('common.description'),
@@ -195,10 +195,10 @@ watch(() => props.scriptInfo, (newValue) => {
     formData.description = newValue.description;
     formData.source = newValue.source?.value || '';
     formData.sourceName = newValue.source?.message || '';
-    formData.createdBy = newValue.createdByName || '';
+    formData.createdBy = newValue.creator || '';
     formData.createdDate = newValue.createdDate || '';
-    formData.lastModifiedDate = newValue.lastModifiedDate || '';
-    formData.lastModifiedByName = newValue.lastModifiedByName || '';
+    formData.modifiedDate = newValue.modifiedDate || '';
+    formData.modifier = newValue.modifier || '';
   }
 }, {
   deep: true,      // Watch nested properties

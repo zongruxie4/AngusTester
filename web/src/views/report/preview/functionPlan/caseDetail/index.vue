@@ -503,7 +503,7 @@ const testers = computed(() => {
                 添加人
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-                {{ _case?.createdByName }}
+                {{ _case?.creator }}
               </div>
             </div>
 
@@ -520,7 +520,7 @@ const testers = computed(() => {
                 最后修改人
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-                {{ _case?.lastModifiedByName }}
+                {{ _case?.modifier }}
               </div>
             </div>
 
@@ -530,7 +530,7 @@ const testers = computed(() => {
                 最后修改时间
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
-                {{ _case?.lastModifiedDate }}
+                {{ _case?.modifiedDate }}
               </div>
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">

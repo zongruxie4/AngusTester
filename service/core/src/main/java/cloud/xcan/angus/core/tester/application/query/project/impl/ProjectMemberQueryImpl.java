@@ -10,7 +10,6 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.api.commonlink.tag.OrgTargetType;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.jpa.criteria.CriteriaUtils;
@@ -25,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -35,7 +35,7 @@ import java.util.Set;
  * information.
  * </p>
  */
-@Biz
+@Service
 public class ProjectMemberQueryImpl implements ProjectMemberQuery {
 
   @Resource

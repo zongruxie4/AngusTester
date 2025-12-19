@@ -53,7 +53,7 @@ const columns = computed(() => [
       name: t('reportPreview.services.info.fields.apiCaseCount')
     },
     {
-      dataIndex: 'createdByName',
+      dataIndex: 'creator',
       name: t('common.creator')
     }
   ],
@@ -63,14 +63,14 @@ const columns = computed(() => [
       name: t('common.createdDate')
     },
     {
-      dataIndex: 'lastModifiedByName',
+      dataIndex: 'modifier',
       name: t('common.modifier')
     }
   ],
   [
     {
-      dataIndex: 'lastModifiedDate',
-      name: t('common.lastModifiedDate')
+      dataIndex: 'modifiedDate',
+      name: t('common.modifiedDate')
     },
     {
       dataIndex: '',

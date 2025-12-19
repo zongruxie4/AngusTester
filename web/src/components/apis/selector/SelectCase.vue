@@ -231,7 +231,7 @@ const processGroupedData = (dataList: any[] = []) => {
         apiListData.value.push({
           type: 'group',
           summary: currentGroupingKey.value === 'createdBy'
-            ? groupedData[key][0].createdByName
+            ? groupedData[key][0].creator
             : currentGroupingKey.value === 'method'
               ? groupedData[key][0].method
               : currentGroupingKey.value === 'ownerId'

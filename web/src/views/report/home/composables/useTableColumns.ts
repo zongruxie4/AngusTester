@@ -102,7 +102,7 @@ export function useTableColumns (): UseTableColumnsReturn {
       hide: false,
       width: 90,
       sorter: true,
-      customRender: ({ record }) => record.createdByName
+      customRender: ({ record }) => record.creator
     },
     {
       key: 'createdDate',
@@ -114,19 +114,19 @@ export function useTableColumns (): UseTableColumnsReturn {
       sorter: true
     },
     {
-      key: 'lastModifiedBy',
-      dataIndex: 'lastModifiedBy',
+      key: 'modifiedBy',
+      dataIndex: 'modifiedBy',
       title: t('common.modifier'),
       groupName: 'creat',
       hide: true,
       width: 130,
       sorter: true,
-      customRender: ({ record }) => record.lastModifiedByName
+      customRender: ({ record }) => record.modifier
     },
     {
-      key: 'lastModifiedDate',
-      dataIndex: 'lastModifiedDate',
-      title: t('common.lastModifiedDate'),
+      key: 'modifiedDate',
+      dataIndex: 'modifiedDate',
+      title: t('common.modifiedDate'),
       groupName: 'creat',
       hide: true,
       width: 160,

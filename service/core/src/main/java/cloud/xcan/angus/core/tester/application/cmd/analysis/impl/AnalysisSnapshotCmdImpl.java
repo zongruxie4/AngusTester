@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.application.cmd.analysis.impl;
 
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.analysis.AnalysisSnapshotCmd;
@@ -13,7 +13,7 @@ import cloud.xcan.angus.core.tester.domain.analysis.snapshot.AnalysisSnapshotRep
 import jakarta.annotation.Resource;
 import java.util.Collection;
 
-@Biz
+@Service
 public class AnalysisSnapshotCmdImpl extends CommCmd<AnalysisSnapshot, Long> implements
     AnalysisSnapshotCmd {
 

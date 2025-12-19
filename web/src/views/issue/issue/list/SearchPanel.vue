@@ -40,9 +40,9 @@ type Props = {
   userInfo: { id: number; };
   appInfo: { id: number; };
   notify: string;
-  orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName';
+  orderBy: 'priority' | 'deadlineDate' | 'creator' | 'assigneeName';
   orderSort: PageQuery.OrderSort;
-  groupKey: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType';
+  groupKey: 'none' | 'assigneeName' | 'modifier' | 'taskType';
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -63,9 +63,9 @@ const emit = defineEmits<{
   (e: 'add'): void;
   (e: 'export'): void;
   (e: 'change', value: SearchCriteria[]): void;
-  (e: 'update:orderBy', value: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName'): void;
+  (e: 'update:orderBy', value: 'priority' | 'deadlineDate' | 'creator' | 'assigneeName'): void;
   (e: 'update:orderSort', value: PageQuery.OrderSort): void;
-  (e: 'update:groupKey', value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType'): void;
+  (e: 'update:groupKey', value: 'none' | 'assigneeName' | 'modifier' | 'taskType'): void;
   (e: 'update:visible', value: boolean): void;
   (e: 'update:collapse', value: boolean): void;
   (e: 'viewModeChange', value: TaskViewMode): void;
@@ -139,7 +139,7 @@ const loadTaskTypeOptions = () => {
  * @param data - Contains orderBy field and orderSort direction
  */
 const handleSortingChange = (
-  data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName';
+  data: { orderBy: 'priority' | 'deadlineDate' | 'creator' | 'assigneeName';
     orderSort: PageQuery.OrderSort; }
 ) => {
   emit('update:orderBy', data.orderBy);
@@ -151,7 +151,7 @@ const handleSortingChange = (
  * @param value - The grouping key to apply
  */
 const handleGroupingChange = (
-  value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType'
+  value: 'none' | 'assigneeName' | 'modifier' | 'taskType'
 ) => {
   emit('update:groupKey', value);
 };
@@ -659,7 +659,7 @@ const initializeComponent = async () => {
     const taskTypeMap: { [key: string]: string } = {};
     if (Object.prototype.hasOwnProperty.call(savedSearchData, 'searchFilters')) {
       searchFilters.value = savedSearchData.searchFilters || [];
-      const dateTimeKeys = ['createdDate', 'startDate', 'deadlineDate', 'processedDate', 'confirmedDate', 'completedDate', 'canceledDate', 'lastModifiedDate'];
+      const dateTimeKeys = ['createdDate', 'startDate', 'deadlineDate', 'processedDate', 'confirmedDate', 'completedDate', 'canceledDate', 'modifiedDate'];
       const taskTypeKeys = ['taskType'];
       const dateTimeMap: { [key: string]: string[] } = {};
       searchFilters.value.every(({ key, value }) => {
@@ -1300,7 +1300,7 @@ const searchOptions = [
   },
   {
     type: 'select-user' as const,
-    valueKey: 'lastModifiedBy',
+    valueKey: 'modifiedBy',
     placeholder: t('common.placeholders.selectModifier'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
@@ -1394,7 +1394,7 @@ const searchOptions = [
   },
   {
     type: 'date-range' as const,
-    valueKey: 'lastModifiedDate',
+    valueKey: 'modifiedDate',
     placeholder: [
       t('common.placeholders.selectModifiedDateRange.0'),
       t('common.placeholders.selectModifiedDateRange.1')
@@ -1450,7 +1450,7 @@ const groupMenuItems = [
     name: t('common.assignee')
   },
   {
-    key: 'lastModifiedByName',
+    key: 'modifier',
     name: t('common.modifier')
   },
   {
@@ -1461,7 +1461,7 @@ const groupMenuItems = [
 
 const sortMenuItems = [
   {
-    key: 'createdByName',
+    key: 'creator',
     name: t('common.creator'),
     orderSort: PageQuery.OrderSort.Asc
   },

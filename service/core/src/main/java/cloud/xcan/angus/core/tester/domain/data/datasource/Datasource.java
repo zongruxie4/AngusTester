@@ -62,7 +62,7 @@ public class Datasource extends TenantAuditingEntity<Datasource, Long> {
   @Transient
   private String connFailureMessage;
   @Transient
-  private String lastModifiedByName;
+  private String modifier;
   @Transient
   private String avatar;
 

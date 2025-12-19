@@ -111,12 +111,12 @@ public class FuncCaseExportListVo {
   @ExcelProperty(converter = ListStringWriteConverter.class)
   private List<String> refTasks;
 
-  private String createdByName;
+  private String creator;
   @DateTimeFormat(DEFAULT_DATE_TIME_FORMAT)
   private LocalDateTime createdDate;
 
-  private String lastModifiedByName;
+  private String modifier;
   @DateTimeFormat(DEFAULT_DATE_TIME_FORMAT)
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
 }

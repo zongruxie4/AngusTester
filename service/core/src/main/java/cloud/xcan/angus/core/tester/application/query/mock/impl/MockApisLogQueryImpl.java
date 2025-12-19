@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.application.query.mock.impl;
 
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.mock.MockApisLogQuery;
@@ -40,7 +40,7 @@ import org.springframework.data.domain.PageRequest;
  *
  * @author XiaoLong Liu
  */
-@Biz
+@Service
 public class MockApisLogQueryImpl implements MockApisLogQuery {
 
   @Resource

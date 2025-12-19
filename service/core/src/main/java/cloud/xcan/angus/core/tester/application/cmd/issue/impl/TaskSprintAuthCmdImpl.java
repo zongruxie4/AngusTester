@@ -9,7 +9,6 @@ import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.AUTH_CAN
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.AUTH_UPDATED;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -28,6 +27,7 @@ import cloud.xcan.angus.core.tester.domain.issue.sprint.auth.TaskSprintAuthRepo;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -48,7 +48,7 @@ import org.springframework.transaction.annotation.Transactional;
  *   <li>Permission validation and security</li>
  * </ul></p>
  */
-@Biz
+@Service
 public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> implements
     TaskSprintAuthCmd {
 

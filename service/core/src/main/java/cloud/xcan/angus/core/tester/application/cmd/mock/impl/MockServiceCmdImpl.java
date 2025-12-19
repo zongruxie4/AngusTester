@@ -39,7 +39,6 @@ import cloud.xcan.angus.agent.message.mockservice.StopVo;
 import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.api.enums.NodeRole;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -110,6 +109,7 @@ import java.util.stream.Collectors;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -124,7 +124,7 @@ import org.springframework.web.multipart.MultipartFile;
  * transaction management.
  */
 @Slf4j
-@Biz
+@Service
 public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements MockServiceCmd {
 
   @Resource

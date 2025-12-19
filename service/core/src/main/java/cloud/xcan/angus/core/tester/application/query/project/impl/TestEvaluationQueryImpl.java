@@ -17,7 +17,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.config.SettingTenantQuery;
@@ -50,6 +49,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -59,7 +59,7 @@ import org.springframework.data.domain.PageRequest;
  * Provides methods for evaluation listing, detail retrieval, and permission checking.
  * </p>
  */
-@Biz
+@Service
 public class TestEvaluationQueryImpl implements TestEvaluationQuery {
 
   @Resource

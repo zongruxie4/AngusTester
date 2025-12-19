@@ -37,8 +37,8 @@ export type ServiceSchemaDetail = {
   tags: OpenAPIV3_1.TagObject[];
   extensions: Record<string, any>;
   specVersion: string;
-  lastModifiedBy: number;
-  lastModifiedDate: string;
+  modifiedBy: number;
+  modifiedDate: string;
 }
 
 export type ServicesDetail = {
@@ -55,11 +55,11 @@ export type ServicesDetail = {
   apisCaseNum: number;
   schema: ServiceSchemaDetail;
   createdBy: string;
-  createdByName: string;
+  creator: string;
   createdDate: string;
-  lastModifiedBy: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifier: string;
+  modifiedDate: string;
 }
 
 export type ServicesCompDetail = {
@@ -71,9 +71,9 @@ export type ServicesCompDetail = {
   model?: any;
   description?: string;
   resolvedRefModels?: Record<string, string>;
-  lastModifiedBy: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifier: string;
+  modifiedDate: string;
 
   // Temp fields in web
   isQuote: boolean; // whether the component is a reference to another

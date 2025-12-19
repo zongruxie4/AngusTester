@@ -33,9 +33,9 @@ export interface DataSourceDetail {
   tenantId: string;
   createdBy: string;
   createdDate: string;
-  lastModifiedBy: string;
-  lastModifiedDate: string;
-  lastModifiedByName?: string;
+  modifiedBy: string;
+  modifiedDate: string;
+  modifier?: string;
   avatar?: string;
 }
 

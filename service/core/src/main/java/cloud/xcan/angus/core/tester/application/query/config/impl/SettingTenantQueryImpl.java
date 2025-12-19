@@ -3,7 +3,7 @@ package cloud.xcan.angus.core.tester.application.query.config.impl;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static java.util.Objects.isNull;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.cmd.config.SettingTenantCmd;
 import cloud.xcan.angus.core.tester.application.query.config.SettingTenantQuery;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
  * comprehensive tenant configuration administration.
  * </p>
  */
-@Biz
+@Service
 public class SettingTenantQueryImpl implements SettingTenantQuery {
 
   @Resource

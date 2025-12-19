@@ -18,11 +18,11 @@ export const bigPeopleInfoColumns = [
     },
     {
       label: t('common.creator'),
-      dataIndex: 'createdByName'
+      dataIndex: 'creator'
     },
     {
       label: t('common.modifier'),
-      dataIndex: 'lastModifiedByName'
+      dataIndex: 'modifier'
     }]
 ];
 
@@ -57,8 +57,8 @@ export const bigDateInfoColumns = [
       dataIndex: 'testResultHandleDate'
     },
     {
-      label: t('common.lastModifiedDate'),
-      dataIndex: 'lastModifiedDate'
+      label: t('common.modifiedDate'),
+      dataIndex: 'modifiedDate'
     }
   ]
 ];

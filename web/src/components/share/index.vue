@@ -70,7 +70,7 @@ const shareList = ref<ShareObj[]>([{
   public0: true,
   password: undefined,
   createdBy: '',
-  createdByName: '',
+  creator: '',
   createdDate: '',
   validFlag: false,
   isEdit: true,
@@ -114,7 +114,7 @@ const loadApiList = async () => {
   if (error) {
     return;
   }
-  
+
   allAvailableApiIds.value = [];
   filteredApiList.value = data?.list.map(item => {
     allAvailableApiIds.value.push(item.id);
@@ -124,7 +124,7 @@ const loadApiList = async () => {
       method: item.method
     };
   }) || [];
-  
+
   shareList.value[0].apiList = filteredApiList.value;
   completeApiList.value = filteredApiList.value;
 };
@@ -139,7 +139,7 @@ const loadShareHistory = async () => {
   if (error || !data?.list?.length) {
     return;
   }
-  
+
   shareList.value = [shareList.value[0], ...data.list.map(item => ({
     ...item,
     isEdit: false,
@@ -179,19 +179,19 @@ const handleEditShare = (share, index: number) => {
     share.apiList = completeApiList.value;
     allAvailableApiIds.value = completeApiList.value.map(item => item.id);
   }
-  
+
   // Save data before editing for potential rollback
   previousShareData.value = share;
-  
+
   // If clicking on already expanded item, do nothing
   if (currentlyEditingShare.value?.id === share?.id && share.isEdit) {
     return;
   }
-  
+
   // Show password field
   isPasswordVisible.value = true;
   share.isEdit = true;
-  
+
   // Only allow editing one share at a time
   for (let i = 0; i < shareList.value.length; i++) {
     if (shareList.value[i]?.id !== share?.id && share.isEdit) {
@@ -202,7 +202,7 @@ const handleEditShare = (share, index: number) => {
   // Set current editing share
   currentlyEditingShare.value = share;
   currentShareId.value = share.id;
-  
+
   // Populate form with share data
   shareFormData.value.name = share.id === 'add' ? '' : share.name;
   shareFormData.value.url = share.url;
@@ -213,7 +213,7 @@ const handleEditShare = (share, index: number) => {
   sharePassword.value = share.password || '';
   selectedApiIds.value = share.apiIds || [];
   expirationDate.value = share.expiredDate;
-  
+
   // Save original data for comparison (to detect changes)
   originalShareData.value.name = share.id === 'add' ? '' : share.name;
   originalShareData.value.id = share.id;
@@ -347,7 +347,7 @@ const handleApiSelectionChange = (checkedValues: (string | number | boolean)[]) 
   // Convert to string array for consistency
   const stringValues = checkedValues.map(v => String(v));
   selectedApiIds.value = stringValues;
-  
+
   if (stringValues.length) {
     const isEqual = utils.deepCompare(allAvailableApiIds.value, stringValues);
     if (isEqual) {
@@ -381,7 +381,7 @@ const handleSaveShare = async (share) => {
     ...shareFormData.value,
     expiredFlag: !shareFormData.value.expiredFlag
   };
-  
+
   // If private share, include password
   if (!shareFormData.value.public0) {
     // Validate password
@@ -394,7 +394,7 @@ const handleSaveShare = async (share) => {
       password: sharePassword.value
     };
   }
-  
+
   // If has expiration time, include it
   if (!shareFormData.value.expiredFlag) {
     // Validate expiration time (must be at least 30 minutes in future)
@@ -411,7 +411,7 @@ const handleSaveShare = async (share) => {
       expiredDate: expirationDate.value
     };
   }
-  
+
   // For service shares, validate API selection
   if (props.type !== 'API') {
     if (!filteredApiList.value.length) {
@@ -492,14 +492,14 @@ const updateExistingShare = async (params, share) => {
     copyShareInfo(share);
     return;
   }
-  
+
   share.isLoading = true;
   const [error] = await apis.patchShared(params);
   share.isLoading = false;
   if (error) {
     return;
   }
-  
+
   emit('ok', { url: params.url, password: params.password, type: 'edit' });
   copyShareInfo(params);
   emit('update:visible', false);
@@ -591,7 +591,7 @@ const copyShareInfo = (item: ShareObj, showCopySuccess?: boolean) => {
  */
 const searchApisByName = debounce(duration.search, (event: ChangeEvent, share: ShareObj) => {
   const searchTerm = event.target.value as string;
-  
+
   // If no search term, show all APIs
   if (!searchTerm) {
     share.apiList = completeApiList.value;
@@ -636,7 +636,7 @@ const initializeData = () => {
     public0: true,
     password: undefined,
     createdBy: '',
-    createdByName: '',
+    creator: '',
     createdDate: '',
     validFlag: false,
     isEdit: true,
@@ -649,7 +649,7 @@ const initializeData = () => {
   selectedApiIds.value = [];
   filteredApiList.value = [];
   completeApiList.value = [];
-  
+
   shareFormData.value = {
     public0: true,
     url: '',
@@ -658,14 +658,14 @@ const initializeData = () => {
     targetType: 'API',
     expiredFlag: true
   };
-  
+
   currentlyEditingShare.value = undefined;
   previousShareData.value = undefined;
   sharePassword.value = '';
-  
+
   isApiSelectionIndeterminate.value = false;
   isAllApisChecked.value = false;
-  
+
   originalShareData.value = {
     public0: false,
     url: '',
@@ -676,14 +676,14 @@ const initializeData = () => {
     name: '',
     apiIds: []
   };
-  
+
   currentShareId.value = props.sharedId;
-  
+
   // Reset error states
   hasNameError.value = false;
   hasPasswordError.value = false;
   hasDateError.value = false;
-  
+
   // Reset password visibility
   isPasswordVisible.value = true;
   actualPassword.value = '';
@@ -695,16 +695,16 @@ const initializeData = () => {
  */
 onMounted(async () => {
   await loadTimeUnits();
-  
+
   watch(() => props.visible, async (newValue) => {
     if (!newValue) {
       return;
     }
-    
+
     // Initialize data when modal opens
     initializeData();
     await loadApiList();
-    
+
     // Load share history for 'all' mode
     if (props.source === 'all') {
       await loadShareHistory();

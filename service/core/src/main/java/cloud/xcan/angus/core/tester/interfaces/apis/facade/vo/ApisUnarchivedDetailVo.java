@@ -86,11 +86,11 @@ public class ApisUnarchivedDetailVo {
   private Long createdBy;
 
   //@NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")
-  //private String createdByName;
+  //private String creator;
 
   private LocalDateTime createdDate;
 
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
   @JsonAnyGetter
   public Map<String, Object> getExtensions() {

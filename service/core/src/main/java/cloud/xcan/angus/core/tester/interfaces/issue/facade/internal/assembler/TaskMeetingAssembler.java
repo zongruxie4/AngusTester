@@ -64,8 +64,8 @@ public class TaskMeetingAssembler {
         .setContent(meeting.getContent())
         .setCreatedBy(meeting.getCreatedBy())
         .setCreatedDate(meeting.getCreatedDate())
-        .setLastModifiedBy(meeting.getLastModifiedBy())
-        .setLastModifiedDate(meeting.getLastModifiedDate());
+        .setModifiedBy(meeting.getModifiedBy())
+        .setModifiedDate(meeting.getModifiedDate());
   }
 
   public static TaskMeetingVo toVo(TaskMeeting meeting) {
@@ -81,15 +81,15 @@ public class TaskMeetingAssembler {
         .setContent(meeting.getContent())
         .setCreatedBy(meeting.getCreatedBy())
         .setCreatedDate(meeting.getCreatedDate())
-        .setLastModifiedBy(meeting.getLastModifiedBy())
-        .setLastModifiedDate(meeting.getLastModifiedDate());
+        .setModifiedBy(meeting.getModifiedBy())
+        .setModifiedDate(meeting.getModifiedDate());
   }
 
   public static GenericSpecification<TaskMeeting> getSpecification(TaskMeetingFindDto dto) {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdDate")
-        .orderByFields("id", "subject", "createdBy", "createdDate", "lastModifiedBy")
+        .orderByFields("id", "subject", "createdBy", "createdDate", "modifiedBy")
         .matchSearchFields("subject")
         .build();
     return new GenericSpecification<>(filters);

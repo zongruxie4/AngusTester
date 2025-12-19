@@ -81,10 +81,10 @@ public class ServicesSchema extends TenantEntity<ServicesSchema, Long> implement
   private SpecVersion specVersion;
 
   @LastModifiedBy
-  private Long lastModifiedBy;
+  private Long modifiedBy;
 
   @LastModifiedDate
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
   @Override
   public Long identity() {

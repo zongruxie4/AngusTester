@@ -6,7 +6,7 @@ import static cloud.xcan.angus.core.tester.application.converter.ActivityConvert
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Provides methods for adding and deleting comments, including recursive deletion of sub-comments.
  * Handles permission checks, quota validation, activity logging, and notification events.
  */
-@Biz
+@Service
 public class CommentCmdImpl extends CommCmd<Comment, Long> implements CommentCmd {
 
   @Resource

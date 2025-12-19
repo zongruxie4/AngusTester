@@ -6,7 +6,6 @@ import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.APIS_FOLLOW_
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static java.util.Objects.isNull;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -21,6 +20,7 @@ import cloud.xcan.angus.core.tester.domain.apis.follow.ApisFollowRepo;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Manages user's API follow relationships for tracking API changes and updates.
  * </p>
  */
-@Biz
+@Service
 public class ApisFollowCmdImpl extends CommCmd<ApisFollow, Long> implements ApisFollowCmd {
 
   @Resource

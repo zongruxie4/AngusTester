@@ -11,7 +11,7 @@ import { DataSetItem } from './PropsType2';
 const { t } = useI18n();
 
 // Type definitions
-type OrderByKey = 'lastModifiedDate' | 'lastModifiedByName';
+type OrderByKey = 'modifiedDate' | 'modifier';
 type OrderSortKey = 'ASC' | 'DESC';
 
 /**
@@ -288,17 +288,17 @@ const tableColumns = [
     width: '10%'
   },
   {
-    key: 'lastModifiedByName',
-    title: t('common.lastModifiedBy'),
-    dataIndex: 'lastModifiedByName',
+    key: 'modifier',
+    title: t('common.modifiedBy'),
+    dataIndex: 'modifier',
     ellipsis: true,
     width: '11%',
     sort: true
   },
   {
-    key: 'lastModifiedDate',
-    title: t('common.lastModifiedDate'),
-    dataIndex: 'lastModifiedDate',
+    key: 'modifiedDate',
+    title: t('common.modifiedDate'),
+    dataIndex: 'modifiedDate',
     ellipsis: true,
     width: '15%',
     sort: true

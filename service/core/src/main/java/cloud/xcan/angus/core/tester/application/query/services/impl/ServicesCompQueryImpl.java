@@ -9,7 +9,6 @@ import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.converter.ServicesCompConverter;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesAuthQuery;
@@ -31,6 +30,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import lombok.SneakyThrows;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -41,7 +41,7 @@ import org.springframework.cache.annotation.Cacheable;
  * component handling.
  * </p>
  */
-@Biz
+@Service
 public class ServicesCompQueryImpl implements ServicesCompQuery {
 
   @Resource

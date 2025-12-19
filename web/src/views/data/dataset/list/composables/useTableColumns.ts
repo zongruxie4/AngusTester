@@ -38,17 +38,17 @@ export function useTableColumns () {
       ellipsis: true,
       width: '15%',
       sorter: true,
-      customRender: ({ record }: { record: any }) => record.createdByName,
+      customRender: ({ record }: { record: any }) => record.creator,
       groupName: 'person'
     },
     {
-      key: 'lastModifiedBy',
-      title: t('common.lastModifiedBy'),
-      dataIndex: 'lastModifiedBy',
+      key: 'modifiedBy',
+      title: t('common.modifiedBy'),
+      dataIndex: 'modifiedBy',
       ellipsis: true,
       width: '15%',
       sorter: true,
-      customRender: ({ record }: { record: any }) => record.lastModifiedByName,
+      customRender: ({ record }: { record: any }) => record.modifier,
       groupName: 'person',
       hide: true
     },
@@ -62,9 +62,9 @@ export function useTableColumns () {
       groupName: 'date'
     },
     {
-      key: 'lastModifiedDate',
-      title: t('common.lastModifiedDate'),
-      dataIndex: 'lastModifiedDate',
+      key: 'modifiedDate',
+      title: t('common.modifiedDate'),
+      dataIndex: 'modifiedDate',
       ellipsis: true,
       width: '15%',
       sorter: true,

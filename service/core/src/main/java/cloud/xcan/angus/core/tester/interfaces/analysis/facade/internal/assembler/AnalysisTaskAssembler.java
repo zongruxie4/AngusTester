@@ -47,7 +47,7 @@ public class AnalysisTaskAssembler {
     return new SearchCriteriaBuilder<>(dto)
         .matchSearchFields("name", "code")
         .rangeSearchFields("startDate", "deadlineDate", "confirmedDate", "completedDate",
-            "processedDate", "canceledDate", "execDate", "createdDate", "lastModifiedDate",
+            "processedDate", "canceledDate", "execDate", "createdDate", "modifiedDate",
             "failNum", "totalNum", "evalWorkload", "actualWorkload")
         .inAndNotFields("id", "tagId", "status", "assigneeId", "confirmorId", "moduleId")
         .orderByFields("id", "name", "code", "createdDate", "taskType", "testType", "startDate",

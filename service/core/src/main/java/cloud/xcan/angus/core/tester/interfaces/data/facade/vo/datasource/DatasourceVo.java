@@ -34,16 +34,16 @@ public class DatasourceVo {
   private Long createdBy;
 
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")
-  private String createdByName;
+  private String creator;
 
   private LocalDateTime createdDate;
 
-  private Long lastModifiedBy;
+  private Long modifiedBy;
 
-  private String lastModifiedByName;
+  private String modifier;
 
   private String avatar;
 
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
 }

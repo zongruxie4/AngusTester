@@ -1,6 +1,5 @@
 package cloud.xcan.angus.core.tester.application.cmd.test.impl;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.test.FuncReviewCaseRecordCmd;
@@ -9,6 +8,7 @@ import cloud.xcan.angus.core.tester.domain.test.review.record.FuncReviewCaseReco
 import jakarta.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -23,7 +23,7 @@ import java.util.List;
  * case lifecycle.
  * </p>
  */
-@Biz
+@Service
 public class FuncReviewCaseRecordCmdImpl extends CommCmd<FuncReviewCaseRecord, Long>
     implements FuncReviewCaseRecordCmd {
 

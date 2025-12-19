@@ -6,7 +6,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
@@ -33,7 +33,7 @@ import org.springframework.data.domain.PageRequest;
  * Provides methods to retrieve, list, and check baselines and their info, including permission
  * checks and summary statistics.
  */
-@Biz
+@Service
 public class FuncBaselineQueryImpl implements FuncBaselineQuery {
 
   @Resource
@@ -100,8 +100,8 @@ public class FuncBaselineQueryImpl implements FuncBaselineQuery {
 
         if (page.hasContent()) {
           // Set user name and avatar
-          userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "createdByName",
-              "createdByAvatar");
+          userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "creator",
+              "creatorAvatar");
         }
         return page;
       }

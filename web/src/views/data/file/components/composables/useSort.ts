@@ -15,8 +15,8 @@ export function useSort () {
    */
   const sortMenuItems: SortMenuItem[] = [
     {
-      key: 'lastModifiedDate',
-      name: t('common.lastModifiedDate'),
+      key: 'modifiedDate',
+      name: t('common.modifiedDate'),
       orderSort: 'ASC'
     },
     {

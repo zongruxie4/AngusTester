@@ -23,7 +23,7 @@ public class NodeInfoAssembler {
     return new NodeInfoDetailVo().setId(nodeInfo.getId())
         .setAgentInstalled(nodeInfo.getAgentInstalled())
         .setAgentOnline(nodeInfo.getAgentOnline())
-        .setLastModifiedDate(nodeInfo.getLastModifiedDate())
+        .setModifiedDate(nodeInfo.getModifiedDate())
         .setInfo(Objects.nonNull(nodeInfo.getInfo()) ? toInfoVo(nodeInfo.getInfo()) : null)
         .setOs(Objects.nonNull(nodeInfo.getOs()) ? toOsVo(nodeInfo.getOs()) : null);
   }
@@ -64,8 +64,8 @@ public class NodeInfoAssembler {
 
   public static GenericSpecification<NodeInfo> getSpecification(NodeInfoFindDto dto) {
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "lastModifiedDate")
-        .orderByFields("id", "lastModifiedDate")
+        .rangeSearchFields("id", "modifiedDate")
+        .orderByFields("id", "modifiedDate")
         .build();
     return new GenericSpecification<>(filters);
   }

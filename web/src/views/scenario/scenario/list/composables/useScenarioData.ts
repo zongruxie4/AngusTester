@@ -7,7 +7,7 @@ import { ScenarioMenuKey } from '@/views/scenario/menu';
 /**
  * Sort keys for scenarios
  */
-export type SortKey = 'createdDate' | 'name' | 'createdByName';
+export type SortKey = 'createdDate' | 'name' | 'creator';
 
 /**
  * Composable for managing scenario data

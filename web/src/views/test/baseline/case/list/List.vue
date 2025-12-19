@@ -61,7 +61,7 @@ const tableColumns = [
   },
   {
     title: t('common.creator'),
-    dataIndex: 'createdByName',
+    dataIndex: 'creator',
     width: 100
   },
   {
@@ -263,7 +263,7 @@ onMounted(() => {
   loadBaselineInfo();
   loadBaselineCaseList();
   watch(() => selectedModuleId.value, () => {
-    
+
     loadBaselineCaseList();
   });
 });

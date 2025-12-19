@@ -22,7 +22,7 @@ public class NodeInfoDetailVo {
 
   private Boolean agentOnline;
 
-  protected LocalDateTime lastModifiedDate;
+  protected LocalDateTime modifiedDate;
 
   @Setter
   @Getter

@@ -5,7 +5,6 @@ import static cloud.xcan.angus.core.tester.application.converter.TaskConverter.a
 import static cloud.xcan.angus.core.tester.application.query.issue.impl.TaskQueryImpl.getTaskSummary;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.JoinSupplier;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -27,6 +26,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -37,7 +37,7 @@ import org.springframework.data.domain.PageRequest;
  * management.
  * </p>
  */
-@Biz
+@Service
 public class SoftwareVersionQueryImpl implements SoftwareVersionQuery {
 
   @Resource

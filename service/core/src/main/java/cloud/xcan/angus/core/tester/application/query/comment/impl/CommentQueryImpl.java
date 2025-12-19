@@ -15,7 +15,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.api.commonlink.TesterConstant;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.biz.exception.QuotaException;
@@ -28,6 +27,7 @@ import cloud.xcan.angus.core.tester.domain.comment.summary.CommentTreeSummary;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Implementation of comment query operations for functional and general plugin use.
@@ -47,7 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author XiaoLong Liu
  */
-@Biz
+@Service
 public class CommentQueryImpl implements CommentQuery {
 
   @Autowired(required = false)

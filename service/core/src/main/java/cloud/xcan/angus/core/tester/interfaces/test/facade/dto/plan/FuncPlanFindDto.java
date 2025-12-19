@@ -1,7 +1,5 @@
 package cloud.xcan.angus.core.tester.interfaces.test.facade.dto.plan;
 
-import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
-
 import cloud.xcan.angus.core.tester.domain.test.plan.FuncPlanStatus;
 import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,7 +9,6 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Setter
@@ -47,16 +44,6 @@ public class FuncPlanFindDto extends PageQuery {
 
   @Schema(description = "Test plan owner identifier for responsibility filtering")
   private Long ownerId;
-
-  @Schema(description = "Test plan creator identifier for ownership filtering")
-  private Long createdBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Test plan creation timestamp for temporal filtering")
-  private LocalDateTime createdDate;
-
-  @Schema(description = "Test plan last modifier identifier for modification tracking")
-  private Long lastModifiedBy;
 
   @Override
   public String getDefaultOrderBy() {

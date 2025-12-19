@@ -26,7 +26,6 @@ import cloud.xcan.angus.api.commonlink.node.AgentInstallCmd;
 import cloud.xcan.angus.api.expense.order.OrderInnerRemote;
 import cloud.xcan.angus.api.expense.order.vo.OrderDetailVo;
 import cloud.xcan.angus.api.pojo.node.NodeSpecData;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -67,6 +66,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -79,7 +79,7 @@ import org.springframework.transaction.annotation.Transactional;
  * operations with transaction management.
  */
 @Slf4j
-@Biz
+@Service
 public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
 
   @Resource

@@ -69,16 +69,16 @@ export interface MockService {
   createdBy: string;
 
   /** Creator user name */
-  createdByName: string;
+  creator: string;
 
   /** Creation date */
   createdDate: string;
 
   /** Last modifier user name */
-  lastModifiedByName?: string;
+  modifier?: string;
 
   /** Last modification date */
-  lastModifiedDate?: string;
+  modifiedDate?: string;
 
   /** Failure tips information */
   failTips?: {

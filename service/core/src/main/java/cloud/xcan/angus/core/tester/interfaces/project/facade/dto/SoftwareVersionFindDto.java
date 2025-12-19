@@ -5,7 +5,6 @@ import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -28,12 +27,6 @@ public class SoftwareVersionFindDto extends PageQuery {
 
   @Schema(description = "Version status for lifecycle filtering")
   private SoftwareVersionStatus status;
-
-  @Schema(description = "Version created by for audit filtering")
-  private Long createdBy;
-
-  @Schema(description = "Version creation timestamp for timeline filtering")
-  private LocalDateTime createdDate;
 
   @Override
   public String getDefaultOrderBy() {

@@ -30,7 +30,6 @@ import cloud.xcan.angus.api.commonlink.exec.result.ExecSampleResultContent;
 import cloud.xcan.angus.api.commonlink.exec.result.ExecTargetSummary;
 import cloud.xcan.angus.api.commonlink.exec.result.NodeUsageSummary;
 import cloud.xcan.angus.api.enums.Percentile;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecTestCmd;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecTestResultCmd;
@@ -76,6 +75,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -92,7 +92,7 @@ import org.jetbrains.annotations.Nullable;
  * </p>
  */
 @Slf4j
-@Biz
+@Service
 public class ExecTestResultCmdImpl implements ExecTestResultCmd {
 
   @Resource

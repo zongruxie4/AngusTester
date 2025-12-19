@@ -10,7 +10,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.StringUtils.format;
 
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
@@ -53,7 +53,7 @@ import org.springframework.data.domain.PageRequest;
 @SummaryQueryRegister(name = "ApisShare", table = "apis_share",
     groupByColumns = {"created_date", "target_type"}
 )
-@Biz
+@Service
 public class ApisShareQueryImpl implements ApisShareQuery {
 
   @Resource

@@ -101,7 +101,7 @@ export interface Project {
   /** User ID of the project creator */
   createdBy?: string;
   /** Last modification timestamp */
-  lastModifiedDate?: string;
+  modifiedDate?: string;
   /** Date range for form input [start, end] */
   dateRange?: [string, string];
   /** Whether to import example data on creation */
@@ -262,7 +262,7 @@ export interface RawProjectData {
   startDate: string;
   deadlineDate: string;
   createdBy: string;
-  lastModifiedDate: string;
+  modifiedDate: string;
 }
 
 /**
@@ -286,7 +286,7 @@ export interface ProjectSortOption {
   /** Display name for the sort option */
   name: string;
   /** Field to sort by */
-  key: 'createdDate' | 'createdByName' | 'name' | 'lastModifiedDate';
+  key: 'createdDate' | 'creator' | 'name' | 'modifiedDate';
   /** Sort direction */
   orderSort: PageQuery.OrderSort;
 }

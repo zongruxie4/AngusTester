@@ -80,18 +80,18 @@ export type ReportContent = {
             overdue: boolean;
             commentNum: string;
             createdBy: string;
-            createdByName: string;
+            creator: string;
             createdDate: string;
-            lastModifiedBy: string;
-            lastModifiedByName: string;
-            lastModifiedDate: string;
+            modifiedBy: string;
+            modifier: string;
+            modifiedDate: string;
         };
         remarks: {
             id: string;
             content: string;
             taskId: string;
             createdBy: string;
-            createdByName: string;
+            creator: string;
             createdDate: string;
         }[];
         activities: {
@@ -451,14 +451,14 @@ export type ReportContent = {
         };
         createdAt: { value: string; message: string; };
         createdBy: string;
-        createdByName: string;
+        creator: string;
         createdDate: string;
         description: string;
         failureMessage: string;
         id: string;
-        lastModifiedBy: string;
-        lastModifiedByName: string;
-        lastModifiedDate: string;
+        modifiedBy: string;
+        modifier: string;
+        modifiedDate: string;
         name: string;
         nextGenerationDate: string;
         projectId: string;

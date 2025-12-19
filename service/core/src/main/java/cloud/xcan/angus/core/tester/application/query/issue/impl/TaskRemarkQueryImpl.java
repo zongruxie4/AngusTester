@@ -5,7 +5,7 @@ import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_REMARK_
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_REMARK_OVER_LIMIT_T;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.biz.exception.BizException;
@@ -29,7 +29,7 @@ import org.springframework.data.domain.PageRequest;
  * Provides methods for task remark CRUD operations, quota validation, and remark statistics.
  * </p>
  */
-@Biz
+@Service
 public class TaskRemarkQueryImpl implements TaskRemarkQuery {
 
   @Resource

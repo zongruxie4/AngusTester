@@ -27,7 +27,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class TaskFindDto extends PageQuery {
 
-
   @NotNull
   @Schema(description = "Project identifier for task filtering and organization", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
@@ -146,20 +145,6 @@ public class TaskFindDto extends PageQuery {
   @Schema(description = "Task execution timestamp for performance analysis")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime execDate;
-
-  @Schema(description = "Task creator identifier for ownership filtering")
-  private Long createdBy;
-
-  @Schema(description = "Task creation timestamp for timeline analysis")
-  @DateTimeFormat(pattern = DATE_FMT)
-  private LocalDateTime createdDate;
-
-  @Schema(description = "Last modifier identifier for change tracking")
-  private Long lastModifiedBy;
-
-  @Schema(description = "Last modification timestamp for change analysis")
-  @DateTimeFormat(pattern = DATE_FMT)
-  private LocalDateTime lastModifiedDate;
 
   @Schema(description = "Administrator flag for cross-project query permissions")
   private Boolean admin;

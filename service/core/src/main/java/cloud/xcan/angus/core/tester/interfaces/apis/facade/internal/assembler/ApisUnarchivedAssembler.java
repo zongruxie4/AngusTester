@@ -102,7 +102,7 @@ public class ApisUnarchivedAssembler {
         .setCreatedBy(api.getCreatedBy())
         .setTenantId(api.getTenantId())
         .setSecurity(api.getSecurity())
-        .setLastModifiedDate(api.getLastModifiedDate());
+        .setModifiedDate(api.getModifiedDate());
   }
 
   public static ApisUnarchivedListVo toApisUnarchivedListVo(ApisUnarchived api) {
@@ -113,7 +113,7 @@ public class ApisUnarchivedAssembler {
         .setEndpoint(api.getEndpoint())
         .setSummary(api.getSummary())
         .setCreatedDate(api.getCreatedDate())
-        .setLastModifiedDate(api.getLastModifiedDate());
+        .setModifiedDate(api.getModifiedDate());
   }
 
   public static GenericSpecification<ApisUnarchived> getSpecification(ApisUnarchivedFindDto dto) {

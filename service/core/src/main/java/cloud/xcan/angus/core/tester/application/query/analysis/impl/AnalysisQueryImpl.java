@@ -10,7 +10,6 @@ import static java.util.Objects.isNull;
 import cloud.xcan.angus.api.commonlink.TesterConstant;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.analysis.AnalysisQuery;
@@ -56,8 +55,9 @@ import java.util.Set;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
-@Biz
+@Service
 public class AnalysisQueryImpl implements AnalysisQuery {
 
   @Resource

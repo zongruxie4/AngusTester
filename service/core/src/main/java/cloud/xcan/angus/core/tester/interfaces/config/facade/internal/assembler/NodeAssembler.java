@@ -69,8 +69,8 @@ public class NodeAssembler {
         .setSshPort(dto.getSshPort())
         .setDomain(stringSafe(dto.getDomain()))
         .setRoles(dto.getRoles());
-    node.setLastModifiedBy(userId);
-    node.setLastModifiedDate(LocalDateTime.now());
+    node.setModifiedBy(userId);
+    node.setModifiedDate(LocalDateTime.now());
     return node;
   }
 
@@ -162,8 +162,8 @@ public class NodeAssembler {
         .setTenantId(node.getTenantId())
         .setCreatedBy(node.getCreatedBy())
         .setCreatedDate(LocalDateTime.now())
-        .setLastModifiedBy(node.getLastModifiedBy())
-        .setLastModifiedDate(node.getLastModifiedDate());
+        .setModifiedBy(node.getModifiedBy())
+        .setModifiedDate(node.getModifiedDate());
   }
 
   public static NodeMockServiceListVo toServiceListVo(MockServiceInfo service) {
@@ -180,8 +180,8 @@ public class NodeAssembler {
         .setTenantId(service.getTenantId())
         .setCreatedBy(service.getCreatedBy())
         .setCreatedDate(service.getCreatedDate())
-        .setLastModifiedBy(service.getLastModifiedBy())
-        .setLastModifiedDate(service.getLastModifiedDate());
+        .setModifiedBy(service.getModifiedBy())
+        .setModifiedDate(service.getModifiedDate());
   }
 
   public static Specification<Node> getCountSpecification(NodeCountFindDto dto) {

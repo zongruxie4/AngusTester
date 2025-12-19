@@ -13,7 +13,6 @@ import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.user.UserRepo;
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.exception.BizException;
@@ -40,6 +39,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -50,7 +50,7 @@ import org.springframework.data.jpa.domain.Specification;
  * access rights.
  * </p>
  */
-@Biz
+@Service
 public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
 
   @Resource

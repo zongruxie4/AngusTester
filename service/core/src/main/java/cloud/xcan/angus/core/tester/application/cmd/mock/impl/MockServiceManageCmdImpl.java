@@ -25,7 +25,6 @@ import cloud.xcan.angus.agent.message.mockservice.StatusVo;
 import cloud.xcan.angus.agent.message.mockservice.StopCmdParam;
 import cloud.xcan.angus.agent.message.mockservice.StopDto;
 import cloud.xcan.angus.agent.message.mockservice.StopVo;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceManageCmd;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceMetricsCmd;
@@ -57,6 +56,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.stereotype.Service;
 
 /**
  * Command implementation for mock service instance management.
@@ -67,7 +67,7 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
  * Ensures distributed coordination, error handling, and integration with agent nodes.
  */
 @Slf4j
-@Biz
+@Service
 public class MockServiceManageCmdImpl implements MockServiceManageCmd {
 
   @Resource

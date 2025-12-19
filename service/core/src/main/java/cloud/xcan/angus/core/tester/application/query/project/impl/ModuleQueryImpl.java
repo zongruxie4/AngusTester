@@ -10,7 +10,6 @@ import static java.util.Collections.emptyMap;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.jpa.criteria.CriteriaUtils;
@@ -36,6 +35,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.JpaSort;
+import org.springframework.stereotype.Service;
 
 /**
  * Implementation of ModuleQuery for managing module operations and data retrieval.
@@ -59,7 +59,7 @@ import org.springframework.data.jpa.domain.JpaSort;
  * The implementation uses the BizTemplate pattern for consistent business logic handling
  * and proper error management across all operations.
  */
-@Biz
+@Service
 public class ModuleQueryImpl implements ModuleQuery {
 
   @Resource

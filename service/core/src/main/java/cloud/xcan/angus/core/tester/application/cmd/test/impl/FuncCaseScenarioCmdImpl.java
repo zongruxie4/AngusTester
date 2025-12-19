@@ -7,7 +7,6 @@ import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.ASSOC_SC
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.biz.exception.QuotaException;
@@ -27,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
  * <p>
  * Supports batch operations and enforces maximum association limits (20 scenarios per case).
  */
-@Biz
+@Service
 public class FuncCaseScenarioCmdImpl extends CommCmd<FuncCaseScenario, Long> implements
     FuncCaseScenarioCmd {
 

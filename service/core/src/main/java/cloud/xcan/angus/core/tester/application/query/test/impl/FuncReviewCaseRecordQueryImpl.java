@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.application.query.test.impl;
 
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.test.FuncCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncReviewCaseRecordQuery;
@@ -32,7 +32,7 @@ import java.util.List;
  * Supports individual case review history operations with proper error handling
  * and resource validation.
  */
-@Biz
+@Service
 public class FuncReviewCaseRecordQueryImpl implements FuncReviewCaseRecordQuery {
 
   @Resource

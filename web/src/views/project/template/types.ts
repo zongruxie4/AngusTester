@@ -22,11 +22,11 @@ export type TestTemplateDetail = {
   templateContent: TestTemplateContent;
   isSystem: boolean;
   createdBy: string;
-  createdByName: string;
+  creator: string;
   createdDate: string;
-  lastModifiedBy: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifier: string;
+  modifiedDate: string;
 };
 export type IssueTemplateEditFormState = {
   name: string;

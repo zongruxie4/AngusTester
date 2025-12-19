@@ -9,7 +9,7 @@ import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.exception.QuotaException;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
  *
  * @author XiaoLong Liu
  */
-@Biz
+@Service
 public class DatasetTargetQueryImpl implements DatasetTargetQuery {
 
   @Resource

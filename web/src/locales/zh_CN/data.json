@@ -448,7 +448,7 @@
     "sort": {
       "title": "排序",
       "menuItems": {
-        "byLastModifiedDate": "按最后修改时间",
+        "bymodifiedDate": "按最后修改时间",
         "byType": "按添加类型"
       }
     },

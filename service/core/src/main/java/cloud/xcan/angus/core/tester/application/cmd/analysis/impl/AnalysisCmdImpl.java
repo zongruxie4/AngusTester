@@ -12,7 +12,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -33,7 +33,7 @@ import jakarta.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
 
-@Biz
+@Service
 public class AnalysisCmdImpl extends CommCmd<Analysis, Long> implements AnalysisCmd {
 
   @Resource

@@ -62,7 +62,7 @@ public class TaskAssocVo {
   private Long createdBy;
 
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")
-  private String createdByName;
+  private String creator;
 
   private LocalDateTime createdDate;
 

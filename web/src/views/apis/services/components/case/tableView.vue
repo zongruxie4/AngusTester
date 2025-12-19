@@ -72,7 +72,7 @@ const columns = [
     customRender: ({ text }) => text || '--'
   },
   {
-    dataIndex: 'createdByName',
+    dataIndex: 'creator',
     title: t('common.createdBy'),
     groupName: 'create'
   },
@@ -83,13 +83,13 @@ const columns = [
     hide: true
   },
   {
-    dataIndex: 'lastModifiedByName',
-    title: t('common.lastModifiedBy'),
+    dataIndex: 'modifier',
+    title: t('common.modifiedBy'),
     groupName: 'modify'
   },
   {
-    dataIndex: 'lastModifiedDate',
-    title: t('common.lastModifiedDate'),
+    dataIndex: 'modifiedDate',
+    title: t('common.modifiedDate'),
     groupName: 'modify',
     hide: true
   },

@@ -207,10 +207,10 @@ onBeforeUnmount(() => {
         <div class="mt-2 text-3.5">{{ analysisData.description }}</div>
         <div class="mt-2">
           <span class="text-3.5 font-semibold">
-            {{ analysisData.lastModifiedByName }}
+            {{ analysisData.modifier }}
           </span>
           <span class="text-3.5 ml-2">
-            {{ t('status.modifiedAt') }}&nbsp;{{ analysisData.lastModifiedDate }}
+            {{ t('status.modifiedAt') }}&nbsp;{{ analysisData.modifiedDate }}
           </span>
         </div>
       </div>

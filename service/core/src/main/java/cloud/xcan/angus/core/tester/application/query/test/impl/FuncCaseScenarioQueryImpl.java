@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.application.query.test.impl;
 
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioQuery;
 import cloud.xcan.angus.core.tester.application.query.test.FuncCaseScenarioQuery;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * <p>
  * Provides query operations for retrieving scenarios associated with functional test cases.
  */
-@Biz
+@Service
 public class FuncCaseScenarioQueryImpl implements FuncCaseScenarioQuery {
 
   @Resource

@@ -201,7 +201,7 @@ public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements
   @Transient
   private Boolean follow;
   @Transient
-  private String createdByName;
+  private String creator;
   @Transient
   private String avatar;
   @Transient

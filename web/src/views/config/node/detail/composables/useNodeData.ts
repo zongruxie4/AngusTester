@@ -68,7 +68,7 @@ export const infoItem = [
   },
   {
     label: t('common.creator'),
-    dataIndex: 'createdByName'
+    dataIndex: 'creator'
   },
   {
     label: t('common.createdDate'),

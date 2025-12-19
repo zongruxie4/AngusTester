@@ -105,9 +105,9 @@ export interface TaskInfo {
     // confirmTask: true,
     // overdue: false,
     // createdBy: string,
-    // createdByName: string,
+    // creator: string,
     // createdDate: string,
-    // lastModifiedDate: string,
-    // lastModifiedBy: string,
-    // lastModifiedByName: string
+    // modifiedDate: string,
+    // modifiedBy: string,
+    // modifier: string
 }

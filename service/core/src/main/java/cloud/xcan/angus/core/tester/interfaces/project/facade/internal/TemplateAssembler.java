@@ -53,8 +53,8 @@ public class TemplateAssembler {
         .setIsSystem(template.getIsSystem())
         .setCreatedBy(template.getCreatedBy())
         .setCreatedDate(template.getCreatedDate())
-        .setLastModifiedBy(template.getLastModifiedBy())
-        .setLastModifiedDate(template.getLastModifiedDate());
+        .setModifiedBy(template.getModifiedBy())
+        .setModifiedDate(template.getModifiedDate());
   }
 
   /**
@@ -121,10 +121,10 @@ public class TemplateAssembler {
             escapeCsv(template.getName()),
             template.getTemplateType() != null ? template.getTemplateType().name() : "",
             template.getIsSystem() != null && template.getIsSystem() ? "是" : "否",
-            escapeCsv(template.getCreatedByName()),
+            escapeCsv(template.getCreator()),
             template.getCreatedDate() != null ? template.getCreatedDate().toString() : "",
-            escapeCsv(template.getLastModifiedByName()),
-            template.getLastModifiedDate() != null ? template.getLastModifiedDate().toString()
+            escapeCsv(template.getModifier()),
+            template.getModifiedDate() != null ? template.getModifiedDate().toString()
                 : ""));
       }
     }

@@ -1,6 +1,5 @@
 package cloud.xcan.angus.core.tester.application.query.scenario.impl;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioMonitorHistoryQuery;
@@ -14,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -25,7 +25,7 @@ import org.springframework.data.domain.PageRequest;
  * and finding history by monitor IDs.
  * </p>
  */
-@Biz
+@Service
 public class ScenarioMonitorHistoryQueryImpl implements ScenarioMonitorHistoryQuery {
 
   @Resource

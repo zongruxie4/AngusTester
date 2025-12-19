@@ -1048,7 +1048,7 @@
     "sprintName": "Sprint Name",
     "assigneeName": "Assignee Name",
     "confirmerName": "Confirmer Name",
-    "createdByName": "Created By Name"
+    "creator": "Created By Name"
   },
   "xcan_iconCopy": {
     "copySuccess": "Copy Success"
@@ -1228,8 +1228,8 @@
     "execNodes": "Execution Nodes",
     "reportInterval": "Report Interval",
     "batchRows": "Batch Rows",
-    "createdByName": "Created By",
-    "modifiedByName": "Modified By",
+    "creator": "Created By",
+    "modifier": "Modified By",
     "mockFileUrl": "Generated File",
     "actualStartDate": "Start Time",
     "updateTestResult": "Update Test Result",

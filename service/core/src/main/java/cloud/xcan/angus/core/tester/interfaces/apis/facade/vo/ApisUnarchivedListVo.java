@@ -31,7 +31,7 @@ public class ApisUnarchivedListVo {
 
   private LocalDateTime createdDate;
 
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 }
 
 

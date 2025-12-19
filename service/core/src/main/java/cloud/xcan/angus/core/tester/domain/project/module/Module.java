@@ -40,7 +40,7 @@ public class Module extends TenantAuditingEntity<Module, Long> implements Activi
   private Boolean hit = false;
   @Transient
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")
-  private String createdByName;
+  private String creator;
 
   public boolean hasParent() {
     return nonNull(pid) && !pid.equals(DEFAULT_ROOT_PID);

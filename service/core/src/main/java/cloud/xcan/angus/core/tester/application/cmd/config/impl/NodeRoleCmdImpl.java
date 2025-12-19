@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.application.cmd.config.impl;
 
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.config.NodeRoleCmd;
@@ -12,6 +11,7 @@ import jakarta.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 /**
  * Command implementation for node role management.
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * <p>
  * Ensures batch operations and repository access.
  */
-@Biz
+@Service
 public class NodeRoleCmdImpl extends CommCmd<NodeRole, Long> implements NodeRoleCmd {
 
   @Resource

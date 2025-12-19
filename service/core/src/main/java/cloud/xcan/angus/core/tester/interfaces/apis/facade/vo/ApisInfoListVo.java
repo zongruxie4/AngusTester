@@ -53,7 +53,7 @@ public class ApisInfoListVo {
   private Long createdBy;
 
   // @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo") // Join in biz
-  private String createdByName;
+  private String creator;
 
   private Long ownerId;
 
@@ -64,7 +64,7 @@ public class ApisInfoListVo {
 
   private LocalDateTime createdDate;
 
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
   private Boolean auth;
 

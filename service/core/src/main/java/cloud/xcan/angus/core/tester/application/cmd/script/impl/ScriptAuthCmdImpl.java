@@ -7,7 +7,7 @@ import static cloud.xcan.angus.core.tester.application.converter.ActivityConvert
 import static cloud.xcan.angus.core.tester.application.converter.ScriptAuthConverter.toScriptCreatorAuths;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -39,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
  * <p>The implementation uses the BizTemplate pattern to ensure consistent business
  * logic execution with proper parameter validation and transaction management.</p>
  */
-@Biz
+@Service
 public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements ScriptAuthCmd {
 
   @Resource

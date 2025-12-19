@@ -61,7 +61,7 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
     },
     {
       name: t('scenarioMonitor.searchPanel.sortOptions.byCreator'),
-      key: 'createdByName',
+      key: 'creator',
       orderSort: PageQuery.OrderSort.Asc
     }
   ];
@@ -82,7 +82,7 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
     // Audit information options
     auditOptions: createAuditOptions([
       { key: 'createdBy', name: t('quickSearch.createdByMe'), fieldKey: 'createdBy' },
-      { key: 'lastModifiedBy', name: t('quickSearch.modifiedByMe'), fieldKey: 'lastModifiedBy' }
+      { key: 'modifiedBy', name: t('quickSearch.modifiedByMe'), fieldKey: 'modifiedBy' }
     ], userId.value),
     enumType: createEnumTypeConfig(ScenarioMonitorStatus, 'status'),
     timeOptions: createTimeOptions([

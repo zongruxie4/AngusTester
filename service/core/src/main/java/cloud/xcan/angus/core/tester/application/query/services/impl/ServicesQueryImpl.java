@@ -18,7 +18,6 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
@@ -57,6 +56,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -67,7 +67,7 @@ import org.springframework.data.domain.PageRequest;
  * quota validation.
  * </p>
  */
-@Biz
+@Service
 @SummaryQueryRegister(name = "Services", table = "services",
     groupByColumns = {"created_date", "source", "auth", "status", "type"})
 public class ServicesQueryImpl implements ServicesQuery {

@@ -22,7 +22,6 @@ import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -58,6 +57,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.util.FileUtil;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -69,7 +69,7 @@ import org.springframework.web.multipart.MultipartFile;
  * operations.
  */
 @Slf4j
-@Biz
+@Service
 public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd {
 
   @Resource

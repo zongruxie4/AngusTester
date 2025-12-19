@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.application.query.report.impl;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -20,8 +19,9 @@ import cloud.xcan.angus.spec.annotations.NonNullable;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
-@Biz
+@Service
 public class ReportRecordQueryImpl implements ReportRecordQuery {
 
   @Resource

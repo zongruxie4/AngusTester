@@ -44,7 +44,7 @@ const taskProcessedDate = computed(() => props.dataSource?.processedDate);
 const taskConfirmedDate = computed(() => props.dataSource?.confirmedDate);
 const taskCompletedDate = computed(() => props.dataSource?.completedDate);
 const taskCanceledDate = computed(() => props.dataSource?.canceledDate);
-const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
+const taskmodifiedDate = computed(() => props.dataSource?.modifiedDate);
 
 /**
  * <p>Initiates deadline date editing mode by setting the input value and enabling edit flag.</p>
@@ -269,11 +269,11 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('common.lastModifiedDate') }}</span>
+              <span>{{ t('common.modifiedDate') }}</span>
             </div>
             <div class="info-value">
-              <span :class="{ 'placeholder-text': !taskLastModifiedDate }" class="info-text">
-                {{ taskLastModifiedDate || '--' }}
+              <span :class="{ 'placeholder-text': !taskmodifiedDate }" class="info-text">
+                {{ taskmodifiedDate || '--' }}
               </span>
             </div>
           </div>

@@ -76,17 +76,17 @@ public class ExecEventJob {
                 Collectors.toSet())).stream().collect(Collectors.toMap(Tenant::getId, x -> x));
         // Query the exec user info
         Map<Long, UserBase> userMap = userManager.getUserBaseMap(execDbs.stream()
-            .filter(x -> nonNull(x.getLastModifiedBy()) && x.getLastModifiedBy() > 0)
-            .map(Exec::getLastModifiedBy).collect(Collectors.toSet()));
+            .filter(x -> nonNull(x.getModifiedBy()) && x.getModifiedBy() > 0)
+            .map(Exec::getModifiedBy).collect(Collectors.toSet()));
 
         for (Exec execDb : execDbs) {
           try {
             if (execDb.getScriptType().isTest()) {
               Tenant tenant = tenantMap.get(execDb.getTenantId());
-              UserBase user = userMap.get(execDb.getLastModifiedBy());
+              UserBase user = userMap.get(execDb.getModifiedBy());
               if (isNull(tenant) || isNull(user)) {
                 log.error("tenant:{} user:{} not exist!", execDb.getTenantId(),
-                    execDb.getLastModifiedBy());
+                    execDb.getModifiedBy());
                 execRepo.updateAssembleAndSendEvent(execDb.getId(), false);
                 continue;
               }
@@ -132,7 +132,7 @@ public class ExecEventJob {
 
   private void assembleAndSendNoticeEvent(Exec execDb) {
     List<Long> receiveObjectIds = new ArrayList<>();
-    receiveObjectIds.add(execDb.getLastModifiedBy());
+    receiveObjectIds.add(execDb.getModifiedBy());
     EventContent event;
     if (execDb.getStatus().isCompleted()) {
       List<NoticeType> noticeTypes = commonQuery.findTenantEventNoticeTypes(execDb.getTenantId())

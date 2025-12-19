@@ -28,9 +28,9 @@ export function useTableColumns () {
       sorter: false
     },
     {
-      key: 'createdByName',
+      key: 'creator',
       title: t('common.creator'),
-      dataIndex: 'createdByName',
+      dataIndex: 'creator',
       ellipsis: true,
       sorter: false
     },

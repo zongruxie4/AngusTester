@@ -17,9 +17,9 @@ type Props = {
   userInfo: { id: string; };
   appInfo: { id: string; };
   notify: string;
-  orderBy: 'createdByName' ;
+  orderBy: 'creator' ;
   orderSort: PageQuery.OrderSort;
-  groupKey: 'none' | 'lastModifiedByName';
+  groupKey: 'none' | 'modifier';
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,9 +36,9 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   (e: 'add'): void;
   (e: 'change', value: SearchCriteria[]): void;
-  (e: 'update:orderBy', value: 'createdByName'): void;
+  (e: 'update:orderBy', value: 'creator'): void;
   (e: 'update:orderSort', value: PageQuery.OrderSort): void;
-  (e: 'update:groupKey', value: 'none' | 'lastModifiedByName'): void;
+  (e: 'update:groupKey', value: 'none' | 'modifier'): void;
   (e: 'update:visible', value: boolean): void;
 }>();
 
@@ -67,9 +67,9 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
       fieldKey: 'createdBy'
     },
     {
-      key: 'lastModifiedBy',
+      key: 'modifiedBy',
       name: t('quickSearch.modifiedByMe'),
-      fieldKey: 'lastModifiedBy'
+      fieldKey: 'modifiedBy'
     }
   ], String(currentUserId.value || '')),
   // Time options
@@ -90,8 +90,8 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
  * Handle sort configuration changes.
  * @param sortData - Sort configuration data
  */
-const handleSortChange = (sortData: { orderBy: 'createsDate' | 'createdByName' ; orderSort: PageQuery.OrderSort; }) => {
-  emit('update:orderBy', sortData.orderBy as 'createdByName');
+const handleSortChange = (sortData: { orderBy: 'createsDate' | 'creator' ; orderSort: PageQuery.OrderSort; }) => {
+  emit('update:orderBy', sortData.orderBy as 'creator');
   emit('update:orderSort', sortData.orderSort);
 };
 
@@ -368,7 +368,7 @@ const sortMenuItems = [
     orderSort: PageQuery.OrderSort.Asc
   },
   {
-    key: 'createdByName',
+    key: 'creator',
     name: t('common.creator'),
     orderSort: PageQuery.OrderSort.Asc
   },

@@ -193,7 +193,7 @@ export function useFileManagement () {
           message: t('file.type.directory'),
           value: 'DIRECTORY'
         },
-        lastModifiedDate: '--'
+        modifiedDate: '--'
       } as SourceType);
 
       nextTick(() => {

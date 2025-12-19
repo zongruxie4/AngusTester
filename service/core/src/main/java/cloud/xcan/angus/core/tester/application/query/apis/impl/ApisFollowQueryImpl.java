@@ -4,7 +4,7 @@ import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static java.util.Objects.isNull;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisFollowQuery;
 import cloud.xcan.angus.core.tester.domain.apis.follow.ApisFollowP;
@@ -30,7 +30,7 @@ import org.springframework.data.domain.PageRequest;
  *   <li>User-specific follow filtering</li>
  * </ul></p>
  */
-@Biz
+@Service
 public class ApisFollowQueryImpl implements ApisFollowQuery {
 
   @Resource

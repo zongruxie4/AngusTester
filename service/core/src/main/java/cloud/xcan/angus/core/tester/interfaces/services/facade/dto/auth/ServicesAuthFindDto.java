@@ -5,7 +5,6 @@ import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotNull;
-import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -25,9 +24,6 @@ public class ServicesAuthFindDto extends PageQuery {
 
   @Schema(description = "Authorization object identifier for specific entity filtering")
   private Long authObjectId;
-
-  @Schema(description = "Authorization creation date for temporal filtering")
-  private Date createdDate;
 
 }
 

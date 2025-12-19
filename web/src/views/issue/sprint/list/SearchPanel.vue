@@ -66,7 +66,7 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
     {
       key: 'myModified',
       name: t('quickSearch.modifiedByMe'),
-      fieldKey: 'lastModifiedBy'
+      fieldKey: 'modifiedBy'
     }
   ], String(currentUser.value?.id || '')),
   // Enum status options for sprint status
@@ -184,7 +184,7 @@ const getSearchParameters = () => {
  */
 const handleSearchPanelChange = (filterData: SearchCriteria[], _headers?: { [key: string]: string }, _changedKey?: string) => {
   // Merge search panel filters with quick search filters
-  // const quickSearchFields = ['ownerId', 'createdBy', 'lastModifiedBy', 'status', 'createdDate'];
+  // const quickSearchFields = ['ownerId', 'createdBy', 'modifiedBy', 'status', 'createdDate'];
   // const currentQuickSearchFilters = quickSearchFilters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
   // const searchPanelFilters = filterData.filter(f => f.key && !quickSearchFields.includes(f.key as string));
 

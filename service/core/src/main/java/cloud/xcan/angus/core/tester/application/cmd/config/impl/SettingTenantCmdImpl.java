@@ -3,13 +3,11 @@ package cloud.xcan.angus.core.tester.application.cmd.config.impl;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toUpdateGlobalResourceActivity;
 import static cloud.xcan.angus.core.tester.application.converter.SettingTenantConverter.initTenantSetting;
-import static cloud.xcan.angus.core.tester.infra.util.LinkedHashMapDiffUtil.compareEvaluationMaps;
 import static cloud.xcan.angus.core.tester.infra.util.ObjectDiffUtil.compareObjects;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -30,6 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -45,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
  * updates.
  * </p>
  */
-@Biz
+@Service
 @Slf4j
 public class SettingTenantCmdImpl extends CommCmd<TenantSetting, Long> implements SettingTenantCmd {
 
@@ -123,9 +122,9 @@ public class SettingTenantCmdImpl extends CommCmd<TenantSetting, Long> implement
         setting.setEvaluationWeightData(evaluation);
         updateTenantSetting(getOptTenantId(), setting);
 
-  //        activityCmd.add(toUpdateGlobalResourceActivity(CombinedTargetType.INDICATOR,
-  //            GlobalResourceType.EVALUATION, "INDICATOR_UPDATE_TO",
-  //            compareEvaluationMaps(setting.getEvaluationWeightData(), evaluation)));
+        //        activityCmd.add(toUpdateGlobalResourceActivity(CombinedTargetType.INDICATOR,
+        //            GlobalResourceType.EVALUATION, "INDICATOR_UPDATE_TO",
+        //            compareEvaluationMaps(setting.getEvaluationWeightData(), evaluation)));
         return null;
       }
     }.execute();
@@ -177,9 +176,9 @@ public class SettingTenantCmdImpl extends CommCmd<TenantSetting, Long> implement
         setting.setPerfData(data);
         updateTenantSetting(getOptTenantId(), setting);
 
-      //        activityCmd.add(toUpdateGlobalResourceActivity(CombinedTargetType.INDICATOR,
-      //            GlobalResourceType.EVALUATION, "INDICATOR_UPDATE_TO",
-      //            compareObjects(setting.getFuncData(), data)));
+        //        activityCmd.add(toUpdateGlobalResourceActivity(CombinedTargetType.INDICATOR,
+        //            GlobalResourceType.EVALUATION, "INDICATOR_UPDATE_TO",
+        //            compareObjects(setting.getFuncData(), data)));
         return null;
       }
     }.execute();

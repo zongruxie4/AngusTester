@@ -45,7 +45,7 @@ const caseCreatedDate = computed(() => props.dataSource?.createdDate);
 const currentDeadlineDate = computed(() => props.dataSource?.deadlineDate);
 const caseReviewDate = computed(() => props.dataSource?.reviewDate);
 const caseCompletedDate = computed(() => props.dataSource?.testResultHandleDate);
-const caseLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
+const casemodifiedDate = computed(() => props.dataSource?.modifiedDate);
 
 /**
  * <p>Initiates deadline date editing mode by setting the input value and enabling edit flag.</p>
@@ -232,11 +232,11 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('common.lastModifiedDate') }}</span>
+              <span>{{ t('common.modifiedDate') }}</span>
             </div>
             <div class="info-value">
-              <span :class="{ 'placeholder-text': !caseLastModifiedDate }" class="info-text">
-                {{ caseLastModifiedDate || '--' }}
+              <span :class="{ 'placeholder-text': !casemodifiedDate }" class="info-text">
+                {{ casemodifiedDate || '--' }}
               </span>
             </div>
           </div>

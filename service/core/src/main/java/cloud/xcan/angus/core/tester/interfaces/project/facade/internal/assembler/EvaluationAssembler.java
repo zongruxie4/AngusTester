@@ -51,15 +51,15 @@ public class EvaluationAssembler {
     vo.setResult(evaluation.getResult());
     vo.setCreatedBy(evaluation.getCreatedBy());
     vo.setCreatedDate(evaluation.getCreatedDate());
-    vo.setLastModifiedBy(evaluation.getLastModifiedBy());
-    vo.setLastModifiedDate(evaluation.getLastModifiedDate());
+    vo.setModifiedBy(evaluation.getModifiedBy());
+    vo.setModifiedDate(evaluation.getModifiedDate());
     return vo;
   }
 
   public static GenericSpecification<TestEvaluation> getSpecification(EvaluationFindDto dto) {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate", "lastModifiedDate")
+        .rangeSearchFields("id", "createdDate", "modifiedDate")
         .orderByFields("id", "name", "scope", "createdBy", "createdDate")
         .matchSearchFields("name")
         .build();

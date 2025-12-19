@@ -13,7 +13,7 @@ import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.user.UserRepo;
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -65,7 +65,7 @@ import org.springframework.data.domain.Pageable;
  *
  * @author XiaoLong Liu
  */
-@Biz
+@Service
 public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
 
   @Resource

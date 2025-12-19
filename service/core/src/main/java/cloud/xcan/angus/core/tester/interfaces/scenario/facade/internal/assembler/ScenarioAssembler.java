@@ -100,8 +100,8 @@ public class ScenarioAssembler {
         .setFollow(scenario.getFollow())
         .setCreatedBy(scenario.getCreatedBy())
         .setCreatedDate(scenario.getCreatedDate())
-        .setLastModifiedBy(scenario.getLastModifiedBy())
-        .setLastModifiedDate(scenario.getLastModifiedDate());
+        .setModifiedBy(scenario.getModifiedBy())
+        .setModifiedDate(scenario.getModifiedDate());
   }
 
   public static ScenarioListVo toListVo(Scenario scenario) {
@@ -133,10 +133,10 @@ public class ScenarioAssembler {
         .setFollow(scenario.getFollow())
         .setCreatedBy(scenario.getCreatedBy())
         .setCreatedDate(scenario.getCreatedDate())
-        .setCreatedByName(scenario.getCreatedByName())
+        .setCreator(scenario.getCreator())
         .setAvatar(scenario.getAvatar())
-        .setLastModifiedBy(scenario.getLastModifiedBy())
-        .setLastModifiedDate(scenario.getLastModifiedDate());
+        .setModifiedBy(scenario.getModifiedBy())
+        .setModifiedDate(scenario.getModifiedDate());
   }
 
   public static GenericSpecification<Scenario> getSpecification(ScenarioInfoFindDto dto) {
@@ -145,7 +145,7 @@ public class ScenarioAssembler {
         .inAndNotFields("id")
         .rangeSearchFields("id", "platform", "scriptType", "createdDate")
         .matchSearchFields("name", "description", "extSearchMerge")
-        .orderByFields("id", "name", "createdDate", "createdBy", "lastModifiedBy")
+        .orderByFields("id", "name", "createdDate", "createdBy", "modifiedBy")
         .build();
     return new GenericSpecification<>(filters);
   }

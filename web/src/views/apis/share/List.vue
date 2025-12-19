@@ -203,9 +203,9 @@ const columns = [
     width: 120
   },
   {
-    key: 'createdByName',
+    key: 'creator',
     title: t('common.creator'),
-    dataIndex: 'createdByName',
+    dataIndex: 'creator',
     sorter: true,
     ellipsis: true,
     width: 120
@@ -250,19 +250,19 @@ const columns = [
     width: '35%'
   },
   {
-    key: 'lastModifiedByName',
+    key: 'modifier',
     title: t('common.modifier'),
-    dataIndex: 'lastModifiedByName',
-    groupName: 'lastModifiedByName',
+    dataIndex: 'modifier',
+    groupName: 'modifier',
     ellipsis: true,
     hide: true,
     width: 160
   },
   {
-    key: 'lastModifiedDate',
-    title: t('common.lastModifiedDate'),
-    dataIndex: 'lastModifiedDate',
-    groupName: 'lastModifiedByName',
+    key: 'modifiedDate',
+    title: t('common.modifiedDate'),
+    dataIndex: 'modifiedDate',
+    groupName: 'modifier',
     width: 160
   },
   {

@@ -12,7 +12,7 @@ import static cloud.xcan.angus.core.tester.application.converter.TagTargetConver
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
@@ -60,7 +60,7 @@ import org.springframework.transaction.annotation.Transactional;
  *   <li>External business integration support</li>
  * </ul></p>
  */
-@Biz
+@Service
 public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTargetCmd {
 
   @Resource

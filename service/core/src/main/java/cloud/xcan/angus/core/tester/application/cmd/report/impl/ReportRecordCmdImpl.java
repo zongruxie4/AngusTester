@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.application.cmd.report.impl;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.Set;
 import org.springframework.transaction.annotation.Transactional;
 
-@Biz
+@Service
 public class ReportRecordCmdImpl extends CommCmd<ReportRecord, Long> implements ReportRecordCmd {
 
   @Resource

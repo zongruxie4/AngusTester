@@ -57,20 +57,20 @@ public interface ExecRepo extends BaseRepository<Exec, Long> {
 
   @Transactional
   @Modifying
-  @Query(value = "UPDATE exec SET status = ?2, scheduling_num = scheduling_num + 1, last_scheduling_date = ?3, last_scheduling_result = ?4 , last_modified_by = ?5, last_modified_date = ?6 WHERE id = ?1", nativeQuery = true)
+  @Query(value = "UPDATE exec SET status = ?2, scheduling_num = scheduling_num + 1, last_scheduling_date = ?3, last_scheduling_result = ?4 , modified_by = ?5, modified_date = ?6 WHERE id = ?1", nativeQuery = true)
   void updateSchedulingFailed(Long execId, String status, LocalDateTime now, String result,
-      Long lastModifiedBy, LocalDateTime lastModifiedDate);
+      Long modifiedBy, LocalDateTime modifiedDate);
 
   @Transactional
   @Modifying
-  @Query(value = "UPDATE exec SET status = ?2, last_modified_by = ?3, last_modified_date = ?4 WHERE id = ?1", nativeQuery = true)
-  void updateStatusById(Long id, String status, Long lastModifiedBy,
-      LocalDateTime lastModifiedDate);
+  @Query(value = "UPDATE exec SET status = ?2, modified_by = ?3, modified_date = ?4 WHERE id = ?1", nativeQuery = true)
+  void updateStatusById(Long id, String status, Long modifiedBy,
+      LocalDateTime modifiedDate);
 
   @Transactional
   @Modifying
-  @Query(value = "UPDATE exec SET status = 'STOPPED', end_date = ?2, last_modified_by = ?3, last_modified_date = ?2 WHERE id = ?1", nativeQuery = true)
-  void updateStoppedStatusById(Long id, LocalDateTime now, Long lastModifiedBy);
+  @Query(value = "UPDATE exec SET status = 'STOPPED', end_date = ?2, modified_by = ?3, modified_date = ?2 WHERE id = ?1", nativeQuery = true)
+  void updateStoppedStatusById(Long id, LocalDateTime now, Long modifiedBy);
 
   @Transactional
   @Modifying

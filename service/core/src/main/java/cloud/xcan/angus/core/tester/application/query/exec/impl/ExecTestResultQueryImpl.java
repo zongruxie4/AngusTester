@@ -15,7 +15,7 @@ import cloud.xcan.angus.api.commonlink.user.UserBase;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.api.pojo.Progress;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.entity.projection.IdAndName;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecQuery;
@@ -59,7 +59,7 @@ import lombok.extern.slf4j.Slf4j;
  * assembling result summaries and progress information for reporting purposes.
  */
 @Slf4j
-@Biz
+@Service
 public class ExecTestResultQueryImpl implements ExecTestResultQuery {
 
   @Resource

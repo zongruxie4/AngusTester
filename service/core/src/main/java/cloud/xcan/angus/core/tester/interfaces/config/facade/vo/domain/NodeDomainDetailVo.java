@@ -25,9 +25,9 @@ public class NodeDomainDetailVo {
 
   private LocalDateTime createdDate;
 
-  private Long lastModifiedBy;
+  private Long modifiedBy;
 
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
 }
 

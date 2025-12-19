@@ -11,7 +11,6 @@ import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioQuery;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioTestQuery;
@@ -35,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -45,7 +45,7 @@ import org.springframework.data.domain.Sort.Order;
  * counting.
  * </p>
  */
-@Biz
+@Service
 public class ScenarioTestQueryImpl implements ScenarioTestQuery {
 
   @Resource

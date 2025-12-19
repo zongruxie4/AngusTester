@@ -83,8 +83,8 @@ public class TaskSprintConverter {
         .setOtherInformation(sprintDb.getOtherInformation())
         .setCreatedBy(sprintDb.getCreatedBy())
         .setCreatedDate(sprintDb.getCreatedDate())
-        .setLastModifiedBy(sprintDb.getLastModifiedBy())
-        .setLastModifiedDate(sprintDb.getLastModifiedDate());
+        .setModifiedBy(sprintDb.getModifiedBy())
+        .setModifiedDate(sprintDb.getModifiedDate());
   }
 
   public static Set<SearchCriteria> getSprintCreatorResourcesFilter(Long projectId,

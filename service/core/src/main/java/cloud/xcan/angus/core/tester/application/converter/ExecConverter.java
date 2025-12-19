@@ -131,7 +131,7 @@ public class ExecConverter {
     if (!isUserAction()) {
       exec.setTenantId(script.getTenantId())
           .setCreatedBy(-1L).setCreatedDate(LocalDateTime.now())
-          .setLastModifiedBy(-1L).setLastModifiedDate(LocalDateTime.now());
+          .setModifiedBy(-1L).setModifiedDate(LocalDateTime.now());
     }
     return exec;
   }

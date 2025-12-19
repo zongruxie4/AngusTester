@@ -496,7 +496,7 @@ onBeforeUnmount(() => {
                       {{ t('common.scriptName') }}:
                     </div>
                     <div class="whitespace-nowrap h-7 text-right">
-                      {{ t('common.lastModifiedBy') }}:
+                      {{ t('common.modifiedBy') }}:
                     </div>
                   </div>
 
@@ -537,8 +537,8 @@ onBeforeUnmount(() => {
                     </div>
 
                     <div class="h-7 flex items-center">
-                      <div class="truncate cursor-pointer" :title="item?.lastModifiedByName">
-                        {{ item?.lastModifiedByName || "--" }}
+                      <div class="truncate cursor-pointer" :title="item?.modifier">
+                        {{ item?.modifier || "--" }}
                       </div>
                     </div>
                   </div>

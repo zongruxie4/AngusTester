@@ -114,9 +114,9 @@ export function useMockUI () {
     },
     {
       title: t('common.creator'),
-      dataIndex: 'createdByName',
+      dataIndex: 'creator',
       width: '10%',
-      groupName: 'createdByName',
+      groupName: 'creator',
       customRender: ({ text }: { text: string }) => text || '--',
       ellipsis: true
     },
@@ -125,7 +125,7 @@ export function useMockUI () {
       dataIndex: 'createdDate',
       width: '10%',
       sorter: true,
-      groupName: 'createdByName',
+      groupName: 'creator',
       hide: true,
       customCell: () => {
         return { style: 'white-space:nowrap;' };
@@ -133,19 +133,19 @@ export function useMockUI () {
     },
     {
       title: t('common.modifier'),
-      dataIndex: 'lastModifiedByName',
+      dataIndex: 'modifier',
       width: '10%',
-      groupName: 'lastModifiedByName',
+      groupName: 'modifier',
       hide: true,
       customRender: ({ text }: { text: string }) => text || '--',
       ellipsis: true
     },
     {
-      title: t('common.lastModifiedDate'),
-      dataIndex: 'lastModifiedDate',
+      title: t('common.modifiedDate'),
+      dataIndex: 'modifiedDate',
       width: '10%',
       sorter: true,
-      groupName: 'lastModifiedByName',
+      groupName: 'modifier',
       customCell: () => {
         return { style: 'white-space:nowrap;' };
       }

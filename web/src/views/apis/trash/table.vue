@@ -181,18 +181,18 @@ onMounted(() => {
 
         <!-- Enhanced creator avatar and name cell -->
         <div
-          v-else-if="column.dataIndex === 'createdByName'"
-          :title="record.createdByName"
+          v-else-if="column.dataIndex === 'creator'"
+          :title="record.creator"
           class="flex items-center space-x-2 p-1 rounded-md hover:bg-gray-50 transition-colors">
           <div class="relative">
             <Image
-              :src="record.createdByAvatar"
+              :src="record.creatorAvatar"
               type="avatar"
               class="w-6 h-6 rounded-full border border-gray-200" />
             <div class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-white"></div>
           </div>
           <div class="flex-1 min-w-0">
-            <div class="font-medium text-gray-900 truncate text-xs">{{ record.createdByName }}</div>
+            <div class="font-medium text-gray-900 truncate text-xs">{{ record.creator }}</div>
           </div>
         </div>
 

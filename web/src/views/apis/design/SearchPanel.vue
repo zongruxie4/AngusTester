@@ -67,7 +67,7 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
     {
       key: 'myModified',
       name: t('quickSearch.modifiedByMe'),
-      fieldKey: 'lastModifiedBy'
+      fieldKey: 'modifiedBy'
     }
   ], String(userInfo.value?.id ?? '')),
   timeOptions: createTimeOptions([

@@ -368,13 +368,13 @@ const dropdownMenuItems = [
             <div class="flex items-center">
               <!-- Last modified -->
               <div class="flex items-center space-x-2 text-xs text-theme-sub-content">
-                <span class="text-theme-content font-medium truncate max-w-16" :title="item.lastModifiedByName">
-                  {{ item.lastModifiedByName }}
+                <span class="text-theme-content font-medium truncate max-w-16" :title="item.modifier">
+                  {{ item.modifier }}
                 </span>
 
                 <span>{{ t('status.modifiedAt') }}</span>
 
-                <span class="text-theme-sub-content">{{ item.lastModifiedDate }}</span>
+                <span class="text-theme-sub-content">{{ item.modifiedDate }}</span>
               </div>
             </div>
           </div>

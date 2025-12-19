@@ -447,7 +447,7 @@
     "sort": {
       "title": "Sort",
       "menuItems": {
-        "lastModifiedDate": "By Last Modified Time",
+        "modifiedDate": "By Last Modified Time",
         "type": "By Add Type"
       }
     },

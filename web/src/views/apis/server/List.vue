@@ -40,7 +40,7 @@ type ServerRecord = {
   server: OpenAPIV3_1.ServerObject;
   // optional presentational fields from backend or derived locally
   avatar?: string;
-  createdByName?: string;
+  creator?: string;
   createdDate?: string;
   editLinkUrl?: string;
 };
@@ -312,7 +312,7 @@ const searchOptions = [
                   type="avatar"
                   class="flex-shrink-0 w-6 h-6 rounded-xl" />
                 <div class="flex items-center space-x-3">
-                  <span>{{ record.createdByName }}</span>
+                  <span>{{ record.creator }}</span>
                   <span>{{ record.createdDate }}</span>
                 </div>
               </div>

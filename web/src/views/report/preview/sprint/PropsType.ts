@@ -32,11 +32,11 @@ export type ReportContent = {
             tenantId: string;
             tenantName: string;
             createdBy: string;
-            createdByName: string;
+            creator: string;
             createdDate: string;
-            lastModifiedBy: string;
-            lastModifiedByName: string;
-            lastModifiedDate: string;
+            modifiedBy: string;
+            modifier: string;
+            modifiedDate: string;
             taskNum: string;
             taskPrefix: string;
             progress: {
@@ -252,10 +252,10 @@ export type ReportContent = {
                 };
                 confirmTask: boolean;
                 createdBy: string;
-                createdByName: string;
-                lastModifiedBy: string;
-                lastModifiedByName: string;
-                lastModifiedDate: string
+                creator: string;
+                modifiedBy: string;
+                modifier: string;
+                modifiedDate: string
             }[];
         }
     };
@@ -297,14 +297,14 @@ export type ReportContent = {
         };
         createdAt: { value: 'AT_SOME_DATE' | 'NOW' | 'PERIODICALLY'; message: string; };
         createdBy: string;
-        createdByName: string;
+        creator: string;
         createdDate: string;
         description: string;
         failureMessage: string;
         id: string;
-        lastModifiedBy: string;
-        lastModifiedByName: string;
-        lastModifiedDate: string;
+        modifiedBy: string;
+        modifier: string;
+        modifiedDate: string;
         name: string;
         nextGenerationDate: string;
         projectId: string;

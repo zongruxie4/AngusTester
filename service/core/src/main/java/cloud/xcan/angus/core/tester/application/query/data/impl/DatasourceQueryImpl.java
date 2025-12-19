@@ -5,7 +5,7 @@ import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MOCK_DS_NAME
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.data.DatasourceQuery;
@@ -39,7 +39,7 @@ import org.springframework.data.domain.PageRequest;
  *
  * @author XiaoLong Liu
  */
-@Biz
+@Service
 @Slf4j
 public class DatasourceQueryImpl implements DatasourceQuery {
 
@@ -102,8 +102,8 @@ public class DatasourceQueryImpl implements DatasourceQuery {
 
         // Enrich results with user information if content exists
         if (page.hasContent()) {
-          userManager.setUserNameAndAvatar(page.getContent(), "lastModifiedBy",
-              "lastModifiedByName", "avatar");
+          userManager.setUserNameAndAvatar(page.getContent(), "modifiedBy",
+              "modifier", "avatar");
         }
         return page;
       }

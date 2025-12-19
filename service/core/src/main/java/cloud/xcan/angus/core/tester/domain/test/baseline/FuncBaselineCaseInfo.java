@@ -151,7 +151,7 @@ public class FuncBaselineCaseInfo extends TenantAuditingEntity<FuncBaselineCaseI
   @Transient
   private Boolean follow;
   @Transient
-  private String createdByName;
+  private String creator;
   @Transient
   private String avatar;
   @Transient

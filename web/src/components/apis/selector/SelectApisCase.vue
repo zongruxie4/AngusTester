@@ -171,7 +171,7 @@ const grouped = (datalist = []) => {
         apisList.value.push({
           type: 'group',
           summary: groupedKey.value === 'createdBy'
-            ? objData[key][0].createdByName
+            ? objData[key][0].creator
             : groupedKey.value === 'method'
               ? objData[key][0].method
               : groupedKey.value === 'ownerId'

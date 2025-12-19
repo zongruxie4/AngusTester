@@ -6,7 +6,6 @@ import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -20,6 +19,7 @@ import cloud.xcan.angus.core.tester.domain.issue.meeting.TaskMeetingRepo;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -39,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
  *   <li>Project member permission management</li>
  * </ul></p>
  */
-@Biz
+@Service
 public class TaskMeetingCmdImpl extends CommCmd<TaskMeeting, Long> implements TaskMeetingCmd {
 
   @Resource

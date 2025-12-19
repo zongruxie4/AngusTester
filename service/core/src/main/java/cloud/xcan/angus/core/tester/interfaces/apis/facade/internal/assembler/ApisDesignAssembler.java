@@ -33,8 +33,8 @@ public class ApisDesignAssembler {
         .setTenantId(design.getTenantId())
         .setCreatedBy(design.getCreatedBy())
         .setCreatedDate(design.getCreatedDate())
-        .setLastModifiedBy(design.getLastModifiedBy())
-        .setLastModifiedDate(design.getLastModifiedDate());
+        .setModifiedBy(design.getModifiedBy())
+        .setModifiedDate(design.getModifiedDate());
   }
 
   public static ApisDesignVo toVo(ApisDesignInfo design) {
@@ -47,11 +47,11 @@ public class ApisDesignAssembler {
         .setDesignSourceName(design.getDesignSourceName())
         .setTenantId(design.getTenantId())
         .setCreatedBy(design.getCreatedBy())
-        .setCreatedByName(design.getCreatedByName())
-        .setCreatedByAvatar(design.getAvatar())
+        .setCreator(design.getCreator())
+        .setCreatorAvatar(design.getAvatar())
         .setCreatedDate(design.getCreatedDate())
-        .setLastModifiedBy(design.getLastModifiedBy())
-        .setLastModifiedDate(design.getLastModifiedDate());
+        .setModifiedBy(design.getModifiedBy())
+        .setModifiedDate(design.getModifiedDate());
   }
 
   public static GenericSpecification<ApisDesignInfo> getSpecification(ApisDesignFindDto dto) {
@@ -59,8 +59,8 @@ public class ApisDesignAssembler {
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdDate")
         .matchSearchFields("summary")
-        .orderByFields("id", "name", "createdBy", "createdDate", "lastModifiedBy",
-            "lastModifiedDate")
+        .orderByFields("id", "name", "createdBy", "createdDate", "modifiedBy",
+            "modifiedDate")
         .build();
     return new GenericSpecification<>(filters);
   }

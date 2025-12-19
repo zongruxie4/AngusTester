@@ -8,7 +8,6 @@ import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.a
 import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioMonitorAssembler.toUpdateDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioMonitorCmd;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioMonitorQuery;
@@ -26,8 +25,9 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import java.util.Collection;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
-@Biz
+@Service
 public class ScenarioMonitorFacadeImpl implements ScenarioMonitorFacade {
 
   @Resource

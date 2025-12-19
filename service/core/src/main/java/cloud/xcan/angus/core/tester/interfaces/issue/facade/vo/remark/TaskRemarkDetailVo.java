@@ -24,7 +24,7 @@ public class TaskRemarkDetailVo {
 
   private Long createdBy;
 
-  private String createdByName;
+  private String creator;
 
   private String avatar;
 

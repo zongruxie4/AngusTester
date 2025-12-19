@@ -39,9 +39,9 @@ public class FuncBaselineInfo extends TenantAuditingEntity<FuncBaselineInfo, Lon
   private Boolean established;
 
   @Transient
-  private String createdByName;
+  private String creator;
   @Transient
-  private String createdByAvatar;
+  private String creatorAvatar;
 
   @Override
   public Long getParentId() {

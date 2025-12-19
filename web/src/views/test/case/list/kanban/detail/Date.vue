@@ -38,7 +38,7 @@ const createdDate = computed(() => props.dataSource?.createdDate);
 const deadlineDate = computed(() => props.dataSource?.deadlineDate);
 const testResultHandleDate = computed(() => props.dataSource?.testResultHandleDate);
 const reviewDate = computed(() => props.dataSource?.reviewDate);
-const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
+const modifiedDate = computed(() => props.dataSource?.modifiedDate);
 
 /*
   Enter deadline edit mode and autofocus the date picker.
@@ -226,10 +226,10 @@ const refreshCaseDetail = async () => {
         <!-- Last Modified Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('common.lastModifiedDate') }}</span>
+            <span>{{ t('common.modifiedDate') }}</span>
           </div>
           <div class="info-value">
-            <span class="info-text" :class="{ 'dash-text': !lastModifiedDate }">{{ lastModifiedDate || '--' }}</span>
+            <span class="info-text" :class="{ 'dash-text': !modifiedDate }">{{ modifiedDate || '--' }}</span>
           </div>
         </div>
       </div>

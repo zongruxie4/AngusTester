@@ -153,8 +153,8 @@ watch(() => props.visible, (isVisible) => {
               <div class="flex-1/3 flex items-center">
                 <Checkbox :checked="selectedModel === option.value" @change="handleModelSelectionChange(option.value)">{{ option.key }}</Checkbox>
               </div>
-              <div class="flex-1/3">{{ option.lastModifiedByName }}</div>
-              <div class="flex-1/3">{{ option.lastModifiedDate }}</div>
+              <div class="flex-1/3">{{ option.modifier }}</div>
+              <div class="flex-1/3">{{ option.modifiedDate }}</div>
             </div>
           </div>
         </template>

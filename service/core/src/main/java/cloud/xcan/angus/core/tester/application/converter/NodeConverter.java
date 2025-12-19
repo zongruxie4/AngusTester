@@ -89,8 +89,8 @@ public class NodeConverter {
           .setSync(false)
           .setCreatedBy(-1L)
           .setCreatedDate(LocalDateTime.now())
-          .setLastModifiedBy(-1L)
-          .setLastModifiedDate(LocalDateTime.now());
+          .setModifiedBy(-1L)
+          .setModifiedDate(LocalDateTime.now());
       LinkedHashSet<NodeRole> roles = new LinkedHashSet<>();
       roles.add(NodeRole.EXECUTION);
       node.setRoles(roles);
@@ -103,7 +103,7 @@ public class NodeConverter {
     target.setFree(source.getFree())
         .setChargeType(source.getChargeType())
         .setCreatedBy(source.getCreatedBy())
-        .setLastModifiedBy(source.getLastModifiedBy());
+        .setModifiedBy(source.getModifiedBy());
     target.setTenantId(source.getTenantId());
     return target;
   }

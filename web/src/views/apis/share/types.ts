@@ -20,10 +20,10 @@ export type ShareInfo = {
   url: string;
   viewNum: number;
   isExpired: boolean;
-  createdByName: string;
+  creator: string;
   createdDate: Dayjs;
-  lastModifiedByName: string;
-  lastModifiedDate: Dayjs;
+  modifier: string;
+  modifiedDate: Dayjs;
 }
 
 export type ShareEditForm = {

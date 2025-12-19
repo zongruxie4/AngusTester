@@ -22,7 +22,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import cloud.xcan.angus.api.commonlink.apis.ApiSource;
 import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -58,6 +57,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -71,7 +71,7 @@ import org.springframework.web.multipart.MultipartFile;
  * both manual design creation and service-based design association.
  * </p>
  */
-@Biz
+@Service
 public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements ApisDesignCmd {
 
   @Resource

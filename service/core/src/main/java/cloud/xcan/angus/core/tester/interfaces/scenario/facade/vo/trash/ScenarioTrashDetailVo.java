@@ -22,9 +22,9 @@ public class ScenarioTrashDetailVo {
 
   private Long createdBy;
 
-  private String createdByName;
+  private String creator;
 
-  private String createdByAvatar;
+  private String creatorAvatar;
 
   private Long deletedBy;
 

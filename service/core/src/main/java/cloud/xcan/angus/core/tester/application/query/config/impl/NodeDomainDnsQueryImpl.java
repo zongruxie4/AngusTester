@@ -3,7 +3,7 @@ package cloud.xcan.angus.core.tester.application.query.config.impl;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceExisted;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.DOMAIN_DNS_NAME_REPEATED_T;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.config.NodeDomainDnsQuery;
 import cloud.xcan.angus.core.tester.domain.config.node.dns.NodeDomainDns;
@@ -23,7 +23,7 @@ import org.springframework.data.jpa.domain.Specification;
  * <p>The implementation includes business logic for checking name uniqueness within domains
  * and provides both transactional and non-transactional query methods.</p>
  */
-@Biz
+@Service
 public class NodeDomainDnsQueryImpl implements NodeDomainDnsQuery {
 
   @Resource

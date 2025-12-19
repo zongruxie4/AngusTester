@@ -25,7 +25,7 @@ import { BasicProps } from '@/types/types';
 const { t } = useI18n();
 
 // Type definitions
-type OrderByKey = 'createdDate' | 'createdByName';
+type OrderByKey = 'createdDate' | 'creator';
 
 // Props and emits
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -79,7 +79,7 @@ const sortMenuItems = computed(() => [
   },
   {
     name: t('common.createdBy'),
-    key: 'createdByName' as OrderByKey,
+    key: 'creator' as OrderByKey,
     orderSort: PageQuery.OrderSort.Asc
   }
 ]);
@@ -400,8 +400,8 @@ defineExpose({
                 </div>
 
                 <div class="project-time-info">
-                  <span class="info-label">{{ t('common.lastModifiedDate') }}: </span>
-                  <span class="info-value">{{ item.lastModifiedDate }}</span>
+                  <span class="info-label">{{ t('common.modifiedDate') }}: </span>
+                  <span class="info-value">{{ item.modifiedDate }}</span>
                 </div>
               </div>
 

@@ -42,11 +42,11 @@ export type VariableDetail = {
     }
   };
   createdBy: string;
-  createdByName: string;
+  creator: string;
   createdDate: string;
-  lastModifiedBy: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifier: string;
+  modifiedDate: string;
   preview?: boolean;
   dataSource?: { value: string; message: string; };
 }

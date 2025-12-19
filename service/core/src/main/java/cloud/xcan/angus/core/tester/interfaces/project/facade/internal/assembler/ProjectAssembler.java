@@ -79,8 +79,8 @@ public class ProjectAssembler {
         .setMembers(project.getMembers())
         .setCreatedBy(project.getCreatedBy())
         .setCreatedDate(project.getCreatedDate())
-        .setLastModifiedBy(project.getLastModifiedBy())
-        .setLastModifiedDate(project.getLastModifiedDate());
+        .setModifiedBy(project.getModifiedBy())
+        .setModifiedDate(project.getModifiedDate());
   }
 
   public static GenericSpecification<Project> getSpecification(ProjectFindDto dto) {

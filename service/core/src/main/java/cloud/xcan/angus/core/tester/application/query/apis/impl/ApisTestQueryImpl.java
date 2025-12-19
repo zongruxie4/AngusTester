@@ -8,7 +8,7 @@ import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisTestQuery;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
@@ -46,7 +46,7 @@ import org.springframework.data.domain.Sort.Order;
  *   <li>Comprehensive test data aggregation</li>
  * </ul></p>
  */
-@Biz
+@Service
 public class ApisTestQueryImpl implements ApisTestQuery {
 
   @Resource

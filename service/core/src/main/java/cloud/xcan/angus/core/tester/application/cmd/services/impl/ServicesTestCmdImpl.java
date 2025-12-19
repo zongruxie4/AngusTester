@@ -14,7 +14,7 @@ import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static java.util.Collections.singletonList;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisTestCmd;
@@ -67,7 +67,7 @@ import org.springframework.transaction.annotation.Transactional;
  *   <li>Activity logging for audit trails</li>
  * </ul></p>
  */
-@Biz
+@Service
 public class ServicesTestCmdImpl implements ServicesTestCmd {
 
   @Resource

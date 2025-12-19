@@ -1,6 +1,5 @@
 package cloud.xcan.angus.core.tester.application.query.project.impl;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.project.TemplateQuery;
 import cloud.xcan.angus.core.tester.domain.project.template.Template;
@@ -9,13 +8,14 @@ import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
  * Query implementation for test template queries.
  * <p>
  * Provides query operations for retrieving test templates.
  */
-@Biz
+@Service
 public class TemplateQueryImpl implements TemplateQuery {
 
   @Resource

@@ -62,7 +62,7 @@ const columns = computed(() => [
   ],
   [
     {
-      dataIndex: 'createdByName',
+      dataIndex: 'creator',
       name: t('common.creator')
     },
     {
@@ -72,12 +72,12 @@ const columns = computed(() => [
   ],
   [
     {
-      dataIndex: 'lastModifiedByName',
+      dataIndex: 'modifier',
       name: t('common.modifier')
     },
     {
-      dataIndex: 'lastModifiedDate',
-      name: t('common.lastModifiedDate')
+      dataIndex: 'modifiedDate',
+      name: t('common.modifiedDate')
     }
   ]
 ]);

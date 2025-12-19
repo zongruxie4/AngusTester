@@ -17,7 +17,7 @@ import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.apis.ApiSource;
 import cloud.xcan.angus.api.pojo.auth.SimpleHttpAuth;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -67,7 +67,7 @@ import org.springframework.transaction.annotation.Transactional;
  *   <li>Activity logging for audit trails</li>
  * </ul></p>
  */
-@Biz
+@Service
 @Slf4j
 public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements ServicesSyncCmd {
 

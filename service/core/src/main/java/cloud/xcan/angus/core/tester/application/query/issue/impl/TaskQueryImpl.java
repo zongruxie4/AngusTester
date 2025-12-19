@@ -105,7 +105,7 @@ import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.api.pojo.Attachment;
 import cloud.xcan.angus.api.pojo.Progress;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.JoinSupplier;
@@ -251,7 +251,7 @@ import org.springframework.data.domain.Sort.Direction;
  * filtering with project member permission checks.
  * </p>
  */
-@Biz
+@Service
 @SummaryQueryRegister(name = "Task", table = "task",
     aggregateColumns = {"id", "fail_num", "total_num", "eval_workload", "actual_workload"},
     groupByColumns = {"created_date", "task_type", "status", "priority", "start_date",

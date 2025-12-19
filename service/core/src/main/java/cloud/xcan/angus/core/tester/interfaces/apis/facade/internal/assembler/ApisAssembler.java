@@ -220,8 +220,8 @@ public class ApisAssembler {
         .setTenantId(apis.getTenantId())
         .setCreatedBy(apis.getCreatedBy())
         .setCreatedDate(apis.getCreatedDate())
-        .setLastModifiedBy(apis.getLastModifiedBy())
-        .setLastModifiedDate(apis.getLastModifiedDate());
+        .setModifiedBy(apis.getModifiedBy())
+        .setModifiedDate(apis.getModifiedDate());
   }
 
   public static ServicesApisInfoListVo toServiceApisVo(ApisBasicInfo apis) {
@@ -241,9 +241,9 @@ public class ApisAssembler {
         .setFavourite(apis.getFavourite())
         .setFollow(apis.getFollow())
         .setCreatedBy(apis.getCreatedBy())
-        .setCreatedByName(apis.getCreatedByName())
+        .setCreator(apis.getCreator())
         .setCreatedDate(apis.getCreatedDate())
-        .setLastModifiedDate(apis.getLastModifiedDate())
+        .setModifiedDate(apis.getModifiedDate())
         .setAuth(apis.getAuth())
         .setServiceAuth(apis.getServiceAuth())
         .setTestFunc(apis.getTestFunc())
@@ -280,9 +280,9 @@ public class ApisAssembler {
         .setFollow(apis.getFollow())
         .setTenantId(apis.getTenantId())
         .setCreatedBy(apis.getCreatedBy())
-        .setCreatedByName(apis.getCreatedByName())
+        .setCreator(apis.getCreator())
         .setCreatedDate(apis.getCreatedDate())
-        .setLastModifiedDate(apis.getLastModifiedDate())
+        .setModifiedDate(apis.getModifiedDate())
         .setAuth(apis.getAuth())
         .setServiceAuth(apis.getServiceAuth())
         .setTestFunc(apis.getTestFunc())

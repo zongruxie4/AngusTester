@@ -27,8 +27,8 @@ public class ServicesSyncAssembler {
         .setSyncSuccess(sync.getSyncSuccess())
         .setSyncFailureCause(sync.getSyncFailureCause())
         .setLastSyncDate(sync.getLastSyncDate())
-        .setLastModifiedBy(sync.getLastModifiedBy())
-        .setLastModifiedDate(sync.getLastModifiedDate());
+        .setModifiedBy(sync.getModifiedBy())
+        .setModifiedDate(sync.getModifiedDate());
   }
 
 }

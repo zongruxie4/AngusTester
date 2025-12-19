@@ -1,7 +1,5 @@
 package cloud.xcan.angus.core.tester.interfaces.issue.facade.dto.sprint;
 
-import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
-
 import cloud.xcan.angus.core.tester.domain.issue.sprint.TaskSprintStatus;
 import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,7 +9,6 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Setter
@@ -40,16 +37,6 @@ public class TaskSprintFindDto extends PageQuery {
 
   @Schema(description = "Sprint owner identifier for responsibility filtering")
   private Long ownerId;
-
-  @Schema(description = "Sprint creator identifier for ownership filtering")
-  private Long createdBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Sprint creation timestamp for timeline filtering")
-  private LocalDateTime createdDate;
-
-  @Schema(description = "Last modifier identifier for change tracking")
-  private Long lastModifiedBy;
 
   @Override
   public String getDefaultOrderBy() {

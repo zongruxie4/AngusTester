@@ -70,10 +70,10 @@ public class DatasourceAssembler {
         .setTenantId(datasource.getTenantId())
         .setCreatedBy(datasource.getCreatedBy())
         .setCreatedDate(datasource.getCreatedDate())
-        .setLastModifiedBy(datasource.getLastModifiedBy())
-        .setLastModifiedByName(datasource.getLastModifiedByName())
+        .setModifiedBy(datasource.getModifiedBy())
+        .setModifier(datasource.getModifier())
         .setAvatar(datasource.getAvatar())
-        .setLastModifiedDate(datasource.getLastModifiedDate());
+        .setModifiedDate(datasource.getModifiedDate());
   }
 
   public static DatasourceDetailVo toDetailVo(Datasource datasource) {
@@ -91,15 +91,15 @@ public class DatasourceAssembler {
         .setTenantId(datasource.getTenantId())
         .setCreatedBy(datasource.getCreatedBy())
         .setCreatedDate(datasource.getCreatedDate())
-        .setLastModifiedBy(datasource.getLastModifiedBy())
-        .setLastModifiedDate(datasource.getLastModifiedDate());
+        .setModifiedBy(datasource.getModifiedBy())
+        .setModifiedDate(datasource.getModifiedDate());
   }
 
   public static GenericSpecification<Datasource> getSpecification(DatasourceFindDto dto) {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "lastModifiedDate")
-        .orderByFields("id", "lastModifiedDate")
+        .rangeSearchFields("id", "modifiedDate")
+        .orderByFields("id", "modifiedDate")
         .matchSearchFields("name")
         .build();
     return new GenericSpecification<>(filters);

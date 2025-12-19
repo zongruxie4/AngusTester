@@ -113,11 +113,11 @@ public class ApisCaseAssembler {
         .setApisDeleted(case0.getApisDeleted())
         .setTenantId(case0.getTenantId())
         .setCreatedBy(case0.getCreatedBy())
-        .setCreatedByName(case0.getCreatedByName())
+        .setCreator(case0.getCreator())
         .setCreatedDate(case0.getCreatedDate())
         .setAvatar(case0.getAvatar())
-        .setLastModifiedBy(case0.getLastModifiedBy())
-        .setLastModifiedDate(case0.getLastModifiedDate());
+        .setModifiedBy(case0.getModifiedBy())
+        .setModifiedDate(case0.getModifiedDate());
   }
 
   public static ApisCaseListVo toListVo(ApisCaseInfo case0) {
@@ -135,19 +135,19 @@ public class ApisCaseAssembler {
         .setApisDeleted(case0.getApisDeleted())
         .setTenantId(case0.getTenantId())
         .setCreatedBy(case0.getCreatedBy())
-        .setCreatedByName(case0.getCreatedByName())
+        .setCreator(case0.getCreator())
         .setCreatedDate(case0.getCreatedDate())
         .setAvatar(case0.getAvatar())
-        .setLastModifiedBy(case0.getLastModifiedBy())
-        .setLastModifiedDate(case0.getLastModifiedDate());
+        .setModifiedBy(case0.getModifiedBy())
+        .setModifiedDate(case0.getModifiedDate());
   }
 
   public static GenericSpecification<ApisCaseInfo> getSpecification(ApisCaseFindDto dto) {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("createdDate", "lastModifiedDate")
+        .rangeSearchFields("createdDate", "modifiedDate")
         .inAndNotFields("id")
-        .orderByFields("id", "createdDate", "lastModifiedDate")
+        .orderByFields("id", "createdDate", "modifiedDate")
         .matchSearchFields("name", "description")
         .build();
     return new GenericSpecification<>(filters);

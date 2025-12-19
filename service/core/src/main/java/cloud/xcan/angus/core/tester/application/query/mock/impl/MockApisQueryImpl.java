@@ -16,7 +16,7 @@ import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -73,7 +73,7 @@ import org.springframework.data.domain.PageRequest;
  * and proper error management across all operations. It also supports summary query
  * registration for analytics and reporting purposes.
  */
-@Biz
+@Service
 @SummaryQueryRegister(name = "MockApis", table = "mock_apis",
     groupByColumns = {"created_date", "method", "source"},
     aggregateColumns = {"id", "request_num", "pushback_num", "simulate_error_num",

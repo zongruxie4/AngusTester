@@ -56,11 +56,11 @@ export type ScriptInfo = {
   sourceName: string;
   tags: string[];
   createdBy: string;
-  createdByName: string;
+  creator: string;
   createdDate: string;
-  lastModifiedBy: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifier: string;
+  modifiedDate: string;
 
   /** Optional link URL for the script name */
   nameLinkUrl?: string;
@@ -81,7 +81,7 @@ export type ExecInfo = {
   assocApiCaseIds: string[];
   canUpdateTestResult: boolean;
   createdBy: string;
-  createdByName: string;
+  creator: string;
   createdDate: string;
   currentDuration: string;
   currentDurationProgress: string;
@@ -100,9 +100,9 @@ export type ExecInfo = {
   ignoreAssertions: boolean;
   iterations: string;
   iterationsProgress: boolean;
-  lastModifiedBy: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifier: string;
+  modifiedDate: string;
   lastSchedulingDate: string;
   lastSchedulingResult: {
     console: string[];

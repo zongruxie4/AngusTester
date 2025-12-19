@@ -1,13 +1,13 @@
 package cloud.xcan.angus.core.tester.application.query.analysis.impl;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.tester.application.query.analysis.AnalysisSnapshotQuery;
 import cloud.xcan.angus.core.tester.domain.analysis.snapshot.AnalysisSnapshot;
 import cloud.xcan.angus.core.tester.domain.analysis.snapshot.AnalysisSnapshotRepo;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
 
-@Biz
+@Service
 public class AnalysisSnapshotQueryImpl implements AnalysisSnapshotQuery {
 
   @Resource

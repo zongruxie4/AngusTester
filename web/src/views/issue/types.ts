@@ -62,12 +62,12 @@ export type TaskInfo = {
   tags: TagInfo[];
   tenantId: string;
   createdBy: string;
-  createdByName: string;
+  creator: string;
   createdDate: string;
   avatar: string;
-  lastModifiedBy: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifier: string;
+  modifiedDate: string;
 }
 
 export type TaskDetail = {
@@ -124,11 +124,11 @@ export type TaskDetail = {
   subTaskInfos: TaskInfo[];
   tenantId: string;
   createdBy: string;
-  createdByName: string;
+  creator: string;
   createdDate: string;
   avatar: string;
-  lastModifiedBy: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifier: string;
+  modifiedDate: string;
   linkUrl?: string
 }

@@ -5,7 +5,7 @@ import static cloud.xcan.angus.core.tester.domain.TesterFuncPluginMessage.CASE_R
 import static cloud.xcan.angus.remote.search.SearchCriteria.equal;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.test.FuncCaseQuery;
@@ -49,7 +49,7 @@ import org.springframework.data.domain.PageRequest;
  * Supports both individual review case operations and bulk operations with proper error handling
  * and resource validation.
  */
-@Biz
+@Service
 public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
 
   @Resource

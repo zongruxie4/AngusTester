@@ -7,7 +7,7 @@ import { exec } from '@/api/tester';
 import { ExecStatus } from '@/enums/enums';
 import type { ExecutionInfo } from '../types';
 
-export type OrderByKey = 'createdDate' | 'createdByName';
+export type OrderByKey = 'createdDate' | 'creator';
 
 /**
  * Composable for managing execution list functionality

@@ -5,7 +5,7 @@ import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.DOMAIN_NAME_
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static java.util.Collections.singletonList;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.config.NodeDomainQuery;
 import cloud.xcan.angus.core.tester.domain.config.node.dns.DomainDnsNum;
@@ -31,7 +31,7 @@ import org.springframework.data.jpa.domain.Specification;
  * <p>The implementation supports both transactional and non-transactional operations,
  * with proper error handling and business rule validation.</p>
  */
-@Biz
+@Service
 public class NodeDomainQueryImpl implements NodeDomainQuery {
 
   @Resource

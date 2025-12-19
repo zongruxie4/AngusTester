@@ -5,7 +5,6 @@ import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotNull;
-import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,9 +23,6 @@ public class TaskSprintAuthFindDto extends PageQuery {
 
   @Schema(description = "Authorization object identifier for user or role filtering")
   private Long authObjectId;
-
-  @Schema(description = "Authorization creation timestamp for timeline filtering")
-  private Date createdDate;
 
 }
 

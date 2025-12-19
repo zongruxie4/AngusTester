@@ -42,8 +42,8 @@ const developerSelectValue = ref<string>();
 
 // Computed properties for case personnel data
 const currentCaseId = computed(() => props.dataSource?.id);
-const currentCreatedByName = computed(() => props.dataSource?.createdByName);
-const currentLastModifiedByName = computed(() => props.dataSource?.lastModifiedByName);
+const currentcreator = computed(() => props.dataSource?.creator);
+const currentmodifier = computed(() => props.dataSource?.modifier);
 
 /**
  * <p>Gets the current tester ID from the case data source.</p>
@@ -393,7 +393,7 @@ const handleDeveloperBlur = async () => {
               <span>{{ t('common.creator') }}</span>
             </div>
             <div class="info-value">
-              <span class="info-text">{{ currentCreatedByName }}</span>
+              <span class="info-text">{{ currentcreator }}</span>
             </div>
           </div>
         </div>
@@ -405,7 +405,7 @@ const handleDeveloperBlur = async () => {
               <span>{{ t('common.modifier') }}</span>
             </div>
             <div class="info-value">
-              <span class="info-text">{{ currentLastModifiedByName }}</span>
+              <span class="info-text">{{ currentmodifier }}</span>
             </div>
           </div>
         </div>

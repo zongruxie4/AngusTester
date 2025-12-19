@@ -7,7 +7,7 @@ import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisDesignQuery;
@@ -55,7 +55,7 @@ import org.springframework.data.domain.PageRequest;
  *   <li>Latest content retrieval and formatting</li>
  * </ul></p>
  */
-@Biz
+@Service
 public class ApisDesignQueryImpl implements ApisDesignQuery {
 
   @Resource

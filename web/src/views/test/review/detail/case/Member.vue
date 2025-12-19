@@ -34,11 +34,11 @@ const peopleInfoColumns = [
     },
     {
       label: t('common.creator'),
-      dataIndex: 'createdByName'
+      dataIndex: 'creator'
     },
     {
       label: t('common.modifier'),
-      dataIndex: 'lastModifiedByName'
+      dataIndex: 'modifier'
     }]
 ];
 

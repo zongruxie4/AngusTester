@@ -48,8 +48,8 @@ public class FuncBaselineAssembler {
         .setTenantId(baseline.getTenantId())
         .setCreatedBy(baseline.getCreatedBy())
         .setCreatedDate(baseline.getCreatedDate())
-        .setLastModifiedBy(baseline.getLastModifiedBy())
-        .setLastModifiedDate(baseline.getLastModifiedDate());
+        .setModifiedBy(baseline.getModifiedBy())
+        .setModifiedDate(baseline.getModifiedDate());
   }
 
   public static FuncBaselineVo toListVo(FuncBaselineInfo baseline) {
@@ -60,18 +60,18 @@ public class FuncBaselineAssembler {
         .setEstablished(baseline.getEstablished())
         .setTenantId(baseline.getTenantId())
         .setCreatedBy(baseline.getCreatedBy())
-        .setCreatedByName(baseline.getCreatedByName())
-        .setCreatedByAvatar(baseline.getCreatedByAvatar())
+        .setCreator(baseline.getCreator())
+        .setCreatorAvatar(baseline.getCreatorAvatar())
         .setCreatedDate(baseline.getCreatedDate())
-        .setLastModifiedBy(baseline.getLastModifiedBy())
-        .setLastModifiedDate(baseline.getLastModifiedDate());
+        .setModifiedBy(baseline.getModifiedBy())
+        .setModifiedDate(baseline.getModifiedDate());
   }
 
   public static GenericSpecification<FuncBaselineInfo> getSpecification(FuncBaselineFindDto dto) {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdDate")
-        .orderByFields("id", "name", "createdBy", "createdDate", "lastModifiedBy")
+        .orderByFields("id", "name", "createdBy", "createdDate", "modifiedBy")
         .matchSearchFields("name", "description")
         .build();
     return new GenericSpecification<>(filters);

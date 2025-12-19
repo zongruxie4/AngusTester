@@ -16,7 +16,7 @@ import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.enums.NodeRole;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.query.config.NodeQuery;
@@ -65,7 +65,7 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
  *
  * @author XiaoLong Liu
  */
-@Biz
+@Service
 @Slf4j
 public class CtrlQueryImpl implements CtrlQuery {
 

@@ -255,9 +255,9 @@ const handleTesterBlur = async () => {
 
 // Computed properties for task personnel data
 const currentTaskId = computed(() => props.dataSource?.id);
-const currentCreatedByName = computed(() => props.dataSource?.createdByName);
+const currentcreator = computed(() => props.dataSource?.creator);
 
-const currentLastModifiedByName = computed(() => props.dataSource?.lastModifiedByName);
+const currentmodifier = computed(() => props.dataSource?.modifier);
 
 /**
  * <p>Gets the current assignee ID from the task data source.</p>
@@ -519,7 +519,7 @@ const confirmerDefaultOptions = computed(() => {
               <span>{{ t('common.creator') }}</span>
             </div>
             <div class="info-value">
-              <span class="info-text">{{ currentCreatedByName }}</span>
+              <span class="info-text">{{ currentcreator }}</span>
             </div>
           </div>
         </div>
@@ -532,7 +532,7 @@ const confirmerDefaultOptions = computed(() => {
               <span>{{ t('common.modifier') }}</span>
             </div>
             <div class="info-value">
-              <span class="info-text">{{ currentLastModifiedByName }}</span>
+              <span class="info-text">{{ currentmodifier }}</span>
             </div>
           </div>
         </div>

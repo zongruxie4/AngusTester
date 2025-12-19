@@ -16,7 +16,7 @@ import cloud.xcan.angus.api.commonlink.user.UserInfo;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.api.pojo.Progress;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -69,7 +69,7 @@ import org.springframework.data.domain.PageRequest;
  * Supports both individual review operations and bulk operations with proper error handling
  * and resource validation.
  */
-@Biz
+@Service
 public class FuncReviewQueryImpl implements FuncReviewQuery {
 
   @Resource

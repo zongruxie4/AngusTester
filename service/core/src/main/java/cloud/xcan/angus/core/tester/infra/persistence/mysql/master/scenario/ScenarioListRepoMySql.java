@@ -49,7 +49,7 @@ public class ScenarioListRepoMySql extends AbstractSearchRepository<Scenario> im
 
   @Override
   public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
-    return "a.id, a.name, a.description, a.project_id, a.auth, a.plugin, a.script_type, a.script_id, a.created_by, a.created_date, a.last_modified_by, a.last_modified_date";
+    return "a.id, a.name, a.description, a.project_id, a.auth, a.plugin, a.script_type, a.script_id, a.created_by, a.created_date, a.modified_by, a.modified_date";
   }
 
   private StringBuilder assembleFavouriteByJoinCondition(Set<SearchCriteria> criteria) {

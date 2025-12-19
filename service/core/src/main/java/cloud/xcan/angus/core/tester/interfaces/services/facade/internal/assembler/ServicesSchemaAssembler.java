@@ -23,8 +23,8 @@ public class ServicesSchemaAssembler {
             .setTags(schema.getTags())
             .setExtensions(schema.getExtensions())
             .setSpecVersion(schema.getSpecVersion())
-            .setLastModifiedBy(schema.getLastModifiedBy())
-            .setLastModifiedDate(schema.getLastModifiedDate());
+            .setModifiedBy(schema.getModifiedBy())
+            .setModifiedDate(schema.getModifiedDate());
   }
 
 }

@@ -96,8 +96,8 @@ public class ScriptAssembler {
         .setTenantId(script.getTenantId())
         .setCreatedBy(script.getCreatedBy())
         .setCreatedDate(script.getCreatedDate())
-        .setLastModifiedBy(script.getLastModifiedBy())
-        .setLastModifiedDate(script.getLastModifiedDate());
+        .setModifiedBy(script.getModifiedBy())
+        .setModifiedDate(script.getModifiedDate());
   }
 
   public static ScriptInfoVo toInfoVo(Script script) {
@@ -119,8 +119,8 @@ public class ScriptAssembler {
         .setTenantId(script.getTenantId())
         .setCreatedBy(script.getCreatedBy())
         .setCreatedDate(script.getCreatedDate())
-        .setLastModifiedBy(script.getLastModifiedBy())
-        .setLastModifiedDate(script.getLastModifiedDate());
+        .setModifiedBy(script.getModifiedBy())
+        .setModifiedDate(script.getModifiedDate());
   }
 
   public static ScriptInfosVo toInfosVo(ScriptInfo script) {
@@ -142,8 +142,8 @@ public class ScriptAssembler {
         .setTenantId(script.getTenantId())
         .setCreatedBy(script.getCreatedBy())
         .setCreatedDate(script.getCreatedDate())
-        .setLastModifiedBy(script.getLastModifiedBy())
-        .setLastModifiedDate(script.getLastModifiedDate());
+        .setModifiedBy(script.getModifiedBy())
+        .setModifiedDate(script.getModifiedDate());
   }
 
   public static AngusScriptDetailVo toAngusDetailVo(Script script) {
@@ -163,8 +163,8 @@ public class ScriptAssembler {
         .setContent(script.getAngusScript())
         .setCreatedBy(script.getCreatedBy())
         .setCreatedDate(script.getCreatedDate())
-        .setLastModifiedBy(script.getLastModifiedBy())
-        .setLastModifiedDate(script.getLastModifiedDate());
+        .setModifiedBy(script.getModifiedBy())
+        .setModifiedDate(script.getModifiedDate());
   }
 
   public static ScriptListVo toScriptListVo(ScriptInfo script) {
@@ -184,8 +184,8 @@ public class ScriptAssembler {
         .setPlugin(script.getPlugin())
         .setCreatedBy(script.getCreatedBy())
         .setCreatedDate(script.getCreatedDate())
-        .setLastModifiedBy(script.getLastModifiedBy())
-        .setLastModifiedDate(script.getLastModifiedDate());
+        .setModifiedBy(script.getModifiedBy())
+        .setModifiedDate(script.getModifiedDate());
   }
 
   public static ScriptInfoListVo toScriptInfoListVo(ScriptInfo script) {
@@ -205,8 +205,8 @@ public class ScriptAssembler {
         .setPlugin(script.getPlugin())
         .setCreatedBy(script.getCreatedBy())
         .setCreatedDate(script.getCreatedDate())
-        .setLastModifiedBy(script.getLastModifiedBy())
-        .setLastModifiedDate(script.getLastModifiedDate());
+        .setModifiedBy(script.getModifiedBy())
+        .setModifiedDate(script.getModifiedDate());
   }
 
 
@@ -216,7 +216,7 @@ public class ScriptAssembler {
     ApiLocaleResult<PageResult<ScriptListVo>> apiResult = ApiLocaleResult.success(result);
     Object queryAll = PrincipalContext.getExtension("queryAllEmpty");
     if (result.isEmpty() && nonNull(queryAll) && (boolean) queryAll) {
-      apiResult.getExt().put("allowImportSamples", true);
+      apiResult.getExtensions().put("allowImportSamples", true);
     }
     return apiResult;
   }
@@ -227,16 +227,16 @@ public class ScriptAssembler {
     ApiLocaleResult<PageResult<ScriptInfoListVo>> apiResult = ApiLocaleResult.success(result);
     Object queryAll = PrincipalContext.getExtension("queryAllEmpty");
     if (result.isEmpty() && nonNull(queryAll) && (boolean) queryAll) {
-      apiResult.getExt().put("allowImportSamples", true);
+      apiResult.getExtensions().put("allowImportSamples", true);
     }
     return apiResult;
   }
 
   public static GenericSpecification<ScriptInfo> getSpecification(ScriptFindDto dto) {
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate")
+        .rangeSearchFields("id", "createdBy", "createdDate", "modifiedBy", "modifiedDate")
         .orderByFields("id", "name", "platform", "type", "source", "plugin",
-            "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate")
+            "createdBy", "createdDate", "modifiedBy", "modifiedDate")
         .inAndNotFields("id", "type", "source", "sourceId", "tag", "createdBy")
         .matchSearchFields("name", "description", "extSearchMerge", "plugin")
         .build();

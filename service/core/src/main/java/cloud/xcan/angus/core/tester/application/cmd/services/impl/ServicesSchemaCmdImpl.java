@@ -17,7 +17,7 @@ import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.apis.ApiSource;
 import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -88,7 +88,7 @@ import org.springframework.transaction.annotation.Transactional;
  *   <li>Cache management for performance</li>
  * </ul></p>
  */
-@Biz
+@Service
 public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> implements
     ServicesSchemaCmd {
 

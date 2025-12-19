@@ -107,8 +107,8 @@ public class MockApisAssembler {
         .setTenantId(apis.getTenantId())
         .setCreatedBy(apis.getCreatedBy())
         .setCreatedDate(apis.getCreatedDate())
-        .setLastModifiedBy(apis.getLastModifiedBy())
-        .setLastModifiedDate(apis.getLastModifiedDate());
+        .setModifiedBy(apis.getModifiedBy())
+        .setModifiedDate(apis.getModifiedDate());
   }
 
   private static MockApiResponseInfoVo toMockApiResponseInfoVo(MockApisResponse response) {
@@ -143,8 +143,8 @@ public class MockApisAssembler {
         .setTenantId(apis.getTenantId())
         .setCreatedBy(apis.getCreatedBy())
         .setCreatedDate(apis.getCreatedDate())
-        .setLastModifiedBy(apis.getLastModifiedBy())
-        .setLastModifiedDate(apis.getLastModifiedDate());
+        .setModifiedBy(apis.getModifiedBy())
+        .setModifiedDate(apis.getModifiedDate());
   }
 
   public static MockApisServiceInfoVo toMockApisServiceInfoVo(MockService service) {
@@ -180,7 +180,7 @@ public class MockApisAssembler {
     ApiLocaleResult<PageResult<MockApisListVo>> apiResult = ApiLocaleResult.success(result);
     Object queryAll = PrincipalContext.getExtension("queryAllEmpty");
     if (result.isEmpty() && nonNull(queryAll) && (boolean) queryAll) {
-      apiResult.getExt().put("allowImportSamples", true);
+      apiResult.getExtensions().put("allowImportSamples", true);
     }
     return apiResult;
   }

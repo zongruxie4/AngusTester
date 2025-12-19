@@ -24,7 +24,6 @@ import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.api.pojo.IdAndCreatedDate;
 import cloud.xcan.angus.api.pojo.IdAndCreatedDateBase;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.CriteriaUtils;
 import cloud.xcan.angus.core.jpa.repository.LongKeyCountSummary;
@@ -80,6 +79,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 /**
  * Implementation of KanbanDataAssetsQuery for managing data assets dashboard queries.
@@ -104,7 +104,7 @@ import java.util.stream.Collectors;
  * Supports both individual category analysis and comprehensive dashboard data generation
  * with proper error handling and resource validation.
  */
-@Biz
+@Service
 public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
 
   @Resource

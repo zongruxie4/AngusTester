@@ -83,7 +83,7 @@ public class ReportAssembler {
         .setDescription(ReportTemplate.TASK.getMessage())
         .setTargetType(CombinedTargetType.TASK)
         .setTargetId(taskId).setTargetName(taskInfo.getName())
-        .setCreatedBy(getUserId()).setCreatedByName(getUserFullName())
+        .setCreatedBy(getUserId()).setCreator(getUserFullName())
         .setCreatedDate(LocalDateTime.now());
     return report;
   }
@@ -95,7 +95,7 @@ public class ReportAssembler {
         .setDescription(ReportTemplate.FUNC_TESTING_CASE.getMessage())
         .setTargetType(CombinedTargetType.FUNC_CASE)
         .setTargetId(caseId).setTargetName(caseInfo.getName())
-        .setCreatedBy(getUserId()).setCreatedByName(getUserFullName())
+        .setCreatedBy(getUserId()).setCreator(getUserFullName())
         .setCreatedDate(LocalDateTime.now());
     return report;
   }
@@ -122,8 +122,8 @@ public class ReportAssembler {
         .setTenantId(report.getTenantId())
         .setCreatedBy(report.getCreatedBy())
         .setCreatedDate(report.getCreatedDate())
-        .setLastModifiedBy(report.getLastModifiedBy())
-        .setLastModifiedDate(report.getLastModifiedDate());
+        .setModifiedBy(report.getModifiedBy())
+        .setModifiedDate(report.getModifiedDate());
   }
 
   public static ReportListVo toListVo(ReportInfo report) {
@@ -146,8 +146,8 @@ public class ReportAssembler {
         .setTenantId(report.getTenantId())
         .setCreatedBy(report.getCreatedBy())
         .setCreatedDate(report.getCreatedDate())
-        .setLastModifiedBy(report.getLastModifiedBy())
-        .setLastModifiedDate(report.getLastModifiedDate());
+        .setModifiedBy(report.getModifiedBy())
+        .setModifiedDate(report.getModifiedDate());
   }
 
   public static GenericSpecification<ReportInfo> getSpecification(ReportFindDto dto) {
@@ -155,7 +155,7 @@ public class ReportAssembler {
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdDate")
         .orderByFields("id", "name", "category", "template", "nextGenerationDate",
-            "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate")
+            "createdBy", "createdDate", "modifiedBy", "modifiedDate")
         .matchSearchFields("name", "description")
         .build();
     return new GenericSpecification<>(filters);
@@ -166,7 +166,7 @@ public class ReportAssembler {
     return new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdDate")
         .orderByFields("id", "name", "category", "template", "nextGenerationDate",
-            "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate")
+            "createdBy", "createdDate", "modifiedBy", "modifiedDate")
         .matchSearchFields("name", "description")
         .build();
   }

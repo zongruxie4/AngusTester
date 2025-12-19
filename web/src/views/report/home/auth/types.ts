@@ -11,6 +11,6 @@ export type SpaceItem = {
     subDirectoryNum: string;
     subFileNum: string;
     createdBy: string;
-    createdByName: string;
+    creator: string;
     createdDate: string;
 };

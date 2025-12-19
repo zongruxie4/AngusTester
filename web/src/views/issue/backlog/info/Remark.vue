@@ -211,7 +211,7 @@ const queryParams = computed(() => {
                 <div class="border-2 border-theme-text-box w-2.5 h-2.5 rounded-full"></div>
 
                 <div class="ml-3 font-normal text-3 flex items-center space-x-2 leading-4">
-                  <div class="text-theme-content font-medium">{{ remark.createdByName }}</div>
+                  <div class="text-theme-content font-medium">{{ remark.creator }}</div>
                   <div class="text-theme-content font-medium">{{ t('backlog.addedRemark') }}</div>
                   <div class="text-theme-sub-content">{{ remark.createdDate }}</div>
                   <Icon

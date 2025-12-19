@@ -83,8 +83,8 @@ public class FuncPlanConverter {
         //.setTenantId(plan.getTenantId())
         .setCreatedBy(plan.getCreatedBy())
         .setCreatedDate(plan.getCreatedDate())
-        .setLastModifiedBy(plan.getLastModifiedBy())
-        .setLastModifiedDate(plan.getLastModifiedDate())
+        .setModifiedBy(plan.getModifiedBy())
+        .setModifiedDate(plan.getModifiedDate())
         .setCaseNum(plan.getCaseNum())
         .setValidCaseNum(plan.getValidCaseNum())
         .setProgress(plan.getProgress());

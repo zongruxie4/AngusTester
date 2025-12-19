@@ -33,7 +33,7 @@ export function useUserAvatar () {
    * @returns Object containing template slot content
    */
   const renderCreatorAvatar = (record: any) =>
-    renderUserAvatar(record.createdByAvatar, record.createdByName, record.createdByName);
+    renderUserAvatar(record.creatorAvatar, record.creator, record.creator);
 
   /**
    * <p>Renders deleter avatar cell with consistent styling.</p>

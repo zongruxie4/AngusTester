@@ -16,7 +16,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.JoinSupplier;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
@@ -55,6 +54,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 /**
  * Implementation of KanbanEfficiencyQuery for managing efficiency dashboard queries.
@@ -79,7 +79,7 @@ import java.util.stream.Collectors;
  * Supports both individual efficiency analysis and comprehensive dashboard data generation
  * with proper error handling and resource validation.
  */
-@Biz
+@Service
 public class KanbanEfficiencyQueryImpl implements KanbanEfficiencyQuery {
 
   @Resource

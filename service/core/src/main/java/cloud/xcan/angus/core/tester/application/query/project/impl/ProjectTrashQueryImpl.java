@@ -8,7 +8,6 @@ import static cloud.xcan.angus.core.tester.application.query.common.impl.CommonQ
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -21,6 +20,7 @@ import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -31,7 +31,7 @@ import org.springframework.data.domain.PageRequest;
  * operation permissions.
  * </p>
  */
-@Biz
+@Service
 public class ProjectTrashQueryImpl implements ProjectTrashQuery {
 
   @Resource
@@ -86,8 +86,8 @@ public class ProjectTrashQueryImpl implements ProjectTrashQuery {
 
         if (!page.isEmpty()) {
           // Set user name and avatar
-          userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "createdByName",
-              "createdByAvatar");
+          userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "creator",
+              "creatorAvatar");
           userManager.setUserNameAndAvatar(page.getContent(), "deletedBy", "deletedByName",
               "deletedByAvatar");
         }

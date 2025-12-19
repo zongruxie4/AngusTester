@@ -29,7 +29,7 @@ export interface NodeInfo {
   port?: number;
   agentPort?: number;
   online: boolean;
-  createdByName?: string;
+  creator?: string;
   createdDate?: string;
   instanceExpiredDate?: string;
   tenantId?: string;
@@ -182,7 +182,7 @@ export interface MockService {
   /** Port number for the mock service */
   servicePort: number;
   /** Name of the user who created the service */
-  createdByName: string;
+  creator: string;
   /** Date when the service was created */
   createdDate: string;
 }

@@ -6,7 +6,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -21,6 +20,7 @@ import cloud.xcan.angus.core.tester.domain.data.datasource.DatasourceRepo;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Provides methods for adding, replacing, testing, and deleting datasources. Handles permission
  * checks, name uniqueness, quota validation, and connection testing.
  */
-@Biz
+@Service
 @Slf4j
 public class DatasourceCmdImpl extends CommCmd<Datasource, Long> implements DatasourceCmd {
 

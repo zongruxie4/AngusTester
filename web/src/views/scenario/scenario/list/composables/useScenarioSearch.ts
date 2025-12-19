@@ -134,7 +134,7 @@ export function useScenarioSearch () {
       orderSort: PageQuery.OrderSort.Asc
     }, {
       name: t('scenario.list.sortOptions.byCreator'),
-      key: 'createdByName' as SortKey,
+      key: 'creator' as SortKey,
       orderSort: PageQuery.OrderSort.Asc
     }
   ]);

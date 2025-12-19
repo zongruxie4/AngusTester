@@ -2,7 +2,7 @@ import { EnumMessage, ScriptType, ScriptSource, StartMode } from '@xcan-angus/in
 import { ExecStatus } from '@/enums/enums';
 
 export type MenuItem = {
-  key: 'none' | 'createdBy' | 'lastModifiedBy' | 'execBy' | 'last1Day' | 'last3Days' | 'last7Days' | 'scriptType';
+  key: 'none' | 'createdBy' | 'modifiedBy' | 'execBy' | 'last1Day' | 'last3Days' | 'last7Days' | 'scriptType';
   name: string;
 }
 
@@ -59,11 +59,11 @@ export type ExecutionInfo = {
   pipelineTargetMappings?:Record<string, any>;
 
   createdBy: string;
-  createdByName:string;
+  creator:string;
   createdDate: string;
-  lastModifiedBy: string;
-  lastModifiedByName:string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifier:string;
+  modifiedDate: string;
 
   currentDuration: string;
   durationProgress: string;

@@ -190,8 +190,8 @@ public class TaskConverter {
         .setDeadlineDate(LocalDateTime.now().plusHours(SAMPLE_AFTER_HOURS))
         .setCreatedBy(currentUserId)
         .setCreatedDate(LocalDateTime.now())
-        .setLastModifiedBy(currentUserId)
-        .setLastModifiedDate(LocalDateTime.now());
+        .setModifiedBy(currentUserId)
+        .setModifiedDate(LocalDateTime.now());
   }
 
   public static void assembleExampleTask(Project projectDb, Task task,
@@ -214,8 +214,8 @@ public class TaskConverter {
         .setTenantId(projectDb.getTenantId()).setDeleted(false)
         .setCreatedBy(users.get(random.nextInt(users.size())).getId())
         .setCreatedDate(now).setDeadlineDate(deadlineDate)
-        .setLastModifiedBy(users.get(random.nextInt(users.size())).getId())
-        .setLastModifiedDate(status.isFinished() ? finishedDate : now);
+        .setModifiedBy(users.get(random.nextInt(users.size())).getId())
+        .setModifiedDate(status.isFinished() ? finishedDate : now);
   }
 
   public static @NotNull SoftwareVersion assembleExampleTaskSoftwareVersion(Project projectDb,
@@ -226,7 +226,7 @@ public class TaskConverter {
         .setStatus(SoftwareVersionStatus.DEFAULT).setDescription("Release1.0")
         .setTenantId(projectDb.getTenantId())
         .setCreatedBy(currentUserId).setCreatedDate(projectDb.getCreatedDate())
-        .setLastModifiedBy(currentUserId).setLastModifiedDate(projectDb.getCreatedDate());
+        .setModifiedBy(currentUserId).setModifiedDate(projectDb.getCreatedDate());
     if (nonNull(sprint)) {
       version.setStartDate(sprint.getStartDate())
           .setReleaseDate(sprint.getDeadlineDate());
@@ -310,8 +310,8 @@ public class TaskConverter {
     //.setCommentNum(task.getCommentNum())
     summary.setCreatedBy(task.getCreatedBy());
     summary.setCreatedDate(task.getCreatedDate());
-    summary.setLastModifiedBy(task.getLastModifiedBy());
-    summary.setLastModifiedDate(task.getLastModifiedDate());
+    summary.setModifiedBy(task.getModifiedBy());
+    summary.setModifiedDate(task.getModifiedDate());
     return summary;
   }
 
@@ -366,8 +366,8 @@ public class TaskConverter {
         //.setCommentNum(task.getCommentNum())
         .setCreatedBy(task.getCreatedBy())
         .setCreatedDate(task.getCreatedDate())
-        .setLastModifiedBy(task.getLastModifiedBy())
-        .setLastModifiedDate(task.getLastModifiedDate());
+        .setModifiedBy(task.getModifiedBy())
+        .setModifiedDate(task.getModifiedDate());
   }
 
   public static TaskRemarkSummary toTaskRemarkSummary(TaskRemark remark) {

@@ -79,8 +79,8 @@ public class VariableAssembler {
         .setTenantId(variable.getTenantId())
         .setCreatedBy(variable.getCreatedBy())
         .setCreatedDate(variable.getCreatedDate())
-        .setLastModifiedBy(variable.getLastModifiedBy())
-        .setLastModifiedDate(variable.getLastModifiedDate());
+        .setModifiedBy(variable.getModifiedBy())
+        .setModifiedDate(variable.getModifiedDate());
   }
 
   public static VariableTargetVo toTargetVo(VariableTarget target) {
@@ -95,9 +95,9 @@ public class VariableAssembler {
   public static GenericSpecification<Variable> getSpecification(VariableFindDto dto) {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate", "lastModifiedDate")
-        .orderByFields("id", "name", "createdDate", "createdBy", "lastModifiedBy",
-            "lastModifiedDate")
+        .rangeSearchFields("id", "createdDate", "modifiedDate")
+        .orderByFields("id", "name", "createdDate", "createdBy", "modifiedBy",
+            "modifiedDate")
         .inAndNotFields("id", "name")
         .matchSearchFields("name")
         .build();

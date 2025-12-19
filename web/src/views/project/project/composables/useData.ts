@@ -27,7 +27,7 @@ export function useData () {
   const detailData = ref<Project>({} as Project);
 
   /** Current sort field */
-  const orderBy = ref<'createdDate' | 'createdByName'>('createdDate');
+  const orderBy = ref<'createdDate' | 'creator'>('createdDate');
 
   /** Current sort direction */
   const orderSort = ref<PageQuery.OrderSort>(PageQuery.OrderSort.Desc);
@@ -252,7 +252,7 @@ export function useData () {
    * @param {PageQuery.OrderSort} sortConfig.orderSort - Sort direction
    */
   const updateSort = (sortConfig: {
-    orderBy: 'createdDate' | 'createdByName';
+    orderBy: 'createdDate' | 'creator';
     orderSort: PageQuery.OrderSort;
   }): void => {
     orderBy.value = sortConfig.orderBy;

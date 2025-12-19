@@ -51,8 +51,8 @@ export function useTableColumns () {
       ellipsis: true
     },
     {
-      dataIndex: 'createdByName',
-      key: 'createdByName',
+      dataIndex: 'creator',
+      key: 'creator',
       title: t('common.createdBy'),
       width: '13%',
       ellipsis: true
@@ -102,8 +102,8 @@ export function useTableColumns () {
       width: 80
     },
     {
-      title: t('common.lastModifiedDate'),
-      dataIndex: 'lastModifiedDate',
+      title: t('common.modifiedDate'),
+      dataIndex: 'modifiedDate',
       ellipsis: true,
       width: 160
     },

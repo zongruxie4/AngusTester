@@ -232,14 +232,14 @@ const columns = [
   },
   {
     title: t('common.creator'),
-    dataIndex: 'createdByName',
-    groupName: 'createdByName',
+    dataIndex: 'creator',
+    groupName: 'creator',
     width: 160
   },
   {
     title: t('common.createdDate'),
     dataIndex: 'createdDate',
-    groupName: 'createdByName',
+    groupName: 'creator',
     hide: true,
     sorter: true,
     width: 160
@@ -260,16 +260,16 @@ const columns = [
   },
   {
     title: t('common.modifier'),
-    dataIndex: 'lastModifiedByName',
-    groupName: 'lastModifiedByName',
+    dataIndex: 'modifier',
+    groupName: 'modifier',
     ellipsis: true,
     hide: true,
     width: 160
   },
   {
-    title: t('common.lastModifiedDate'),
-    dataIndex: 'lastModifiedDate',
-    groupName: 'lastModifiedByName',
+    title: t('common.modifiedDate'),
+    dataIndex: 'modifiedDate',
+    groupName: 'modifier',
     sorter: true,
     width: 160
   },

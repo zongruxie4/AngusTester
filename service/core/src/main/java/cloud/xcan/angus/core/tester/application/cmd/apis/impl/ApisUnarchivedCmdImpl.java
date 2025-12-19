@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.application.cmd.apis.impl;
 
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -17,6 +16,7 @@ import jakarta.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
  * </p>
  */
 @Slf4j
-@Biz
+@Service
 public class ApisUnarchivedCmdImpl extends CommCmd<ApisUnarchived, Long> implements
     ApisUnarchivedCmd {
 

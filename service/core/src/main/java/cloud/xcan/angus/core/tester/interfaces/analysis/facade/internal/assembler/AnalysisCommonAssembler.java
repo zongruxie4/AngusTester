@@ -10,8 +10,8 @@ public class AnalysisCommonAssembler {
   public static Set<SearchCriteria> getSearchCriteria(ScriptStatisticsDto dto) {
     // Build the final filters
     return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate")
-        .orderByFields("id", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate")
+        .rangeSearchFields("id", "createdBy", "createdDate", "modifiedBy", "modifiedDate")
+        .orderByFields("id", "createdBy", "createdDate", "modifiedBy", "modifiedDate")
         .inAndNotFields("id", "type", "source", "sourceId", "scenarioId", "tag", "createdBy")
         .matchSearchFields("name", "description", "extSearchMerge", "plugin")
         .build();

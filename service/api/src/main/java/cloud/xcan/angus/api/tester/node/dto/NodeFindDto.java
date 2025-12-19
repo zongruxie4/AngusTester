@@ -44,18 +44,8 @@ public class NodeFindDto extends PageQuery {
   @Schema(description = "Has the node agent been installed")
   private Boolean installAgent;
 
-  @Schema(description = "Tenant identifier for multi-tenant node filtering")
-  private Long tenantId;
-
   @Schema(description = "Order identifier for purchase transaction tracking")
   private Long orderId;
-
-  @Schema(description = "User identifier who created the node")
-  private Long createdBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Node creation timestamp for timeline filtering")
-  private LocalDateTime createdDate;
 
   @DateTimeFormat(pattern = DATE_FMT)
   @Schema(description = "Node instance expiration date for lifecycle management")

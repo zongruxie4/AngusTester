@@ -66,15 +66,15 @@ interface ExtractionConfig {
  */
 export type DataSetItem = {
     createdBy: string;
-    createdByName: string;
+    creator: string;
     createdDate: string;
     description: string;
     extracted: boolean;
     extraction: ExtractionConfig;
     id: string;
-    lastModifiedBy: string;
-    lastModifiedByName: string;
-    lastModifiedDate: string;
+    modifiedBy: string;
+    modifier: string;
+    modifiedDate: string;
     name: string;
     parameters: DatasetParameter[];
     projectId: string;

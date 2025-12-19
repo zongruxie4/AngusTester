@@ -32,11 +32,11 @@ public class ServicesCompDetailVo {
 
   private Map<String, String> resolvedRefModels;
 
-  private Long lastModifiedBy;
+  private Long modifiedBy;
 
-  @NameJoinField(id = "lastModifiedBy", repository = "commonUserBaseRepo")
-  private String lastModifiedByName;
+  @NameJoinField(id = "modifiedBy", repository = "commonUserBaseRepo")
+  private String modifier;
 
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
 }

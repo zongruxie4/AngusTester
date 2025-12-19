@@ -108,8 +108,8 @@ public class FuncPlanAssembler {
         .setTenantId(plan.getTenantId())
         .setCreatedBy(plan.getCreatedBy())
         .setCreatedDate(plan.getCreatedDate())
-        .setLastModifiedBy(plan.getLastModifiedBy())
-        .setLastModifiedDate(plan.getLastModifiedDate())
+        .setModifiedBy(plan.getModifiedBy())
+        .setModifiedDate(plan.getModifiedDate())
         .setCaseNum(plan.getCaseNum())
         .setValidCaseNum(plan.getValidCaseNum())
         .setProgress(plan.getProgress());
@@ -119,7 +119,7 @@ public class FuncPlanAssembler {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdDate", "startDate", "deadlineDate")
-        .orderByFields("id", "name", "ownerId", "createdBy", "createdDate", "lastModifiedBy"
+        .orderByFields("id", "name", "ownerId", "createdBy", "createdDate", "modifiedBy"
             , "startDate", "deadlineDate")
         .matchSearchFields("name", "otherInformation")
         .build();

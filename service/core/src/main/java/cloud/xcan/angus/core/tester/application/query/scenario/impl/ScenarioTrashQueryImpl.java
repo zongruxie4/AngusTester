@@ -9,7 +9,6 @@ import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -22,6 +21,7 @@ import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -32,7 +32,7 @@ import org.springframework.data.domain.PageRequest;
  * operation permissions.
  * </p>
  */
-@Biz
+@Service
 public class ScenarioTrashQueryImpl implements ScenarioTrashQuery {
 
   @Resource
@@ -92,8 +92,8 @@ public class ScenarioTrashQueryImpl implements ScenarioTrashQuery {
             : scenarioTrashRepo.findAll(spec, pageable);
         if (!page.isEmpty()) {
           // Set user name and avatar
-          userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "createdByName",
-              "createdByAvatar");
+          userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "creator",
+              "creatorAvatar");
           userManager.setUserNameAndAvatar(page.getContent(), "deletedBy", "deletedByName",
               "deletedByAvatar");
         }

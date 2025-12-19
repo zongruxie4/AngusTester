@@ -145,11 +145,11 @@ const {
                   <div
                     style="max-width: 110px;"
                     class="truncate leading-5"
-                    :title="record.lastModifiedByName">
-                    {{ record.lastModifiedByName }}
+                    :title="record.modifier">
+                    {{ record.modifier }}
                   </div>
                   <div class="flex-none leading-5">
-                    &nbsp;&nbsp;{{ t('common.lastModifiedBy') }}&nbsp;&nbsp;{{ record.lastModifiedDate }}
+                    &nbsp;&nbsp;{{ t('common.modifiedBy') }}&nbsp;&nbsp;{{ record.modifiedDate }}
                   </div>
                 </div>
               </div>

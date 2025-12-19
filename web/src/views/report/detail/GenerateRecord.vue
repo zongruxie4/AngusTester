@@ -21,7 +21,7 @@ type Record = {
   id: string;
   status: EnumMessage<ReportStatus>;
   failureMessage?: string;
-  createdByName: string;
+  creator: string;
   category: EnumMessage<ReportCategory>;
 };
 
@@ -66,8 +66,8 @@ const columns = [
     }
   },
   {
-    key: 'createdByName',
-    dataIndex: 'createdByName',
+    key: 'creator',
+    dataIndex: 'creator',
     title: t('common.creator')
   },
   {

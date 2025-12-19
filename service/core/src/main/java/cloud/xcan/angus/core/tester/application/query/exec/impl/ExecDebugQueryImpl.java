@@ -12,7 +12,7 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.SneakyThrow0;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecDebugQuery;
@@ -45,7 +45,7 @@ import java.util.List;
  * The implementation includes methods for finding debug executions by different sources, checking
  * quotas, and setting debug results with parsed script content and sample data.
  */
-@Biz
+@Service
 public class ExecDebugQueryImpl implements ExecDebugQuery {
 
   @Resource

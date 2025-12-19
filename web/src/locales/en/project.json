@@ -41,7 +41,7 @@
       "projectNotFound": "Project not found",
       "sortMenu": {
         "createdDate": "Sort by Created Time",
-        "createdByName": "Sort by Creator"
+        "creator": "Sort by Creator"
       }
     },
     "edit": {

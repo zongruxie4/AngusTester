@@ -29,7 +29,7 @@ import cloud.xcan.angus.agent.message.mockservice.StatusCmdParam;
 import cloud.xcan.angus.agent.message.mockservice.StatusVo;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
@@ -109,7 +109,7 @@ import org.springframework.data.domain.Sort.Direction;
  * and proper error management across all operations. It also supports summary query
  * registration for analytics and reporting purposes.
  */
-@Biz
+@Service
 @SummaryQueryRegister(name = "MockService", table = "mock_service",
     groupByColumns = {"created_date", "source"})
 public class MockServiceQueryImpl implements MockServiceQuery {

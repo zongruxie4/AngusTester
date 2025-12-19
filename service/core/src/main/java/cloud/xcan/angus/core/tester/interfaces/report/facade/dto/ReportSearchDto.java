@@ -51,20 +51,6 @@ public class ReportSearchDto extends PageQuery {
   @Schema(description = "Next generation date to filter reports scheduled for generation on a specific date")
   private LocalDateTime nextGenerationDate;
 
-  @Schema(description = "User ID who created the report")
-  private Long createdBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Creation date to filter reports created on a specific date")
-  private LocalDateTime createdDate;
-
-  @Schema(description = "User ID who last modified the report")
-  private Long lastModifiedBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Last modification date to filter reports modified on a specific date")
-  private LocalDateTime lastModifiedDate;
-
   @Override
   public String getDefaultOrderBy() {
     return "createdDate";

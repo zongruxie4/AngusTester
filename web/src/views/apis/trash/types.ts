@@ -28,7 +28,7 @@ export interface TrashItem {
   /** ID of the user who deleted the item */
   deletedBy: string;
   /** Avatar URL of the creator */
-  createdByAvatar: string;
+  creatorAvatar: string;
   /** Avatar URL of the deleter */
   deletedByAvatar: string;
   /** Name of the creator */

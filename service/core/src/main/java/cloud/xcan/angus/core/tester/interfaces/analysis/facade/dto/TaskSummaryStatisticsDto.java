@@ -149,20 +149,6 @@ public class TaskSummaryStatisticsDto extends PageQuery {
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime execDate;
 
-  @Schema(description = "Task creator user identifier")
-  private Long createdBy;
-
-  @Schema(description = "Task creation timestamp")
-  @DateTimeFormat(pattern = DATE_FMT)
-  private LocalDateTime createdDate;
-
-  @Schema(description = "Last modifier user identifier")
-  private Long lastModifiedBy;
-
-  @Schema(description = "Last modification timestamp")
-  @DateTimeFormat(pattern = DATE_FMT)
-  private LocalDateTime lastModifiedDate;
-
   @Schema(description = "Administrator access flag for cross-project task queries")
   private Boolean admin;
 

@@ -16,7 +16,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisCaseCmd;
@@ -60,6 +59,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -73,7 +73,7 @@ import org.springframework.transaction.annotation.Transactional;
  * testing with script generation and execution management.
  * </p>
  */
-@Biz
+@Service
 public class ApisTestCmdImpl implements ApisTestCmd {
 
   @Resource

@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.config.facade.internal;
 import static cloud.xcan.angus.core.tester.interfaces.config.facade.internal.assembler.SettingUserAssembler.toApiProxyVo;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.tester.application.cmd.config.SettingUserCmd;
 import cloud.xcan.angus.core.tester.application.query.config.SettingUserQuery;
 import cloud.xcan.angus.core.tester.domain.config.user.apiproxy.UserApiProxy;
@@ -12,8 +11,9 @@ import cloud.xcan.angus.core.tester.interfaces.config.facade.vo.setting.UserApiC
 import cloud.xcan.angus.core.tester.interfaces.config.facade.vo.setting.UserApiProxyEnabledDto;
 import cloud.xcan.angus.core.tester.interfaces.config.facade.vo.setting.UserApiProxyVo;
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
 
-@Biz
+@Service
 public class SettingUserFacadeImpl implements SettingUserFacade {
 
   @Resource

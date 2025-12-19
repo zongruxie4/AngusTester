@@ -4,7 +4,7 @@ import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.test.FuncCaseFavouriteQuery;
 import cloud.xcan.angus.core.tester.domain.test.favourite.FuncCaseFavouriteP;
@@ -18,7 +18,7 @@ import org.springframework.data.domain.PageRequest;
  * <p>
  * Provides methods to list and count favourite cases for the current user.
  */
-@Biz
+@Service
 public class FuncCaseFavouriteQueryImpl implements FuncCaseFavouriteQuery {
 
   @Resource

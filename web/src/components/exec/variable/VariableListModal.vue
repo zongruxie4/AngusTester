@@ -9,7 +9,7 @@ import { VariableDetail } from '@/views/data/variable/types';
 
 const { t } = useI18n();
 
-type OrderByKey = 'lastModifiedDate' | 'lastModifiedByName';
+type OrderByKey = 'modifiedDate' | 'modifier';
 type OrderSortKey = PageQuery.OrderSort;
 
 type Props = {
@@ -304,14 +304,14 @@ const columns = [
   },
   {
     title: t('common.modifier'),
-    dataIndex: 'lastModifiedByName',
+    dataIndex: 'modifier',
     ellipsis: true,
     width: '10%',
     sort: true
   },
   {
-    title: t('common.lastModifiedDate'),
-    dataIndex: 'lastModifiedDate',
+    title: t('common.modifiedDate'),
+    dataIndex: 'modifiedDate',
     ellipsis: true,
     width: '14%',
     sort: true

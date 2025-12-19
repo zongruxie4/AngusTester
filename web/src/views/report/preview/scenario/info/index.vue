@@ -63,7 +63,7 @@ const columns = computed(() => [
       name: t('common.scriptName')
     },
     {
-      dataIndex: 'createdByName',
+      dataIndex: 'creator',
       name: t('common.creator')
     }
   ],
@@ -73,14 +73,14 @@ const columns = computed(() => [
       name: t('common.createdDate')
     },
     {
-      dataIndex: 'lastModifiedByName',
-      name: t('common.lastModifiedBy')
+      dataIndex: 'modifier',
+      name: t('common.modifiedBy')
     }
   ],
   [
     {
-      dataIndex: 'lastModifiedDate',
-      name: t('common.lastModifiedDate')
+      dataIndex: 'modifiedDate',
+      name: t('common.modifiedDate')
     }
   ]
 ]);

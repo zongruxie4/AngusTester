@@ -15,7 +15,7 @@ const { t } = useI18n();
 /**
  * Sort column key type
  */
-type OrderByKey = 'lastModifiedDate' | 'lastModifiedByName';
+type OrderByKey = 'modifiedDate' | 'modifier';
 
 /**
  * Sort direction type
@@ -58,12 +58,12 @@ const orderSort = ref<OrderSortKey>();          // Current sort direction
 /**
  * Pagination configuration
  */
-const pagination = ref<{ 
-  current: number; 
-  pageSize: number; 
-  total: number; 
+const pagination = ref<{
+  current: number;
+  pageSize: number;
+  total: number;
   showSizeChanger: boolean;
-}>({ 
+}>({
   current: 1,             // Current page number
   pageSize: 10,           // Items per page
   total: 0,               // Total items count
@@ -92,7 +92,7 @@ const tableData = ref<DatasetItem[]>([]);
 /**
  * Handle search input change (debounced)
  * Resets to first page and reloads data
- * 
+ *
  * @param event - Input change event
  */
 const searchInputChange = debounce(duration.search, (event: any) => {
@@ -161,11 +161,11 @@ const loadData = async (): Promise<void> => {
     tableData.value = [];
 
     const names = props.selectedNames;
-    
+
     // Process each dataset item
     _list.forEach((item) => {
-      const { extracted, extraction, name, id, createdByName } = item;
-      
+      const { extracted, extraction, name, id, creator } = item;
+
       // Determine source type label
       if (!extraction || !['FILE', 'HTTP', 'JDBC'].includes(extraction.source)) {
         // Static value (no extraction)
@@ -195,7 +195,7 @@ const loadData = async (): Promise<void> => {
 
       // Add custom fields for internal use
       item['x-id'] = id;
-      item['x-createdByName'] = createdByName;
+      item['x-creator'] = creator;
 
       tableData.value.push(item);
 
@@ -212,14 +212,14 @@ const loadData = async (): Promise<void> => {
 /**
  * Handle table pagination, filter, or sort change
  * Updates pagination state, sorting parameters, and reloads data
- * 
+ *
  * @param pagination - New pagination state
  * @param _filters - Filter parameters (unused)
  * @param sorter - Sort parameters
  */
 const tableChange = (
-  { current, pageSize }: { current: number; pageSize: number; }, 
-  _filters: { [key: string]: any }[], 
+  { current, pageSize }: { current: number; pageSize: number; },
+  _filters: { [key: string]: any }[],
   sorter: { orderBy: OrderByKey; orderSort: OrderSortKey }
 ): void => {
   pagination.value.current = current;
@@ -234,7 +234,7 @@ const tableChange = (
 /**
  * Handle table row selection change
  * Manages selected datasets across pages using a Map for persistence
- * 
+ *
  * @param keys - Array of selected row keys (IDs)
  */
 const tableSelect = (keys: string[]): void => {
@@ -371,15 +371,15 @@ const columns = [
     width: '10%'
   },
   {
-    title: t('common.lastModifiedBy'),
-    dataIndex: 'lastModifiedByName',
+    title: t('common.modifiedBy'),
+    dataIndex: 'modifier',
     ellipsis: true,
     width: '11%',
     sort: true             // Enable sorting for this column
   },
   {
-    title: t('common.lastModifiedDate'),
-    dataIndex: 'lastModifiedDate',
+    title: t('common.modifiedDate'),
+    dataIndex: 'modifiedDate',
     ellipsis: true,
     width: '15%',
     sort: true             // Enable sorting for this column
@@ -411,7 +411,7 @@ const columns = [
             class="w-75 flex-grow-0 flex-shrink"
             :placeholder="t('common.placeholders.searchKeyword')"
             @change="searchInputChange" />
-          
+
           <!-- Refresh button -->
           <Button
             type="default"
@@ -424,8 +424,8 @@ const columns = [
         </div>
 
         <!-- No data placeholder (when table is empty) -->
-        <NoData 
-          v-if="tableData.length === 0" 
+        <NoData
+          v-if="tableData.length === 0"
           class="flex-1 mt-10 mb-5" />
 
         <!-- Dataset table with selection, pagination, and sorting -->

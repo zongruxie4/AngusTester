@@ -16,7 +16,7 @@ export type ShareObj = {
   public0: boolean;
   password?: string;
   createdBy: string;
-  createdByName: string;
+  creator: string;
   createdDate: string;
   validFlag: boolean;
   isEdit?:boolean;

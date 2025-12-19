@@ -3,7 +3,7 @@ package cloud.xcan.angus.core.tester.application.query.config.impl;
 
 import static cloud.xcan.angus.core.tester.application.converter.SettingUserConverter.assembleProxyConfig;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.config.SettingTenantQuery;
 import cloud.xcan.angus.core.tester.application.query.config.SettingUserQuery;
@@ -29,7 +29,7 @@ import java.util.Objects;
  * integration for comprehensive user configuration administration.
  * </p>
  */
-@Biz
+@Service
 public class SettingUserQueryImpl implements SettingUserQuery {
 
   @Resource

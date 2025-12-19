@@ -4,7 +4,7 @@ import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskFollowQuery;
 import cloud.xcan.angus.core.tester.domain.issue.follow.TaskFollowP;
@@ -21,7 +21,7 @@ import org.springframework.data.domain.PageRequest;
  * Provides methods for querying user's followed tasks with pagination and search capabilities.
  * </p>
  */
-@Biz
+@Service
 public class TaskFollowQueryImpl implements TaskFollowQuery {
 
   @Resource

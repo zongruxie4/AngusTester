@@ -11,7 +11,6 @@ import static cloud.xcan.angus.core.tester.application.query.test.impl.FuncCaseQ
 import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.JoinSupplier;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisTestQuery;
@@ -38,6 +37,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 /**
  * Implementation of KanbanCtoQuery for managing CTO-level kanban dashboard queries.
@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
  * Supports both individual overview operations and comprehensive dashboard data generation
  * with proper error handling and resource validation.
  */
-@Biz
+@Service
 public class KanbanCtoQueryImpl implements KanbanCtoQuery {
 
   @Resource

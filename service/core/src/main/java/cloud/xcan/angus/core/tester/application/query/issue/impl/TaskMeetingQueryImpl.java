@@ -4,7 +4,7 @@ import static cloud.xcan.angus.core.tester.application.converter.TaskMeetingConv
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.issue.TaskMeetingQuery;
@@ -30,7 +30,7 @@ import org.springframework.data.domain.PageRequest;
  * statistics.
  * </p>
  */
-@Biz
+@Service
 public class TaskMeetingQueryImpl implements TaskMeetingQuery {
 
   @Resource

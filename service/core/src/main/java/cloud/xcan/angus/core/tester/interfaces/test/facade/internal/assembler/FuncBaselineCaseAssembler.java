@@ -67,8 +67,8 @@ public class FuncBaselineCaseAssembler {
         .setCreatedBy(case0.getCreatedBy())
         .setCreatedDate(case0.getCreatedDate())
         .setAvatar(case0.getAvatar())
-        .setLastModifiedBy(case0.getLastModifiedBy())
-        .setLastModifiedDate(case0.getLastModifiedDate());
+        .setModifiedBy(case0.getModifiedBy())
+        .setModifiedDate(case0.getModifiedDate());
   }
 
   public static FuncBaselineCaseListVo toListVo(FuncBaselineCaseInfo case0) {
@@ -116,20 +116,20 @@ public class FuncBaselineCaseAssembler {
         .setFollow(case0.getFollow())
         .setTenantId(case0.getTenantId())
         .setCreatedBy(case0.getCreatedBy())
-        .setCreatedByName(case0.getCreatedByName())
+        .setCreator(case0.getCreator())
         .setCreatedDate(case0.getCreatedDate())
         .setAvatar(case0.getAvatar())
-        .setLastModifiedBy(case0.getLastModifiedBy())
-        .setLastModifiedDate(case0.getLastModifiedDate());
+        .setModifiedBy(case0.getModifiedBy())
+        .setModifiedDate(case0.getModifiedDate());
   }
 
   public static GenericSpecification<FuncBaselineCaseInfo> getSpecification(FuncCaseFindDto dto) {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("deadlineDate", "createdDate", "lastModifiedDate", "reviewDate",
+        .rangeSearchFields("deadlineDate", "createdDate", "modifiedDate", "reviewDate",
             "testResultHandleDate", "reviewNum", "testNum", "testFailNum")
         .inAndNotFields("id", "tagId", "testResult", "testerId", "developerId")
-        .orderByFields("id", "createdDate", "lastModifiedDate", "priority",
+        .orderByFields("id", "createdDate", "modifiedDate", "priority",
             "deadlineDate", "reviewStatus", "reviewNum", "testerId", "developerId", "reviewerId",
             "testNum", "testFailNum", "testResult", "reviewDate", "testResultHandleDate")
         .matchSearchFields("name", "description", "code")

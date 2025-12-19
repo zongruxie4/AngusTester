@@ -24,7 +24,7 @@ const scriptTooltipTableColumns = [
     { dataIndex: 'description', label: t('common.description') },
     { dataIndex: 'scenarioId', label: t('xcan_httpTestInfo.associatedScenarioId') },
     { dataIndex: 'scenarioName', label: t('xcan_httpTestInfo.associatedScenarioName') },
-    { dataIndex: 'createdByName', label: t('common.creator') },
+    { dataIndex: 'creator', label: t('common.creator') },
     { dataIndex: 'createdDate', label: t('xcan_httpTestInfo.creationTime') }
   ]
 ];

@@ -9,7 +9,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -26,6 +25,7 @@ import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * <p>
  * Ensures permission checks, activity logging, and batch operations with transaction management.
  */
-@Biz
+@Service
 public class IndicatorPerfCmdImpl extends CommCmd<IndicatorPerf, Long> implements IndicatorPerfCmd {
 
   @Resource

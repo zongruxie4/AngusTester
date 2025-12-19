@@ -6,7 +6,6 @@ import static cloud.xcan.angus.core.tester.domain.TesterFuncPluginMessage.CASE_F
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static java.util.Objects.isNull;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -20,6 +19,7 @@ import cloud.xcan.angus.core.tester.domain.test.follow.FuncCaseFollowRepo;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * activity logging for audit purposes.
  * </p>
  */
-@Biz
+@Service
 public class FuncCaseFollowCmdImpl extends CommCmd<FuncCaseFollow, Long> implements
     FuncCaseFollowCmd {
 

@@ -68,8 +68,8 @@ public class FuncReviewAssembler {
         .setTenantId(review.getTenantId())
         .setCreatedBy(review.getCreatedBy())
         .setCreatedDate(review.getCreatedDate())
-        .setLastModifiedBy(review.getLastModifiedBy())
-        .setLastModifiedDate(review.getLastModifiedDate())
+        .setModifiedBy(review.getModifiedBy())
+        .setModifiedDate(review.getModifiedDate())
         .setCaseNum(review.getCaseNum())
         .setProgress(review.getProgress());
   }
@@ -78,7 +78,7 @@ public class FuncReviewAssembler {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdDate")
-        .orderByFields("id", "name", "ownerId", "createdBy", "createdDate", "lastModifiedBy")
+        .orderByFields("id", "name", "ownerId", "createdBy", "createdDate", "modifiedBy")
         .matchSearchFields("name", "description")
         .build();
     return new GenericSpecification<>(filters);

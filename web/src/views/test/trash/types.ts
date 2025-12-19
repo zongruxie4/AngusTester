@@ -12,11 +12,11 @@ export interface TrashItem {
   /** ID of the user who deleted the item */
   deletedBy: string;
   /** Avatar URL of the item creator */
-  createdByAvatar: string;
+  creatorAvatar: string;
   /** Avatar URL of the item deleter */
   deletedByAvatar: string;
   /** Name of the item creator */
-  createdByName: string;
+  creator: string;
   /** Name of the item deleter */
   deletedByName: string;
   /** Name/title of the deleted item */

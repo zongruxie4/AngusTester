@@ -2,7 +2,7 @@ import { ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from
 
 export type DatasetItem = {
     createdBy: string;
-    createdByName: string;
+    creator: string;
     createdDate: string;
     description: string;
     extracted: boolean;
@@ -40,9 +40,9 @@ export type DatasetItem = {
         };
     };
     id: string;
-    lastModifiedBy: string;
-    lastModifiedByName: string;
-    lastModifiedDate: string;
+    modifiedBy: string;
+    modifier: string;
+    modifiedDate: string;
     name: string;
     parameters: {
         name: string;

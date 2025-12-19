@@ -93,7 +93,7 @@ const activityType = ['REPORT'];
           <div class="font-semibold text-3.5">{{ report?.template?.message }}</div>
           <div class="flex justify-between">
             <div class="text-3 flex-1">{{ t('common.category') }}： {{ report.category?.message }}</div>
-            <div class="text-3 flex-1">{{ t('common.creator') }}： {{ report.createdByName }}</div>
+            <div class="text-3 flex-1">{{ t('common.creator') }}： {{ report.creator }}</div>
           </div>
           <div class="text-3">{{ t('common.description') }}： {{ reportTypeObj?.description }}</div>
         </div>

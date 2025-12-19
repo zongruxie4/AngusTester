@@ -81,18 +81,6 @@ public class ExecFindDto extends PageQuery {
   @Schema(description = "Executor identifier for executor-based filtering")
   private Long execBy;
 
-  @Schema(description = "Creator identifier for ownership filtering")
-  private Long createdBy;
-
-  @Schema(description = "Creation date for temporal filtering")
-  private LocalDateTime createdDate;
-
-  @Schema(description = "Last modifier identifier for update tracking")
-  private Long lastModifiedBy;
-
-  @Schema(description = "Last modification date for temporal filtering")
-  private LocalDateTime lastModifiedDate;
-
   @Override
   public String getDefaultOrderBy() {
     return "createdDate";

@@ -200,15 +200,15 @@ export type DataSetDetail = {
   /** ID of the user who created this dataset */
   createdBy: string;
   /** Name of the user who created this dataset */
-  createdByName: string;
+  creator: string;
   /** Creation date in ISO format */
   createdDate: string;
   /** ID of the user who last modified this dataset */
-  lastModifiedBy: string;
+  modifiedBy: string;
   /** Name of the user who last modified this dataset */
-  lastModifiedByName: string;
+  modifier: string;
   /** Last modification date in ISO format */
-  lastModifiedDate: string;
+  modifiedDate: string;
   /** Whether preview is enabled */
   preview?: boolean;
 }
@@ -232,7 +232,7 @@ export type SourceItem = {
   /** ID of the user who created this reference */
   createdBy: string;
   /** Name of the user who created this reference */
-  createdByName: string;
+  creator: string;
   /** Creation date in ISO format */
   createdDate: string;
 }

@@ -5,7 +5,7 @@ import static cloud.xcan.angus.core.tester.application.converter.ActivityConvert
 import static cloud.xcan.angus.core.utils.CoreUtils.copyPropertiesIgnoreTenantAuditing;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Implements business logic validation, permission checks, activity logging, and transaction
  * management for all evaluation operations.
  */
-@Biz
+@Service
 public class TestEvaluationCmdImpl extends CommCmd<TestEvaluation, Long> implements
     TestEvaluationCmd {
 

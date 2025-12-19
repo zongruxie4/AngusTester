@@ -89,9 +89,9 @@ export function useSearchPanel (
         fieldKey: 'createdBy'
       },
       {
-        key: 'lastModifiedBy',
+        key: 'modifiedBy',
         name: t('quickSearch.modifiedByMe'),
-        fieldKey: 'lastModifiedBy'
+        fieldKey: 'modifiedBy'
       }
     ], String(userId.value || '')),
     // Time options
@@ -178,7 +178,7 @@ export function useSearchPanel (
     },
     {
       name: t('reportHome.searchPanel.sortMenus.byCreator'),
-      key: 'createdByName' as OrderByKey,
+      key: 'creator' as OrderByKey,
       orderSort: PageQuery.OrderSort.Desc
     }
   ];
@@ -191,7 +191,7 @@ export function useSearchPanel (
    */
   const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
     // Update filters with quick search criteria
-    const quickSearchFields = ['createdBy', 'lastModifiedBy', 'createdDate'];
+    const quickSearchFields = ['createdBy', 'modifiedBy', 'createdDate'];
     const otherFilters = filters.value.filter(f => f.key && !quickSearchFields.includes(f.key as string));
     const newFilters = [...otherFilters, ...searchCriteria];
 
@@ -208,7 +208,7 @@ export function useSearchPanel (
     key?: string
   ) => {
     // Merge search panel filters with quick search filters
-    const quickSearchFields = ['createdBy', 'lastModifiedBy', 'createdDate'];
+    const quickSearchFields = ['createdBy', 'modifiedBy', 'createdDate'];
     const quickSearchFilters = filters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
     const searchPanelFilters = data.filter(f => f.key && !quickSearchFields.includes(f.key as string));
 

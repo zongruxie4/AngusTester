@@ -40,12 +40,12 @@ public class NodeDomainDnsDetailVo {
   private Long createdBy;
 
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")
-  private String createdByName;
+  private String creator;
 
   private LocalDateTime createdDate;
 
-  private Long lastModifiedBy;
+  private Long modifiedBy;
 
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
 }

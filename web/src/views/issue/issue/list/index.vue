@@ -62,8 +62,8 @@ const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', r
 const statisticsRefreshNotify = ref<string>(); // Statistics panel refresh notification
 const listRefreshNotify = ref<string>(); // Task list refresh notification
 
-const kanbanGroupKey = ref<'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType'>('none');
-const kanbanOrderBy = ref<'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName'>();
+const kanbanGroupKey = ref<'none' | 'assigneeName' | 'modifier' | 'taskType'>('none');
+const kanbanOrderBy = ref<'priority' | 'deadlineDate' | 'creator' | 'assigneeName'>();
 const kanbanOrderSort = ref<PageQuery.OrderSort>();
 
 const isStatisticsCollapsed = ref(true); // Initially collapsed, will auto-expand after initialization if not manually collapsed

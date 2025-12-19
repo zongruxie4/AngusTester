@@ -41,7 +41,6 @@ import static java.util.Objects.nonNull;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 
 import cloud.xcan.angus.api.commonlink.apis.ApiPermission;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -113,6 +112,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -127,7 +127,7 @@ import org.springframework.transaction.annotation.Transactional;
  * associations.
  * </p>
  */
-@Biz
+@Service
 @Slf4j
 public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 

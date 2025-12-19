@@ -4,7 +4,7 @@ import { ScenarioMonitorStatus } from '@/enums/enums';
 import { CreateTimeSetting } from '@/types/types';
 import { QuickSearchConfig } from 'src/components/form/quickSearch';
 
-export type OrderByKey = 'createdDate' | 'createdByName';
+export type OrderByKey = 'createdDate' | 'creator';
 
 // Type aliases for compatibility
 export type FilterItem = SearchCriteria;
@@ -71,10 +71,10 @@ export type MonitorInfo = {
   serverSetting?: ServerSetting[];
   timeSetting: CreateTimeSetting;
   count?: MonitorCount,
-  createdByName: string;
+  creator: string;
   createdDate: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifier: string;
+  modifiedDate: string;
   lastMonitorDate?: string;
   lastMonitorHistoryId?: string;
 }
@@ -131,7 +131,7 @@ export interface TabPaneInjection {
 // History execution record types
 export interface HistoryRecord {
   createdBy: string;
-  createdByName: string;
+  creator: string;
   createdDate: string;
   execEndDate: string;
   execId: string;

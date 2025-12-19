@@ -35,8 +35,8 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   (e: 'change', value: DatasetItem[]): void;  // Emit dataset list changes
   (e: 'targetInfoChange', value: {            // Emit configuration changes
-    actionOnEOF?: ActionOnEOF; 
-    sharingMode?: SharingMode; 
+    actionOnEOF?: ActionOnEOF;
+    sharingMode?: SharingMode;
   }): void;
 }>();
 
@@ -65,7 +65,7 @@ const sharingModeEnums = ref<EnumMessage<SharingMode>[]>([]); // Sharing mode op
 /**
  * Handle collapse panel expand/collapse
  * Updates the active keys list to control panel visibility
- * 
+ *
  * @param open - Whether to expand or collapse
  * @param id - Dataset ID (panel key)
  */
@@ -91,7 +91,7 @@ const toUse = (): void => {
 /**
  * Handle action on EOF configuration change
  * Emits configuration update to parent component
- * 
+ *
  * @param event - Radio group change event
  */
 const datasetActionOnEOFChange = async (event: any): Promise<void> => {
@@ -103,7 +103,7 @@ const datasetActionOnEOFChange = async (event: any): Promise<void> => {
 /**
  * Handle sharing mode configuration change
  * Emits configuration update to parent component
- * 
+ *
  * @param event - Radio group change event
  */
 const datasetSharingModeChange = async (event: any): Promise<void> => {
@@ -115,7 +115,7 @@ const datasetSharingModeChange = async (event: any): Promise<void> => {
 /**
  * Handle dataset selection from modal
  * Adds selected datasets to the beginning of the list
- * 
+ *
  * @param data - Array of selected dataset items
  */
 const selectedVariablesOk = async (data: DatasetItem[]): Promise<void> => {
@@ -131,7 +131,7 @@ const selectedVariablesOk = async (data: DatasetItem[]): Promise<void> => {
 /**
  * Handle dataset deletion (unlink)
  * Removes dataset from the list
- * 
+ *
  * @param data - Dataset item to delete
  */
 const toDelete = async (data: DatasetItem): Promise<void> => {
@@ -213,15 +213,15 @@ const hintTextMap = {
     <div class="flex items-center flex-nowrap mb-2.5">
       <!-- Blue indicator bar -->
       <div class="flex-shrink-0 w-1 h-3.5 rounded bg-blue-400 mr-1.5"></div>
-      
+
       <!-- Section title -->
       <div class="flex-shrink-0 text-theme-title mr-2.5">
         {{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.title') }}
       </div>
-      
+
       <!-- Info icon -->
       <Icon icon="icon-tishi1" class="flex-shrink-0 text-tips text-3.5 mr-1" />
-      
+
       <!-- Description label -->
       <div class="flex-shrink-0 break-all whitespace-pre-wrap">
         {{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.description') }}
@@ -237,7 +237,7 @@ const hintTextMap = {
           <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.actionOnEOF') }}</span>
           <Colon />
         </div>
-        
+
         <!-- Radio group for EOF action options -->
         <RadioGroup
           :value="props.actionOnEOF"
@@ -249,17 +249,17 @@ const hintTextMap = {
             :value="item.value">
             <div class="flex items-center space-x-1">
               <span>{{ item.message }}</span>
-              
+
               <!-- Tooltip for RECYCLE option -->
-              <Tooltip 
-                v-if="item.value === 'RECYCLE'" 
+              <Tooltip
+                v-if="item.value === 'RECYCLE'"
                 :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.recycleTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
-              
+
               <!-- Tooltip for STOP_THREAD option -->
-              <Tooltip 
-                v-else-if="item.value === 'STOP_THREAD'" 
+              <Tooltip
+                v-else-if="item.value === 'STOP_THREAD'"
                 :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.stopThreadTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
@@ -275,7 +275,7 @@ const hintTextMap = {
           <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.sharingMode') }}</span>
           <Colon />
         </div>
-        
+
         <!-- Radio group for sharing mode options -->
         <RadioGroup
           :value="props.sharingMode"
@@ -287,17 +287,17 @@ const hintTextMap = {
             :value="item.value">
             <div class="flex items-center space-x-1">
               <span>{{ item.message }}</span>
-              
+
               <!-- Tooltip for ALL_THREAD option -->
-              <Tooltip 
-                v-if="item.value === 'ALL_THREAD'" 
+              <Tooltip
+                v-if="item.value === 'ALL_THREAD'"
                 :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.allThreadTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
-              
+
               <!-- Tooltip for CURRENT_THREAD option -->
-              <Tooltip 
-                v-else-if="item.value === 'CURRENT_THREAD'" 
+              <Tooltip
+                v-else-if="item.value === 'CURRENT_THREAD'"
                 :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.currentThreadTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
@@ -320,8 +320,8 @@ const hintTextMap = {
     </div>
 
     <!-- Empty state (when no datasets selected) -->
-    <div 
-      v-if="tableData.length === 0" 
+    <div
+      v-if="tableData.length === 0"
       class="flex-1 flex flex-col items-center justify-center">
       <img style="width:100px;" src="./images/nodata.png">
       <div class="flex items-center text-theme-sub-content text-3">
@@ -339,8 +339,8 @@ const hintTextMap = {
       </div>
 
       <!-- Collapsible dataset panels -->
-      <Collapse 
-        v-model:activeKey="collapseActiveKeys" 
+      <Collapse
+        v-model:activeKey="collapseActiveKeys"
         collapsible="disabled">
         <!-- Individual dataset panel -->
         <CollapsePanel
@@ -367,17 +367,17 @@ const hintTextMap = {
                   </span>
                 </div>
               </div>
-              
+
               <!-- Creator column -->
-              <div class="table-tbody-td" :title="item['x-createdByName']">
-                <div class="flex-1 truncate">{{ item['x-createdByName'] }}</div>
+              <div class="table-tbody-td" :title="item['x-creator']">
+                <div class="flex-1 truncate">{{ item['x-creator'] }}</div>
               </div>
-              
+
               <!-- Actions column -->
               <div class="table-tbody-td flex items-center space-x-2.5">
                 <!-- Unlink/delete button with confirmation -->
-                <Popconfirm 
-                  :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.confirmUnlinkDataset', { name: item.name })" 
+                <Popconfirm
+                  :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.confirmUnlinkDataset', { name: item.name })"
                   @confirm="toDelete(item)">
                   <Button
                     :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.unlinkDataset')"
@@ -409,19 +409,19 @@ const hintTextMap = {
           <Tabs size="small" class="ant-tabs-nav-mb-2.5 normal-tabs">
             <!-- Static parameters tab (shown when no extraction configured) -->
             <template v-if="!item.extraction">
-              <TabPane 
-                key="value" 
+              <TabPane
+                key="value"
                 :tab="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.parameters')">
-                <StaticParameters 
-                  :dataSource="item.parameters" 
+                <StaticParameters
+                  :dataSource="item.parameters"
                   class="mb-5" />
               </TabPane>
             </template>
 
             <!-- Extracted parameters tab (shown when extraction configured) -->
             <template v-else>
-              <TabPane 
-                key="value" 
+              <TabPane
+                key="value"
                 :tab="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.extractParameters')">
                 <ExtractParameters
                   :dataSource="item.parameters"
@@ -432,15 +432,15 @@ const hintTextMap = {
             </template>
 
             <!-- Preview data tab -->
-            <TabPane 
-              key="preview" 
+            <TabPane
+              key="preview"
               :tab="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.previewData')">
               <PreviewData :dataSource="item as any" />
             </TabPane>
 
             <!-- Dataset usage tab -->
-            <TabPane 
-              key="use" 
+            <TabPane
+              key="use"
               :tab="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseList')">
               <DatasetUseList :id="item['x-id']" />
             </TabPane>

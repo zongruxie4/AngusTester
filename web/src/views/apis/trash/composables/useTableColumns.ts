@@ -23,8 +23,8 @@ export function useTableColumns () {
     },
     {
       title: t('common.createdBy'),
-      dataIndex: 'createdByName',
-      key: 'createdByName',
+      dataIndex: 'creator',
+      key: 'creator',
       ellipsis: true,
       sorter: false
     },

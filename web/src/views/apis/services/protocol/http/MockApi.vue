@@ -249,7 +249,7 @@ const gridColumnsConfiguration = [[
   { label: t('common.method'), dataIndex: 'method' },
   { label: t('service.mockApi.columns.mockServiceHostUrl'), dataIndex: 'mockServiceHostUrl' }
 ], [
-  { label: t('common.createdBy'), dataIndex: 'createdByName' },
+  { label: t('common.createdBy'), dataIndex: 'creator' },
   { label: t('common.createdDate'), dataIndex: 'createdDate' }
 ]];
 </script>

@@ -26,8 +26,8 @@ type Props = {
   notify: string;
   moduleId: number;
   loading: boolean;
-  groupKey: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType';
-  orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName';
+  groupKey: 'none' | 'assigneeName' | 'modifier' | 'taskType';
+  orderBy: 'priority' | 'deadlineDate' | 'creator' | 'assigneeName';
   orderSort: PageQuery.OrderSort;
 };
 
@@ -113,7 +113,7 @@ const taskCountMap = ref<{ [key in TaskDetail['status']['value']]: number }>({
 
 // Group data lists
 const assigneeNameList = ref<{ name: string; value: number }[]>([]);
-const lastModifiedByNameList = ref<{ name: string; value: number }[]>([]);
+const modifierList = ref<{ name: string; value: number }[]>([]);
 const taskTypeList = ref<{ name: string; value: string }[]>([]);
 
 // UI state
@@ -170,7 +170,7 @@ const loadData = async () => {
   const newList: TaskDetail[] = [];
   const sprintIdSet = new Set<number>();
   const assigneeNameSet = new Set<string>();
-  const lastModifiedByNameSet = new Set<string>();
+  const modifierSet = new Set<string>();
   const taskTypeSet = new Set<string>();
 
   for (let i = 0, len = allTasks.length; i < len; i++) {
@@ -197,10 +197,10 @@ const loadData = async () => {
     }
 
     // Build last modified by list for grouping
-    if (!lastModifiedByNameSet.has(item.lastModifiedByName)) {
-      lastModifiedByNameList.value.push({
-        name: item.lastModifiedByName,
-        value: item.lastModifiedBy
+    if (!modifierSet.has(item.modifier)) {
+      modifierList.value.push({
+        name: item.modifier,
+        value: item.modifiedBy
       });
     }
 
@@ -213,7 +213,7 @@ const loadData = async () => {
     }
 
     assigneeNameSet.add(item.assigneeName);
-    lastModifiedByNameSet.add(item.lastModifiedByName);
+    modifierSet.add(item.modifier);
     taskTypeSet.add(item.taskType.value);
 
     // Set group data if grouping is enabled
@@ -302,12 +302,12 @@ const getParams = () => {
 };
 
 // Sorting methods
-const toSort = (data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName'; orderSort: PageQuery.OrderSort; }) => {
+const toSort = (data: { orderBy: 'priority' | 'deadlineDate' | 'creator' | 'assigneeName'; orderSort: PageQuery.OrderSort; }) => {
   // Apply sorting to task data
   sortData(data.orderBy, data.orderSort);
 };
 
-const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName', orderSort: PageQuery.OrderSort) => {
+const sortData = (orderBy: 'priority' | 'deadlineDate' | 'creator' | 'assigneeName', orderSort: PageQuery.OrderSort) => {
   // Sort tasks by specified criteria
   const map = taskDataMap.value;
 
@@ -361,7 +361,7 @@ const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assi
     return;
   }
 
-  if (orderBy === 'assigneeName' || orderBy === 'createdByName') {
+  if (orderBy === 'assigneeName' || orderBy === 'creator') {
     // Sort by name fields
     if (orderSort === PageQuery.OrderSort.Desc) {
       for (const key in map) {
@@ -379,7 +379,7 @@ const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assi
 };
 
 // Grouping methods
-const toGroup = (value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType') => {
+const toGroup = (value: 'none' | 'assigneeName' | 'modifier' | 'taskType') => {
   // Apply grouping to tasks
   expandedGroupSet.value.clear();
 
@@ -403,13 +403,13 @@ const toGroup = (value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskTy
 
 const setGroupData = (data: TaskDetail) => {
   // Add task to appropriate group based on groupKey
-  const { status: { value: statusValue }, assigneeId, lastModifiedBy, taskType: { value: taskTypeValue } } = data;
+  const { status: { value: statusValue }, assigneeId, modifiedBy, taskType: { value: taskTypeValue } } = data;
   let key;
 
   if (props.groupKey === 'assigneeName') {
     key = assigneeId;
-  } else if (props.groupKey === 'lastModifiedByName') {
-    key = lastModifiedBy;
+  } else if (props.groupKey === 'modifier') {
+    key = modifiedBy;
   } else if (props.groupKey === 'taskType') {
     key = taskTypeValue;
   }
@@ -859,7 +859,7 @@ const dragHandler = async (
   status: TaskDetail['status']['value'],
   toStatus: TaskDetail['status']['value'],
   index: number,
-  groupKey?: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType'
+  groupKey?: 'none' | 'assigneeName' | 'modifier' | 'taskType'
 ) => {
   // Handle task drag and drop with status validation
   const { id, confirmerId } = data;
@@ -1143,7 +1143,7 @@ const groupDragAdd = async (
     return;
   }
 
-  dragHandler(targetData, status, toStatus, index, groupKey as 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType');
+  dragHandler(targetData, status, toStatus, index, groupKey as 'none' | 'assigneeName' | 'modifier' | 'taskType');
 };
 
 const dragMove = (event) => {
@@ -1230,8 +1230,8 @@ const toggleOpen = () => {
     let list: string[] = [];
     if (props.groupKey === 'assigneeName') {
       list = assigneeNameList.value.map(item => item.value.toString());
-    } else if (props.groupKey === 'lastModifiedByName') {
-      list = lastModifiedByNameList.value.map(item => item.value.toString());
+    } else if (props.groupKey === 'modifier') {
+      list = modifierList.value.map(item => item.value.toString());
     } else if (props.groupKey === 'taskType') {
       list = taskTypeList.value.map(item => item.value.toString());
     }
@@ -1265,7 +1265,7 @@ const resetData = () => {
   };
 
   assigneeNameList.value = [];
-  lastModifiedByNameList.value = [];
+  modifierList.value = [];
   taskTypeList.value = [];
 };
 
@@ -1276,8 +1276,8 @@ const showGroupData = computed(() => {
     return assigneeNameList.value;
   }
 
-  if (props.groupKey === 'lastModifiedByName') {
-    return lastModifiedByNameList.value;
+  if (props.groupKey === 'modifier') {
+    return modifierList.value;
   }
 
   if (props.groupKey === 'taskType') {
@@ -1610,54 +1610,54 @@ onMounted(() => {
         </div>
         <div style="height:calc(100% - 32px);" class="overflow-y-auto">
           <div
-            v-for="_createdByName in showGroupData"
-            :key="_createdByName.value"
-            :class="{ 'h-full': expandedGroupSet.has(_createdByName.value as number) }"
+            v-for="_creator in showGroupData"
+            :key="_creator.value"
+            :class="{ 'h-full': expandedGroupSet.has(_creator.value as number) }"
             class="flex items-start flex-nowrap border-b border-solid border-theme-text-box overflow-x-hidden">
             <div class="w-50 flex-shrink-0 flex items-center justify-between px-2.5 py-3.5">
               <div class="flex items-center overflow-hidden">
                 <Arrow
-                  :open="expandedGroupSet.has(_createdByName.value as number)"
+                  :open="expandedGroupSet.has(_creator.value as number)"
                   type="dashed"
                   class="flex-shrink-0 mr-1.5"
                   style="font-size:12px;"
-                  @change="arrowOpenChange($event, _createdByName.value as number)" />
+                  @change="arrowOpenChange($event, _creator.value as number)" />
                 <IconTask
                   v-if="props.groupKey === 'taskType'"
-                  :value="_createdByName.value"
+                  :value="_creator.value"
                   class="mr-1.5" />
-                <div class="flex-1 truncate font-semibold" :title="_createdByName.name">{{ _createdByName.name }}</div>
+                <div class="flex-1 truncate font-semibold" :title="_creator.name">{{ _creator.name }}</div>
                 <div class="flex-shrink-0">
                 </div>
               </div>
               <div class="flex items-center">
-                <span>{{ Object.values(groupDataMap[_createdByName.value] || {}).reduce((prev, cur) => prev +
+                <span>{{ Object.values(groupDataMap[_creator.value] || {}).reduce((prev, cur) => prev +
                   cur.length, 0)
                 }}</span>
                 <span>{{ t('common.task') }}</span>
               </div>
             </div>
             <div class="relative h-full flex items-start" style="width: calc(100% - 193px);">
-              <template v-if="!expandedGroupSet.has(_createdByName.value as number)">
+              <template v-if="!expandedGroupSet.has(_creator.value as number)">
                 <div
                   v-for="_status in statusList"
                   :key="_status.value"
                   style="width:20%;"
                   class="flex items-center px-2.5 py-3.5 space-x-1.5">
                   <span>{{ _status.message }}</span>
-                  <span>{{ groupDataMap[_createdByName.value]?.[_status.value]?.length || 0 }}</span>
+                  <span>{{ groupDataMap[_creator.value]?.[_status.value]?.length || 0 }}</span>
                 </div>
               </template>
-              <AsyncComponent :visible="expandedGroupSet.has(_createdByName.value as number)">
+              <AsyncComponent :visible="expandedGroupSet.has(_creator.value as number)">
                 <Draggable
                   v-for="(_status, statusIndex) in statusList"
-                  v-show="expandedGroupSet.has(_createdByName.value as number)"
+                  v-show="expandedGroupSet.has(_creator.value as number)"
                   :id="`${_status.value}-${statusIndex}`"
                   :key="_status.value"
                   style="width:20%;height: 100%;"
-                  :list="(groupDataMap[_createdByName.value]?.[_status.value] || [])"
+                  :list="(groupDataMap[_creator.value]?.[_status.value] || [])"
                   :animation="300"
-                  :group="`tasks-${_createdByName.value}`"
+                  :group="`tasks-${_creator.value}`"
                   :class="{ 'highlight-enabled': statusIndex === isDraggingToColumn, highlight: isDraggingToColumnStatus.includes(_status.value) }"
                   class="draggable-container right-border relative overflow-y-auto scroll-smooth space-y-2 px-2 py-2"
                   ghostClass="ghost"
@@ -1669,10 +1669,10 @@ onMounted(() => {
                   @add="groupDragAdd($event, _status.value)">
                   <template #item="{ element, index }: { element: TaskDetail; index: number; }">
                     <div
-                      :id="`${_status.value}-${index}-${element.id}-${(element.confirmerId || '0')}-${_createdByName.value}`"
+                      :id="`${_status.value}-${index}-${element.id}-${(element.confirmerId || '0')}-${_creator.value}`"
                       :class="{ 'active-item': checkedTaskId === element.id }"
                       class="task-board-item border border-solid rounded border-theme-text-box p-2 space-y-1.5"
-                      @click="toChecked(element, statusIndex, _createdByName.value as number)">
+                      @click="toChecked(element, statusIndex, _creator.value as number)">
                       <div class="flex items-center overflow-hidden">
                         <IconTask :value="element.taskType.value" class="mr-1.5" />
                         <span :title="element.name" class="flex-1 truncate font-semibold">{{ element.name }}</span>

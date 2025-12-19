@@ -26,7 +26,7 @@ import cloud.xcan.angus.api.enums.ReviewStatus;
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.api.pojo.Progress;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.exception.BizException;
@@ -89,7 +89,7 @@ import org.springframework.data.domain.PageRequest;
  * Supports both individual plan operations and bulk operations with proper error handling
  * and resource validation.
  */
-@Biz
+@Service
 public class FuncPlanQueryImpl implements FuncPlanQuery {
 
   @Resource

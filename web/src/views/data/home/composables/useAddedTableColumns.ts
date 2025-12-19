@@ -42,9 +42,9 @@ export function useAddedTableColumns (type: DataType) {
     if (['space', 'datasource'].includes(type)) {
       typeSpecificColumns.push(
         {
-          key: 'createdByName',
+          key: 'creator',
           title: t('common.createdBy'),
-          dataIndex: 'createdByName',
+          dataIndex: 'creator',
           width: 200
         },
         {
@@ -59,16 +59,16 @@ export function useAddedTableColumns (type: DataType) {
     if (['variable', 'dataset'].includes(type)) {
       typeSpecificColumns.push(
         {
-          key: 'lastModifiedByName',
-          title: t('common.lastModifiedBy'),
-          dataIndex: 'lastModifiedByName',
+          key: 'modifier',
+          title: t('common.modifiedBy'),
+          dataIndex: 'modifier',
           ellipsis: true,
           width: 200
         },
         {
-          key: 'lastModifiedDate',
-          title: t('common.lastModifiedDate'),
-          dataIndex: 'lastModifiedDate',
+          key: 'modifiedDate',
+          title: t('common.modifiedDate'),
+          dataIndex: 'modifiedDate',
           width: 200
         }
       );

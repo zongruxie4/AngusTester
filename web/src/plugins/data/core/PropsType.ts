@@ -30,8 +30,8 @@ export type UserInfo = {
     tenantName: string;
     createdBy: string;
     createdDate: string;
-    lastModifiedBy: string;
-    lastModifiedDate: string;
+    modifiedBy: string;
+    modifiedDate: string;
     passwordStrength: {
       value: string;
       message: string;

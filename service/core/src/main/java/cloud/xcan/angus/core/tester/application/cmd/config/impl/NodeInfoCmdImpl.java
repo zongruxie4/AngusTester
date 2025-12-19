@@ -24,7 +24,6 @@ import cloud.xcan.angus.api.gm.client.vo.AuthClientSignVo;
 import cloud.xcan.angus.api.gm.client.vo.AuthClientSignupVo;
 import cloud.xcan.angus.api.manager.TenantManager;
 import cloud.xcan.angus.api.pojo.auth.AgentAuth;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.spring.env.EnvHelper;
@@ -48,6 +47,7 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -59,7 +59,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Ensures distributed coordination, agent installation, and integration with external services.
  */
 @Slf4j
-@Biz
+@Service
 public class NodeInfoCmdImpl implements NodeInfoCmd {
 
   @Resource
@@ -394,7 +394,7 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
     }
     initNodeInfo.setTenantId(tenantId);
     initNodeInfo.setId(nodeId);
-    initNodeInfo.setLastModifiedDate(LocalDateTime.now());
+    initNodeInfo.setModifiedDate(LocalDateTime.now());
     nodeInfoRepo.save(initNodeInfo);
     return initNodeInfo;
   }

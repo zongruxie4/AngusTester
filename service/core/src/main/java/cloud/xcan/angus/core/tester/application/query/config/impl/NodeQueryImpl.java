@@ -29,7 +29,7 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.api.enums.NodeRole;
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -70,7 +70,7 @@ import org.springframework.data.jpa.domain.Specification;
  * management.
  * </p>
  */
-@Biz
+@Service
 @SummaryQueryRegister(name = "Node", table = "node",
     groupByColumns = {"created_date", "source", "enabled", "free", "install_agent"})
 public class NodeQueryImpl implements NodeQuery {

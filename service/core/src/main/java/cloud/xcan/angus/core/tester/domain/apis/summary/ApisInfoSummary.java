@@ -122,9 +122,9 @@ public class ApisInfoSummary {
   @JsonFormat(pattern = DEFAULT_DATE_TIME_FORMAT)
   private LocalDateTime createdDate;
 
-  private Long lastModifiedBy;
+  private Long modifiedBy;
 
   @JsonFormat(pattern = DEFAULT_DATE_TIME_FORMAT)
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
 }

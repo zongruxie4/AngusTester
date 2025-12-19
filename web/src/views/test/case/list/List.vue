@@ -90,7 +90,7 @@ const params = ref({
   pageNo: 1,
   pageSize: 10,
   filters: [] as SearchCriteria[],
-  orderBy: undefined as 'priority' | 'deadlineDate' | 'createdByName' | 'testerName' | undefined,
+  orderBy: undefined as 'priority' | 'deadlineDate' | 'creator' | 'testerName' | undefined,
   orderSort: undefined as PageQuery.OrderSort | undefined
 });
 const total = ref(0);

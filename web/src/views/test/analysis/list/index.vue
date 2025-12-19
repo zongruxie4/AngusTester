@@ -355,8 +355,8 @@ onBeforeUnmount(() => {
               </div>
             </div>
             <div class="mt-1 text-right">
-              <span class="font-semibold mr-1">{{ item.lastModifiedByName || 'Unknown' }}</span>
-              {{ t('status.createdAt') }}&nbsp;{{ item.lastModifiedDate || 'Unknown' }}
+              <span class="font-semibold mr-1">{{ item.modifier || 'Unknown' }}</span>
+              {{ t('status.createdAt') }}&nbsp;{{ item.modifiedDate || 'Unknown' }}
             </div>
             <div class="flex justify-end">
               <Button

@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.application.cmd.exec.impl;
 
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecNodeCmd;
@@ -11,6 +10,7 @@ import cloud.xcan.angus.core.tester.domain.exec.node.ExecNodeRepo;
 import jakarta.annotation.Resource;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
  * </p>
  */
 @Slf4j
-@Biz
+@Service
 public class ExecNodeCmdImpl extends CommCmd<ExecNode, Long> implements ExecNodeCmd {
 
   @Resource

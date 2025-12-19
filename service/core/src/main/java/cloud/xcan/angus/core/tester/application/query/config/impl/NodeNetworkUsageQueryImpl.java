@@ -6,7 +6,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.CriteriaUtils;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -48,7 +48,7 @@ import org.springframework.data.domain.PageRequest;
  * comprehensive network metrics for performance monitoring.
  * </p>
  */
-@Biz
+@Service
 public class NodeNetworkUsageQueryImpl implements NodeNetworkUsageQuery {
 
   @Resource

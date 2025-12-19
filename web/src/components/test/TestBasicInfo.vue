@@ -20,10 +20,10 @@ interface Props {
     result:string;
     scriptType:{value:string;message:string;};
     scriptId:string;
-    createdByName:string;
+    creator:string;
     createdDate:string;
-    lastModifiedByName:string;
-    lastModifiedDate:string;
+    modifier:string;
+    modifiedDate:string;
     status:{value:string;message:string;};
   };
   exception:{
@@ -47,7 +47,7 @@ const GridColumns = computed(() => {
     [{ dataIndex: 'id', label: t('common.id') }, { dataIndex: 'status', label: t('common.status') }, { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }],
       [{ dataIndex: 'name', label: t('common.name') }, { dataIndex: 'scriptType', label: t('common.scriptType') }, { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }],
       [{ dataIndex: 'scriptName', label: t('common.scriptName') }, { dataIndex: 'priority', label: t('common.priority') }, { dataIndex: 'batchRows', label: t('xcan_testBasicInfo.batchRows') }],
-      [{ dataIndex: 'plugin', label: t('common.plugin') }, { dataIndex: 'createdByName', label: t('common.creator') }, { dataIndex: 'modifiedByName', label: t('common.modifier') }],
+      [{ dataIndex: 'plugin', label: t('common.plugin') }, { dataIndex: 'creator', label: t('common.creator') }, { dataIndex: 'modifier', label: t('common.modifier') }],
       [{ dataIndex: 'actualStartDate', label: t('xcan_testBasicInfo.actualStartDate') }, { dataIndex: 'endDate', label: t('common.endTime') }, (props.value?.status?.value === 'COMPLETED' && props.value?.mockFileUrl) && { dataIndex: 'mockFileUrl', label: t('xcan_testBasicInfo.mockFileUrl') }].filter(Boolean)
     ];
   }
@@ -55,8 +55,8 @@ const GridColumns = computed(() => {
   if (props.hasIgnoreAssertions) {
     return [
     [{ dataIndex: 'id', label: t('common.id') }, { dataIndex: 'status', label: t('common.status') }, { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }, { dataIndex: 'endDate', label: t('common.endTime') }],
-      [{ dataIndex: 'name', label: t('common.name') }, { dataIndex: 'scriptType', label: t('common.scriptType') }, { dataIndex: 'updateTestResult', label: t('xcan_testBasicInfo.updateTestResult') }, { dataIndex: 'modifiedByName', label: t('common.modifier') }],
-      [{ dataIndex: 'scriptName', label: t('common.scriptName') }, { dataIndex: 'priority', label: t('common.priority') }, { dataIndex: 'createdByName', label: t('common.creator') }],
+      [{ dataIndex: 'name', label: t('common.name') }, { dataIndex: 'scriptType', label: t('common.scriptType') }, { dataIndex: 'updateTestResult', label: t('xcan_testBasicInfo.updateTestResult') }, { dataIndex: 'modifier', label: t('common.modifier') }],
+      [{ dataIndex: 'scriptName', label: t('common.scriptName') }, { dataIndex: 'priority', label: t('common.priority') }, { dataIndex: 'creator', label: t('common.creator') }],
       [{ dataIndex: 'plugin', label: t('common.plugin') }, { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }, { dataIndex: 'actualStartDate', label: t('xcan_testBasicInfo.actualStartDate') }]
     ];
   }
@@ -65,7 +65,7 @@ const GridColumns = computed(() => {
   [{ dataIndex: 'id', label: t('common.id') }, { dataIndex: 'status', label: t('common.status') }, { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }],
     [{ dataIndex: 'name', label: t('common.name') }, { dataIndex: 'scriptType', label: t('common.scriptType') }, { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }],
     [{ dataIndex: 'scriptName', label: t('common.scriptName') }, { dataIndex: 'priority', label: t('common.priority') }, { dataIndex: 'ignoreAssertions', label: t('xcan_testBasicInfo.ignoreAssertions') }],
-    [{ dataIndex: 'plugin', label: t('common.plugin') }, { dataIndex: 'createdByName', label: t('common.creator') }, { dataIndex: 'modifiedByName', label: t('common.modifier') }],
+    [{ dataIndex: 'plugin', label: t('common.plugin') }, { dataIndex: 'creator', label: t('common.creator') }, { dataIndex: 'modifier', label: t('common.modifier') }],
     [{ dataIndex: 'actualStartDate', label: t('xcan_testBasicInfo.actualStartDate') }, { dataIndex: 'endDate', label: t('common.endTime') }, { dataIndex: 'updateTestResult', label: t('xcan_testBasicInfo.updateTestResult') }]
   ];
 });
@@ -145,17 +145,17 @@ const letterMap = {
       </template>
       <template v-else>--</template>
     </template>
-    <template #createdByName="{text}">
+    <template #creator="{text}">
       <span class="mr-2">{{ text }}</span>
       <span class="whitespace-nowrap">{{ props.value?.createdDate }}</span>
     </template>
-    <template #modifiedByName>
-      <span class="mr-2">{{ props.value?.lastModifiedByName }}</span>
-      <span class="whitespace-nowrap">{{ props.value?.lastModifiedDate }}</span>
+    <template #modifier>
+      <span class="mr-2">{{ props.value?.modifier }}</span>
+      <span class="whitespace-nowrap">{{ props.value?.modifiedDate }}</span>
     </template>
-    <template #lastModifiedByName="{text}">
+    <template #modifier="{text}">
       <span class="mr-2">{{ text }}</span>
-      <span>{{ props.value?.lastModifiedDate }}</span>
+      <span>{{ props.value?.modifiedDate }}</span>
     </template>
     <template #status="{text}">
       <div class="flex items-center flex-none">

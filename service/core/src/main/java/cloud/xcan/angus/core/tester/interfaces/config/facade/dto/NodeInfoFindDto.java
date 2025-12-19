@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.config.facade.dto;
 
 import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -26,8 +25,5 @@ public class NodeInfoFindDto extends PageQuery {
 
   @Schema(description = "Flag indicating whether this is a free/shared node")
   private Boolean isFreeNode;
-
-  @Schema(description = "Last modification date for temporal filtering")
-  private LocalDateTime lastModifiedDate;
 
 }

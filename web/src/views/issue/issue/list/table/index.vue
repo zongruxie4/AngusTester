@@ -934,7 +934,7 @@ const tableColumns: ({
   },
   {
     title: t('common.creator'),
-    dataIndex: 'createdByName',
+    dataIndex: 'creator',
     width: 110,
     hide: true,
     groupName: 'personType',
@@ -950,8 +950,8 @@ const tableColumns: ({
     customRender: ({ text }) => text || '--'
   },
   {
-    title: t('common.lastModifiedBy'),
-    dataIndex: 'lastModifiedByName',
+    title: t('common.modifiedBy'),
+    dataIndex: 'modifier',
     width: 110,
     hide: true,
     groupName: 'personType',
@@ -1071,8 +1071,8 @@ const tableColumns: ({
     customRender: ({ text }) => text || '--'
   },
   {
-    title: t('common.lastModifiedDate'),
-    dataIndex: 'lastModifiedDate',
+    title: t('common.modifiedDate'),
+    dataIndex: 'modifiedDate',
     width: 160,
     hide: true,
     groupName: 'date',

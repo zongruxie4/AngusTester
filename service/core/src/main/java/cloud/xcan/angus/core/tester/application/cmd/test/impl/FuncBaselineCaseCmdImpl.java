@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.application.cmd.test.impl;
 
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -20,6 +19,7 @@ import jakarta.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * management for functional test cases.
  * </p>
  */
-@Biz
+@Service
 public class FuncBaselineCaseCmdImpl extends CommCmd<FuncBaselineCase, Long> implements
     FuncBaselineCaseCmd {
 

@@ -1124,7 +1124,7 @@
       "columns": {
         "apisNum": "接口数量",
         "apisCaseNum": "用例数量",
-        "createdByName": "添加人",
+        "creator": "添加人",
         "securityTitle": "安全需求",
         "hasPermission": "有权限限制",
         "noPermission": "无权限限制"

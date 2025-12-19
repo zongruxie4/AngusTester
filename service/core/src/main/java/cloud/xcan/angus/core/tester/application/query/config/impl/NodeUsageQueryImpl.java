@@ -7,7 +7,7 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.OWNER_TENANT_ID;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.exec.result.NodeUsageSummary;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.config.NodeInfoQuery;
@@ -43,7 +43,7 @@ import org.springframework.data.domain.Sort.Direction;
  * </p>
  */
 @Slf4j
-@Biz
+@Service
 public class NodeUsageQueryImpl implements NodeUsageQuery {
 
   @Resource

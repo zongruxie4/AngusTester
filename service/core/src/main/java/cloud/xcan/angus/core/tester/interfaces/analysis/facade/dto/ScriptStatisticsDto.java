@@ -1,6 +1,5 @@
 package cloud.xcan.angus.core.tester.interfaces.analysis.facade.dto;
 
-import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH_X2;
 
@@ -11,12 +10,10 @@ import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * @author XiaoLong Liu
@@ -65,19 +62,5 @@ public class ScriptStatisticsDto extends PageQuery {
 
   @Schema(description = "Permission level for script access control")
   private ScriptPermission hasPermission;
-
-  @Schema(description = "Script creator user identifier")
-  private Long createdBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Script creation timestamp")
-  private LocalDateTime createdDate;
-
-  @Schema(description = "Last modifier user identifier")
-  private Long lastModifiedBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Last modification timestamp")
-  private LocalDateTime lastModifiedDate;
 
 }

@@ -95,8 +95,8 @@ public class AnalysisAssembler {
         .setData(analysis.getDataObj())
         .setCreatedBy(analysis.getCreatedBy()).
         setCreatedDate(analysis.getCreatedDate())
-        .setLastModifiedBy(analysis.getLastModifiedBy())
-        .setLastModifiedDate(analysis.getLastModifiedDate());
+        .setModifiedBy(analysis.getModifiedBy())
+        .setModifiedDate(analysis.getModifiedDate());
   }
 
   public static AnalysisListVo toListVo(Analysis analysis) {
@@ -119,15 +119,15 @@ public class AnalysisAssembler {
         .setFilterCriteria(analysis.getFilterCriteria())
         .setCreatedBy(analysis.getCreatedBy())
         .setCreatedDate(analysis.getCreatedDate())
-        .setLastModifiedBy(analysis.getLastModifiedBy())
-        .setLastModifiedDate(analysis.getLastModifiedDate());
+        .setModifiedBy(analysis.getModifiedBy())
+        .setModifiedDate(analysis.getModifiedDate());
   }
 
   public static GenericSpecification<Analysis> getSpecification(AnalysisFindDto dto) {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdDate")
-        .orderByFields("id", "name", "createdBy", "createdDate", "lastModifiedBy", "category",
+        .orderByFields("id", "name", "createdBy", "createdDate", "modifiedBy", "category",
             "template")
         .matchSearchFields("name", "description")
         .build();
@@ -138,7 +138,7 @@ public class AnalysisAssembler {
     // Build the final filters
     return new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdDate")
-        .orderByFields("id", "name", "createdBy", "createdDate", "lastModifiedBy", "category",
+        .orderByFields("id", "name", "createdBy", "createdDate", "modifiedBy", "category",
             "template")
         .matchSearchFields("name", "description")
         .build();

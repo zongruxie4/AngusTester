@@ -1,7 +1,5 @@
 package cloud.xcan.angus.core.tester.interfaces.test.facade.dto.review.cases;
 
-import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
-
 import cloud.xcan.angus.api.enums.ReviewStatus;
 import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,7 +9,6 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Setter
@@ -46,13 +43,6 @@ public class FuncReviewCaseFindDto extends PageQuery {
 
   @Schema(description = "Test case review status for state-based filtering")
   private ReviewStatus reviewStatus;
-
-  @Schema(description = "Review case creator identifier for ownership filtering")
-  private Long createdBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Review case creation timestamp for temporal filtering")
-  private LocalDateTime createdDate;
 
 }
 

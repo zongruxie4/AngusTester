@@ -23,7 +23,7 @@ export interface SpaceItem {
   /** ID of the user who created the space */
   createdBy: string;
   /** Name of the user who created the space */
-  createdByName: string;
+  creator: string;
   /** Date when the space was created */
   createdDate: string;
 }

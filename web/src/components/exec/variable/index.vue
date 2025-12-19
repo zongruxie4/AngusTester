@@ -273,7 +273,7 @@ onMounted(() => {
         ...item,
         id,
         extracted,
-        createdByName: item['x-createdByName']
+        creator: item['x-creator']
       };
     });
     showTableData.value = tableData.value.map(item => item);
@@ -310,7 +310,7 @@ const columns = [
   },
   {
     title: t('common.creator'),
-    dataIndex: 'createdByName',
+    dataIndex: 'creator',
     ellipsis: true,
     width: '8%'
   },
@@ -325,7 +325,7 @@ const getData = (): {
   updateVariableByIteration:boolean;
   variables:{
     'x-id': string;
-    'x-createdByName': string;
+    'x-creator': string;
     name: string;
     description: string;
     passwordValue: string;
@@ -347,7 +347,7 @@ const getData = (): {
       passwordValue: item.passwordValue,
       value: item.value,
       'x-id': item.id,
-      'x-createdByName': item.createdByName
+      'x-creator': item.creator
     });
 
     return pureData;

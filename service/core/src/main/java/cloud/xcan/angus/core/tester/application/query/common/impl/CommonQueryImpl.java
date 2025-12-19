@@ -35,7 +35,7 @@ import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.enums.NoticeType;
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisAuthQuery;
@@ -101,7 +101,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author XiaoLong Liu
  */
-@Biz
+@Service
 @Slf4j
 public class CommonQueryImpl implements CommonQuery {
 

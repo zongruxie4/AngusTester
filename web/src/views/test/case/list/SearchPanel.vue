@@ -28,9 +28,9 @@ type Props = {
   userInfo: { id: number; fullName: string };
   appInfo: { id: number; name: string };
   notify: string;
-  orderBy?: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName';
+  orderBy?: 'priority' | 'deadlineDate' | 'creator' | 'testerName';
   orderSort?: PageQuery.OrderSort;
-  groupKey?: 'none' | 'testerName' | 'lastModifiedByName';
+  groupKey?: 'none' | 'testerName' | 'modifier';
   enabledGroup: boolean;
   moduleId?: number;
 }
@@ -52,9 +52,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   (e: 'change', value: SearchCriteria[]): void;
-  (e: 'update:orderBy', value: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName'): void;
+  (e: 'update:orderBy', value: 'priority' | 'deadlineDate' | 'creator' | 'testerName'): void;
   (e: 'update:orderSort', value: PageQuery.OrderSort): void;
-  (e: 'update:groupKey', value: 'none' | 'testerName' | 'lastModifiedByName'): void;
+  (e: 'update:groupKey', value: 'none' | 'testerName' | 'modifier'): void;
   (e: 'update:enabledGroup', value: boolean): void;
   (e: 'update:moduleId', value: string | undefined): void;
   (e: 'viewModeChange', value: CaseViewMode): void;
@@ -124,7 +124,7 @@ const loadEnums = () => {
  * Handles sorting configuration changes
  */
 const handleSortingChange = (
-  data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName';
+  data: { orderBy: 'priority' | 'deadlineDate' | 'creator' | 'testerName';
     orderSort: PageQuery.OrderSort; }
 ) => {
   emit('update:orderBy', data.orderBy);
@@ -135,7 +135,7 @@ const handleSortingChange = (
  * Handles grouping configuration changes
  */
 const handleGroupingChange = (
-  value: 'none' | 'testerName' | 'lastModifiedByName'
+  value: 'none' | 'testerName' | 'modifier'
 ) => {
   emit('update:groupKey', value);
 };
@@ -699,7 +699,7 @@ const searchOptions = computed(() => [
       t('common.placeholders.selectModifiedDateRange.0'),
       t('common.placeholders.selectModifiedDateRange.1')
     ],
-    valueKey: 'lastModifiedDate',
+    valueKey: 'modifiedDate',
     type: 'date-range' as const,
     allowClear: true,
     showTime: true
@@ -801,14 +801,14 @@ const groupMenuItems = [
     name: t('common.tester')
   },
   {
-    key: 'lastModifiedByName',
+    key: 'modifier',
     name: t('common.modifier')
   }
 ];
 
 const sortMenuItems = [
   {
-    key: 'createdByName',
+    key: 'creator',
     name: t('common.creator'),
     orderSort: PageQuery.OrderSort.Asc
   },
@@ -939,7 +939,7 @@ const initializeComponent = async () => {
           }
         } else {
           // Handle date range filters
-          const dateTimeKeys = ['createdDate', 'deadlineDate', 'reviewDate', 'lastModifiedDate', 'testResultHandleDate'];
+          const dateTimeKeys = ['createdDate', 'deadlineDate', 'reviewDate', 'modifiedDate', 'testResultHandleDate'];
           if (item.key && dateTimeKeys.includes(item.key)) {
             if (item.value !== undefined) {
               if (dateTimeMap[item.key]) {

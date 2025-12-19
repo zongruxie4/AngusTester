@@ -66,13 +66,13 @@ public class ServicesSync extends TenantEntity<ServicesSync, Long> {
   @Column(name = "last_sync_date")
   private LocalDateTime lastSyncDate;
 
-  @Column(name = "last_modified_by")
+  @Column(name = "modified_by")
   @LastModifiedBy
-  private Long lastModifiedBy;
+  private Long modifiedBy;
 
-  @Column(name = "last_modified_date")
+  @Column(name = "modified_date")
   @LastModifiedDate
-  private LocalDateTime lastModifiedDate;
+  private LocalDateTime modifiedDate;
 
   @Override
   public boolean sameIdentityAs(ServicesSync other) {

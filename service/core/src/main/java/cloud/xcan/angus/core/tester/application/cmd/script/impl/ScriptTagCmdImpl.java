@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.application.cmd.script.impl;
 
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.script.ScriptTagCmd;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * <p>It handles tag operations in a batch manner for better performance and
  * maintains consistency with the script lifecycle management.</p>
  */
-@Biz
+@Service
 public class ScriptTagCmdImpl extends CommCmd<ScriptTag, Long> implements
     ScriptTagCmd {
 

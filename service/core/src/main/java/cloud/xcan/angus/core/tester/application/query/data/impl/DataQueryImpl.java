@@ -12,7 +12,7 @@ import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.api.storage.space.SpacePrivRemote;
 import cloud.xcan.angus.api.storage.space.SpaceRemote;
 import cloud.xcan.angus.api.storage.space.dto.SpaceAssetsCountDto;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.repository.CountSummary;
 import cloud.xcan.angus.core.jpa.repository.LongKeyCountSummary;
@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
  *
  * @author XiaoLong Liu
  */
-@Biz
+@Service
 public class DataQueryImpl implements DataQuery {
 
   @Resource

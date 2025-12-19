@@ -50,7 +50,7 @@ import cloud.xcan.angus.agent.message.CheckPortVo;
 import cloud.xcan.angus.agent.message.CheckStatusDto;
 import cloud.xcan.angus.agent.message.runner.RunnerKillDto;
 import cloud.xcan.angus.agent.message.runner.RunnerQueryVo;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -127,7 +127,7 @@ import org.springframework.data.domain.PageRequest;
  * </p>
  */
 @Slf4j
-@Biz
+@Service
 public class NodeInfoQueryImpl implements NodeInfoQuery {
 
   @Resource

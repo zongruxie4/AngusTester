@@ -65,7 +65,7 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
     {
       key: 'myModified',
       name: t('quickSearch.modifiedByMe'),
-      fieldKey: 'lastModifiedBy'
+      fieldKey: 'modifiedBy'
     }
   ], String(currentUser.value?.id || '')),
   // Time options
@@ -165,7 +165,7 @@ const buildSearchParameters = (): PageQuery => {
  */
 const handleSearchFilterChange = (filterData: SearchCriteria[]) => {
   // Merge search panel filters with quick search filters
-  const quickSearchFields = ['moderatorId', 'createdBy', 'lastModifiedBy', 'createdDate'];
+  const quickSearchFields = ['moderatorId', 'createdBy', 'modifiedBy', 'createdDate'];
   const currentQuickSearchFilters = quickSearchFilters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
   const searchPanelFilters = filterData.filter(f => f.key && !quickSearchFields.includes(f.key as string));
 

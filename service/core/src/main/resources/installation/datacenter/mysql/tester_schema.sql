@@ -24,14 +24,14 @@ CREATE TABLE `analysis` (
   `tenant_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '租户ID',
   `created_by` bigint(20) NOT NULL COMMENT '创建人',
   `created_date` datetime NOT NULL DEFAULT '2001-01-01 00:00:00' COMMENT '创建时间',
-  `last_modified_by` bigint(20) NOT NULL COMMENT '最后修改人',
-  `last_modified_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+  `modified_by` bigint(20) NOT NULL COMMENT '最后修改人',
+  `modified_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
   PRIMARY KEY (`id`),
   KEY `idx_project_id` (`project_id`) USING BTREE,
   KEY `idx_tenant_id` (`tenant_id`) USING BTREE,
   KEY `idx_created_by` (`created_by`) USING BTREE,
   KEY `idx_created_date` (`created_date`) USING BTREE,
-  KEY `idx_last_modified_by` (`last_modified_by`) USING BTREE,
+  KEY `idx_modified_by` (`modified_by`) USING BTREE,
   FULLTEXT KEY `udx_name_description` (`name`,`description`) /*!50100 WITH PARSER `ngram` */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='分析';
 
@@ -45,8 +45,8 @@ CREATE TABLE `analysis_snapshot` (
    `data` longtext COLLATE utf8mb4_bin COMMENT '数据',
    `created_by` bigint(20) NOT NULL COMMENT '创建人',
    `created_date` datetime NOT NULL DEFAULT '2001-01-01 00:00:00' COMMENT '创建时间',
-   `last_modified_by` bigint(20) NOT NULL COMMENT '最后修改人',
-   `last_modified_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+   `modified_by` bigint(20) NOT NULL COMMENT '最后修改人',
+   `modified_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
    PRIMARY KEY (`id`) USING BTREE,
    KEY `udix_analysis_id` (`analysis_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -78,8 +78,8 @@ CREATE TABLE `report` (
    `tenant_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '租户ID',
    `created_by` bigint(20) NOT NULL COMMENT '创建人',
    `created_date` datetime NOT NULL DEFAULT '2001-01-01 00:00:00' COMMENT '创建时间',
-   `last_modified_by` bigint(20) NOT NULL COMMENT '最后修改人',
-   `last_modified_date` datetime NOT NULL DEFAULT '2001-01-01 00:00:00' COMMENT '最后修改时间',
+   `modified_by` bigint(20) NOT NULL COMMENT '最后修改人',
+   `modified_date` datetime NOT NULL DEFAULT '2001-01-01 00:00:00' COMMENT '最后修改时间',
    PRIMARY KEY (`id`) USING BTREE,
    KEY `idx_project_id` (`project_id`) USING BTREE,
    KEY `idx_category` (`category`) USING BTREE,
@@ -92,8 +92,8 @@ CREATE TABLE `report` (
    KEY `idx_tenant_id` (`tenant_id`) USING BTREE,
    KEY `idx_created_by` (`created_by`) USING BTREE,
    KEY `idx_created_date` (`created_date`) USING BTREE,
-   KEY `idx_last_modified_by` (`last_modified_by`) USING BTREE,
-   KEY `idx_last_modified_date` (`last_modified_date`) USING BTREE,
+   KEY `idx_modified_by` (`modified_by`) USING BTREE,
+   KEY `idx_modified_date` (`modified_date`) USING BTREE,
    KEY `idx_name` (`name`) USING BTREE,
    KEY `idx_auth` (`auth`) USING BTREE,
    FULLTEXT KEY `fx_name_description` (`name`,`description`) /*!50100 WITH PARSER `ngram` */

@@ -9,7 +9,7 @@ import { ExecStatus } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
 import { createAuditOptions, createTimeOptions, createEnumTypeConfig, type QuickSearchConfig } from 'src/components/form/quickSearch';
 
-export type OrderByKey = 'createdDate' | 'createdByName';
+export type OrderByKey = 'createdDate' | 'creator';
 
 /**
  * Composable for managing search panel functionality
@@ -60,7 +60,7 @@ export function useSearchPanel (props: BasicProps) {
       {
         key: 'modifiedByMe',
         name: t('quickSearch.modifiedByMe'),
-        fieldKey: 'lastModifiedBy'
+        fieldKey: 'modifiedBy'
       },
       {
         key: 'executedByMe',
@@ -115,7 +115,7 @@ export function useSearchPanel (props: BasicProps) {
    */
   const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
     // Update filters with quick search criteria
-    const quickSearchFields = ['createdBy', 'lastModifiedBy', 'execBy', 'scriptType', 'createdDate'];
+    const quickSearchFields = ['createdBy', 'modifiedBy', 'execBy', 'scriptType', 'createdDate'];
     const otherFilters = filters.value.filter(f => f.key && !quickSearchFields.includes(f.key as string));
     const newFilters = [...otherFilters, ...searchCriteria];
 
@@ -128,7 +128,7 @@ export function useSearchPanel (props: BasicProps) {
    */
   const searchPanelChange = (data: SearchCriteria[]): void => {
     // Merge search panel filters with quick search filters
-    const quickSearchFields = ['createdBy', 'lastModifiedBy', 'execBy', 'scriptType', 'createdDate'];
+    const quickSearchFields = ['createdBy', 'modifiedBy', 'execBy', 'scriptType', 'createdDate'];
     const quickSearchFilters = filters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
     const searchPanelFilters = data.filter(f => f.key && !quickSearchFields.includes(f.key as string));
 
@@ -200,7 +200,7 @@ export function useSearchPanel (props: BasicProps) {
 
       if (Object.prototype.hasOwnProperty.call(dbData, 'a')) {
         filters.value = dbData.a || [];
-        const dateTimeKeys = ['startDate', 'actualStartDate', 'endDate', 'createdDate', 'lastModifiedDate'];
+        const dateTimeKeys = ['startDate', 'actualStartDate', 'endDate', 'createdDate', 'modifiedDate'];
         const dateTimeMap: { [key: string]: string[] } = {};
 
         filters.value.every(({ key, value }) => {
@@ -467,12 +467,12 @@ export function useSearchPanel (props: BasicProps) {
       showTime: true
     },
     {
-      valueKey: 'lastModifiedBy',
+      valueKey: 'modifiedBy',
       placeholder: t('execution.searchPanel.selectLastModifier'),
       type: 'select-user'
     },
     {
-      valueKey: 'lastModifiedDate',
+      valueKey: 'modifiedDate',
       placeholder: [
         t('execution.searchPanel.lastModifiedTimeFrom'),
         t('execution.searchPanel.lastModifiedTimeTo')

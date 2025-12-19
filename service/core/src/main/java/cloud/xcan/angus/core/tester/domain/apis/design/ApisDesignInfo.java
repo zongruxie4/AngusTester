@@ -43,7 +43,7 @@ public class ApisDesignInfo extends TenantAuditingEntity<Apis, Long> implements 
   @Transient
   private String designSourceName;
   @Transient
-  private String createdByName;
+  private String creator;
   @Transient
   private String avatar;
 

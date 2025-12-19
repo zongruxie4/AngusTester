@@ -41,7 +41,7 @@
       "projectNotFound": "不存在此项目",
       "sortMenu": {
         "createdDate": "按添加时间",
-        "createdByName": "按添加人"
+        "creator": "按添加人"
       }
     },
     "edit": {

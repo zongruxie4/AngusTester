@@ -89,7 +89,7 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
 
-    <xcan-infra.bom.version>1.0.0</xcan-infra.bom.version>
+    <xcan-infra.bom.version>2.0.0</xcan-infra.bom.version>
     <xcan-plugin.bom.version>1.0.0</xcan-plugin.bom.version>
     <xcan-jmock.bom.version>1.0.0</xcan-jmock.bom.version>
 

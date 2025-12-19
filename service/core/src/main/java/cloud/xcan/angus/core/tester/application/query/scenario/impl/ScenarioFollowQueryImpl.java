@@ -5,7 +5,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioFollowQuery;
 import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
@@ -18,6 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -28,7 +28,7 @@ import org.springframework.data.domain.PageRequest;
  * information.
  * </p>
  */
-@Biz
+@Service
 public class ScenarioFollowQueryImpl implements ScenarioFollowQuery {
 
   @Resource

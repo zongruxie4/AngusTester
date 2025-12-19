@@ -44,7 +44,7 @@ import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.enums.NoticeType;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -145,7 +145,7 @@ import org.springframework.data.domain.PageRequest;
  * </ul></p>
  */
 @Slf4j
-@Biz
+@Service
 @SummaryQueryRegister(name = "Apis", table = "apis",
     groupByColumns = {"created_date", "source", "method", "protocol_type", "status", "auth",
         "publish"}
@@ -529,7 +529,7 @@ public class ApisQueryImpl implements ApisQuery {
       // Set associated mock APIs for enhanced display
       setInfoAssocMockApis(page.getContent());
       // Enrich with user name and avatar information
-      userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "createdByName",
+      userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "creator",
           "avatar");
     }
     return page;

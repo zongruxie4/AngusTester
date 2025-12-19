@@ -43,7 +43,7 @@ const taskProcessedDate = computed(() => props.dataSource?.processedDate);
 const taskConfirmedDate = computed(() => props.dataSource?.confirmedDate);
 const taskCompletedDate = computed(() => props.dataSource?.completedDate);
 const taskCanceledDate = computed(() => props.dataSource?.canceledDate);
-const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
+const taskmodifiedDate = computed(() => props.dataSource?.modifiedDate);
 
 // Date editing methods
 /**
@@ -236,10 +236,10 @@ const isDateDisabled = (current: Dayjs) => {
         <!-- Last Modified Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('common.lastModifiedDate') }}</span>
+            <span>{{ t('common.modifiedDate') }}</span>
           </div>
           <div class="info-value">
-            <span class="info-text" :class="{ 'dash-text': !taskLastModifiedDate }">{{ taskLastModifiedDate || '--' }}</span>
+            <span class="info-text" :class="{ 'dash-text': !taskmodifiedDate }">{{ taskmodifiedDate || '--' }}</span>
           </div>
         </div>
       </div>

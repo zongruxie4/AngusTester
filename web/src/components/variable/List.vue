@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
 const newData:VariableObj = {
   id: utils.uuid('api'),
   createdBy: '',
-  createdByName: '',
+  creator: '',
   createdDate: '',
   description: '',
   elementName: '',
@@ -47,9 +47,9 @@ const newData:VariableObj = {
     parameterNameErr: false,
     expressionErr: false
   },
-  lastModifiedBy: '',
-  lastModifiedByName: '',
-  lastModifiedDate: '',
+  modifiedBy: '',
+  modifier: '',
+  modifiedDate: '',
   name: '',
   // scope: { value: 'CURRENT', message: '' },
   targetId: props.id,
@@ -672,8 +672,8 @@ onMounted(() => {
             <!--            <div class="h-4">{{ variable.scope.message }}</div>-->
             <div class="flex">
               <div class="mr-2 truncate h-4" style="max-width: 60px;">
-                <Tooltip :title="variable.createdByName" placement="top">
-                  {{ variable.createdByName }}
+                <Tooltip :title="variable.creator" placement="top">
+                  {{ variable.creator }}
                 </Tooltip>
               </div>
               <div class="h-4">{{ variable.createdDate }}</div>

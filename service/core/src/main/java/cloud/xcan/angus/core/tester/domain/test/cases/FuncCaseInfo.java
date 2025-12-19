@@ -184,7 +184,7 @@ public class FuncCaseInfo extends TenantAuditingEntity<FuncCaseInfo, Long> imple
   @Transient
   private Boolean follow;
   @Transient
-  private String createdByName;
+  private String creator;
   @Transient
   private String avatar;
   @Transient

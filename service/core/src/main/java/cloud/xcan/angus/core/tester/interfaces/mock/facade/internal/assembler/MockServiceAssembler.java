@@ -133,8 +133,8 @@ public class MockServiceAssembler {
         //.setSetting(service.getSetting())
         .setCreatedBy(service.getCreatedBy())
         .setCreatedDate(service.getCreatedDate())
-        .setLastModifiedBy(service.getLastModifiedBy())
-        .setLastModifiedDate(service.getLastModifiedDate());
+        .setModifiedBy(service.getModifiedBy())
+        .setModifiedDate(service.getModifiedDate());
   }
 
   public static MockServiceDetailVo toDetailVo(MockService service) {
@@ -157,8 +157,8 @@ public class MockServiceAssembler {
         .setTenantId(service.getTenantId())
         .setCreatedBy(service.getCreatedBy())
         .setCreatedDate(service.getCreatedDate())
-        .setLastModifiedBy(service.getLastModifiedBy())
-        .setLastModifiedDate(service.getLastModifiedDate());
+        .setModifiedBy(service.getModifiedBy())
+        .setModifiedDate(service.getModifiedDate());
   }
 
   public static MockServiceListVo toServiceListVo(MockServiceInfo service) {
@@ -179,8 +179,8 @@ public class MockServiceAssembler {
         .setTenantId(service.getTenantId())
         .setCreatedBy(service.getCreatedBy())
         .setCreatedDate(service.getCreatedDate())
-        .setLastModifiedBy(service.getLastModifiedBy())
-        .setLastModifiedDate(service.getLastModifiedDate());
+        .setModifiedBy(service.getModifiedBy())
+        .setModifiedDate(service.getModifiedDate());
   }
 
   public static GenericSpecification<MockServiceInfo> getSpecification(MockServiceFindDto dto) {

@@ -18,7 +18,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -57,6 +56,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,7 +69,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Ensures permission checks, activity logging, and batch operations with transaction management.
  */
 @Slf4j
-@Biz
+@Service
 public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApisCmd {
 
   @Resource

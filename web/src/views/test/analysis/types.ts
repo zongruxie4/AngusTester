@@ -15,8 +15,8 @@ export interface AnalysisInfo {
   orgType?: EnumMessage<AuthObjectType>;
   orgId?: string;
   customRange?: [string, string];
-  lastModifiedByName?: string;
-  lastModifiedDate?: string;
+  modifier?: string;
+  modifiedDate?: string;
   data?: any;
 }
 

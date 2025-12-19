@@ -87,7 +87,7 @@ const getRateColor = (rate: number) => {
 const createPassRatePieConfig = (rate: number, numerator: number, denominator: number, title: string) => {
   const color = getRateColor(rate);
   const remaining = denominator - numerator;
-  
+
   return {
     tooltip: {
       trigger: 'item',
@@ -171,7 +171,7 @@ const createPassRatePieConfig = (rate: number, numerator: number, denominator: n
  */
 const createScoreProgressBarConfig = (score: number, title: string) => {
   const color = getScoreColor(score);
-  
+
   return {
     grid: {
       title: t('evaluation.detail.averageScore'),
@@ -262,7 +262,7 @@ const createScoreProgressBarConfig = (score: number, title: string) => {
  */
 const initOrUpdateChart = (chartInstance: any, ref: HTMLElement | undefined, config: any) => {
   if (!ref) return null;
-  
+
   if (chartInstance && !chartInstance.isDisposed()) {
     chartInstance.setOption(config, true);
     return chartInstance;
@@ -444,7 +444,7 @@ const loadEvaluationDetail = async (evaluationId: string) => {
 
   evaluationDetail.value = data;
   updateTabPaneTitle(data.name, evaluationId);
-  
+
   // Initialize charts after data loaded
   nextTick(() => {
     initCharts();
@@ -753,7 +753,7 @@ onBeforeUnmount(() => {
             <span>{{ t('common.createdBy') }}</span>
           </div>
           <div class="info-value">
-            <span class="value-text">{{ evaluationDetail.createdByName || '-' }}</span>
+            <span class="value-text">{{ evaluationDetail.creator || '-' }}</span>
           </div>
         </div>
 
@@ -776,7 +776,7 @@ onBeforeUnmount(() => {
         <div class="text-base font-semibold">{{ t('evaluation.detail.resultTitle') }}</div>
       </template>
 
-      
+
       <div class="evaluation-results-container">
 
         <div v-if="showQualityScores" class="flex items-center">
@@ -811,7 +811,7 @@ onBeforeUnmount(() => {
           <!-- Test Pass Rates Section -->
           <div class="results-section mb-6">
             <h3 class="text-4 font-semibold mb-4 text-title">{{ t('evaluation.detail.mainIndicators') }}</h3>
-            
+
             <div class="pass-rate-charts-grid">
               <!-- Functional Test Pass Rate -->
               <Card
@@ -853,7 +853,7 @@ onBeforeUnmount(() => {
                   </div>
                 </div>
               </Card>
-  
+
               <!-- Performance Test Pass Rate -->
               <Card
                 v-if="evaluationDetail.result.metrics?.PERFORMANCE_SCORE"
@@ -894,7 +894,7 @@ onBeforeUnmount(() => {
                   </div>
                 </div>
               </Card>
-  
+
               <!-- Stability Test Pass Rate -->
               <Card
                 v-if="evaluationDetail.result.metrics?.STABILITY_SCORE"
@@ -944,7 +944,7 @@ onBeforeUnmount(() => {
           <!-- Quality Scores Section -->
           <div class="results-section">
             <h3 class="text-4 font-semibold mb-4 text-title">{{ t('evaluation.detail.otherIndicators') }}</h3>
-            
+
             <div class="quality-scores-container space-y-2">
               <!-- Compatibility Score -->
               <Card
@@ -978,7 +978,7 @@ onBeforeUnmount(() => {
                   <div ref="compatibilityScoreRef" class="quality-score-chart flex-1"></div>
                 </div>
               </Card>
-  
+
               <!-- Usability Score -->
               <Card
                 v-if="evaluationDetail.result.metrics?.USABILITY_SCORE"
@@ -1011,7 +1011,7 @@ onBeforeUnmount(() => {
                   <div ref="usabilityScoreRef" class="quality-score-chart flex-1"></div>
                 </div>
               </Card>
-  
+
               <!-- Maintainability Score -->
               <Card
                 v-if="evaluationDetail.result.metrics?.MAINTAINABILITY_SCORE"
@@ -1021,7 +1021,7 @@ onBeforeUnmount(() => {
                   <div class="card-title">{{ t('evaluation.detail.scoreTitles.maintainability') }}</div>
                 </template>
                 <div class="flex">
-                  
+
                   <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
                       <Statistic
                         :title="t('evaluation.detail.totalCases')"
@@ -1045,7 +1045,7 @@ onBeforeUnmount(() => {
                   <div ref="maintainabilityScoreRef" class="quality-score-chart flex-1"></div>
                 </div>
               </Card>
-  
+
               <!-- Scalability Score -->
               <Card
                 v-if="evaluationDetail.result.metrics?.SCALABILITY_SCORE"
@@ -1055,7 +1055,7 @@ onBeforeUnmount(() => {
                   <div class="card-title">{{ t('evaluation.detail.scoreTitles.scalability') }}</div>
                 </template>
                 <div class="flex">
-                  
+
                   <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
                       <Statistic
                         :title="t('evaluation.detail.totalCases')"
@@ -1079,7 +1079,7 @@ onBeforeUnmount(() => {
                   <div ref="scalabilityScoreRef" class="quality-score-chart flex-1"></div>
                 </div>
               </Card>
-  
+
               <!-- Security Score -->
               <Card
                 v-if="evaluationDetail.result.metrics?.SECURITY_SCORE"
@@ -1089,7 +1089,7 @@ onBeforeUnmount(() => {
                   <div class="card-title">{{ t('evaluation.detail.scoreTitles.security') }}</div>
                 </template>
                 <div class="flex">
-                  
+
                   <div class="quality-score-content inline-flex justify-around space-x-2 w-100">
                       <Statistic
                         :title="t('evaluation.detail.totalCases')"
@@ -1145,7 +1145,7 @@ onBeforeUnmount(() => {
                   </div>
                   <div ref="complianceScoreRef" class="quality-score-chart flex-1"></div>
                 </div>
-              </Card> 
+              </Card>
 
               <!-- Availability Score -->
               <Card
@@ -1189,7 +1189,7 @@ onBeforeUnmount(() => {
       <template #title>
         <div class="text-base font-semibold">测试用例明细</div>
       </template>
-     
+
       <div class="flex space-x-2">
         <Input v-model:value="caseNameKeyword" class="w-50" placeholder="搜索测试用例名称" />
         <Input v-model:value="caseCodeKeyword" class="w-50" placeholder="搜索测试用例编码" />

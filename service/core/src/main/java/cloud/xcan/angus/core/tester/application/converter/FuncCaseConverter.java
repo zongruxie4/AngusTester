@@ -186,8 +186,8 @@ public class FuncCaseConverter {
         .setTenantId(getOptTenantId())
         .setCreatedBy(currentUserId)
         .setCreatedDate(LocalDateTime.now())
-        .setLastModifiedBy(currentUserId)
-        .setLastModifiedDate(LocalDateTime.now());
+        .setModifiedBy(currentUserId)
+        .setModifiedDate(LocalDateTime.now());
   }
 
   private static LinkedHashMap<Long, String> getTesterResponsibilities(FuncPlan plan,
@@ -223,8 +223,8 @@ public class FuncCaseConverter {
         .setTenantId(getOptTenantId())
         .setCreatedBy(users.get(random.nextInt(users.size())).getId())
         .setCreatedDate(now)
-        .setLastModifiedBy(users.get(random.nextInt(users.size())).getId())
-        .setLastModifiedDate(result.isFinished() ? finishedDate : now);
+        .setModifiedBy(users.get(random.nextInt(users.size())).getId())
+        .setModifiedDate(result.isFinished() ? finishedDate : now);
   }
 
   public static void assembleExampleFuncReview(Long projectId,
@@ -234,7 +234,7 @@ public class FuncCaseConverter {
         .setPlanId(plan.getId()).setOwnerId(currentUserId)
         .setParticipantIds(new LinkedHashSet<>(users.stream().map(User::getId)
             .collect(Collectors.toSet())))
-        .setCreatedBy(currentUserId).setLastModifiedBy(currentUserId);
+        .setCreatedBy(currentUserId).setModifiedBy(currentUserId);
   }
 
   public static void assembleExampleFuncBaseline(Long projectId,
@@ -242,7 +242,7 @@ public class FuncCaseConverter {
     Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
     baseline.setProjectId(projectId)
         .setPlanId(plan.getId()).setEstablished(false).setTenantId(getOptTenantId())
-        .setCreatedBy(currentUserId).setLastModifiedBy(currentUserId);
+        .setCreatedBy(currentUserId).setModifiedBy(currentUserId);
     LinkedHashSet<Long> baselineCaseIds = new LinkedHashSet<>();
     int baselineCasesNum = cases.size() / 2;
     for (int j = 0; j < baselineCasesNum; j++) {
@@ -366,8 +366,8 @@ public class FuncCaseConverter {
         .setCreatedBy(case0.getCreatedBy())
         .setCreatedDate(case0.getCreatedDate())
         //.setAvatar(case0.getAvatar())
-        .setLastModifiedBy(case0.getLastModifiedBy())
-        .setLastModifiedDate(case0.getLastModifiedDate());
+        .setModifiedBy(case0.getModifiedBy())
+        .setModifiedDate(case0.getModifiedDate());
   }
 
   public static FuncCaseDetailSummary toCaseDetailSummary(FuncCase case0) {
@@ -412,11 +412,11 @@ public class FuncCaseConverter {
         .setCommentNum(case0.getCommentNum())
         .setTenantId(case0.getTenantId())
         .setCreatedBy(case0.getCreatedBy())
-        .setCreatedByName(case0.getCreatedByName())
+        .setCreator(case0.getCreator())
         .setCreatedDate(case0.getCreatedDate())
         .setAvatar(case0.getAvatar())
-        .setLastModifiedBy(case0.getLastModifiedBy())
-        .setLastModifiedDate(case0.getLastModifiedDate());
+        .setModifiedBy(case0.getModifiedBy())
+        .setModifiedDate(case0.getModifiedDate());
   }
 
   public static FuncCaseCount objectArrToCount(List<Object[]> groupByResult,

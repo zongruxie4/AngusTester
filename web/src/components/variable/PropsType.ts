@@ -6,7 +6,7 @@ export type MethodObj = 'EXACT_VALUE' | 'REGEX' | 'JSON_PATH' | 'X_PATH';
 
 export type VariableObj = {
   createdBy: string;
-  createdByName: string;
+  creator: string;
   createdDate: string;
   description: string;
   elementName: string;
@@ -25,9 +25,9 @@ export type VariableObj = {
     expressionErr?: boolean;
   },
   id: string;
-  lastModifiedBy: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
+  modifiedBy: string;
+  modifier: string;
+  modifiedDate: string;
   name: string;
   scope: {value:Scope, message:string};
   targetId: string;

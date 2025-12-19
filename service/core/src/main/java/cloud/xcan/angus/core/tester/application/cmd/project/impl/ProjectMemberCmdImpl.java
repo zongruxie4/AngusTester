@@ -3,7 +3,7 @@ package cloud.xcan.angus.core.tester.application.cmd.project.impl;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.tag.OrgTargetType;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.project.ProjectMemberCmd;
@@ -21,7 +21,7 @@ import java.util.LinkedHashSet;
  * <p>
  * Ensures batch operations and repository access.
  */
-@Biz
+@Service
 public class ProjectMemberCmdImpl extends CommCmd<ProjectMember, Long> implements ProjectMemberCmd {
 
   @Resource

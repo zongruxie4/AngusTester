@@ -46,8 +46,8 @@ public class SoftwareVersionAssembler {
         .setDescription(version.getDescription())
         .setProgress(version.getProgress()).setTaskByStatus(version.getTaskByStatus())
         .setCreatedBy(version.getCreatedBy()).setCreatedDate(version.getCreatedDate())
-        .setLastModifiedBy(version.getLastModifiedBy())
-        .setLastModifiedDate(version.getLastModifiedDate());
+        .setModifiedBy(version.getModifiedBy())
+        .setModifiedDate(version.getModifiedDate());
   }
 
   public static SoftwareVersionVo toVo(SoftwareVersion version) {
@@ -56,8 +56,8 @@ public class SoftwareVersionAssembler {
         .setReleaseDate(version.getReleaseDate()).setStatus(version.getStatus())
         .setDescription(version.getDescription()).setProgress(version.getProgress())
         .setCreatedBy(version.getCreatedBy()).setCreatedDate(version.getCreatedDate())
-        .setLastModifiedBy(version.getLastModifiedBy())
-        .setLastModifiedDate(version.getLastModifiedDate());
+        .setModifiedBy(version.getModifiedBy())
+        .setModifiedDate(version.getModifiedDate());
   }
 
   public static GenericSpecification<SoftwareVersion> getSpecification(SoftwareVersionFindDto dto) {

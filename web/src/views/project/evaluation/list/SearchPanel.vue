@@ -51,7 +51,7 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
     {
       key: 'modifiedByMe',
       name: t('quickSearch.modifiedByMe'),
-      fieldKey: 'lastModifiedBy'
+      fieldKey: 'modifiedBy'
     }
   ], String(userInfo.value?.id || '')),
   timeOptions: createTimeOptions([
@@ -139,7 +139,7 @@ const handleSearchChange = (data: SearchCriteria[], _headers?: { [key: string]: 
 };
 
 const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void => {
-  
+
   quickSearchFilters.value = searchCriteria.filter(f => !assocKeys.includes(f.key as string));
   if (key === 'createdByMe') {
     if (selectedKeys.includes(key)) {

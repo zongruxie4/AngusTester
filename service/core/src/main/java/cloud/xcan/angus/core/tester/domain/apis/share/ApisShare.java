@@ -72,7 +72,7 @@ public class ApisShare extends TenantAuditingEntity<ApisShare, Long> {
   @Transient
   private String url;
   @Transient
-  private String createdByName;
+  private String creator;
   @Transient
   private String avatar;
 

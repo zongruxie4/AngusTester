@@ -8,7 +8,6 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.api.commonlink.exec.TestCaseResultInfo;
 import cloud.xcan.angus.api.commonlink.exec.TestResultInfo;
 import cloud.xcan.angus.api.enums.Result;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecCmd;
@@ -29,6 +28,7 @@ import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
  * example execution import functionality.
  * </p>
  */
-@Biz
+@Service
 public class ExecTestCmdImpl implements ExecTestCmd {
 
   @Resource

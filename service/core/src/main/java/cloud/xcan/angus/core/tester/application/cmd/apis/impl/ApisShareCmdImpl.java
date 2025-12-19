@@ -11,7 +11,6 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_PUBLIC_TOKEN_LE
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -31,6 +30,7 @@ import cloud.xcan.angus.core.utils.CoreUtils;
 import jakarta.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -43,7 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
  * logging. Manages public access tokens and share scopes for APIs and services.
  * </p>
  */
-@Biz
+@Service
 public class ApisShareCmdImpl extends CommCmd<ApisShare, Long> implements ApisShareCmd {
 
   @Resource

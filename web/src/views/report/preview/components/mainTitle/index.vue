@@ -37,7 +37,7 @@ const report = computed(() => {
           <span class="flex-shrink-0">{{ t('common.reporter') }}</span>
           <Colon />
         </div>
-        <div>{{ report?.createdByName }}</div>
+        <div>{{ report?.creator }}</div>
       </div>
 
       <div class="inline-flex items-start mb-1">

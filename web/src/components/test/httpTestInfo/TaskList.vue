@@ -67,7 +67,7 @@ const taskTooltipTableColumns = [
       label: t('common.confirmer')
     },
     {
-      dataIndex: 'createdByName',
+      dataIndex: 'creator',
       label: t('common.createdBy')
     },
     {

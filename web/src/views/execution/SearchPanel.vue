@@ -9,7 +9,7 @@ import { useSearchPanel } from './composables/useSearchPanel';
 import { BasicProps } from '@/types/types';
 import { QuickSearchOptions } from 'src/components/form/quickSearch';
 
-type OrderByKey = 'createdDate' | 'createdByName';
+type OrderByKey = 'createdDate' | 'creator';
 
 const { t } = useI18n();
 

@@ -9,7 +9,6 @@ import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.AUTH_CAN
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.AUTH_UPDATED;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -30,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Ensures permission checks, duplicate prevention, and activity logging.
  */
 @Slf4j
-@Biz
+@Service
 public class MockServiceAuthCmdImpl extends CommCmd<MockServiceAuth, Long> implements
     MockServiceAuthCmd {
 

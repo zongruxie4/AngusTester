@@ -87,7 +87,7 @@ import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.api.pojo.Attachment;
 import cloud.xcan.angus.api.pojo.Progress;
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.JoinSupplier;
@@ -235,7 +235,7 @@ import org.springframework.data.domain.Sort.Direction;
  * Supports both individual case operations and bulk operations with proper error handling
  * and resource validation.
  */
-@Biz
+@Service
 public class FuncCaseQueryImpl implements FuncCaseQuery {
 
   @Resource

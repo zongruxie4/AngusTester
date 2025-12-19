@@ -1,6 +1,5 @@
 package cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service;
 
-import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
 import static cloud.xcan.angus.spec.experimental.BizConstant.IPV4_LENGTH;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH;
 
@@ -9,12 +8,10 @@ import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Setter
@@ -42,13 +39,6 @@ public class MockServiceFindDto extends PageQuery {
 
   @Schema(description = "Mock service source type for origin-based filtering")
   private MockServiceSource source;
-
-  @Schema(description = "Creator identifier for ownership-based filtering")
-  private Long createdBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Creation date for temporal filtering")
-  private LocalDateTime createdDate;
 
   @Override
   public String getDefaultOrderBy() {

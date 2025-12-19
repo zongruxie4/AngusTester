@@ -14,12 +14,12 @@ export type AddedItem = {
   id: string;
   name: string;
   createdBy: string;
-  createdByName: string;
+  creator: string;
   ownerId: string;
   ownerName: string;
   avatar: string;
   createdDate: string;
-  lastModifiedDate: string;
+  modifiedDate: string;
   auth: boolean;
 }
 

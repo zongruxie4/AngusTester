@@ -4,7 +4,7 @@ import static cloud.xcan.angus.core.tester.infra.metricsds.MetricsDynamicDataSou
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static cloud.xcan.angus.metrics.ExecMetrics.EXT_KEY_SAMPLE_RESULT_CONTENT;
 
-import cloud.xcan.angus.core.biz.Biz;
+import org.springframework.stereotype.Service;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecSampleExtcQuery;
@@ -26,7 +26,7 @@ import org.springframework.data.domain.PageRequest;
  * Supports both paginated queries with search criteria and direct content retrieval for specific
  * execution IDs with extension field filtering.
  */
-@Biz
+@Service
 public class ExecSampleExtcQueryImpl implements ExecSampleExtcQuery {
 
   @Resource

@@ -24,7 +24,7 @@ export type Remark = {
   /** ID of the user who created the remark */
   createdBy: string;
   /** Name of the user who created the remark */
-  createdByName: string;
+  creator: string;
   /** Creation date of the remark */
   createdDate: string;
 }

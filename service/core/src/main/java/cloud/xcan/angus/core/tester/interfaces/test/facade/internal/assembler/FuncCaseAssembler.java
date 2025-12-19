@@ -235,8 +235,8 @@ public class FuncCaseAssembler {
         .setCreatedBy(case0.getCreatedBy())
         .setCreatedDate(case0.getCreatedDate())
         .setAvatar(case0.getAvatar())
-        .setLastModifiedBy(case0.getLastModifiedBy())
-        .setLastModifiedDate(case0.getLastModifiedDate());
+        .setModifiedBy(case0.getModifiedBy())
+        .setModifiedDate(case0.getModifiedDate());
   }
 
   public static FuncCaseListVo toListVo(FuncCaseInfo case0) {
@@ -289,11 +289,11 @@ public class FuncCaseAssembler {
         .setFollow(case0.getFollow())
         .setTenantId(case0.getTenantId())
         .setCreatedBy(case0.getCreatedBy())
-        .setCreatedByName(case0.getCreatedByName())
+        .setCreator(case0.getCreator())
         .setCreatedDate(case0.getCreatedDate())
         .setAvatar(case0.getAvatar())
-        .setLastModifiedBy(case0.getLastModifiedBy())
-        .setLastModifiedDate(case0.getLastModifiedDate());
+        .setModifiedBy(case0.getModifiedBy())
+        .setModifiedDate(case0.getModifiedDate());
   }
 
   public static FuncCaseReviewVo toReviewListVo(FuncReviewCaseRecord reviewCase) {
@@ -313,7 +313,7 @@ public class FuncCaseAssembler {
         .setReviewStatus(reviewCase.getReviewStatus())
         .setReviewRemark(reviewCase.getReviewRemark())
         .setCreatedBy(reviewCase.getCreatedBy())
-        .setCreatedByName(reviewCase.getCreatedByName())
+        .setCreator(reviewCase.getCreator())
         .setAvatar(reviewCase.getAvatar())
         .setCreatedDate(reviewCase.getCreatedDate());
   }
@@ -376,10 +376,10 @@ public class FuncCaseAssembler {
         .setTestResultHandleDate(listVo.getTestResultHandleDate())
         .setRefTags(isNotEmpty(listVo.getTags()) ? listVo.getTags().stream()
             .map(IdAndNameVo::getName).toList() : Collections.emptyList())
-        .setCreatedByName(listVo.getCreatedByName())
+        .setCreator(listVo.getCreator())
         .setCreatedDate(listVo.getCreatedDate())
-        .setLastModifiedByName(listVo.getLastModifiedByName())
-        .setLastModifiedDate(listVo.getLastModifiedDate());
+        .setModifier(listVo.getModifier())
+        .setModifiedDate(listVo.getModifiedDate());
     if (isNotEmpty(listVo.getRefTaskInfos())) {
       vo.setRefTasks(listVo.getRefTaskInfos().stream().map(TaskInfoVo::getName)
           .toList());
@@ -426,11 +426,11 @@ public class FuncCaseAssembler {
   public static GenericSpecification<FuncCaseInfo> getSpecification(FuncCaseFindDto dto) {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("deadlineDate", "createdDate", "lastModifiedDate", "reviewDate",
+        .rangeSearchFields("deadlineDate", "createdDate", "modifiedDate", "reviewDate",
             "testResultHandleDate", "reviewNum", "testNum", "testFailNum")
         .inAndNotFields("id", "tagId", "testResult", "testerId", "developerId", "testLayer",
             "EvaluationPurpose")
-        .orderByFields("id", "createdDate", "lastModifiedDate", "priority",
+        .orderByFields("id", "createdDate", "modifiedDate", "priority",
             "deadlineDate", "reviewStatus", "reviewNum", "testerId", "developerId", "reviewerId",
             "testNum", "testFailNum", "testResult", "reviewDate", "testResultHandleDate",
             "testLayer", "EvaluationPurpose")

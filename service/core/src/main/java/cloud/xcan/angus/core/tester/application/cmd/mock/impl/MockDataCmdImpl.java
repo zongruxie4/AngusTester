@@ -6,7 +6,6 @@ import static cloud.xcan.angus.remote.message.ProtocolException.M.EXPRESSION_PAR
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMessage;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecCmd;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockDataCmd;
@@ -28,6 +27,7 @@ import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Service;
 
 /**
  * Command implementation for mock data generation.
@@ -36,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
  * <p>
  * Ensures batch operations, error handling, and integration with script and execution commands.
  */
-@Biz
+@Service
 public class MockDataCmdImpl implements MockDataCmd {
 
   @Resource

@@ -115,20 +115,6 @@ public class FuncCaseFindDto extends PageQuery {
   @Schema(description = "API endpoint for test case endpoint filtering")
   private String endpoint;
 
-  @Schema(description = "Test case creator identifier for ownership filtering")
-  private Long createdBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Test case creation timestamp for temporal filtering")
-  private LocalDateTime createdDate;
-
-  @Schema(description = "Test case last modifier identifier for modification tracking")
-  private Long lastModifiedBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Test case last modification timestamp for change tracking")
-  private LocalDateTime lastModifiedDate;
-
   @Schema(description = "Favorite user identifier for favorite case filtering")
   private Long favouriteBy;
 

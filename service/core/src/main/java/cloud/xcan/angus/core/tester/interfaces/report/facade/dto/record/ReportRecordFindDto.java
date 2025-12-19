@@ -1,18 +1,14 @@
 package cloud.xcan.angus.core.tester.interfaces.report.facade.dto.record;
 
-import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
-
 import cloud.xcan.angus.core.tester.domain.report.ReportCategory;
 import cloud.xcan.angus.core.tester.domain.report.ReportTemplate;
 import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Setter
 @Getter
@@ -35,12 +31,5 @@ public class ReportRecordFindDto extends PageQuery {
 
   @Schema(description = "Report template to filter records by template type")
   private ReportTemplate template;
-
-  @Schema(description = "User ID who created the report record")
-  private Long createdBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Creation date to filter records created on a specific date")
-  private LocalDateTime createdDate;
 
 }

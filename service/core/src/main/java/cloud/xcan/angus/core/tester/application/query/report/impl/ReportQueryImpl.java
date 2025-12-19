@@ -39,7 +39,6 @@ import cloud.xcan.angus.api.enums.NoticeType;
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.api.pojo.Progress;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.JoinSupplier;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
@@ -132,11 +131,12 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @SummaryQueryRegister(name = "Report", table = "report", groupByColumns = {/*"created_date", */
     "category", "template", "status"})
-@Biz
+@Service
 public class ReportQueryImpl implements ReportQuery {
 
   @Resource

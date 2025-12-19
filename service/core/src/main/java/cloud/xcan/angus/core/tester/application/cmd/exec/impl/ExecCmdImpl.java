@@ -60,7 +60,6 @@ import cloud.xcan.angus.agent.message.runner.RunnerStopDto;
 import cloud.xcan.angus.agent.message.runner.RunnerStopVo;
 import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
 import cloud.xcan.angus.api.commonlink.script.ScriptPermission;
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -132,6 +131,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -151,7 +151,7 @@ import org.springframework.transaction.annotation.Transactional;
  * </p>
  */
 @Slf4j
-@Biz
+@Service
 public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
   @Resource
@@ -1308,7 +1308,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
             new TypeReference<ApiLocaleResult<?>>() {
             });
         return dto.getRemoteNodeIds().stream()
-            .map(x -> RunnerRunVo.fail(String.valueOf(dto.getId()), x, result.getMsg()))
+            .map(x -> RunnerRunVo.fail(String.valueOf(dto.getId()), x, result.getMessage()))
             .toList();
       }
     } catch (Throwable e) {
@@ -1346,7 +1346,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
             new TypeReference<ApiLocaleResult<?>>() {
             });
         return dto.getRemoteNodeIds().stream()
-            .map(x -> RunnerStopVo.fail(String.valueOf(dto.getId()), x, result.getMsg()))
+            .map(x -> RunnerStopVo.fail(String.valueOf(dto.getId()), x, result.getMessage()))
             .toList();
       }
     } catch (Throwable e) {

@@ -21,7 +21,7 @@ export function useSearchPanel (searchPanelRef?: any) {
   const assocFilters = ref<SearchCriteria[]>([]);
 
   // Constants
-  const assocKeys = ['createdBy', 'lastModifiedBy', 'createdDate'];
+  const assocKeys = ['createdBy', 'modifiedBy', 'createdDate'];
   const establishedKeys = ['established=1', 'established=0'];
 
   /**
@@ -89,7 +89,7 @@ export function useSearchPanel (searchPanelRef?: any) {
       {
         key: 'modifiedByMe',
         name: t('quickSearch.modifiedByMe'),
-        fieldKey: 'lastModifiedBy'
+        fieldKey: 'modifiedBy'
       }
     ], String(userInfo.value?.id || '')),
     // Time options

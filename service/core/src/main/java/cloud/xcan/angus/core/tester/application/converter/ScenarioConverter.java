@@ -46,8 +46,8 @@ public class ScenarioConverter {
     //.setDescription(convert(objects[5], String.class));
     scenario.setCreatedBy(convert(objects[8], Long.class));
     scenario.setCreatedDate(convert(objects[9], LocalDateTime.class));
-    scenario.setLastModifiedBy(convert(objects[10], Long.class));
-    scenario.setLastModifiedDate(convert(objects[11], LocalDateTime.class));
+    scenario.setModifiedBy(convert(objects[10], Long.class));
+    scenario.setModifiedDate(convert(objects[11], LocalDateTime.class));
     return scenario;
   }
 
@@ -135,8 +135,8 @@ public class ScenarioConverter {
         .setFollow(scenario.getFollow())
         .setCreatedBy(scenario.getCreatedBy())
         .setCreatedDate(scenario.getCreatedDate())
-        .setLastModifiedBy(scenario.getLastModifiedBy())
-        .setLastModifiedDate(scenario.getLastModifiedDate());
+        .setModifiedBy(scenario.getModifiedBy())
+        .setModifiedDate(scenario.getModifiedDate());
   }
 
   public static void countCreationScenario(ScenarioResourcesCreationCount result,

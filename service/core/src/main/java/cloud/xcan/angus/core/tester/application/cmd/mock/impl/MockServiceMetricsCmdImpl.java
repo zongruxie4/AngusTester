@@ -1,10 +1,10 @@
 package cloud.xcan.angus.core.tester.application.cmd.mock.impl;
 
-import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceMetricsCmd;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.jvmservice.JvmServiceUsageRepo;
 import jakarta.annotation.Resource;
 import java.util.Collection;
+import org.springframework.stereotype.Service;
 
 /**
  * Command implementation for mock service metrics management.
@@ -13,7 +13,7 @@ import java.util.Collection;
  * <p>
  * Ensures batch deletion and repository access.
  */
-@Biz
+@Service
 public class MockServiceMetricsCmdImpl implements MockServiceMetricsCmd {
 
   @Resource

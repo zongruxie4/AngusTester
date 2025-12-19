@@ -93,8 +93,8 @@ public class ExecAssembler {
         .setTenantId(exec.getTenantId())
         .setCreatedBy(exec.getCreatedBy())
         .setCreatedDate(exec.getCreatedDate())
-        .setLastModifiedBy(exec.getLastModifiedBy())
-        .setLastModifiedDate(exec.getLastModifiedDate())
+        .setModifiedBy(exec.getModifiedBy())
+        .setModifiedDate(exec.getModifiedDate())
         .setSampleSummaryInfo(toSample(exec.getFinishSampleResult()))
         .setHasOperationPermission(exec.isHasOperationPermission())
         .setSchedulingNum(exec.getSchedulingNum())
@@ -143,8 +143,8 @@ public class ExecAssembler {
         .setTenantId(exec.getTenantId())
         .setCreatedBy(exec.getCreatedBy())
         .setCreatedDate(exec.getCreatedDate())
-        .setLastModifiedBy(exec.getLastModifiedBy())
-        .setLastModifiedDate(exec.getLastModifiedDate())
+        .setModifiedBy(exec.getModifiedBy())
+        .setModifiedDate(exec.getModifiedDate())
         .setSampleSummaryInfo(toSample(exec.getFinishSample()))
         .setHasOperationPermission(exec.isHasOperationPermission())
         .setSchedulingNum(exec.getSchedulingNum())
@@ -155,10 +155,10 @@ public class ExecAssembler {
   public static GenericSpecification<ExecInfo> getSpecification(ExecFindDto dto) {
     return new GenericSpecification<>(new SearchCriteriaBuilder<>(dto)
         .matchSearchFields("name", "plugin", "extSearchMerge")
-        .rangeSearchFields("id", "createdDate", "lastModifiedDate", "startDate",
+        .rangeSearchFields("id", "createdDate", "modifiedDate", "startDate",
             "actualStartDate", "endDate", "priority")
         .inAndNotFields("id", "name", "plugin", "platform", "scriptType", "priority", "status")
-        .orderByFields("id", "createdDate", "startDate", "lastModifiedDate", "actualStartDate",
+        .orderByFields("id", "createdDate", "startDate", "modifiedDate", "actualStartDate",
             "endDate", "priority")
         .build());
   }
